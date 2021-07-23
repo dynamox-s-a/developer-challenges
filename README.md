@@ -8,9 +8,17 @@ A Dynamox é uma empresa de alta tecnologia que desenvolve sistemas de monitoram
 
 Todas as soluções são desenvolvidas por nossa equipe, desde o hardware até a aplicação web. Nossa equipe é formada por desenvolvedores de hardware, firmware, mobile (android e ios) e web (backend e frontend), além de engenheiros especializados na área de processamento de sinais para vibração e acústica.
 
-## Sobre os desafios
 
-A ideia é simples, você terá que desenvolver uma landing page e um CRUD com dados falsos.
+## Sobre a vaga e os desafios
+
+Estamos buscando alguém para trabalhar com o desenvolvimento web direcionado para nossa apresentação institucional. Nessa atividade, iremos contar contigo para:
+
+- Atualizar e implementar funcionalidades em nosso website institucional;
+- Implementar integrações de nosso website com ferramentas de marketing como RD Station e Google Analytics;
+- Implementar integrações com ferramentas de gestão de conteúdo (CMS), Wordpress, Contentful ou similares para disponibilizar e organizar posts em nosso blog ou e-commerce e similares;
+- Dar suporte à equipe de marketing em atividades que envolvem funcionalidades web;
+
+Para isso, sugerimos dois desafios. O primeiro para avaliar como você implementa um design definido para uma landing page e o segundo para avaliar suas abilidades em realizar operações básicas de CRUD e chamadas a uma api.
 
 ---
 
