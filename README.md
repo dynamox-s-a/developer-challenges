@@ -25,7 +25,7 @@ Requisitos funcionais:
 **Header**
 
 - Ao clicar no logo Dymamox, usuário deve ser redirecionado para https://dynamox.net/
-- Ao clicar em “Dynapredict”, usuário deve ser redirecionado para https://dynamox.net/dynapredict/
+- Ao clicar em “DynaPredict”, usuário deve ser redirecionado para https://dynamox.net/dynapredict/
 - Ao clicar em "Sensores", usuário deve ser movido para a seção de sensores da landing page.
 - Ao clicar em "Contato", usuário deve ser movido para seção de contato da landing page.
 
@@ -35,7 +35,7 @@ Requisitos funcionais:
 
 **Contato**
 
-- Ao clicar em "Enviar", website deve emitir aleta contendo o conteúdo dos campos do formulário de contato.
+- Ao clicar em "Enviar", website deve emitir alerta contendo o conteúdo dos campos do formulário de contato.
 
 Critérios de avaliação:
 
