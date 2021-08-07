@@ -1,0 +1,23 @@
+export declare type Observer<T> = {
+    next: (value: T) => void;
+};
+declare type TearDown = () => void;
+export declare type SubjectType<T> = {
+    next: (value: T) => void;
+    subscribe: (value: Observer<T>) => {
+        unsubscribe: TearDown;
+    };
+};
+export declare class Subscription {
+    private tearDowns;
+    add(tearDown: TearDown): void;
+    unsubscribe(): void;
+}
+export default class Subject<T> {
+    observers: Observer<T>[];
+    constructor();
+    next(value: T): void;
+    subscribe(observer: Observer<T>): Subscription;
+    unsubscribe(): void;
+}
+export {};
