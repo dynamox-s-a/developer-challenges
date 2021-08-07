@@ -25,10 +25,10 @@ const Footer = () =>{
     
     const onSubmitFunction = (data) => {
         setForm(data)
-        toast.info(`NOME: ${form.name}`);
-        toast.info(`EMPRESA: ${form.company}`);
-        toast.info(`E-MAIL: ${form.email}`);
-        toast.info(`TELEFONE: ${form.cellphone}`);
+        toast.info(`NOME: ${data.name}`);
+        toast.info(`EMPRESA: ${data.company}`);
+        toast.info(`E-MAIL: ${data.email}`);
+        toast.info(`TELEFONE: ${data.cellphone}`);
       };
     
     return(
