@@ -20,6 +20,11 @@ export const Container = styled.div`
       font-family: 'Raleway', sans-serif;
       font-weight: lighter;
     }
+    @media (max-width: 500px) {
+      padding-left: 5px;
+      height: 70%;
+      width: 100vw;
+    }
   }
   div {
     color: var(--red);
@@ -33,4 +38,9 @@ export const Container = styled.div`
       font-size: 1rem;
     }
   }
+  @media (max-width: 500px) {
+
+
+      width: 100vw;
+    }
 `;

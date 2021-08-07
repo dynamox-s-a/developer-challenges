@@ -26,7 +26,16 @@ export const Container = styled.div`
     font-family: 'Raleway', sans-serif;
   }
 
-  @media (min-width: 500px) {
-    height: 15vh;
+  @media (max-width: 500px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 25vh;
+    .left{
+      /* margin-right:3vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center; */
+    }
   }
 `;

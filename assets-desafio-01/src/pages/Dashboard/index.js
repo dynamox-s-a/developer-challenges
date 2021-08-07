@@ -17,9 +17,9 @@ const Dashboard = () => {
             <Grafismo>
                 <div className="left">
                     <h1>Solução DynaPredict</h1>
-                    <img src={logo} alt="description of \zxzx\zx"/>
+                    <img src={logo} alt="logo"/>
                 </div>
-                <img src={computador} alt="description of \zx\zx"/>
+                <img src={computador} alt="computador"/>
             </Grafismo>
             <Sensores>
                 <div classname="top">
@@ -33,15 +33,15 @@ const Dashboard = () => {
                 </div>
                 <Down>
                     <div className="img">
-                        <img src={sensor_tca} alt="description of z\xz\x"/>
+                        <img src={sensor_tca} alt="sensor_tca"/>
                         <h2>TcA+</h2>
                     </div>
                     <div className="img">
-                        <img src={sensor_af} alt="description of imz\x\zxage"/>
+                        <img src={sensor_af} alt="sensor_af"/>
                         <h2>AS</h2>
                     </div>
                     <div className="img">
-                        <img src={sensor_hf} alt="description of \zxz\x"/>
+                        <img src={sensor_hf} alt="sensor_hf"/>
                         <h2>HF</h2>
                     </div>
                 </Down>

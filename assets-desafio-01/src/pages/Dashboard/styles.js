@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import grafismo from "../../assets/grafismo.png"
+import grafismo2 from "../../assets/dynapredict-banner.jpg"
 
 export const Grafismo = styled.div`
   background-size: 100vw 80vh;
@@ -21,9 +22,33 @@ export const Grafismo = styled.div`
     flex-direction: column;
     text-align: left;
     img{
-        width:10vw;
+        width:15vw;
         margin-top: 20px;
     }
+  }
+  @media (max-width: 500px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 80vh;
+    background-image: url(${grafismo2});
+    img{
+        max-width:100vw;
+    }
+    .left {
+    margin-left: 8vw;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+        h1{
+            font-size: 50px;    
+        }
+        img{
+            width:30vw;
+            margin-top: 20px;
+        }
+  }
+
   }
   `
   
@@ -55,7 +80,17 @@ export const Sensores = styled.div`
         margin-left: 60px;
         height:300px;
     }
-`
+    @media (max-width: 500px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img{
+        margin-top: 10px;
+        margin-left: 0px;
+        height:300px;
+    }
+  }
+  `
 export const Down = styled.div`
     display: flex;
     align-items: center;
@@ -65,6 +100,11 @@ export const Down = styled.div`
         color:'#5D7A8C';
         font-weight: bold;
         font-size: 40px;
-        margin-left:70px;
+        margin-left:48px;
     }
+    @media (max-width: 500px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `
