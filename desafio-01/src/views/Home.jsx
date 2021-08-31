@@ -7,7 +7,7 @@ import desktopandmobile from '../assets/img/desktopandmobile.png';
 import sensoraf from '../assets/img/sensoraf.png';
 import sensorhf from '../assets/img/sensorhf.png';
 import sensortca from '../assets/img/sensortca.png';
-import { Button, Container, Grid } from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
 import '../assets/css/styled.css';
 
 
@@ -21,6 +21,10 @@ const useStyles = makeStyles((theme) => ({
         backgroundSize: '100% 100%',
         height: '91.5vh',
         width: '100%',
+        '@media (max-width:768px)': {
+            backgroundColor:'#263252',
+            backgroundImage: 'none',
+          },
     },
     tituloCapa: {
         width: '472px',
@@ -31,6 +35,10 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '80px',
         lineHeight: '94px',
         color: ' #FFFFFF',
+        '@media (max-width:768px)': {
+            fontSize:'40px',           
+           
+          },
 
     },
     logocapa: {
@@ -42,20 +50,32 @@ const useStyles = makeStyles((theme) => ({
 
         width: '100%',
         height: '527px',
+        '@media (max-width:768px)': {
+            height:'200px',
+            
+          },
+
 
     },
     divcapa: {
-        padding: 80
+        padding: 80,
+        '@media (max-width:768px)': {
+            padding:'40px',
+            
+            textAlign:'center'
+            
+          },
     },
     divcapa1: {
         marginTop: 80,
+        
 
     },
     section1: {
         padding: 15,
         marginTop: 25
     },
-    title: {
+    titleSensores: {
         fontFamily: 'Raleway, sans-serif',
         fontSize: '40px',
         fontStyle: 'normal',
@@ -63,7 +83,10 @@ const useStyles = makeStyles((theme) => ({
         lineHeight: '47px',
         letterSpacing: '0em',
         textAlign: 'center',
-        color: '#37383D'
+        color: '#37383D',
+        '@media (max-width:768px)': {
+            fontSize:'30px'
+          },
 
     },
     text: {
@@ -115,12 +138,17 @@ const useStyles = makeStyles((theme) => ({
 
     },
     imgSensor: {
-        width: '276.83px',
+        width: 'auto',
         height: '297.84px',
+        '@media (max-width:768px)': {
+            height:'270px'
+          },
+        
     },
     divsensor: {
         padding: 15,
-        marginTop: 15
+        marginTop: 15,
+        
     },
     footer: {
         backgroundColor: '#263252',
@@ -142,6 +170,9 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         height: '41px',
         borderRadius: '5px',
+        '@media (max-width:768px)': {
+            width:'200px'
+          },
 
     }
 
@@ -155,9 +186,8 @@ const Home = () => {
     const [email, setEmail] = useState('')
     const [telefone, setTelefone] = useState('')
    
-    const getForm = () => {
-        let form = {nome, empresa, email, telefone}        
-        alert(Object.values(form))
+    const getForm = () => {               
+        alert(" Nome: " + nome + "\n Empresa: " + empresa + "\n Email: " + email + "\n Telefone: " + telefone + "\n")
     }
 
     return (<>
@@ -178,7 +208,7 @@ const Home = () => {
         <div className={classes.section1} >
             <Grid container align={'center'} >
                 <div>
-                    <h2 className={classes.title}>Sensores para Manutenção Preditiva</h2>
+                    <h2 className={classes.titleSensores}>Sensores para Manutenção Preditiva</h2>
                     <p className={classes.text}>Opções de sensores sem fio, ou DynaLoggers com sensores de vibração triaxial e
                         temperatura embarcados, que comunicam por Bluetooth com o App mobile ou Gateway,
                         registrando os dados monitorados em sua memória interna. Por conexão internet esses dados

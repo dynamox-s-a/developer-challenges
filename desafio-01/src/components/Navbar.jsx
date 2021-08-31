@@ -16,10 +16,12 @@ const useStyles = makeStyles((theme) => ({
     logo: {
         padding: 3,
         marginLeft: 30,
-        display: 'none',
-        [theme.breakpoints.up('sm')]: {
-            display: 'block',
-        },
+        '@media (max-width:768px)': {
+            width:98,
+            padding: 10            
+          },
+      
+       
     },
     navbar: {
         background: "#263252",
@@ -107,17 +109,17 @@ export default function Navbar() {
             onClose={handleMobileMenuClose}
         >
             <MenuItem>
-                <IconButton color="inherit">
+                <IconButton color="inherit" href={'https://dynamox.net/dynapredict/'}>
                     DynaPredict
                 </IconButton>
             </MenuItem>
             <MenuItem>
-                <IconButton color="inherit">
+                <IconButton color="inherit" href={'#sensores'}>
                     Sensores
                 </IconButton>
             </MenuItem>
             <MenuItem>
-                <IconButton color="inherit">
+                <IconButton color="inherit" href={'#footer'}>
                     Contato
                 </IconButton>
             </MenuItem>
@@ -140,7 +142,7 @@ export default function Navbar() {
                         </Link>
                         <div className={classes.grow} />
                         <div className={classes.links}>
-                            <IconButton className={classes.navButton} color="inherit" href={' https://dynamox.net/dynapredict/'}>
+                            <IconButton className={classes.navButton} color="inherit" href={'https://dynamox.net/dynapredict/'}>
                                 DynaPredict
                             </IconButton>
                             <IconButton className={classes.navButton} color="inherit"  href={'#sensores'}>
