@@ -1,0 +1,63 @@
+{
+  "produtos": [
+    {
+      "id": 13,
+      "nome": "testando novamente",
+      "datafab": "eee",
+      "perecivel": false,
+      "datavenc": "eee",
+      "preco": "eee"
+    },
+    {
+      "nome": "adasda",
+      "datafab": "dadad",
+      "perecivel": true,
+      "datavenc": "ada",
+      "preco": "dada",
+      "id": 14
+    },
+    {
+      "nome": " teste ",
+      "datafab": "novo teste",
+      "perecivel": false,
+      "datavenc": "dada",
+      "preco": "dada",
+      "id": 15
+    },
+    {
+      "nome": "pilha",
+      "datafab": "1989-08-02",
+      "perecivel": true,
+      "datavenc": "2000-12-22",
+      "preco": "22",
+      "id": 16
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "email": "teste@teste.com",
+      "password": "teste"
+    },
+    {
+      "email": "teste@teste.com",
+      "password": "teste",
+      "id": 2
+    },
+    {
+      "email": "teste@teste.com",
+      "password": "teste",
+      "id": 3
+    },
+    {
+      "email": "teste@teste.com",
+      "password": "teste",
+      "id": 4
+    },
+    {
+      "email": "aaaa@aaa.com",
+      "password": "teste",
+      "id": 5
+    }
+  ]
+}
