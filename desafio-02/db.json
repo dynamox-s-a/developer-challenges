@@ -1,0 +1,52 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "nome": "Produto 1",
+      "dataFabricacao": "2021-06-23T03:00:00.000Z",
+      "perecivel": "true",
+      "dataValidade": "2021-08-24T21:44:00.000Z",
+      "preco": "80,99"
+    },
+    {
+      "id": 2,
+      "nome": "Produto 2",
+      "dataFabricacao": "2021-08-31T21:09:22.898Z",
+      "perecivel": "false",
+      "dataValidade": "2021-08-31T21:44:32.465Z",
+      "preco": "60,00"
+    },
+    {
+      "id": 3,
+      "nome": "Produto 4",
+      "dataFabricacao": "2021-08-24T20:56:00.000Z",
+      "perecivel": "true",
+      "dataValidade": "2021-08-31T20:56:46.360Z",
+      "preco": "88,88"
+    },
+    {
+      "id": 4,
+      "nome": "Produto 6",
+      "dataFabricacao": "2021-08-03T21:44:00.000Z",
+      "perecivel": "false",
+      "dataValidade": "2021-08-31T21:44:38.669Z",
+      "preco": "3,00"
+    },
+    {
+      "id": 8,
+      "nome": "sfdsdf",
+      "dataFabricacao": "2021-08-16T21:44:00.000Z",
+      "perecivel": "false",
+      "dataValidade": "2021-08-31T21:44:46.068Z",
+      "preco": "800,00"
+    },
+    {
+      "nome": "Produto teste",
+      "dataFabricacao": "2021-08-31T23:35:46.354Z",
+      "perecivel": "true",
+      "dataValidade": "2021-08-31T23:35:46.367Z",
+      "preco": "999,99",
+      "id": 9
+    }
+  ]
+}
