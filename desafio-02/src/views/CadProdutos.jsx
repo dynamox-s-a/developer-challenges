@@ -94,6 +94,7 @@ const CadProdutos = () => {
         },
 
     ];
+   
 
     return (
         <>
@@ -135,6 +136,7 @@ const CadProdutos = () => {
                                                 startAdornment: <InputAdornment position="start"></InputAdornment>,
                                             }}
                                     />}
+                                    
                                     <TextField label="Preço" value={preco} onChange={e => setPreco(e.target.value)} />
                                 </Grid>
                             </Grid>

@@ -1,28 +1,20 @@
 {
   "produtos": [
     {
-      "id": 13,
-      "nome": "testando novamente",
-      "datafab": "eee",
-      "perecivel": false,
-      "datavenc": "eee",
-      "preco": "eee"
-    },
-    {
+      "id": 14,
       "nome": "adasda",
-      "datafab": "dadad",
+      "datafab": "2021-09-03",
       "perecivel": true,
-      "datavenc": "ada",
-      "preco": "dada",
-      "id": 14
+      "datavenc": "2021-09-14",
+      "preco": "33"
     },
     {
+      "id": 15,
       "nome": " teste ",
-      "datafab": "novo teste",
+      "datafab": "2021-09-06",
       "perecivel": false,
       "datavenc": "dada",
-      "preco": "dada",
-      "id": 15
+      "preco": "32"
     },
     {
       "nome": "pilha",
@@ -31,6 +23,61 @@
       "datavenc": "2000-12-22",
       "preco": "22",
       "id": 16
+    },
+    {
+      "id": 17,
+      "nome": "celular",
+      "datafab": "2021-09-02",
+      "perecivel": false,
+      "datavenc": null,
+      "preco": "333"
+    },
+    {
+      "nome": "teste w",
+      "datafab": "2021-09-01",
+      "perecivel": "",
+      "datavenc": null,
+      "preco": "",
+      "id": 18
+    },
+    {
+      "nome": "teste w",
+      "datafab": "2021-09-14",
+      "perecivel": false,
+      "datavenc": null,
+      "preco": "22"
+    },
+    {
+      "nome": "nvoo",
+      "datafab": "2021-09-09",
+      "perecivel": false,
+      "datavenc": null,
+      "preco": "33",
+      "id": 20
+    },
+    {
+      "nome": "nvoo",
+      "datafab": null,
+      "perecivel": "",
+      "datavenc": null,
+      "preco": "33",
+      "id": 21
+    },
+    {
+      "nome": "nvoo",
+      "datafab": "2021-09-09",
+      "perecivel": false,
+      "datavenc": null,
+      "preco": "33",
+      "id": 22
+    },
+    {
+      "nome": "nvoo",
+      "datafab": null,
+      "perecivel": "",
+      "datavenc": null,
+      "preco": "",
+      "id": 23
     }
   ],
   "users": [
