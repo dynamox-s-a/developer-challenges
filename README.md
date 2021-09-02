@@ -102,7 +102,6 @@ Requisitos funcionais:
 - Organização e documentação do código;
 - Usabilidade;
 - Layout responsivo (seja criativo!);
-- Utilização de NextJS ou Gatsby no desafio 01;
 
 ## Pronto para começar os desafios?
 
