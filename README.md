@@ -51,6 +51,19 @@ Critérios de avaliação:
 - Funcionalidades: redirecionamentos para links e seções e disparo de funções no browser;
 - Semântica e SEO: utilização de tags e metatags html adequados;
 
+### Tecnologias, frameworks e bibliotecas
+
+- A utilização de React é obrigatória;
+- O restante das ferramentas fica a seu critério;
+
+### Diferenciais
+
+- Componentes reutilizáveis;
+- Organização e documentação do código;
+- Usabilidade;
+- Layout responsivo (seja criativo!);
+- Utilização de NextJS ou Gatsby;
+
 ---
 
 ## Desafio 02 - Autenticação e CRUD
@@ -76,15 +89,15 @@ Requisitos funcionais:
 - A tela de listagem deverá ter a possibilidade de ordenação dos campos e com uma paginação de 10 produtos por página.
 - O backend deve ser simulado com [json-server](https://www.npmjs.com/package/json-server), que cria uma API REST fake;
 
----
+### Tecnologias, frameworks e bibliotecas
 
-## Tecnologias, frameworks e bibliotecas
-
-- A utilização de React é obrigatória para ambos os desafios;
+- A utilização de React é obrigatória;
+- A utilização de Redux para controle de estados globais é obrigatória;
 - O restante das ferramentas fica a seu critério;
 
-## Diferenciais
+### Diferenciais
 
+- Utilizar Redux Saga para controle de efeitos colaterais assíncronos;
 - Componentes reutilizáveis;
 - Organização e documentação do código;
 - Usabilidade;
