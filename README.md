@@ -87,13 +87,12 @@ Requisitos funcionais:
 - A data de fabricação nunca deverá ser maior que a data de validade;
 - O preço deverá estar em reais (R$);
 - A tela de listagem deverá ter a possibilidade de ordenação dos campos e com uma paginação de 10 produtos por página.
-- O teste deve ser feito necessariamente com React/Redux.
 - O backend deve ser simulado com [json-server](https://www.npmjs.com/package/json-server), que cria uma API REST fake;
 
 ### Tecnologias, frameworks e bibliotecas
 
 - A utilização de React é obrigatória;
-- Utilizar Redux para controle de estados globais;
+- A utilização de Redux para controle de estados globais é obrigatória;
 - O restante das ferramentas fica a seu critério;
 
 ### Diferenciais
