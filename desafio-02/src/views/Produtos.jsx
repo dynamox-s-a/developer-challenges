@@ -17,6 +17,8 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
+import { useDispatch, useSelector } from "react-redux";
+import { Creators as ProdutosActions } from "../store/ducks/Produtos";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -72,21 +74,19 @@ const useStyles = makeStyles({
 
 });
 
+const produtosListSelector = ({ Produtos }) => Produtos.produtosList;
+
+
 
 export default function Produtos() {
     const classes = useStyles();
+    const dispatch = useDispatch();
+    const produtosList = useSelector(produtosListSelector);
 
 
-    const [error, setError] = useState('');
-    const [produtos, setProdutos] = useState([]);
-
-    const getProdutos = async () => {
-        const produtos = await api.getProdutos();
-        setProdutos(produtos);
-    };
 
     useEffect(() => {
-        getProdutos();
+        dispatch(ProdutosActions.getProdutosRequest())
     }, []);
 
 
@@ -95,22 +95,22 @@ export default function Produtos() {
     const handleDel = async (dados) => {
         const json = await api.DelProdutos(dados.id)
         if (json.error) {
-            setError(json.error);
+            console.log("erro")
         } else {
             window.location.href = '/produtos';
         }
     };
 
 
-    const maskMoney = (value) => {
-        value = `R$ ${value.toLocaleString("pt-BR")}`
+    // const maskMoney = (value) => {
+    //     value = `R$ ${value.toLocaleString("pt-BR")}`
      
-        if(value.indexOf(',') === -1){
-            value = value + ',00'
-        }
+    //     if(value.indexOf(',') === -1){
+    //         value = value + ',00'
+    //     }
      
-        return value
-    }
+    //     return value
+    // }
 
 
     return (<Container>
@@ -133,7 +133,7 @@ export default function Produtos() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {produtos.map((dados) => (
+                    {produtosList.map((dados) => (
                         <StyledTableRow key={dados}>
                             <StyledTableCell className={classes.wrow} component="th" scope="row">
                                 {dados.nome}
@@ -147,7 +147,7 @@ export default function Produtos() {
                             </StyledTableCell>
                             
                             <StyledTableCell className={classes.wrow} align="center">{moment(dados.datavenc).format("DD/MM/YYYY ").toString()}</StyledTableCell>
-                            <StyledTableCell className={classes.wrow} align="center">{maskMoney(dados.preco)}</StyledTableCell>
+                            {/* <StyledTableCell className={classes.wrow} align="center">{maskMoney(dados.preco)}</StyledTableCell> */}
                             <StyledTableCell className={classes.wrow} align="center" className={classes.acoesIcons} >
                                 <Link to={{ pathname: "/cadprodutos", state: { dados, create: false } }}>
                                     <EditIcon className={classes.icons} />

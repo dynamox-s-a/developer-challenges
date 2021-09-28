@@ -213,10 +213,10 @@ const NavBar = (prop) => {
                 <RouteHandler exact path='/login'>
                     <Login />
                 </RouteHandler>
-                <RouteHandler private path='/produtos'>
+                <RouteHandler  path='/produtos'>
                     <Produtos />
                 </RouteHandler>
-                <RouteHandler private path='/cadprodutos'>
+                <RouteHandler  path='/cadprodutos'>
                     <CadProdutos />
                 </RouteHandler>
 

@@ -7,7 +7,7 @@ import api from '../helpers/Api';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import moment from 'moment';
-
+import { useSelector, useDispatch } from 'react-redux';
 
 
 
@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CadProdutos = () => {
     const classes = useStyles();
+    const dispatch = useDispatch();
 
     const [id, setId] = useState('')
     const [nome, setNome] = useState('')
@@ -45,6 +46,8 @@ const CadProdutos = () => {
     const [error, setError] = useState('');
     const [isNew, setIsNew] = useState('');
     const location = useLocation();
+
+    
 
     useEffect(() => {
         const { state } = location
