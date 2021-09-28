@@ -102,15 +102,15 @@ export default function Produtos() {
     };
 
 
-    // const maskMoney = (value) => {
-    //     value = `R$ ${value.toLocaleString("pt-BR")}`
-     
-    //     if(value.indexOf(',') === -1){
-    //         value = value + ',00'
-    //     }
-     
-    //     return value
-    // }
+    const maskMoney = (value) => {
+        value = `R$ ${value.toLocaleString("pt-BR")}`
+
+        if(value.indexOf(',') === -1){
+            value = value + ',00'
+        }
+
+        return value
+    }
 
 
     return (<Container>
@@ -145,9 +145,9 @@ export default function Produtos() {
                                     ? <CloseIcon style={{color:"red"}}/>
                                     : <CheckIcon style={{color:"green"}}/>}
                             </StyledTableCell>
-                            
+
                             <StyledTableCell className={classes.wrow} align="center">{moment(dados.datavenc).format("DD/MM/YYYY ").toString()}</StyledTableCell>
-                            {/* <StyledTableCell className={classes.wrow} align="center">{maskMoney(dados.preco)}</StyledTableCell> */}
+                            { <StyledTableCell className={classes.wrow} align="center">{maskMoney(dados.preco)}</StyledTableCell> }
                             <StyledTableCell className={classes.wrow} align="center" className={classes.acoesIcons} >
                                 <Link to={{ pathname: "/cadprodutos", state: { dados, create: false } }}>
                                     <EditIcon className={classes.icons} />
