@@ -3,5 +3,6 @@ import Produtos from "./Produtos";
 
 
 export default combineReducers({
-    Produtos
+    Produtos,
+    
 });

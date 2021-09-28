@@ -10,14 +10,11 @@ import {
 
 function* getProdutos(action) {
   try {
-      const response = yield call(Api.getProdutos);
-      console.log("Response Api", response)
+      const response = yield call(Api.getProdutos);     
     yield put(ProdutosActions.getProdutosSuccess(response));
   } catch (e) {
     yield put(ProdutosActions.getProdutosFailure(e));
-  }
-
-    
+  }    
 }
 
 export default function* () {
