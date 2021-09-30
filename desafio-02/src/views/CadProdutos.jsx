@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
+import { Creators as ProdutosActions } from "../store/ducks/Produtos";
 
 
 
@@ -31,19 +32,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
+const produtosInnputSelector = ({ Produtos }) => Produtos.produtosInnput;
 
 const CadProdutos = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
-
+    const produtosInnput = useSelector(produtosInnputSelector)
     const [id, setId] = useState('')
     const [nome, setNome] = useState('')
     const [datafab, setDatafab] = useState('')
     const [perecivel, setPerecivel] = useState('')
     const [datavenc, setDatavenc] = useState('')
     const [preco, setPreco] = useState('')
-    const [error, setError] = useState('');
     const [isNew, setIsNew] = useState('');
     const location = useLocation();
 
@@ -53,8 +53,8 @@ const CadProdutos = () => {
         const { state } = location
         const { dados, create } = state
         setIsNew(create)
-
-        if (dados) {
+        
+         if (dados) {
             setNome(dados.nome)
             setDatafab(dados.datafab)
             setPerecivel(dados.perecivel)
@@ -73,18 +73,14 @@ const CadProdutos = () => {
         }
     }, [])
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const json = (await isNew)
-            ? api.CadProdutos(nome, datafab, perecivel, datavenc, preco)
-            : api.PutProdutos(id, nome, datafab, perecivel, datavenc, preco)
-
-        if (json.error) {
-            setError(json.error);
-        } else {
-            window.location.href = '/produtos';
-            console.log("else");
-        }
+    const handleSubmit = async () => {
+       
+        const json = { nome, datafab, perecivel, datavenc, preco }
+        console.log("JSON",json)
+        dispatch(ProdutosActions.postProdutosRequest(json));
+            //: api.PutProdutos(id, nome, datafab, perecivel, datavenc, preco)
+     
+        
     }
     const currencies = [
         {
