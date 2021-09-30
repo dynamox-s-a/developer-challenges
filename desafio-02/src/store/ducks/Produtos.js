@@ -5,7 +5,7 @@ export const { Types, Creators } = createActions({
   getProdutosSuccess: ["produtos"],
   getProdutosRequest: [], 
   getProdutosFailure: [],
-  
+  postProdutosRequest:[]
   
 });
 
@@ -36,6 +36,13 @@ const getProdutosRequest = (state = INITIAL_STATE) => {
     ...state,
     loading: false
   }
+};
+   
+  const postProdutosRequest = (state = INITIAL_STATE) => {
+    return {
+      ...state,
+      loading: false
+    }
   
 };
 
@@ -50,6 +57,7 @@ const getProdutosRequest = (state = INITIAL_STATE) => {
 export default createReducer(INITIAL_STATE, { 
   [Types.GET_PRODUTOS_SUCCESS]: getProdutosSuccess,
   [Types.GET_PRODUTOS_FAILURE]: getProdutosFailure,
+  [Types.GET_PRODUTOS_REQUEST]: getProdutosRequest,
   [Types.GET_PRODUTOS_REQUEST]: getProdutosRequest,
   
   
