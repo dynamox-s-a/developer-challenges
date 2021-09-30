@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
+import { Creators as ProdutosActions } from "../store/ducks/Produtos";
 
 
 
@@ -35,15 +36,13 @@ const useStyles = makeStyles((theme) => ({
 
 const CadProdutos = () => {
     const classes = useStyles();
-    const dispatch = useDispatch();
-
+    const dispatch = useDispatch();   
     const [id, setId] = useState('')
     const [nome, setNome] = useState('')
     const [datafab, setDatafab] = useState('')
     const [perecivel, setPerecivel] = useState('')
     const [datavenc, setDatavenc] = useState('')
     const [preco, setPreco] = useState('')
-    const [error, setError] = useState('');
     const [isNew, setIsNew] = useState('');
     const location = useLocation();
 
@@ -53,8 +52,8 @@ const CadProdutos = () => {
         const { state } = location
         const { dados, create } = state
         setIsNew(create)
-
-        if (dados) {
+        
+         if (dados) {
             setNome(dados.nome)
             setDatafab(dados.datafab)
             setPerecivel(dados.perecivel)
@@ -73,13 +72,14 @@ const CadProdutos = () => {
         }
     }, [])
 
-    const handleSubmit = async (e) => {
-        
-        const json ={nome, datafab, perecivel, datavenc, preco}
-        console.log("teste", {json})
+    const handleSubmit = async () => {       
+        const json = { nome, datafab, perecivel, datavenc, preco }
+        console.log("JSON",json)
+        dispatch(ProdutosActions.postProdutosRequest(json));
+            //: api.PutProdutos(id, nome, datafab, perecivel, datavenc, preco)
         
     }
-    
+
     const currencies = [
         {
             value: true,

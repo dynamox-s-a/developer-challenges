@@ -17,6 +17,18 @@ function* getProdutos(action) {
   }    
 }
 
+  function* postProdutos() {
+    try {
+   const  response = yield call(Api.CadProdutos, 'json' )
+      yield put(ProdutosActions.reateProdutosRequest(response));
+    }
+    catch (e) {
+     yield put(ProdutosActions.getProdutosFailure(e));
+    }
+  }
+
+
 export default function* () {
   yield takeEvery(Produtosypes.GET_PRODUTOS_REQUEST, getProdutos);
-}
+  yield takeEvery(Produtosypes.POST_PRODUTOS__REQUEST, postProdutos);
+};
