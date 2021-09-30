@@ -74,18 +74,12 @@ const CadProdutos = () => {
     }, [])
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        const json = (await isNew)
-            ? api.CadProdutos(nome, datafab, perecivel, datavenc, preco)
-            : api.PutProdutos(id, nome, datafab, perecivel, datavenc, preco)
-
-        if (json.error) {
-            setError(json.error);
-        } else {
-            window.location.href = '/produtos';
-            console.log("else");
-        }
+        
+        const json ={nome, datafab, perecivel, datavenc, preco}
+        console.log("teste", {json})
+        
     }
+    
     const currencies = [
         {
             value: true,
