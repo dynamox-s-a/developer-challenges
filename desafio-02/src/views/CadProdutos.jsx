@@ -32,12 +32,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const produtosInnputSelector = ({ Produtos }) => Produtos.produtosInnput;
+
 
 const CadProdutos = () => {
     const classes = useStyles();
-    const dispatch = useDispatch();
-    const produtosInnput = useSelector(produtosInnputSelector)
+    const dispatch = useDispatch();   
     const [id, setId] = useState('')
     const [nome, setNome] = useState('')
     const [datafab, setDatafab] = useState('')
@@ -73,15 +72,14 @@ const CadProdutos = () => {
         }
     }, [])
 
-    const handleSubmit = async () => {
-       
+    const handleSubmit = async () => {       
         const json = { nome, datafab, perecivel, datavenc, preco }
         console.log("JSON",json)
         dispatch(ProdutosActions.postProdutosRequest(json));
             //: api.PutProdutos(id, nome, datafab, perecivel, datavenc, preco)
-     
         
     }
+
     const currencies = [
         {
             value: true,

@@ -38,10 +38,11 @@ const getProdutosRequest = (state = INITIAL_STATE) => {
   }
 };
    
-  const postProdutosRequest = (state = INITIAL_STATE) => {
+  const createProdutosRequest = (state = INITIAL_STATE, action) => {
     return {
       ...state,
-      loading: false
+      produtosInnput:[...state.produtosInnput, ...action.produtos],
+    loading: false
     }
   
 };
@@ -58,7 +59,7 @@ export default createReducer(INITIAL_STATE, {
   [Types.GET_PRODUTOS_SUCCESS]: getProdutosSuccess,
   [Types.GET_PRODUTOS_FAILURE]: getProdutosFailure,
   [Types.GET_PRODUTOS_REQUEST]: getProdutosRequest,
-  [Types.GET_PRODUTOS_REQUEST]: getProdutosRequest,
+  [Types.CREATE_PRODUTOS_REQUEST]: createProdutosRequest
   
   
 });

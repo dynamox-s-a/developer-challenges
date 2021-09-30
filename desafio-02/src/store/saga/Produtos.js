@@ -20,7 +20,7 @@ function* getProdutos(action) {
   function* postProdutos() {
     try {
    const  response = yield call(Api.CadProdutos, 'json' )
-      yield put(ProdutosActions.getProdutosSuccess(response));
+      yield put(ProdutosActions.reateProdutosRequest(response));
     }
     catch (e) {
      yield put(ProdutosActions.getProdutosFailure(e));
