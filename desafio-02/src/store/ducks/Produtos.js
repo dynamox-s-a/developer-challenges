@@ -5,7 +5,8 @@ export const { Types, Creators } = createActions({
   getProdutosSuccess: ["produtos"],
   getProdutosRequest: [], 
   getProdutosFailure: [],
-  postProdutosRequest:[]
+  deleteProduto:[]
+ // createProdutosRequest:[]
   
 });
 
@@ -37,15 +38,21 @@ const getProdutosRequest = (state = INITIAL_STATE) => {
     loading: false
   }
 };
-   
-  const createProdutosRequest = (state = INITIAL_STATE, action) => {
-    return {
-      ...state,
-      produtosInnput:[...state.produtosInnput, ...action.produtos],
+const deleteProduto = (state = INITIAL_STATE) => {
+  return {
+    ...state,
     loading: false
-    }
-  
+  }
 };
+   
+//   const createProdutosRequest = (state = INITIAL_STATE, action) => {
+//     return {
+//       ...state,
+//       produtosInnput:[...state, ...action.json],
+//     loading: false
+//     }
+  
+// };
 
  
 
@@ -59,7 +66,8 @@ export default createReducer(INITIAL_STATE, {
   [Types.GET_PRODUTOS_SUCCESS]: getProdutosSuccess,
   [Types.GET_PRODUTOS_FAILURE]: getProdutosFailure,
   [Types.GET_PRODUTOS_REQUEST]: getProdutosRequest,
-  [Types.CREATE_PRODUTOS_REQUEST]: createProdutosRequest
+  [Types.DELETE_PRODUTO]:deleteProduto
+ // [Types.CREATE_PRODUTOS_REQUEST]: createProdutosRequest
   
   
 });

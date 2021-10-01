@@ -91,15 +91,14 @@ export default function Produtos() {
 
 
 
-
     const handleDel = async (dados) => {
-        const json = await api.DelProdutos(dados.id)
-        if (json.error) {
-            console.log("erro")
-        } else {
-            window.location.href = '/produtos';
-        }
+        dispatch(ProdutosActions.deleteProduto(dados.id))
+       
     };
+    // const handleDel = async (dados) => {
+    //     const del = await api.DelProdutos(dados.id)
+       
+    // };
 
 
     const maskMoney = (value) => {

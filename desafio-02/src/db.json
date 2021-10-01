@@ -1,22 +1,6 @@
 {
   "produtos": [
     {
-      "id": 14,
-      "nome": "adasda",
-      "datafab": "2021-09-03",
-      "perecivel": true,
-      "datavenc": "2021-09-14",
-      "preco": "33"
-    },
-    {
-      "id": 15,
-      "nome": " teste ",
-      "datafab": "2021-09-06",
-      "perecivel": false,
-      "datavenc": "dada",
-      "preco": "32"
-    },
-    {
       "nome": "pilha",
       "datafab": "1989-08-02",
       "perecivel": true,
@@ -70,22 +54,6 @@
       "datavenc": null,
       "preco": "33",
       "id": 22
-    },
-    {
-      "nome": "nvoo",
-      "datafab": null,
-      "perecivel": "",
-      "datavenc": null,
-      "preco": "",
-      "id": 23
-    },
-    {
-      "nome": "snfrtddpmq",
-      "datafab": "2021-09-09",
-      "perecivel": "",
-      "datavenc": null,
-      "preco": "444",
-      "id": 24
     }
   ],
   "users": [

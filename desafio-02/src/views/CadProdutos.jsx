@@ -75,7 +75,7 @@ const CadProdutos = () => {
     const handleSubmit = async () => {       
         const json = { nome, datafab, perecivel, datavenc, preco }
         console.log("JSON",json)
-        dispatch(ProdutosActions.postProdutosRequest(json));
+        dispatch(ProdutosActions.cadProdutosRequest(json));
             //: api.PutProdutos(id, nome, datafab, perecivel, datavenc, preco)
         
     }
