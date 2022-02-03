@@ -1,0 +1,91 @@
+{
+  "produtos": [
+    {
+      "nome": "pilha",
+      "datafab": "1989-08-02",
+      "perecivel": true,
+      "datavenc": "2000-12-22",
+      "preco": "22",
+      "id": 16
+    },
+    {
+      "id": 17,
+      "nome": "celular",
+      "datafab": "2021-09-02",
+      "perecivel": false,
+      "datavenc": null,
+      "preco": "333"
+    },
+    {
+      "nome": "teste w",
+      "datafab": "2021-09-01",
+      "perecivel": "",
+      "datavenc": null,
+      "preco": "",
+      "id": 18
+    },
+    {
+      "nome": "teste w",
+      "datafab": "2021-09-14",
+      "perecivel": false,
+      "datavenc": null,
+      "preco": "22"
+    },
+    {
+      "nome": "nvoo",
+      "datafab": "2021-09-09",
+      "perecivel": false,
+      "datavenc": null,
+      "preco": "33",
+      "id": 20
+    },
+    {
+      "nome": "nvoo",
+      "datafab": null,
+      "perecivel": "",
+      "datavenc": null,
+      "preco": "33",
+      "id": 21
+    },
+    {
+      "nome": "nvoo",
+      "datafab": "2021-09-09",
+      "perecivel": false,
+      "datavenc": null,
+      "preco": "33",
+      "id": 22
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "email": "teste@teste.com",
+      "password": "teste"
+    },
+    {
+      "email": "teste@teste.com",
+      "password": "teste",
+      "id": 2
+    },
+    {
+      "email": "teste@teste.com",
+      "password": "teste",
+      "id": 3
+    },
+    {
+      "email": "teste@teste.com",
+      "password": "teste",
+      "id": 4
+    },
+    {
+      "email": "aaaa@aaa.com",
+      "password": "teste",
+      "id": 5
+    },
+    {
+      "email": "teste@teste.com",
+      "password": "teste",
+      "id": 6
+    }
+  ]
+}
