@@ -1,5 +1,5 @@
-.solucao_container {
-    background-image: url(../../imagens/grafismo.png);
+.solution_container {
+    background-image: url(../../images/grafismo.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -8,13 +8,13 @@
     justify-content: space-between;
 }
 
-.solucao_message {
+.solution_message {
     display: flex;
     flex-direction: column;
     padding-left: 96px;
 }
 
-.solucao_title {
+.solution_title {
     color: #FFFFFF;
     font-family: 'Raleway', sans-serif;
     font-size: 80px;
@@ -29,54 +29,54 @@
     width: 161px; 
 }
 
-.dispositivos {
+.devices {
     height: 627px;
 }
 
 
 @media (max-width: 1250px) {
-    .solucao_container {
+    .solution_container {
         padding-left: 50px;
     }
-    .dispositivos {
+    .devices {
         display: none;
     }
 }
 
 @media (max-width: 1200px) {
-    .solucao_container {
+    .solution_container {
         align-items: center;
-        background: linear-gradient(rgba(0,0,0,.50),rgba(0,0,0,.50)) 100%, url(../../imagens/grafismo.png);
+        background: linear-gradient(rgba(0,0,0,.50),rgba(0,0,0,.50)) 100%, url(../../images/grafismo.png);
         background-size: cover;
         flex-direction: column;
     }
-    .solucao_message {
+    .solution_message {
         align-items: center;    
         display: flex;
         justify-content: space-around;
         padding-left: 0;
         text-align: center;
     }
-    .dispositivos {
+    .devices {
         display: none;
     }
 }
 
 @media (max-width: 600px) {
-    .solucao_container {
+    .solution_container {
         height: 400px;
     }
-    .solucao_message {
+    .solution_message {
         align-items: center;    
         display: flex;
         justify-content: space-around;
         padding-left: 0;
         text-align: center;
     }
-    .solucao_title {
+    .solution_title {
         padding-top: 0;
     }
-    .dispositivos {
+    .devices {
         display: none;
     }
 }

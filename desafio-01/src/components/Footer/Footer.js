@@ -12,7 +12,7 @@ const Footer = () => {
         evt.preventDefault();
         alert(`Nome: ${name}\nEmpresa: ${company}\nE-mail: ${email}\nTelefone: ${tel}\n`);
     }
-   
+
     return (
         <footer id="Footer" className={styles.footer_container}>
             <h3 className={styles.footer_title}>Ficou com dúvida? <br />

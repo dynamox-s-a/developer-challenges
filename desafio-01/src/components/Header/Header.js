@@ -1,5 +1,5 @@
 import styles from './Header.module.css'
-import LOGO from '../../imagens/logo-dynamox.png'
+import LOGO from '../../images/logo-dynamox.png'
 
 const Header = () => {
 
@@ -9,7 +9,7 @@ const Header = () => {
                 <img className={styles.nav_img} src={LOGO}/><a href="https://dynamox.net/"></a>
                 <ul className={styles.nav_list}>
                     <li className={styles.nav_item}><a className={styles.nav_item_link} href="https://dynamox.net/dynapredict/">DynaPredict</a></li>
-                    <li className={styles.nav_item}><a className={styles.nav_item_link} href="#SensoresSection">Sensores</a></li>
+                    <li className={styles.nav_item}><a className={styles.nav_item_link} href="#SensorsSection">Sensores</a></li>
                     <li className={styles.nav_item}><a className={styles.nav_item_link} href="#Footer">Contato</a></li>
                 </ul>
             </nav>
@@ -17,4 +17,4 @@ const Header = () => {
     );
 }
 
-export default Header
+export default Header;
