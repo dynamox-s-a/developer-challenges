@@ -1,0 +1,15 @@
+.Header {
+    align-items: center;
+    background-color: #fdfdfd;
+    display: flex;
+    height: 4rem;
+    padding-top: 2rem;
+}
+
+.Header_title {
+    color: #4D4D4D;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    padding-bottom: 2rem;
+    margin-left: 2rem;
+}

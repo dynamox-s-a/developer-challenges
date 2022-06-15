@@ -1,0 +1,25 @@
+.Date_container {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Montserrat', sans-serif;
+    justify-content: flex-end;
+    margin: 2rem 2rem 1rem 2rem;  
+    position: relative;
+}
+
+.Input_date_label {
+    font-weight: bolder;
+    margin-bottom: 1rem;
+    text-decoration: underline;
+}
+
+.Input_date {
+    box-sizing: border-box;
+    border-bottom: 1px solid #000000;
+    font-family: 'Montserrat', sans-serif;
+    height: 3.25rem;
+    margin-bottom: 1rem;
+    padding: 1.375rem 0.5rem 0.5rem;
+    width: 40%;
+}

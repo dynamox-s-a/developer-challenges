@@ -1,0 +1,19 @@
+.submitButton {
+    background-color: lightblue;
+    border: solid 0.2rem black;
+    border-radius: 0.2rem;
+    color: black;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    height: 3rem;
+    margin-left: 2rem;
+    margin-bottom: 2rem;
+    width: 30%;
+}
+
+.submitButton:hover {
+    cursor: pointer;
+    background-color: rgba(134, 134, 235, 0.849);
+    transition: 0.4s;
+}
