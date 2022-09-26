@@ -11,12 +11,10 @@ Todas as soluções são desenvolvidas por nossa equipe, desde o hardware até a
 
 ## Sobre a vaga e os desafios
 
-Estamos buscando alguém para trabalhar com o desenvolvimento web direcionado para nossa apresentação institucional. Nessa atividade, iremos contar contigo para:
+Estamos buscando alguém que se identifique com o [perfil da vaga](https://dynamox.solides.jobs/vacancies/181263?__hstc=127459538.1d0234f804b73865f84753db24577b25.1658333603238.1663969357474.1664197850410.19&__hssc=127459538.3.1664197850410&__hsfp=309846428) e que possa integrar uma de nossas frentes de desenvolvimento:
 
-- Atualizar e implementar funcionalidades em nosso website institucional;
-- Implementar integrações de nosso website com ferramentas de marketing como RD Station e Google Analytics;
-- Implementar integrações com ferramentas de gestão de conteúdo (CMS), Wordpress, Contentful ou similares para disponibilizar e organizar posts em nosso blog ou e-commerce e similares;
-- Dar suporte à equipe de marketing em atividades que envolvem funcionalidades web;
+- Relações Públicas (presença institucional);
+- [DynaPredict](https://dynamox.net/dynapredict);
 
 Para isso, sugerimos dois desafios. O primeiro para avaliar como você implementa um design definido para uma landing page e o segundo para avaliar suas abilidades em realizar operações básicas de CRUD e chamadas a uma api.
 
