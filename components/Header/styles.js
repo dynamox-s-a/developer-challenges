@@ -1,0 +1,40 @@
+import styled from 'styled-components'
+
+export const HeaderContainer = styled.header`
+  width: 100%;
+  height: 12rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0;
+  background: ${props => props.theme['blue-dark']};
+  color: ${props => props.theme.white};
+`
+
+export const ImageContainer = styled.div`
+  position: relative;
+  width: 17.2rem;
+  height: 6.5rem;
+  margin-left: 7.7rem;
+  margin-bottom: 2.4rem;
+  cursor: pointer;
+`
+
+export const NavContainer = styled.nav`
+  display: flex;
+  gap: 3.7rem;
+  margin-right: 4.3rem;
+  margin-bottom: 2.9rem;
+
+  a {
+    text-decoration: none;
+    transition: color 0.2s;
+    color: ${props => props.theme.white};
+    font-size: 2rem;
+    font-weight: 500;
+    
+    &:hover {
+      color: ${props => `${props.theme.white}29`};
+    }
+  }
+`
