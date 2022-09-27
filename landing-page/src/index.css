@@ -1,0 +1,23 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  font-family: 'Raleway', sans-serif;
+}
+
+.grid-pattern {
+  display                  : grid;
+  grid-template            : auto / 1fr 1200px 1fr;
+}
+
+@media (max-width          : 1350px) {
+  .grid-pattern {
+    grid-template          : auto / 1fr 80% 1fr;
+  }
+}
+
+@media (max-width          : 600px) {
+  .grid-pattern {
+    grid-template          : auto / 1fr 90% 1fr;
+  }
+}
