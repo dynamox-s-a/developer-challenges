@@ -1,0 +1,36 @@
+header {
+  height: 120px;
+  background-color: #263252;
+}
+
+a {
+  text-decoration: none;
+}
+
+.contain-header {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+img.logo {
+  height: 65px;
+}
+
+nav ul {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+}
+
+nav ul li {
+  color: #FFFF;
+  list-style: none;
+  font-weight: 500;
+  font-size: 20px;
+}
+
+nav ul li:hover {
+  color: rgb(209, 209, 209);
+}
