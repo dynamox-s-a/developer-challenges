@@ -1,18 +1,75 @@
 .initial {
   width: 100%;
   height: 720px;
-
   background-image: url("../../assets/images/grafismo.png");
   position: relative;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 
+  display: flex;
+}
+
+.image-initial {
+  align-items: right;
 }
 
 .description {
   background-color: #F4F7FC;
-  color: #37383D;
   width: 100%;
   height: 820px
+}
+
+.description-text {
+  padding-top: 95px;
+  text-align: center;
+
+}
+
+.description-text h2 {
+  font-size: 40px;
+  color: #37383D;
+  padding-top: 3rem;
+}
+
+.description-text h3 {
+  font-size: 24px;
+  color: #454545;
+  padding-bottom: 2rem;
+  width: 70%;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.description .btn {
+  width: 183px;
+  height: 39px;
+  display: flex;
+  font-size: 20px;
+  background-color: #263252;
+  color: #ffffff;
+  margin: 0 auto;
+}
+
+.description-sensors {
+  background-color: #F4F7FC;
+}
+
+.sensor img {
+  width: 276px;
+  height: 297px;
+}
+
+.sensors {
+  display: flex;
+  justify-content: space-evenly;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+}
+
+.sensor p {
+  display: flex;
+  justify-content: center;
+  font-size: 40px;
+  color: #5D7A8C;
 }
