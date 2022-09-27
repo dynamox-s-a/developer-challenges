@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;700&display=swap');
+
+.header {
+  margin: 0 auto 25px auto;
+  display: flex;
+  width: 100%;
+  height: 7.5rem;
+  justify-content: space-between;
+  background-color: #263252;
+}
+
+.logo img {
+  width: 16rem;
+  padding-left: 4.8rem;
+  padding-top: 1.5rem;
+}
+
+.menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 4.25rem 1rem;
+}
+
+.menu a {
+  font-family: Raleway, Arial, Helvetica, sans-serif;
+  font-weight: 300;
+  text-decoration: none;
+  color: #FFFFFF;
+  font-size: 20px;
+}
+
+.menu p {
+  padding: 2rem;
+}
