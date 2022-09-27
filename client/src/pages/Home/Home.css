@@ -1,0 +1,18 @@
+.initial {
+  width: 100%;
+  height: 720px;
+
+  background-image: url("../../assets/images/grafismo.png");
+  position: relative;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+}
+
+.description {
+  background-color: #F4F7FC;
+  color: #37383D;
+  width: 100%;
+  height: 820px
+}
