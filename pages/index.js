@@ -1,6 +1,7 @@
 import Head from 'next/head'
 
 import Header from '../components/Header'
+import Cover from '../components/Cover'
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
 
       <main>
         <Header />
+        <Cover />
       </main>
     </>
   )

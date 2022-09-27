@@ -3,11 +3,15 @@ import styled from 'styled-components'
 export const HeaderContainer = styled.header`
   width: 100%;
   height: 12rem;
+  background: ${props => props.theme['blue-dark']};
+`
+
+export const ContentContainer = styled.div`
+  height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   padding: 0;
-  background: ${props => props.theme['blue-dark']};
   color: ${props => props.theme.white};
 `
 
