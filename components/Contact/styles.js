@@ -38,7 +38,12 @@ export const Form = styled.form`
     border-radius: 5px;
     cursor: pointer;
 
-    &:hover {
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    &:not(:disabled):hover {
       background: ${props => props.theme['blue-700']};
     }
   }

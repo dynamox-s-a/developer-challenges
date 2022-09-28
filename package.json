@@ -9,11 +9,14 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
+		"@hookform/resolvers": "^2.9.8",
 		"next": "12.3.1",
 		"phosphor-react": "^1.4.1",
 		"react": "18.2.0",
 		"react-dom": "18.2.0",
-		"styled-components": "^5.3.5"
+		"react-hook-form": "^7.36.1",
+		"styled-components": "^5.3.5",
+		"zod": "^3.19.1"
 	},
 	"devDependencies": {
 		"babel-plugin-styled-components": "^2.0.7",
