@@ -23,7 +23,7 @@ export const LeftContainer = styled.div`
   padding-left: 9.6rem;
   gap: 3.1rem;
 
-  span {
+  h1 {
     font-size: 8rem;
     font-weight: 700;
     color: ${props => props.theme.white};

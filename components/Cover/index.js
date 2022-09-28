@@ -10,7 +10,7 @@ function Cover() {
       <Container>
         <S.OverallContainer>
           <S.LeftContainer>
-            <span>Solução DynaPredict</span>
+            <h1>Solução DynaPredict</h1>
             <S.LogoContainer>
               <Image
                 src="/assets/logo-dynapredict.png"

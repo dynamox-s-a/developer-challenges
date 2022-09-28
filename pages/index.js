@@ -2,6 +2,7 @@ import Head from 'next/head'
 
 import Header from '../components/Header'
 import Cover from '../components/Cover'
+import Sensors from '../components/Sensors'
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <main>
         <Header />
         <Cover />
+        <Sensors />
       </main>
     </>
   )
