@@ -22,7 +22,7 @@ export function Home() {
         </div>
 
       </section>
-      <section className="description">
+      <section className="description" id="sensors">
         <div className='description-text'>
           <h2>Sensores para Manutenção Preditiva</h2>
           <br />

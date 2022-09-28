@@ -13,10 +13,10 @@ export function Header() {
         <a target="_blank" rel="noopener noreferrer" href="https://dynamox.net/dynapredict/">
           <p>DynaPredict</p>
         </a>
-        <a target="_blank" rel="noopener noreferrer" href="https://vanderleimiguel.herokuapp.com/">
+        <a href="/#sensors">
           <p>Sensores</p>
         </a>
-        <a target="_blank" rel="noopener noreferrer" href="https://vanderleimiguel.herokuapp.com/">
+        <a href="/#contact">
           <p>Contato</p>
         </a>
       </div>

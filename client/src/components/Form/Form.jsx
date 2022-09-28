@@ -26,7 +26,7 @@ Telefone: ${newForm.phone}`);
 
   return (
 
-    <div className="form">
+    <div className="form" id="contact">
       <div className='form-text'>
         <p>Ficou com dúvida?</p>
         <p>Nós entramos em contato com você</p>
