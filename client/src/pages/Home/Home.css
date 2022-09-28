@@ -1,6 +1,6 @@
 .initial {
   width: 100%;
-  height: 720px;
+  height: 45rem;
   background-image: url("../../assets/images/grafismo.png");
   position: relative;
   background-repeat: no-repeat;
@@ -16,7 +16,7 @@
 }
 
 .title h1 {
-  font-size: 80px;
+  font-size: 5rem;
   color: #ffffff;
   padding-left: 6rem;
   padding-top: 9rem;
@@ -25,34 +25,34 @@
 .title img {
   padding-left: 6.5rem;
   padding-top: 2rem;
-  width: 270px;
+  width: 17rem;
 }
 
 .image-initial img {
   position: relative;
-  bottom: 50px;
+  bottom: 3rem;
 }
 
 .description {
   background-color: #F4F7FC;
   width: 100%;
-  height: 820px
+  height: 51rem;
 }
 
 .description-text {
-  padding-top: 60px;
+  padding-top: 3.7rem;
   text-align: center;
 
 }
 
 .description-text h2 {
-  font-size: 40px;
+  font-size: 2.5rem;
   color: #37383D;
   padding-top: 3rem;
 }
 
 .description-text h3 {
-  font-size: 24px;
+  font-size: 1.5rem;
   color: #454545;
   padding-bottom: 2rem;
   width: 70%;
@@ -61,10 +61,10 @@
 }
 
 .description .btn {
-  width: 183px;
-  height: 39px;
+  width: 11.5rem;
+  height: 2.5rem;
   display: flex;
-  font-size: 20px;
+  font-size: 1.3rem;
   background-color: #263252;
   color: #ffffff;
   margin: 0 auto;
@@ -75,8 +75,8 @@
 }
 
 .sensor img {
-  width: 276px;
-  height: 297px;
+  width: 17rem;
+  height: 18.5rem;
 }
 
 .sensors {
@@ -89,6 +89,39 @@
 .sensor p {
   display: flex;
   justify-content: center;
-  font-size: 40px;
+  font-size: 2.5rem;
   color: #5D7A8C;
+}
+
+@media (max-width: 1300px) {
+  .initial {
+    background-image: none;
+    background-color: #263252;
+  }
+
+  .image-initial img {
+    display: none;
+  }
+}
+
+@media (max-width: 800px) {
+  .title h1 {
+    font-size: 3rem;
+    padding-left: 3rem;
+  }
+
+  .description-text h3 {
+    font-size: 1.3rem;
+    width: 80%;
+  }
+
+  .sensor img {
+    width: 5rem;
+    height: 6.2rem;
+  }
+
+  .sensor p {
+    font-size: 2rem;
+  }
+
 }
