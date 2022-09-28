@@ -25,8 +25,8 @@ function Header() {
           </a>
           <S.NavContainer>
             <a href="https://dynamox.net/dynapredict/">DynaPredict</a>
-            <a href="#">Sensores</a>
-            <a href="#">Contato</a>
+            <a href="#sensores">Sensores</a>
+            <a href="#contato">Contato</a>
           </S.NavContainer>
         </S.ContentContainer>
       </Container>

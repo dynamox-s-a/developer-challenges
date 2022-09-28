@@ -6,6 +6,7 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
     box-sizing: border-box;
     font-size: 62.5%;
+    scroll-behavior: smooth;
 
     :focus {
       outline: 0;

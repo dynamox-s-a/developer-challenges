@@ -5,7 +5,7 @@ import * as S from './styles'
 
 function Sensors() {
   return (
-    <S.SensorsContainer>
+    <S.SensorsContainer id="sensores">
       <Container>
         <S.ArticleContainer>
             <h2>Sensores para Manutenção Preditiva</h2>

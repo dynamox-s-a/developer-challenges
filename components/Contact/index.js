@@ -4,7 +4,7 @@ import * as S from './styles'
 
 function Contact() {
   return (
-    <S.ContactContainer>
+    <S.ContactContainer id="contato">
       <Container>
         <S.Form>
           <h2>Ficou com dúvida? <br /> Nós entramos em contato com você</h2>
