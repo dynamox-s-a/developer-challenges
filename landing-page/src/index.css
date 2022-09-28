@@ -22,6 +22,10 @@ h3 {
   font-size: 30px;
 }
 
+h4 {
+  font-size: 22px;
+}
+
 button {
   color: #FFFF;
   font-size: 20px;
@@ -29,6 +33,10 @@ button {
   border-radius: 8px;
   padding: 8px 45px;
   margin-top: 10px;
+}
+
+button:hover {
+  cursor: pointer;
 }
 
 .grid-pattern {
