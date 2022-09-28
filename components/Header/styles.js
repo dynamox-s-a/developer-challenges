@@ -58,10 +58,10 @@ export const NavContainer = styled.nav`
 `
 
 export const MenuContainer = styled.div`
-  visibility: hidden;
+  display: none;
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-      visibility: visible;
+      display: block;
     } 
 `
 
