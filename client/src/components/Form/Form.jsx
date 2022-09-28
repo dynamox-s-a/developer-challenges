@@ -18,6 +18,10 @@ Trabalho: ${newForm.work}
 E-mail: ${newForm.email}
 Telefone: ${newForm.phone}`);
 
+    event.target.name.value = ""
+    event.target.work.value = ""
+    event.target.email.value = ""
+    event.target.phone.value = ""
   }
 
   return (
