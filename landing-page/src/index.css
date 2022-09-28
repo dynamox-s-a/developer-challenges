@@ -5,19 +5,48 @@
   font-family: 'Raleway', sans-serif;
 }
 
-.grid-pattern {
-  display                  : grid;
-  grid-template            : auto / 1fr 1200px 1fr;
+.title {
+  font-weight: 700;
+  color: #FFFF;
 }
 
-@media (max-width          : 1350px) {
+h1 {
+  font-size: 80px;
+}
+
+h2 {
+  font-size: 40px;
+}
+
+h3 {
+  font-size: 30px;
+}
+
+.grid-pattern {
+  display: grid;
+  grid-template: auto / 1fr 1200px 1fr;
+}
+
+@media (max-width: 1350px) {
+  h1 {
+    font-size: 70px;
+  }
+
   .grid-pattern {
-    grid-template          : auto / 1fr 80% 1fr;
+    grid-template: auto / 1fr 90% 1fr;
   }
 }
 
-@media (max-width          : 600px) {
+@media (max-width: 600px) {
+  h1 {
+    font-size: 42px;
+  }
+
+  h2 {
+    font-size: 36px;
+  }
+  
   .grid-pattern {
-    grid-template          : auto / 1fr 90% 1fr;
+    grid-template: auto / 1fr 90% 1fr;
   }
 }
