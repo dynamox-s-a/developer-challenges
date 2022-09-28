@@ -2,6 +2,24 @@ import './Form.css'
 import Button from '@mui/material/Button';
 
 export function Form() {
+
+  function Submit(event) {
+    event.preventDefault();
+
+    const newForm = {
+      name: event.target.name.value,
+      work: event.target.work.value,
+      email: event.target.email.value,
+      phone: event.target.phone.value,
+    }
+
+    alert(`Nome: ${newForm.name}
+Trabalho: ${newForm.work}
+E-mail: ${newForm.email}
+Telefone: ${newForm.phone}`);
+
+  }
+
   return (
 
     <div className="form">
@@ -9,7 +27,7 @@ export function Form() {
         <p>Ficou com dúvida?</p>
         <p>Nós entramos em contato com você</p>
       </div>
-      <form className="form-inputs">
+      <form className="form-inputs" onSubmit={Submit}>
         <section className='form-input'>
           <input className='form-name'
             type="text"
