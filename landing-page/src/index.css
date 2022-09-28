@@ -22,6 +22,15 @@ h3 {
   font-size: 30px;
 }
 
+button {
+  color: #FFFF;
+  font-size: 20px;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 8px 45px;
+  margin-top: 10px;
+}
+
 .grid-pattern {
   display: grid;
   grid-template: auto / 1fr 1200px 1fr;
