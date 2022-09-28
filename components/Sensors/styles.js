@@ -48,7 +48,7 @@ export const ArticleContainer = styled.article`
     transition: 0.2s;
 
     &:hover {
-      background: ${props => props.theme['blue']};
+      background: ${props => props.theme['blue-700']};
     }
   }
 `

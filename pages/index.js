@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Header from '../components/Header'
 import Cover from '../components/Cover'
 import Sensors from '../components/Sensors'
+import Contact from '../components/Contact'
 
 export default function Home() {
   return (
@@ -23,6 +24,8 @@ export default function Home() {
         <Cover />
         <Sensors />
       </main>
+      
+      <Contact />
     </>
   )
 }
