@@ -4,6 +4,10 @@ export const ContactContainer = styled.footer`
   background: ${props => props.theme['blue-dark']};
   height: 45rem;
   padding: 4.1rem 0;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    height: 100%;
+  } 
 `
 
 export const Form = styled.form`

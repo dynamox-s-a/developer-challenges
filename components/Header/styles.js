@@ -22,6 +22,10 @@ export const ImageContainer = styled.div`
   margin-left: 7.7rem;
   margin-bottom: 2.4rem;
   cursor: pointer;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    margin-left: 0;
+  }
 `
 
 export const NavContainer = styled.nav`
@@ -29,6 +33,10 @@ export const NavContainer = styled.nav`
   gap: 3.7rem;
   margin-right: 4.3rem;
   margin-bottom: 2.9rem;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+      margin-right: 0;
+    } 
 
   a {
     text-decoration: none;
@@ -40,5 +48,17 @@ export const NavContainer = styled.nav`
     &:hover {
       color: ${props => `${props.theme.white}29`};
     }
+
+    @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+      display: none;
+    } 
   }
+`
+
+export const MenuContainer = styled.div`
+  visibility: hidden;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+      visibility: visible;
+    } 
 `

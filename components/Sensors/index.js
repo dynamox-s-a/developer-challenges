@@ -9,12 +9,18 @@ function Sensors() {
       <Container>
         <S.ArticleContainer>
             <h2>Sensores para Manutenção Preditiva</h2>
-            <p>
+            <S.DesktopParagraph>
                 Opções de sensores sem fio, ou DynaLoggers com sensores de vibração triaxial e <br/>
                 temperatura embarcados, que comunicam por Bluetooth com o App mobile ou Gateway, <br/>
                 registrando os dados monitorados em sua memória interna. Por conexão internet esses dados <br/>
                 são centralizados na Plataforma DynaPredict Web para análise, prognóstico e tomada de decisão.
-            </p>
+            </S.DesktopParagraph>
+            <S.MobileParagraph>
+                Opções de sensores sem fio, ou DynaLoggers com sensores de vibração triaxial e
+                temperatura embarcados, que comunicam por Bluetooth com o App mobile ou Gateway,
+                registrando os dados monitorados em sua memória interna. Por conexão internet esses dados
+                são centralizados na Plataforma DynaPredict Web para análise, prognóstico e tomada de decisão.
+            </S.MobileParagraph>
             <a href="https://dynamox.net/dynapredict/">Ver mais</a>
           <S.ImagesContainer>
             <Card 

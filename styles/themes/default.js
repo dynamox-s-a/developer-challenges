@@ -10,4 +10,10 @@ export const defaultTheme = {
 
   'title': '#37383D',
   'text': '#454545',
+
+  breakpoints: {
+    mobile: '425px',
+    tablet: '768px',
+    desktop: '1024px'
+  }
 }
