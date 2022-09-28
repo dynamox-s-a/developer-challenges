@@ -1,0 +1,43 @@
+.modal-overlay {
+  background: rgba(0, 0, 0, 0.524);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+
+  visibility: hidden;
+  opacity: 0;
+}
+
+.modal-overlay.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.modal-card {
+  display: grid;
+  gap: 10px;
+  background-color: aliceblue;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.modal-card p {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.modal-card button {
+  background-color: #263252;
+}
+
+.modal-card button:hover {
+  background-color: #202a44;
+}
