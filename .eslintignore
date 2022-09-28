@@ -1,0 +1,8 @@
+
+
+# Ignore artifacts:
+.vscode
+.env
+build
+coverage
+node_modules
