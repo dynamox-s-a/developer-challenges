@@ -1,5 +1,78 @@
-.Form {
+.form {
   width: 100%;
   height: 480px;
   background-color: #263252
+}
+
+.form-text {
+  padding-top: 3rem;
+}
+
+.form-text p {
+  color: #FFFFFF;
+  font-size: 30px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.form-inputs {
+  padding-top: 2.5rem;
+}
+
+.form-name {
+  margin: 0 auto;
+  display: flex;
+  width: 26.5rem;
+  height: 2.5rem;
+  font-size: 16px;
+  text-align: center;
+  border-radius: 5px;
+
+}
+
+.form-work {
+  margin: 0 auto;
+  display: flex;
+  width: 26.5rem;
+  height: 2.5rem;
+  font-size: 16px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.form-email {
+  margin: 0 auto;
+  display: flex;
+  width: 26.5rem;
+  height: 2.5rem;
+  font-size: 16px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.form-phone {
+  margin: 0 auto;
+  display: flex;
+  width: 26.5rem;
+  height: 2.5rem;
+  font-size: 16px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.form-input {
+  padding-bottom: 0.8rem;
+}
+
+
+.form-inputs .btn-form {
+  width: 183px;
+  height: 39px;
+  display: flex;
+  font-size: 20px;
+  background-color: #0165DB;
+  color: #ffffff;
+  margin: 0 auto;
+
 }

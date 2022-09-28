@@ -29,7 +29,7 @@ export function Home() {
           <h3>Opções de sensores sem fio, ou DynaLoggers com sensores de vibração triaxial e temperatura embarcados, que comunicam por Bluetooth com o App mobile ou Gateway, registrando os dados monitorados em sua memória interna. Por conexão internet esses dados são centralizados na Plataforma DynaPredict Web para análise, prognóstico e tomada de decisão.</h3>
         </div>
 
-        <Button className='btn' variant="contained" size="medium">
+        <Button className='btn' variant="contained" size="medium" href='https://dynamox.net/dynapredict/'>
           VER MAIS
         </Button>
 

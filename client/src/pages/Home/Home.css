@@ -10,8 +10,22 @@
   display: flex;
 }
 
-.image-initial {
-  align-items: right;
+.title {
+  display: flex;
+  flex-direction: column;
+}
+
+.title h1 {
+  font-size: 80px;
+  color: #ffffff;
+  padding-left: 6rem;
+  padding-top: 9rem;
+}
+
+.title img {
+  padding-left: 6.5rem;
+  padding-top: 2rem;
+  width: 270px;
 }
 
 .description {
