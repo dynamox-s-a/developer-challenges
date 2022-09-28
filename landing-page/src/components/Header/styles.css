@@ -1,6 +1,10 @@
 header {
   height: 120px;
   background-color: #263252;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 a {
@@ -33,4 +37,21 @@ nav ul li {
 
 nav ul li:hover {
   color: rgb(209, 209, 209);
+}
+
+@media (max-width: 900px) {
+  img.logo {
+    height: 50px;
+  }
+}
+
+@media (max-width: 580px) {
+  img.logo {
+    height: 40px;
+  }
+
+  nav.menu ul {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
