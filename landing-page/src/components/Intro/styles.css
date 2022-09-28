@@ -1,4 +1,4 @@
-section {
+section.intro {
   background-image: url('/src/assets/grafismo.png');
   background-repeat: no-repeat;
   background-size: cover;
@@ -27,12 +27,16 @@ section {
 }
 
 @media (max-width: 900px) {
-  section {
+  section.intro {
     background-size: initial;
   }
 
   .intro-content {
     max-width: 100%;
+  }
+  
+  .intro-content img {
+    width: 160px; 
   }
 
   .intro-image {

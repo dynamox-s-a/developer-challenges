@@ -4,7 +4,7 @@ import './styles.css';
 
 export function Intro() {
   return(
-    <section className="grid-pattern">
+    <section className="grid-pattern intro">
       <div className="intro-section">
 
         <div className="intro-content">
