@@ -28,6 +28,11 @@
   width: 270px;
 }
 
+.image-initial img {
+  position: relative;
+  bottom: 50px;
+}
+
 .description {
   background-color: #F4F7FC;
   width: 100%;
@@ -35,7 +40,7 @@
 }
 
 .description-text {
-  padding-top: 95px;
+  padding-top: 60px;
   text-align: center;
 
 }
