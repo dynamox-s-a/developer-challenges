@@ -1,9 +1,11 @@
 import styled from 'styled-components'
 
 export const HeaderContainer = styled.header`
-  width: 100%;
+  position: fixed;
+  width: 100vw;
   height: 12rem;
   background: ${props => props.theme['blue-dark']};
+  z-index: 2;
 `
 
 export const ContentContainer = styled.div`
@@ -36,7 +38,7 @@ export const NavContainer = styled.nav`
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
       margin-right: 0;
-    } 
+  } 
 
   a {
     text-decoration: none;
@@ -61,4 +63,50 @@ export const MenuContainer = styled.div`
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
       visibility: visible;
     } 
+`
+
+export const OverflowContainer = styled.nav`
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  background: ${props => props.theme['blue-dark']};
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  top: 0;
+  right: ${props => props.show ? '0' : '-100%'};
+  transition: 0.4s ease-in-out;
+  box-shadow: ${props => `inset 0px 0px 5px ${props.theme['blue']}`};
+`
+
+export const CloseIconContainer = styled.div`
+  color: ${props => props.theme.white};
+  width: 100%;
+  height: 12rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding-bottom: 2.9rem;
+  padding-right: 2rem;
+`
+
+export const LinksContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+
+  a {
+    text-decoration: none;
+    transition: color 0.2s;
+    color: ${props => props.theme.white};
+    font-size: 4rem;
+    font-weight: 500;
+    
+    &:hover {
+      color: ${props => `${props.theme.white}29`};
+    }
+  }
 `

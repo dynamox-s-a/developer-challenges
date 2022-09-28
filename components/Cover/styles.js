@@ -2,9 +2,10 @@ import styled from 'styled-components'
 
 export const CoverContainer = styled.section`
   position: relative;
-  height: 72rem;
+  height: 84rem;
   background: ${props => props.theme['blue-dark']};
   border-bottom-left-radius: 50%;
+  padding-top: 12rem;
 `
 
 export const OverallContainer = styled.div`

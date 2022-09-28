@@ -1,11 +1,15 @@
+import { useState } from 'react'
+
 import Image from 'next/image'
 
 import Container from '../Container'
-import { List } from 'phosphor-react'
+import { List, X } from 'phosphor-react'
 
 import * as S from './styles'
 
 function Header() {
+  const [showMenu, setShowMenu] = useState(false)
+
   return (
     <S.HeaderContainer>
       <Container>
@@ -29,11 +33,39 @@ function Header() {
             <a href="#sensores">Sensores</a>
             <a href="#contato">Contato</a>
             <S.MenuContainer>
-              <List size={24} cursor="pointer" />
+              <List 
+                onClick={() => setShowMenu(true)}
+                size={24}
+                cursor="pointer"
+              />
             </S.MenuContainer>
           </S.NavContainer>
         </S.ContentContainer>
       </Container>
+      <S.OverflowContainer show={showMenu}>
+        <S.CloseIconContainer>
+          <X
+            onClick={() => setShowMenu(false)}
+            size={24}
+            cursor="pointer" 
+          />
+        </S.CloseIconContainer>
+        <S.LinksContainer>
+          <a href="https://dynamox.net/dynapredict/">DynaPredict</a>
+          <a 
+            href="#sensores"
+            onClick={() => setShowMenu(false)}
+          >
+            Sensores
+          </a>
+          <a 
+            href="#contato"
+            onClick={() => setShowMenu(false)}
+          >
+            Contato
+          </a>
+        </S.LinksContainer>
+      </S.OverflowContainer>
     </S.HeaderContainer>
   )
 }
