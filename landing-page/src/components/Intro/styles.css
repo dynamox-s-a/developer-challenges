@@ -1,0 +1,41 @@
+section {
+  background-image: url('/src/assets/grafismo.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.intro-section {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.intro-content {
+  display: grid;
+  gap: 30px;
+  max-width: 45%;
+}
+
+.intro-image {
+  width: 55%;
+}
+
+.intro-image img {
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  section {
+    background-size: initial;
+  }
+
+  .intro-content {
+    max-width: 100%;
+  }
+
+  .intro-image {
+    display: none;
+  }
+}
