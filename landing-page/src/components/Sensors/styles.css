@@ -22,13 +22,16 @@
   line-height: 30px;
 }
 
+.sensors-content button a {
+  color: #FFFF;
+}
+
 .sensors-content button {
   background-color: #263252;
 }
 
 .sensors-content button:hover {
   background-color: #202a44;
-  cursor: pointer;
 }
 
 .sensors-image {
