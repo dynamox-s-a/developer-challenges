@@ -1,6 +1,6 @@
 import { Intro } from "./components/Intro"
 import { Header } from "./components/Header"
-import { About } from "./components/About"
+import { Sensors } from "./components/Sensors"
 import { Contact } from "./components/Contact"
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     <div>
       <Header />
       <Intro />
-      <About />
+      <Sensors />
       <Contact />
     </div>
   )

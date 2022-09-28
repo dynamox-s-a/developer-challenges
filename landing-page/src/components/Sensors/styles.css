@@ -1,37 +1,37 @@
-.about-section {
+.sensors-section {
   grid-column: 2;
   padding: 100px 0px;
 }
 
-.about-content {
+.sensors-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 30px;
 }
 
-.about-content h2 { 
+.sensors-content h2 { 
   color: #37383D;
   text-align: center;
 }
 
-.about-content p {
+.sensors-content p {
   font-size: 24px;
   font-weight: 400;
   text-align: center;
   line-height: 30px;
 }
 
-.about-content button {
+.sensors-content button {
   background-color: #263252;
 }
 
-.about-content button:hover {
+.sensors-content button:hover {
   background-color: #202a44;
   cursor: pointer;
 }
 
-.about-image {
+.sensors-image {
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -39,24 +39,24 @@
   width: 100%;
 }
 
-.about-image img {
+.sensors-image img {
   width: 270px;
 }
 
-.card-image {
+.sensors-image .card-image {
   display: grid;
   gap: 20px;
   padding-top: 20px;
 }
 
-.card-image p {
+.sensors-image .card-image p {
   font-size: 40px;
   font-weight: 700;
   color: #5D7A8C;
 }
 
 @media (max-width: 900px) {
-  .about-section {
+  .sensors-section {
     padding-top: 50px;
   }
 }

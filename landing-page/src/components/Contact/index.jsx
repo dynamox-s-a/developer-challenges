@@ -2,7 +2,7 @@ import './styles.css';
 
 export function Contact() {
   return(
-    <section className="grid-pattern contact">
+    <section className="grid-pattern contact" id="contact">
       <div className="contact-section">
 
         <div className="contact-content">
