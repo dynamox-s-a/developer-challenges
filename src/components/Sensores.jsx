@@ -2,32 +2,45 @@ import React from "react";
 import SensorAf from "../assets/images/sensor-af.png";
 import SensorHf from "../assets/images/sensor-hf.png";
 import SensorTca from "../assets/images/sensor-tca.png";
+import {
+  Sensor,
+  SensoresBox,
+  SensoresButton,
+  SensoresContainer,
+  SensoresGroup,
+  SensoresText,
+  SensoresTitle,
+  SensorImage,
+  SensorName,
+} from "../styles/components/Sensores";
 
 export default function Sensores() {
   return (
-    <section>
-      <h3>Sensores para Manutenção Preditiva</h3>
-      <p>
-        Opções de sensores sem fio, ou DynaLoggers com sensores de vibração triaxial e temperatura
-        embarcados, que comunicam por Bluetooth com o App mobile ou Gateway, registrando os dados
-        monitorados em sua memória interna. Por conexão internet esses dados são centralizados na
-        Plataforma DynaPredict Web para análise, prognóstico e tomada de decisão.
-      </p>
-      <button type="button">VER MAIS</button>
-      <div>
-        <div>
-          <img src={SensorTca} alt="sensor-tca.png" />
-          <h2>TcA+</h2>
-        </div>
-        <div>
-          <img src={SensorAf} alt="sensor-af.png" />
-          <h2>AS</h2>
-        </div>
-        <div>
-          <img src={SensorHf} alt="sensor-hf.png" />
-          <h2>HF</h2>
-        </div>
-      </div>
-    </section>
+    <SensoresContainer id="sensores">
+      <SensoresBox>
+        <SensoresTitle>Sensores para Manutenção Preditiva</SensoresTitle>
+        <SensoresText>
+          Opções de sensores sem fio, ou DynaLoggers com sensores de vibração triaxial e temperatura
+          embarcados, que comunicam por Bluetooth com o App mobile ou Gateway, registrando os dados
+          monitorados em sua memória interna. Por conexão internet esses dados são centralizados na
+          Plataforma DynaPredict Web para análise, prognóstico e tomada de decisão.
+        </SensoresText>
+        <SensoresButton type="button">VER MAIS</SensoresButton>
+      </SensoresBox>
+      <SensoresGroup>
+        <Sensor>
+          <SensorImage src={SensorTca} alt="sensor-tca.png" />
+          <SensorName>TcA+</SensorName>
+        </Sensor>
+        <Sensor>
+          <SensorImage src={SensorAf} alt="sensor-af.png" />
+          <SensorName>AS</SensorName>
+        </Sensor>
+        <Sensor>
+          <SensorImage src={SensorHf} alt="sensor-hf.png" />
+          <SensorName>HF</SensorName>
+        </Sensor>
+      </SensoresGroup>
+    </SensoresContainer>
   );
 }

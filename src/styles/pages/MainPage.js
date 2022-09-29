@@ -1,12 +1,16 @@
 import styled, { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
-  *{
+  * {
     border: 0;
     font-family: Arial, Helvetica, sans-serif;
     list-style: none;
     margin: 0;
     padding: 0;
+  }
+  html {
+    overflow-y: scroll;
+    scroll-behavior: smooth;
   }
 `;
 

@@ -20,8 +20,8 @@ export default function Header() {
         </NavLogo>
         <NavGroup>
           <NavDynaPredict href="https://dynamox.net/dynapredict/">DynaPredict</NavDynaPredict>
-          <NavSensores href="https://dynamox.net/">Sensores</NavSensores>
-          <NavContato href="https://dynamox.net/">Contato</NavContato>
+          <NavSensores href="#sensores">Sensores</NavSensores>
+          <NavContato href="#contact">Contato</NavContato>
         </NavGroup>
       </BoxHeader>
     </Container>
