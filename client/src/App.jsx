@@ -1,13 +1,13 @@
 import { Home } from './pages/Home/Home'
 import { Header } from './components/Header/Header'
-import { Form } from './components/Form/Form'
+import { Summary } from './components/Summary/Summary'
 
 function App() {
   return (
     <div className="App">
       <Header />
       <Home />
-      <Form />
+      <Summary />
     </div>
   );
 }
