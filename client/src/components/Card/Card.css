@@ -1,0 +1,28 @@
+.card-component {
+  display: flex;
+  flex-direction: column;
+  width: 14rem;
+  height: 7rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 8px;
+  margin: 1rem;
+  box-shadow: 0px 0px 15px rgba(89, 0, 253, 0.3);
+  background-color: white;
+  transition: all .3s ease-in-out;
+}
+
+.card-component:hover {
+  background-color: rgb(66, 66, 66);
+}
+
+.card-component h2 {
+  font-size: 1.5rem;
+  color: black
+}
+
+.card-component h3 {
+  font-size: 1rem;
+  color: black
+}
