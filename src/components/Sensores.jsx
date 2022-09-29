@@ -1,7 +1,7 @@
 import React from "react";
-import SensorAf from "../assets/sensor-af.png";
-import SensorHf from "../assets/sensor-hf.png";
-import SensorTca from "../assets/sensor-tca.png";
+import SensorAf from "../assets/images/sensor-af.png";
+import SensorHf from "../assets/images/sensor-hf.png";
+import SensorTca from "../assets/images/sensor-tca.png";
 
 export default function Sensores() {
   return (

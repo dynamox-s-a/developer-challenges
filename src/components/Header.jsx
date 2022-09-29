@@ -1,5 +1,5 @@
 import React from "react";
-import LogoDinamox from "../assets/logo-dynamox.png";
+import LogoDinamox from "../assets/images/logo-dynamox.png";
 import {
   NavContato,
   NavDynaPredict,

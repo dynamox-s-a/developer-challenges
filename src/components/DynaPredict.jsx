@@ -1,6 +1,6 @@
 import React from "react";
-import LogoDynapredict from "../assets/logo-dynapredict.png";
-import DesktopAndMobile from "../assets/desktop-and-mobile.png";
+import LogoDynapredict from "../assets/images/logo-dynapredict.png";
+import DesktopAndMobile from "../assets/images/desktop-and-mobile.png";
 
 export default function DynaPredict() {
   return (
