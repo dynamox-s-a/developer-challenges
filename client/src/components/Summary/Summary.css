@@ -1,0 +1,9 @@
+.summary {
+  background: gray;
+  margin-left: 5rem;
+  margin-right: 5rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 20px;
+  box-shadow: 0px 0px 15px rgba(25, 0, 250, 0.3);
+}
