@@ -55,10 +55,13 @@ export function Home() {
     const product = {
       id: event.target.id.value,
       nome: event.target.nome.value,
-      data: event.target.data.value,
+      dataFabricacao: event.target.dataFabricacao.value,
+      perecivel: event.target.perecivel.value,
+      dataValidade: event.target.dataValidade.value,
+      preco: event.target.preco.value,
     }
 
-    if (product.nome == "" || product.data == "") {
+    if (product.nome == "" || product.dataFabricacao == "" || product.perecivel == "" || product.dataValidade == "" || product.preco == "") {
       alert("Preencha todos os campos")
     } else {
       await api.updateProduct(product, product.id);
@@ -118,15 +121,42 @@ export function Home() {
                 </section>
                 <section>
                   <span>Título: </span>
-                  <input className="form-title-update"
+                  <input className="form-nome-update"
                     type="text"
                     name="nome"
                     defaultValue={uniqueProduct.nome}
                   ></input>
                 </section>
                 <section>
-                  <span>Url: </span>
-                  <input className="form-url-update"
+                  <span>Data de fabricação: </span>
+                  <input className="form-dataFabricacao-update"
+                    type="text"
+                    name="dataFabricacao"
+                    defaultValue={uniqueProduct.dataFabricacao}
+                  ></input>
+
+                </section>
+                <section>
+                  <span>Produto perecivel: </span>
+                  <input className="form-perecivel-update"
+                    type="text"
+                    name="perecivel"
+                    defaultValue={uniqueProduct.perecivel}
+                  ></input>
+
+                </section>
+                <section>
+                  <span>Data de validade: </span>
+                  <input className="form-dataValidade-update"
+                    type="text"
+                    name="dataValidade"
+                    defaultValue={uniqueProduct.dataValidade}
+                  ></input>
+
+                </section>
+                <section>
+                  <span>Preço: R$</span>
+                  <input className="form-preco-update"
                     type="text"
                     name="preco"
                     defaultValue={uniqueProduct.preco}
