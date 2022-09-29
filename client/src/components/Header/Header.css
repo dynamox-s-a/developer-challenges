@@ -1,21 +1,82 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;700&display=swap');
 
-.header {
+.Header {
+  margin: 0 auto 25px auto;
+  position: relative;
+}
+
+.row {
   display: flex;
   width: 100%;
-  height: 7.5rem;
   justify-content: space-between;
-  background-color: #263252;
+  margin: 20px 0 30px 0;
 }
 
-.logo img {
-  width: 16rem;
-  padding-left: 4.8rem;
-  padding-top: 1.5rem;
+.Logo {
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  width: 29rem;
+  height: 3rem;
+  margin-left: 5rem;
+  box-shadow: 0px 0px 15px rgba(89, 0, 253, 0.3);
+  background: grey;
 }
 
-@media (max-width: 800px) {
-  .logo img {
-    position: absolute;
+.Logo-title {
+  position: absolute;
+  left: 3rem;
+  margin-left: 5rem;
+  font-weight: 700;
+  font-size: 2.5rem;
+}
+
+.btn-create-icon {
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(89, 0, 253, 0.3);
+  background: grey;
+  width: 15rem;
+  height: 3rem;
+  position: relative;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 2.5rem;
+  margin-right: 5rem;
+  transition: all .3s ease-in-out;
+}
+
+.btn-create-icon:hover {
+  background-color: rgb(66, 66, 66);
+}
+
+@media (max-width: 1220px) {
+  .Logo {
+    width: 20rem;
+  }
+
+  .Logo-title {
+    font-size: 1.5rem;
+  }
+
+  .btn-create-icon {
+    font-size: 1.5rem;
+    width: 10rem;
+  }
+}
+
+@media (max-width: 740px) {
+  .row {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .btn-create-icon {
+    font-size: 1.5rem;
+    width: 10rem;
+    display: flex;
+    margin: 0 auto;
   }
 }
