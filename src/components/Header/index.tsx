@@ -1,3 +1,4 @@
+import { SignOut } from 'phosphor-react'
 import { NavLink } from 'react-router-dom'
 import { Logo } from '../Logo'
 
@@ -11,7 +12,9 @@ export function Header() {
           <Logo />
         </NavLink>
         <NavLink to="/login">
-          <S.LogoutButton>Log out</S.LogoutButton>
+          <S.LogoutButton title="Log out">
+            <SignOut size={24} />
+          </S.LogoutButton>
         </NavLink>
       </S.ContentContainer>
     </S.HeaderContainer>
