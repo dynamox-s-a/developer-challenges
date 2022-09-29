@@ -23,6 +23,19 @@
       "dataValidade": 2022,
       "preco": 50,
       "id": 3
+    },
+    {
+      "nome": "teste123",
+      "dataFabricacao": "1995",
+      "id": 4
+    },
+    {
+      "nome": "teste444",
+      "dataFabricacao": "45",
+      "perecivel": "true",
+      "dataValidade": "888",
+      "preco": "89",
+      "id": 5
     }
   ]
 }
