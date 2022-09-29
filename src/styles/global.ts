@@ -11,6 +11,10 @@ export const GlobalStyle = createGlobalStyle`
       box-shadow: 0 0 0 2px ${(props) => props.theme['blue-dark']}
   } 
 
+  a {
+    text-decoration: none;
+  }
+
   body {
       background: ${(props) => props.theme.background};
       color: ${(props) => props.theme.text};
