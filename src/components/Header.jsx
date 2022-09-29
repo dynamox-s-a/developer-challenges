@@ -8,19 +8,22 @@ import {
   Container,
   ImageLogo,
   NavLogo,
+  BoxHeader,
 } from "../styles/components/Header";
 
 export default function Header() {
   return (
     <Container>
-      <NavLogo href="https://dynamox.net/">
-        <ImageLogo src={LogoDinamox} alt="logo-dynamox.png" />
-      </NavLogo>
-      <NavGroup>
-        <NavDynaPredict href="https://dynamox.net/dynapredict/">DynaPredict</NavDynaPredict>
-        <NavSensores href="https://dynamox.net/">Sensores</NavSensores>
-        <NavContato href="https://dynamox.net/">Contato</NavContato>
-      </NavGroup>
+      <BoxHeader>
+        <NavLogo href="https://dynamox.net/">
+          <ImageLogo src={LogoDinamox} alt="logo-dynamox.png" />
+        </NavLogo>
+        <NavGroup>
+          <NavDynaPredict href="https://dynamox.net/dynapredict/">DynaPredict</NavDynaPredict>
+          <NavSensores href="https://dynamox.net/">Sensores</NavSensores>
+          <NavContato href="https://dynamox.net/">Contato</NavContato>
+        </NavGroup>
+      </BoxHeader>
     </Container>
   );
 }

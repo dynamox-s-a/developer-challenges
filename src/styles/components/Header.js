@@ -1,12 +1,22 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+export const Container = styled.section`
   align-items: baseline;
   background: #263252;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 1.5rem;
+  padding: 1rem;
+`;
+
+export const BoxHeader = styled.div`
+  max-width: 80rem;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 0 auto;
 `;
 
 export const NavLogo = styled.a`
@@ -28,7 +38,7 @@ export const NavGroup = styled.div`
 export const NavDynaPredict = styled.a`
   background: none;
   color: #ffffff;
-  font-family: "Raleway";
+  font-family: "Raleway", sans-serif;
   font-size: 1.25rem;
   font-style: normal;
   font-weight: 500;
@@ -43,7 +53,7 @@ export const NavDynaPredict = styled.a`
 export const NavSensores = styled.a`
   background: none;
   color: #ffffff;
-  font-family: "Raleway";
+  font-family: "Raleway", sans-serif;
   font-size: 1.25rem;
   font-style: normal;
   font-weight: 500;
@@ -57,7 +67,7 @@ export const NavSensores = styled.a`
 export const NavContato = styled.a`
   background: none;
   color: #ffffff;
-  font-family: "Raleway";
+  font-family: "Raleway", sans-serif;
   font-size: 1.25rem;
   font-style: normal;
   font-weight: 500;

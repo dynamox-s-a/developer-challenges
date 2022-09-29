@@ -1,17 +1,28 @@
 import React from "react";
-import LogoDynapredict from "../assets/images/logo-dynapredict.png";
+import LogoDynaPredict from "../assets/images/logo-dynapredict.png";
 import DesktopAndMobile from "../assets/images/desktop-and-mobile.png";
+import {
+  BoxDesktopAndMobile,
+  BoxDynaPredict,
+  DinaPredictContainer,
+  ImageDesktopAndMobile,
+  ImageLogoDynaPredict,
+  Stack,
+  TitleDinaPredict,
+} from "../styles/components/DynaPredict";
 
 export default function DynaPredict() {
   return (
-    <section>
-      <div>
-        <h1>Solução DynaPredict</h1>
-        <img src={LogoDynapredict} alt="logo-dynapredict.png" />
-      </div>
-      <div>
-        <img src={DesktopAndMobile} alt="desktop-and-mobile.png" />
-      </div>
-    </section>
+    <DinaPredictContainer>
+      <Stack>
+        <BoxDynaPredict>
+          <TitleDinaPredict>Solução DynaPredict</TitleDinaPredict>
+          <ImageLogoDynaPredict src={LogoDynaPredict} alt="logo-dynapredict.png" />
+        </BoxDynaPredict>
+        <BoxDesktopAndMobile>
+          <ImageDesktopAndMobile src={DesktopAndMobile} alt="desktop-and-mobile.png" />
+        </BoxDesktopAndMobile>
+      </Stack>
+    </DinaPredictContainer>
   );
 }
