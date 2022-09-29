@@ -22,7 +22,7 @@ export function Form() {
     } else {
       console.log(newProduct)
       await api.createProduct(newProduct);
-      // location.reload();
+      window.location.reload();
     }
   }
 
@@ -49,7 +49,7 @@ export function Form() {
             }}
           ></input>
 
-        </section><br />
+        </section>
         <section>
           <span>Produto perecivel: </span>
           <input className='form-perecivel'
@@ -60,7 +60,7 @@ export function Form() {
             }}
           ></input>
 
-        </section><br />
+        </section>
         <section>
           <span>Data de validade: </span>
           <input className='form-dataValidade'
@@ -71,7 +71,7 @@ export function Form() {
             }}
           ></input>
 
-        </section><br />
+        </section>
         <section>
           <span>Preço: R$</span>
           <input className='form-preco'
