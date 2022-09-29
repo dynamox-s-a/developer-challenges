@@ -1,0 +1,57 @@
+.menu-desktop {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 4.25rem 1rem;
+}
+
+.menu-desktop a,
+.menu-mobile a {
+  font-family: Raleway, Arial, Helvetica, sans-serif;
+  font-weight: 300;
+  text-decoration: none;
+  color: #FFFFFF;
+  font-size: 20px;
+}
+
+.menu-desktop p,
+.menu-mobile p {
+  padding: 2rem;
+}
+
+.menu-mobile {
+  display: none;
+}
+
+@media (max-width: 800px) {
+  .menu-desktop {
+    display: none;
+  }
+
+  .menu-mobile {
+    display: grid;
+    width: 100%;
+  }
+
+
+  .menu-mobile a {
+    background: #181818ff;
+    width: 100%;
+    height: 200px;
+
+    z-index: 5;
+  }
+
+  .menu-mobile p {
+    font-size: 2.5rem;
+    align-items: center;
+  }
+
+  .menu-mobile .hamburguer {
+    position: absolute;
+    right: 5%;
+    cursor: pointer;
+    z-index: 6;
+  }
+}

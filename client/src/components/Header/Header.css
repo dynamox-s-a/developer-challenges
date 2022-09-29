@@ -15,28 +15,9 @@
   padding-top: 1.5rem;
 }
 
-.menu {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  padding: 4.25rem 1rem;
-}
-
-.menu a {
-  font-family: Raleway, Arial, Helvetica, sans-serif;
-  font-weight: 300;
-  text-decoration: none;
-  color: #FFFFFF;
-  font-size: 20px;
-}
-
-.menu p {
-  padding: 2rem;
-}
-
 @media (max-width: 800px) {
-  .menu a {
-    display: none;
+  .logo img {
+    position: absolute;
+
   }
 }
