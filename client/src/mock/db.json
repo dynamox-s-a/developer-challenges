@@ -1,0 +1,28 @@
+{
+  "produtos": [
+    {
+      "id": 1,
+      "nome": "json-server",
+      "dataFabricacao": 2020,
+      "perecivel": "false",
+      "dataValidade": 2022,
+      "preco": 50
+    },
+    {
+      "id": 2,
+      "nome": "json-server",
+      "dataFabricacao": 2020,
+      "perecivel": "false",
+      "dataValidade": 2022,
+      "preco": 50
+    },
+    {
+      "nome": "teste",
+      "dataFabricacao": 2020,
+      "perecivel": "false",
+      "dataValidade": 2022,
+      "preco": 50,
+      "id": 3
+    }
+  ]
+}
