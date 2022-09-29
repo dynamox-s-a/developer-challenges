@@ -7,7 +7,7 @@ export default function Contact() {
       <form action="">
         <input type="text" />
         <input type="text" />
-        <input type="text" />
+        <input type="email" />
         <input type="text" />
         <button type="submit">ENVIAR</button>
       </form>
