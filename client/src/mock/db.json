@@ -25,16 +25,19 @@
       "id": 3
     },
     {
-      "nome": "teste123",
+      "nome": "banana",
       "dataFabricacao": "1995",
+      "perecivel": "sim",
+      "dataValidade": "2022",
+      "preco": "15",
       "id": 4
     },
     {
-      "nome": "teste444",
-      "dataFabricacao": "45",
-      "perecivel": "true",
-      "dataValidade": "888",
-      "preco": "89",
+      "nome": "sorvete",
+      "dataFabricacao": "2021",
+      "perecivel": "sim",
+      "dataValidade": "2023",
+      "preco": "20",
       "id": 5
     }
   ]
