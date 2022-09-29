@@ -23,22 +23,6 @@ export const Form = styled.form`
   justify-content: center;
   align-items: center;
 
-  input {
-    height: 2rem;
-    padding: 0.5rem;
-    width: 100%;
-    font-weight: 500;
-    background: ${(props) => props.theme.background};
-    color: ${(props) => props.theme['blue-dark']};
-    border: 1px solid ${(props) => props.theme['blue-dark']};
-    border-radius: 5px;
-
-    &::placeholder {
-      color: ${(props) => props.theme.text};
-      font-weight: 400;
-    }
-  }
-
   button {
     width: 100%;
     height: 2rem;
