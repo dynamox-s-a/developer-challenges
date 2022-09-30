@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const SensoresContainer = styled.section`
   background: #f4f7fc;
-  height: 51.25rem;
+  min-height: 51.25rem;
   width: 100%;
 `;
 
@@ -19,6 +19,7 @@ export const SensoresBox = styled.section`
 
 export const SensoresTitle = styled.h1`
   color: #37383d;
+  margin-top: 3rem;
   font-family: "Raleway", sans-serif;
   font-size: 2.5em;
   font-style: normal;
@@ -66,7 +67,13 @@ export const SensoresGroup = styled.div`
   align-items: center;
 `;
 
-export const Sensor = styled.div``;
+export const Sensor = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem;
+`;
 
 export const SensorImage = styled.img`
   max-width: 17.3rem;

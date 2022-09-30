@@ -3,7 +3,7 @@ import Grafismo from "../../assets/images/grafismo.png";
 
 export const DinaPredictContainer = styled.section`
   background: #263252;
-  height: 1280px;
+  min-height: 45rem;
   width: 100%;
 `;
 
