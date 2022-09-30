@@ -7,7 +7,7 @@ function SensorSection() {
   return (
     <section id='sensors-section' className='font-raleway pt-24 pb-10 bg-bg-light-cyan-blue h-auto w-full'>
       <div className='flex justify-center flex-col items-center'>
-        <h2 className=' py-2 font-bold text-title-sensors  text-title-blue leading-10'>Sensores para Manutenção Preditiva</h2>
+        <h2 className=' py-2 font-bold text-primary-font-size  text-title-blue leading-10'>Sensores para Manutenção Preditiva</h2>
         <p className='py-3 text-2xl mx-32  text-text-sensors leading-9 font-normal text-center'>
           Opções de sensores sem fio, ou DynaLoggers com sensores de vibração triaxial e
           temperatura embarcados, que comunicam por Bluetooth com o App mobile ou Gateway,
@@ -21,7 +21,7 @@ function SensorSection() {
           type="button">VER MAIS</button>
         </a>
       </div>
-      <div className='mt-10 flex items-center flex-row justify-evenly text-name-sensors font-bold text-title-sensors'>
+      <div className='mt-10 flex items-center flex-row justify-evenly text-name-sensors font-bold text-primary-font-size'>
         <div className='flex flex-col items-center'>
           <img className='w-72' src={sensorAS} alt="sensor-AS" />
           <h4 className=''>AS</h4>
