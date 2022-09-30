@@ -15,6 +15,8 @@ export const SensoresBox = styled.section`
   max-width: 80rem;
   padding: 2.5rem 0;
   width: 100%;
+  @media screen and (max-width: 375px) {
+  }
 `;
 
 export const SensoresTitle = styled.h1`

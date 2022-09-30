@@ -5,6 +5,9 @@ export const DinaPredictContainer = styled.section`
   background: #263252;
   min-height: 45rem;
   width: 100%;
+  @media screen and (max-width: 375px) {
+    min-height: 30rem;
+  }
 `;
 
 export const Stack = styled.div`
@@ -21,6 +24,10 @@ export const Stack = styled.div`
   max-width: 80rem;
   overflow: hidden;
   width: 100%;
+  @media screen and (max-width: 375px) {
+    flex-direction: column;
+    background-position: left;
+  }
 `;
 
 export const BoxDynaPredict = styled.div`
@@ -32,6 +39,9 @@ export const BoxDynaPredict = styled.div`
   max-width: 36.5rem;
   padding: 5rem 1rem 0 5rem;
   width: 40%;
+  @media screen and (max-width: 375px) {
+    width: 100%;
+  }
 `;
 
 export const BoxDesktopAndMobile = styled.div`
@@ -48,11 +58,19 @@ export const TitleDinaPredict = styled.h1`
   margin: 1rem 0;
   text-align: start;
   word-break: break-word;
+  @media screen and (max-width: 375px) {
+    font-size: 2rem;
+    line-height: 2rem;
+  }
 `;
 
 export const ImageLogoDynaPredict = styled.img`
   max-height: 1.94rem;
   max-width: 10rem;
+  @media screen and (max-width: 375px) {
+    height: 1.5rem;
+    width: 7.5rem;
+  }
 `;
 
 export const ImageDesktopAndMobile = styled.img`
