@@ -25,7 +25,7 @@ export default function Sensores() {
           monitorados em sua memória interna. Por conexão internet esses dados são centralizados na
           Plataforma DynaPredict Web para análise, prognóstico e tomada de decisão.
         </SensoresText>
-        <SensoresButton type="button">VER MAIS</SensoresButton>
+        <SensoresButton href="https://dynamox.net/dynapredict/">VER MAIS</SensoresButton>
       </SensoresBox>
       <SensoresGroup>
         <Sensor>
