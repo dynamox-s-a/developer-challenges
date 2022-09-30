@@ -4,6 +4,9 @@ export const SensoresContainer = styled.section`
   background: #f4f7fc;
   min-height: 51.25rem;
   width: 100%;
+  @media screen and (max-width: 375px) {
+    min-height: 40rem;
+  }
 `;
 
 export const SensoresBox = styled.section`
@@ -16,6 +19,9 @@ export const SensoresBox = styled.section`
   padding: 2.5rem 0;
   width: 100%;
   @media screen and (max-width: 375px) {
+    max-width: 100%;
+    max-height: 100%;
+    padding: 1rem 0;
   }
 `;
 
@@ -30,6 +36,11 @@ export const SensoresTitle = styled.h1`
   margin-top: 3rem;
   text-align: center;
   word-break: break-word;
+  @media screen and (max-width: 375px) {
+    font-size: 1.5rem;
+    line-height: normal;
+    margin-bottom: 0.5rem;
+  }
 `;
 
 export const SensoresText = styled.p`
@@ -44,6 +55,12 @@ export const SensoresText = styled.p`
   padding: 0 3rem;
   text-align: center;
   word-break: break-word;
+  @media screen and (max-width: 375px) {
+    font-size: 1rem;
+    font-weight: 200;
+    line-height: normal;
+    padding: 0 1rem;
+  }
 `;
 
 export const SensoresButton = styled.a`
@@ -70,6 +87,9 @@ export const SensoresGroup = styled.div`
   flex-direction: row;
   justify-content: center;
   margin: 0 auto;
+  @media screen and (max-width: 375px) {
+    width: 100%;
+  }
 `;
 
 export const Sensor = styled.div`
@@ -83,6 +103,10 @@ export const Sensor = styled.div`
 export const SensorImage = styled.img`
   max-height: 18.615rem;
   max-width: 17.3rem;
+  @media screen and (max-width: 375px) {
+    height: 5rem;
+    width: 100%;
+  }
 `;
 
 export const SensorName = styled.h2`
@@ -97,4 +121,7 @@ export const SensorName = styled.h2`
   margin: 0 auto;
   text-align: center;
   word-break: break-word;
+  @media screen and (max-width: 375px) {
+    font-size: 1.5rem;
+  }
 `;
