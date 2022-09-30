@@ -4,7 +4,7 @@ export const SensoresContainer = styled.section`
   background: #f4f7fc;
   min-height: 51.25rem;
   width: 100%;
-  @media screen and (max-width: 420px) {
+  @media screen and (max-width: 768px) {
     min-height: 50rem;
   }
 `;
@@ -18,7 +18,7 @@ export const SensoresBox = styled.section`
   max-width: 80rem;
   padding: 2.5rem 0;
   width: 100%;
-  @media screen and (max-width: 420px) {
+  @media screen and (max-width: 768px) {
     max-width: 100%;
     max-height: 100%;
     padding: 1rem 0;
@@ -36,7 +36,7 @@ export const SensoresTitle = styled.h1`
   margin-top: 3rem;
   text-align: center;
   word-break: break-word;
-  @media screen and (max-width: 420px) {
+  @media screen and (max-width: 768px) {
     font-size: 1.5rem;
     line-height: normal;
     margin-bottom: 0.5rem;
@@ -55,7 +55,7 @@ export const SensoresText = styled.p`
   padding: 0 3rem;
   text-align: center;
   word-break: break-word;
-  @media screen and (max-width: 420px) {
+  @media screen and (max-width: 768px) {
     font-size: 1rem;
     font-weight: 200;
     line-height: normal;
@@ -79,7 +79,7 @@ export const SensoresButton = styled.a`
   text-align: center;
   text-decoration: none;
   width: 11.5rem;
-  @media screen and (max-width: 420px) {
+  @media screen and (max-width: 768px) {
     font-size: 1rem;
     font-weight: 600;
     width: 7.5rem;
@@ -93,7 +93,7 @@ export const SensoresGroup = styled.div`
   flex-direction: row;
   justify-content: center;
   margin: 0 auto;
-  @media screen and (max-width: 420px) {
+  @media screen and (max-width: 768px) {
     width: 100%;
   }
 `;
@@ -104,7 +104,7 @@ export const Sensor = styled.div`
   flex-direction: column;
   justify-content: center;
   margin: 1rem;
-  @media screen and (max-width: 420px) {
+  @media screen and (max-width: 768px) {
     height: 7.5rem;
     width: 100%;
     padding: 3rem 0;
@@ -114,7 +114,7 @@ export const Sensor = styled.div`
 export const SensorImage = styled.img`
   max-height: 18.615rem;
   max-width: 17.3rem;
-  @media screen and (max-width: 412px) {
+  @media screen and (max-width: 768px) {
     width: 100%;
   }
   @media screen and (max-width: 1024px) {
@@ -135,7 +135,7 @@ export const SensorName = styled.h2`
   margin: 0 auto;
   text-align: center;
   word-break: break-word;
-  @media screen and (max-width: 420px) {
+  @media screen and (max-width: 768px) {
     font-size: 1.5rem;
   }
 `;

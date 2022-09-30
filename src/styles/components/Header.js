@@ -16,7 +16,7 @@ export const BoxHeader = styled.div`
   margin: 0 auto;
   max-width: 80rem;
   width: 100%;
-  @media screen and (max-width: 420px) {
+  @media screen and (max-width: 768px) {
     align-items: center;
     flex-direction: column;
     justify-content: center;
@@ -27,7 +27,7 @@ export const NavLogo = styled.a`
   height: 4rem;
   margin: 0 1.5rem;
   width: 10rem;
-  @media screen and (max-width: 420px) {
+  @media screen and (max-width: 768px) {
     height: 3rem;
     width: 7.5rem;
   }
@@ -43,7 +43,7 @@ export const NavGroup = styled.div`
   flex-direction: row;
   background: none;
   margin: 0.5rem 0;
-  @media screen and (max-width: 420px) {
+  @media screen and (max-width: 768px) {
     flex-direction: column;
     background-color: whitesmoke;
     width: 100%;
@@ -68,7 +68,7 @@ export const NavDynaPredict = styled.a`
   text-align: center;
   text-decoration: none;
   width: 7.5rem;
-  @media screen and (max-width: 420px) {
+  @media screen and (max-width: 768px) {
     color: #37383d;
     width: 100%;
     display: flex;
@@ -93,7 +93,7 @@ export const NavSensores = styled.a`
   margin: 0 1rem;
   text-align: center;
   text-decoration: none;
-  @media screen and (max-width: 420px) {
+  @media screen and (max-width: 768px) {
     color: #37383d;
     width: 100%;
     display: flex;
@@ -117,7 +117,7 @@ export const NavContato = styled.a`
   margin: 0 1rem;
   text-align: center;
   text-decoration: none;
-  @media screen and (max-width: 420px) {
+  @media screen and (max-width: 768px) {
     color: #37383d;
     width: 100%;
     display: flex;

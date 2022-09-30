@@ -5,7 +5,7 @@ export const DinaPredictContainer = styled.section`
   background: #263252;
   min-height: 45rem;
   width: 100%;
-  @media screen and (max-width: 420px) {
+  @media screen and (max-width: 768px) {
     min-height: 30rem;
   }
 `;
@@ -24,7 +24,7 @@ export const Stack = styled.div`
   max-width: 80rem;
   overflow: hidden;
   width: 100%;
-  @media screen and (max-width: 420px) {
+  @media screen and (max-width: 768px) {
     flex-direction: column;
     background-position: left;
   }
@@ -39,7 +39,7 @@ export const BoxDynaPredict = styled.div`
   max-width: 36.5rem;
   padding: 5rem 1rem 0 5rem;
   width: 40%;
-  @media screen and (max-width: 420px) {
+  @media screen and (max-width: 768px) {
     width: 100%;
   }
 `;
@@ -58,7 +58,7 @@ export const TitleDinaPredict = styled.h1`
   margin: 1rem 0;
   text-align: start;
   word-break: break-word;
-  @media screen and (max-width: 420px) {
+  @media screen and (max-width: 768px) {
     font-size: 2rem;
     line-height: 2rem;
   }
@@ -67,7 +67,7 @@ export const TitleDinaPredict = styled.h1`
 export const ImageLogoDynaPredict = styled.img`
   max-height: 1.94rem;
   max-width: 10rem;
-  @media screen and (max-width: 420px) {
+  @media screen and (max-width: 768px) {
     height: 1.5rem;
     width: 7.5rem;
   }
