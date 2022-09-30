@@ -1,3 +1,4 @@
+import Footer from "../components/Footer";
 import Header from "../components/Header";
 import SensorSection from "../components/SensorSection";
 import SolutionSection from "../components/SolutionSection";
@@ -8,6 +9,7 @@ function Landing() {
       <Header />
       <SolutionSection />
       <SensorSection />
+      <Footer />
     </div>
   );
 }
