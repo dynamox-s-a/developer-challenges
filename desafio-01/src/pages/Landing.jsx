@@ -1,4 +1,5 @@
 import Header from "../components/Header";
+import SensorSection from "../components/SensorSection";
 import SolutionSection from "../components/SolutionSection";
 
 function Landing() {
@@ -6,6 +7,7 @@ function Landing() {
     <div className="App">
       <Header />
       <SolutionSection />
+      <SensorSection />
     </div>
   );
 }
