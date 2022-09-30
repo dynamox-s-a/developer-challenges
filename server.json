@@ -1,0 +1,12 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "Amaciante Downy",
+      "manufacturingDate": "27/08/2022",
+      "expirationDate": "27/08/2024",
+      "price": "27,90",
+      "perishable": true
+    }
+  ]
+}
