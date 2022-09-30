@@ -39,7 +39,7 @@ export function Header() {
       <header>
         <div className='row'>
           <div className="Logo">
-            <span className='Logo-title'>Produtos</span>
+            <span className='Logo-title'>Cadastro de Produtos</span>
           </div>
           <div >
             <button className="btn-create-icon" onClick={handleModal}>

@@ -135,22 +135,41 @@
 }
 
 input.form-id-update {
-  width: 35rem;
-  font-size: 1.5rem;
-  background-color: #4b6cfd;
-}
-
-input.form-title-update {
-  width: 31.5rem;
-  font-size: 1.5rem;
-  background-color: #4b6cfd;
-}
-
-input.form-url-update {
   width: 34rem;
   font-size: 1.5rem;
   background-color: #4b6cfd;
 }
+
+input.form-nome-update {
+  width: 30.5rem;
+  font-size: 1.5rem;
+  background-color: #4b6cfd;
+}
+
+input.form-dataFabricacao-update {
+  width: 18.9rem;
+  font-size: 1.5rem;
+  background-color: #4b6cfd;
+}
+
+input.form-perecivel-update {
+  width: 20rem;
+  font-size: 1.5rem;
+  background-color: #4b6cfd;
+}
+
+input.form-dataValidade-update {
+  width: 21rem;
+  font-size: 1.5rem;
+  background-color: #4b6cfd;
+}
+
+input.form-preco-update {
+  width: 28rem;
+  font-size: 1.5rem;
+  background-color: #4b6cfd;
+}
+
 
 @media (max-width: 1200px) {
   .card-list {

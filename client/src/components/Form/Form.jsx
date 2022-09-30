@@ -17,10 +17,17 @@ export function Form() {
       }
     }
 
-    if (newProduct.nome == "" || newProduct.dataFabricacao == "" || qtdForm < 5) {
+    if (newProduct.nome == "" || newProduct.dataFabricacao == "" || newProduct.perecivel == "" || newProduct.dataValidade == "" || newProduct.preco == "" || qtdForm < 5) {
       alert("Preencha todos os campos")
-    } else {
+    } else if (newProduct.perecivel != "false" && newProduct.perecivel != "true") {
+      alert("Informe 'false' ou 'true' no campo produto perecivel")
+    } else if (newProduct.perecivel === "true" && newProduct.dataValidade < newProduct.dataFabricacao) {
       console.log(newProduct)
+      alert("Data de validade deve ser maior que data de fabricação")
+    } else {
+      if (newProduct.perecivel === "false") {
+        newProduct.dataValidade = ""
+      }
       await api.createProduct(newProduct);
       window.location.reload();
     }
@@ -45,7 +52,7 @@ export function Form() {
             type="text"
             name="dataFabricacao"
             onChange={(event) => {
-              setNewProduct({ ...newProduct, dataFabricacao: event.target.value });
+              setNewProduct({ ...newProduct, dataFabricacao: +event.target.value });
             }}
           ></input>
 
@@ -67,7 +74,7 @@ export function Form() {
             type="text"
             name="dataValidade"
             onChange={(event) => {
-              setNewProduct({ ...newProduct, dataValidade: event.target.value });
+              setNewProduct({ ...newProduct, dataValidade: +event.target.value });
             }}
           ></input>
 
@@ -78,7 +85,7 @@ export function Form() {
             type="text"
             name="preco"
             onChange={(event) => {
-              setNewProduct({ ...newProduct, preco: event.target.value });
+              setNewProduct({ ...newProduct, preco: +event.target.value });
             }}
           ></input>
 

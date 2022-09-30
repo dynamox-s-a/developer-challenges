@@ -13,7 +13,7 @@ const customStyles = {
     bottom: "auto",
     marginRight: "-50%",
     width: "45rem",
-    height: "25rem",
+    height: "28rem",
     transform: "translate(-50%, -50%)",
     backgroundColor: " rgba(0, 0, 0, 0.8)",
     borderRadius: "15px",
@@ -55,14 +55,23 @@ export function Home() {
     const product = {
       id: event.target.id.value,
       nome: event.target.nome.value,
-      dataFabricacao: event.target.dataFabricacao.value,
+      dataFabricacao: +event.target.dataFabricacao.value,
       perecivel: event.target.perecivel.value,
-      dataValidade: event.target.dataValidade.value,
-      preco: event.target.preco.value,
+      dataValidade: +event.target.dataValidade.value,
+      preco: +event.target.preco.value,
     }
 
-    if (product.nome == "" || product.dataFabricacao == "" || product.perecivel == "" || product.dataValidade == "" || product.preco == "") {
+
+    if (product.perecivel === "false") {
+      product.dataValidade = ""
+    }
+
+    if (product.nome == "" || product.dataFabricacao == "" || product.perecivel == "" || product.preco == "") {
       alert("Preencha todos os campos")
+    } else if (product.perecivel != "false" && product.perecivel != "true") {
+      alert("Informe 'false' ou 'true' no campo produto perecivel")
+    } else if (product.perecivel === "true" && product.dataValidade < product.dataFabricacao) {
+      alert("Data de validade deve ser maior que data de fabricação")
     } else {
       await api.updateProduct(product, product.id);
       getProduct()
