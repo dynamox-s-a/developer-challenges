@@ -1,14 +1,15 @@
+import { useAppDispatch } from '../../store/hooks'
+import { createProduct } from '../../store/fetchActions'
+
+import { useNavigate } from 'react-router-dom'
+
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
+
 import InputMask from 'react-input-mask'
 
-import { useState } from 'react'
-
-import { createProduct } from '../../services/api'
-
 import * as S from './styles'
-import { useNavigate } from 'react-router-dom'
 
 const schema = zod.object({
   name: zod.string().min(1),
@@ -18,40 +19,17 @@ const schema = zod.object({
   perishable: zod.boolean(),
 })
 
-// interface CreateProductProps {
-//   name: string
-//   manufacturingDate: string
-//   perishable: boolean
-//   expirationDate: string
-//   price: number
-// }
-
-// interface Product {
-//   id: string
-//   name: string
-//   manufacturingDate: string
-//   perishable: boolean
-//   expirationDate: string
-//   price: number
-// }
-
 export function Create() {
   const { register, handleSubmit } = useForm({
     resolver: zodResolver(schema),
   })
 
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
-  const [error, setError] = useState<boolean>(false)
-
-  async function handleCreateProduct(data: any) {
-    try {
-      const product = { id: String(Date.now()), ...data }
-      await createProduct(product)
-      navigate('/')
-    } catch (error) {
-      setError(true)
-    }
+  function handleCreateProduct(data: any) {
+    dispatch(createProduct({ id: String(Date.now()), ...data }))
+    navigate('/')
   }
 
   return (
@@ -88,7 +66,7 @@ export function Create() {
           <label htmlFor="price">Preço</label>
           <InputMask
             mask="R$99,99"
-            type="string"
+            type="text"
             placeholder="R$4,00"
             {...register('price')}
           />
@@ -98,7 +76,6 @@ export function Create() {
           <input type="checkbox" {...register('perishable')} />
         </S.CheckBoxContainer>
         <button type="submit">Salvar</button>
-        {error && <span>Desculpe, não foi possível criar o produto.</span>}
       </S.Form>
     </>
   )

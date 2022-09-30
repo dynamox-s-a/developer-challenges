@@ -1,48 +1,23 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAppSelector, useAppDispatch } from '../../store/hooks'
+import { deleteProduct, getAllProducts } from '../../store/fetchActions'
+
 import { Pencil, PlusCircle, Trash } from 'phosphor-react'
 import * as S from './styles'
-import { deleteProductById, getProducts } from '../../services/api'
-
-interface Product {
-  id: string
-  name: string
-  manufacturingDate: string
-  perishable: boolean
-  expirationDate: string
-  price: number
-}
 
 export function Home() {
-  const [products, setProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
-  const [errorLoading, setErrorLoading] = useState<boolean>(false)
-  const [errorDeleting, setErrorDeleting] = useState<boolean>(false)
-
   const navigate = useNavigate()
 
+  const products = useAppSelector((state) => state.products)
+  const dispatch = useAppDispatch()
+
   useEffect(() => {
-    async function handleLoadingProducts() {
-      try {
-        const response = await getProducts()
-        setProducts(response.data)
-        setLoading(false)
-      } catch (error) {
-        setErrorLoading(true)
-      }
-    }
+    dispatch(getAllProducts())
+  }, [dispatch])
 
-    handleLoadingProducts()
-  }, [])
-
-  async function handleDeleteProduct(id: string) {
-    try {
-      await deleteProductById(id)
-      const response = await getProducts()
-      setProducts(response.data)
-    } catch (error) {
-      setErrorDeleting(true)
-    }
+  function handleDeleteProduct(id: string) {
+    dispatch(deleteProduct(id))
   }
 
   return (
@@ -55,11 +30,9 @@ export function Home() {
         </button>
       </S.Header>
       <S.TableContainer>
-        {loading && !errorLoading && <span>Carregando...</span>}
-        {errorLoading && (
-          <span>Desculpe, não foi possível carregar os produtos.</span>
-        )}
-        {products.length !== 0 && (
+        {products.length === 0 ? (
+          <span>Ainda não existem produtos cadastrados.</span>
+        ) : (
           <table>
             <thead>
               <tr>
@@ -101,9 +74,6 @@ export function Home() {
           </table>
         )}
       </S.TableContainer>
-      {errorDeleting && (
-        <span>Desculpe, não foi possível deletar o produto.</span>
-      )}
     </>
   )
 }

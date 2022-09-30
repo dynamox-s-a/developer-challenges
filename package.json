@@ -11,6 +11,7 @@
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^2.9.8",
+		"@reduxjs/toolkit": "^1.8.5",
 		"axios": "^0.27.2",
 		"json-server": "^0.17.0",
 		"phosphor-react": "^1.4.1",
@@ -18,7 +19,9 @@
 		"react-dom": "^18.2.0",
 		"react-hook-form": "^7.36.1",
 		"react-input-mask": "^2.0.4",
+		"react-redux": "^8.0.4",
 		"react-router-dom": "^6.4.1",
+		"redux": "^4.2.0",
 		"styled-components": "^5.3.6",
 		"zod": "^3.19.1"
 	},
