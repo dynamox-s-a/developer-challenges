@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { devices } from "../Devices";
 
 export const Container = styled.section`
   align-items: baseline;
@@ -17,6 +18,11 @@ export const BoxHeader = styled.div`
   justify-content: space-between;
   align-items: baseline;
   margin: 0 auto;
+  @media ${devices.mobileM} {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 export const NavLogo = styled.a`
