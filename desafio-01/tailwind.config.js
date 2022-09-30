@@ -4,7 +4,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "primary-blue": '#263252'
+        "primary-blue": '#263252',
+        "title-blue": '#37383D',
+        "bg-light-cyan-blue": '#F4F7FC',
+        "text-sensors": '#454545',
+        "name-sensors": '#5D7A8C',
       },
       fontFamily: {
         'raleway': ['Raleway', 'sans-serif'] 
@@ -15,6 +19,12 @@ module.exports = {
         'bg-image': '720px',
 
       },
+      fontSize: {
+        'title-sensors': '40px',
+      },
+      width: {
+        'button-width': '184px',
+      }
     },
 
   },
