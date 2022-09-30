@@ -24,6 +24,13 @@ export const ContactTitle = styled.h1`
   line-height: 2rem;
   text-align: start;
   word-break: break-word;
+  @media screen and (max-width: 375px) {
+    font-size: 1.5rem;
+    line-height: normal;
+    text-align: center;
+    width: 80%;
+    margin: 0.25rem auto;
+  }
 `;
 
 export const ContactForms = styled.form`
@@ -31,6 +38,9 @@ export const ContactForms = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  @media screen and (max-width: 375px) {
+    width: 100%;
+  }
 `;
 
 export const FormsInput = styled.input`
@@ -46,6 +56,9 @@ export const FormsInput = styled.input`
   line-height: 1.2rem;
   font-size: 1em;
   color: #454545;
+  @media screen and (max-width: 375px) {
+    width: 90%;
+  }
 `;
 
 export const FormsButton = styled.button`
@@ -61,4 +74,10 @@ export const FormsButton = styled.button`
   text-align: center;
   width: 11.5rem;
   cursor: pointer;
+  @media screen and (max-width: 375px) {
+    font-size: 1rem;
+    font-weight: 600;
+    width: 7.5rem;
+    margin: 2rem;
+  }
 `;

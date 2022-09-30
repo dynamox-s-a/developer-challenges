@@ -79,6 +79,12 @@ export const SensoresButton = styled.a`
   text-align: center;
   text-decoration: none;
   width: 11.5rem;
+  @media screen and (max-width: 375px) {
+    font-size: 1rem;
+    font-weight: 600;
+    width: 7.5rem;
+    margin: 2rem;
+  }
 `;
 
 export const SensoresGroup = styled.div`
