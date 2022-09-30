@@ -5,7 +5,7 @@ export const SensoresContainer = styled.section`
   min-height: 51.25rem;
   width: 100%;
   @media screen and (max-width: 375px) {
-    min-height: 40rem;
+    min-height: 50rem;
   }
 `;
 
@@ -104,13 +104,21 @@ export const Sensor = styled.div`
   flex-direction: column;
   justify-content: center;
   margin: 1rem;
+  @media screen and (max-width: 375px) {
+    height: 7.5rem;
+    width: 100%;
+    padding: 3rem 0;
+  }
 `;
 
 export const SensorImage = styled.img`
   max-height: 18.615rem;
   max-width: 17.3rem;
   @media screen and (max-width: 375px) {
-    height: 5rem;
+    width: 100%;
+  }
+  @media screen and (max-width: 1024px) {
+    height: 10rem;
     width: 100%;
   }
 `;
