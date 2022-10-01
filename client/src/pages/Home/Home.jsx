@@ -8,7 +8,6 @@ import './Home.css'
 import { useDispatch, useSelector } from "react-redux"
 import { addProducts } from '../../components/Features/productsSlice'
 
-
 const customStyles = {
   content: {
     top: "50%",
@@ -35,13 +34,30 @@ export function Home() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [uniqueProduct, setUniqueProduct] = useState({});
   const [editProduct, setEditProduct] = useState(false);
+  const [page, setPage] = useState(0)
   const productsRedux = useSelector(state => state.products.value)
 
   const dispatch = useDispatch()
+  const pagesWindow = 10
+
+  function handleModal() {
+    setModalIsOpen(!modalIsOpen);
+    setEditProduct(!true)
+  }
+
+  function returnPage() {
+    if (page != 0) {
+      setPage(page - 10)
+    }
+  }
+
+  function nextPage() {
+    setPage(page + 10)
+  }
 
   async function getProduct() {
     if (localStorage.getItem("userToken")) {
-      console.log("teste")
+
       const products = await api.getAllProducts();
 
       dispatch(addProducts(products))
@@ -53,11 +69,6 @@ export function Home() {
     await api.deleteProduct(productId);
     getProduct()
     handleModal();
-  }
-
-  function handleModal() {
-    setModalIsOpen(!modalIsOpen);
-    setEditProduct(!true)
   }
 
   async function updateOneProduct(event) {
@@ -97,27 +108,37 @@ export function Home() {
     <div className="Home">
       <div className="card-list">
         {productsRedux.map((item, index) => {
-          return (
-            <button
-              className="button-card"
-              onClick={() => {
-                setUniqueProduct(item);
-                handleModal();
-              }}
-              key={index}
-            >
-              <Card
+          if (index >= page && index < page + pagesWindow) {
+            return (
+              <button
+                className="button-card"
+                onClick={() => {
+                  setUniqueProduct(item);
+                  handleModal();
+                }}
                 key={index}
-                nome={item.nome}
-                dataFabricacao={item.dataFabricacao}
-                perecivel={item.perecivel}
-                dataValidade={item.dataValidade}
-                preco={item.preco}
-              />
-            </button>
-          );
+              >
+                <Card
+                  key={index}
+                  nome={item.nome}
+                  dataFabricacao={item.dataFabricacao}
+                  perecivel={item.perecivel}
+                  dataValidade={item.dataValidade}
+                  preco={item.preco}
+                />
+              </button>
+            )
+          };
         })}
       </div>
+      <button className="button-return"
+        onClick={() => {
+          returnPage();
+        }}>Anterior</button>
+      <button className="button-next"
+        onClick={() => {
+          nextPage();
+        }}>Proximo</button>
 
       <Modal
         isOpen={modalIsOpen}
@@ -240,6 +261,7 @@ export function Home() {
       </Modal>
 
     </div>
+
 
   );
 }
