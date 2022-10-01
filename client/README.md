@@ -1,4 +1,43 @@
+## Rodar codigo
+
+abra o terminal na pasta C:\BlueEdtech\teste-front-end\client> 
+
+1) Abra o terminal na pasta C:\BlueEdtech\teste-front-end\client> 
+digite o comando:
 json-server --watch ./src/mock/db.json
+para inicializar o banco de dados jsonServer
+
+2) Abra um novo terminal na pasta C:\BlueEdtech\teste-front-end\client> 
+digite o comando: npm start
+para inicializar a pagina
+
+## Utilização
+
+Login: Digite seu email e senha nos campos destacados e clique em "EFETUAR LOGIN"
+
+Novo Produto: Clique no botão Adicionar no canto superior direito, irá abrir uma janela para preencher os campos campos, e clique no botão verde "ADICIONAR"
+
+Editar Produto: Clique no produto que deseja editar, irá abrir uma nova janela, clique no botão editar produto, edite o campo que deseja e clique no botão azul "EDITAR PRODUTO"
+
+Deletar Produto: Clique no produto que deseja deletar, irá abrir uma nova janela, clique no botão vermelho "DELETAR PRODUTO"
+
+## Autentificação
+
+Para autentificação, foi utilizado uma API que ja tinha produzido anteriormente como projeto pessoal, onde existe as rotas reais e geração de tokem, utilizando banco de dados mongoDB Atlas
+Foi criado o login abaixo para acesso aos cards e funcionalidade
+
+email= dynamox@dynamox.com
+senha: 123456
+
+### Deploy da API de autentificação
+
+https://rickmorty-api1.herokuapp.com/
+
+### Swagger da API de autentificação
+
+https://rickmorty-api1.herokuapp.com/doc
+
+
 
 # Getting Started with Create React App
 
