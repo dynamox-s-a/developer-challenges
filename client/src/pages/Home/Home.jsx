@@ -46,13 +46,13 @@ export function Home() {
   }
 
   function returnPage() {
-    if (page != 0) {
+    if (page !== 0) {
       setPage(page - 10)
     }
   }
 
   function nextPage() {
-    if ((Math.floor(totalCards / 10)) != (page / 10)) {
+    if ((Math.floor(totalCards / 10)) !== (page / 10)) {
       setPage(page + 10)
     }
   }
@@ -164,7 +164,7 @@ export function Home() {
                   ></input>
                 </section>
                 <section>
-                  <span>Título: </span>
+                  <span>Produto: </span>
                   <input className="form-nome-update"
                     type="text"
                     name="nome"

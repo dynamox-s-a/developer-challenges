@@ -73,31 +73,6 @@
   background: linear-gradient(#0688fa, #2dabf9);
 }
 
-.btn-visit,
-.btn-visit a {
-  display: flex;
-  margin: 0 auto;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  width: 15rem;
-  height: 3rem;
-  border-width: 1px;
-  color: #fff;
-  border-color: #566963;
-  font-weight: bold;
-  border-radius: 4px;
-  box-shadow: inset 0px 1px 3px 0px #91b8b3;
-  text-shadow: inset 0px -1px 0px #2b665e;
-  background: linear-gradient(#768d87, #6c7c7c);
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.btn-visit:hover {
-  background: linear-gradient(#6c7c7c, #768d87);
-}
-
 .form-update {
   position: relative;
   background-color: rgb(71, 71, 71);
@@ -173,7 +148,13 @@ input.form-preco-update {
   justify-content: space-between;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1300px) {
+  .card-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1100px) {
   .card-list {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -182,5 +163,49 @@ input.form-preco-update {
 @media (max-width: 840px) {
   .card-list {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .Home {
+    margin-right: 1rem;
+    margin-left: 1rem;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .form-update {
+    margin-left: 5rem;
+    margin-right: 5rem;
+    font-size: 1rem;
+  }
+
+  input.form-id-update,
+  input.form-nome-update,
+  input.form-dataFabricacao-update,
+  select.form-perecivel-update,
+  input.form-dataValidade-update,
+  input.form-preco-update {
+    width: 20rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 550px) {
+  .form-update {
+    margin-left: 10rem;
+    margin-right: 10rem;
+    font-size: 1rem;
+  }
+
+  input.form-id-update,
+  input.form-nome-update,
+  input.form-dataFabricacao-update,
+  select.form-perecivel-update,
+  input.form-dataValidade-update,
+  input.form-preco-update {
+    width: 20rem;
+    font-size: 1rem;
   }
 }

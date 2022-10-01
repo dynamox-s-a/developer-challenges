@@ -32,3 +32,10 @@
 .form-login button:hover {
   background: linear-gradient(#0688fa, #2dabf9);
 }
+
+@media (max-width: 1200px) {
+  .form-login {
+    display: grid;
+    margin: 0 auto;
+  }
+}

@@ -26,3 +26,14 @@
   font-size: 1rem;
   color: black
 }
+
+@media (max-width: 600px) {
+  .card-component h2 {
+    font-size: 1.1rem;
+  }
+
+  .card-component h3 {
+    font-size: 1rem;
+  }
+
+}

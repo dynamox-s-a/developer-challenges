@@ -68,3 +68,37 @@ input.form-preco {
   font-size: 1.5rem;
   background-color: #6bf8b2;
 }
+
+@media (max-width: 700px) {
+  .form {
+    margin-left: 5rem;
+    margin-right: 5rem;
+    font-size: 1rem;
+  }
+
+  input.form-nome,
+  input.form-dataFabricacao,
+  select.form-perecivel,
+  input.form-dataValidade,
+  input.form-preco {
+    width: 20rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 550px) {
+  .form {
+    margin-left: 10rem;
+    margin-right: 10rem;
+    font-size: 1rem;
+  }
+
+  input.form-nome,
+  input.form-dataFabricacao,
+  select.form-perecivel,
+  input.form-dataValidade,
+  input.form-preco {
+    width: 20rem;
+    font-size: 1rem;
+  }
+}
