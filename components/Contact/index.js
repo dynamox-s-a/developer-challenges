@@ -17,7 +17,7 @@ function Contact() {
   const { register, handleSubmit, formState: { isValid } } = useForm({ mode: 'onChange', resolver: zodResolver(schema)});
   
   function onSubmit(data) {
-    alert(JSON.stringify(data))
+    alert(JSON.stringify(data, null, 2))
   }
 
   return (
