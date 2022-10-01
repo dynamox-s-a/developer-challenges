@@ -4,9 +4,10 @@ import { api } from '../../utils/Api/Api'
 import { useState, useEffect } from 'react'
 import Modal from "react-modal"
 import { CgClose } from "react-icons/cg"
-import './Home.css'
 import { useDispatch, useSelector } from "react-redux"
 import { addProducts } from '../../components/Features/productsSlice'
+import './Home.css'
+import Button from '@mui/material/Button'
 
 const customStyles = {
   content: {
@@ -30,15 +31,14 @@ const customStyles = {
 Modal.setAppElement("#root");
 
 export function Home() {
-  // const [productList, setProductList] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [uniqueProduct, setUniqueProduct] = useState({});
   const [editProduct, setEditProduct] = useState(false);
   const [page, setPage] = useState(0)
   const productsRedux = useSelector(state => state.products.value)
 
+  const totalCards = productsRedux.length
   const dispatch = useDispatch()
-  const pagesWindow = 10
 
   function handleModal() {
     setModalIsOpen(!modalIsOpen);
@@ -52,7 +52,9 @@ export function Home() {
   }
 
   function nextPage() {
-    setPage(page + 10)
+    if ((Math.floor(totalCards / 10)) != (page / 10)) {
+      setPage(page + 10)
+    }
   }
 
   async function getProduct() {
@@ -61,7 +63,7 @@ export function Home() {
       const products = await api.getAllProducts();
 
       dispatch(addProducts(products))
-      // setProductList(products);
+
     }
   }
 
@@ -108,7 +110,7 @@ export function Home() {
     <div className="Home">
       <div className="card-list">
         {productsRedux.map((item, index) => {
-          if (index >= page && index < page + pagesWindow) {
+          if (index >= page && index < page + 10) {
             return (
               <button
                 className="button-card"
@@ -131,14 +133,16 @@ export function Home() {
           };
         })}
       </div>
-      <button className="button-return"
-        onClick={() => {
-          returnPage();
-        }}>Anterior</button>
-      <button className="button-next"
-        onClick={() => {
-          nextPage();
-        }}>Proximo</button>
+      <div className='btn-pages'>
+        <Button className="btn-return" variant="contained" component="label" size="large"
+          onClick={() => {
+            returnPage();
+          }}>Anterior</Button>
+        <Button className="btn-next" variant="contained" component="label" color="success" size="large"
+          onClick={() => {
+            nextPage();
+          }}>Proximo</Button>
+      </div>
 
       <Modal
         isOpen={modalIsOpen}
@@ -257,10 +261,11 @@ export function Home() {
               DELETAR PRODUTO
             </button>
           </>
-        )}
-      </Modal>
+        )
+        }
+      </Modal >
 
-    </div>
+    </div >
 
 
   );
