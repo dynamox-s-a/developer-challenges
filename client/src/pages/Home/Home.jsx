@@ -1,9 +1,13 @@
+import React from 'react'
 import { Card } from '../../components/Card/Card'
 import { api } from '../../utils/Api/Api'
 import { useState, useEffect } from 'react'
 import Modal from "react-modal"
-import { CgClose } from "react-icons/cg";
+import { CgClose } from "react-icons/cg"
 import './Home.css'
+import { useDispatch, useSelector } from "react-redux"
+import { addProducts } from '../../components/Features/productsSlice'
+
 
 const customStyles = {
   content: {
@@ -27,16 +31,21 @@ const customStyles = {
 Modal.setAppElement("#root");
 
 export function Home() {
-  const [productList, setProductList] = useState([]);
+  // const [productList, setProductList] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [uniqueProduct, setUniqueProduct] = useState({});
   const [editProduct, setEditProduct] = useState(false);
+  const productsRedux = useSelector(state => state.products.value)
 
+  const dispatch = useDispatch()
 
   async function getProduct() {
     if (localStorage.getItem("userToken")) {
+      console.log("teste")
       const products = await api.getAllProducts();
-      setProductList(products);
+
+      dispatch(addProducts(products))
+      // setProductList(products);
     }
   }
 
@@ -87,7 +96,7 @@ export function Home() {
   return (
     <div className="Home">
       <div className="card-list">
-        {productList.map((item, index) => {
+        {productsRedux.map((item, index) => {
           return (
             <button
               className="button-card"
