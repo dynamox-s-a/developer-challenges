@@ -31,28 +31,6 @@
       "validade": "2022-10-02",
       "preco": "4",
       "id": 4
-    },
-    {
-      "nome": "alooo",
-      "fabricacao": "2022-10-03",
-      "validade": "2022-10-17",
-      "preco": "06",
-      "id": 5
-    },
-    {
-      "nome": "fghfghfgh",
-      "fabricacao": "2022-10-10",
-      "validade": "2022-11-01",
-      "preco": "089",
-      "id": 6
-    },
-    {
-      "nome": "aloofdf",
-      "fabricacao": "2022-10-02",
-      "perecivel": "false",
-      "validade": "2022-10-03",
-      "preco": "665",
-      "id": 7
     }
   ]
 }

@@ -1,0 +1,51 @@
+h1 {
+  text-align: center;
+}
+
+th {
+  padding: 25px
+}
+
+td {
+  padding: 10px 10px;
+}
+
+.table-container {
+  max-width: 1800px;
+  margin-right:auto;
+  margin-left:auto;
+  min-height:20vh;
+}
+
+.table-header {
+  background-color: #95A5A6;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.table-row {
+  background-color: #ffffff;
+  box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;  
+}
+
+.button-register, .button-list{
+  color:#fff;
+  font-size: large;
+  background-color:#668575;
+  outline: none;
+    border: 0;
+    color: #fff;
+  padding:10px 20px;
+  text-transform:uppercase;
+  margin:50px 0;
+  border-radius:2px;
+  cursor:pointer;
+  position:relative;
+}

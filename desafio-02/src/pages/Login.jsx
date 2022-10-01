@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
+import '../styles/Login.css';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -32,10 +33,10 @@ function Login() {
   if (isRegistered) return <Navigate to="/home" />;
 
   return(
-    <>
-    <h1>Login</h1>
-    <form>
-    <input
+    <main className='login-container'>
+      <h1>Login</h1>
+      <form className='inputs-container'>
+        <input
           data-testid="email-input"
           type="email"
           name="email"
@@ -51,14 +52,16 @@ function Login() {
           placeholder="Digite a sua senha"
           onChange={ ({ target: { value } }) => setSenha(value) }
         />
-        <button
-          type="submit"
-          onClick={ (event) => register(event) }
-        >
-          Entrar
-        </button>
-    </form>
-    </>
+        <div className='button-container'>
+          <button
+            type="submit"
+            onClick={ (event) => register(event) }
+          >
+            Entrar
+          </button>
+        </div>
+      </form>
+    </main>
   )
 }
 

@@ -1,0 +1,20 @@
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  text-align: center;
+  font-size: x-large;
+  outline: none;
+  margin: 0 200px;
+
+}
+
+.link {
+  background: rgb(230, 230, 230);
+  margin: 2rem;
+  padding: 3rem;
+  box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.16);
+  border-radius: 50px;
+}

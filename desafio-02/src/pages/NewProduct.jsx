@@ -3,7 +3,7 @@ import { createProduct } from "../services/api";
 import { useDispatch } from 'react-redux';
 import { actionRegisterProduct } from "../redux/actions";
 import NavBar from "../components/NavBar";
-
+import '../styles/Table.css'
 
 function NewProduct() {
   const [nome, setNome] = useState('');
@@ -22,9 +22,9 @@ function NewProduct() {
   return (
     <>
       <NavBar />
-      <h1>Cadastrar novo produto</h1>
-      <table>
-        <thead>
+      <h1>Cadastro</h1>
+      <table className="table-container">
+        <thead className="table-header">
           <tr>
             <th>Nome</th>
             <th>Data de Fabricação</th>
@@ -34,7 +34,7 @@ function NewProduct() {
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr className="table-row">
             <td>
               <input
               name="nome"
@@ -89,13 +89,16 @@ function NewProduct() {
           </tr>
         </tbody>
       </table>
-        <button
+      <div className="button-container">
+      <button
+          className="button-register"
           name="cadastro"
           type="submit"
           onClick={ () => register() }
         >
           Cadastrar
         </button>
+      </div>
     </>
   );
 

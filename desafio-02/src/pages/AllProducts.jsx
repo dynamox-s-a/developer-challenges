@@ -3,7 +3,7 @@ import { getAllProducts } from '../services/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionGetProducts } from '../redux/actions';
 import NavBar from '../components/NavBar';
-
+import '../styles/Table.css'
 
 function AllProducts() {
   const [allProducts, setAllProducts] = useState([])
@@ -27,12 +27,17 @@ useEffect(() => {
     <main>
       <NavBar />
       <h1>Lista de Produtos</h1>
-      <button
-      type='button'
-      onClick={() => listAll()}
-      >Listar</button>
-      <table>
-        <thead>
+      <div className='button-container'>
+        <button
+          className='button-list'
+          type='button'
+          onClick={() => listAll()}
+        >
+          Listar Produtos do Banco de dados
+        </button>
+      </div>
+      <table className="table-container">
+        <thead className="table-header">
           <tr>
             <th>Id</th>
             <th>Nome</th>
@@ -44,7 +49,7 @@ useEffect(() => {
         </thead>
         <tbody>
           { allProducts && allProducts.map((product, index) => (
-            <tr key={ index }>
+            <tr className="table-row" key={ index }>
               <td>
                 {product.id}
               </td>
