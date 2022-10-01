@@ -7,7 +7,7 @@ export const Form = styled.form`
   gap: 1.5rem;
   justify-content: center;
   align-items: flex-start;
-  margin-top: 2rem;
+  margin: 2rem 0;
 
   button {
     width: 100%;
@@ -58,6 +58,10 @@ export const InputContainer = styled.div`
       color: ${(props) => props.theme.text};
       font-weight: 400;
     }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
   }
 `
 
@@ -67,4 +71,8 @@ export const CheckBoxContainer = styled.div`
   font-size: 0.875rem;
   font-weight: 700;
   color: ${(props) => props.theme['blue-dark']};
+`
+
+export const ErrorMessage = styled.span`
+  color: darkred;
 `

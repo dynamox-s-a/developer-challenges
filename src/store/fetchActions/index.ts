@@ -13,7 +13,7 @@ interface Product {
   name: string
   manufacturingDate: string
   perishable: boolean
-  expirationDate: string
+  expirationDate?: string
   price: number
 }
 

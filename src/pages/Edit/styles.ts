@@ -7,7 +7,7 @@ export const Form = styled.form`
   gap: 1.5rem;
   justify-content: center;
   align-items: flex-start;
-  margin-top: 2rem;
+  margin: 2rem 0;
 
   button {
     width: 100%;

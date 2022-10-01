@@ -2,67 +2,100 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 
-import { useForm } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 
 import * as S from './styles'
-import { useEffect, useState } from 'react'
 import { updateProduct } from '../../store/fetchActions'
+import { useEffect } from 'react'
+import { getProductAction } from '../../store/ducks/products'
 
-const schema = zod.object({
+const isNotPerishableSchema = zod.object({
   id: zod.string(),
   name: zod.string().min(1),
-  manufacturingDate: zod.string().min(1),
-  expirationDate: zod.string().min(1),
-  price: zod.number(),
-  perishable: zod.boolean(),
+  manufacturingDate: zod.string(),
+  price: zod.preprocess((arg) => Number(arg), zod.number()),
+  perishable: zod.literal(false),
 })
 
-type ProductValidateSchema = zod.infer<typeof schema>
+const isPerishableSchema = zod.object({
+  id: zod.string(),
+  name: zod.string().min(1),
+  manufacturingDate: zod.string(),
+  price: zod.preprocess((arg) => Number(arg), zod.number()),
+  perishable: zod.literal(true),
+  expirationDate: zod.string(),
+})
 
-interface Product {
-  id: string
-  name: string
-  manufacturingDate: string
-  perishable: boolean
-  expirationDate: string
-  price: number
-}
+const FormSchema = zod.discriminatedUnion('perishable', [
+  isNotPerishableSchema,
+  isPerishableSchema,
+])
 
-type Params = {
-  id: string | undefined
-}
+type FormSchemaType = zod.infer<typeof FormSchema>
+
+// interface Product {
+//   id: string
+//   name: string
+//   manufacturingDate: Date
+//   perishable: boolean
+//   expirationDate?: Date
+//   price: number
+// }
 
 export function Edit() {
-  const { register, handleSubmit, reset } = useForm<ProductValidateSchema>({
-    resolver: zodResolver(schema),
-  })
-
-  const { id } = useParams<Params>()
-
-  const products = useAppSelector((state) => state.products)
+  const { id } = useParams()
+  const product = useAppSelector((state) => state.products.selectedProduct)
   const dispatch = useAppDispatch()
 
-  const [product, setProduct] = useState<Product | undefined>(undefined)
+  const {
+    register,
+    watch,
+    handleSubmit,
+    reset,
+    formState: { isValid },
+  } = useForm<FormSchemaType>({
+    mode: 'onChange',
+    resolver: zodResolver(FormSchema),
+    defaultValues: product?.perishable
+      ? { ...product, perishable: true }
+      : { ...product, perishable: false },
+  })
 
   useEffect(() => {
-    setProduct(products.find((item) => item.id === id))
+    if (id) dispatch(getProductAction(id))
 
-    reset(product)
-  }, [id, products, product, reset])
+    if (product?.perishable)
+      reset({
+        ...product,
+        perishable: true,
+      })
+    else
+      reset({
+        ...product,
+        perishable: false,
+      })
+  }, [id, product, reset, dispatch])
 
   const navigate = useNavigate()
 
-  async function handleEditProduct(data: Product) {
+  const handleEditProduct: SubmitHandler<FormSchemaType> = (data) => {
     dispatch(updateProduct(data))
     navigate('/')
   }
+
+  const isProductPerishable = watch('perishable')
+  const manufacturingDateValue = watch('manufacturingDate')
 
   return (
     <>
       <h1>Editar produto</h1>
       <S.Form onSubmit={handleSubmit((data) => handleEditProduct(data))}>
+        <S.CheckBoxContainer>
+          <label htmlFor="perishable">Produto perecível</label>
+          <input type="checkbox" {...register('perishable')} />
+        </S.CheckBoxContainer>
         <S.InputContainer>
           <label htmlFor="name">Nome</label>
           <input
@@ -74,29 +107,36 @@ export function Edit() {
         <S.InputContainer>
           <label htmlFor="manufacturingDate">Data de fabricação</label>
           <input
-            type="text"
+            type="date"
             placeholder="Ex: 01/01/2022"
             {...register('manufacturingDate')}
           />
         </S.InputContainer>
         <S.InputContainer>
-          <label htmlFor="expirationDate">Data de validade</label>
+          <label htmlFor="price">Preço (R$)</label>
           <input
-            type="text"
-            placeholder="Ex: 01/01/2023"
-            {...register('expirationDate')}
+            type="number"
+            placeholder="4.00"
+            {...register('price')}
+            step=".01"
           />
         </S.InputContainer>
-        <S.InputContainer>
-          <label htmlFor="price">Preço</label>
-          <input type="number" placeholder="R$4,00" {...register('price')} />
-        </S.InputContainer>
-        <S.CheckBoxContainer>
-          <label htmlFor="perishable">Produto perecível</label>
-          <input type="checkbox" {...register('perishable')} />
-        </S.CheckBoxContainer>
-        <button type="submit">Salvar</button>
+        {isProductPerishable && (
+          <S.InputContainer>
+            <label htmlFor="expirationDate">Data de validade</label>
+            <input
+              type="date"
+              placeholder="Ex: 01/01/2023"
+              {...register('expirationDate', { shouldUnregister: true })}
+              min={String(manufacturingDateValue)}
+            />
+          </S.InputContainer>
+        )}
+        <button type="submit" disabled={!isValid}>
+          Salvar
+        </button>
       </S.Form>
+      <pre>{JSON.stringify(watch(), null, 2)}</pre>
     </>
   )
 }

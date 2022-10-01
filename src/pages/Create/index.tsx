@@ -1,44 +1,67 @@
-import { useEffect, useState } from 'react'
-
 import { useAppDispatch } from '../../store/hooks'
 import { createProduct } from '../../store/fetchActions'
 
 import { useNavigate } from 'react-router-dom'
 
-import { useForm } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 
-import InputMask from 'react-input-mask'
-
 import * as S from './styles'
 
-const schema = zod.object({
+const isNotPerishableSchema = zod.object({
   name: zod.string().min(1),
   manufacturingDate: zod.string(),
-  expirationDate: zod.string(),
-  price: zod.string(),
-  perishable: zod.boolean(),
+  price: zod.preprocess((arg) => Number(arg), zod.number()),
+  perishable: zod.literal(false),
 })
 
+const isPerishableSchema = zod.object({
+  name: zod.string().min(1),
+  manufacturingDate: zod.string(),
+  price: zod.preprocess((arg) => Number(arg), zod.number()),
+  perishable: zod.literal(true),
+  expirationDate: zod.string(),
+})
+
+const FormSchema = zod.discriminatedUnion('perishable', [
+  isNotPerishableSchema,
+  isPerishableSchema,
+])
+
+type FormSchemaType = zod.infer<typeof FormSchema>
+
 export function Create() {
-  const { register, handleSubmit } = useForm({
-    resolver: zodResolver(schema),
+  const {
+    register,
+    watch,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<FormSchemaType>({
+    mode: 'onChange',
+    resolver: zodResolver(FormSchema),
   })
 
   const dispatch = useAppDispatch()
 
   const navigate = useNavigate()
 
-  function handleCreateProduct(data: any) {
+  const handleCreateProduct: SubmitHandler<FormSchemaType> = (data) => {
     dispatch(createProduct({ id: String(Date.now()), ...data }))
     navigate('/')
   }
+
+  const isProductPerishable = watch('perishable')
+  const manufacturingDateValue = watch('manufacturingDate')
 
   return (
     <>
       <h1>Criar produto</h1>
       <S.Form onSubmit={handleSubmit((data) => handleCreateProduct(data))}>
+        <S.CheckBoxContainer>
+          <label htmlFor="perishable">Produto perecível</label>
+          <input type="checkbox" {...register('perishable')} />
+        </S.CheckBoxContainer>
         <S.InputContainer>
           <label htmlFor="name">Nome</label>
           <input
@@ -49,37 +72,37 @@ export function Create() {
         </S.InputContainer>
         <S.InputContainer>
           <label htmlFor="manufacturingDate">Data de fabricação</label>
-          <InputMask
-            mask="99/99/9999"
-            type="text"
+          <input
+            type="date"
             placeholder="Ex: 01/01/2022"
             {...register('manufacturingDate')}
           />
         </S.InputContainer>
         <S.InputContainer>
-          <label htmlFor="expirationDate">Data de validade</label>
-          <InputMask
-            mask="99/99/9999"
-            type="text"
-            placeholder="Ex: 01/01/2023"
-            {...register('expirationDate')}
-          />
-        </S.InputContainer>
-        <S.InputContainer>
-          <label htmlFor="price">Preço</label>
-          <InputMask
-            mask="R$99,99"
-            type="text"
-            placeholder="R$4,00"
+          <label htmlFor="price">Preço (R$)</label>
+          <input
+            type="number"
+            placeholder="4.00"
             {...register('price')}
+            step=".01"
           />
         </S.InputContainer>
-        <S.CheckBoxContainer>
-          <label htmlFor="perishable">Produto perecível</label>
-          <input type="checkbox" {...register('perishable')} />
-        </S.CheckBoxContainer>
-        <button type="submit">Salvar</button>
+        {isProductPerishable && (
+          <S.InputContainer>
+            <label htmlFor="expirationDate">Data de validade</label>
+            <input
+              type="date"
+              placeholder="Ex: 01/01/2023"
+              {...register('expirationDate', { shouldUnregister: true })}
+              min={String(manufacturingDateValue)}
+            />
+          </S.InputContainer>
+        )}
+        <button type="submit" disabled={!isValid}>
+          Salvar
+        </button>
       </S.Form>
+      <pre>{JSON.stringify(watch(), null, 2)}</pre>
     </>
   )
 }

@@ -7,12 +7,13 @@ import { Pagination } from '../../components/Pagination'
 
 import { Pencil, PlusCircle, Trash } from 'phosphor-react'
 import * as S from './styles'
+import { getProductAction } from '../../store/ducks/products'
 
 export function Home() {
   const [currentPage, setCurrentPage] = useState(1)
   const [productsPerPage] = useState(10)
 
-  const products = useAppSelector((state) => state.products)
+  const products = useAppSelector((state) => state.products.products)
   const dispatch = useAppDispatch()
 
   const navigate = useNavigate()
@@ -20,6 +21,11 @@ export function Home() {
   useEffect(() => {
     dispatch(getAllProducts())
   }, [dispatch])
+
+  function handleEditProduct(id: string) {
+    dispatch(getProductAction(id))
+    navigate(`/edit/${id}`)
+  }
 
   function handleDeleteProduct(id: string) {
     dispatch(deleteProduct(id))
@@ -66,15 +72,25 @@ export function Home() {
               {currentProducts.map((product) => (
                 <tr key={product.id}>
                   <td>{product.name}</td>
-                  <td>{product.manufacturingDate}</td>
+                  <td>
+                    {new Date(product.manufacturingDate).toLocaleDateString(
+                      'pt-BR',
+                    )}
+                  </td>
                   <td>{product.perishable ? 'Sim' : 'Não'}</td>
-                  <td>{product.expirationDate}</td>
+                  <td>
+                    {product.expirationDate
+                      ? new Date(product.manufacturingDate).toLocaleDateString(
+                          'pt-BR',
+                        )
+                      : '-'}
+                  </td>
                   <td>R${product.price}</td>
                   <td>
                     <S.EditProductContainer>
                       <S.IconContainer
                         title="Editar"
-                        onClick={() => navigate(`/edit/${product.id}`)}
+                        onClick={() => handleEditProduct(product.id)}
                       >
                         <Pencil size={24} />
                       </S.IconContainer>
