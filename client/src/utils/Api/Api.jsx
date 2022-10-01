@@ -1,4 +1,5 @@
 const defaultUrl = "http://localhost:3000/produtos";
+const loginUrl = 'https://rickmorty-api1.herokuapp.com/auth'
 
 export const api = {
 
@@ -37,4 +38,17 @@ export const api = {
     return productDeleted;
   },
 };
+
+export const apiLogin = {
+  loginAPI: async (login) => {
+    const response = await fetch(loginUrl + "/login", {
+      method: "POST",
+      headers: new Headers({ "Content-Type": "application/json" }),
+      body: JSON.stringify(login),
+    });
+    const newLogin = await response.json();
+    return newLogin;
+
+  }
+}
 
