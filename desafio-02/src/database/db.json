@@ -3,26 +3,34 @@
     {
       "id": 1,
       "nome": "Hambúrguer",
-      "fabricacao": "2022-09-10T13:45:00.000Z",
+      "fabricacao": "2022-09-10",
       "perecivel": true,
-      "validade": "2022-09-30T13:45:00.000Z",
+      "validade": "2022-09-30",
       "preco": 10
     },
     {
       "id": 2,
       "nome": "Banana",
-      "fabricacao": "2022-09-15T13:45:00.000Z",
+      "fabricacao": "2022-09-15",
       "perecivel": true,
-      "validade": "2022-09-25T13:45:00.000Z",
+      "validade": "2022-09-25",
       "preco": 2
     },
     {
       "id": 3,
       "nome": "Bala",
-      "fabricacao": "2022-09-10T13:45:00.000Z",
+      "fabricacao": "2022-09-10",
       "perecivel": false,
-      "validade": "2023-09-30T13:45:00.000Z",
+      "validade": "2023-09-30",
       "preco": 5
+    },
+    {
+      "nome": "Tomate",
+      "fabricacao": "2022-09-18",
+      "perecivel": "true",
+      "validade": "2022-10-02",
+      "preco": "4",
+      "id": 4
     }
   ]
 }

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { getAllProducts } from '../services/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionGetProducts } from '../redux/actions';
+import NavBar from '../components/NavBar';
 
 
 function AllProducts() {
@@ -25,6 +26,7 @@ useEffect(() => {
 
   return (
     <main>
+      <NavBar />
       <h1>Lista de Produtos</h1>
       <button
       type='button'
@@ -51,13 +53,13 @@ useEffect(() => {
                 {product.nome}
               </td>
               <td>
-                {moment((new Date(product.fabricacao)).toString()).format('DD/MM/yyyy')}
+                {product.fabricacao}
               </td>
               <td>
                 {`${product.perecivel}`}
               </td>
               <td>
-              {moment((new Date(product.validade)).toString()).format('DD/MM/yyyy')}
+              {product.validade}
               </td>
               <td>
                 {`R$ ${product.preco}`}
