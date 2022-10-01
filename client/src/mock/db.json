@@ -2,15 +2,15 @@
   "produtos": [
     {
       "id": 5,
-      "nome": "1",
-      "dataFabricacao": "2022-03",
-      "perecivel": "false",
-      "dataValidade": "",
+      "nome": "Laranja",
+      "dataFabricacao": "2022-06",
+      "perecivel": "true",
+      "dataValidade": "2022-11",
       "preco": 20
     },
     {
       "id": 6,
-      "nome": "2",
+      "nome": "chocolate",
       "dataFabricacao": "2022-03",
       "perecivel": "true",
       "dataValidade": "2022-12",
@@ -18,23 +18,23 @@
     },
     {
       "id": 7,
-      "nome": "3",
+      "nome": "melancia",
       "dataFabricacao": "2022-02",
-      "perecivel": "false",
-      "dataValidade": "",
-      "preco": 50
-    },
-    {
-      "id": 8,
-      "nome": "4",
-      "dataFabricacao": "2022-04",
       "perecivel": "true",
       "dataValidade": "2022-12",
       "preco": 50
     },
     {
+      "id": 8,
+      "nome": "Feijão",
+      "dataFabricacao": "2022-04",
+      "perecivel": "false",
+      "dataValidade": "",
+      "preco": 50
+    },
+    {
       "id": 9,
-      "nome": "5",
+      "nome": "Arroz",
       "dataFabricacao": "2022-06",
       "perecivel": "false",
       "dataValidade": "",
@@ -42,7 +42,7 @@
     },
     {
       "id": 10,
-      "nome": "6",
+      "nome": "manga",
       "dataFabricacao": "2022-04",
       "perecivel": "true",
       "dataValidade": "2022-12",
@@ -50,7 +50,7 @@
     },
     {
       "id": 12,
-      "nome": "7",
+      "nome": "açucar",
       "dataFabricacao": "2022-03",
       "perecivel": "false",
       "dataValidade": "",
@@ -58,27 +58,27 @@
     },
     {
       "id": 13,
-      "nome": "8",
+      "nome": "sal",
       "dataFabricacao": "2022-08",
-      "perecivel": "true",
-      "dataValidade": "2022-12",
-      "preco": 0
+      "perecivel": "false",
+      "dataValidade": "",
+      "preco": 20
     },
     {
       "id": 14,
-      "nome": "9",
+      "nome": "óleo de cozinha",
       "dataFabricacao": "2022-04",
       "perecivel": "false",
       "dataValidade": "",
-      "preco": 80
+      "preco": 15
     },
     {
       "id": 15,
-      "nome": "10",
+      "nome": "pão",
       "dataFabricacao": "2022-04",
-      "perecivel": "false",
-      "dataValidade": "",
-      "preco": 44
+      "perecivel": "true",
+      "dataValidade": "2022-05",
+      "preco": 10
     },
     {
       "id": 16,
@@ -90,27 +90,27 @@
     },
     {
       "id": 18,
-      "nome": "12",
-      "dataFabricacao": "2022-03",
-      "perecivel": "false",
-      "dataValidade": "",
-      "preco": 44
-    },
-    {
-      "nome": "teste",
-      "dataFabricacao": "2022-03",
-      "perecivel": "false",
-      "preco": 44,
-      "dataValidade": "",
-      "id": 19
-    },
-    {
-      "id": 21,
-      "nome": "pppp",
+      "nome": "refrigerante",
       "dataFabricacao": "2022-03",
       "perecivel": "true",
       "dataValidade": "2022-12",
-      "preco": 77
+      "preco": 10
+    },
+    {
+      "id": 19,
+      "nome": "leite",
+      "dataFabricacao": "2022-03",
+      "perecivel": "true",
+      "dataValidade": "2022-04",
+      "preco": 6
+    },
+    {
+      "nome": "Banana",
+      "dataFabricacao": "2022-01",
+      "perecivel": "true",
+      "dataValidade": "2022-11",
+      "preco": 30,
+      "id": 22
     }
   ]
 }

@@ -32,8 +32,9 @@ export function Form() {
       if (newProduct.perecivel === "false") {
         newProduct.dataValidade = ""
       }
-      await api.createProduct(newProduct);
 
+      await api.createProduct(newProduct);
+      window.location.reload()
     }
   }
 
