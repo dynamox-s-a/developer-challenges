@@ -1,19 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { signIn } from '../services/api';
 
 function Login() {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [senha, setSenha] = useState('');
   const [isRegistered, setIsRegistered] = useState(false)
 
-  const register = async (event) => {
-    event.preventDefault();
+  const initialState = {
+    user: {
+      emailDefault: 'teste@teste.com',
+      senhaDefault: 'senhateste',
+    }
+  }
 
+  useEffect(() => {
+
+  }, [email, senha, isRegistered])
+
+  const register = () => {
     try {
-      await signIn({ email, password });
-
-      setIsRegistered(true);
+      if(email === initialState.user.emailDefault && senha === initialState.user.senhaDefault) {
+        setIsRegistered(true);
+      } else {
+        setIsRegistered(false);
+      }
     } catch (error) {
       setIsRegistered(false);
     }
@@ -37,9 +47,9 @@ function Login() {
           data-testid="password-input"
           type="password"
           name="password"
-          value={ password }
+          value={ senha }
           placeholder="Digite a sua senha"
-          onChange={ ({ target: { value } }) => setPassword(value) }
+          onChange={ ({ target: { value } }) => setSenha(value) }
         />
         <button
           type="submit"

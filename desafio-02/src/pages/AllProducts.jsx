@@ -1,4 +1,3 @@
-import moment from 'moment/moment';
 import React, { useEffect, useState } from 'react';
 import { getAllProducts } from '../services/api';
 import { useDispatch, useSelector } from 'react-redux';

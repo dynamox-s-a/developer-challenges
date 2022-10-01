@@ -1,4 +1,4 @@
-import { GETALLPRODUCTS, REGISTER_NEW_PRODUCT } from '../actions';
+import { GET_ALL_PRODUCTS, REGISTER_NEW_PRODUCT } from '../actions';
 
 const initialState = {
   productsArr: [],
@@ -6,7 +6,7 @@ const initialState = {
 
 const productReducer = (state = initialState, action) => {
   switch (action.type) {
-  case GETALLPRODUCTS:
+  case GET_ALL_PRODUCTS:
     return {
       ...state,
       productsArr: action.value,

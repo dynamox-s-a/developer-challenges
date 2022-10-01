@@ -10,14 +10,6 @@ export const getAllProducts = async () => {
   return data;
 };
 
-export const signIn = async (body) => {
-  const url = '/'
-
-  const { data } = await API.post(url, body);
-
-  return data;
-};
-
 export const createProduct = async (body) => {
   const url = '/produtos'
   const data = await API.post(url, body);

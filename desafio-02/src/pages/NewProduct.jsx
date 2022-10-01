@@ -10,7 +10,7 @@ function NewProduct() {
   const [fabricacao, setFabricacao] = useState('');
   const [perecivel, setPerecivel] = useState();
   const [validade, setValidade] = useState('');
-  const [preco, setPreco] = useState(0);
+  const [preco, setPreco] = useState();
   const dispatch = useDispatch();
 
   const register = async () => {
@@ -54,13 +54,17 @@ function NewProduct() {
               />
             </td>
             <td>
-              <input
+            <select onChange={ ({ target: { value } }) => setPerecivel(value) }>
+            <option value={true} >Verdadeiro</option>
+            <option value={false} >Falso</option>
+            </select>
+              {/* <input
               name="perecivel"
               placeholder="true or false"
               type="text"
               value={ perecivel }
               onChange={ ({ target: { value } }) => setPerecivel(value) }
-              />
+              /> */}
             </td>
             <td>
               <input
@@ -78,6 +82,7 @@ function NewProduct() {
               placeholder="Preço (R$)"
               type='number'
               value={ preco }
+              
               onChange={ ({ target: { value } }) => setPreco(value) }
               />
             </td>
