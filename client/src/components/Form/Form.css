@@ -51,7 +51,7 @@ input.form-dataFabricacao {
   background-color: #6bf8b2;
 }
 
-input.form-perecivel {
+select.form-perecivel {
   width: 19.5rem;
   font-size: 1.5rem;
   background-color: #6bf8b2;

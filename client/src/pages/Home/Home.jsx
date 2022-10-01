@@ -55,21 +55,20 @@ export function Home() {
     const product = {
       id: event.target.id.value,
       nome: event.target.nome.value,
-      dataFabricacao: +event.target.dataFabricacao.value,
+      dataFabricacao: event.target.dataFabricacao.value,
       perecivel: event.target.perecivel.value,
-      dataValidade: +event.target.dataValidade.value,
+      dataValidade: event.target.dataValidade.value,
       preco: +event.target.preco.value,
     }
-
 
     if (product.perecivel === "false") {
       product.dataValidade = ""
     }
 
-    if (product.nome == "" || product.dataFabricacao == "" || product.perecivel == "" || product.preco == "") {
+    if (product.nome === "" || product.dataFabricacao === "" || product.perecivel === "" || product.preco === "") {
       alert("Preencha todos os campos")
-    } else if (product.perecivel != "false" && product.perecivel != "true") {
-      alert("Informe 'false' ou 'true' no campo produto perecivel")
+    } else if (product.perecivel !== "false" && product.perecivel !== "true") {
+      alert("Informe 'Sim' ou 'Não' no campo produto perecivel")
     } else if (product.perecivel === "true" && product.dataValidade < product.dataFabricacao) {
       alert("Data de validade deve ser maior que data de fabricação")
     } else {
@@ -139,7 +138,7 @@ export function Home() {
                 <section>
                   <span>Data de fabricação: </span>
                   <input className="form-dataFabricacao-update"
-                    type="text"
+                    type="month"
                     name="dataFabricacao"
                     defaultValue={uniqueProduct.dataFabricacao}
                   ></input>
@@ -147,17 +146,17 @@ export function Home() {
                 </section>
                 <section>
                   <span>Produto perecivel: </span>
-                  <input className="form-perecivel-update"
-                    type="text"
+                  <select className="form-perecivel-update"
                     name="perecivel"
                     defaultValue={uniqueProduct.perecivel}
-                  ></input>
+                  ><option value="true">Sim</option>
+                    <option value="false">Não</option></select>
 
                 </section>
                 <section>
                   <span>Data de validade: </span>
                   <input className="form-dataValidade-update"
-                    type="text"
+                    type="month"
                     name="dataValidade"
                     defaultValue={uniqueProduct.dataValidade}
                   ></input>
@@ -166,7 +165,7 @@ export function Home() {
                 <section>
                   <span>Preço: R$</span>
                   <input className="form-preco-update"
-                    type="text"
+                    type="number"
                     name="preco"
                     defaultValue={uniqueProduct.preco}
                   ></input>
@@ -228,6 +227,8 @@ export function Home() {
           </>
         )}
       </Modal>
+
     </div>
+
   );
 }

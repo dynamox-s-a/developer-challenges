@@ -1,7 +1,7 @@
 .card-component {
   display: flex;
   flex-direction: column;
-  width: 14rem;
+  width: 16rem;
   height: 7rem;
   align-items: center;
   justify-content: center;

@@ -17,10 +17,14 @@ export function Form() {
       }
     }
 
-    if (newProduct.nome == "" || newProduct.dataFabricacao == "" || newProduct.perecivel == "" || newProduct.dataValidade == "" || newProduct.preco == "" || qtdForm < 5) {
+    if (newProduct.perecivel == "false" && !newProduct.dataValidade) {
+      newProduct.dataValidade = ""
+    }
+
+    if (newProduct.nome == "" || newProduct.dataFabricacao == "" || newProduct.perecivel == "" || newProduct.preco == "" || qtdForm < 4) {
       alert("Preencha todos os campos")
     } else if (newProduct.perecivel != "false" && newProduct.perecivel != "true") {
-      alert("Informe 'false' ou 'true' no campo produto perecivel")
+      alert("Informe 'Sim' ou 'Não' no campo produto perecivel")
     } else if (newProduct.perecivel === "true" && newProduct.dataValidade < newProduct.dataFabricacao) {
       console.log(newProduct)
       alert("Data de validade deve ser maior que data de fabricação")
@@ -49,32 +53,33 @@ export function Form() {
         <section>
           <span>Data de fabricação: </span>
           <input className='form-dataFabricacao'
-            type="text"
+            type="month"
             name="dataFabricacao"
             onChange={(event) => {
-              setNewProduct({ ...newProduct, dataFabricacao: +event.target.value });
+              setNewProduct({ ...newProduct, dataFabricacao: event.target.value });
             }}
           ></input>
 
         </section>
         <section>
           <span>Produto perecivel: </span>
-          <input className='form-perecivel'
-            type="text"
+          <select className='form-perecivel'
             name="perecivel"
             onChange={(event) => {
               setNewProduct({ ...newProduct, perecivel: event.target.value });
             }}
-          ></input>
+          ><option value=""></option>
+            <option value="true">Sim</option>
+            <option value="false">Não</option></select>
 
         </section>
         <section>
           <span>Data de validade: </span>
           <input className='form-dataValidade'
-            type="text"
+            type="month"
             name="dataValidade"
             onChange={(event) => {
-              setNewProduct({ ...newProduct, dataValidade: +event.target.value });
+              setNewProduct({ ...newProduct, dataValidade: event.target.value });
             }}
           ></input>
 
@@ -82,7 +87,7 @@ export function Form() {
         <section>
           <span>Preço: R$</span>
           <input className='form-preco'
-            type="text"
+            type="number"
             name="preco"
             onChange={(event) => {
               setNewProduct({ ...newProduct, preco: +event.target.value });

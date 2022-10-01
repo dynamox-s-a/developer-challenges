@@ -152,7 +152,7 @@ input.form-dataFabricacao-update {
   background-color: #4b6cfd;
 }
 
-input.form-perecivel-update {
+select.form-perecivel-update {
   width: 20rem;
   font-size: 1.5rem;
   background-color: #4b6cfd;
