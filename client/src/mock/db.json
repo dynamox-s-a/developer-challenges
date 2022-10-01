@@ -1,28 +1,124 @@
 {
   "produtos": [
     {
-      "nome": "banana",
-      "dataFabricacao": "1995",
-      "perecivel": "sim",
-      "dataValidade": "2022",
-      "preco": "15",
-      "id": 4
-    },
-    {
       "id": 5,
       "nome": "sorvete",
-      "dataFabricacao": "2021",
+      "dataFabricacao": "2022-03",
       "perecivel": "false",
-      "dataValidade": "2023",
-      "preco": "20"
+      "dataValidade": "",
+      "preco": 20
     },
     {
       "id": 6,
-      "nome": "maca",
-      "dataFabricacao": 2010,
-      "perecivel": "trudfdfdf",
-      "dataValidade": 2021,
+      "nome": "Banana",
+      "dataFabricacao": "2022-09-06",
+      "perecivel": "true",
+      "dataValidade": "2022-09-23",
+      "preco": 40
+    },
+    {
+      "id": 7,
+      "nome": "açucar",
+      "dataFabricacao": "2022-09-28",
+      "perecivel": "false",
+      "dataValidade": "",
+      "preco": 50
+    },
+    {
+      "nome": "teste3",
+      "dataFabricacao": "2022-09-07",
+      "perecivel": "true",
+      "dataValidade": "2022-09-29",
+      "preco": 50,
+      "id": 8
+    },
+    {
+      "id": 9,
+      "nome": "teste",
+      "dataFabricacao": "2022-06",
+      "perecivel": "false",
+      "dataValidade": "",
       "preco": 60
+    },
+    {
+      "id": 10,
+      "nome": "ggggg",
+      "dataFabricacao": "2022-04",
+      "perecivel": "true",
+      "dataValidade": "2022-12",
+      "preco": 88
+    },
+    {
+      "id": 12,
+      "nome": "ffff",
+      "dataFabricacao": "2022-03",
+      "perecivel": "false",
+      "dataValidade": "",
+      "preco": 38
+    },
+    {
+      "nome": "ghghghghghg",
+      "dataFabricacao": "2022-08",
+      "perecivel": "true",
+      "dataValidade": "2022-12",
+      "preco": null,
+      "id": 13
+    },
+    {
+      "id": 14,
+      "nome": "tttt",
+      "dataFabricacao": "2022-04",
+      "perecivel": "false",
+      "dataValidade": "",
+      "preco": 80
+    },
+    {
+      "id": 15,
+      "nome": "yyyyy",
+      "dataFabricacao": "2022-04",
+      "perecivel": "false",
+      "dataValidade": "",
+      "preco": 44
+    },
+    {
+      "nome": "kkkkk",
+      "dataFabricacao": "2022-02",
+      "dataValidade": "",
+      "preco": 44,
+      "perecivel": "false",
+      "id": 16
+    },
+    {
+      "nome": "oooooooo",
+      "dataFabricacao": "2022-04",
+      "perecivel": "true",
+      "dataValidade": "2022-04",
+      "preco": 66,
+      "id": 17
+    },
+    {
+      "nome": "ttttfffggg",
+      "dataFabricacao": "2022-03",
+      "perecivel": "false",
+      "preco": 44,
+      "dataValidade": "",
+      "id": 18
+    },
+    {
+      "nome": "teste",
+      "dataFabricacao": "2022-03",
+      "perecivel": "false",
+      "preco": 44,
+      "dataValidade": "",
+      "id": 19
+    },
+    {
+      "nome": "pppp",
+      "dataFabricacao": "2022-03",
+      "perecivel": "false",
+      "dataValidade": "",
+      "preco": 77,
+      "id": 21
     }
   ]
 }
