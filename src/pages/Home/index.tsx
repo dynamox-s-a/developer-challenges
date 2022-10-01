@@ -3,14 +3,19 @@ import { useNavigate } from 'react-router-dom'
 import { useAppSelector, useAppDispatch } from '../../store/hooks'
 import { deleteProduct, getAllProducts } from '../../store/fetchActions'
 
+import { Pagination } from '../../components/Pagination'
+
 import { Pencil, PlusCircle, Trash } from 'phosphor-react'
 import * as S from './styles'
 
 export function Home() {
-  const navigate = useNavigate()
+  const [currentPage, setCurrentPage] = useState(1)
+  const [productsPerPage] = useState(10)
 
   const products = useAppSelector((state) => state.products)
   const dispatch = useAppDispatch()
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(getAllProducts())
@@ -18,6 +23,19 @@ export function Home() {
 
   function handleDeleteProduct(id: string) {
     dispatch(deleteProduct(id))
+  }
+
+  // Get current products
+  const indexOfLastProduct = currentPage * productsPerPage
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct,
+  )
+
+  // Change page
+  function paginate(pageNumber: number) {
+    setCurrentPage(pageNumber)
   }
 
   return (
@@ -45,7 +63,7 @@ export function Home() {
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
+              {currentProducts.map((product) => (
                 <tr key={product.id}>
                   <td>{product.name}</td>
                   <td>{product.manufacturingDate}</td>
@@ -74,6 +92,12 @@ export function Home() {
           </table>
         )}
       </S.TableContainer>
+      <Pagination
+        productsPerPage={productsPerPage}
+        totalProducts={products.length}
+        currentPage={currentPage}
+        paginate={paginate}
+      />
     </>
   )
 }

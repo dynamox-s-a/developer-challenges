@@ -34,6 +34,7 @@ export const TableContainer = styled.div`
   flex: 1;
   overflow: auto;
   margin-top: 2rem;
+  height: 42rem;
 
   table {
     width: 100%;
