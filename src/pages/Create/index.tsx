@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+
 import { useAppDispatch } from '../../store/hooks'
 import { createProduct } from '../../store/fetchActions'
 
@@ -24,8 +26,9 @@ export function Create() {
     resolver: zodResolver(schema),
   })
 
-  const navigate = useNavigate()
   const dispatch = useAppDispatch()
+
+  const navigate = useNavigate()
 
   function handleCreateProduct(data: any) {
     dispatch(createProduct({ id: String(Date.now()), ...data }))

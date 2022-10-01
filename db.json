@@ -1,0 +1,11 @@
+{
+  "users": [
+    {
+      "email": "admin@email.com",
+      "password": "$2a$10$VbvF8FebI/.VpniFEaylCuEr2UGINGyl/irLyECjyy/hf3u5/yULe",
+      "username": "admin",
+      "id": 1
+    }
+  ],
+  "products": []
+}
