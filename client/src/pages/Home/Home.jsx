@@ -34,8 +34,10 @@ export function Home() {
 
 
   async function getProduct() {
-    const products = await api.getAllProducts();
-    setProductList(products);
+    if (localStorage.getItem("userToken")) {
+      const products = await api.getAllProducts();
+      setProductList(products);
+    }
   }
 
   async function deleteProduct(productId) {

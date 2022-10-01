@@ -17,13 +17,13 @@ export function Form() {
       }
     }
 
-    if (newProduct.perecivel == "false" && !newProduct.dataValidade) {
+    if (newProduct.perecivel === "false" && !newProduct.dataValidade) {
       newProduct.dataValidade = ""
     }
 
-    if (newProduct.nome == "" || newProduct.dataFabricacao == "" || newProduct.perecivel == "" || newProduct.preco == "" || qtdForm < 4) {
+    if (newProduct.nome === "" || newProduct.dataFabricacao === "" || newProduct.perecivel === "" || newProduct.preco === "" || qtdForm < 4) {
       alert("Preencha todos os campos")
-    } else if (newProduct.perecivel != "false" && newProduct.perecivel != "true") {
+    } else if (newProduct.perecivel !== "false" && newProduct.perecivel !== "true") {
       alert("Informe 'Sim' ou 'Não' no campo produto perecivel")
     } else if (newProduct.perecivel === "true" && newProduct.dataValidade < newProduct.dataFabricacao) {
       console.log(newProduct)
@@ -33,7 +33,7 @@ export function Form() {
         newProduct.dataValidade = ""
       }
       await api.createProduct(newProduct);
-      window.location.reload();
+
     }
   }
 

@@ -89,14 +89,6 @@
       "id": 16
     },
     {
-      "nome": "oooooooo",
-      "dataFabricacao": "2022-04",
-      "perecivel": "true",
-      "dataValidade": "2022-04",
-      "preco": 66,
-      "id": 17
-    },
-    {
       "nome": "ttttfffggg",
       "dataFabricacao": "2022-03",
       "perecivel": "false",
@@ -113,12 +105,12 @@
       "id": 19
     },
     {
+      "id": 21,
       "nome": "pppp",
       "dataFabricacao": "2022-03",
-      "perecivel": "false",
-      "dataValidade": "",
-      "preco": 77,
-      "id": 21
+      "perecivel": "true",
+      "dataValidade": "2022-12",
+      "preco": 77
     }
   ]
 }

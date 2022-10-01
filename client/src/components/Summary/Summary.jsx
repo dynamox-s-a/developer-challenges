@@ -4,6 +4,9 @@ export function Summary() {
   return (
     <div className='summary'>
       <p>
+        <strong>Login: </strong>Digite seu email e senha nos campos destacados e clique em "EFETUAR LOGIN"
+      </p>
+      <p>
         <strong>Novo Produto: </strong>Clique no botão Adicionar no canto superior direito, irá abrir uma janela para preencher os campos campos, e clique no botão verde "ADICIONAR"
       </p>
       <p>

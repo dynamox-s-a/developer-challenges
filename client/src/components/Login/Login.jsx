@@ -9,7 +9,6 @@ async function loginSubmit(event) {
     password: event.target.password.value,
   }
   await apiLogin.loginAPI(login)
-
 }
 
 export function Login() {

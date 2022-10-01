@@ -40,15 +40,25 @@ export const api = {
 };
 
 export const apiLogin = {
+
   loginAPI: async (login) => {
+    localStorage.removeItem("userToken");
     const response = await fetch(loginUrl + "/login", {
       method: "POST",
       headers: new Headers({ "Content-Type": "application/json" }),
       body: JSON.stringify(login),
     });
     const newLogin = await response.json();
-    return newLogin;
 
+    if (newLogin.token) {
+      localStorage.setItem("userToken", newLogin.token);
+      alert("Login efetuado com sucesso!!!")
+      window.location.reload();
+      return
+    }
+    alert("email ou senha incorretos")
+    window.location.reload();
+    return;
   }
 }
 

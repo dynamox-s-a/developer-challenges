@@ -42,9 +42,11 @@ export function Header() {
             <span className='Logo-title'>Cadastro de Produtos</span>
           </div>
           <div >
-            <button className="btn-create-icon" onClick={handleModal}>
-              <img src={createIcon} alt="botão de criar um produto" className='Create--icon' width='40px' />Adicionar
-            </button>
+            {localStorage.getItem('userToken') ?
+              <button className="btn-create-icon" onClick={handleModal}>
+                <img src={createIcon} alt="botão de criar um produto" className='Create--icon' width='40px' />Adicionar
+              </button>
+              : <span></span>}
           </div>
         </div>
       </header>
