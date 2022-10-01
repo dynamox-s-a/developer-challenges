@@ -16,7 +16,9 @@ Os requisitos do projeto se encontram [aqui](https://github.com/dynamox-s-a/test
 
 3. Instale os pacotes do projeto `yarn install`
 
-4. Execute `yarn dev` e acesse `http://localhost:3000`
+4. Execute `yarn build`
+
+5. Execute `yarn start` e acesse `http://localhost:3000`
 
 ## Tecnologias
 
