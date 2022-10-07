@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
 }
@@ -45,6 +49,44 @@ body {
   justify-content: space-between;
 }
 
+#menu-btn {
+  padding: 1em;
+
+  background: #0165DB;
+  border: none;
+  border-radius: 5px;
+
+  font-size: 13px;
+  font-weight: 700;
+  font-family: "Raleway";
+  color: white;
+  text-transform: uppercase;
+
+  cursor: pointer;
+}
+
+.mobile-navigation-links {
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 70px;
+
+  background-color: white;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+
+  z-index: -1;
+}
+
+.mobile-navigation-links a {
+  color:#263252;
+  font-size: 2em;
+}
+
 main {
   height: calc(100vh - 120px);
   position: relative;
@@ -57,8 +99,12 @@ h1, h2 {
 }
 
 .hero-container {
-  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   padding: 0 5vw 0 5vw;
+  min-height: 70vh;
 
   background-image: url("./assets/images/grafismo.png");
   background-position: 50% 80%;
@@ -67,14 +113,14 @@ h1, h2 {
 }
 
 .hero-content {
-  height: 60vh;
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
 }
 
 .demo img {
-  width: 1000px;
+  width: 800px;
 }
 
 .title {
@@ -83,33 +129,37 @@ h1, h2 {
   align-items: center;
   justify-content: center;
 
+  margin-top: -50px;
+
   color: white;
   font-family: 'Raleway';
   font-style: normal;
   font-weight: 700;
-  font-size: 3.8em;
-  line-height: 150px;
+  font-size: 3.4em;
+  line-height: 110px;
 }
 
 .title img {
-  width: 230px;
+  width: 180px;
 }
 
 .sensores-container {
   background: #F4F7FC;
-  height: 80vh;
+  min-height: max-content;
 
-  padding: 140px 5vw 0 5vw;
+  padding: 140px 5vw 120px 5vw;
 }
 
 .sensores-title {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px;
+  gap: 15px;
+
+  margin-bottom: 130px;
 }
 
-.sensores-title h2 {
+h2 {
   font-family: 'Raleway';
   font-style: normal;
   font-weight: 700;
@@ -133,7 +183,7 @@ h1, h2 {
   color: #454545;
 }
 
-.sensores-title a {
+.sensores-title a, .contact-form button {
   max-width: fit-content;
 
   background: #263252;
@@ -147,7 +197,178 @@ h1, h2 {
 }
 
 .sensores-products {
-  width: 100%;
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.sensores-card img {
+  width: 350px;
+}
+
+.sensores-card h3 {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 47px;
+  text-align: center;
+
+  color: #5D7A8C;
+}
+
+.contacts-container {
+  background: #263252;
+
+  padding: 70px 5vw 100px 5vw;
+}
+
+.contacts-content {
+  display: flex;
+  justify-content: center;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+
+  align-items: center;
+}
+
+.contact-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  width: 80%;
+}  
+
+
+.contacts-content input {
+  background: #F4F7FC;
+  border-radius: 5px;
+  border: none;
+  padding: 0.8em 1em 0.8em 1em;
+
+  text-align: center;
+  font-family: "Raleway";
+  font-size: 20px;
+}
+
+.contact-form button {
+  align-self: center;
+  margin-top: 20px;
+  background: #0165DB;
+  border: none;
+  font-size: 16px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+@media (max-width: 1600px) {
+  .title {
+    font-size: 3em;
+    line-height: 110px;
+  }
+
+  .demo img {
+    width: 600px;
+  }
+}
+
+@media (max-width: 1300px) {
+  .title {
+    font-size: 2em;
+    line-height: 70px;
+  }
+
+  .demo img {
+    width: 500px;
+  }
+
+  .title img {
+    width: 140px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .title {
+    font-size: 2em;
+    line-height: 70px;
+  }
+
+  .demo img {
+    width: 400px;
+  }
+
+  .title img {
+    width: 140px;
+  }
+}
+
+@media (max-width: 863px) {
+  .hero-container {
+    background: #263252;
+    min-height: calc(100vh - 120px);
+  }
+  .title {
+    font-size: 2.5em;
+    line-height: 90px;
+    margin-top: 30px;
+  }
+
+  .demo img {
+    width: 90%;
+  }
+
+  .title img {
+    width: 170px;
+  }
+}
+
+@media (min-width: 700px) {
+  .navigation-links {
+    display: flex;
+  }
+
+  .mobile-navigation-links {
+    display: none;
+  }
+
+  #menu-btn {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .navigation-links {
+    display: none;
+  }
+
+  .mobile-navigation-links {
+    display: flex;
+  }
+}
+
+
+@media (max-width: 550px) {
+  .hero-container {
+    background: #263252;
+    min-height: calc(100vh - 120px);
+  }
+  .title {
+    font-size: 7vw;
+    line-height: 15vw;
+    margin-top: 30px;
+  }
+
+  .demo img {
+    width: 90%;
+  }
+
+  .title img {
+    width: 170px;
+  }
 }

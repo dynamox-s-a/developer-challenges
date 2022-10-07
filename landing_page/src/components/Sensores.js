@@ -1,6 +1,6 @@
 const Sensores = () => {
     return (
-        <div className="sensores-container">
+        <div className="sensores-container" id="sensores">
             <div className="sensores-content">
                 <div className="sensores-title">
                     <h2>Sensores para Manutenção Preditiva</h2>

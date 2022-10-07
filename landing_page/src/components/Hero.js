@@ -3,7 +3,7 @@ const Hero = () => {
         <div className="hero-container">
             <div className="hero-content">
                 <div className="title">
-                    <h1 style={{ marginBottom : "45px" }}>Solução<br/>DynaPredict</h1>
+                    <h1 style={{ marginBottom : "35px" }}>Solução<br/>DynaPredict</h1>
                     <img src={require("../assets/images/logo-dynapredict.png")} alt="DynaPredict Logo" style={{ alignSelf : "flex-start" }}></img>
                 </div>
                 <div className="demo">
