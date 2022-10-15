@@ -1,0 +1,52 @@
+{
+  "Products": [
+    {
+      "produto": "cafe",
+      "fabDate": "22052022",
+      "perishable": "false",
+      "validade": "22052023",
+      "price": "20",
+      "id": 3
+    },
+    {
+      "produto": "arroz",
+      "fabDate": 1,
+      "perishable": "true",
+      "validade": "2",
+      "price": "3",
+      "id": 4
+    },
+    {
+      "produto": "ovo",
+      "fabDate": 2,
+      "perishable": "true",
+      "validade": "3",
+      "price": "80",
+      "id": 5
+    },
+    {
+      "produto": "uva",
+      "fabDate": 2,
+      "perishable": "true",
+      "validade": "3",
+      "price": "80",
+      "id": 6
+    },
+    {
+      "produto": "tijolo",
+      "fabDate": 1,
+      "perishable": "true",
+      "validade": "2",
+      "price": "3",
+      "id": 7
+    },
+    {
+      "produto": "tijolo",
+      "fabDate": 1,
+      "perishable": "true",
+      "validade": "2",
+      "price": "125",
+      "id": 8
+    }
+  ]
+}

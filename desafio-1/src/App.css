@@ -1,0 +1,8 @@
+html {
+  scroll-behavior: smooth;
+}
+,
+#root {
+  font-family: "Raleway", sans-serif;
+  font-size: 24px;
+}
