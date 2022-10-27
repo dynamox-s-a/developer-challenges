@@ -1,0 +1,76 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #263252;
+  align-items: center;
+  text-align: center;
+  padding-top: 2.5625rem;
+  padding-bottom: 2.5625rem;
+}
+
+.titleForm {
+  height: 4.4375rem;
+  font-weight: 700;
+  color: white;
+  font-size: 1.875rem;
+  line-height: 2.2rem;
+  margin-bottom: 1.94rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.174rem;
+  gap: 11px;
+}
+
+.input {
+  font-family: "Raleway";
+  display: flex;
+  text-align: center;
+  width: 26.625rem;
+  height: 2.563rem;
+  border-radius: 5px;
+  border: none;
+  padding: 0;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.buttonForm {
+  font-family: "Raleway";
+  width: 11.44rem;
+  height: 2.44rem;
+  font-size: 1.25rem;
+  line-height: 23px;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 5px;
+  color: white;
+  background-color: #0165db;
+  border: none;
+  margin-top: 19px;
+}
+
+.buttonForm:hover {
+  background-color: #034da2;
+  transition: 0.2s;
+}
+
+@media screen and (max-width: 549px) {
+  .titleForm {
+    font-size: 1.25rem;
+  }
+
+  form {
+    width: 100%;
+  }
+
+  .input {
+    width: 80%;
+  }
+}
