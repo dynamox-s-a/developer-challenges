@@ -105,7 +105,7 @@ Requisitos funcionais:
 
 - Faça um "fork" desse repositório na sua conta do Github;
 - Crie uma branch com o seu nome, sobrenome e desafio: `desafio-01/caroline-oliveira`;
-- Após completar o desafio, crie um "pull request" para este repositório [(dynamox-ac/teste-front-end)](https://github.com/dynamox-ac/teste-front-end) comparando a sua branch com a master;
+- Após completar o desafio, crie um "pull request" para este repositório [(dynamox-s-a/teste-front-end)](https://github.com/dynamox-s-a/teste-front-end) comparando a sua branch com a master;
 - Faça isso para cada um dos desafios separadamente;
 - Receberemos uma notificação do seu pull request, faremos a avaliação da sua solução e entraremos em contato;
 
