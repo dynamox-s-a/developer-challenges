@@ -105,7 +105,7 @@ export const HomeLayout = () => {
         </Swiper>
       </section>
       <section
-        className="bg-[#263252] py-5 flex flex-col items-center justify-center px-5 md:px-36"
+        className="w-full bg-[#263252] py-5 flex flex-col items-center justify-center px-5 md:px-36"
         id="contato"
       >
         <h2 className="text-[#ffffff] font-bold text-[1.875rem] text-center">
