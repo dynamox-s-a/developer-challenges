@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "editorconfig.editorconfig",
+    "donjayamanne.githistory",
+    "eamodio.gitlens",
+    "pkief.material-icon-theme",
+    "esbenp.prettier-vscode",
+    "sonarsource.sonarlint-vscode",
+    "styled-components.vscode-styled-components",
+    "coenraads.bracket-pair-colorizer"
+  ]
+}

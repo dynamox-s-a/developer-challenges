@@ -1,0 +1,27 @@
+{
+  "users": [
+    {
+      "email": "vitor@dynamox.com.br",
+      "password": "$2a$10$98QyvgQ/B1nIDORurtAUy.A4EPPxQ.txhPtMlYBU7NTQmAMozkeW6",
+      "id": 1
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "first",
+      "perishable": true,
+      "price": "123123",
+      "expirationDate": "2022-11-26T03:00:00.000Z",
+      "manufactureDate": "2022-11-09T03:00:00.000Z"
+    },
+    {
+      "name": "teste",
+      "price": "10",
+      "perishable": false,
+      "expirationDate": null,
+      "manufactureDate": "2022-11-09T03:00:00.000Z",
+      "id": 2
+    }
+  ]
+}

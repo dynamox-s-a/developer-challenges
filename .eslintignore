@@ -1,0 +1,5 @@
+node_modules
+build
+dist
+wind.config.js
+vite.config.js
