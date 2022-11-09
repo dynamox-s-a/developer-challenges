@@ -124,3 +124,13 @@ Requisitos funcionais:
   **Entre em contato com [Calil](https://github.com/amaralc) (Front-end Developer)**
 
 **Boa sorte.** 🚀
+
+
+### Para Rodar o projeto
+
+
+para rodar o projeto do desafio 02 voce precisa estar com 2 terminais em aberto
+
+0: yarn install antes de qualquer coisa
+1: Rodar o yarn server
+2: Rodar o yarn dev
