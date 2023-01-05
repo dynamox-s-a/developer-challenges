@@ -1,0 +1,54 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+}
+
+a {
+  color: unset;
+  text-decoration: none;
+}
+
+.initial__bg {
+  background: #263252;
+}
+
+.initial__text {
+  background: var(--initial-text);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section__padding {
+  padding: 4rem 6rem;
+}
+
+.section__margin {
+  padding: 4rem 6rem;
+}
+
+@media screen and (max-wdth: 700px) {
+  .section__padding {
+      padding: 4rem;
+  }
+
+  .section__margin {
+      margin: 4rem;
+  }
+}
+
+@media screen and (max-wdth: 550px) {
+  .section__padding {
+      padding: 4rem 2rem;
+  }
+
+  .section__margin {
+      margin: 4rem 2rem;
+  }
+}
