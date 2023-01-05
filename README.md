@@ -68,3 +68,46 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Desafio 01 - Landing page
+
+Neste desafio avaliaremos sua capacidade de implementar uma landing page com design pré definido, para ser visualizada em dispositivo desktop.
+
+[Protótipo do Figma](https://www.figma.com/file/oMYCDyVORucqrRrohyQpwC/Desafio-01---Front-end?node-id=0%3A1)
+
+Requisitos funcionais:
+
+**Header**
+
+- Ao clicar no logo Dymamox, usuário deve ser redirecionado para https://dynamox.net/
+- Ao clicar em “DynaPredict”, usuário deve ser redirecionado para https://dynamox.net/dynapredict/
+- Ao clicar em "Sensores", usuário deve ser movido para a seção de sensores da landing page.
+- Ao clicar em "Contato", usuário deve ser movido para seção de contato da landing page.
+
+**Sensores**
+
+- Ao clicar em "Ver Mais" usuário deve ser redirecionado para https://dynamox.net/dynapredict/.
+
+**Contato**
+
+- Ao clicar em "Enviar", website deve emitir alerta contendo o conteúdo dos campos do formulário de contato.
+
+Critérios de avaliação:
+
+- Design: implementação do layout de acordo com o layout proposto;
+- Funcionalidades: redirecionamentos para links e seções e disparo de funções no browser;
+- Semântica e SEO: utilização de tags e metatags html adequados;
+
+### Tecnologias, frameworks e bibliotecas
+
+- A utilização de React é obrigatória;
+- O restante das ferramentas fica a seu critério;
+
+### Diferenciais
+
+- Componentes reutilizáveis;
+- Organização e documentação do código;
+- Usabilidade;
+- Layout responsivo (seja criativo!);
+- Utilização de NextJS ou Gatsby;
+
+---
