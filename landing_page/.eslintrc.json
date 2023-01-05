@@ -1,0 +1,71 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "jest": true
+  },
+  "extends": [
+    "plugin:react/recommended",
+    "standard-with-typescript",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"]
+    }
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2019,
+    "sourceType": "module",
+    "project": ".*/tsconfig.json"
+  },
+  "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
+  "rules": {
+    "no-underscore-dangle": "off",
+    "no-console": "off",
+    "camelcase": "warn",
+    "arrow-parens": [2, "always"],
+    "quotes": [2, "double"],
+    "implicit-arrow-linebreak": "off",
+    "consistent-return": "off",
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "ignoreRestSiblings": true
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "ignoreRestSiblings": true
+      }
+    ],
+    "object-curly-newline": "off",
+    "max-params": ["error", 4],
+    "max-lines": ["error", 250],
+    "max-lines-per-function": [
+      "error",
+      {
+        "max": 250,
+        "skipBlankLines": true,
+        "skipComments": true
+      }
+    ],
+    "max-len": [
+      "error",
+      100,
+      {
+        "ignoreComments": true
+      }
+    ],
+    "complexity": ["error", 7],
+    "import/no-extraneous-dependencies": ["off"],
+    "lines-between-class-members": "off",
+    "@typescript-eslint/lines-between-class-members": ["off"]
+  }
+}
