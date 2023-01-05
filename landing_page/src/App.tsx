@@ -1,9 +1,13 @@
 import React from "react";
+import { Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
 
 function App(): JSX.Element {
   return (
-    <div className="App">
-      <h1> Initial Config</h1>
+    <div>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+      </Routes>
     </div>
   );
 }
