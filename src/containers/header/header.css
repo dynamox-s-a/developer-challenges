@@ -1,0 +1,70 @@
+.header {
+    display: flex;
+    padding: 1rem 3rem;
+    background-image: url(../../assets-desafio-01/grafismo.png);
+    background-position: center center;
+    background-size: 100%;
+}
+
+.header-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+
+    margin-right: 5rem;
+}
+
+.header-content h1 {
+    color: #fff;
+    font-family: var(--font-family);
+    font-weight: 700;
+
+    font-style: Bold;
+    font-size: 80px;
+    line-height: 94px;
+    line-height: 100%;
+    vertical-align: Top;
+
+    margin-left: .5rem;
+}
+
+.header-image_desktop-and-mobile {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header-image_desktop-and-mobile img {
+  width: 692.06px;
+  height: 627;
+}
+
+@media screen and (max-width: 1050px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .header-content {
+    margin: 0 0 3rem;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .header h1 {
+    font-size: 48px;
+    line-height: 60px;
+  }
+
+  .header-content {
+    margin: 0 0 3rem;
+  }
+}
+
+.header-content_logo {
+  margin: 2rem .5rem 1rem;
+  display: flex;
+
+}
