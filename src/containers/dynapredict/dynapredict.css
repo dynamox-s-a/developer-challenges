@@ -1,0 +1,54 @@
+.dynapredict {
+  background: #F4F7FC;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 4rem;
+}
+
+.dynapredict h2 {
+  font-family: var(--font-family);
+  font-style: bold;
+  font-size: 40px;
+  width: 100%;
+  text-align: center;
+}
+
+.dynapredict-heading {
+  width: 100%;
+  text-align: center;
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 24px;
+  color: var(--color-text);
+  line-height: 35px;
+
+  margin-bottom: 3rem;
+  padding: 1rem 2rem 0 2rem;
+}
+
+.dynapredict-btn {
+  width: 183px;
+  height: 39px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #263252;
+
+  padding: 1rem;
+  border: 1px solid #fff;
+  text-align: center;
+
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.dynapredict-btn p {
+  font-size: 20px;
+  font-family: var(--font-family);
+  line-height: 23px;
+  color: #fff;
+  word-spacing: 1px;
+  font-weight: 700;
+}

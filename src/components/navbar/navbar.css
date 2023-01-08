@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   
-  padding: 2rem 3rem 0 3rem;
+  padding: 2rem 2rem 0 3rem;
 }
 
 .navbar-links {
@@ -21,6 +21,8 @@
   width: 172.86px;
   height: 65.15px;
   vertical-align: 3.5ch;
+
+  margin-left: 2rem;
 }
 
 .navbar-links_container {

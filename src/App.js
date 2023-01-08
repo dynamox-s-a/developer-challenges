@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Contact, Dynapredict, Header } from './containers';
-import { CTA, Sensor, Navbar } from './components';
+import { Navbar } from './components';
 import './App.css';
 
 const App = () => {
@@ -12,8 +12,6 @@ const App = () => {
         <Header />
       </div>
       <Dynapredict />
-      <CTA />
-      <Sensor />
       <Contact />
     </div>
   )

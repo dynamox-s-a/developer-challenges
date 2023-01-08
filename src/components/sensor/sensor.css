@@ -1,0 +1,49 @@
+.dynapredict-sensores {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.dynapredict-sensores div {
+    width: 100%;
+    flex: 1;
+    margin: 2rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dynapredict-sensores img {
+    width: 276px;
+    height: 297px;
+}
+
+.dynapredict-sensores p {
+  font-family: var(--font-family);
+  font-style: bold;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 47px;
+  line-height: 100%;
+  color: #5D7A8C;
+}
+
+.sensor-tca {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.sensor-as {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.sensor-hf {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
