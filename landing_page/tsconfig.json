@@ -20,6 +20,7 @@
     "strictNullChecks": true
   },
   "include": [
-    "src"
+    "src",
+    "landing_page",
   ]
 }
