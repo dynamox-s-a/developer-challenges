@@ -1,0 +1,38 @@
+.dynapredicBox {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  background-image: url("../../images/grafismo.png");
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: cover;
+  padding: 0 4vw;
+  gap: 5%;
+  justify-content: center;
+}
+
+.desktopAndMobileImg {
+  width: 50%;
+  height: 50%;
+  margin-top: 13%;
+}
+
+.dynapredicImg {
+  width: 25%;
+  margin-left: 1.1%;
+}
+
+.dynapredicSolution {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  height: 100%;
+  margin-right: 0%;
+  padding-top: 18%;
+  gap: 2%;
+}
+
+.dynapredicSolution h2 {
+  font-size: 5rem;
+  color: #ffffff;
+}
