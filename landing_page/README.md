@@ -132,7 +132,7 @@
   git@github.com:ItaloRAmaral/Dynamox-Teste-Front-End.git
   ```
 
-  2. Entre no diretório do projeto
+  2. Entre no diretório do projeto, e depois na pasta `landing_page` que é onde se encontra a resolução do desafio.
 
   3. Troque para a branch do desafio:
   ```bash
@@ -167,7 +167,7 @@
   ```bash
     git@github.com:ItaloRAmaral/Dynamox-Teste-Front-End.git
   ```
-  2. Enter the project directory
+  2. Enter the project directory, and then the `landing_page` folder where the challenge solution is located.
 
   3. Change to the challenge branch
   ```bash
