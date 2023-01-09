@@ -123,3 +123,54 @@
     margin-top: 30%;
   }
 }
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .dynapredicSolution {
+    height: 100%;
+    width: 45%;
+    padding-top: 30%;
+  }
+
+  .desktopAndMobileImg {
+    width: 51%;
+    height: 31%;
+    margin-top: 30%;
+  }
+
+  .dynapredicSolution h2 {
+    font-size: 3.5rem;
+    color: #ffffff;
+  }
+}
+
+@media (min-width: 860px) and (max-width: 1024px) {
+  .dynapredicBox {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    background-image: url("../../images/grafismo.png");
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-size: cover;
+    padding: 0 4vw;
+    gap: 5%;
+    justify-content: center;
+  }
+
+  .desktopAndMobileImg {
+    width: 50%;
+    height: 42%;
+    margin-top: 18%;
+  }
+
+    .dynapredicSolution h2 {
+    font-size: 4rem;
+    color: #ffffff;
+  }
+
+  .dynapredicSolution {
+    height: 100%;
+    width: 45%;
+    padding-top: 20%;
+  }
+}

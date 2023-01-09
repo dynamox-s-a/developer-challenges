@@ -55,3 +55,10 @@
     width: 20%;
   }
 }
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .logoBox {
+    height: 50%;
+    width: 20%;
+  }
+}
