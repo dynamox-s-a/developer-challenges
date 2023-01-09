@@ -38,6 +38,18 @@
   border-bottom: 1px solid #ffffff;
 }
 
+.mobileNavBarBox {
+  display: none;
+}
+
+.mobileMenuItem {
+  text-decoration: none;
+  cursor: pointer;
+  color: #000000;
+  font-weight: 200;
+  font-size: 1.1rem;
+}
+
 @media (min-width: 320px) and (max-width:480px) {
   .linkPagesBox {
     display: none;
@@ -46,6 +58,14 @@
   .logoBox {
     height: 44%;
     width: 37%;
+  }
+
+  .desktopNavBar {
+    justify-content: space-between;
+  }
+
+  .mobileNavBarBox {
+    display: flex;
   }
 }
 

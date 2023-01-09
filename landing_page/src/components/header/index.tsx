@@ -3,6 +3,7 @@ import "./header.css";
 import { AppBar, Box, Container, Toolbar, Typography } from "@mui/material";
 import { pages } from "./helper";
 import DynamoxLogo from "../../images/logo-dynamox.png";
+import MobileNavBar from "./mobileNavBar";
 
 export default function Header(): JSX.Element {
   return (
@@ -35,6 +36,10 @@ export default function Header(): JSX.Element {
                 {page.name}
               </Typography>
             ))}
+          </Box>
+
+          <Box className="mobileNavBarBox">
+            <MobileNavBar />
           </Box>
         </Toolbar>
       </Container>
