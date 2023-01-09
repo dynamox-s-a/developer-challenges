@@ -57,12 +57,12 @@
 
 @media (min-width: 320px) and (max-width:480px) {
   .sensorsBox {
-    padding: 8vh 4vw 0%;
+    padding: 6vh 4vw 0%;
   }
   
   .sensorsInfoBox {
-    height: 60%;
-    gap: 10%;
+    height: 55%;
+    gap: 8%;
   }
 
   .sensorsInfoBox h2 {
@@ -75,7 +75,7 @@
   }
 
   .sensorImagesBox {
-    margin-top: 13%;
+    margin-top: 9%;
   }
 
   .sensorImage h3 {
