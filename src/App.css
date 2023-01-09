@@ -6,7 +6,7 @@
 }
 
 body {
-  background: var(--color-bg);
+  background: var(--color-bg-body);
 }
 
 a {
@@ -15,7 +15,7 @@ a {
 }
 
 .initial__bg {
-  background: #263252;
+  background: var(--color-bg);
 }
 
 .initial__text {

@@ -13,7 +13,7 @@ registrando os dados monitorados em sua memória interna. Por conexão internet 
 são centralizados na Plataforma DynaPredict Web para análise, prognóstico e tomada de decisão.</p>
       </div>
       <div className="dynapredict-btn">
-        <p>VER MAIS</p>
+        <a href="https://dynamox.net/dynapredict/"><p>VER MAIS</p></a>
       </div>
       <div>
         <Sensor />

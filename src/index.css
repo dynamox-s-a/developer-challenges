@@ -1,5 +1,6 @@
 :root {
   --font-family: 'Raleway', sans-serif;
-  --color-bg: #F4F7FC;
+  --color-bg-body: #F4F7FC;
+  --color-bg: #263252;
   --color-text: #454545;
 }
