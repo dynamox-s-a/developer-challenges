@@ -1,46 +1,196 @@
-# Getting Started with Create React App
+# Dynamox - Front End Desafio 1
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 📃 Sobre - About
+<details>
+  <summary > :brazil: Portuguese </summary>
+  <p>
+    Desenvolver uma landing page com um design pré definido, para ser visualizada em um dispositivo desktop (1280px)
+  </p>
+</details>
 
-## Available Scripts
+<details>
+  <summary > :us: English </summary>
+  <p>
+    Develop a landing page with a predefined design, to be viewed on a desktop device (1280px)
+  </p>
+</details>
 
-In the project directory, you can run:
+## 🛠️ Ferramentas - Tools
+  - React
+  - React Router Dom
+  - Material UI Components
+  - Material UI Icon
+  - CSS
 
-### `npm start`
+##  📝 Melhorias - Improvements
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+<details>
+  <summary > :brazil: Portuguese </summary>
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+  - [ ] Testes
 
-### `npm test`
+</details>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<details>
+  <summary > :us: English </summary>
+  
+  - [ ] Tests
 
-### `npm run build`
+</details>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Requisitos do desafio - Challenge requirements
+<details>
+  <summary > :brazil: Portuguese </summary>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+  ## 1 - Header
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Ao clicar no logo Dymamox, usuário deve ser redirecionado para https://dynamox.net/
 
-### `npm run eject`
+- Ao clicar em “DynaPredict”, usuário deve ser redirecionado para https://dynamox.net/dynapredict/
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Ao clicar em "Sensores", usuário deve ser movido para a seção de sensores da landing page.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Ao clicar em "Contato", usuário deve ser movido para seção de contato da landing page.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## 2 - Sensores
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- Ao clicar em "Ver Mais" usuário deve ser redirecionado para https://dynamox.net/dynapredict/.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 3 - Contato
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Ao clicar em "Enviar", website deve emitir alerta contendo o conteúdo dos campos do formulário de contato.
+
+## 4 - Diferenciais
+
+- Componentes reutilizáveis;
+- Organização e documentação do código;
+- Usabilidade;
+- Layout responsivo (seja criativo!);
+- Utilização de NextJS ou Gatsby;
+
+<details>
+  <summary> PS: A responsividade foi feito nos seguintes tamanhos de tela: </summary>
+
+  - 320px — 480px: dispositivos móveis
+  - 481px — 768px: iPads, tablets
+  - 769px — 1024px: telas pequenas, laptops
+  - 1024px+ : telas grandes, monitores
+</details>
+</details>
+
+<details>
+  <summary > :us: English </summary>
+
+  ## 1 - Header
+
+- When clicking on the Dymamox logo, the user should be redirected to https://dynamox.net/
+
+- When clicking on "DynaPredict", the user should be redirected to https://dynamox.net/dynapredict/
+
+- When clicking on "Sensors", the user should be moved to the sensors section of the landing page.
+
+- When clicking on "Contact", the user should be moved to the contact section of the landing page.
+
+## 2 - Sensors
+
+- When clicking on "See More", the user should be redirected to https://dynamox.net/dynapredict/.
+
+## 3 - Contact
+
+- When clicking on "Enviar", the website should emit an alert containing the content of the contact form fields.
+
+## 4 - Differentials
+
+- Reusable components;
+- Code organization and documentation;
+- Usability;
+- Responsive layout (be creative!);
+- Use of NextJS or Gatsby;
+
+<details>
+  <summary> PS: Responsiveness was done in the following screen sizes: </summary>
+
+  - 320px — 480px: mobile devices
+  - 481px — 768px: iPads, tablets
+  - 769px — 1024px: small screens, laptops
+  - 1024px+ : large screens, monitors
+</details>
+</details>
+
+
+
+## ⚙️ Como executar - How to run
+<details>
+  <summary > :brazil: Portuguese </summary>
+  <p>
+    Para executar o projeto, você precisará ter instalado em sua máquina as seguintes ferramentas: Git, NodeJS (v16+). Além disto é bom ter um editor para trabalhar com o código como VSCode.
+  </p>
+
+  1. Faça um clone deste repositório:
+  ```bash
+  git@github.com:ItaloRAmaral/Dynamox-Teste-Front-End.git
+  ```
+
+  2. Entre no diretório do projeto
+
+  3. Troque para a branch do desafio:
+  ```bash
+  git checkout desafio-01-landing-page
+  ```
+
+  4. Instale as dependências
+  ```bash
+  npm install
+  ```
+ 
+ 5. Execute a aplicação em modo de desenvolvimento
+  ```bash
+  npm start
+  ```
+
+  6. O servidor inciará na porta:3000 - acesse <http://localhost:3000>
+  </p>
+
+
+
+
+</details>
+
+<details>
+  <summary > :us: English </summary>
+  <p>
+    To run the project, you will need to have installed on your machine the following tools: Git, NodeJS (v16+). In addition, it is good to have an editor to work with the code like VSCode.
+  </p>
+
+  1. Clone this repository:
+  ```bash
+    git@github.com:ItaloRAmaral/Dynamox-Teste-Front-End.git
+  ```
+  2. Enter the project directory
+
+  3. Change to the challenge branch
+  ```bash
+  git checkout desafio-01-landing-page
+  ```
+
+  4. Install the dependencies
+  ```bash
+    npm install
+  ```
+  5. Run the application in development mode
+  ```bash
+    npm start
+  ```
+  6. The server will start on port: 3000 - access <http://localhost:3000>
+
+</details>
+
+
+## 📱 Como funciona - How it works
+
+## 1 - Desktop
+  <img src="./assets/desktopVersion.gif" width=80% text-align=center />
+
+## 2 - Mobile
+  <img src="./assets/mobileVersion.gif" width=80% text-align=center />
