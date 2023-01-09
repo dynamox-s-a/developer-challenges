@@ -20,7 +20,7 @@
   "parserOptions": {
     "ecmaVersion": 2019,
     "sourceType": "module",
-    "project": "./landing_page/tsconfig.json"
+    "project": "./tsconfig.json"
   },
   "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
   "rules": {

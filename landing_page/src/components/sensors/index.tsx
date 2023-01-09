@@ -32,14 +32,13 @@ export default function Sensors(): JSX.Element {
 
       <Box className="sensorImagesBox">
         {sensorImages.map((sensor) => (
-          <Box className="sensorImage">
+          <Box className="sensorImage" key={sensor.name}>
             <img src={sensor.url} alt={sensor.name} />
             <Typography variant="h3" component="h3">
               {sensor.name}
             </Typography>
           </Box>
         ))}
-
       </Box>
     </Box>
   );
