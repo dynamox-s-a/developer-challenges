@@ -66,3 +66,60 @@
     align-self: center;
   }
 }
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .dynapredicBox {
+    background: #263252;
+    flex-direction: column;
+    padding: 5vh 4vw;
+  }
+
+  .desktopAndMobileImg {
+    width: 100%;
+    height: 37%;
+    margin-top: 30%;
+  }
+
+  .dynapredicSolution {
+    height: 20%;
+    width: 100%;
+    padding-top: 3%;
+  }
+
+  .dynapredicSolution h2 {
+    font-size: 3rem;
+    text-align: center;
+  }
+
+  .dynapredicImg {
+    width: 21%;
+    align-self: center;
+  }
+}
+
+@media (min-width: 620px) and (max-width: 768px) {
+
+  .dynapredicBox {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    background-image: url("../../images/grafismo.png");
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-size: cover;
+    padding: 0 4vw;
+    gap: 5%;
+    justify-content: center;
+  }
+  .dynapredicSolution {
+    height: 20%;
+    width: 100%;
+    padding-top: 33%;
+  }
+
+  .desktopAndMobileImg {
+    width: 51%;
+    height: 31%;
+    margin-top: 30%;
+  }
+}

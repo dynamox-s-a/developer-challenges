@@ -88,3 +88,36 @@
     width: 90%;
   }
 }
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .containerBox {
+    padding-top: 3%;
+  }
+
+  .containerBox h2 {
+    font-size: 1.4rem;
+  }
+
+  .containerBox h3 {
+    font-size: 1rem;
+  }
+
+  .contactInput {
+    width: 80%;
+  }
+
+  .containerBox button {
+    margin-top: 5%;
+    margin-left: 32.5%;
+    width: 35%;
+  }
+
+  .contactFormBox {
+    margin-top: 3%;
+  }
+
+  .alertInfo {
+    left: 5%;
+    width: 90%;
+  }
+}

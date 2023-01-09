@@ -83,3 +83,32 @@
     margin-top: 3%;
   }
 }
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .sensorsBox {
+    padding: 6vh 4vw 0%;
+  }
+  
+  .sensorsInfoBox {
+    height: 43%;
+    gap: 11%;
+  }
+
+  .sensorsInfoBox h2 {
+    font-size: 1.5rem;
+  }
+
+  .sensorsInfoBox p {
+    width: 98%;
+    font-size: 0.9rem;
+  }
+
+  .sensorImagesBox {
+    padding-top: 8vh;
+  }
+
+  .sensorImage h3 {
+    font-size: 1.1rem;
+    margin-top: 3%;
+  }
+}
