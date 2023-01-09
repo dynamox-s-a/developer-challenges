@@ -1,5 +1,3 @@
-/* 770x 600*/
-
 .desktopNavBar {
   height: 14vh;
 }
@@ -7,11 +5,9 @@
 .headerLogoImg {
   width: 100%;
   height: 100%;
-  /* border: 1px solid pink; */
 }
 
 .logoBox {
-  /* border: 1px solid red; */
   height: 65%;
   display: flex;
   flex-direction: column;
@@ -20,7 +16,6 @@
 }
 
 .linkPagesBox {
-  /* border: 1px solid green; */
   height: 65%;
   display: flex;
   flex-direction: row;
@@ -41,4 +36,15 @@
 
 .linkPagesBox a:hover {
   border-bottom: 1px solid #ffffff;
+}
+
+@media (min-width: 320px) and (max-width:480px) {
+  .linkPagesBox {
+    display: none;
+  }
+
+  .logoBox {
+    height: 44%;
+    width: 37%;
+  }
 }

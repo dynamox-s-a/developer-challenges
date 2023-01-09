@@ -36,3 +36,33 @@
   font-size: 5rem;
   color: #ffffff;
 }
+
+@media (min-width: 320px) and (max-width:480px) {
+  .dynapredicBox {
+    background: #263252;
+    flex-direction: column;
+    padding: 5vh 4vw;
+  }
+
+  .desktopAndMobileImg {
+    width: 100%;
+    height: 30%;
+    margin-top: 30%;
+  }
+
+  .dynapredicSolution {
+    height: 20%;
+    width: 100%;
+    padding-top: 3%;
+  }
+
+  .dynapredicSolution h2 {
+    font-size: 3rem;
+    text-align: center;
+  }
+
+  .dynapredicImg {
+    width: 21%;
+    margin-left: 6.1%;
+  }
+}

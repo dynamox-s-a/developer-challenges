@@ -55,3 +55,36 @@
   left: 20%;
   width: 60%;
 }
+
+@media (min-width: 320px) and (max-width:480px) {
+  .containerBox {
+    padding-top: 5%;
+  }
+
+  .containerBox h2 {
+    font-size: 1.4rem;
+  }
+
+  .containerBox h3 {
+    font-size: 1rem;
+  }
+
+  .contactInput {
+    width: 100%;
+  }
+
+  .containerBox button {
+    margin-top: 10%;
+    margin-left: 32.5%;
+    width: 35%;
+  }
+
+  .contactFormBox {
+    margin-top: 10%;
+  }
+
+  .alertInfo {
+    left: 5%;
+    width: 90%;
+  }
+}
