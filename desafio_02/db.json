@@ -1,0 +1,26 @@
+{
+  "users": [
+    {
+      "email": "italo@dynamox.com.br",
+      "password": "italodynamox"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Macbook Air Pro",
+      "perishable": false,
+      "price": "123123",
+      "expirationDate": null,
+      "manufactureDate": "2022-11-09T03:00:00.000Z"
+    },
+    {
+      "name": "Hamburguer",
+      "price": "15",
+      "perishable": true,
+      "expirationDate": null,
+      "manufactureDate": "2022-11-09T03:00:00.000Z",
+      "id": 2
+    }
+  ]
+}
