@@ -12,6 +12,11 @@
   gap: 5%;
   padding: 2%;
   box-sizing: border-box;
+  justify-content: center;
+}
+
+.loginBox h1 {
+  font-weight: 300;
 }
 
 .formBox {
@@ -25,14 +30,18 @@
   justify-content: center;
 }
 
+.formBox button {
+  margin-top: 3%;
+}
+
 .container {
   display: flex;
   justify-content: center;
 }
 
 .loginInput {
-  width: 70%;
-  height: 15%;
+  width: 75%;
+  height: 18%;
   background-color: #F4F7FC;
   border: 1px solid #9EA0A5;
   border-radius: 5px;
