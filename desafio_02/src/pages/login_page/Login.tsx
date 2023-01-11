@@ -60,8 +60,8 @@ export default function Login(): JSX.Element {
         fetchUserInfo({ email, password })
       ).unwrap();
 
-      setLocalStorage("user", userInfo.token);
-      navigate("/userDashboard");
+      setLocalStorage("userToken", userInfo.token);
+      navigate("/userDashboard/products");
     } catch (error) {
       setWrongInfo({
         isError: true,
