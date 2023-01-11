@@ -1,7 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { useCreateAppAsyncThunk } from "../hooks/useCreateAppAsyncThunk";
 import { IProduct, IProductsState } from "../interfaces/IProducts";
-import { fetchProducts, fetchAddNewProduct } from "../helpers/fetchAPI";
+import {
+  fetchProducts,
+  fetchAddNewProduct,
+  fetchEditProduct,
+  fetchDeleteProduct,
+} from "../helpers/fetchAPI";
 
 export const fetchAllProducts = useCreateAppAsyncThunk(
   "products/fetchProducts",
@@ -29,6 +34,35 @@ export const addNewProduct = useCreateAppAsyncThunk(
   }
 );
 
+export const editProduct = useCreateAppAsyncThunk(
+  "products/editProduct",
+  async (newEditedProduct: IProduct, thunkAPI) => {
+    const product = await fetchEditProduct(
+      newEditedProduct.id,
+      newEditedProduct
+    );
+
+    if (product === null) {
+      return thunkAPI.rejectWithValue("Error edditing new product");
+    }
+
+    return product;
+  }
+);
+
+export const deleteProduct = useCreateAppAsyncThunk(
+  "products/deleteProduct",
+  async (id: number, thunkAPI) => {
+    const product = await fetchDeleteProduct(id);
+
+    if (product === null) {
+      return thunkAPI.rejectWithValue("Error deleting new product");
+    }
+
+    return product;
+  }
+);
+
 const INITIAL_STATE: IProductsState = {
   products: [],
   newProduct: {
@@ -40,6 +74,7 @@ const INITIAL_STATE: IProductsState = {
     quantity: "",
   } as unknown as IProduct,
   loading: false,
+  productID: 0,
 };
 
 const productsSlice = createSlice({
@@ -80,6 +115,9 @@ const productsSlice = createSlice({
         quantity: "",
       } as unknown as IProduct;
     },
+    setProductID: (state, action) => {
+      state.productID = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllProducts.pending, (state) => {
@@ -102,9 +140,20 @@ const productsSlice = createSlice({
     builder.addCase(addNewProduct.rejected, (state) => {
       state.loading = false;
     });
+    builder.addCase(editProduct.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(editProduct.fulfilled, (state, action) => {
+      state.products.push(action.payload);
+      state.loading = false;
+    });
+    builder.addCase(editProduct.rejected, (state) => {
+      state.loading = false;
+    });
   },
 });
 
-export const { setNewProductInfo, resetNewProductInfo } = productsSlice.actions;
+export const { setNewProductInfo, resetNewProductInfo, setProductID } =
+  productsSlice.actions;
 
 export default productsSlice.reducer;

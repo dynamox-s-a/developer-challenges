@@ -7,15 +7,6 @@
   ],
   "products": [
     {
-      "id": 1,
-      "name": "Macbook Air Pro",
-      "price": "123123",
-      "perishable": "Sim",
-      "expirationDate": "N/A",
-      "manufactureDate": "11/09/2022",
-      "quantity": 1
-    },
-    {
       "id": 2,
       "name": "Hamburguer",
       "price": "15",
@@ -25,15 +16,6 @@
       "quantity": 1
     },
     {
-      "name": "Iphone 7",
-      "price": "1254.17",
-      "perishable": "Não",
-      "expirationDate": "N/A",
-      "manufactureDate": "22/07/2017",
-      "quantity": "2",
-      "id": 3
-    },
-    {
       "name": "Macbook Air Pro 23''",
       "price": "1254.17",
       "perishable": "Não",
@@ -41,15 +23,6 @@
       "manufactureDate": "22/07/2017",
       "quantity": "2",
       "id": 4
-    },
-    {
-      "name": "AppleTv",
-      "price": "1254.17",
-      "perishable": "Não",
-      "expirationDate": "N/A",
-      "manufactureDate": "22/07/2017",
-      "quantity": "2",
-      "id": 5
     },
     {
       "name": "Iphone 12",
@@ -68,15 +41,6 @@
       "manufactureDate": "22/07/2017",
       "quantity": "2",
       "id": 7
-    },
-    {
-      "name": "Cama Box Casal",
-      "price": "1254.17",
-      "perishable": "Não",
-      "expirationDate": "N/A",
-      "manufactureDate": "22/07/2017",
-      "quantity": "2",
-      "id": 8
     },
     {
       "name": "Cama box solteiro",

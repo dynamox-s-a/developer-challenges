@@ -12,4 +12,5 @@ export interface IProductsState {
   products: IProduct[];
   newProduct: IProduct;
   loading: boolean;
+  productID: number;
 }

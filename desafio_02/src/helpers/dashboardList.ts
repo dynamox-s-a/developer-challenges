@@ -21,7 +21,7 @@ export const listItems = [
     rmv: false,
   },
   {
-    name: "Excluir Produto",
+    name: "Remover Produto",
     rmv: true,
     add: false,
     prod: false,
