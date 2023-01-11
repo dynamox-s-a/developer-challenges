@@ -50,3 +50,34 @@
   color: #000000;
   box-sizing: border-box;
 }
+
+@media (min-width: 320px) and (max-width:480px) {
+  .loginBox {
+    width: 80%;
+    margin-left: 8%;
+    margin-top: 50%;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .loginBox {
+    width: 80%;
+    margin-left: 8%;
+    margin-top: 35%;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .loginBox {
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 20%;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1280px) {
+  .loginBox {
+    width: 400px;
+    margin-top: 20%;
+  }
+}
