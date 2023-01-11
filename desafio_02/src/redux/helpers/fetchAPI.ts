@@ -43,3 +43,23 @@ export const fetchProducts = async (): Promise<IProduct[] | null> => {
     return null;
   }
 };
+
+export const fetchAddNewProduct = async (
+  newProduct: IProduct
+): Promise<IProduct | null> => {
+  try {
+    const response = await fetch(`${FETCH_PRODUCT_URL}`, {
+      method: "POST",
+      headers: { "Content-Type": APP_JSON },
+      body: JSON.stringify(newProduct),
+    });
+
+    const data = await response.json();
+    console.log("FETCH API DATA", data);
+
+    return data as IProduct;
+  } catch (error) {
+    console.log("error", error);
+    return null;
+  }
+};

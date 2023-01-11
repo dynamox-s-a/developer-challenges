@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable max-params */
 import * as React from "react";
-import { ProductsProps } from "../../../interfaces/product-interfaces";
+// import { ProductsProps } from "../../../interfaces/product-interfaces";
 import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
@@ -25,6 +25,7 @@ import Switch from "@mui/material/Switch";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
+import { useAppSelector } from "../../../redux/store";
 
 interface Data {
   name: string;
@@ -247,8 +248,8 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   );
 }
 
-export default function ProductsTable(props: ProductsProps): JSX.Element {
-  console.log(props.products);
+export default function ProductsTable(): JSX.Element {
+  const { products } = useAppSelector((state) => state.productsSlice);
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("price");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
@@ -267,7 +268,7 @@ export default function ProductsTable(props: ProductsProps): JSX.Element {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = props.products.map((n) => n.name);
+      const newSelected = products.map((n) => n.name);
       setSelected(newSelected);
       return;
     }
@@ -313,9 +314,7 @@ export default function ProductsTable(props: ProductsProps): JSX.Element {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0
-      ? Math.max(0, (1 + page) * rowsPerPage - props.products.length)
-      : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - products.length) : 0;
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -333,11 +332,11 @@ export default function ProductsTable(props: ProductsProps): JSX.Element {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={props.products.length}
+              rowCount={products.length}
             />
             <TableBody>
               {stableSort<Data>(
-                props.products as unknown as Data[],
+                products as unknown as Data[],
                 getComparator(order, orderBy)
               )
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -395,7 +394,7 @@ export default function ProductsTable(props: ProductsProps): JSX.Element {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={props.products.length}
+          count={products.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

@@ -1,0 +1,23 @@
+.addFormBox {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+  margin: 0 auto;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3%;
+  justify-content: center;
+}
+
+.addFormInput {
+  width: 70%;
+}

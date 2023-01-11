@@ -3,12 +3,13 @@ export interface IProduct {
   name: string;
   price: number;
   perishable: string;
-  expirationDate: string | null;
+  expirationDate: string;
   manufactureDate: string;
   quantity: number;
 }
 
 export interface IProductsState {
   products: IProduct[];
+  newProduct: IProduct;
   loading: boolean;
 }

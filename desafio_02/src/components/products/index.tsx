@@ -15,7 +15,7 @@ export default function Produtcs(): JSX.Element {
     <section>
       {loading && <h1>Carregando...</h1>}
       {products.length === 0 && !loading && <h1> Sem Produtos</h1>}
-      {products.length > 0 && <ProductsTable products={products} />}
+      {products.length > 0 && <ProductsTable />}
     </section>
   );
 }
