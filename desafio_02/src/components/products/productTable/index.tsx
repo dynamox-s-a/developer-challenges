@@ -34,6 +34,7 @@ interface Data {
   expirationDate: string;
   manufactureDate: string;
   quantity: number;
+  id: number;
 }
 
 // nao tem data
@@ -88,9 +89,15 @@ interface HeadCell {
 // tem data
 const headCells: readonly HeadCell[] = [
   {
+    id: "id",
+    numeric: true,
+    disablePadding: false,
+    label: "Product ID",
+  },
+  {
     id: "name",
-    numeric: false,
-    disablePadding: true,
+    numeric: true,
+    disablePadding: false,
     label: "Produto",
   },
   {
@@ -101,21 +108,21 @@ const headCells: readonly HeadCell[] = [
   },
   {
     id: "perishable",
-    numeric: false,
+    numeric: true,
     disablePadding: false,
     label: "Perecivel",
   },
   {
     id: "expirationDate",
-    numeric: false,
+    numeric: true,
     disablePadding: false,
-    label: "Data de Validade",
+    label: "Validade",
   },
   {
     id: "manufactureDate",
     numeric: true,
     disablePadding: false,
-    label: "Dia de Fabricação",
+    label: "Fabricação",
   },
   {
     id: "quantity",
@@ -251,7 +258,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 export default function ProductsTable(): JSX.Element {
   const { products } = useAppSelector((state) => state.productsSlice);
   const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("price");
+  const [orderBy, setOrderBy] = React.useState<keyof Data>("name");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -363,6 +370,7 @@ export default function ProductsTable(): JSX.Element {
                           }}
                         />
                       </TableCell>
+                      <TableCell align="right">{row.id}</TableCell>
                       <TableCell
                         component="th"
                         id={labelId}
