@@ -132,12 +132,12 @@
   git@github.com:ItaloRAmaral/Dynamox-Teste-Front-End.git
   ```
 
-  2. Entre no diretório do projeto, e depois na pasta `landing_page` que é onde se encontra a resolução do desafio.
-
-  3. Troque para a branch do desafio:
+  2. Entre no diretório do projeto, e depois troque para a branch do desafio
   ```bash
   git checkout desafio-01-landing-page
   ```
+
+  3. Entre na pasta `landing_page` que é onde se encontra a resolução do desafio.
 
   4. Instale as dependências
   ```bash
@@ -167,12 +167,12 @@
   ```bash
     git@github.com:ItaloRAmaral/Dynamox-Teste-Front-End.git
   ```
-  2. Enter the project directory, and then the `landing_page` folder where the challenge solution is located.
-
-  3. Change to the challenge branch
+  2. Enter the project directory, and then change to the challenge branch
   ```bash
   git checkout desafio-01-landing-page
   ```
+
+  3. Enter the `landing_page` folder where the challenge solution is located.
 
   4. Install the dependencies
   ```bash
