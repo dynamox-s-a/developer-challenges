@@ -133,12 +133,17 @@
   npm install
   ```
  
- 5. Execute a aplicação em modo de desenvolvimento
+  5. Execute a nossa fake api do json-server para simular o backend. Ele irá abrir na porta 3000.
+  ```bash
+  json-server --watch db.json
+  ```
+
+  6. Execute a aplicação do nosso front end.
   ```bash
   npm start
   ```
 
-  6. O servidor inciará na porta:3000 - acesse <http://localhost:3000>
+  7. O servidor inciará na porta:3001 - acesse <http://localhost:3001>
   </p>
 
 
@@ -168,10 +173,16 @@
   ```bash
     npm install
   ```
-  5. Run the application in development mode
+
+  5. Run the json-server fake api to simulate the backend. It will open on port 3000.
+  ```bash
+    json-server --watch db.json
+  ```
+
+  6. Run the front end application.
   ```bash
     npm start
   ```
-  6. The server will start on port: 3000 - access <http://localhost:3000>
+  7. The server will start on port: 3001 - access <http://localhost:3001>
 
 </details>
