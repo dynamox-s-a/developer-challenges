@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/consistent-type-assertions */
 /* eslint-disable complexity */
 import React, { useEffect, useState } from "react";
 import moment from "moment";
@@ -9,17 +10,17 @@ import {
   addNewProduct,
   resetNewProductInfo,
 } from "../../redux/reducers/products";
-// import { IWrongInfo } from "../../interfaces/IWrongInfo";
+import { IWrongInfo } from "../../interfaces/IWrongInfo";
+import { ErrorAlert } from "../errorAlert";
 
 export default function AddProduct(): JSX.Element {
-  // Adiciona um estado para controlar se o input de data de validade está habilitado
   const [isExpirationDateDisabled, setIsExpirationDateDisabled] =
     useState<boolean>(true);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
-  // const [isWrongInfo, setWrongInfo] = useState<IWrongInfo>({
-  //   isError: false,
-  //   message: "",
-  // } as IWrongInfo);
+  const [isWrongInfo, setWrongInfo] = useState<IWrongInfo>({
+    isError: false,
+    message: "",
+  } as IWrongInfo);
 
   const { newProduct } = useAppSelector((state) => state.productsSlice);
   const { name, perishable, expirationDate, manufactureDate, price, quantity } =
@@ -100,10 +101,24 @@ export default function AddProduct(): JSX.Element {
         expirationDateObj.isValid() &&
         manufactureDateObj.isBefore(expirationDateObj);
       setIsExpirationDateDisabled(false);
-      dispatch(setNewProductInfo({ value: "", name: "expirationDate" }));
+      if (!isExpirationDateValid) {
+        setWrongInfo({
+          isError: true,
+          message: "Data de Validade não pode ser menor que Data de Fabricação",
+        });
+      } else {
+        setWrongInfo({
+          isError: false,
+          message: "",
+        });
+      }
     } else {
       setIsExpirationDateDisabled(true);
       dispatch(setNewProductInfo({ value: "N/A", name: "expirationDate" }));
+      setWrongInfo({
+        isError: false,
+        message: "",
+      });
     }
 
     if (
@@ -188,6 +203,7 @@ export default function AddProduct(): JSX.Element {
           Adicionar
         </Button>
       </Box>
+      {isWrongInfo.isError && <ErrorAlert errorMessage={isWrongInfo.message} />}
     </Box>
   );
 }

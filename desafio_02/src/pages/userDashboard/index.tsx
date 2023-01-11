@@ -22,6 +22,7 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import { resetNewProductInfo } from "../../redux/reducers/products";
 
 const drawerWidth = 240;
 
@@ -53,18 +54,26 @@ export default function ResponsiveDrawer(props: Props): JSX.Element {
       case "Produtos":
         navigate("/userDashboard/products");
         dispatch(setDashboardTitle(name));
+        dispatch(resetNewProductInfo());
+        dispatch(setProductID(0));
         break;
       case "Adicionar Produto":
         navigate("/userDashboard/addProduct");
         dispatch(setDashboardTitle(name));
+        dispatch(resetNewProductInfo());
+        dispatch(setProductID(0));
         break;
       case "Editar Produto":
         navigate("/userDashboard/editProduct");
         dispatch(setDashboardTitle(name));
+        dispatch(resetNewProductInfo());
+        dispatch(setProductID(0));
         break;
       case "Remover Produto":
         navigate("/userDashboard/removeProduct");
         dispatch(setDashboardTitle(name));
+        dispatch(resetNewProductInfo());
+        dispatch(setProductID(0));
         break;
       default:
         break;

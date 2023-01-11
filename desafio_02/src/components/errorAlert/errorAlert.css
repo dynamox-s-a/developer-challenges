@@ -1,6 +1,7 @@
 .errorStack {
   position: fixed;
+  z-index: 9999;
   width: 30%;
-  top: 5%;
+  top: 2%;
   left: 36.3%;
 }

@@ -13,11 +13,17 @@ import {
   setProductID,
 } from "../../redux/reducers/products";
 import { IProduct } from "../../redux/interfaces/IProducts";
+import { IWrongInfo } from "../../interfaces/IWrongInfo";
+import { ErrorAlert } from "../errorAlert";
 
 export default function EditProduct(): JSX.Element {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [isExpirationDateDisabled, setIsExpirationDateDisabled] =
     useState<boolean>(true);
+  const [isWrongInfo, setWrongInfo] = useState<IWrongInfo>({
+    isError: false,
+    message: "",
+  } as IWrongInfo);
 
   const { newProduct, productID } = useAppSelector(
     (state) => state.productsSlice
@@ -26,63 +32,6 @@ export default function EditProduct(): JSX.Element {
     newProduct;
 
   const dispatch = useAppDispatch();
-
-  // const handleChangeItemInfo = (
-  //   event: React.ChangeEvent<HTMLInputElement>
-  // ): void => {
-  //   switch (event.target.name) {
-  //     case "productName":
-  //       dispatch(
-  //         setNewProductInfo({ value: event.target.value, name: "productName" })
-  //       );
-  //       break;
-  //     case "perishable":
-  //       dispatch(
-  //         setNewProductInfo({
-  //           value: event.target.value,
-  //           name: "perishable",
-  //         })
-  //       );
-  //       break;
-  //     case "expirationDate":
-  //       dispatch(
-  //         setNewProductInfo({
-  //           value: event.target.value,
-  //           name: "expirationDate",
-  //         })
-  //       );
-  //       break;
-  //     case "manufactureDate":
-  //       dispatch(
-  //         setNewProductInfo({
-  //           value: event.target.value,
-  //           name: "manufactureDate",
-  //         })
-  //       );
-  //       break;
-  //     case "price":
-  //       dispatch(
-  //         setNewProductInfo({
-  //           value: event.target.value,
-  //           name: "price",
-  //         })
-  //       );
-  //       break;
-  //     case "quantity":
-  //       dispatch(
-  //         setNewProductInfo({
-  //           value: event.target.value,
-  //           name: "quantity",
-  //         })
-  //       );
-  //       break;
-  //     case "productID":
-  //       dispatch(setProductID(event.target.value));
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
 
   const handleChangeItemInfo = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -162,11 +111,25 @@ export default function EditProduct(): JSX.Element {
       isExpirationDateValid =
         expirationDateObj.isValid() &&
         manufactureDateObj.isBefore(expirationDateObj);
-      dispatch(setNewProductInfo({ value: "", name: "expirationDate" }));
       setIsExpirationDateDisabled(false);
+      if (!isExpirationDateValid) {
+        setWrongInfo({
+          isError: true,
+          message: "Data de Validade não pode ser menor que Data de Fabricação",
+        });
+      } else {
+        setWrongInfo({
+          isError: false,
+          message: "",
+        });
+      }
     } else {
       setIsExpirationDateDisabled(true);
       dispatch(setNewProductInfo({ value: "N/A", name: "expirationDate" }));
+      setWrongInfo({
+        isError: false,
+        message: "",
+      });
     }
 
     if (
@@ -268,6 +231,7 @@ export default function EditProduct(): JSX.Element {
           Adicionar
         </Button>
       </Box>
+      {isWrongInfo.isError && <ErrorAlert errorMessage={isWrongInfo.message} />}
     </Box>
   );
 }

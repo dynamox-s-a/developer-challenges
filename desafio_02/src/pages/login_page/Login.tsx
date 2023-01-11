@@ -12,7 +12,7 @@ import "./login.css";
 import { IUser } from "../../redux/interfaces/IUser";
 import { setLocalStorage } from "../../helpers/localStorage";
 import { IWrongInfo } from "../../interfaces/IWrongInfo";
-import { LoginErrorAlert } from "../../components/loginErrorAlert";
+import { ErrorAlert } from "../../components/errorAlert";
 import { useNavigate } from "react-router-dom";
 
 export default function Login(): JSX.Element {
@@ -115,9 +115,7 @@ export default function Login(): JSX.Element {
         </Box>
       </Box>
 
-      {isWrongInfo.isError && (
-        <LoginErrorAlert errorMessage={isWrongInfo.message} />
-      )}
+      {isWrongInfo.isError && <ErrorAlert errorMessage={isWrongInfo.message} />}
     </Box>
   );
 }
