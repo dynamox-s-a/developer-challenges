@@ -2,6 +2,7 @@ import * as React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../../redux/store";
 import { setDashboardTitle } from "../../redux/reducers/headerHandleTitle";
+import { listItems } from "../../helpers/dashboardList";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,6 +13,8 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
@@ -55,6 +58,14 @@ export default function ResponsiveDrawer(props: Props): JSX.Element {
         navigate("/userDashboard/addProduct");
         dispatch(setDashboardTitle(name));
         break;
+      case "Editar Produto":
+        navigate("/userDashboard/editProduct");
+        dispatch(setDashboardTitle(name));
+        break;
+      case "Remover Produto":
+        navigate("/userDashboard/removeProduct");
+        dispatch(setDashboardTitle(name));
+        break;
       default:
         break;
     }
@@ -70,13 +81,16 @@ export default function ResponsiveDrawer(props: Props): JSX.Element {
       <Toolbar />
       <Divider />
       <List>
-        {["Produtos", "Adicionar Produto"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton onClick={() => handleClickNav(text)}>
+        {listItems.map((item) => (
+          <ListItem key={item.name} disablePadding>
+            <ListItemButton onClick={() => handleClickNav(item.name)}>
               <ListItemIcon>
-                {index % 2 === 0 ? <ShoppingBagIcon /> : <AddBoxIcon />}
+                {item.prod && <ShoppingBagIcon />}
+                {item.add && <AddBoxIcon />}
+                {item.edit && <EditIcon />}
+                {item.rmv && <DeleteIcon />}
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={item.name} />
             </ListItemButton>
           </ListItem>
         ))}
