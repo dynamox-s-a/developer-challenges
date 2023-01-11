@@ -1,78 +1,51 @@
-# Desafio Front-end Dynamox
+# Dynamox - Front End Desafio 2
 
-> Desafio para ingressar como Front-end Developer na Dynamox
+## 📃 Sobre - About
+<details>
+  <summary > :brazil: Portuguese </summary>
+  <p>
+    Desenvolver uma tela de autenticação fake. O login pode ser feito com e-mail e senha fixos, porém as rotas devem ser privadas e as requests à API devem simular o envio do token JWT, que também poderá ser fake, para ser visualizada em um dispositivo desktop (1280px)
+  </p>
+</details>
 
-## Sobre a Dynamox
+<details>
+  <summary > :us: English </summary>
+  <p>
+    Develop a fake authentication screen. The login can be done with fixed email and password, but the routes must be private and the requests to the API must simulate the sending of the JWT token, which can also be fake, to be viewed on a desktop device (1280px)
+  </p>
+</details>
 
-A Dynamox é uma empresa de alta tecnologia que desenvolve sistemas de monitoramento e aquisição de dados de vibração e temperatura. Somos uma empresa especialista em análise de vibrações e monitoramento da condição de ativos industriais.
+## 🛠️ Ferramentas - Tools
+  - React
+  - React Router Dom
+  - Material UI Components
+  - Material UI Icon
+  - CSS
+  - json-server
 
-Todas as soluções são desenvolvidas por nossa equipe, desde o hardware até a aplicação web. Nossa equipe é formada por desenvolvedores de hardware, firmware, mobile (android e ios) e web (backend e frontend), além de engenheiros especializados na área de processamento de sinais para vibração e acústica.
+##  📝 Melhorias - Improvements
 
+<details>
+  <summary > :brazil: Portuguese </summary>
 
-## Sobre a vaga e os desafios
+  - [ ] Testes
+  - [ ] Otimização do Código
 
-Estamos buscando alguém que se identifique com o [perfil da vaga](https://dynamox.solides.jobs/vacancies/181263?__hstc=127459538.1d0234f804b73865f84753db24577b25.1658333603238.1663969357474.1664197850410.19&__hssc=127459538.3.1664197850410&__hsfp=309846428) e que possa integrar uma de nossas frentes de desenvolvimento:
+</details>
 
-- Relações Públicas (presença institucional);
-- [DynaPredict](https://dynamox.net/dynapredict);
+<details>
+  <summary > :us: English </summary>
+  
+  - [ ] Tests
+  - [ ] Code Optimization
 
-Para isso, sugerimos dois desafios. O primeiro para avaliar como você implementa um design definido para uma landing page e o segundo para avaliar suas abilidades em realizar operações básicas de CRUD e chamadas a uma api.
+</details>
 
----
+## Requisitos do desafio - Challenge requirements
+<details>
+  <summary > :brazil: Portuguese </summary>
 
-## Desafio 01 - Landing page
-
-Neste desafio avaliaremos sua capacidade de implementar uma landing page com design pré definido, para ser visualizada em dispositivo desktop.
-
-[Protótipo do Figma](https://www.figma.com/file/oMYCDyVORucqrRrohyQpwC/Desafio-01---Front-end?node-id=0%3A1)
-
-Requisitos funcionais:
-
-**Header**
-
-- Ao clicar no logo Dymamox, usuário deve ser redirecionado para https://dynamox.net/
-- Ao clicar em “DynaPredict”, usuário deve ser redirecionado para https://dynamox.net/dynapredict/
-- Ao clicar em "Sensores", usuário deve ser movido para a seção de sensores da landing page.
-- Ao clicar em "Contato", usuário deve ser movido para seção de contato da landing page.
-
-**Sensores**
-
-- Ao clicar em "Ver Mais" usuário deve ser redirecionado para https://dynamox.net/dynapredict/.
-
-**Contato**
-
-- Ao clicar em "Enviar", website deve emitir alerta contendo o conteúdo dos campos do formulário de contato.
-
-Critérios de avaliação:
-
-- Design: implementação do layout de acordo com o layout proposto;
-- Funcionalidades: redirecionamentos para links e seções e disparo de funções no browser;
-- Semântica e SEO: utilização de tags e metatags html adequados;
-
-### Tecnologias, frameworks e bibliotecas
-
-- A utilização de React é obrigatória;
-- O restante das ferramentas fica a seu critério;
-
-### Diferenciais
-
-- Componentes reutilizáveis;
-- Organização e documentação do código;
-- Usabilidade;
-- Layout responsivo (seja criativo!);
-- Utilização de NextJS ou Gatsby;
-
----
-
-## Desafio 02 - Autenticação e CRUD
-
-Neste desafio avaliaremos sua capacidade de realizar operações básicas de criação, leitura, atualização e remoção de dados a uma api fake. Neste desafio, não serão avaliadas questões relacionadas ao design da aplicação.
-
-Desenvolva uma tela de autenticação fake. O login pode ser feito com e-mail e senha fixos, porém as rotas devem ser privadas e as requests à API devem simular o envio do token JWT, que também poderá ser fake.
-
-Requisitos funcionais:
-
-- Aplicação deverá ter telas de criação, edição e listagem de produtos, com os campos:
+## 1 -  Aplicação deverá ter telas de criação, edição e listagem de produtos, com os campos:
 
   - Nome;
   - Data de fabricação;
@@ -80,47 +53,125 @@ Requisitos funcionais:
   - Data de validade;
   - Preço;
 
-- O usuário só deverá ter acesso às rotas de criação, edição e listagem de produtos caso esteja autenticado;
-- O usuário só poderá cadastrar data de validade caso o produto seja perecível;
-- A data de fabricação nunca deverá ser maior que a data de validade;
-- O preço deverá estar em reais (R$);
-- A tela de listagem deverá ter a possibilidade de ordenação dos campos e com uma paginação de 10 produtos por página.
-- O backend deve ser simulado com [json-server](https://www.npmjs.com/package/json-server), que cria uma API REST fake;
+## 2 - O usuário só deverá ter acesso às rotas de criação, edição e listagem de produtos caso esteja autenticado;
 
-### Tecnologias, frameworks e bibliotecas
+## 3 - O usuário só poderá cadastrar data de validade caso o produto seja perecível;
 
-- A utilização de React é obrigatória;
-- A utilização de Redux para controle de estados globais é obrigatória;
-- O restante das ferramentas fica a seu critério;
+## 4 - A data de fabricação nunca deverá ser maior que a data de validade;
 
-### Diferenciais
+## 5 - O preço deverá estar em reais (R$);
 
-- Utilizar Redux Saga para controle de efeitos colaterais assíncronos;
-- Componentes reutilizáveis;
-- Organização e documentação do código;
-- Usabilidade;
-- Layout responsivo (seja criativo!);
+## 6 - A tela de listagem deverá ter a possibilidade de ordenação dos campos e com uma paginação de 10 produtos por página.
 
-## Pronto para começar os desafios?
+## 7 - O backend deve ser simulado com json-server, que cria uma API REST fake;
 
-- Faça um "fork" desse repositório na sua conta do Github;
-- Crie uma branch com o seu nome, sobrenome e desafio: `desafio-01/caroline-oliveira`;
-- Após completar o desafio, crie um "pull request" para este repositório [(dynamox-s-a/teste-front-end)](https://github.com/dynamox-s-a/teste-front-end) comparando a sua branch com a master;
-- Faça isso para cada um dos desafios separadamente;
-- Receberemos uma notificação do seu pull request, faremos a avaliação da sua solução e entraremos em contato;
+<details>
+  <summary> PS: A responsividade foi feito nos seguintes tamanhos de tela: </summary>
 
-## FAQ
+  - 320px — 480px: dispositivos móveis
+  - 481px — 768px: iPads, tablets
+  - 769px — 1024px: telas pequenas, laptops
+  - 1024px+ : telas grandes, monitores
+</details>
+</details>
 
-- Posso usar o create-react-app para completar o desafio?
-  **Sim, você pode usar qualquer cli para criar seu projeto**
-- Posso usar o Next ou Gatsby para completar o desafio?
-  **Sim e até gostaremos de ver que usou alguma dessas ferramentas!**
-- Preciso necessariamente fazer um fork do projeto?
-  **Sim, para que possamos saber quanto tempo você levou para executar o desafio**
-- Posso usar MaterialUI no projeto?
-  **Sim e até gostaremos de ver que utilizou algum framework ou bibliotecas de react para UI**.
+<details>
+  <summary > :us: English </summary>
 
-- Tenho mais dúvidas, com quem posso entrar em contato?
-  **Entre em contato com [Calil](https://github.com/amaralc) (Front-end Developer)**
+## 1 - The application should have screens for creating, editing and listing products, with the following fields:
+  
+    - Name;
+    - Manufacturing date;
+    - Perishable product (boolean);
+    - Expiration date;
+    - Price;
 
-**Boa sorte.** 🚀
+## 2 - The user should only have access to the routes for creating, editing and listing products if he is authenticated;
+
+## 3 - The user should only be able to register the expiration date if the product is perishable;
+
+## 4 - The manufacturing date should never be greater than the expiration date;
+
+## 5 - The price should be in reais (R$);
+
+## 6 - The listing screen should have the possibility of sorting the fields and with a pagination of 10 products per page.
+
+<details>
+  <summary> PS: Responsiveness was done in the following screen sizes: </summary>
+
+  - 320px — 480px: mobile devices
+  - 481px — 768px: iPads, tablets
+  - 769px — 1024px: small screens, laptops
+  - 1024px+ : large screens, monitors
+</details>
+</details>
+
+
+
+## ⚙️ Como executar - How to run
+<details>
+  <summary > :brazil: Portuguese </summary>
+  <p>
+    Para executar o projeto, você precisará ter instalado em sua máquina as seguintes ferramentas: Git, NodeJS (v16+). Além disto é bom ter um editor para trabalhar com o código como VSCode.
+  </p>
+
+  1. Faça um clone deste repositório:
+  ```bash
+  git@github.com:ItaloRAmaral/Dynamox-Teste-Front-End.git
+  ```
+
+  2. Entre no diretório do projeto, e depois troque para a branch do desafio:
+  ```bash
+  git checkout desafio-02-auth-
+  ```
+
+  3. Entre na pasta `desafio_02` que é onde se encontra a resolução do desafio.
+
+
+  4. Instale as dependências
+  ```bash
+  npm install
+  ```
+ 
+ 5. Execute a aplicação em modo de desenvolvimento
+  ```bash
+  npm start
+  ```
+
+  6. O servidor inciará na porta:3000 - acesse <http://localhost:3000>
+  </p>
+
+
+
+
+</details>
+
+<details>
+  <summary > :us: English </summary>
+  <p>
+    To run the project, you will need to have installed on your machine the following tools: Git, NodeJS (v16+). In addition, it is good to have an editor to work with the code like VSCode.
+  </p>
+
+  1. Clone this repository:
+  ```bash
+    git@github.com:ItaloRAmaral/Dynamox-Teste-Front-End.git
+  ```
+
+  2. Enter the project directory, and then the change to challenge branch.
+  ```bash
+  git checkout desafio-02-auth-
+  ```
+
+  3. Enter the `desafio_02` folder where the challenge solution is located.
+
+  4. Install the dependencies
+  ```bash
+    npm install
+  ```
+  5. Run the application in development mode
+  ```bash
+    npm start
+  ```
+  6. The server will start on port: 3000 - access <http://localhost:3000>
+
+</details>
