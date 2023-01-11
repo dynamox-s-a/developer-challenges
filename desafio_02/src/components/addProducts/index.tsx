@@ -44,6 +44,7 @@ export default function AddProduct(): JSX.Element {
           })
         );
         if (event.target.value === "sim") {
+          dispatch(setNewProductInfo({ value: "", name: "expirationDate" }));
           setIsExpirationDateDisabled(false);
         } else {
           setIsExpirationDateDisabled(true);
@@ -99,6 +100,7 @@ export default function AddProduct(): JSX.Element {
         expirationDateObj.isValid() &&
         manufactureDateObj.isBefore(expirationDateObj);
       setIsExpirationDateDisabled(false);
+      dispatch(setNewProductInfo({ value: "", name: "expirationDate" }));
     } else {
       setIsExpirationDateDisabled(true);
       dispatch(setNewProductInfo({ value: "N/A", name: "expirationDate" }));

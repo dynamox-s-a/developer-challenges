@@ -7,13 +7,13 @@
   ],
   "products": [
     {
-      "id": 2,
-      "name": "Hamburguer",
-      "price": "15",
-      "perishable": "Sim",
-      "expirationDate": "N/A",
-      "manufactureDate": "11/09/2022",
-      "quantity": 1
+      "name": "Pao",
+      "perishable": "sim",
+      "expirationDate": "22/05/2009",
+      "manufactureDate": "20/04/2009",
+      "price": "1254.17",
+      "quantity": "2",
+      "id": 2
     },
     {
       "name": "Macbook Air Pro 23''",
@@ -70,11 +70,11 @@
       "id": 11
     },
     {
-      "name": "Anel de ouro 24 Kilates",
-      "price": "1254.17",
+      "name": "Cadeira Gamer",
       "perishable": "Não",
       "expirationDate": "N/A",
       "manufactureDate": "22/07/2017",
+      "price": "1254.17",
       "quantity": "2",
       "id": 12
     },
