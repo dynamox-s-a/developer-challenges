@@ -175,7 +175,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
+            align={headCell.numeric ? "center" : "right"}
             padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -261,7 +261,7 @@ export default function ProductsTable(): JSX.Element {
   const [orderBy, setOrderBy] = React.useState<keyof Data>("name");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
+  const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleRequestSort = (
@@ -370,7 +370,7 @@ export default function ProductsTable(): JSX.Element {
                           }}
                         />
                       </TableCell>
-                      <TableCell align="right">{row.id}</TableCell>
+                      <TableCell align="center">{row.id}</TableCell>
                       <TableCell
                         component="th"
                         id={labelId}
@@ -379,11 +379,13 @@ export default function ProductsTable(): JSX.Element {
                       >
                         {row.name}
                       </TableCell>
-                      <TableCell align="right">{row.price}</TableCell>
-                      <TableCell align="right">{row.perishable}</TableCell>
-                      <TableCell align="right">{row.expirationDate}</TableCell>
-                      <TableCell align="right">{row.manufactureDate}</TableCell>
-                      <TableCell align="right">{row.quantity}</TableCell>
+                      <TableCell align="center">{row.price}</TableCell>
+                      <TableCell align="center">{row.perishable}</TableCell>
+                      <TableCell align="center">{row.expirationDate}</TableCell>
+                      <TableCell align="center">
+                        {row.manufactureDate}
+                      </TableCell>
+                      <TableCell align="center">{row.quantity}</TableCell>
                     </TableRow>
                   );
                 })}
