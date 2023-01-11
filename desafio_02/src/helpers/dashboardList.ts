@@ -7,7 +7,7 @@ export const listItems = [
     rmv: false,
   },
   {
-    name: "Adicionar Produtos",
+    name: "Adicionar Produto",
     add: true,
     prod: false,
     edit: false,
