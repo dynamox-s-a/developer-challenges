@@ -7,94 +7,112 @@
   ],
   "products": [
     {
-      "name": "Pao",
+      "name": "Pao Francês",
       "perishable": "sim",
-      "expirationDate": "22/05/2009",
-      "manufactureDate": "20/04/2009",
-      "price": "1254.17",
-      "quantity": "2",
+      "expirationDate": "10/01/2023",
+      "manufactureDate": "05/01/2023",
+      "price": "0,75",
+      "quantity": "12",
+      "id": 1
+    },
+    {
+      "name": "MacBook Pro 14/15''",
+      "price": "23699",
+      "perishable": "não",
+      "expirationDate": "N/A",
+      "manufactureDate": "22/07/2022",
+      "quantity": "5",
       "id": 2
     },
     {
-      "name": "Macbook Air Pro 23''",
-      "price": "1254.17",
+      "name": "MacBook Pro 13''",
+      "price": "15299",
+      "perishable": "não",
+      "expirationDate": "N/A",
+      "manufactureDate": "22/07/2022",
+      "quantity": "2",
+      "id": 3
+    },
+    {
+      "name": "Iphone 13",
+      "price": "6499",
       "perishable": "Não",
       "expirationDate": "N/A",
-      "manufactureDate": "22/07/2017",
-      "quantity": "2",
+      "manufactureDate": "22/07/2022",
+      "quantity": "7",
       "id": 4
     },
     {
-      "name": "Iphone 12",
-      "price": "1254.17",
+      "name": "Smart TV Samsung 50",
+      "price": "3000",
       "perishable": "Não",
+      "expirationDate": "N/A",
+      "manufactureDate": "22/07/2022",
+      "quantity": "10",
+      "id": 5
+    },
+    {
+      "name": "Cama Box Casal Ortobom",
+      "price": "1399",
+      "perishable": "não",
       "expirationDate": "N/A",
       "manufactureDate": "22/07/2017",
       "quantity": "2",
       "id": 6
     },
     {
-      "name": "Iphone 15",
-      "price": "1254.17",
+      "name": "Guarda-Roupa Casal Madesa",
+      "price": "1099",
       "perishable": "Não",
       "expirationDate": "N/A",
       "manufactureDate": "22/07/2017",
-      "quantity": "2",
+      "quantity": "9",
       "id": 7
     },
     {
-      "name": "Cama box solteiro",
-      "price": "1254.17",
-      "perishable": "Não",
-      "expirationDate": "N/A",
+      "name": "Skol Beats Senses",
+      "perishable": "sim",
+      "expirationDate": "15/01/2023",
+      "manufactureDate": "22/07/2022",
+      "price": "5,50",
+      "quantity": "55",
+      "id": 8
+    },
+    {
+      "name": "Coca Cola",
+      "price": "6",
+      "perishable": "sim",
+      "expirationDate": "11/04/2023",
       "manufactureDate": "22/07/2017",
-      "quantity": "2",
+      "quantity": "100",
       "id": 9
     },
     {
-      "name": "Macarrao Penne",
-      "price": "1254.17",
-      "perishable": "Sim",
-      "expirationDate": "25/06/2023",
-      "manufactureDate": "22/07/2017",
-      "quantity": "2",
+      "name": "Torta Banoffe",
+      "price": "55",
+      "perishable": "sim",
+      "expirationDate": "17/01/2023",
+      "manufactureDate": "02/01/2023",
+      "quantity": "1",
       "id": 10
     },
     {
-      "name": "Colar de Pérolas ",
-      "price": "1254.17",
-      "perishable": "Não",
+      "name": "Ventilador Oster 127V",
+      "price": "265,17",
+      "perishable": "não",
       "expirationDate": "N/A",
-      "manufactureDate": "22/07/2017",
-      "quantity": "2",
+      "manufactureDate": "02/01/2023",
+      "quantity": "23",
       "id": 11
     },
     {
-      "name": "Cadeira Gamer",
-      "perishable": "Não",
+      "name": "Fone de Ouvido Bluetooth JBL Tune 510BT",
+      "price": "214,90",
+      "perishable": "não",
       "expirationDate": "N/A",
-      "manufactureDate": "22/07/2017",
-      "price": "1254.17",
-      "quantity": "2",
+      "manufactureDate": "02/01/2023",
+      "quantity": "32",
       "id": 12
-    },
-    {
-      "name": "Iphone 7",
-      "price": "1254.17",
-      "perishable": "Não",
-      "expirationDate": "N/A",
-      "manufactureDate": "22/07/2017",
-      "quantity": "2",
-      "id": 13
-    },
-    {
-      "name": "banofe",
-      "price": "1254.17",
-      "perishable": "sim",
-      "expirationDate": "25/10/2020",
-      "manufactureDate": "20/10/2019",
-      "quantity": "2",
-      "id": 14
     }
   ]
 }
