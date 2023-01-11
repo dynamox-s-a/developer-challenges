@@ -113,6 +113,15 @@
       "manufactureDate": "02/01/2023",
       "quantity": "32",
       "id": 12
+    },
+    {
+      "name": "Edredom",
+      "price": "3452",
+      "perishable": "não",
+      "expirationDate": "N/A",
+      "manufactureDate": "22/07/2017",
+      "quantity": "55",
+      "id": 13
     }
   ]
 }
