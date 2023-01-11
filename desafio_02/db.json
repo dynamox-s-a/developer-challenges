@@ -77,6 +77,24 @@
       "manufactureDate": "22/07/2017",
       "quantity": "2",
       "id": 12
+    },
+    {
+      "name": "Iphone 7",
+      "price": "1254.17",
+      "perishable": "Não",
+      "expirationDate": "N/A",
+      "manufactureDate": "22/07/2017",
+      "quantity": "2",
+      "id": 13
+    },
+    {
+      "name": "banofe",
+      "price": "1254.17",
+      "perishable": "sim",
+      "expirationDate": "25/10/2020",
+      "manufactureDate": "20/10/2019",
+      "quantity": "2",
+      "id": 14
     }
   ]
 }

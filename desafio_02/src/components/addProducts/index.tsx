@@ -1,5 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable complexity */
 import React, { useEffect, useState } from "react";
+import moment from "moment";
 import { Box, Button, TextField } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import "./addProducts.css";
@@ -8,9 +9,17 @@ import {
   addNewProduct,
   resetNewProductInfo,
 } from "../../redux/reducers/products";
+// import { IWrongInfo } from "../../interfaces/IWrongInfo";
 
 export default function AddProduct(): JSX.Element {
+  // Adiciona um estado para controlar se o input de data de validade está habilitado
+  const [isExpirationDateDisabled, setIsExpirationDateDisabled] =
+    useState<boolean>(true);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
+  // const [isWrongInfo, setWrongInfo] = useState<IWrongInfo>({
+  //   isError: false,
+  //   message: "",
+  // } as IWrongInfo);
 
   const { newProduct } = useAppSelector((state) => state.productsSlice);
   const { name, perishable, expirationDate, manufactureDate, price, quantity } =
@@ -34,6 +43,12 @@ export default function AddProduct(): JSX.Element {
             name: "perishable",
           })
         );
+        if (event.target.value === "sim") {
+          setIsExpirationDateDisabled(false);
+        } else {
+          setIsExpirationDateDisabled(true);
+          dispatch(setNewProductInfo({ value: "N/A", name: "expirationDate" }));
+        }
         break;
       case "expirationDate":
         dispatch(
@@ -75,12 +90,24 @@ export default function AddProduct(): JSX.Element {
   useEffect(() => {
     const MIN_LENGTH = 3;
     const MIN_PRICE_LENGTH = 1;
+    let isExpirationDateValid = true;
+
+    if (perishable === "sim") {
+      const expirationDateObj = moment(expirationDate, "DD/MM/YYYY", true);
+      const manufactureDateObj = moment(manufactureDate, "DD/MM/YYYY", true);
+      isExpirationDateValid =
+        expirationDateObj.isValid() &&
+        manufactureDateObj.isBefore(expirationDateObj);
+      setIsExpirationDateDisabled(false);
+    } else {
+      setIsExpirationDateDisabled(true);
+      dispatch(setNewProductInfo({ value: "N/A", name: "expirationDate" }));
+    }
 
     if (
       name.length >= MIN_LENGTH &&
       perishable.length >= MIN_LENGTH &&
-      expirationDate.length >= MIN_LENGTH &&
-      manufactureDate.length >= MIN_LENGTH &&
+      isExpirationDateValid &&
       price >= MIN_PRICE_LENGTH &&
       quantity >= MIN_PRICE_LENGTH
     ) {
@@ -88,11 +115,10 @@ export default function AddProduct(): JSX.Element {
     } else {
       setIsDisabled(true);
     }
-  });
+  }, [name, perishable, expirationDate, manufactureDate, price, quantity]);
 
   const handleAddNewProduct = async (): Promise<any> => {
     try {
-      console.log("cliquei");
       await dispatch(addNewProduct(newProduct)).unwrap();
       dispatch(resetNewProductInfo());
     } catch (error) {
@@ -122,10 +148,11 @@ export default function AddProduct(): JSX.Element {
         <TextField
           className="addFormInput"
           variant="outlined"
-          label="Validade"
+          label="Data de Validade"
           name="expirationDate"
           value={expirationDate}
           onChange={handleChangeItemInfo}
+          disabled={isExpirationDateDisabled}
         />
         <TextField
           className="addFormInput"
