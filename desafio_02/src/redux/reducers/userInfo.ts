@@ -1,5 +1,5 @@
 import { IUser, FetchUserInfo } from "../interfaces/IUser";
-import { fetchUser } from "../helper/fetchAPI";
+import { fetchUser } from "../helpers/fetchAPI";
 import { createSlice } from "@reduxjs/toolkit";
 import { useCreateAppAsyncThunk } from "../hooks/useCreateAppAsyncThunk";
 
@@ -7,7 +7,6 @@ export const fetchUserInfo = useCreateAppAsyncThunk(
   "userInfo/fetchUser",
   async (userInfo: FetchUserInfo, thunkAPI) => {
     const verifyUser = await fetchUser(userInfo.email);
-    console.log("fetchUserInfo verifyUser", verifyUser);
 
     if (verifyUser === null) {
       return thunkAPI.rejectWithValue(
