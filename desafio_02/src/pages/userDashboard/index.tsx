@@ -22,7 +22,10 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { resetNewProductInfo } from "../../redux/reducers/products";
+import {
+  resetNewProductInfo,
+  setProductID,
+} from "../../redux/reducers/products";
 
 const drawerWidth = 240;
 
