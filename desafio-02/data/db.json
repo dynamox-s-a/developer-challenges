@@ -1,0 +1,84 @@
+{
+  "produtos": [
+    {
+      "nome": "Coca-Cola",
+      "fabricacao": "22/01/2023",
+      "perecivel": true,
+      "validade": "22/03/2024",
+      "valor": 9.9,
+      "id": 1
+    },
+    {
+      "nome": "Arroz",
+      "fabricacao": "22/03/2023",
+      "perecivel": true,
+      "validade": "22/04/2024",
+      "valor": 19.9,
+      "id": 2
+    },
+    {
+      "nome": "Sorvete",
+      "fabricacao": "2023-01-10",
+      "perecivel": true,
+      "validade": "2023-09-04",
+      "valor": 5,
+      "id": 4
+    },
+    {
+      "nome": "manteiga",
+      "fabricacao": "12/01/2023",
+      "perecivel": true,
+      "validade": "11/02/2025",
+      "valor": 15,
+      "id": 5
+    },
+    {
+      "nome": "Suco",
+      "fabricacao": "28/12/2023",
+      "perecivel": true,
+      "validade": "23/11/2023",
+      "valor": 9,
+      "id": 6
+    },
+    {
+      "nome": "Feijão",
+      "fabricacao": "11/01/2023",
+      "perecivel": true,
+      "validade": "12/09/2023",
+      "valor": 10,
+      "id": 7
+    },
+    {
+      "nome": "Café",
+      "fabricacao": "11/01/2023",
+      "perecivel": false,
+      "validade": "",
+      "valor": 13,
+      "id": 8
+    },
+    {
+      "nome": "Bolo",
+      "fabricacao": "10/01/2023",
+      "perecivel": false,
+      "validade": "",
+      "valor": 20,
+      "id": 9
+    },
+    {
+      "nome": "gelatina",
+      "fabricacao": "11/02/2025",
+      "perecivel": true,
+      "validade": "11/06/2027",
+      "valor": 1,
+      "id": 12
+    },
+    {
+      "nome": "Amora",
+      "fabricacao": "14/01/2023",
+      "perecivel": true,
+      "validade": "",
+      "valor": 8,
+      "id": 13
+    }
+  ]
+}
