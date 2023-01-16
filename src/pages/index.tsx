@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -41,9 +42,54 @@ export default function Home() {
       </section>
       <section
         id="sensores"
-        className="flex justify-center items-center h-screen"
+        className="flex flex-col justify-center items-center h-screen max-w-5xl mx-auto gap-4"
       >
-        <h2>Sensores para Manutenção Preditiva</h2>
+        <h2 className="font-bold text-4xl text-black text-center">
+          Sensores para Manutenção Preditiva
+        </h2>
+        <p className="text-center text-gray text-xl">
+          Opções de sensores sem fio, ou DynaLoggers com sensores de vibração
+          triaxial e temperatura embarcados, que comunicam por Bluetooth com o
+          App mobile ou Gateway, registrando os dados monitorados em sua memória
+          interna. Por conexão internet esses dados são centralizados na
+          Plataforma DynaPredict Web para análise, prognóstico e tomada de
+          decisão.
+        </p>
+        <Link
+          href="#"
+          className="text-white bg-blue px-11 py-2 rounded font-bold my-8"
+        >
+          VER MAIS
+        </Link>
+        <div className="grid grid-cols-3 text-center font-bold text-4xl text-lightBlue">
+          <div>
+            <img
+              src="/sensor-tca.png"
+              alt="sensor-tca"
+              id="tca"
+              className="w-[300px] object-cover"
+            />
+            <label htmlFor="tca">TcA+</label>
+          </div>
+          <div>
+            <img
+              src="/sensor-af.png"
+              alt="sensor-af"
+              id="af"
+              className="w-[300px] object-cover"
+            />
+            <label htmlFor="af">AS</label>
+          </div>
+          <div>
+            <img
+              src="/sensor-hf.png"
+              alt="sensor-hf"
+              id="hf"
+              className="w-[300px] object-cover"
+            />
+            <label htmlFor="hf">HF</label>
+          </div>
+        </div>
       </section>
     </>
   );

@@ -3,5 +3,6 @@
 @tailwind utilities;
 
 html,body{
-    @apply bg-white
+    @apply bg-white;
+    overflow-x: hidden;
 }
