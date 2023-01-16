@@ -17,7 +17,12 @@ export default function Home() {
       <header>
         <nav className="bg-blue flex items-center justify-between px-11 h-[120px]">
           <Link href="https://dynamox.net/">
-            <img src="/logo-dynamox.png" alt="dynamox logo" className="w-44" />
+            <img
+              src="/logo-dynamox.png"
+              alt="dynamox logo"
+              className="w-44"
+              draggable={false}
+            />
           </Link>
           <ul className="flex text-white gap-9 font-medium -mb-10">
             <li>
@@ -37,18 +42,24 @@ export default function Home() {
           src="/grafismo.png"
           alt="grafismo backgroud"
           className="absolute w-screen h-full object-cover"
+          draggable={false}
         />
         <div className="flex justify-around items-center w-screen z-10 px-20">
           <div className="z-10 leading-snug gap-8">
             <h1 className="font-bold text-[80px] text-white">
               Solução DynaPredict
             </h1>
-            <img src="/logo-dynapredict.png" alt="logo dynamox" />
+            <img
+              src="/logo-dynapredict.png"
+              alt="logo dynamox"
+              draggable={false}
+            />
           </div>
           <img
             src="/desktop-and-mobile.png"
             alt="desktop-and-mobile"
             className="z-10 w-[700px]"
+            draggable={false}
           />
         </div>
       </section>
@@ -80,6 +91,7 @@ export default function Home() {
               alt="sensor-tca"
               id="tca"
               className="w-[300px] object-cover"
+              draggable={false}
             />
             <label htmlFor="tca">TcA+</label>
           </div>
@@ -89,6 +101,7 @@ export default function Home() {
               alt="sensor-af"
               id="af"
               className="w-[300px] object-cover"
+              draggable={false}
             />
             <label htmlFor="af">AS</label>
           </div>
@@ -98,6 +111,7 @@ export default function Home() {
               alt="sensor-hf"
               id="hf"
               className="w-[300px] object-cover"
+              draggable={false}
             />
             <label htmlFor="hf">HF</label>
           </div>
