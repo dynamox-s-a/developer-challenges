@@ -3,6 +3,6 @@
 @tailwind utilities;
 
 html,body{
-    @apply bg-white;
+    @apply bg-white transition-all;
     overflow-x: hidden;
 }
