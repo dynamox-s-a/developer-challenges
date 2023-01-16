@@ -127,21 +127,25 @@ export default function Home() {
             type="text"
             placeholder="Como gostaria de ser chamado?"
             className="text-center rounded py-3 placeholder:text-gray"
+            required
           />
           <input
             type="text"
             placeholder="Em qual empresa você trabalha?"
             className="text-center rounded py-3 placeholder:text-gray"
+            required
           />
           <input
-            type="text"
+            type="email"
             placeholder="Digite aqui o seu email"
             className="text-center rounded py-3 placeholder:text-gray"
+            required
           />
           <input
-            type="text"
+            type="tel"
             placeholder="Qual o seu telefone?"
             className="text-center rounded py-3 placeholder:text-gray"
+            required
           />
           <button
             type="submit"
