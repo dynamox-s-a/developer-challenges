@@ -91,33 +91,38 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section id="contato" className="flex flex-col bg-blue text-center">
-        <h3 className="font-bold text-white text-3xl">Ficou com dúvida? </h3>
+      <section id="contato" className="flex flex-col bg-blue text-center py-10">
+        <h3 className="font-bold text-white text-3xl">Ficou com dúvida?</h3>
         <h3 className="font-bold text-white text-3xl">
           Nós entramos em contato com você
         </h3>
-        <form className="flex flex-col w-96 mx-auto gap-3">
+        <form className="flex flex-col w-96 mx-auto gap-3 mt-8">
           <input
             type="text"
             placeholder="Como gostaria de ser chamado?"
-            className="text-center rounded py-3"
+            className="text-center rounded py-3 placeholder:text-gray"
           />
           <input
             type="text"
             placeholder="Em qual empresa você trabalha?"
-            className="text-center rounded py-3"
+            className="text-center rounded py-3 placeholder:text-gray"
           />
           <input
             type="text"
             placeholder="Digite aqui o seu email"
-            className="text-center rounded py-3"
+            className="text-center rounded py-3 placeholder:text-gray"
           />
           <input
             type="text"
             placeholder="Qual o seu telefone?"
-            className="text-center rounded py-3"
+            className="text-center rounded py-3 placeholder:text-gray"
           />
-          <button type="submit">Enviar</button>
+          <button
+            type="submit"
+            className="bg-shockBLue px-14 py-2 text-white font-bold rounded w-fit mx-auto mt-8 tracking-wide"
+          >
+            ENVIAR
+          </button>
         </form>
       </section>
     </>
