@@ -19,7 +19,7 @@ export default function Home() {
           <Link href="https://dynamox.net/">
             <img
               src="/logo-dynamox.png"
-              alt="dynamox logo"
+              alt="dynamox-logo"
               className="w-44"
               draggable={false}
             />
@@ -40,7 +40,7 @@ export default function Home() {
       <section id="inicio" className="relative h-[calc(100vh-120px)]">
         <img
           src="/grafismo.png"
-          alt="grafismo backgroud"
+          alt="grafismo-backgroud"
           className="absolute w-screen h-full object-cover"
           draggable={false}
         />
