@@ -25,9 +25,18 @@ export default function Home() {
           alt="grafismo backgroud"
           className="absolute w-screen h-full object-cover"
         />
-        <div>
-          <h1>Solução DynaPredict</h1>
-          <img src="/desktop-and-mobile.png" alt="" />
+        <div className="flex justify-around items-center w-screen z-10 px-20">
+          <div className="z-10 leading-snug gap-8">
+            <h1 className="font-bold text-[80px] text-white">
+              Solução DynaPredict
+            </h1>
+            <img src="/logo-dynapredict.png" alt="logo dynamox" />
+          </div>
+          <img
+            src="/desktop-and-mobile.png"
+            alt="desktop-and-mobile"
+            className="z-10 w-[700px]"
+          />
         </div>
       </section>
     </>
