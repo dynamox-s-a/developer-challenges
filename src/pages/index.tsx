@@ -39,6 +39,12 @@ export default function Home() {
           />
         </div>
       </section>
+      <section
+        id="sensores"
+        className="flex justify-center items-center h-screen"
+      >
+        <h2>Sensores para Manutenção Preditiva</h2>
+      </section>
     </>
   );
 }
