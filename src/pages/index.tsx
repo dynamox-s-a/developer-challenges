@@ -1,9 +1,4 @@
 import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "@next/font/google";
-import styles from "@/styles/Home.module.css";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   return (
@@ -14,14 +9,27 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <nav>
-        <Image src="logo-dynamox.png" alt="dynamox logo" />
-        <ul>
-          <li>DynaPredict</li>
-          <li>Sensores</li>
-          <li>Contato</li>
-        </ul>
-      </nav>
+      <header>
+        <nav className="bg-blue flex items-center justify-between px-11 h-[120px]">
+          <img src="/logo-dynamox.png" alt="dynamox logo" className="w-44" />
+          <ul className="flex text-white gap-9 font-medium -mb-10">
+            <li>DynaPredict</li>
+            <li>Sensores</li>
+            <li>Contato</li>
+          </ul>
+        </nav>
+      </header>
+      <section id="inicio" className="relative h-[calc(100vh-120px)]">
+        <img
+          src="/grafismo.png"
+          alt="grafismo backgroud"
+          className="absolute w-screen h-full object-cover"
+        />
+        <div>
+          <h1>Solução DynaPredict</h1>
+          <img src="/desktop-and-mobile.png" alt="" />
+        </div>
+      </section>
     </>
   );
 }
