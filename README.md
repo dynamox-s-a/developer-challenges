@@ -60,6 +60,6 @@ Vá para a porta 5173 do localhost: http://localhost:5173
 
 ## Stack utilizada
 
-**Front-end:** React, Redux Toolkit, TailwindCSS, React Hook Form, React Icons, React Router Dom, React Responsive Paginate e React Toastify
+**Front-end:** React, Typescript, Redux Toolkit, TailwindCSS, React Hook Form, React Icons, React Router Dom, React Responsive Paginate e React Toastify
 
 **Back-end:** Json-server
