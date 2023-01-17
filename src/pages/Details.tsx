@@ -50,13 +50,13 @@ const Details = () => {
                 scope="col"
                 className="text-sm font-medium text-gray-200 px-6 py-4 text-left"
               >
-                #
+                Dados
               </th>
               <th
                 scope="col"
                 className="text-sm font-medium text-gray-200 px-6 py-4 text-left"
               >
-                First
+                Produto
               </th>
             </tr>
           </thead>

@@ -11,6 +11,7 @@
     "server": "json-server --watch db.json -m ./node_modules/json-server-auth"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.42.1",
