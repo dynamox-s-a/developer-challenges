@@ -1,7 +1,23 @@
+import { Inputs } from "@/types";
+import { handlePhone } from "@/utils/phoneMask";
 import Head from "next/head";
 import Link from "next/link";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 export default function Home() {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = ({ nome, email, empresa, tel }) =>
+    alert(`
+    Nome: ${nome}, 
+    Empresa: ${empresa},
+    Email: ${email},
+    Telefone: ${tel}
+  `);
   return (
     <>
       <Head>
@@ -122,30 +138,38 @@ export default function Home() {
         <h3 className="font-bold text-white text-3xl">
           Nós entramos em contato com você
         </h3>
-        <form className="flex flex-col w-96 mx-auto gap-3 mt-8">
+        <form
+          className="flex flex-col w-96 mx-auto gap-3 mt-8"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <input
             type="text"
             placeholder="Como gostaria de ser chamado?"
             className="text-center rounded py-3 placeholder:text-gray"
             required
+            {...register("nome")}
           />
           <input
             type="text"
             placeholder="Em qual empresa você trabalha?"
             className="text-center rounded py-3 placeholder:text-gray"
             required
+            {...register("empresa")}
           />
           <input
             type="email"
             placeholder="Digite aqui o seu email"
             className="text-center rounded py-3 placeholder:text-gray"
             required
+            {...register("email")}
           />
           <input
             type="tel"
             placeholder="Qual o seu telefone?"
             className="text-center rounded py-3 placeholder:text-gray"
             required
+            {...register("tel")}
+            onChange={handlePhone}
           />
           <button
             type="submit"
