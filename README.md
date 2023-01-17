@@ -2,10 +2,6 @@
 
 Implementei uma landing page com design pré definido, para ser visualizada em dispositivo desktop.
 
-Os requisitos funcionais:
-
-Protótipo do Figma
-
 Requisitos funcionais:
 
 - Header
