@@ -24,8 +24,12 @@ export const api = createApi({
       }),
     }),
 
-    getAllProducts: builder.query<ResponseProductType[], { page: number }>({
-      query: ({ page }) => `products?_limit=10&_page=${page}`,
+    getAllProducts: builder.query<
+      ResponseProductType[],
+      { page: number; sort: string }
+    >({
+      query: ({ page, sort }) =>
+        `products?_limit=10&_page=${page}&_sort=${sort}`,
     }),
 
     getSelectedProduct: builder.query<ResponseProductType, { id: string }>({
@@ -38,7 +42,6 @@ export const api = createApi({
         method: "POST",
         body: product,
       }),
-      invalidatesTags: ["Products"],
     }),
 
     updateProduct: builder.mutation({
@@ -54,7 +57,6 @@ export const api = createApi({
         url: `products/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Products"],
     }),
   }),
 });

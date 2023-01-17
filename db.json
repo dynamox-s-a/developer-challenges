@@ -21,6 +21,13 @@
       "preco": "R$ 20,00",
       "data_de_fabricacao": "27/03/2019",
       "produto_perecivel": false
+    },
+    {
+      "id": "4dd6d709-3259-470f-bbe6-03f9fb928292",
+      "nome": "Arroz",
+      "preco": "R$ 1.000,00",
+      "data_de_fabricacao": "22/11/2020",
+      "produto_perecivel": false
     }
   ]
 }

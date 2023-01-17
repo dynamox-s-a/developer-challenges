@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../app/hooks";
 import { logout, selectAuth } from "../features/auth.slice";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,11 +12,13 @@ import NotFound from "../components/NotFound";
 
 const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [sort, setSort] = useState("nome");
   const { email } = useAppSelector(selectAuth);
   const { data } = useGetAllProductsQuery(
-    { page: currentPage },
+    { page: currentPage, sort },
     { refetchOnMountOrArgChange: true }
   );
+  console.log("🚀 ~ file: Home.tsx:19 ~ Home ~ data", data);
   const totalPages = Math.ceil(products.length / 10);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -40,13 +42,33 @@ const Home = () => {
               {email}
             </h4>
           </div>
-          <Link to="/new" className="px-10 md:px-0">
-            <Button title="Adicionar Produto" />
-          </Link>
+          <div className="flex items-end gap-20">
+            <div className="w-1/2">
+              <label htmlFor="sort" className="text-white">
+                Ordenar por :
+              </label>
+              <select
+                className="w-full p-4 text-sm text-gray-600 border border-gray-200 rounded bg-gray-50 focus:outline-none"
+                id="sort"
+                defaultValue="nome"
+                onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                  setSort(e.target.value)
+                }
+              >
+                <option value="nome">Nome</option>
+                <option value="preco">Preço</option>
+                <option value="data_de_fabricacao">Data de Fabricação</option>
+              </select>
+            </div>
+
+            <Link to="/new" className="px-10 md:px-0 w-1/2">
+              <Button title="Adicionar Produto" />
+            </Link>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mx-10 md:mx-auto">
             {data?.length
-              ? data?.map((product, index) => (
-                  <div key={index}>
+              ? data?.map((product) => (
+                  <div key={product.id}>
                     <Link to={`/details/${product.id}`}>
                       <ProductCard
                         id={product.id}
