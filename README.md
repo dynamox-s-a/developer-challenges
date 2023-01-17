@@ -62,4 +62,4 @@ Vá para a porta 5173 do localhost: http://localhost:5173
 
 **Front-end:** React, Typescript, Redux Toolkit, TailwindCSS, React Hook Form, React Icons, React Router Dom, React Responsive Paginate e React Toastify
 
-**Back-end:** Json-server
+**Back-end:** Json-server, Json-server-auth
