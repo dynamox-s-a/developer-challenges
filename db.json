@@ -1,0 +1,26 @@
+{
+  "users": [
+    {
+      "email": "matheus@example.com",
+      "password": "$2a$10$HZkg1cAxMOagcXtw.4nr5OLnW4LaWW/WW45FW5lZW0qtbEa53fcVy",
+      "id": 1
+    }
+  ],
+  "products": [
+    {
+      "id": "9670a486-003e-4adb-a7d7-bd4e27acb61f",
+      "nome": "Linguiça",
+      "preco": "R$ 100,00",
+      "data_de_fabricacao": "10/02/2021",
+      "produto_perecivel": true,
+      "data_de_validade": "20/02/2021"
+    },
+    {
+      "id": "65a2ddbb-95c5-4b2d-8648-260933ff6608",
+      "nome": "Trigo",
+      "preco": "R$ 20,00",
+      "data_de_fabricacao": "27/03/2019",
+      "produto_perecivel": false
+    }
+  ]
+}
