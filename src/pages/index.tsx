@@ -5,12 +5,7 @@ import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 export default function Home() {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = ({ nome, email, empresa, tel }) =>
     alert(`
     Nome: ${nome}, 
@@ -67,7 +62,7 @@ export default function Home() {
             </h1>
             <img
               src="/logo-dynapredict.png"
-              alt="logo dynamox"
+              alt="logo-dynamox"
               draggable={false}
             />
           </div>
