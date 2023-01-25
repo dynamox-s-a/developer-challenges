@@ -15,11 +15,16 @@ export const Title = styled.h1`
   font-family: "Raleway";
   font-style: normal;
   font-weight: 700;
-  font-size: 40px;
+  font-size: 30px;
   line-height: 47px;
   text-align: center;
   color: #fff;
   margin-top: 41px;
   margin-bottom: 31px;
+
+  @media (min-width: 768px) and (max-width: 1300px) {
+    font-size: 25px;
+    line-height: 28px;
+  }
 `;
 

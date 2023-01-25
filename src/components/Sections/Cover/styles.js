@@ -6,7 +6,6 @@ export const Container = styled.section`
   justify-content: center;
   background-image: url("/grafismo.png");
   background-repeat: no-repeat;
-  /* background-size:100% 100%; */
   background-size: cover;
   background-position: center;
   overflow-x: hidden;
@@ -15,12 +14,13 @@ export const Container = styled.section`
     height: 627px;
     width: auto;
   }
-  /* @media (max-width: 1140px) {
-    .logo {
-      width: 62px;
-      height: 30px;
-    } */
-  /* } */
+
+  @media (min-width: 768px) and (max-width: 1300px) {
+    .desktopAndMobile {
+      height: 387px;
+      width: auto;
+    }
+  }
 `;
 
 export const Title = styled.div`
@@ -43,5 +43,23 @@ export const Title = styled.div`
     margin-top: 31px;
     width: 161px;
     height: auto;
+  }
+
+  @media (min-width: 768px) and (max-width: 1300px) {
+    margin: 74px 8px 0 46px;
+
+    h1 {
+      font-size: 50px;
+      width: 272px;
+      line-height: 54px;
+    }
+
+    .logoDynapredict {
+      margin-top: 15px;
+      width: 141px;
+      height: auto;
+    }
+
+    
   }
 `;
