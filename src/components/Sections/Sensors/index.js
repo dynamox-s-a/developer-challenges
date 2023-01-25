@@ -1,8 +1,32 @@
 import * as React from "react";
 import Image from "next/image";
-import { Container, Title, Description, ViewMoreButton } from "./styles";
+import {
+  Container,
+  Title,
+  Description,
+  ViewMoreButton,
+  SensorsDescription,
+  Sensor,
+} from "./styles";
+import sensorTCA from "@/assets/images/sensor-tca.png";
+import sensorAS from "@/assets/images/sensor-as.png";
+import sensorHF from "@/assets/images/sensor-hf.png";
 
 export default function Cover() {
+  const sensors = [
+    {
+      name: "TcA+",
+      image: sensorTCA,
+    },
+    {
+      name: "AS",
+      image: sensorAS,
+    },
+    {
+      name: "HF",
+      image: sensorHF,
+    },
+  ];
   return (
     <Container>
       <Title>Sensores para Manutenção Preditiva</Title>
@@ -14,18 +38,25 @@ export default function Cover() {
         centralizados na Plataforma DynaPredict Web para análise, prognóstico e
         tomada de decisão.
       </Description>
-      {/* <ViewMoreButton
-        onClick={() => {
-          window.location.href = "https://dynamox.net/dynapredict/";
-        }}
-      >
-        VER MAIS
-      </ViewMoreButton> */}
-      {/* <Image
-        src={desktopAndMobile}
-        alt="desktopAndMobile"
-        className="desktopAndMobile"
-      /> */}
+      <ViewMoreButton>
+        <button
+          onClick={() => {
+            window.location.href = "https://dynamox.net/dynapredict/";
+          }}
+        >
+          VER MAIS
+        </button>
+      </ViewMoreButton>
+      <SensorsDescription>
+        {sensors.map((sensor, index) => {
+          return (
+            <Sensor key={index}>
+              <Image src={sensor.image} alt={sensor.name} className="sensor" />
+              <p>{sensor.name}</p>
+            </Sensor>
+          );
+        })}
+      </SensorsDescription>
     </Container>
   );
 }
