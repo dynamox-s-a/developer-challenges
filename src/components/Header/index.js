@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import { Container } from "./styles";
 
-export default function Navigationbar() {
+export default function Header() {
   return (
     <Container>
       <Box sx={{ flexGrow: 1 }}>
