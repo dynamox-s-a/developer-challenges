@@ -33,21 +33,6 @@ export const ViewMoreButton = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 45px;
-
-  button {
-    width: 183px;
-    height: 39px;
-    background: #263252;
-    border-radius: 5px;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    font-family: "Raleway";
-    font-style: normal;
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 23px;
-  }
 `;
 
 export const SensorsDescription = styled.div`

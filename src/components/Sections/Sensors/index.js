@@ -11,6 +11,7 @@ import {
 import sensorTCA from "@/assets/images/sensor-tca.png";
 import sensorAS from "@/assets/images/sensor-as.png";
 import sensorHF from "@/assets/images/sensor-hf.png";
+import Button from "@/components/Button/Button";
 
 export default function Cover() {
   const sensors = [
@@ -39,13 +40,14 @@ export default function Cover() {
         tomada de decisão.
       </Description>
       <ViewMoreButton>
-        <button
+        <Button
+          color="secondary"
           onClick={() => {
             window.location.href = "https://dynamox.net/dynapredict/";
           }}
         >
           VER MAIS
-        </button>
+        </Button>
       </ViewMoreButton>
       <SensorsDescription>
         {sensors.map((sensor, index) => {

@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const Container = styled.section`
   display: flex;
   flex-direction: column;
+  align-items: center;
   background-color: #263252;
 `;
 
@@ -17,3 +18,4 @@ export const Title = styled.h1`
   margin-top: 41px;
   margin-bottom: 31px;
 `;
+
