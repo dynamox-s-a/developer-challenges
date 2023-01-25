@@ -26,7 +26,7 @@ export const Title = styled.div`
   display: flex;
   flex-direction: column;
   display: table-caption;
-  margin: 144px 16px 0 105px;
+  margin: 144px 16px 0 96px;
 
   h1 {
     font-family: "Raleway";
