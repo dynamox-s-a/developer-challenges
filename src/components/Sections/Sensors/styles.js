@@ -6,7 +6,7 @@ export const Container = styled.section`
   justify-content: center;
 `;
 
-export const Title = styled.h1`
+export const Title = styled.h2`
   font-family: "Raleway";
   font-style: normal;
   font-weight: 700;
