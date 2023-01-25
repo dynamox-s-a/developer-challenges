@@ -18,11 +18,12 @@ export default function Header() {
             background: "#263252",
             height: "120px",
           }}
+          elevation={0}
         >
           <Toolbar>
             <Typography
               component="div"
-              sx={{ flexGrow: 1, mt:"24px", ml:"77px" }}
+              sx={{ flexGrow: 1, mt: "24px", ml: "77px" }}
               style={{
                 justifyContent: "center",
               }}
