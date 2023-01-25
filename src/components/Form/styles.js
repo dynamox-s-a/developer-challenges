@@ -39,7 +39,7 @@ export const Form = styled.form`
 
   .error {
     color: #fc8181;
-    font-size: 0.75rem;
+    font-size: 15px;
     text-align: left;
     margin-top: 0.2rem;
     margin-bottom: 0.6rem;
