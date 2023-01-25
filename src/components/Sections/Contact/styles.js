@@ -5,6 +5,10 @@ export const Container = styled.section`
   flex-direction: column;
   align-items: center;
   background-color: #263252;
+
+  button {
+    margin-bottom: 41px;
+  }
 `;
 
 export const Title = styled.h1`

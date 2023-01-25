@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Container, Title, Row, TitleForm, Label } from "./styles";
-import Button from "@/components/Button/Button";
-import { useState, useContext } from "react";
+import { Container, Title } from "./styles";
+
+import Form from "@/components/Form/Form";
 
 export default function Cover() {
   return (
@@ -9,10 +9,8 @@ export default function Cover() {
       <Title>
         Ficou com dúvida? <br></br> Nós entramos em contato com você
       </Title>
-
-      <Button type="submit" color="primary">
-        Enviar
-      </Button>
+      <Form />
+      
     </Container>
   );
 }
