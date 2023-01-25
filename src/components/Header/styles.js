@@ -2,6 +2,9 @@ import styled from "styled-components";
 
 export const Container = styled.section`
   display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 
   .logo {
     width: 172px;

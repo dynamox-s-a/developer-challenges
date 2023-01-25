@@ -9,7 +9,6 @@ import Link from "@mui/material/Link";
 import { Container } from "./styles";
 
 export default function Header({pageRef}) {
-  console.log(pageRef[0]);
   return (
     <Container>
       <Box sx={{ flexGrow: 1 }}>

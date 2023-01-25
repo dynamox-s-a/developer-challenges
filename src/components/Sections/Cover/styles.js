@@ -36,6 +36,7 @@ export const Title = styled.div`
     font-size: 80px;
     line-height: 94px;
     color: #ffffff;
+    width: 472px;
   }
 
   .logoDynapredict {

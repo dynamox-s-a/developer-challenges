@@ -50,8 +50,11 @@ export const Sensor = styled.div`
   .sensor {
     width: 276.83px;
     height: auto;
-    margin-left: 66px;
     margin-bottom: 14px;
+  }
+
+  &:nth-child(2), &:nth-child(3) {
+    margin-left:66px;
   }
 
   p {
