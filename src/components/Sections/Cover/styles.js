@@ -1,13 +1,13 @@
 import styled from "styled-components";
-import grafismo from "@/assets/images/grafismo.png";
 
 export const Container = styled.section`
   display: flex;
   flex-direction: row;
-  background-image: linear-gradient(black, black);
-  /* background-image: url(${grafismo}); */
+  justify-content: center;
+  background-image: url("/grafismo.png");
   background-repeat: no-repeat;
-  background-size: auto;
+  /* background-size:100% 100%; */
+  background-size: cover;
   background-position: center;
 
   .desktopAndMobile {
