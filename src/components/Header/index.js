@@ -8,7 +8,8 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import { Container } from "./styles";
 
-export default function Header() {
+export default function Header({pageRef}) {
+  console.log(pageRef[0]);
   return (
     <Container>
       <Box sx={{ flexGrow: 1 }}>
@@ -34,8 +35,27 @@ export default function Header() {
             </Typography>
             <Box sx={{ mt: "44px" }}>
               <Link href="https://dynamox.net/dynapredict/">DynaPredict</Link>
-              <Link href="#">Sensores</Link>
-              <Link href="#">Contato</Link>
+              <Link
+                onClick={(e) => {
+                  e.preventDefault();
+                  pageRef[0].current.scrollIntoView({
+                    behavior: "smooth",
+                  });
+                }}
+              >
+                Sensores
+              </Link>
+              <Link
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  pageRef[1].current.scrollIntoView({
+                    behavior: "smooth",
+                  });
+                }}
+              >
+                Contato
+              </Link>
             </Box>
           </Toolbar>
         </AppBar>

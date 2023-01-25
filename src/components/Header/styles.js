@@ -17,6 +17,7 @@ export const Container = styled.section`
     line-height: 23px;
     color: #fff;
     margin-left: 37px;
+    cursor: pointer;
   }
 
   a:nth-child(1) {

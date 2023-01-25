@@ -1,4 +1,5 @@
 import * as React from "react";
+import { forwardRef } from "react";
 import Image from "next/image";
 import {
   Container,
@@ -13,7 +14,7 @@ import sensorAS from "@/assets/images/sensor-as.png";
 import sensorHF from "@/assets/images/sensor-hf.png";
 import Button from "@/components/Button/Button";
 
-export default function Cover() {
+export function Sensors(props, sensorsRef) {
   const sensors = [
     {
       name: "TcA+",
@@ -29,8 +30,8 @@ export default function Cover() {
     },
   ];
   return (
-    <Container>
-      <Title>Sensores para Manutenção Preditiva</Title>
+    <Container ref={sensorsRef}>
+      <Title >Sensores para Manutenção Preditiva</Title>
       <Description>
         Opções de sensores sem fio, ou DynaLoggers com sensores de vibração
         triaxial <br></br>e temperatura embarcados, que comunicam por Bluetooth
@@ -62,3 +63,5 @@ export default function Cover() {
     </Container>
   );
 }
+
+export default forwardRef(Sensors);
