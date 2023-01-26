@@ -1,0 +1,29 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "arroz",
+      "fabricationDate": "01/01/2023",
+      "perishable": false,
+      "validationDate": null,
+      "price": 500
+    },
+    {
+      "id": 2,
+      "name": "feijao",
+      "fabricationDate": "08/04/2022",
+      "perishable": false,
+      "validationDate": null,
+      "price": 400
+    },
+    {
+      "id": 3,
+      "name": "batata",
+      "fabricationDate": "08/04/2022",
+      "perishable": true,
+      "validationDate": "08/10/2022",
+      "price": 400
+    }
+  ],
+  "users": { "id": 1, "email": "user@user.com", "password": "user" }
+}
