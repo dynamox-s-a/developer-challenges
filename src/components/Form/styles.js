@@ -50,4 +50,12 @@ export const Form = styled.form`
     margin: 0px 0 5px 0;
     border-color: #fc8181;
   }
+
+  @media (max-width: 767px) {
+    .form__field {
+    border-radius: 0px;
+    width: 100vw;
+    height: 61px;
+  }
+}
 `;

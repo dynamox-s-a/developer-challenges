@@ -21,6 +21,12 @@ export const Title = styled.h2`
     line-height: 27px;
     margin-top: 55px;
   }
+
+  @media (max-width: 767px) {
+    font-size: 25px;
+    line-height: 27px;
+    margin-top: 55px;
+  }
 `;
 
 export const Description = styled.p`
@@ -36,11 +42,20 @@ export const Description = styled.p`
 
   @media (min-width: 768px) and (max-width: 1300px) {
     font-size: 20px;
-    line-height: 18px;
+    line-height: 28px;
     margin-top: 10px;
     margin-bottom: 10px;
     word-wrap: wrap;
-    padding:20px;
+    padding: 20px;
+  }
+
+  @media (max-width: 767px) {
+    font-size: 18px;
+    line-height: 28px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    word-wrap: wrap;
+    padding: 20px;
   }
 `;
 
@@ -58,7 +73,9 @@ export const SensorsDescription = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 45px;
-  @media (min-width: 768px) and (max-width: 1300px) {
+
+  @media (max-width: 767px) {
+    flex-direction: column;
   }
 `;
 
@@ -104,6 +121,26 @@ export const Sensor = styled.div`
 
     p {
       font-size: 30px;
+      line-height: 27px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    margin-bottom: 35px;
+
+    .sensor {
+      width: 220px;
+      height: auto;
+      margin-bottom: 14px;
+    }
+
+    &:nth-child(2),
+    &:nth-child(3) {
+      margin-left: 0px;
+    }
+
+    p {
+      font-size: 20px;
       line-height: 27px;
     }
   }

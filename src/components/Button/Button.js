@@ -22,6 +22,11 @@ const StyledMuiButton = styled(MuiButton)`
   font-size: 20px;
   line-height: 23px;
   color: #ffffff;
+
+  @media (max-width: 767px) {
+    width: 153px;
+    height: 29px;
+  }
 `;
 
 const theme = createTheme({

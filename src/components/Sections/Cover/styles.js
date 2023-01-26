@@ -21,6 +21,15 @@ export const Container = styled.section`
       width: auto;
     }
   }
+
+  @media (max-width: 767px) {
+    background-size: 145% 120%;
+    height: 180px;
+    background-position:  top left;
+    .desktopAndMobile {
+      display: none;
+    }
+  }
 `;
 
 export const Title = styled.div`
@@ -59,7 +68,21 @@ export const Title = styled.div`
       width: 141px;
       height: auto;
     }
+  }
 
-    
+  @media (max-width: 767px) {
+    margin: 20px 0px 0 -20px;
+
+    h1 {
+      font-size: 40px;
+      width: 272px;
+      line-height: 44px;
+    }
+
+    .logoDynapredict {
+      margin-top: 15px;
+      width: 141px;
+      height: auto;
+    }
   }
 `;

@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+import Header from "@/components/Header/index";
 import Cover from "@/components/Sections/Cover";
 import Sensors from "@/components/Sections/Sensors";
 import Contact from "@/components/Sections/Contact";

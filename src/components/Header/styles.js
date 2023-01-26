@@ -45,15 +45,21 @@ export const Container = styled.section`
     }
   }
 
-  /* @media (max-width: 767px) {
+  @media (max-width: 767px) {
     .logo {
-      width: 62px;
-      height: 30px;
+      width: 102px;
+      height: auto;
+      margin-left: -80px;
+      margin-top: 8px;
     }
-  } */
+
+    a {
+      font-size: 18px;
+    }
+    a:nth-child(3) {
+      margin-right: 15px;
+    }
+  }
 `;
 
-// export const StyledAppBar = styled(AppBar)`
-//   background: #263252;
-//   height: 120px;
-// `;
+

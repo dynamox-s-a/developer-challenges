@@ -26,5 +26,10 @@ export const Title = styled.h1`
     font-size: 25px;
     line-height: 28px;
   }
+
+  @media (max-width: 767px) {
+    font-size: 20px;
+    line-height: 28px;
+  }
 `;
 
