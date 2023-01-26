@@ -25,6 +25,13 @@ export default function HeaderMobile({ pageRef }) {
     setAnchorEl(null);
   };
 
+  // function scrollSensor() {
+  //   handleCloseMenu;
+  //   pageRef[0].current.scrollIntoView({
+  //     behavior: "smooth",
+  //   });
+  // }
+
   return (
     <StyledEngineProvider injectFirst>
       <Container>
