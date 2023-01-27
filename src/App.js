@@ -3,6 +3,7 @@ import React from "react";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import { ToastContainer } from "react-toastify";
+import ProtectedRouteGuard from "./utils/ProtectRouteGuard";
 
 export default function App() {
   return (
@@ -12,7 +13,14 @@ export default function App() {
         <div>
           <Routes>
             <Route path="/" element={<Login />}></Route>
-            <Route path="/dashboard" element={<Dashboard />}></Route>
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRouteGuard>
+                  <Dashboard />
+                </ProtectedRouteGuard>
+              }
+            ></Route>
           </Routes>
         </div>
       </BrowserRouter>
