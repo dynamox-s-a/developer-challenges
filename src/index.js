@@ -5,7 +5,8 @@ import { store } from "./app/store";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-import "./assets/styles/reset.css"
+import "react-toastify/dist/ReactToastify.css";
+import "./assets/styles/reset.css";
 import "./assets/styles/style.css";
 
 const container = document.getElementById("root");

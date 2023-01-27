@@ -25,5 +25,16 @@
       "price": 400
     }
   ],
-  "users": { "id": 1, "email": "user@user.com", "password": "user" }
+  "users": [
+    {
+      "email": "a@a.com",
+      "password": "$2a$10$VZKUg7KEqOv.bamRXxXfgOfWTHW3vLqUp4YXFrf17pYdXGWlX8BCm",
+      "id": 1
+    },
+    {
+      "email": "b@a.com",
+      "password": "$2a$10$jTMdNv.23kPzVye5DSjXNOwCjiGiQvsR.h.SDmtLHbIVJjAaBFC06",
+      "id": 2
+    }
+  ]
 }
