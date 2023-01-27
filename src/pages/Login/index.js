@@ -7,8 +7,7 @@ import { Form } from "./styles";
 import { Formik } from "formik";
 import { loginSchema } from "../../schemas/loginSchema";
 import { Button } from "./styles";
-import { Navigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { postUser } from "../../features/users/usersSlice";
 
 export default function Login() {
