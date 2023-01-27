@@ -8,16 +8,17 @@ import { Formik } from "formik";
 import { loginSchema } from "../../schemas/loginSchema";
 import { Button } from "./styles";
 import { PostLogin } from "../../services/authApi";
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 export default function Login() {
+  const [setValue] = useLocalStorage("desafio02/barbara-rech", "");
   const navigate = useNavigate();
 
   async function submitLogin(values) {
-    // event.preventDefault();
     try {
-      const response = await PostLogin(values.email, values.password);
-      console.log(response.accessToken);
-      // setUserData(userData);
+      const user = await PostLogin(values.email, values.password);
+      setValue(user);
+
       toast("Login realizado com sucesso!");
       navigate("/dashboard");
     } catch (err) {
