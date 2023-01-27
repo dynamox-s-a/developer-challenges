@@ -4,12 +4,12 @@ export const Header = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   margin-top: 40px;
-  padding: 20px;
+  padding: 10px;
   width: 80vw;
-  border-radius: 20px;
-  background-color: #fff9;
+  border-radius: 10px;
+  background-color: #fff;
 
   button,
   p {
@@ -67,7 +67,7 @@ export const Footer = styled.div`
     padding: 20px;
     justify-content: center;
     align-items: center;
-    background-color: #fff9;
+    background-color: #fff;
     line-height: 20px;
     border-radius: 15px;
     margin-bottom: 40px;

@@ -3,6 +3,7 @@ import { getProducts } from "../../services/apiProducts";
 import RenderProducts from "./renderProducts";
 import { Header, Footer } from "./styles";
 import { useNavigate } from "react-router-dom";
+import CustomizedMenu from "./orderByMenu";
 
 export default function Dashboard() {
   const [products, setProducts] = useState([]);
@@ -25,8 +26,8 @@ export default function Dashboard() {
   return (
     <>
       <Header>
-        <button onClick={() => navigate("/products/new")}>Novo produto</button>
-        <p>Ordenar por</p>
+        <button onClick={() => navigate("/products/new")}>NOVO PRODUTO</button>
+        <p>{CustomizedMenu()}</p>
       </Header>
       {RenderProducts(products)}
       <Footer>
