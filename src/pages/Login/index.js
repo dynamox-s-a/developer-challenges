@@ -27,7 +27,7 @@ export default function Login() {
       );
 
       toast("Login realizado com sucesso!");
-      navigate("/dashboard");
+      navigate("/products");
     } catch (err) {
       toast(`Não foi possível fazer o login! ${err}`);
     }

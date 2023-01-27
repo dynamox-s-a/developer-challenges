@@ -2,7 +2,7 @@
   "products": [
     {
       "id": 1,
-      "name": "arroz",
+      "name": "Arroz",
       "fabricationDate": "01/01/2023",
       "perishable": false,
       "validationDate": null,
@@ -10,7 +10,7 @@
     },
     {
       "id": 2,
-      "name": "feijao",
+      "name": "Feijao",
       "fabricationDate": "08/04/2022",
       "perishable": false,
       "validationDate": null,
@@ -18,7 +18,79 @@
     },
     {
       "id": 3,
-      "name": "batata",
+      "name": "Batata",
+      "fabricationDate": "08/04/2022",
+      "perishable": true,
+      "validationDate": "08/10/2022",
+      "price": 400
+    },
+    {
+      "id": 4,
+      "name": "Arroz",
+      "fabricationDate": "01/01/2023",
+      "perishable": false,
+      "validationDate": null,
+      "price": 500
+    },
+    {
+      "id": 5,
+      "name": "Feijao",
+      "fabricationDate": "08/04/2022",
+      "perishable": false,
+      "validationDate": null,
+      "price": 400
+    },
+    {
+      "id": 6,
+      "name": "Batata",
+      "fabricationDate": "08/04/2022",
+      "perishable": true,
+      "validationDate": "08/10/2022",
+      "price": 400
+    },
+    {
+      "id": 7,
+      "name": "Arroz",
+      "fabricationDate": "01/01/2023",
+      "perishable": false,
+      "validationDate": null,
+      "price": 500
+    },
+    {
+      "id": 8,
+      "name": "Feijao",
+      "fabricationDate": "08/04/2022",
+      "perishable": false,
+      "validationDate": null,
+      "price": 400
+    },
+    {
+      "id": 9,
+      "name": "Batata",
+      "fabricationDate": "08/04/2022",
+      "perishable": true,
+      "validationDate": "08/10/2022",
+      "price": 400
+    },
+    {
+      "id": 10,
+      "name": "Arroz",
+      "fabricationDate": "01/01/2023",
+      "perishable": false,
+      "validationDate": null,
+      "price": 500
+    },
+    {
+      "id": 11,
+      "name": "Feijao",
+      "fabricationDate": "08/04/2022",
+      "perishable": false,
+      "validationDate": null,
+      "price": 400
+    },
+    {
+      "id": 12,
+      "name": "Batata",
       "fabricationDate": "08/04/2022",
       "perishable": true,
       "validationDate": "08/10/2022",

@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { getProducts } from "../../services/apiProducts";
 import RenderProducts from "./renderProducts";
+import { Header, Footer } from "./styles";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function ViewProducts() {
@@ -19,6 +22,16 @@ export default function Dashboard() {
     ViewProducts();
   }, []);
 
-  
-  return RenderProducts(products);
+  return (
+    <>
+      <Header>
+        <button onClick={() => navigate("/products/new")}>Novo produto</button>
+        <p>Ordenar por</p>
+      </Header>
+      {RenderProducts(products)}
+      <Footer>
+        <p>Próxima página</p>
+      </Footer>
+    </>
+  );
 }

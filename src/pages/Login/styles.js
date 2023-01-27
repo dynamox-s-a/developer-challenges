@@ -21,7 +21,6 @@ export const Form = styled.form`
   .form__field {
     border: 0;
     outline: 0;
-    font-family: "Raleway";
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
