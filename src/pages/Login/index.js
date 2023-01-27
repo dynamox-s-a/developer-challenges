@@ -7,17 +7,25 @@ import { Form } from "./styles";
 import { Formik } from "formik";
 import { loginSchema } from "../../schemas/loginSchema";
 import { Button } from "./styles";
-import { PostLogin } from "../../services/authApi";
-import useLocalStorage from "../../hooks/useLocalStorage";
+import { Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { postUser } from "../../features/users/usersSlice";
 
 export default function Login() {
-  const [setValue] = useLocalStorage("desafio02/barbara-rech", "");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   async function submitLogin(values) {
     try {
-      const user = await PostLogin(values.email, values.password);
-      setValue(user);
+      const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIyQHVzZXIuY29tIiwiaWF0IjoxNjc0ODI2MjM3LCJleHAiOjE2NzQ4Mjk4MzcsInN1YiI6IjcifQ.tpZdn8QqezHnm5EWcxWYfa0w_CjtgUHGaDm8bBd5W3w";
+
+      dispatch(
+        postUser({
+          email: values.email,
+          token: token,
+        })
+      );
 
       toast("Login realizado com sucesso!");
       navigate("/dashboard");

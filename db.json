@@ -24,27 +24,5 @@
       "validationDate": "08/10/2022",
       "price": 400
     }
-  ],
-  "users": [
-    {
-      "email": "a@a.com",
-      "password": "$2a$10$VZKUg7KEqOv.bamRXxXfgOfWTHW3vLqUp4YXFrf17pYdXGWlX8BCm",
-      "id": 1
-    },
-    {
-      "email": "b@a.com",
-      "password": "$2a$10$jTMdNv.23kPzVye5DSjXNOwCjiGiQvsR.h.SDmtLHbIVJjAaBFC06",
-      "id": 2
-    },
-    {
-      "email": "gwe@sgs.com",
-      "password": "$2a$10$6AzjPBf1wvg6dK2FbxmPuOexjdIA6SIE6qsd9A9lL8HKY9alLjEtq",
-      "id": 3
-    },
-    {
-      "email": "vew@ba.com",
-      "password": "$2a$10$EPwxDY7QXTrh6lq3mBbJK.o5ekPgMR.SNxYnBQe1UEqjBNvoc8m6q",
-      "id": 4
-    }
   ]
 }

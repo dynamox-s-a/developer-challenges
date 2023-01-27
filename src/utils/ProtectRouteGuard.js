@@ -1,11 +1,11 @@
-import useLocalStorage from "../hooks/useLocalStorage";
-import {  Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function ProtectedRouteGuard({ children }) {
-  const [storedValue] = useLocalStorage("desafio02/barbara-rech", "");
-  const token = storedValue.accessToken;
+  const user = useSelector((state) => state.users);
 
-  if (!token) {
+  console.log(user);
+  if (user.length === 0) {
     return <Navigate to="/" />;
   }
 
