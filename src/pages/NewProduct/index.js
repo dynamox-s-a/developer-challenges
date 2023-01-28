@@ -136,6 +136,7 @@ export default function NewProduct() {
                 InputLabelProps={{
                   shrink: true,
                 }}
+                disabled={!values.perishable}
                 className={
                   errors.expirationDate && touched.expirationDate
                     ? " form__field input-error"
