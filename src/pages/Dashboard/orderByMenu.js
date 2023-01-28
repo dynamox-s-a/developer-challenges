@@ -5,7 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
-export default function CustomizedMenu() {
+export default function OrderByMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -31,13 +31,7 @@ export default function CustomizedMenu() {
       >
         Ordenar por
       </Button>
-      <Menu
-        id="menu"
-       
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-      >
+      <Menu id="menu" anchorEl={anchorEl} open={open} onClose={handleClose}>
         <MenuItem onClick={handleClose} disableRipple>
           Nome
         </MenuItem>

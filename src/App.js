@@ -4,7 +4,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import NewProduct from "./pages/NewProduct";
 import { ToastContainer } from "react-toastify";
-import ProtectedRouteGuard from "./utils/ProtectRouteGuard";
+import ProtectedRouteGuard from "./utils/protectRouteGuard";
 
 export default function App() {
   return (
