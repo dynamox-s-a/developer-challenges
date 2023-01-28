@@ -5,10 +5,18 @@ import CreateAndEdit from "../../layouts/CreateAndEdit";
 import { Title } from "./styles";
 import { Form } from "./styles";
 import { Formik, Field, FormikProps } from "formik";
-import { loginSchema } from "../../schemas/loginSchema";
+import { productSchema } from "../../schemas/productSchema";
 import { Button } from "./styles";
 import useConfigHeaders from "../../utils/useConfigHeaders";
 import { postNewProduct } from "../../services/apiProducts";
+import {
+  Box,
+  TextField,
+  FormControl,
+  Select,
+  MenuItem,
+  InputLabel,
+} from "@mui/material";
 
 export default function NewProduct() {
   const config = useConfigHeaders();
@@ -16,6 +24,7 @@ export default function NewProduct() {
 
   async function submitNewProduct(values) {
     try {
+      alert(JSON.stringify(values))
       await postNewProduct(values, config);
       toast("Produto adicionado com sucesso!");
       navigate("/products");
@@ -23,7 +32,7 @@ export default function NewProduct() {
       toast(`Não foi possível cadastrar o produto! ${err}`);
     }
   }
-
+ 
   return (
     <CreateAndEdit>
       <Title>Adicionar produto</Title>
@@ -35,7 +44,7 @@ export default function NewProduct() {
           expirationDate: "",
           price: "",
         }}
-        validationSchema={loginSchema}
+        // validationSchema={productSchema}
         onSubmit={(values) => {
           submitNewProduct(values);
         }}
@@ -50,14 +59,18 @@ export default function NewProduct() {
         }) => (
           <>
             <Form onSubmit={handleSubmit} autoComplete="off">
-              <input
+              <TextField
                 value={values.name}
                 onChange={handleChange}
                 id="name"
                 onBlur={handleBlur}
                 name="name"
                 type="text"
-                placeholder="Nome do produto"
+                label="Nome do produto"
+                placeholder=""
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 className={
                   errors.name && touched.name
                     ? " form__field input-error"
@@ -68,14 +81,18 @@ export default function NewProduct() {
                 <p className="error">{errors.name}</p>
               )}
 
-              <input
+              <TextField
                 value={values.fabricationDate}
                 onChange={handleChange}
                 id="fabricationDate"
                 onBlur={handleBlur}
                 name="fabricationDate"
                 type="date"
-                placeholder="Digite aqui a data de fabricação"
+                label="Data de fabricação"
+                placeholder="Data de fabricação"
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 className={
                   errors.fabricationDate && touched.fabricationDate
                     ? " form__field input-error"
@@ -86,38 +103,39 @@ export default function NewProduct() {
                 <p className="error">{errors.fabricationDate}</p>
               )}
 
-              <input
-                value={values.perishable}
-                onChange={handleChange}
-                id="perishable"
-                onBlur={handleBlur}
-                name="perishable"
-                type="text"
-                placeholder="O produto é perecível?"
-                className={
-                  errors.perishable && touched.perishable
-                    ? " form__field input-error"
-                    : "form__field"
-                }
-              />
-              {errors.perishable && touched.perishable && (
-                <p className="error">{errors.perishable}</p>
-              )}
+              <Box>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    Perecível?
+                  </InputLabel>
+                  <Select
+                    labelId="perishable"
+                    id="perishable"
+                    name="perishable"
+                    value={values.perishable}
+                    label="perishable"
+                    onChange={handleChange}
+                    color="success"
+                    required
+                  >
+                    <MenuItem value={true}>Sim</MenuItem>
+                    <MenuItem value={false}>Não</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
 
-              <Field as="select" name="O produto é perecível?">
-                <option value='true'>Sim</option>
-                <option value="false">Não</option>
-              </Field>
-
-              <input
+              <TextField
                 value={values.expirationDate}
                 onChange={handleChange}
                 id="expirationDate"
                 onBlur={handleBlur}
                 name="expirationDate"
-                type="text"
-                placeholder="Digite aqui a data de validade"
-                onFocus="(this.type='date')"
+                type="date"
+                label="Data de validade"
+                placeholder="Data de validade"
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 className={
                   errors.expirationDate && touched.expirationDate
                     ? " form__field input-error"
@@ -128,14 +146,18 @@ export default function NewProduct() {
                 <p className="error">{errors.expirationDate}</p>
               )}
 
-              <input
+              <TextField
                 value={values.price}
                 onChange={handleChange}
                 id="price"
                 onBlur={handleBlur}
                 name="price"
                 type="number"
-                placeholder="Preço"
+                label="Preço do produto"
+                placeholder="R$"
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 className={
                   errors.price && touched.price
                     ? " form__field input-error"
