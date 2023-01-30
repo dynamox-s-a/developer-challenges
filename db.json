@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "Arroz",
-      "fabricationDate": "01/01/2023",
+      "fabricationDate": "2023-01-30",
       "perishable": false,
       "expirationDate": null,
       "price": 5
@@ -11,7 +11,7 @@
     {
       "id": 2,
       "name": "Feijão",
-      "fabricationDate": "08/04/2022",
+      "fabricationDate": "2023-01-30",
       "perishable": false,
       "expirationDate": null,
       "price": 4
@@ -27,7 +27,7 @@
     {
       "id": 4,
       "name": "Arroz",
-      "fabricationDate": "01/01/2023",
+      "fabricationDate": "2023-01-30",
       "perishable": false,
       "expirationDate": null,
       "price": 5
@@ -35,7 +35,7 @@
     {
       "id": 5,
       "name": "Feijão",
-      "fabricationDate": "08/04/2022",
+      "fabricationDate": "2023-01-30",
       "perishable": false,
       "expirationDate": null,
       "price": 4
@@ -43,15 +43,15 @@
     {
       "id": 6,
       "name": "Batata",
-      "fabricationDate": "08/04/2022",
+      "fabricationDate": "2023-01-30",
       "perishable": true,
-      "expirationDate": "08/10/2022",
+      "expirationDate": "2023-02-30",
       "price": 4
     },
     {
       "id": 7,
       "name": "Arroz",
-      "fabricationDate": "01/01/2023",
+      "fabricationDate": "2023-01-30",
       "perishable": false,
       "expirationDate": null,
       "price": 5
@@ -59,7 +59,7 @@
     {
       "id": 8,
       "name": "Feijão",
-      "fabricationDate": "08/04/2022",
+      "fabricationDate": "2023-01-30",
       "perishable": false,
       "expirationDate": null,
       "price": 4
@@ -67,15 +67,15 @@
     {
       "id": 9,
       "name": "Batata",
-      "fabricationDate": "08/04/2022",
+      "fabricationDate": "2023-01-30",
       "perishable": true,
-      "expirationDate": "08/10/2022",
+      "expirationDate": "2023-02-30",
       "price": 4
     },
     {
       "id": 10,
       "name": "Arroz",
-      "fabricationDate": "01/01/2023",
+      "fabricationDate": "2023-01-30",
       "perishable": false,
       "expirationDate": null,
       "price": 5
@@ -83,7 +83,7 @@
     {
       "id": 11,
       "name": "Feijão",
-      "fabricationDate": "08/04/2022",
+      "fabricationDate": "2023-01-30",
       "perishable": false,
       "expirationDate": null,
       "price": 4
@@ -91,9 +91,9 @@
     {
       "id": 12,
       "name": "Batata",
-      "fabricationDate": "08/04/2022",
+      "fabricationDate": "2023-01-30",
       "perishable": true,
-      "expirationDate": "08/10/2022",
+      "expirationDate": "2023-02-03",
       "price": 4
     },
     {
@@ -135,6 +135,14 @@
       "expirationDate": "2023-02-03",
       "price": 4.76,
       "id": 17
+    },
+    {
+      "name": "Alho",
+      "fabricationDate": "2022-12-15",
+      "perishable": true,
+      "expirationDate": "2022-12-29",
+      "price": 4.65,
+      "id": 18
     }
   ]
 }

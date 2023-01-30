@@ -1,14 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Title } from "./styles";
-import { Form } from "./styles";
 import { Formik } from "formik";
-import { Button } from "./styles";
-import CreateAndEdit from "../../layouts/CreateAndEdit";
-import { productSchema } from "../../schemas/productSchema";
-import useConfigHeaders from "../../utils/useConfigHeaders";
-import { postNewProduct, editProduct } from "../../services/apiProducts";
 import {
   Box,
   TextField,
@@ -17,7 +10,12 @@ import {
   MenuItem,
   InputLabel,
 } from "@mui/material";
-import formatDate from "../../utils/formatDate";
+import { Title, Form, Button } from "./styles";
+import CreateAndEdit from "../../layouts/CreateAndEdit";
+import { productSchema } from "../../schemas/productSchema";
+import useConfigHeaders from "../../utils/useConfigHeaders";
+import { postNewProduct, editProduct } from "../../services/apiProducts";
+import formatDate from "../../utils/formatDateForm";
 
 export default function SubmitProduct({ product, page }) {
   const config = useConfigHeaders();
