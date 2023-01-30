@@ -25,7 +25,7 @@ export default function NewProduct() {
   async function submitNewProduct(values) {
     try {
       alert(JSON.stringify(values))
-      await postNewProduct(values, config);
+      // await postNewProduct(values, config);
       toast("Produto adicionado com sucesso!");
       navigate("/products");
     } catch (err) {
@@ -44,7 +44,7 @@ export default function NewProduct() {
           expirationDate: "",
           price: "",
         }}
-        // validationSchema={productSchema}
+        validationSchema={productSchema}
         onSubmit={(values) => {
           submitNewProduct(values);
         }}
@@ -92,6 +92,10 @@ export default function NewProduct() {
                 placeholder="Data de fabricação"
                 InputLabelProps={{
                   shrink: true,
+                }}
+                inputProps={{
+                  min: "10/10/2022",
+                  max: "01/01/2023",
                 }}
                 className={
                   errors.fabricationDate && touched.fabricationDate

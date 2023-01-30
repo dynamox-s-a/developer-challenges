@@ -10,4 +10,5 @@ export default styled.div`
   border-radius: 20px;
   margin-top: 10vh;
   margin-bottom: 10vh;
+  padding: 20px;
 `;

@@ -95,6 +95,14 @@
       "perishable": true,
       "expirationDate": "08/10/2022",
       "price": 400
+    },
+    {
+      "name": "",
+      "fabricationDate": "",
+      "perishable": false,
+      "expirationDate": "",
+      "price": "",
+      "id": 13
     }
   ]
 }
