@@ -97,20 +97,12 @@
       "price": 400
     },
     {
-      "name": "",
-      "fabricationDate": "",
-      "perishable": false,
-      "expirationDate": "",
-      "price": "",
-      "id": 13
-    },
-    {
-      "name": "couve",
+      "name": "Couve",
       "fabricationDate": "2023-01-30",
       "perishable": true,
       "expirationDate": "2023-02-03",
       "price": 1000,
-      "id": 14
+      "id": 13
     },
     {
       "name": "Sal",
@@ -118,7 +110,23 @@
       "perishable": false,
       "expirationDate": "",
       "price": 590,
+      "id": 14
+    },
+    {
+      "name": "Açúcar",
+      "fabricationDate": "2023-01-04",
+      "perishable": false,
+      "expirationDate": "",
+      "price": 986,
       "id": 15
+    },
+    {
+      "name": "Acelga",
+      "fabricationDate": "2023-01-25",
+      "perishable": true,
+      "expirationDate": "2023-02-01",
+      "price": 238,
+      "id": 16
     }
   ]
 }

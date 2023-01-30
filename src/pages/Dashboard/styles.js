@@ -36,11 +36,16 @@ export const Container = styled.section`
   min-height: 200px;
 `;
 
-export const Title = styled.h6`
+export const Title = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   font-size: 30px;
   font-weight: 700;
   margin-bottom: 35px;
   color: #7d92e8;
+  width: 100%;
 `;
 
 export const Description = styled.h6`

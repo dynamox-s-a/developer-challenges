@@ -16,7 +16,6 @@ export default function Dashboard() {
       try {
         const products = await getProducts(config);
         setProducts(products);
-        console.log(products);
       } catch (error) {
         console.log(error);
         alert(error.message);
