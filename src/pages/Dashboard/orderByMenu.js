@@ -5,7 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
-export default function OrderByMenu() {
+export default function OrderByMenu({ sort, setSort }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -32,13 +32,13 @@ export default function OrderByMenu() {
         Ordenar por
       </Button>
       <Menu id="menu" anchorEl={anchorEl} open={open} onClose={handleClose}>
-        <MenuItem onClick={handleClose} disableRipple>
+        <MenuItem onClick={() => setSort("name")} disableRipple>
           Nome
         </MenuItem>
-        <MenuItem onClick={handleClose} disableRipple>
+        <MenuItem onClick={() => setSort("fabricationDate")} disableRipple>
           Data de Fabricação
         </MenuItem>
-        <MenuItem onClick={handleClose} disableRipple>
+        <MenuItem onClick={() => setSort("price")} disableRipple>
           Preço
         </MenuItem>
       </Menu>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useReducer } from "react";
 import { getProducts } from "../../services/apiProducts";
 import RenderProducts from "./renderProducts";
 import { Header, Footer } from "./styles";
@@ -8,13 +8,17 @@ import useConfigHeaders from "../../utils/useConfigHeaders";
 
 export default function Dashboard() {
   const config = useConfigHeaders();
-  const [products, setProducts] = useState([]);
   const navigate = useNavigate();
+
+  const [page, setPage] = useState(1);
+  const [sort, setSort] = useState("");
+
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     async function ViewProducts() {
       try {
-        const products = await getProducts(config);
+        const products = await getProducts(page, sort, config);
         setProducts(products);
       } catch (error) {
         console.log(error);
@@ -22,17 +26,30 @@ export default function Dashboard() {
       }
     }
     ViewProducts();
-  }, []);
+  }, [page, sort]);
 
   return (
     <>
       <Header>
         <button onClick={() => navigate("/products/new")}>NOVO PRODUTO</button>
-        <p>{OrderByMenu()}</p>
+        <p>{OrderByMenu({sort, setSort})}</p>
       </Header>
       {RenderProducts(products)}
       <Footer>
-        <p>Próxima página</p>
+        <p
+          onClick={() => {
+            if (page > 1) setPage(page - 1);
+          }}
+        >
+          Página anterior
+        </p>
+        <p
+          onClick={() => {
+            setPage(page + 1);
+          }}
+        >
+          Próxima página
+        </p>
       </Footer>
     </>
   );

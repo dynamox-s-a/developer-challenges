@@ -8,7 +8,7 @@ export default function RenderProducts(products) {
   const navigate = useNavigate();
 
   if (products.length === 0) {
-    return <p>Não há nenhum produto cadastrado ainda!</p>;
+    return;
   }
 
   return products.map((product, index) => {

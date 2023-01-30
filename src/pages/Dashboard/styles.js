@@ -54,29 +54,7 @@ export const Description = styled.h6`
   color: #5b5b5b;
 `;
 
-export const Footer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-  margin-top: 40px;
-  /* padding: 20px; */
-  width: 80vw;
-  font-size: 18px;
-  border-radius: 20px;
-  color: #7d92e8;
-  font-weight: 700;
-
-  p,
-  a {
-    padding: 20px;
-    justify-content: center;
-    align-items: center;
-    background-color: #fff;
-    line-height: 20px;
-    border-radius: 15px;
-    margin-bottom: 40px;
-    text-decoration: none;
-    cursor: pointer;
-  }
+export const Footer = styled(Header)`
+  padding: 20px;
+  margin-bottom: 40px;
 `;

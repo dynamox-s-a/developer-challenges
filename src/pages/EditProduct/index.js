@@ -13,7 +13,6 @@ export default function EditProduct() {
     async function GetProduct() {
       try {
         const product = await getProductById(id, config);
-        console.log(product);
         setProduct(product);
       } catch (error) {
         console.log(error);
