@@ -9,5 +9,6 @@ export default function formatDateRender(date) {
     "/" +
     dateArray[0]
   ).substring();
+
   return formattedDate;
 }

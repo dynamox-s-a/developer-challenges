@@ -1,10 +1,10 @@
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import React from "react";
+import { ToastContainer } from "react-toastify";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import NewProduct from "./pages/NewProduct";
 import EditProduct from "./pages/EditProduct";
-import { ToastContainer } from "react-toastify";
 import ProtectedRouteGuard from "./utils/protectRouteGuard";
 
 export default function App() {

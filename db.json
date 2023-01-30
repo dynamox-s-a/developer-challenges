@@ -17,7 +17,7 @@
       "price": 4
     },
     {
-      "name": "Batata Baby",
+      "name": "Batata",
       "fabricationDate": "2022-08-04",
       "perishable": true,
       "expirationDate": "2022-08-10",
@@ -26,7 +26,7 @@
     },
     {
       "id": 4,
-      "name": "Arroz",
+      "name": "Vinagre",
       "fabricationDate": "2023-01-30",
       "perishable": false,
       "expirationDate": null,
@@ -34,7 +34,7 @@
     },
     {
       "id": 5,
-      "name": "Feijão",
+      "name": "Farinha de mandioca",
       "fabricationDate": "2023-01-30",
       "perishable": false,
       "expirationDate": null,
@@ -42,7 +42,7 @@
     },
     {
       "id": 6,
-      "name": "Batata",
+      "name": "Tomate",
       "fabricationDate": "2023-01-30",
       "perishable": true,
       "expirationDate": "2023-02-30",
@@ -50,7 +50,7 @@
     },
     {
       "id": 7,
-      "name": "Arroz",
+      "name": "Farinha de trigo",
       "fabricationDate": "2023-01-30",
       "perishable": false,
       "expirationDate": null,
@@ -58,7 +58,7 @@
     },
     {
       "id": 8,
-      "name": "Feijão",
+      "name": "Pipoca",
       "fabricationDate": "2023-01-30",
       "perishable": false,
       "expirationDate": null,
@@ -66,7 +66,7 @@
     },
     {
       "id": 9,
-      "name": "Batata",
+      "name": "Abóbora",
       "fabricationDate": "2023-01-30",
       "perishable": true,
       "expirationDate": "2023-02-30",
@@ -74,7 +74,7 @@
     },
     {
       "id": 10,
-      "name": "Arroz",
+      "name": "Macarrão",
       "fabricationDate": "2023-01-30",
       "perishable": false,
       "expirationDate": null,
@@ -82,7 +82,7 @@
     },
     {
       "id": 11,
-      "name": "Feijão",
+      "name": "Café",
       "fabricationDate": "2023-01-30",
       "perishable": false,
       "expirationDate": null,
@@ -90,7 +90,7 @@
     },
     {
       "id": 12,
-      "name": "Batata",
+      "name": "Alface",
       "fabricationDate": "2023-01-30",
       "perishable": true,
       "expirationDate": "2023-02-03",

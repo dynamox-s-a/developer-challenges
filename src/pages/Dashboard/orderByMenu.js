@@ -1,8 +1,5 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-
+import { Button, Menu, MenuItem } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 export default function OrderByMenu({ sort, setSort }) {
@@ -27,6 +24,7 @@ export default function OrderByMenu({ sort, setSort }) {
         variant="contained"
         disableElevation
         onClick={handleClick}
+        sx={{ ":hover": { bgcolor: "transparent"} }}
         endIcon={<KeyboardArrowDownIcon />}
       >
         Ordenar por

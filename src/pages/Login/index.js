@@ -1,13 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import Auth from "../../layouts/Auth";
-import { Title } from "./styles";
-import { Form } from "./styles";
-import { Formik } from "formik";
-import { loginSchema } from "../../schemas/loginSchema";
-import { Button } from "./styles";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { Formik } from "formik";
+import Auth from "../../layouts/Auth";
+import { Title, Form, Button } from "./styles";
+import { loginSchema } from "../../schemas/loginSchema";
 import { postUser } from "../../features/users/usersSlice";
 
 export default function Login() {

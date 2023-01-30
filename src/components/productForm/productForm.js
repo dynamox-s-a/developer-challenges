@@ -13,9 +13,9 @@ import {
 import { Title, Form, Button } from "./styles";
 import CreateAndEdit from "../../layouts/CreateAndEdit";
 import { productSchema } from "../../schemas/productSchema";
+import formatDate from "../../utils/formatDateForm";
 import useConfigHeaders from "../../utils/useConfigHeaders";
 import { postNewProduct, editProduct } from "../../services/apiProducts";
-import formatDate from "../../utils/formatDateForm";
 
 export default function SubmitProduct({ product, page }) {
   const config = useConfigHeaders();

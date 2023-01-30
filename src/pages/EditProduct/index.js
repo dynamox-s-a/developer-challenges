@@ -1,7 +1,7 @@
-import SubmitProduct from "../../components/productForm/productForm";
-import { getProductById } from "../../services/apiProducts";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import SubmitProduct from "../../components/productForm/productForm";
+import { getProductById } from "../../services/apiProducts";
 import useConfigHeaders from "../../utils/useConfigHeaders";
 
 export default function EditProduct() {

@@ -1,10 +1,10 @@
-import { useEffect, useState, useReducer } from "react";
-import { getProducts } from "../../services/apiProducts";
-import RenderProducts from "./renderProducts";
-import { Header, Footer } from "./styles";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import OrderByMenu from "./orderByMenu";
+import { Header, Footer } from "./styles";
+import { getProducts } from "../../services/apiProducts";
 import useConfigHeaders from "../../utils/useConfigHeaders";
+import RenderProducts from "./renderProducts";
+import OrderByMenu from "./orderByMenu";
 
 export default function Dashboard() {
   const config = useConfigHeaders();
