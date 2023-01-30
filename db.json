@@ -103,6 +103,22 @@
       "expirationDate": "",
       "price": "",
       "id": 13
+    },
+    {
+      "name": "couve",
+      "fabricationDate": "2023-01-30",
+      "perishable": true,
+      "expirationDate": "2023-02-03",
+      "price": 1000,
+      "id": 14
+    },
+    {
+      "name": "Sal",
+      "fabricationDate": "2023-01-26",
+      "perishable": false,
+      "expirationDate": "",
+      "price": 590,
+      "id": 15
     }
   ]
 }

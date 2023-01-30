@@ -24,15 +24,14 @@ export default function NewProduct() {
 
   async function submitNewProduct(values) {
     try {
-      alert(JSON.stringify(values))
-      // await postNewProduct(values, config);
+      await postNewProduct({ ...values, price: values.price * 100 }, config);
       toast("Produto adicionado com sucesso!");
       navigate("/products");
     } catch (err) {
       toast(`Não foi possível cadastrar o produto! ${err}`);
     }
   }
- 
+
   return (
     <CreateAndEdit>
       <Title>Adicionar produto</Title>
