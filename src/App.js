@@ -3,6 +3,7 @@ import React from "react";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import NewProduct from "./pages/NewProduct";
+import EditProduct from "./pages/EditProduct";
 import { ToastContainer } from "react-toastify";
 import ProtectedRouteGuard from "./utils/protectRouteGuard";
 
@@ -20,12 +21,21 @@ export default function App() {
                 <ProtectedRouteGuard>
                   <Dashboard />
                 </ProtectedRouteGuard>
-              }></Route>
-              <Route
+              }
+            ></Route>
+            <Route
               path="/products/new"
               element={
                 <ProtectedRouteGuard>
                   <NewProduct />
+                </ProtectedRouteGuard>
+              }
+            ></Route>
+            <Route
+              path="/products/:id/edit"
+              element={
+                <ProtectedRouteGuard>
+                  <EditProduct />
                 </ProtectedRouteGuard>
               }
             ></Route>

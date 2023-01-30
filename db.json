@@ -6,7 +6,7 @@
       "fabricationDate": "01/01/2023",
       "perishable": false,
       "expirationDate": null,
-      "price": 500
+      "price": 5
     },
     {
       "id": 2,
@@ -14,15 +14,15 @@
       "fabricationDate": "08/04/2022",
       "perishable": false,
       "expirationDate": null,
-      "price": 400
+      "price": 4
     },
     {
-      "id": 3,
-      "name": "Batata",
-      "fabricationDate": "08/04/2022",
+      "name": "Batata Baby",
+      "fabricationDate": "2022-08-04",
       "perishable": true,
-      "expirationDate": "08/10/2022",
-      "price": 400
+      "expirationDate": "2022-08-10",
+      "price": 4,
+      "id": 3
     },
     {
       "id": 4,
@@ -30,7 +30,7 @@
       "fabricationDate": "01/01/2023",
       "perishable": false,
       "expirationDate": null,
-      "price": 500
+      "price": 5
     },
     {
       "id": 5,
@@ -38,7 +38,7 @@
       "fabricationDate": "08/04/2022",
       "perishable": false,
       "expirationDate": null,
-      "price": 400
+      "price": 4
     },
     {
       "id": 6,
@@ -46,7 +46,7 @@
       "fabricationDate": "08/04/2022",
       "perishable": true,
       "expirationDate": "08/10/2022",
-      "price": 400
+      "price": 4
     },
     {
       "id": 7,
@@ -54,7 +54,7 @@
       "fabricationDate": "01/01/2023",
       "perishable": false,
       "expirationDate": null,
-      "price": 500
+      "price": 5
     },
     {
       "id": 8,
@@ -62,7 +62,7 @@
       "fabricationDate": "08/04/2022",
       "perishable": false,
       "expirationDate": null,
-      "price": 400
+      "price": 4
     },
     {
       "id": 9,
@@ -70,7 +70,7 @@
       "fabricationDate": "08/04/2022",
       "perishable": true,
       "expirationDate": "08/10/2022",
-      "price": 400
+      "price": 4
     },
     {
       "id": 10,
@@ -78,7 +78,7 @@
       "fabricationDate": "01/01/2023",
       "perishable": false,
       "expirationDate": null,
-      "price": 500
+      "price": 5
     },
     {
       "id": 11,
@@ -86,7 +86,7 @@
       "fabricationDate": "08/04/2022",
       "perishable": false,
       "expirationDate": null,
-      "price": 400
+      "price": 4
     },
     {
       "id": 12,
@@ -94,14 +94,14 @@
       "fabricationDate": "08/04/2022",
       "perishable": true,
       "expirationDate": "08/10/2022",
-      "price": 400
+      "price": 4
     },
     {
       "name": "Couve",
       "fabricationDate": "2023-01-30",
       "perishable": true,
       "expirationDate": "2023-02-03",
-      "price": 1000,
+      "price": 10,
       "id": 13
     },
     {
@@ -109,7 +109,7 @@
       "fabricationDate": "2023-01-26",
       "perishable": false,
       "expirationDate": "",
-      "price": 590,
+      "price": 5.9,
       "id": 14
     },
     {
@@ -117,7 +117,7 @@
       "fabricationDate": "2023-01-04",
       "perishable": false,
       "expirationDate": "",
-      "price": 986,
+      "price": 9.86,
       "id": 15
     },
     {
@@ -125,8 +125,16 @@
       "fabricationDate": "2023-01-25",
       "perishable": true,
       "expirationDate": "2023-02-01",
-      "price": 238,
+      "price": 2.38,
       "id": 16
+    },
+    {
+      "name": "Cebola",
+      "fabricationDate": "2023-01-27",
+      "perishable": true,
+      "expirationDate": "2023-02-03",
+      "price": 4.76,
+      "id": 17
     }
   ]
 }

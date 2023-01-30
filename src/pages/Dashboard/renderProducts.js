@@ -1,9 +1,11 @@
 import { Container, Title, Description } from "./styles";
 import formatPrice from "../../utils/formatPrice";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
-import Link from "@mui/material/Link";
+import { useNavigate } from "react-router-dom";
 
 export default function RenderProducts(products) {
+  const navigate = useNavigate();
+
   if (products.length === 0) {
     return <p>Não há nenhum produto cadastrado ainda!</p>;
   }
@@ -13,9 +15,11 @@ export default function RenderProducts(products) {
       <Container key={index}>
         <Title>
           {product.name}
-          <Link href={`/products/${product.id}/edit`} underline="none">
-            <BorderColorIcon className="editIcon" />
-          </Link>
+
+          <BorderColorIcon
+            className="editIcon"
+            onClick={() => navigate(`/products/${product.id}/edit`)}
+          />
         </Title>
         <Description>Data de fabricação: {product.fabricationDate}</Description>
         <Description>

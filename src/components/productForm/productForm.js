@@ -5,10 +5,10 @@ import { Title } from "./styles";
 import { Form } from "./styles";
 import { Formik } from "formik";
 import { Button } from "./styles";
-import CreateAndEdit from "../layouts/CreateAndEdit";
-import { productSchema } from "../schemas/productSchema";
-import useConfigHeaders from "../utils/useConfigHeaders";
-import { postNewProduct } from "../services/apiProducts";
+import CreateAndEdit from "../../layouts/CreateAndEdit";
+import { productSchema } from "../../schemas/productSchema";
+import useConfigHeaders from "../../utils/useConfigHeaders";
+import { postNewProduct, editProduct } from "../../services/apiProducts";
 import {
   Box,
   TextField,
@@ -17,14 +17,21 @@ import {
   MenuItem,
   InputLabel,
 } from "@mui/material";
+import formatDate from "../../utils/formatDate";
 
-export default function SubmitProduct() {
+export default function SubmitProduct({ product, page }) {
   const config = useConfigHeaders();
   const navigate = useNavigate();
 
   async function postProduct(values) {
     try {
-      await postNewProduct({ ...values, price: values.price * 100 }, config);
+      if (page === "newProductPage") {
+        await postNewProduct(values, config);
+      } else {
+        await editProduct(product.id, values, config);
+      }
+
+      console.log(values);
       toast("Produto adicionado com sucesso!");
       navigate("/products");
     } catch (err) {
@@ -34,19 +41,22 @@ export default function SubmitProduct() {
 
   return (
     <CreateAndEdit>
-      <Title>Adicionar produto</Title>
+      <Title>
+        {page === "newProductPage" ? "Adicionar produto" : "Editar produto"}
+      </Title>
       <Formik
         initialValues={{
-          name: "",
-          fabricationDate: "",
-          perishable: "",
-          expirationDate: "",
-          price: "",
+          name: product.name || "",
+          fabricationDate: formatDate(product.fabricationDate) || "",
+          perishable: product.perishable || "",
+          expirationDate: formatDate(product.expirationDate) || "",
+          price: product.price || "",
         }}
         validationSchema={productSchema}
         onSubmit={(values) => {
           postProduct(values);
         }}
+        enableReinitialize
       >
         {({
           values,
@@ -66,7 +76,7 @@ export default function SubmitProduct() {
                 name="name"
                 type="text"
                 label="Nome do produto"
-                placeholder=""
+                placeholder={values.name || "Nome do produto"}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -88,13 +98,9 @@ export default function SubmitProduct() {
                 name="fabricationDate"
                 type="date"
                 label="Data de fabricação"
-                placeholder="Data de fabricação"
+                placeholder={"Data de fabricação"}
                 InputLabelProps={{
                   shrink: true,
-                }}
-                inputProps={{
-                  min: "10/10/2022",
-                  max: "01/01/2023",
                 }}
                 className={
                   errors.fabricationDate && touched.fabricationDate
@@ -158,7 +164,7 @@ export default function SubmitProduct() {
                 name="price"
                 type="number"
                 label="Preço do produto"
-                placeholder="R$"
+                placeholder={values.price || "R$"}
                 InputLabelProps={{
                   shrink: true,
                 }}
