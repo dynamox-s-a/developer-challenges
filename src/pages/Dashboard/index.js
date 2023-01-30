@@ -26,7 +26,7 @@ export default function Dashboard() {
       }
     }
     ViewProducts();
-  }, [page, sort]);
+  });
 
   return (
     <>

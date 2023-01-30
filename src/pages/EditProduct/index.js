@@ -20,7 +20,7 @@ export default function EditProduct() {
       }
     }
     GetProduct();
-  }, []);
+  });
 
   return <SubmitProduct product={product} page={"editproduct"} />;
 }
