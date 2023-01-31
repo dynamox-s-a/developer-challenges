@@ -1,38 +1,52 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# <p align = "center"> Desafio 01 - Dyx </p>
 
-## Getting Started
+<p align="center">
+   <img src="data:image/png;base64,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"/>
+</p>
 
-First, run the development server:
+<p align = "center">
+   <img src="https://img.shields.io/badge/author-Bárbara_Rech-45132d?style=flat-square" />
+</p>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+
+##  :clipboard: Description
+
+This is a Next.js landing page bootstrapped with create-next-app.
+
+## :computer: Technologies
+  - NextJS
+  - MUI Materials
+  - Styled-components
+  - Yup
+  - Eslint
+
+## 🏁 Running the application
+
+Make sure you have the latest stable version of [Node.js](https://nodejs.org/en/download/) and [npm](https://www.npmjs.com/) running locally.
+
+First, clone this repository:
+
 ```
+git clone https://github.com/barbararech/teste-front-end.git
+```
+Switch to branch 'desafio-01':
+
+```
+git checkout desafio-01/barbara-rech
+```
+
+Inside the folder, run the following command to install the dependencies.
+
+```
+npm install
+```
+
+Then, run
+
+```
+npm run dev
+```
+to open the project on localhost in your browser.
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
