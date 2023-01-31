@@ -8,17 +8,17 @@
    <img src="https://img.shields.io/badge/author-Bárbara_Rech-45132d?style=flat-square" />
 </p>
 
-
-##  :clipboard: Description
+## :clipboard: Description
 
 This is a Next.js landing page bootstrapped with create-next-app.
 
 ## :computer: Technologies
-  - NextJS
-  - MUI Materials
-  - Styled-components
-  - Yup
-  - Eslint
+
+- NextJS
+- MUI Materials
+- Styled-components
+- Yup
+- Eslint
 
 ## 🏁 Running the application
 
@@ -29,6 +29,7 @@ First, clone this repository:
 ```
 git clone https://github.com/barbararech/teste-front-end.git
 ```
+
 Switch to branch 'desafio-01':
 
 ```
@@ -46,7 +47,7 @@ Then, run
 ```
 npm run dev
 ```
+
 to open the project on localhost in your browser.
 
 Open [http://localhost:3000](http://localhost:3000) to see the result.
-
