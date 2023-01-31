@@ -48,5 +48,5 @@ npm run dev
 ```
 to open the project on localhost in your browser.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the result.
 
