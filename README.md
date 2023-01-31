@@ -1,4 +1,69 @@
-# Getting Started with Create React App and Redux
+# <p align = "center"> Desafio 02 - Dynamox </p>
+
+<p align="center">
+   <img src="https://theme.zdassets.com/theme_assets/9620204/0651d93480a183f0842b7ad8c033ff863880de83.png"  width="400"/>
+</p>
+
+<p align = "center">
+   <img src="https://img.shields.io/badge/author-Bárbara_Rech-45132d?style=flat-square" />
+</p>
+
+
+##  :clipboard: Description
+
+This is a React.js project bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+
+## :computer: Technologies
+  - ReactJS
+  - Redux
+  - JSON Server
+  - MUI Materials
+  - Styled-components
+  - Yup
+  - Formik
+  - Eslint
+
+## 🏁 Running the application
+
+Make sure you have the latest stable version of [Node.js](https://nodejs.org/en/download/) and [npm](https://www.npmjs.com/) running locally.
+
+First, clone this repository:
+
+```
+git clone https://github.com/barbararech/teste-front-end.git
+```
+Switch to branch 'desafio-02':
+
+```
+git checkout desafio-02/barbara-rech
+```
+
+Inside the folder, run the following command to install the dependencies.
+
+```
+npm install
+```
+
+Run
+
+```
+npm run startApi
+```
+to start json server.
+
+Then, in another terminal, run
+
+```
+npm run start
+```
+
+to open the project on localhost in your browser.
+
+Open [http://localhost:3001](http://localhost:3001) to see the result.
+
+
+
+<!-- # Getting Started with Create React App and Redux
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
@@ -43,4 +108,4 @@ You don't have to ever use `eject`. The curated feature set is suitable for smal
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+To learn React, check out the [React documentation](https://reactjs.org/). -->
