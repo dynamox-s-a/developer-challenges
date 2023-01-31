@@ -5,7 +5,7 @@ export const contactSchema = yup.object().shape({
   company: yup.string().required("O campo empresa é obrigatório!"),
   email: yup
     .string()
-    .email("Please enter a valid email")
+    .email("Insira um email válido!")
     .required("O campo email é obrigatório!"),
   phone: yup.string().required("O campo telefone é obrigatório!"),
 });

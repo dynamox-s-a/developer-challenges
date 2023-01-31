@@ -32,4 +32,3 @@ export const Title = styled.h1`
     line-height: 28px;
   }
 `;
-

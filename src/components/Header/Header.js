@@ -1,14 +1,9 @@
 import * as React from "react";
 import Image from "next/image";
-import logo from "@/assets/images/logo-dynamox.png";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
-import { StyledEngineProvider } from "@mui/material/styles";
+import {AppBar, Box, Toolbar,Typography, Link } from "@mui/material";
+import { StyledEngineProvider, styled } from "@mui/material/styles";
 import { Container } from "./styles";
-import { styled } from "@mui/material/styles";
+import logo from "@/assets/images/logo-dynamox.png";
 
 const StyledAppBar = styled(AppBar)`
   background-color: #263252;

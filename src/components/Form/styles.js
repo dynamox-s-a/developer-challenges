@@ -53,9 +53,9 @@ export const Form = styled.form`
 
   @media (max-width: 767px) {
     .form__field {
-    border-radius: 0px;
-    width: 100vw;
-    height: 61px;
+      border-radius: 0px;
+      width: 100vw;
+      height: 61px;
+    }
   }
-}
 `;

@@ -1,18 +1,20 @@
 import * as React from "react";
 import Image from "next/image";
-import logo from "@/assets/images/logo-dynamox.png";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
-import IconButton from "@mui/material/IconButton";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  Typography,
+  Link,
+  IconButton,
+  Menu,
+  MenuItem,
+  StyledEngineProvider,
+  styled,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import { StyledEngineProvider } from "@mui/material/styles";
 import { Container } from "./styles";
-import { styled } from "@mui/material/styles";
+import logo from "@/assets/images/logo-dynamox.png";
 
 export default function HeaderMobile({ pageRef }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -24,13 +26,6 @@ export default function HeaderMobile({ pageRef }) {
   const handleCloseMenu = () => {
     setAnchorEl(null);
   };
-
-  // function scrollSensor() {
-  //   handleCloseMenu;
-  //   pageRef[0].current.scrollIntoView({
-  //     behavior: "smooth",
-  //   });
-  // }
 
   return (
     <StyledEngineProvider injectFirst>

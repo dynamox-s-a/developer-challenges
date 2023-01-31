@@ -31,7 +31,7 @@ export function Sensors(props, sensorsRef) {
   ];
   return (
     <Container ref={sensorsRef}>
-      <Title >Sensores para Manutenção Preditiva</Title>
+      <Title>Sensores para Manutenção Preditiva</Title>
       <Description>
         Opções de sensores sem fio, ou DynaLoggers com sensores de vibração
         triaxial <br></br>e temperatura embarcados, que comunicam por Bluetooth

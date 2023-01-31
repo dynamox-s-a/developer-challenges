@@ -1,4 +1,3 @@
-import * as React from "react";
 import { forwardRef } from "react";
 import { Container, Title } from "./styles";
 import Form from "@/components/Form/Form";

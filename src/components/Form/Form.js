@@ -1,13 +1,10 @@
-import { Form } from "./styles";
 import React from "react";
 import { Formik } from "formik";
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
-import Stack from "@mui/material/Stack";
+import { Form } from "./styles";
 import Button from "@/components/Button/Button";
 import { contactSchema } from "@/schemas/contactSchema";
 
-export default function SignInForm() {
+export default function ContactForm() {
   return (
     <>
       <Formik
