@@ -1,8 +1,8 @@
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import SubmitProduct from "../../components/productForm/productForm";
-import { getProductById } from "../../services/apiProducts";
-import useConfigHeaders from "../../utils/useConfigHeaders";
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import SubmitProduct from '../../components/productForm/productForm';
+import { getProductById } from '../../services/apiProducts';
+import useConfigHeaders from '../../utils/useConfigHeaders';
 
 export default function EditProduct() {
   const { id } = useParams();
@@ -15,6 +15,7 @@ export default function EditProduct() {
         const product = await getProductById(id, config);
         setProduct(product);
       } catch (error) {
+        /* eslint-disable */
         console.log(error);
         alert(error.message);
       }
@@ -22,5 +23,5 @@ export default function EditProduct() {
     GetProduct();
   });
 
-  return <SubmitProduct product={product} page={"editproduct"} />;
+  return <SubmitProduct product={product} page={'editproduct'} />;
 }

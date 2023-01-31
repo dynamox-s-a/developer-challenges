@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export default styled.div`
   background-color: #fff9;
@@ -7,7 +7,6 @@ export default styled.div`
   align-items: center;
   flex-direction: column;
   height: 50vh;
-  border-radius:20px;
+  border-radius: 20px;
   margin-top: 200px;
 `;
-

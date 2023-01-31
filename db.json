@@ -2,10 +2,10 @@
   "products": [
     {
       "name": "Arroz",
-      "fabricationDate": "2023-01-08",
+      "fabricationDate": "2023-01-11",
       "perishable": false,
       "expirationDate": "",
-      "price": 5.35,
+      "price": 5.85,
       "id": 1
     },
     {
@@ -151,6 +151,14 @@
       "expirationDate": "2023-02-02",
       "price": 4.99,
       "id": 19
+    },
+    {
+      "name": "Banana",
+      "fabricationDate": "2023-01-27",
+      "perishable": true,
+      "expirationDate": "2023-02-09",
+      "price": 3.45,
+      "id": 20
     }
   ]
 }

@@ -1,13 +1,13 @@
-import SubmitProduct from "../../components/productForm/productForm";
+import SubmitProduct from '../../components/productForm/productForm';
 
 export default function NewProduct() {
   const product = {
-    name: "",
-    fabricationDate: "",
-    perishable: "",
-    expirationDate: "",
-    price: "",
+    name: '',
+    fabricationDate: '',
+    perishable: '',
+    expirationDate: '',
+    price: ''
   };
 
-  return <SubmitProduct product={product} page={"newProductPage"} />;
+  return <SubmitProduct product={product} page={'newProductPage'} />;
 }

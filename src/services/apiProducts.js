@@ -1,7 +1,6 @@
-import api from "./api";
+import api from './api';
 
 export async function getProducts(page, sort, config) {
-  console.log(page);
   const response = await api.get(
     `/products?_page=${page}&_limit=10&_sort=${sort}&_order=asc`,
     config
@@ -15,7 +14,7 @@ export async function getProductById(id, config) {
 }
 
 export async function postNewProduct(values, config) {
-  const response = await api.post("/products", values, config);
+  const response = await api.post('/products', values, config);
   return response.data;
 }
 

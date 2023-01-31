@@ -1,8 +1,8 @@
-import * as React from "react";
-import { Button, Menu, MenuItem } from "@mui/material";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import * as React from 'react';
+import { Button, Menu, MenuItem } from '@mui/material';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-export default function OrderByMenu({ sort, setSort }) {
+export default function OrderByMenu({ setSort }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -18,25 +18,24 @@ export default function OrderByMenu({ sort, setSort }) {
     <div>
       <Button
         id="button"
-        aria-controls={open ? "menu" : undefined}
+        aria-controls={open ? 'menu' : undefined}
         aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
+        aria-expanded={open ? 'true' : undefined}
         variant="contained"
         disableElevation
         onClick={handleClick}
-        sx={{ ":hover": { bgcolor: "transparent"} }}
-        endIcon={<KeyboardArrowDownIcon />}
-      >
+        sx={{ ':hover': { bgcolor: 'transparent' } }}
+        endIcon={<KeyboardArrowDownIcon />}>
         Ordenar por
       </Button>
       <Menu id="menu" anchorEl={anchorEl} open={open} onClose={handleClose}>
-        <MenuItem onClick={() => setSort("name")} disableRipple>
+        <MenuItem onClick={() => setSort('name')} disableRipple>
           Nome
         </MenuItem>
-        <MenuItem onClick={() => setSort("fabricationDate")} disableRipple>
+        <MenuItem onClick={() => setSort('fabricationDate')} disableRipple>
           Data de Fabricação
         </MenuItem>
-        <MenuItem onClick={() => setSort("price")} disableRipple>
+        <MenuItem onClick={() => setSort('price')} disableRipple>
           Preço
         </MenuItem>
       </Menu>
