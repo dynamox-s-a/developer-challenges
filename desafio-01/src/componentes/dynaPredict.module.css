@@ -1,0 +1,48 @@
+.top {
+display: flex;
+background-size: cover;
+height: 720px;
+justify-content: center;
+background-color:  #263252;
+}
+
+.maxWidth {
+    width: 1280px;
+}
+
+.content {
+    background-image: url("../../public/grafismo.svg");
+    font-family: 'Noto Sans', sans-serif;
+    color: white;
+    height: 720px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 80px;
+    line-height: 94px;
+}
+
+.content .text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start ;
+    margin-bottom: 150px;
+}
+
+.content .text .title {
+    width: 472px;
+    height: 188px;
+}
+
+.content .text img {
+    margin-top: 31px;
+    margin-left: 5px;
+}
+
+.content img {
+    margin-bottom: 50px;
+}
+

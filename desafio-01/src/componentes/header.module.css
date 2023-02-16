@@ -1,0 +1,40 @@
+.Header {
+    background-color: #263252;
+    height: 120px;
+    font-family: 'Noto Sans', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.maxWidth{
+    width: 1280px;
+}
+.content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+.content img {
+    margin-left: 77px;
+}
+
+.buttons {
+    width: 450px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    list-style-type: none;
+    color: white;
+    
+}
+
+.buttons li {
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 23px;
+margin-bottom: 5px;
+
+color: #FFFFFF;
+}

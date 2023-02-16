@@ -1,0 +1,88 @@
+.center {
+    height: 820px;
+    font-family: 'Noto Sans', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: white;
+}
+
+.maxWidth {
+    width: 1280px;
+}
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center ;
+}
+.content .text{
+    margin-top: 95px;
+}
+
+.content .text .title {
+    font-weight: 700;
+    font-size: 40px;
+    color: #37383D;
+}
+.content .text p {
+    height: 158px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 28px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #454545;
+    
+}
+.center .content a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 183px;
+    height: 39px;
+    background: #263252;
+    border-radius: 5px;
+    color: white;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 23px;
+    text-transform: uppercase;
+    margin-top: 27px;
+    border: 0px solid;
+}
+
+.center .content a:hover {
+    background: rgb(226, 223, 223);
+    color: #263252;
+}
+.center .content a:active {
+    vertical-align: top;
+    font-size: 25px;
+}
+
+.center .content .images{
+    margin-top: 95px, 39px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 1000px;
+}
+
+.center .content .images .containerImg{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 47px;
+    color: #5D7A8C;
+
+}
