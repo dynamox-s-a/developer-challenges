@@ -1,0 +1,45 @@
+{
+  "name": "desafio-02",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "api":"json-server --watch db.json --port 3004"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/material": "^5.11.9",
+    "@mui/x-data-grid": "^5.17.23",
+    "@mui/x-date-pickers": "^5.0.18",
+    "@next/font": "13.1.6",
+    "@reduxjs/toolkit": "^1.9.2",
+    "@types/node": "18.13.0",
+    "@types/react": "18.0.28",
+    "@types/react-dom": "18.0.10",
+    "@types/react-redux": "^7.1.25",
+    "dayjs": "^1.11.7",
+    "email-validator": "^2.0.4",
+    "next": "13.1.6",
+    "next-auth": "^4.19.2",
+    "next-redux-wrapper": "^8.1.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-redux": "^8.0.5",
+    "redux": "^4.2.1",
+    "typescript": "4.9.5"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "@typescript-eslint/parser": "^5.52.0",
+    "eslint": "^8.34.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-import-resolver-typescript": "^3.5.3",
+    "eslint-plugin-prettier": "^4.2.1",
+    "json-server": "^0.17.1",
+    "prettier": "^2.8.4"
+  }
+}

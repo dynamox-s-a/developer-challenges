@@ -1,0 +1,9 @@
+.dashboard{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Noto Sans', sans-serif;
+    background-image: url('../../public/grafismo.svg');
+    background-size: cover;
+}

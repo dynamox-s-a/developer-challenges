@@ -1,0 +1,30 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.GridRowModes = exports.GridEditModes = exports.GridCellModes = void 0;
+// TODO v6: rename to GridEditingState
+var GridEditModes;
+exports.GridEditModes = GridEditModes;
+
+(function (GridEditModes) {
+  GridEditModes["Cell"] = "cell";
+  GridEditModes["Row"] = "row";
+})(GridEditModes || (exports.GridEditModes = GridEditModes = {}));
+
+var GridCellModes;
+exports.GridCellModes = GridCellModes;
+
+(function (GridCellModes) {
+  GridCellModes["Edit"] = "edit";
+  GridCellModes["View"] = "view";
+})(GridCellModes || (exports.GridCellModes = GridCellModes = {}));
+
+var GridRowModes;
+exports.GridRowModes = GridRowModes;
+
+(function (GridRowModes) {
+  GridRowModes["Edit"] = "edit";
+  GridRowModes["View"] = "view";
+})(GridRowModes || (exports.GridRowModes = GridRowModes = {}));

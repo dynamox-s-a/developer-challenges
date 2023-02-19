@@ -1,0 +1,18 @@
+.login{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Noto Sans', sans-serif;
+  color: #217bd4;
+  text-transform: uppercase;
+  background-color: #263252;
+}
+
+.login .inputs{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 30px;
+}

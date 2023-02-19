@@ -1,0 +1,34 @@
+.topbar {
+    display: flex;
+    flex-direction: row;
+    height: 100px;
+    align-items: center;
+    justify-content: center;
+    background-color: #263252;
+    font-family: 'Noto Sans', sans-serif
+}
+
+.maxWidth {
+    width: 1280px;
+    
+}
+
+.content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.content .userInfos {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 300px;
+}
+
+.content .userInfos {
+    color: #1976d2;
+}
+

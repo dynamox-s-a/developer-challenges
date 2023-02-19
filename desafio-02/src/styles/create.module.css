@@ -1,0 +1,13 @@
+.create{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 20px;
+    text-align: center;
+    color: #217bd4;
+    width:100%;
+    background-color: #217bd4;
+}

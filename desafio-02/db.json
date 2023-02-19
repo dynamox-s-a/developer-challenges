@@ -1,0 +1,222 @@
+{
+  "products": [
+    {
+      "name": "livro",
+      "fabricationDate": "16/02/2023",
+      "perecive": false,
+      "price": 30,
+      "id": 8
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "email": "felippe@gmail.com",
+      "senha": "123456",
+      "token": "meutoken"
+    },
+    {
+      "email": "iphone@gmail.com",
+      "senha": "123456",
+      "token": 24,
+      "id": 2
+    },
+    {
+      "email": "felippe2@gmail.com",
+      "senha": "123654",
+      "token": 26,
+      "id": 3
+    },
+    {
+      "email": "felippe@gmail.com",
+      "senha": "123456",
+      "token": 25,
+      "id": 4
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 5
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 6
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 7
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 8
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 9
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 10
+    },
+    {
+      "email": "admin@admin.com",
+      "senha": "123456",
+      "id": 11
+    },
+    {
+      "email": "admin@admin.com",
+      "password": "123456",
+      "id": 12
+    },
+    {
+      "email": "admin@admin.com",
+      "password": "123456",
+      "id": 13
+    },
+    {
+      "email": "admin@admin.com",
+      "password": "123456",
+      "id": 14
+    },
+    {
+      "email": "admin@admin.com",
+      "password": "123456",
+      "id": 15
+    },
+    {
+      "email": "admin@admin.com",
+      "password": "123456",
+      "id": 16
+    },
+    {
+      "email": "admin@admin.com",
+      "password": "123456",
+      "id": 17
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 18
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 19
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 20
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 21
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 22
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 23
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 24
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 25
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 26
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 27
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 28
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 29
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 30
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 31
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 32
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 33
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 34
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 35
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 36
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 37
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 38
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 39
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 40
+    },
+    {
+      "email": "felippe@gmail.com",
+      "password": "123456",
+      "id": 41
+    }
+  ]
+}
