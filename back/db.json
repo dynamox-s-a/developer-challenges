@@ -1,0 +1,172 @@
+{
+  "products": [
+    {
+      "name": "Leite1",
+      "manufacturing_date": "2023-03-02",
+      "perishable": "false",
+      "expiration_date": "",
+      "price": "40",
+      "id": 2
+    },
+    {
+      "name": "abacate",
+      "manufacturing_date": "2023-03-02",
+      "perishable": "false",
+      "expiration_date": "",
+      "price": "1",
+      "id": 3
+    },
+    {
+      "name": "limão",
+      "manufacturing_date": "2023-03-04",
+      "perishable": "false",
+      "expiration_date": "",
+      "price": "0.50",
+      "id": 4
+    },
+    {
+      "name": "777",
+      "manufacturing_date": "2023-03-02",
+      "perishable": "false",
+      "expiration_date": "",
+      "price": "123",
+      "id": 6
+    },
+    {
+      "name": "melancia",
+      "manufacturing_date": "2023-03-02",
+      "perishable": "true",
+      "expiration_date": "2023-03-30",
+      "price": "238",
+      "id": 7
+    },
+    {
+      "name": "teste b",
+      "manufacturing_date": "2023-03-02",
+      "perishable": "false",
+      "expiration_date": "",
+      "price": "32",
+      "id": 8
+    },
+    {
+      "name": "aaaaaaaaaaaaaaaaaaa",
+      "manufacturing_date": "2023-03-02",
+      "perishable": "false",
+      "expiration_date": "",
+      "price": "23",
+      "id": 9
+    },
+    {
+      "name": "SHUAHSUAHSUHAU",
+      "manufacturing_date": "2023-03-02",
+      "perishable": "false",
+      "expiration_date": "",
+      "price": "23",
+      "id": 10
+    },
+    {
+      "name": "bbb",
+      "manufacturing_date": "2023-09-29",
+      "perishable": "false",
+      "expiration_date": "",
+      "price": "32",
+      "id": 12
+    },
+    {
+      "name": "cerveja",
+      "manufacturing_date": "2023-03-01",
+      "perishable": "false",
+      "expiration_date": "",
+      "price": "13",
+      "id": 13
+    },
+    {
+      "name": "ccccccccccc",
+      "manufacturing_date": "2023-03-02",
+      "perishable": "false",
+      "expiration_date": "",
+      "price": "23",
+      "id": 14
+    },
+    {
+      "name": "teste validação",
+      "manufacturing_date": "2023-03-03",
+      "perishable": "true",
+      "expiration_date": "2023-03-23",
+      "price": "23",
+      "id": 15
+    },
+    {
+      "name": "777",
+      "manufacturing_date": "2023-03-04",
+      "perishable": "true",
+      "expiration_date": "2023-03-31",
+      "price": "34",
+      "id": 16
+    },
+    {
+      "name": "www",
+      "manufacturing_date": "2023-03-02",
+      "perishable": "true",
+      "expiration_date": "2023-03-08",
+      "price": "23",
+      "id": 17
+    },
+    {
+      "name": "teste b",
+      "manufacturing_date": "2022-10-06",
+      "perishable": "true",
+      "expiration_date": "2023-03-08",
+      "price": "23",
+      "id": 18
+    },
+    {
+      "name": "777",
+      "manufacturing_date": "2023-03-02",
+      "perishable": "false",
+      "expiration_date": "",
+      "price": "34",
+      "id": 19
+    },
+    {
+      "name": "dddddddd",
+      "manufacturing_date": "2023-03-03",
+      "perishable": "false",
+      "expiration_date": "",
+      "price": "123",
+      "id": 20
+    },
+    {
+      "name": "a",
+      "manufacturing_date": "2023-03-02",
+      "perishable": "true",
+      "expiration_date": "2023-03-09",
+      "price": "2",
+      "id": 21
+    },
+    {
+      "name": "teste b",
+      "manufacturing_date": "2023-03-07",
+      "perishable": "false",
+      "expiration_date": "",
+      "price": "23",
+      "id": 22
+    },
+    {
+      "name": "ggggg",
+      "manufacturing_date": "2023-03-16",
+      "perishable": "true",
+      "expiration_date": "2023-03-18",
+      "price": "34",
+      "id": 23
+    },
+    {
+      "name": "melão",
+      "manufacturing_date": "2023-03-15",
+      "perishable": "false",
+      "expiration_date": "",
+      "price": "12",
+      "id": 24
+    }
+  ]
+}
