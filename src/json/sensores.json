@@ -1,0 +1,17 @@
+[
+    {
+        "name": "TcA+",
+        "src": "src/assets/sensor-tca.png",
+        "alt": "imagem do sensor tca"
+    },
+    {
+        "name": "AS",
+        "src": "src/assets/sensor-af.png",
+        "alt": "imagem do sensor as"
+    },
+    {
+        "name": "HF",
+        "src": "src/assets/sensor-hf.png",
+        "alt": "imagem do sensor hf"
+    }
+]

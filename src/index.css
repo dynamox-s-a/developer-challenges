@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    @apply font-Raleway scroll-smooth
+}
+
+@layer components {
+    .sensors-titles {
+        @apply text-4xl text-[#5D7A8C] font-bold
+    }
+
+    .contato-input {
+        @apply p-1 w-full md:w-[426px] text-center rounded-md text-[#454545] placeholder:text-[#454545] border-2 focus:outline-none  focus:border-blue-500 focus:border-solid focus:border-2 focus:placeholder:text-transparent
+    }
+}

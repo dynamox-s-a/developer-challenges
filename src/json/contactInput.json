@@ -1,0 +1,10 @@
+[
+    {
+        "type": "text",
+        "name": "name",
+        "id": "name",
+        "placeholder": "Como gostaria de ser chamado?",
+        "setData": "setName"
+    }
+    
+]
