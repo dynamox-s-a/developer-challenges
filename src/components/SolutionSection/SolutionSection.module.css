@@ -1,0 +1,33 @@
+.bgContainer {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("../../../assets/grafismo.png");
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.boxContainer {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  height: 100%;
+  padding-top: 8%;
+  padding-left: 5%;
+  gap: 6%;
+}
+
+.boxContainer h2 {
+  color: white;
+  font-size: 6rem;
+  font-weight: bold;
+  line-height: 7rem;
+}
+
+.desktopMobilePic {
+  width: 50%;
+  height: 80%;
+  margin-bottom: 10%;
+}
