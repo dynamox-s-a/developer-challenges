@@ -45,7 +45,6 @@ export default function Header() {
                 key={link.title}
                 component='a'
                 href={link.ref}
-                
               >
               {link.title}
               </Typography>
