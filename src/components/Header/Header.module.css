@@ -1,0 +1,27 @@
+.navtoolbar {
+  padding: 2.5rem 0 ;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.navlinks {
+  width: 70%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10%;
+}
+
+.navlinks a {
+  color: white;
+  text-decoration: none;
+  padding: 0.3rem;
+  transition: 0.3s;
+}
+
+.navlinks a:hover {
+  background-color: #1F232D;
+  border-radius: 5%;
+  outline: 1px white dashed;
+  background-clip: padding-box;
+}
