@@ -9,6 +9,9 @@ export default {
       colors: {
         'blue-primary': '#263252',
         'blue-light': '#F4F7FC',
+      },
+      backgroundImage: {
+        'hero': "url('../../src/assets/grafismo.png')",
       }
     },
   },
