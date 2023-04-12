@@ -1,0 +1,59 @@
+.mainBox {
+  display: flex;
+  flex-direction: column; 
+  background-color: #F4F7FC  ;
+  min-height: 100vh;
+}
+
+.textBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 7rem;
+}
+
+.textBox h4 {
+  color: #37383D;
+  font-weight: 700;
+  font-size: 2.5rem;
+  line-height: 3rem;
+}
+
+.textBox p {
+  color: #454545;
+  width: 80%;
+  text-align: center;
+  align-items: center;
+  line-height: 3rem;
+  font-size: 1.5rem;
+}
+
+.button {
+  color: white;
+  font-weight: 700;
+  background-color: #263252;
+  border-radius: 0.313rem;
+  padding: 0.3rem 3.5rem;
+  transition: 0.3s;
+}
+
+.button:hover {
+  background-color: #1F232D;;
+}
+
+.imagesBox {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.imagesBox h6{
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 3rem;
+  color: #5D7A8C;
+}
