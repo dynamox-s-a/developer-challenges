@@ -5,7 +5,7 @@ import Image from './Image';
 
 const index = () => {
   return (
-    <section className="flex flex-row h-[100vh] bg-hero bg-contain bg-no-repeat">
+    <section className="flex flex-row h-[100vh] w-full bg-hero bg-cover bg-no-repeat">
         <Title />
 
         <Image />
