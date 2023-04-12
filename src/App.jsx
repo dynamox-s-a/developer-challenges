@@ -3,6 +3,7 @@ import './App.css'
 
 import Navbar from './components/_layout/Navbar'
 import HeroSection from './components/_layout/HeroSection';
+import Sensors from './components/_layout/Sensors';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -12,6 +13,8 @@ function App() {
       <Navbar />
       
       <HeroSection />
+
+      <Sensors />
     </div>
   )
 }
