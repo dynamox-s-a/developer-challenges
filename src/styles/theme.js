@@ -9,6 +9,6 @@ export const theme = createTheme({
   },
   typography: {
     fontFamily: 'Raleway, sans-serif',
-    fontSize: 20
+    fontSize: 24
   },
 })
