@@ -13,11 +13,11 @@ export default function Header() {
     },
     {
       title: 'Sensores',
-      ref: '#sensors-section',
+      ref: '#sensores',
     },
     {
       title: 'Contato',
-      ref: '#footer-section',
+      ref: '#contato',
     }
   ]
 

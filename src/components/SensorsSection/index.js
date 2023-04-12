@@ -27,7 +27,7 @@ export default function SensorsSection() {
   ];
 
   return (
-    <Box id='sensors-section' className={styles.mainBox}>
+    <Box id='sensores' className={styles.mainBox}>
       <Box className={styles.textBox}>
         <Typography
           variant='h4'

@@ -32,7 +32,7 @@ const sendAlert = () => {
 }
 
   return (
-    <Box id='footer-section' className={styles.footerBox}>
+    <Box id='contato' className={styles.footerBox}>
       <Box className={styles.titleBoxContent}>
         <Typography variant='h6' component='h6'>
           Ficou com dúvida?
