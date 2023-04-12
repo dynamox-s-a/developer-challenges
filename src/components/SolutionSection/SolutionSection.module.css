@@ -12,10 +12,10 @@
 .boxContainer {
   display: flex;
   flex-direction: column;
-  width: 40%;
+  width: 35%;
   height: 100%;
   padding-top: 8%;
-  padding-left: 5%;
+  padding-left: 4%;
   gap: 6%;
 }
 
