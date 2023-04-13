@@ -9,7 +9,7 @@ import SensorsList from './SensorsList';
 
 const index = () => {
   return (
-    <section className='flex flex-col items-center justify-center gap-8 px-24 pt-24 pb-12 bg-blue-light text-center'>
+    <section id="sensors" className='flex flex-col items-center justify-center gap-8 px-24 pt-24 pb-12 bg-blue-light text-center'>
         
         <SectionTitle title={title} />
 

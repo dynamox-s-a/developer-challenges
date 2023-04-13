@@ -3,6 +3,8 @@
   background-color: white;
   color: white;
 
+  scroll-behavior: smooth;
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
