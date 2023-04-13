@@ -1,8 +1,6 @@
 import React from 'react'
 
-import { title, logo } from '../../../data/hero';
-
-const Title = () => {
+const Title = ({ title, logo }) => {
   return (
     <div className='flex flex-col flex-1 items-start gap-8 pl-24 pt-36'>
       

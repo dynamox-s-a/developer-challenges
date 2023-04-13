@@ -10,7 +10,7 @@ const button = {
     link: 'https://dynamox.net/dynapredict/',
 }
 
-const sensorsList = [
+const sensors = [
     {
         name: 'TcA+',
         image: sensorTca,
@@ -29,5 +29,5 @@ export {
     title,
     description,
     button,
-    sensorsList
+    sensors
 }

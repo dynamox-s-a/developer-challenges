@@ -1,8 +1,6 @@
 import React from 'react'
 
-import { image } from '../../../data/hero';
-
-const Image = () => {
+const Image = ({ image }) => {
   return (
     <div className='flex z-50 flex-[2]'>
       <img 

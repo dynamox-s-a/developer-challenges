@@ -1,8 +1,6 @@
 import React from 'react'
 
-import { menu } from '../../../data/navbar';
-
-const Menu = () => {
+const Menu = ({ menu }) => {
   return (
     <div className='flex flex-row items-end gap-9 text-[1.25rem] leading-[1.47rem]'>
       {

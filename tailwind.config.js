@@ -10,6 +10,7 @@ export default {
         'blue-primary': '#263252',
         'blue-light': '#F4F7FC',
         'black-title': '#37383D',
+        'black-description': '#454545',
       },
       backgroundImage: {
         'hero': "url('../../src/assets/grafismo.png')",

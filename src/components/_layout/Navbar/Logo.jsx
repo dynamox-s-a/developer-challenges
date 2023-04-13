@@ -1,8 +1,6 @@
 import React from 'react'
 
-import logo from '../../../assets/logo-dynamox.png';
-
-const Logo = () => {
+const Logo = ({ logo }) => {
   return (
     <a
       href="https://dynamox.net/"
