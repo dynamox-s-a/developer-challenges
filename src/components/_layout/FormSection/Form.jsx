@@ -8,12 +8,13 @@ const Form = ({ formFields }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}
-      className='flex flex-col w-full items-center justify-center gap-3'
+      className='flex flex-col w-screen items-center justify-center gap-3 px-6'
     >
     {
       formFields.map((input, index) => (
         <input 
-          className='w-[27rem] px-4 text-center py-3 rounded-md bg-white text-black-description placeholder-black-description text-base leading-5'
+          className='w-full px-4 text-center py-3 rounded-md bg-white text-black-description placeholder-black-description text-base leading-5
+          lg:w-[27rem]'
           key={index} 
           placeholder={input.placeholder}
           {...register(input.name, { required: input.required })}

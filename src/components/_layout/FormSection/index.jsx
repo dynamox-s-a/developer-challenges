@@ -7,7 +7,9 @@ import Form from './Form';
 
 const index = () => {
   return (
-    <footer id="contact" className='flex flex-col items-center justify-center gap-8 bg-blue-primary py-10 px-24 text-white'>
+    <footer id="contact" className='flex flex-col w-full items-center justify-center gap-8 bg-blue-primary py-10 px-6 text-white
+      lg:px-24'
+    >
         
         <Title title={title} />
 
