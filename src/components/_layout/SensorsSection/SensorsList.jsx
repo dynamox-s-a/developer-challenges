@@ -2,7 +2,9 @@ import React from 'react'
 
 const SensorsList = ({ sensors }) => {
   return (
-    <div className='flex flex-row w-full items-center justify-evenly'>
+    <div className='flex flex-col w-full items-center justify-evenly
+        lg:flex-row'
+    >
     {
         sensors.map(sensor => <Sensor key={sensor.name} name={sensor.name} image={sensor.image} />)
     }
@@ -14,7 +16,7 @@ const Sensor = ({ name, image }) => {
 
     return(
         <div className='flex flex-col'>
-            <img src={image} alt={name} className='w-72' />
+            <img src={image} alt={name} className='w-44 lg:w-72' />
             
             <h1 className='text-[#5D7A8C] font-bold text-[2.5rem] leading-[2.935rem] mt-4'>
                 {name}
