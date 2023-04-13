@@ -2,14 +2,19 @@ import React from 'react'
 
 const Title = ({ title, logo }) => {
   return (
-    <div className='flex flex-col flex-1 items-start gap-8 pl-24 pt-36'>
+    <div className='flex flex-col flex-1 justify-end items-center gap-8 
+      lg:pl-24 lg:pt-36 lg:items-start lg:justify-normal'
+    >
       
-      <h1 className='text-[5rem] leading-[5.87rem] font-bold text-left text-white'>
+      <h1 className='text-5xl font-bold text-center text-white
+        lg:text-[5rem] lg:leading-[5.87rem] lg:text-left'
+      >
         {title}
       </h1>
 
       <a
         href={logo.link}
+        className='z-50'
       >
         <img 
             src={logo.image}

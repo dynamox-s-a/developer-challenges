@@ -22,7 +22,7 @@ const Form = ({ formFields }) => {
     }
 
       <input 
-        className='bg-[#0165DB] py-2 px-14 mt-6 rounded-md font-bold text-xl leading-6'
+        className='bg-[#0165DB] py-2 px-14 mt-6 rounded-md font-bold text-xl leading-6 cursor-pointer'
         type="submit" 
         value="ENVIAR" 
       />

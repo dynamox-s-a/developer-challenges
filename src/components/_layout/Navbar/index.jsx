@@ -8,8 +8,9 @@ import Menu from './Menu';
 
 const Header = () => {
   return (
-    <div className='flex w-full justify-between h-[7.5rem] pl-20 pr-11 pt-8 pb-7
-        bg-blue-primary z-50'
+    <div className='flex w-full justify-center h-[7.5rem] pt-8 pb-7 
+        bg-blue-primary z-50        
+        lg:justify-between lg:pl-20 lg:pr-11 lg:fixed'
     >
       <Logo logo={dynamoxLogo} />
 
