@@ -1,0 +1,42 @@
+.second-container {
+  background-color: #f4f7fc;
+  padding: 95px 0 39px;
+}
+
+.second-container-txt {
+  text-align: center;
+}
+
+.second-container-txt h2 {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 47px;
+  text-align: center;
+  color: #37383D;
+  margin-bottom: 15px;
+}
+
+.second-container-txt p {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 28px;
+  color: #454545;
+  margin-bottom: 27px;
+}
+
+@media only screen and (max-width: 538px) {
+  .second-container {
+    background-color: #f4f7fc;
+    padding: 35px 0;
+  }
+
+  .second-container-txt h2 {
+    font-size: 37px;
+  }
+
+  .second-container-txt p {
+    font-size: 21px;
+  }
+}

@@ -1,0 +1,57 @@
+.fisrt-container {
+  background-image: url("/assets/grafismo.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 720px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.fisrt-container .first-container-txt h1 {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 80px;
+  line-height: 94px;
+  color: #FFFFFF;
+  margin-bottom: 32px;
+}
+
+.fisrt-container .first-container-txt img {
+  width: 161px;
+  height: 31px;
+}
+
+.fisrt-container .first-container-img {
+  width: 100%;
+  height: 100%;
+}
+
+.fisrt-container .first-container-img img {
+  width: 100%;
+  height: 100%;
+}
+
+@media only screen and (max-width: 538px) {
+  .fisrt-container {
+    background-image: none;
+    background-color: #263252;
+    height: 100%;
+    padding-top: 30px;
+    text-align: center;
+  }
+
+  .fisrt-container .first-container-txt h1 {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 50px;
+    line-height: 55px;
+    color: #FFFFFF;
+    margin-bottom: 20px;
+  }
+
+  .fisrt-container .first-container-img {
+    padding-bottom: 30px;
+  }
+}

@@ -1,0 +1,20 @@
+.secContinerItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.secContinerItem img {
+  width: 276px;
+  height: 297px;
+  margin-bottom: 13px;
+}
+
+.secContinerItem h3 {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 47px;
+  color: #5D7A8C;
+}

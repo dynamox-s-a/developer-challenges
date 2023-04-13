@@ -1,0 +1,55 @@
+.last-container {
+  background: #263252;
+  text-align: center;
+  padding: 41px 0;
+}
+
+.last-container .last-container-txt {
+  margin-bottom: 31px;
+}
+
+.last-container .last-container-txt h2 {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 35px;
+  color: #FFFFFF;
+}
+
+.last-container .last-container-form {
+  display: flex;
+  justify-content: center;
+}
+
+.last-container .last-container-form .form {
+  display: flex;
+  flex-direction: column;
+  width: 426px;
+  gap: 11px;
+}
+
+.last-container .form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.last-container .button-container {
+  margin-top: 30px;
+}
+
+@media only screen and (max-width: 538px) {
+
+  .last-container .last-container-txt h2 {
+    font-size: 26px;
+    line-height: 30px;
+  }
+
+  .last-container form {
+    width: 100%;
+  }
+
+  .last-container .last-container-form .form {
+    width: 100%;
+  }
+}

@@ -1,0 +1,21 @@
+.darkblue {
+  background: #263252;
+}
+
+.blue {
+  background: #0165DB;
+}
+
+.button {
+  width: 183px;
+  height: 39px;
+  border: none;
+  border-radius: 5px;
+
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 23px;
+  color: #FFFFFF;
+  cursor: pointer;
+}
