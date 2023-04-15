@@ -1,0 +1,51 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "admin"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "bananinha",
+      "productionDate": "tantosms",
+      "dueDate": "tantosms",
+      "perishable": true,
+      "value": 7
+    },
+    {
+      "id": 2,
+      "name": "moranguinho",
+      "productionDate": "tantosms",
+      "dueDate": "tantosms",
+      "perishable": true,
+      "value": 10
+    },
+    {
+      "id": 3,
+      "name": "laranjinha",
+      "productionDate": "tantosms",
+      "dueDate": "tantosms",
+      "perishable": true,
+      "value": 8
+    },
+    {
+      "id": 4,
+      "name": "salzinho",
+      "productionDate": "tantosms",
+      "dueDate": "tantosms",
+      "perishable": false,
+      "value": 1
+    },
+    {
+      "name": "batata",
+      "value": "8",
+      "perishable": true,
+      "productionDate": "2023-04-22",
+      "dueDate": "2023-04-12",
+      "id": 6
+    }
+  ]
+}
