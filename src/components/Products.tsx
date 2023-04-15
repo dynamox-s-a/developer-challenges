@@ -36,7 +36,7 @@ const Products: React.FC = () => {
 				</Dialog.Trigger>
 				<Dialog.Portal>
 					<Dialog.Overlay className='DialogOverlay backdrop-blur-lg' />
-					<CreateProduct></CreateProduct>
+					<CreateProduct isCreating={true}></CreateProduct>
 				</Dialog.Portal>
 			</Dialog.Root>
 			<section>
@@ -54,6 +54,15 @@ const Products: React.FC = () => {
 								>
 									Excluir
 								</button>
+								<Dialog.Root>
+									<Dialog.Trigger className='bg-pink-700 hover:bg-pink-800 w-fit h-fit p-3'>
+										Editar Produto
+									</Dialog.Trigger>
+									<Dialog.Portal>
+										<Dialog.Overlay className='DialogOverlay backdrop-blur-lg' />
+										<CreateProduct isCreating={false}></CreateProduct>
+									</Dialog.Portal>
+								</Dialog.Root>
 							</div>
 						);
 					})}

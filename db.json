@@ -32,20 +32,12 @@
       "value": 8
     },
     {
-      "id": 4,
-      "name": "salzinho",
-      "productionDate": "tantosms",
-      "dueDate": "tantosms",
+      "name": "teste",
+      "value": 0.5,
       "perishable": false,
-      "value": 1
-    },
-    {
-      "name": "batata",
-      "value": "8",
-      "perishable": true,
-      "productionDate": "2023-04-22",
-      "dueDate": "2023-04-12",
-      "id": 6
+      "productionDate": "4444-12-15",
+      "dueDate": "0151-12-15",
+      "id": 4
     }
   ]
 }
