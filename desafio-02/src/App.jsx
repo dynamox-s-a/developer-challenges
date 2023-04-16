@@ -9,8 +9,8 @@ import UserDashboard from './pages/UserDashboard'
 import './styles/App.css'
 
 function PrivateRoute() {
-  const { userInfo } = useSelector((state) => state.auth)
-  if (!userInfo) return <Navigate to="/" replace />
+  const { userToken } = useSelector((state) => state.auth)
+  if (!userToken) return <Navigate to="/" replace />
   return <Outlet />
 }
 

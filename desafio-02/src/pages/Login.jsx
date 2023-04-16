@@ -8,7 +8,7 @@ import { useEffect } from 'react'
 
 
 export default function Login() {
-  const { loading, userInfo } = useSelector((state) => state.auth)
+  const { loading, userInfo, userToken } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
 
   const { register, handleSubmit } = useForm()
@@ -17,12 +17,13 @@ export default function Login() {
 
   // redirect authenticated user to profile screen
   useEffect(() => {
-    if (userInfo) {
+    if (userToken) {
       navigate('/user')
     }
-  }, [userInfo, navigate])
+  }, [userToken, navigate])
 
   const submitForm = (data) => {
+    console.log(userToken);
     dispatch(userLogin(data))
   }
 
