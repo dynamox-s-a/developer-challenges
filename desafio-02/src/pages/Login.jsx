@@ -4,28 +4,33 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { userLogin } from '../redux/auth/authActions'
 import { useEffect } from 'react'
-// import Error from '../components/Error'
-
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 export default function Login() {
-  const { loading, userInfo, userToken } = useSelector((state) => state.auth)
-  const dispatch = useDispatch()
+  const { loading, userToken } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const { register, handleSubmit } = useForm()
+  const loginSchema = z.object({
+    email: z.string().email(),
+    password: z.string().min(5),
+  });
 
-  const navigate = useNavigate()
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: zodResolver(loginSchema)
+  });
 
   // redirect authenticated user to profile screen
   useEffect(() => {
     if (userToken) {
-      navigate('/user')
+      navigate('/user');
     }
-  }, [userToken, navigate])
+  }, [userToken, navigate]);
 
   const submitForm = (data) => {
-    console.log(userToken);
-    dispatch(userLogin(data))
-  }
+    dispatch(userLogin(data));
+  };
 
   return (
     <form onSubmit={handleSubmit(submitForm)}>
@@ -39,6 +44,7 @@ export default function Login() {
           required
         />
       </div>
+      {errors.email && <span>{errors.email.message}</span>}
       <div className='form-group'>
         <label htmlFor='password'>Password</label>
         <input
@@ -49,8 +55,16 @@ export default function Login() {
           required
         />
       </div>
-      <button type='submit' className='button' disabled={loading}>Login
-      </button>
+      {errors.password && <span>{errors.password.message}</span>}
+      <div>
+        <button 
+          type='submit' 
+          className='button' 
+          disabled={loading}
+        >Login
+        </button>
+
+      </div>
     </form>
   )
 }
