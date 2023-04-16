@@ -19,15 +19,15 @@ const notPerishableSchema = z.object({
   name: z.string().min(3),
   price: z.string().nonempty("O preço precisa possuir pelo menos 1 caractere com o valor").transform((arg) => Number(arg)),
   perishable: z.literal(false),
-  manufactureDate: z.string(),
+  manufactureDate: z.string().nonempty("Insira a data de fabricação do produto"),
 })
 
 const isPerishableSchema = z.object({
   name: z.string().min(3),
   price: z.string().nonempty("O preço precisa possuir pelo menos 1 caractere com o valor").transform((arg) => Number(arg)),
   perishable: z.literal(true),
-  manufactureDate: z.string(),
-  expirationDate: z.string(),
+  manufactureDate: z.string().nonempty("Insira a data de fabricação do produto"),
+  expirationDate: z.string().nonempty("Insira a data de validade do produto"),
 })
 
 const creationSchema = z.discriminatedUnion('perishable', [
