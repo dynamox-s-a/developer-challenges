@@ -32,11 +32,11 @@
       "value": 8
     },
     {
-      "name": "teste",
-      "value": 0.5,
+      "name": "novoteste",
+      "value": 15.36,
+      "dueDate": "150899",
       "perishable": false,
-      "productionDate": "4444-12-15",
-      "dueDate": "0151-12-15",
+      "productionDate": "998562",
       "id": 4
     }
   ]

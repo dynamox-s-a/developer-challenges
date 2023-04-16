@@ -60,7 +60,10 @@ const Products: React.FC = () => {
 									</Dialog.Trigger>
 									<Dialog.Portal>
 										<Dialog.Overlay className='DialogOverlay backdrop-blur-lg' />
-										<CreateProduct isCreating={false}></CreateProduct>
+										<CreateProduct
+											isCreating={false}
+											id={product.id}
+										></CreateProduct>
 									</Dialog.Portal>
 								</Dialog.Root>
 							</div>
