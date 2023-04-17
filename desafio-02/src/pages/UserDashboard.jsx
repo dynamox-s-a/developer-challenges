@@ -14,6 +14,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  TableSortLabel,
   Typography,
 } from "@mui/material";
 import { Header } from "../components/header";
@@ -24,7 +25,13 @@ import { formatDate } from "../services/helpers";
 export default function UserDashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [orderBy, setOrderBy] = useState("name");
+  const [sort, setSort] = useState({
+    column: "id",
+    direction: "asc",
+  });
+
+  // const [sortOrder, setSortOrder] = useState("asc");
+  // const [sortedColumn, setSortedColumn] = useState("name");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { products, isLoading } = useSelector((state) => state.productsSlice);
@@ -35,6 +42,7 @@ export default function UserDashboard() {
 
   const handleDeleteProduct = (id) => {
     dispatch(deleteProduct(id));
+    dispatch(fetchProducts())
   };
 
   const handleEditProduct = (id) => {
@@ -42,7 +50,21 @@ export default function UserDashboard() {
     navigate(`/user/editProduct/${id}`);
   };
 
-  
+  const handleSort = (columnName) => {
+    // If the clicked column is already the one being sorted, toggle the sort direction
+    if (sort.column === columnName) {
+      setSort({
+        column: columnName,
+        direction: sort.direction === "asc" ? "desc" : "asc",
+      });
+    } else {
+      // Otherwise, set the clicked column as the new sorting column, defaulting to ascending order
+      setSort({
+        column: columnName,
+        direction: "asc",
+      });
+    }
+  };
 
   const handleChangePage = (_event, newPage) => {
     setPage(newPage);
@@ -66,14 +88,22 @@ export default function UserDashboard() {
       <Table className="table-container">
         <TableHead className="table-header">
           <TableRow>
-            <TableCell>Id</TableCell>
+            <TableCell>
+              <TableSortLabel
+                active={sort.column === "id"}
+                direction={sort.direction}
+                onClick={() => handleSort("id")}
+              >
+                Id
+              </TableSortLabel>
+            </TableCell>
             <TableCell>Nome</TableCell>
             <TableCell>Data de Fabricação</TableCell>
             <TableCell>Perecível</TableCell>
             <TableCell>Data de Validade</TableCell>
             <TableCell>Preço</TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
+            <TableCell>Editar</TableCell>
+            <TableCell>Excluir</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
