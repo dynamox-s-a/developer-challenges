@@ -1,11 +1,26 @@
-import React from 'react'
-import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { userLogin } from '../redux/auth/authActions'
-import { useEffect } from 'react'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
+import React from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { userLogin } from "../redux/auth/authActions";
+import { useEffect } from "react";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Avatar,
+  Box,
+  Button,
+  Checkbox,
+  Container,
+  CssBaseline,
+  FormControlLabel,
+  FormControl,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+} from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 export default function Login() {
   const { loading, userToken } = useSelector((state) => state.auth);
@@ -17,14 +32,18 @@ export default function Login() {
     password: z.string().min(5),
   });
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: zodResolver(loginSchema)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
   });
 
   // redirect authenticated user to profile screen
   useEffect(() => {
     if (userToken) {
-      navigate('/user');
+      navigate("/user");
     }
   }, [userToken, navigate]);
 
@@ -33,38 +52,54 @@ export default function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit(submitForm)}>
-      <div className='form-group'>
-        <label htmlFor='email'>Email</label>
-        <input
-          type='email'
-          name='email'
-          className='form-input'
-          {...register('email')}
-          required
-        />
-      </div>
-      {errors.email && <span>{errors.email.message}</span>}
-      <div className='form-group'>
-        <label htmlFor='password'>Password</label>
-        <input
-          type='password'
-          name='password'
-          className='form-input'
-          {...register('password')}
-          required
-        />
-      </div>
-      {errors.password && <span>{errors.password.message}</span>}
-      <div>
-        <button 
-          type='submit' 
-          className='button' 
-          disabled={loading}
-        >Login
-        </button>
-
-      </div>
-    </form>
-  )
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box className="paper">
+        <Avatar className="avatar">
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Login
+        </Typography>
+        <form className="form" onSubmit={handleSubmit(submitForm)}>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            {...register("email")}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            {...register("password")}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className="submit"
+            disabled={loading}
+          >
+            Entrar
+          </Button>
+        </form>
+      </Box>
+    </Container>
+  );
 }
