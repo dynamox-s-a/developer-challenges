@@ -57,3 +57,43 @@
   line-height: 3rem;
   color: #5D7A8C;
 }
+
+@media screen and (max-width: 1228px) {
+
+  .textBox {
+    margin-top: 3rem;
+  }
+  
+  .textBox h4 {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+  
+  .textBox p {
+    width: 90%;
+    font-size: 1.2rem;
+    line-height: 2rem;
+  }
+
+  .button {
+    padding: 0.3rem 2rem;
+    font-size: 1.2rem;
+  }
+
+  .imagesBox {
+    flex-direction: column;
+    margin-top: 4rem;
+  }
+
+  .imagesBox img{
+    width: 20rem;
+    height: auto;
+  }
+
+  .imagesBox h6{
+    font-size: 2rem;
+    line-height: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+}
