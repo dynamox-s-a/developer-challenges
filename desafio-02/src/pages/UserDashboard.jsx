@@ -20,29 +20,32 @@ import {
 import { Header } from "../components/header";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import { formatDate } from "../services/helpers";
+import {
+  formatDate,
+  sortByExpirationDate,
+  sortById,
+  sortByManufactureDate,
+  sortByName,
+  sortByPerishable,
+  sortByPrice,
+} from "../services/helpers";
 
 export default function UserDashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [sort, setSort] = useState({
-    column: "id",
-    direction: "asc",
-  });
-
-  // const [sortOrder, setSortOrder] = useState("asc");
-  // const [sortedColumn, setSortedColumn] = useState("name");
+  const [orderBy, setOrderBy] = useState("id");
+  const [order, setOrder] = useState("asc");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const { products, isLoading } = useSelector((state) => state.productsSlice);
+  const { products } = useSelector((state) => state.productsSlice);
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  const handleDeleteProduct = (id) => {
+  const handleDeleteProduct = async (id) => {
     dispatch(deleteProduct(id));
-    dispatch(fetchProducts())
+    dispatch(fetchProducts());
   };
 
   const handleEditProduct = (id) => {
@@ -50,21 +53,34 @@ export default function UserDashboard() {
     navigate(`/user/editProduct/${id}`);
   };
 
-  const handleSort = (columnName) => {
-    // If the clicked column is already the one being sorted, toggle the sort direction
-    if (sort.column === columnName) {
-      setSort({
-        column: columnName,
-        direction: sort.direction === "asc" ? "desc" : "asc",
-      });
+  const handleSort = (column) => {
+    if (orderBy === column) {
+      setOrder(order === "asc" ? "desc" : "asc");
     } else {
-      // Otherwise, set the clicked column as the new sorting column, defaulting to ascending order
-      setSort({
-        column: columnName,
-        direction: "asc",
-      });
+      setOrderBy(column);
+      setOrder("asc");
     }
   };
+
+  const sortedProducts = products.slice().sort((a, b) => {
+    const isAsc = order === "asc";
+    switch (orderBy) {
+      case "id":
+        return sortById(a, b, isAsc);
+      case "name":
+        return sortByName(a, b, isAsc);
+      case "manufactureDate":
+        return sortByManufactureDate(a, b, isAsc);
+      case "perishable":
+        return sortByPerishable(a, b, isAsc);
+      case "expirationDate":
+        return sortByExpirationDate(a, b, isAsc);
+      case "price":
+        return sortByPrice(a, b, isAsc);
+      default:
+        return 0;
+    }
+  });
 
   const handleChangePage = (_event, newPage) => {
     setPage(newPage);
@@ -77,7 +93,7 @@ export default function UserDashboard() {
 
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
-  const paginatedProducts = products.slice(startIndex, endIndex);
+  const paginatedProducts = sortedProducts.slice(startIndex, endIndex);
 
   return (
     <>
@@ -90,18 +106,58 @@ export default function UserDashboard() {
           <TableRow>
             <TableCell>
               <TableSortLabel
-                active={sort.column === "id"}
-                direction={sort.direction}
+                active={orderBy === "id"}
+                direction={order}
                 onClick={() => handleSort("id")}
               >
                 Id
               </TableSortLabel>
             </TableCell>
-            <TableCell>Nome</TableCell>
-            <TableCell>Data de Fabricação</TableCell>
-            <TableCell>Perecível</TableCell>
-            <TableCell>Data de Validade</TableCell>
-            <TableCell>Preço</TableCell>
+            <TableCell>
+              <TableSortLabel
+                active={orderBy === "name"}
+                direction={order}
+                onClick={() => handleSort("name")}
+              >
+                Nome
+              </TableSortLabel>
+            </TableCell>
+            <TableCell>
+              <TableSortLabel
+                active={orderBy === "manufactureDate"}
+                direction={order}
+                onClick={() => handleSort("manufactureDate")}
+              >
+                Data de Fabricação
+              </TableSortLabel>
+            </TableCell>
+            <TableCell>
+              <TableSortLabel
+                active={orderBy === "perishable"}
+                direction={order}
+                onClick={() => handleSort("perishable")}
+              >
+                Perecível
+              </TableSortLabel>
+            </TableCell>
+            <TableCell>
+              <TableSortLabel
+                active={orderBy === "expirationDate"}
+                direction={order}
+                onClick={() => handleSort("expirationDate")}
+              >
+                Data de Validade
+              </TableSortLabel>
+            </TableCell>
+            <TableCell>
+              <TableSortLabel
+                active={orderBy === "price"}
+                direction={order}
+                onClick={() => handleSort("price")}
+              >
+                Preço
+              </TableSortLabel>
+            </TableCell>
             <TableCell>Editar</TableCell>
             <TableCell>Excluir</TableCell>
           </TableRow>
