@@ -27,7 +27,41 @@
 }
 
 .desktopMobilePic {
-  width: 50%;
-  height: 80%;
-  margin-bottom: 10%;
+  width: 100%;
+  max-width: 58rem;
+  height: auto;
+}
+
+@media (max-width: 1368px) {
+  .bgContainer {
+    display: flex;
+    justify-content: center;
+    height: auto;
+    min-height: 100vh;
+    padding: 2rem;
+    flex-direction: column;
+  }
+  
+  .boxContainer {
+    width: 100%;
+    padding-top: 0;
+    padding-left: 0;
+  }
+  
+  .boxContainer h2 {
+    font-size: 3.5rem;
+    line-height: 4.5rem;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .boxContainer img {
+    justify-content: center;
+  }
+  
+  .desktopMobilePic {
+    width: 100%;
+    height: auto;
+    margin-bottom: 2rem;
+  }
 }
