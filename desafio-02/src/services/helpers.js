@@ -1,7 +1,6 @@
 import { z } from "zod";
 import moment from "moment";
 
-
 export const formatDate = (data) => {
   const originalFormat = "YYYY-MM-DD";
   const newFormat = "DD/MM/YYYY";
@@ -34,11 +33,31 @@ export const isPerishableSchema = z.object({
   expirationDate: z.string().nonempty("Insira a data de validade do produto"),
 });
 
+export const sortById = (a, b, isAsc) => (isAsc ? a.id - b.id : b.id - a.id);
 
-export const notPerishableSchemaWithId = notPerishableSchema.extend({
-  id: z.string().nonempty("Insira o ID do produto")
-})
+export const sortByName = (a, b, isAsc) =>
+  (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1) * (isAsc ? 1 : -1);
 
-export const isPerishableSchemaWithId = isPerishableSchema.extend({
-  id: z.string().nonempty("Insira o ID do produto")
-})
+export const sortByManufactureDate = (a, b, isAsc) =>
+  (new Date(a.manufactureDate) > new Date(b.manufactureDate) ? 1 : -1) *
+  (isAsc ? 1 : -1);
+
+export const sortByPerishable = (a, b, isAsc) =>
+  (a.perishable > b.perishable ? 1 : -1) * (isAsc ? 1 : -1);
+
+export const sortByExpirationDate = (a, b, isAsc) => {
+  //ordenação ascendente funciona
+  if (
+    !a.hasOwnProperty("expirationDate") ||
+    !b.hasOwnProperty("expirationDate")
+  ) {
+    return a.hasOwnProperty("expirationDate") ? 1 : -1 * (isAsc ? 1 : -1);
+  } else {
+    const d1 = new Date(a.expirationDate);
+    const d2 = new Date(b.expirationDate);
+    return (d1 > d2 ? 1 : -1) * (isAsc ? 1 : -1);
+  }
+};
+
+export const sortByPrice = (a, b, isAsc) =>
+  (a.price > b.price ? 1 : -1) * (isAsc ? 1 : -1);
