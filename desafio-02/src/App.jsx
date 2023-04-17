@@ -19,7 +19,7 @@ function App() {
       <Route path="/user" element={<PrivateRoute />}>
           <Route path="/user" element={ <UserDashboard /> } />
           <Route path="/user/addProduct" element={ <AddProducts /> } />
-          <Route path="/user/editProduct" element={ <EditProduct /> } />
+          <Route path="/user/editProduct/:id" element={ <EditProduct /> } />
       </Route>
     </Routes>
   )
