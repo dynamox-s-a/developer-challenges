@@ -1,18 +1,23 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchAllProducts, addNewProduct, updateProduct, removeProduct } from '../../services/requests';
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  fetchAllProducts,
+  addNewProduct,
+  updateProduct,
+  removeProduct,
+  findProduct,
+} from "../../services/requests";
 
 export const fetchProducts = createAsyncThunk(
-  'products/productsList',
+  "products/productsList",
   async (_, { rejectWithValue }) => {
     try {
       const products = await fetchAllProducts();
       if (products === null) {
         return rejectWithValue("Não foi possível obter a lista de produtos");
       }
-      console.log(products)
+      console.log(products);
 
       return products;
-
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
@@ -24,7 +29,7 @@ export const fetchProducts = createAsyncThunk(
 );
 
 export const createProduct = createAsyncThunk(
-  'products/addProduct',
+  "products/addProduct",
   async (product, { rejectWithValue }) => {
     try {
       const newProduct = await addNewProduct(product);
@@ -34,7 +39,6 @@ export const createProduct = createAsyncThunk(
       }
 
       return newProduct;
-
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
@@ -46,17 +50,18 @@ export const createProduct = createAsyncThunk(
 );
 
 export const editProduct = createAsyncThunk(
-  'products/editProduct',
+  "products/editProduct",
   async (product, { rejectWithValue }) => {
     try {
       const productUpdated = await updateProduct(product.id, product);
-      
+
       if (productUpdated === null) {
-        return rejectWithValue("Não foi possível atualizar os dados deste produto");
+        return rejectWithValue(
+          "Não foi possível atualizar os dados deste produto"
+        );
       }
 
       return productUpdated;
-
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
@@ -68,7 +73,7 @@ export const editProduct = createAsyncThunk(
 );
 
 export const deleteProduct = createAsyncThunk(
-  'products/deleteProduct',
+  "products/deleteProduct",
   async (id, { rejectWithValue }) => {
     try {
       const productRemoved = await removeProduct(id);
@@ -78,7 +83,27 @@ export const deleteProduct = createAsyncThunk(
       }
 
       return productRemoved;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);
 
+export const getProductById = createAsyncThunk(
+  "products/getById",
+  async (id, { rejectWithValue }) => {
+    try {
+      const productFound = await findProduct(id);
+
+      if (productFound === null) {
+        return rejectWithValue("Não foi encontrado nenhum produto com esse id");
+      }
+
+      return productFound;
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);

@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchProducts, createProduct, editProduct, deleteProduct } from './productsActions';
+import { fetchProducts, createProduct, editProduct, deleteProduct, getProductById } from './productsActions';
 
 const initialState = {
   products: [],
   isLoading: false,
-  isError: false
+  isError: false,
+  productSelected: {}
 };
 
 const productsSlice = createSlice({
@@ -15,9 +16,9 @@ const productsSlice = createSlice({
     [fetchProducts.pending]: (state) => {
       state.isLoading = true;
     },
-    [fetchProducts.fulfilled]: (state, { payload }) => {
+    [fetchProducts.fulfilled]: (state, action) => {
       state.isLoading = false;
-      state.products = payload;
+      state.products = action.payload;
     },
     [fetchProducts.rejected]: (state) => {
       state.isLoading = false;
@@ -50,9 +51,20 @@ const productsSlice = createSlice({
     },
     [deleteProduct.fulfilled]: (state, action) => {
       state.isLoading = false;
-      state.products =  state.products = state.products.filter((product) => product.id !== action.payload)      ;
+      state.products =  state.products.filter((product) => product.id !== action.payload);
     },
     [deleteProduct.rejected]: (state) => {
+      state.isLoading = false;
+      state.isError = true;
+    },
+    [getProductById.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [getProductById.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.productSelected =  state.products.find((product) => product.id === action.payload);
+    },
+    [getProductById.rejected]: (state) => {
       state.isLoading = false;
       state.isError = true;
     },
