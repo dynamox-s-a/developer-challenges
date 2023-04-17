@@ -1,0 +1,227 @@
+{
+  "products": [
+    {
+      "name": "Macarrão",
+      "manufacturing_date": "2023-04-04",
+      "is_perishable": false,
+      "expiration_date": "",
+      "price": 11.52,
+      "id": 1
+    },
+    {
+      "name": "biscoito",
+      "manufacturing_date": "2023-04-13",
+      "is_perishable": false,
+      "expiration_date": "",
+      "price": 15.5,
+      "id": 2
+    },
+    {
+      "name": "Cenoura",
+      "manufacturing_date": "2023-04-19",
+      "is_perishable": false,
+      "expiration_date": "",
+      "price": 50.2,
+      "id": 3
+    },
+    {
+      "name": "Requeijão",
+      "manufacturing_date": "2023-03-30",
+      "is_perishable": true,
+      "expiration_date": "2023-04-25",
+      "price": 17,
+      "id": 4
+    },
+    {
+      "name": "abacaxi",
+      "manufacturing_date": "2023-04-06",
+      "is_perishable": true,
+      "expiration_date": "2023-04-05",
+      "price": 120,
+      "id": 5
+    },
+    {
+      "name": "Feijão",
+      "manufacturing_date": "2023-03-29",
+      "is_perishable": true,
+      "expiration_date": "2023-04-05",
+      "price": 30,
+      "id": 6
+    },
+    {
+      "name": "Granola",
+      "manufacturing_date": "2023-02-08",
+      "is_perishable": true,
+      "expiration_date": "2023-07-27",
+      "price": 27,
+      "id": 7
+    },
+    {
+      "name": "Melancia",
+      "manufacturing_date": "2023-04-18",
+      "is_perishable": true,
+      "expiration_date": "2023-04-20",
+      "price": 59,
+      "id": 8
+    },
+    {
+      "name": "Farinha",
+      "manufacturing_date": "2023-04-17",
+      "is_perishable": true,
+      "expiration_date": "2023-04-05",
+      "price": 13,
+      "id": 9
+    },
+    {
+      "name": "Danone",
+      "manufacturing_date": "2023-04-18",
+      "is_perishable": true,
+      "expiration_date": "2023-04-11",
+      "price": 5,
+      "id": 10
+    },
+    {
+      "name": "Rosca",
+      "manufacturing_date": "2023-04-12",
+      "is_perishable": true,
+      "expiration_date": "2023-06-23",
+      "price": 6,
+      "id": 11
+    },
+    {
+      "name": "Água com gás",
+      "manufacturing_date": "2023-04-11",
+      "is_perishable": false,
+      "expiration_date": "",
+      "price": 22,
+      "id": 12
+    },
+    {
+      "name": "biscoito",
+      "manufacturing_date": "2023-04-13",
+      "is_perishable": false,
+      "expiration_date": "",
+      "price": 15.5,
+      "id": 13
+    },
+    {
+      "name": "Cenoura",
+      "manufacturing_date": "2022-04-15",
+      "is_perishable": false,
+      "expiration_date": "",
+      "price": 50.2,
+      "id": 14
+    },
+    {
+      "name": "Requeijão",
+      "manufacturing_date": "2023-03-30",
+      "is_perishable": true,
+      "expiration_date": "2023-04-25",
+      "price": 17,
+      "id": 15
+    },
+    {
+      "name": "abacaxi",
+      "manufacturing_date": "2023-04-06",
+      "is_perishable": true,
+      "expiration_date": "2023-04-05",
+      "price": 120,
+      "id": 16
+    },
+    {
+      "name": "Feijão",
+      "manufacturing_date": "2023-03-29",
+      "is_perishable": true,
+      "expiration_date": "2023-04-05",
+      "price": 30,
+      "id": 17
+    },
+    {
+      "name": "Granola",
+      "manufacturing_date": "2023-02-08",
+      "is_perishable": true,
+      "expiration_date": "2023-07-27",
+      "price": 27,
+      "id": 18
+    },
+    {
+      "name": "Melancia",
+      "manufacturing_date": "2023-04-18",
+      "is_perishable": true,
+      "expiration_date": "2023-04-20",
+      "price": 59,
+      "id": 19
+    },
+    {
+      "name": "Farinha",
+      "manufacturing_date": "2023-04-17",
+      "is_perishable": true,
+      "expiration_date": "2023-04-05",
+      "price": 13,
+      "id": 20
+    },
+    {
+      "name": "Danone",
+      "manufacturing_date": "2023-04-18",
+      "is_perishable": true,
+      "expiration_date": "2023-04-11",
+      "price": 5,
+      "id": 21
+    },
+    {
+      "name": "Rosca",
+      "manufacturing_date": "2023-04-12",
+      "is_perishable": true,
+      "expiration_date": "2023-06-23",
+      "price": 6,
+      "id": 22
+    },
+    {
+      "name": "Água com gás",
+      "manufacturing_date": "2023-04-11",
+      "is_perishable": false,
+      "expiration_date": "",
+      "price": 22,
+      "id": 23
+    },
+    {
+      "name": "Toddy",
+      "manufacturing_date": "2023-04-11",
+      "is_perishable": true,
+      "expiration_date": "2023-04-05",
+      "price": 33,
+      "id": 24
+    },
+    {
+      "name": "gelatina",
+      "manufacturing_date": "2023-04-17",
+      "is_perishable": false,
+      "expiration_date": "",
+      "price": 16,
+      "id": 25
+    },
+    {
+      "name": "Fósforo",
+      "manufacturing_date": "2023-04-17",
+      "is_perishable": false,
+      "expiration_date": "",
+      "price": 2,
+      "id": 26
+    },
+    {
+      "name": "Pão",
+      "manufacturing_date": "2023-04-17",
+      "is_perishable": false,
+      "expiration_date": "",
+      "price": 131.12,
+      "id": 27
+    }
+  ],
+  "users": [
+    {
+      "email": "admin@mail.com",
+      "password": "$2a$10$6iRwyvXHkOyZ9E08Z7DaZ.oF3hfD9/ToPi6cMLVFegSOPWzlbziH2",
+      "id": 1
+    }
+  ]
+}

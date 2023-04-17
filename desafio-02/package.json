@@ -1,0 +1,26 @@
+{
+  "name": "desafio-02",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "server": "json-server-auth db.json --port 8080"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.12.0",
+    "@mui/x-date-pickers": "^6.1.0",
+    "eslint": "8.38.0",
+    "eslint-config-next": "13.3.0",
+    "json-server": "^0.17.3",
+    "json-server-auth": "^2.1.0",
+    "next": "13.3.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  }
+}
