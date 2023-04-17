@@ -1,38 +1,37 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Desafio Front-end Dynamox, Augusto Sérgio Pimenta Ramos
+Essa é a resolução do desafio-01
 
-## Getting Started
+# Tecnologias utilizadas
 
-First, run the development server:
+Aqui estão as tecnologias utilizadas neste projeto.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+* Nextjs
+* React Hooks
+* MUI Material
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Considerações sobre o projeto
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+Primeiramente gostaria de agradecer a oportunidade de estar realizando este desafio.
+Fiquei muito feliz de poder realiza-lo, pois agregou muito para o meu aprendizado, principalmente na implementação da estrutura do projeto usando o MUI Material.
+No geral o desafio foi bastante proveitoso, pois serviu de aprendizado e estudo.
+Obrigado.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+# Projeto startado com npx Create Next App
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Este projeto foi inicializado com Create Next App.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Como startar a aplicação
 
-## Learn More
+No projeto você executará:
 
-To learn more about Next.js, take a look at the following resources:
+### `npm install`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Execute este script para instalar o node_modules e todas as dependências da aplicação.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### `npm run dev`
 
-## Deploy on Vercel
+Execute o aplicativo no development mode.\
+Abra [http://localhost:3000](http://localhost:3000) para ver ele no seu navegador.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+A página vai recarregar quando houver mudanças.\
+Você também poderá ver os erros no console.
