@@ -71,15 +71,29 @@ export const updateProduct = async (id, product) => {
 
 export const removeProduct = async (id) => {
   try {
-    const { data } = await API.delete(`${productURL}/${id}`, product, {
+    const { data } = await API.delete(`${productURL}/${id}`, {
       headers: { "Content-Type": "application/json" }
     });
-
+    console.log(data)
     if (data.length === 0) return null;
     return data;
 
   } catch (error) {
     console.log("error", error.message);
+    return error;
+  }
+};
+
+export const findProduct = async (id) => {
+  try {
+    const { data } = await API.get(`${productURL}/${id}`, {
+      headers: { "Content-Type": "application/json" }
+    });
+    // if (data.length === 0) return null;
+    return data;
+
+  } catch (error) {
+    console.log("request.js error", error.message);
     return error;
   }
 };
