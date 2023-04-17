@@ -9,100 +9,194 @@
   "products": [
     {
       "id": 1,
-      "name": "Bis",
-      "manufactureDate": "05/01/2023",
+      "name": "Queijo Prato",
+      "price": 5.92,
       "perishable": true,
-      "expirationDate": "10/01/2023",
-      "price": 0.75
+      "manufactureDate": "2023-04-11",
+      "expirationDate": "2023-03-13"
     },
     {
       "id": 2,
-      "name": "Leite Integral",
+      "name": "Doritos",
+      "price": 4,
       "perishable": true,
-      "expirationDate": "15/04/2023",
-      "manufactureDate": "05/03/2023",
-      "price": 2.50
+      "manufactureDate": "2023-04-25",
+      "expirationDate": "2023-05-03"
     },
     {
       "id": 3,
-      "name": "Banana",
+      "name": "Maçã",
+      "price": 1.5,
       "perishable": true,
-      "expirationDate": "18/04/2023",
-      "manufactureDate": "10/04/2023",
-      "price": 0.99
+      "manufactureDate": "2023-04-14",
+      "expirationDate": "2023-04-21"
     },
     {
       "id": 4,
-      "name": "Coca-Cola",
+      "name": "Pão de Forma",
+      "price": 3,
       "perishable": true,
-      "expirationDate": "07/04/2024",
-      "manufactureDate": "17/04/2023",
-      "price": 3.00
+      "manufactureDate": "2023-04-17",
+      "expirationDate": "2023-04-19"
     },
     {
       "id": 5,
-      "name": "Manteiga",
-      "perishable": true,
-      "expirationDate": "01/05/2023",
-      "manufactureDate": "15/04/2023",
-      "price": 4.50
+      "name": "Coca-Cola",
+      "price": 4.5,
+      "perishable": false,
+      "manufactureDate": "2022-04-16"
     },
     {
       "id": 6,
-      "name": "Maçã",
+      "name": "Ovo Branco",
+      "price": 0.5,
       "perishable": true,
-      "expirationDate": "20/04/2023",
-      "manufactureDate": "10/04/2023",
-      "price": 1.25
+      "manufactureDate": "2023-04-16",
+      "expirationDate": "2023-04-23"
     },
     {
       "id": 7,
-      "name": "Arroz",
+      "name": "Biscoito Recheado",
+      "price": 2.5,
       "perishable": false,
-      "expirationDate": null,
-      "manufactureDate": "01/03/2023",
-      "price": 6.99
+      "manufactureDate": "2023-02-07"
     },
     {
       "id": 8,
-      "name": "Salmão",
+      "name": "Iogurte Natural",
+      "price": 3.2,
       "perishable": true,
-      "expirationDate": "13/02/2023",
-      "manufactureDate": "21/02/2023",
-      "price": 12.99
+      "manufactureDate": "2023-04-12",
+      "expirationDate": "2023-04-19"
     },
     {
       "id": 9,
-      "name": "Queijo Prato",
+      "name": "Tomate",
+      "price": 2,
       "perishable": true,
-      "expirationDate": "02/04/2023",
-      "manufactureDate": "16/03/2023",
-      "price": 5.99,
-      "quantity": 1
+      "manufactureDate": "2023-04-15",
+      "expirationDate": "2023-04-22"
     },
     {
       "id": 10,
-      "name": "Cenoura",
+      "name": "Laranja",
+      "price": 1.8,
       "perishable": true,
-      "expirationDate": "15/04/2023",
-      "manufactureDate": "05/04/2023",
-      "price": 0.50
+      "manufactureDate": "2023-04-13",
+      "expirationDate": "2023-04-20"
     },
     {
       "id": 11,
-      "name": "Fone de ouvido",
-      "perishable": false,
-      "expirationDate": "",
-      "manufactureDate": "10/05/2021",
-      "price": 199.50
+      "name": "Cenoura",
+      "price": 1,
+      "perishable": true,
+      "manufactureDate": "2023-04-10",
+      "expirationDate": "2023-04-17"
     },
     {
       "id": 12,
-      "name": "Chinelo",
+      "name": "Macarrão",
+      "price": 2.8,
       "perishable": false,
-      "expirationDate": "",
-      "manufactureDate": "14/10/2022",
-      "price": 45.50
-    }
+      "manufactureDate": "2021-10-16"
+    },
+    {
+      "id": 13,
+      "name": "Alface",
+      "price": 2.5,
+      "perishable": true,
+      "manufactureDate": "2023-04-15",
+      "expirationDate": "2023-04-19"
+    },
+    {
+      "id": 14,
+      "name": "Peito de frango",
+      "price": 10.5,
+      "perishable": true,
+      "manufactureDate": "2023-04-10",
+      "expirationDate": "2023-04-17"
+    },
+    {
+      "id": 15,
+      "name": "Chocolate ao leite",
+      "price": 7.9,
+      "perishable": false,
+      "manufactureDate": "2023-03-20"
+    },
+    {
+      "id": 16,
+      "name": "Açúcar refinado",
+      "price": 3,
+      "perishable": false,
+      "manufactureDate": "2022-12-30"
+    },
+    {
+      "id": 17,
+      "name": "Sabão em pó",
+      "price": 6.5,
+      "perishable": false,
+      "manufactureDate": "2022-11-01"
+    },
+    {
+      "id": 18,
+      "name": "Banana",
+      "price": 2.2,
+      "perishable": true,
+      "manufactureDate": "2023-04-14",
+      "expirationDate": "2023-04-20"
+    },
+    {
+      "id": 19,
+      "name": "Café",
+      "price": 4.8,
+      "perishable": false,
+      "manufactureDate": "2023-02-01"
+    },
+    {
+      "id": 20,
+      "name": "Manteiga",
+      "price": 6,
+      "perishable": true,
+      "manufactureDate": "2023-04-12",
+      "expirationDate": "2023-04-19"
+    },
+    {
+      "id": 21,
+      "name": "Sorvete de morango",
+      "price": 12,
+      "perishable": true,
+      "manufactureDate": "2023-03-20",
+      "expirationDate": "2023-04-20"
+    },
+    {
+      "id": 22,
+      "name": "Azeite de oliva",
+      "price": 9,
+      "perishable": false,
+      "manufactureDate": "2022-08-12"
+    },
+    {
+      "id": 23,
+      "name": "Leite integral",
+      "price": 3.5,
+      "perishable": true,
+      "manufactureDate": "2023-04-10",
+      "expirationDate": "2023-04-17"
+    },
+    {
+      "id": 24,
+      "name": "Feijão carioca",
+      "price": 6,
+      "perishable": false,
+      "manufactureDate": "2022-11-20"
+    },
+    {
+      "id": 25,
+      "name": "Espinafre",
+      "price": 2.7,
+      "perishable": true,
+      "manufactureDate": "2023-04-10",
+      "expirationDate": "2023-04-17"
+      }
   ]
 }
