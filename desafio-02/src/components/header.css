@@ -1,0 +1,50 @@
+.appBar {
+  background-color: #212121;
+  height: 60px;
+  margin-bottom: 1rem;
+}
+
+.titleContainer {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.title {
+  margin: 0 20px;
+}
+
+.link {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 5px;
+}
+
+.link:hover {
+  border-bottom: 2px solid white;
+}
+
+.button-container {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.button {
+  margin-left: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #2196f3;
+  color: white;
+  border-radius: 20px;
+  padding: 10px 20px;
+  transition: all 0.3s ease-in-out;
+}
+
+.button:hover {
+  background-color: #1976d2;
+}
