@@ -1,126 +1,144 @@
-# Desafio Front-end Dynamox
+# Dyamox Full Stack Developer Challenge
 
-> Desafio para ingressar como Front-end Developer na Dynamox
+## About Dynamox
 
-## Sobre a Dynamox
+Dynamox is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications. 
 
-A Dynamox é uma empresa de alta tecnologia que desenvolve sistemas de monitoramento e aquisição de dados de vibração e temperatura. Somos uma empresa especialista em análise de vibrações e monitoramento da condição de ativos industriais.
+With our proficiency in signal processing for vibration and acoustics, we deliver advanced and precise monitoring systems. We are committed to optimizing operational efficiency and facilitating proactive maintenance through our innovative technology and integrated solutions.
 
-Todas as soluções são desenvolvidas por nossa equipe, desde o hardware até a aplicação web. Nossa equipe é formada por desenvolvedores de hardware, firmware, mobile (android e ios) e web (backend e frontend), além de engenheiros especializados na área de processamento de sinais para vibração e acústica.
+</br>
+
+## Positions
+We are actively seeking a versatile Full Stack Developer with a strong emphasis on front-end development to join our team. Your primary responsibility will be enhancing our Corporate Channels—our Website, Blog, Support Portal, Salesforce integration, and our asset condition monitoring platform, DynaPredict. You will become an essential part of one of our dedicated development teams, where your front-end expertise will drive our projects to new heights.
+
+However, while your main focus will be on front-end tasks, we also expect you to navigate backend development as and when necessary. You won't be alone in this; you will have the full support of our team to guide you through. This opportunity to learn and grow across different aspects of development will foster a dynamic and engaging work environment.
+
+We value flexibility and collaboration, hence we provide opportunities for you to lend your skills to other teams when required. Join us on this exciting journey as we revolutionize our digital platforms. Currently we are particularly interested in individuals who can identify with one of the following roles:
+
+### Junior Software Developer
+With limited experience, assists in coding, testing, and stabilizing systems under supervision. Communicates with immediate team members and solves straightforward problems with guidance. Should display a willingness to learn and grow professionally. This is an individual contributor role.
+
+### Mid-level Software Developer
+With a certain level of proven experience, contributes to software development, solves moderate problems, and starts handling ambiguous situations with minimal guidance. Communicates with the broader team and engages in code reviews and documentation. This role also includes mentorship of junior engineers and a commitment to continuous learning. This is an individual contributor role.
 
 
-## Sobre a vaga e os desafios
+</br>
 
-Estamos buscando alguém que se identifique com o [perfil da vaga](https://dynamox.solides.jobs/vacancies/181263?__hstc=127459538.1d0234f804b73865f84753db24577b25.1658333603238.1663969357474.1664197850410.19&__hssc=127459538.3.1664197850410&__hsfp=309846428) e que possa integrar uma de nossas frentes de desenvolvimento:
+# Challenge
 
-- Relações Públicas (presença institucional);
-- [DynaPredict](https://dynamox.net/dynapredict);
+In order to contribute to the enhancement of our Corporate Channels and asset condition monitoring platform, DynaPredict, we present you with the following challenge: 
 
-Para isso, sugerimos dois desafios. O primeiro para avaliar como você implementa um design definido para uma landing page e o segundo para avaliar suas abilidades em realizar operações básicas de CRUD e chamadas a uma api.
+Build a robust and intuitive application developed using React and TypeScript. It should include authentication, machine management, sensor management, and general user-friendly features. 
 
----
+While going through the challenge, you should be able to handle ambiguous situations, adhere to best practices in front-end development, and demonstrate excellent problem-solving skills. Effective communication through well-documented code, code quality, readability, and maintainability will also be evaluated.
 
-## Desafio 01 - Landing page
+## User Stories and Functional Requirements
 
-Neste desafio avaliaremos sua capacidade de implementar uma landing page com design pré definido, para ser visualizada em dispositivo desktop.
+Here you have the functional requirements for the application. You are free to make any assumptions you consider necessary to complete the challenge.
 
-[Protótipo do Figma](https://www.figma.com/file/oMYCDyVORucqrRrohyQpwC/Desafio-01---Front-end?node-id=0%3A1)
+```
+It is not mandatory to implement all the requirements, just keep in mind that the more requirements you implement, the more you will be able to demonstrate your skills and knowledge.
+```
 
-Requisitos funcionais:
+You can use the following user stories as a guide to implement the application features:
 
-**Header**
+1 - Authentication
 
-- Ao clicar no logo Dymamox, usuário deve ser redirecionado para https://dynamox.net/
-- Ao clicar em “DynaPredict”, usuário deve ser redirecionado para https://dynamox.net/dynapredict/
-- Ao clicar em "Sensores", usuário deve ser movido para a seção de sensores da landing page.
-- Ao clicar em "Contato", usuário deve ser movido para seção de contato da landing page.
+1. [ ] As a user, I want to log in using a fixed email and password so that I can access private routes.
+1. [ ] As a user, I want to be able to log out of the system so that I can prevent unauthorized access to my account.
+1. [ ] No private routes should be accessible without authentication.
 
-**Sensores**
+2 - Machine Management
 
-- Ao clicar em "Ver Mais" usuário deve ser redirecionado para https://dynamox.net/dynapredict/.
+1. [ ] As a user, I want to create a new machine with an arbitrary name and with a type selected from a list ["Pump", "Conveyor Belt"] so that I can manage it later.
+1. [ ] As a user, I want to change the attributes (name and type) of a machine after creating it so that I can keep the machine information updated.
+1. [ ] As a user, I want to delete a machine when it is no longer in use so that it doesn't clutter the system.
 
-**Contato**
+3 - Monitoring Points and Sensors Management
 
-- Ao clicar em "Enviar", website deve emitir alerta contendo o conteúdo dos campos do formulário de contato.
+1. [ ] As a user, I want to create at least two monitoring points with arbitrary names for an existing machine, so that I can monitor the machine's performance.
+1. [ ] As a user, I want to associate a sensor to an existing monitoring point so that I can monitor the machine's performance. The sensor should have a unique ID, and the sensor model name should be one of ["TcAg", "TcAs", "HF+"].
+1. [ ] As a user, I want the system to prevent me from setting up "TcAg" and "TcAs" sensors for machines of the type "Pump".
+1. [ ] As a user, I want to see all my monitoring points in a paginated list so that I can manage them. The list should display up to 5 monitoring points per page and should include the following information: "Machine Name", "Machine Type", "Monitoring Point Name", and "Sensor Model".
+1. [ ] As a user, I want to sort the monitoring points list by "Machine Name", "Machine Type", "Monitoring Point Name", and "Sensor Model" so that I can easily find the information I'm looking for.
+1. [ ] As a user, I want to be able to sort the list of monitoring points by any of its columns in ascending or descending order.
 
-Critérios de avaliação:
+4 - Ambiguity Handling
 
-- Design: implementação do layout de acordo com o layout proposto;
-- Funcionalidades: redirecionamentos para links e seções e disparo de funções no browser;
-- Semântica e SEO: utilização de tags e metatags html adequados;
+1. [ ] Make reasonable assumptions and design the application accordingly for any ambiguities in the challenge.
+1. [ ] Document your assumptions in the README file.
 
-### Tecnologias, frameworks e bibliotecas
+5 - Technical requirements
 
-- A utilização de React é obrigatória;
-- O restante das ferramentas fica a seu critério;
+1. [ ] Use TypeScript.
+1. [ ] Use React.
+1. [ ] Use Redux for managing global states.
+1. [ ] Use Redux Thunks or Redux Saga for managing asynchronous side effects.
+1. [ ] Use Next.js or Vite.
+1. [ ] Use Material UI 5 for styling the application.
+1. [ ] Create reusable components.
+1. [ ] The code is well-organized and documented.
+1. [ ] The application layout is responsive.
+1. [ ] Backend can be simulated using a package like [json-server](https://www.npmjs.com/package/json-server), which creates a fake REST API.
+1. The choice of remaining tools is at your discretion.
 
-### Diferenciais
+6 - Bonus
 
-- Componentes reutilizáveis;
-- Organização e documentação do código;
-- Usabilidade;
-- Layout responsivo (seja criativo!);
-- Utilização de NextJS ou Gatsby;
+1. [ ] Implement unit tests for the application.
+1. [ ] Implement your own back-end code (if you pick this option, you should use NodeJS).
+1. [ ] Use Nest.js for the back-end.
+1. [ ] Use Nx to manage the whole application as a monorepo.
+1. [ ] Add e2e tests with Cypress.
+1. [ ] Identify any areas of bad code or suboptimal implementations and refactor them.
+1. [ ] Add a CI/CD pipeline to deploy the application to a cloud provider (e.g. AWS, Azure, GCP, etc.).
 
----
+</br>
 
-## Desafio 02 - Autenticação e CRUD
 
-Neste desafio avaliaremos sua capacidade de realizar operações básicas de criação, leitura, atualização e remoção de dados a uma api fake. Neste desafio, não serão avaliadas questões relacionadas ao design da aplicação.
+## Evaluation Criteria
 
-Desenvolva uma tela de autenticação fake. O login pode ser feito com e-mail e senha fixos, porém as rotas devem ser privadas e as requests à API devem simular o envio do token JWT, que também poderá ser fake.
+The items listed above will have different weights in the evaluation process. Each one of them will be evaluated as "Not Implemented", "Implemented with Issues", "Implemented", or "Implemented with Excellence". Use your judgement to prioritize the requirements you will implement in the time you have available. 
 
-Requisitos funcionais:
+In general we will be looking for the following:
 
-- Aplicação deverá ter telas de criação, edição e listagem de produtos, com os campos:
+1. [ ] Anyone should be able to follow the instructions and run the application.
+1. [ ] User stories were implemented according to the functional requirements.
+1. [ ] Front-end code is successfully integrated with a back-end API (either a fake one, or one you built yourself).
+1. [ ] Ability to refactor existing code (if applicable) and write unit tests for the written code.
+1. [ ] Adherence to best practices in front-end development.
+1. [ ] Problem-solving skills and ability to handle ambiguity.
+1. [ ] Code quality, readability, and maintainability.
 
-  - Nome;
-  - Data de fabricação;
-  - Produto perecível (booleano);
-  - Data de validade;
-  - Preço;
+## Ready to Begin the Challenges?
 
-- O usuário só deverá ter acesso às rotas de criação, edição e listagem de produtos caso esteja autenticado;
-- O usuário só poderá cadastrar data de validade caso o produto seja perecível;
-- A data de fabricação nunca deverá ser maior que a data de validade;
-- O preço deverá estar em reais (R$);
-- A tela de listagem deverá ter a possibilidade de ordenação dos campos e com uma paginação de 10 produtos por página.
-- O backend deve ser simulado com [json-server](https://www.npmjs.com/package/json-server), que cria uma API REST fake;
+1. [ ] Fork this repository to your own Github account.
+1. [ ] Create a new branch using your first name and last name. For example: `caroline-oliveira`.
+1. [ ] After completing the challenge, create a pull request to this repository [(https://github.com/dynamox-s-a/teste-front-end)](https://github.com/dynamox-s-a/teste-front-end), aimed at the main branch.
+1. [ ] We will receive a notification about your pull request, review your solution, and get in touch with you.
 
-### Tecnologias, frameworks e bibliotecas
+## Frequently Asked Questions
 
-- A utilização de React é obrigatória;
-- A utilização de Redux para controle de estados globais é obrigatória;
-- O restante das ferramentas fica a seu critério;
+1. Can I use create-react-app to complete the challenge?
+  **No, create-react-app is not acceptable for this challenge.**
+  
+1. Can I use Next.js or Vite to complete the challenge?
+  **Yes, you should use of either Next.js or Vite for this challenge.**
 
-### Diferenciais
+1. Is it necessary to fork the project?
+  **Yes, this allows us to see how much time you spent on the challenge.**
 
-- Utilizar Redux Saga para controle de efeitos colaterais assíncronos;
-- Componentes reutilizáveis;
-- Organização e documentação do código;
-- Usabilidade;
-- Layout responsivo (seja criativo!);
+1. Can I use Material UI in the project?
+  **Yes, the use of Material UI 5 is mandatory for this challenge.**
 
-## Pronto para começar os desafios?
+1. If I have more questions, who can I contact?
+  **Please reach out to [Calil](https://github.com/amaralc) (Front-end Developer)**
 
-- Faça um "fork" desse repositório na sua conta do Github;
-- Crie uma branch com o seu nome, sobrenome e desafio: `desafio-01/caroline-oliveira`;
-- Após completar o desafio, crie um "pull request" para este repositório [(dynamox-s-a/teste-front-end)](https://github.com/dynamox-s-a/teste-front-end) comparando a sua branch com a master;
-- Faça isso para cada um dos desafios separadamente;
-- Receberemos uma notificação do seu pull request, faremos a avaliação da sua solução e entraremos em contato;
+1. Can I build my own back-end API?
+  **Yes, you can build your own back-end API, but it needs to use NodeJS.**
 
-## FAQ
+1. Can I use any NodeJS framework to the back-end?
+  **Yes, but we encourage you to use Nest.js. We are currently migrating away from pure ExpressJS and from Adonis.**
 
-- Posso usar o create-react-app para completar o desafio?
-  **Sim, você pode usar qualquer cli para criar seu projeto**
-- Posso usar o Next ou Gatsby para completar o desafio?
-  **Sim e até gostaremos de ver que usou alguma dessas ferramentas!**
-- Preciso necessariamente fazer um fork do projeto?
-  **Sim, para que possamos saber quanto tempo você levou para executar o desafio**
-- Posso usar MaterialUI no projeto?
-  **Sim e até gostaremos de ver que utilizou algum framework ou bibliotecas de react para UI**.
+</br>
 
-- Tenho mais dúvidas, com quem posso entrar em contato?
-  **Entre em contato com [Calil](https://github.com/amaralc) (Front-end Developer)**
-
-**Boa sorte.** 🚀
+**Good luck! We look forward to reviewing your submission.** 🚀
