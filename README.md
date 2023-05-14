@@ -36,9 +36,11 @@ While going through the challenge, you should be able to handle ambiguous situat
 
 Here you have the functional requirements for the application. You are free to make any assumptions you consider necessary to complete the challenge.
 
-```
-It is not mandatory to implement all the requirements, just keep in mind that the more requirements you implement, the more you will be able to demonstrate your skills and knowledge.
-```
+---
+
+**It is not mandatory to implement all the listed requirements before submitting your implementation. Just keep in mind that the more requirements you implement, the more you will be able to demonstrate your skills and knowledge.**
+
+---
 
 You can use the following user stories as a guide to implement the application features:
 
