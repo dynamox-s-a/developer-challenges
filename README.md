@@ -1,24 +1,27 @@
-# Dyamox Full Stack Developer Challenge
+# Dyamox Full-Stack Developer Challenge
 
 ## About Dynamox
 
-Dynamox is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications. 
+[Dynamox](https://dynamox.net/) is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications. 
 
 With our proficiency in signal processing for vibration and acoustics, we deliver advanced and precise monitoring systems. We are committed to optimizing operational efficiency and facilitating proactive maintenance through our innovative technology and integrated solutions.
 
 </br>
 
 ## Positions
-We are actively seeking a versatile Full Stack Developer with a strong emphasis on front-end development to join our team. Your primary responsibility will be enhancing our Corporate Channels—our Website, Blog, Support Portal, Salesforce integration, and our asset condition monitoring platform, DynaPredict. You will become an essential part of one of our dedicated development teams, where your front-end expertise will drive our projects to new heights.
+
+We are actively seeking a versatile Full Stack Developer with a strong emphasis on front-end development to join our team. Your primary responsibility will be enhancing our Corporate Channels—our Website, Blog, Support Portal, Salesforce integration, and our asset condition monitoring platform, [DynaPredict](https://dynamox.net/en/dynapredict). You will become an essential part of one of our dedicated development teams, where your front-end expertise will drive our projects to new heights.
 
 However, while your main focus will be on front-end tasks, we also expect you to navigate backend development as and when necessary. You won't be alone in this; you will have the full support of our team to guide you through. This opportunity to learn and grow across different aspects of development will foster a dynamic and engaging work environment.
 
-We value flexibility and collaboration, hence we provide opportunities for you to lend your skills to other teams when required. Join us on this exciting journey as we revolutionize our digital platforms. Currently we are particularly interested in individuals who can identify with one of the following roles:
+We value flexibility and collaboration, hence we provide opportunities for you to lend your skills to other teams when required. Join us on this exciting journey as we revolutionize our digital platforms. Currently we are particularly interested in individuals who can identify with one of the following role descriptions:
 
 ### Junior Software Developer
+
 With limited experience, assists in coding, testing, and stabilizing systems under supervision. Communicates with immediate team members and solves straightforward problems with guidance. Should display a willingness to learn and grow professionally. This is an individual contributor role.
 
 ### Mid-level Software Developer
+
 With a certain level of proven experience, contributes to software development, solves moderate problems, and starts handling ambiguous situations with minimal guidance. Communicates with the broader team and engages in code reviews and documentation. This role also includes mentorship of junior engineers and a commitment to continuous learning. This is an individual contributor role.
 
 
@@ -38,7 +41,9 @@ Here you have the functional requirements for the application. You are free to m
 
 ---
 
-**It is not mandatory to implement all the listed requirements before submitting your implementation. Just keep in mind that the more requirements you implement, the more you will be able to demonstrate your skills and knowledge.**
+It is not mandatory to implement all the listed requirements before submitting your implementation. Just keep in mind that the more requirements you implement, the more you will be able to demonstrate your skills and knowledge.
+
+We will expect candidates applying to more senior levels to demonstrate a deeper understanding of the requirements and to implement more of them for the same deadline.
 
 ---
 
@@ -81,7 +86,6 @@ You can use the following user stories as a guide to implement the application f
 1. [ ] Create reusable components.
 1. [ ] The code is well-organized and documented.
 1. [ ] The application layout is responsive.
-1. [ ] Backend can be simulated using a package like [json-server](https://www.npmjs.com/package/json-server), which creates a fake REST API.
 1. The choice of remaining tools is at your discretion.
 
 6 - Bonus
@@ -93,6 +97,14 @@ You can use the following user stories as a guide to implement the application f
 1. [ ] Add e2e tests with Cypress.
 1. [ ] Identify any areas of bad code or suboptimal implementations and refactor them.
 1. [ ] Add a CI/CD pipeline to deploy the application to a cloud provider (e.g. AWS, Azure, GCP, etc.).
+1. [ ] Deploy your application to a cloud provider and provide a link for the running app.
+
+7 - Tips
+
+1. [ ] Use a Material UI 5 free premium template like [Devias Kit](https://mui.com/store/items/devias-kit/) or [Mantis](https://mui.com/store/items/mantis-free-react-admin-dashboard-template/) to speed up the development process.
+1. [ ] Not familiar with Redux? Check out [this tutorial](https://egghead.io/courses/modern-redux-with-redux-toolkit-rtk-and-typescript-64f243c8) to get started.
+1. [ ] Not familiar with Cypress? Check out [these tutorials](https://learn.cypress.io/) to get started.
+1. [ ] You can mock your back-end using a package like [json-server](https://www.npmjs.com/package/json-server), which creates a fake REST API. Bear in mind that those implementing their own back-end will check more boxes in the evaluation process.
 
 </br>
 
@@ -133,7 +145,7 @@ In general we will be looking for the following:
   **Yes, the use of Material UI 5 is mandatory for this challenge.**
 
 1. If I have more questions, who can I contact?
-  **Please reach out to [Calil](https://github.com/amaralc) (Front-end Developer)**
+  **Please reach out to [Calil](https://www.linkedin.com/in/calil-amaral-84005b67/) (Development Coordinator).**
 
 1. Can I build my own back-end API?
   **Yes, you can build your own back-end API, but it needs to use NodeJS.**
