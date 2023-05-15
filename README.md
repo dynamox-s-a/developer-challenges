@@ -86,22 +86,21 @@ You can use the following user stories as a guide to implement the application f
 1. [ ] Create reusable components.
 1. [ ] The code is well-organized and documented.
 1. [ ] The application layout is responsive.
-1. The choice of remaining tools is at your discretion.
+The choice of remaining tools is at your discretion.
 
 6 - Bonus
 
-1. [ ] Implement unit tests for the application.
+1. [ ] Implement unit tests for the application (let us know how to run them, otherwise we won't be able to evaluate).
 1. [ ] Implement your own back-end code (if you pick this option, you should use NodeJS).
-1. [ ] Use Nest.js for the back-end.
-1. [ ] Use Nx to manage the whole application as a monorepo.
-1. [ ] Add e2e tests with Cypress.
-1. [ ] Identify any areas of bad code or suboptimal implementations and refactor them.
-1. [ ] Add a CI/CD pipeline to deploy the application to a cloud provider (e.g. AWS, Azure, GCP, etc.).
+1. [ ] Use Nest.js for the back-end (we are moving some services to that tool).
+1. [ ] Use Nx to manage the whole application as a monorepo (we use that tool a lot here).
+1. [ ] Add e2e tests with Cypress (use it to test a full user flow).
+1. [ ] If you were provided with a baseline code, identify any areas of bad code or suboptimal implementations and refactor them.
 1. [ ] Deploy your application to a cloud provider and provide a link for the running app.
 
 7 - Tips
 
-1. [ ] Use a Material UI 5 free premium template like [Devias Kit](https://mui.com/store/items/devias-kit/) or [Mantis](https://mui.com/store/items/mantis-free-react-admin-dashboard-template/) to speed up the development process.
+1. [ ] There is no need to reinvent the wheel. You can use a Material UI 5 free template like [Devias Kit](https://mui.com/store/items/devias-kit/) to speed up the development process.
 1. [ ] Not familiar with Redux? Check out [this tutorial](https://egghead.io/courses/modern-redux-with-redux-toolkit-rtk-and-typescript-64f243c8) to get started.
 1. [ ] Not familiar with Cypress? Check out [these tutorials](https://learn.cypress.io/) to get started.
 1. [ ] You can mock your back-end using a package like [json-server](https://www.npmjs.com/package/json-server), which creates a fake REST API. Bear in mind that those implementing their own back-end will check more boxes in the evaluation process.
