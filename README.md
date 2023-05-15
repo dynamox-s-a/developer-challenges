@@ -57,7 +57,7 @@ You can use the following user stories as a guide to implement the application f
 
 2 - Machine Management
 
-1. [ ] As a user, I want to create a new machine with an arbitrary name and with a type selected from a list ["Pump", "Conveyor Belt"] so that I can manage it later.
+1. [ ] As a user, I want to create a new machine with an arbitrary name and with a type selected from a list ["Pump", "Fan"] so that I can manage it later.
 1. [ ] As a user, I want to change the attributes (name and type) of a machine after creating it so that I can keep the machine information updated.
 1. [ ] As a user, I want to delete a machine when it is no longer in use so that it doesn't clutter the system.
 
