@@ -91,8 +91,11 @@ The choice of remaining tools is at your discretion.
 6 - Bonus
 
 1. [ ] Implement unit tests for the application (let us know how to run them, otherwise we won't be able to evaluate).
-1. [ ] Implement your own back-end code (if you pick this option, you should use NodeJS).
-1. [ ] Use Nest.js for the back-end (we are moving some services to that tool).
+1. [ ] Implement your own back-end code. If you pick this option, write it using NodeJS JavaScript runtime (not Java, not PHP...). Although we also work with Python here, we are looking for JavaScript related skills in this test.
+1. [ ] If you choose to implement your own back-end, we encourage you to use either PostgreSQL or MongoDB as a persistence layer.
+1. [ ] If you choose to use PostgreSQL, use Prisma ORM (or even try Drizzle, or Kysely) to interact with PostgreSQL.
+1. [ ] If you choose to use MongoDB, use Mongoose ORM to interact with the database;
+1. [ ] Use Nest.js Framework for the back-end (we are moving some services to that tool).
 1. [ ] Use Nx to manage the whole application as a monorepo (we use that tool a lot here).
 1. [ ] Add e2e tests with Cypress (use it to test a full user flow).
 1. [ ] If you were provided with a baseline code, identify any areas of bad code or suboptimal implementations and refactor them.
