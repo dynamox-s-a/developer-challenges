@@ -16,6 +16,7 @@ import {
     Visibility,
     VisibilityOff,
     AccountCircle,
+    Email,
     LockOpen,
 } from "@mui/icons-material";
 import Image from "next/image";
@@ -59,7 +60,7 @@ export default function Register() {
                             id="register-email"
                             startAdornment={
                                 <InputAdornment position="start">
-                                    <AccountCircle />
+                                    <Email />
                                 </InputAdornment>
                             }
                         />

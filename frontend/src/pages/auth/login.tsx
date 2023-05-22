@@ -11,11 +11,12 @@ import {
     Input,
     IconButton,
     Grid,
+    Link
 } from "@mui/material";
 import {
     Visibility,
     VisibilityOff,
-    AccountCircle,
+    Email,
     LockOpen,
 } from "@mui/icons-material";
 import Image from "next/image";
@@ -48,7 +49,7 @@ export default function Login() {
                             id="login-email"
                             startAdornment={
                                 <InputAdornment position="start">
-                                    <AccountCircle />
+                                    <Email />
                                 </InputAdornment>
                             }
                         />
@@ -78,6 +79,7 @@ export default function Login() {
                     </FormControl>
                 </CardContent>
                 <CardActions variant="align-right">
+                    <Link href="/auth/register">Não possui uma conta? Cadastre-se</Link>
                     <Button
                         variant="contained"
                         onClick={() => {
