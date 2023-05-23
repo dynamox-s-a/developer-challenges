@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import Header from "@/components/header";
 import Sidebar from "@/components/sidebar";
 import {
@@ -27,6 +27,7 @@ import {
 import { Delete, FilterList } from "@mui/icons-material";
 import { visuallyHidden } from "@mui/utils";
 import { alpha } from "@mui/material/styles";
+import { useSelector } from "react-redux";
 
 interface Data {
   name: string;
@@ -51,15 +52,6 @@ function createData(
     imageSource
   };
 }
-
-const rows = [
-  createData("Sensor Teste 2", "HF+", "Máquina Teste 1", "Pump", "/sensors/sensor-hf.png"),
-  createData("Sensor Teste 1", "TcAg", "Máquina Teste 2", "Fan", "/sensors/sensor-af.png"),
-  createData("Sensor Teste 3", "TcAs", "Máquina Teste 2", "Fan", "/sensors/sensor-tca.png"),
-  createData("Sensor Teste 4", "HF+", "Máquina Teste 2", "Pump", "/sensors/sensor-hf.png"),
-  createData("Sensor Teste 5", "HF+", "Máquina Teste 3", "Fan", "/sensors/sensor-hf.png"),
-  createData("Sensor Teste 6", "HF+", "Máquina Teste 1", "Pump", "/sensors/sensor-hf.png"),
-];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -197,6 +189,42 @@ interface EnhancedTableToolbarProps {
 }
 
 export default function MonitoringPointsList() {
+  const monitoringPoints = useSelector((state: any) => state.monitoringPoint.value);
+  const [rows, setRows] = React.useState([]);
+
+  useEffect(() => {
+    createRowsData();
+  }, []);
+
+  useEffect(() => {
+    createRowsData();
+  }, [monitoringPoints]);
+
+  const createRowsData = () => {
+    let thisRowsData = [];
+  
+    monitoringPoints.map((monitoringPoint) => {
+      let thisSensorImageUrl = "";
+      switch(monitoringPoint.sensorName){ 
+          case "HF+": 
+              thisSensorImageUrl = "/sensors/sensor-hf.png";
+          break;   
+          case "TcAg": 
+              thisSensorImageUrl = "/sensors/sensor-af.png";
+          break;
+          case "TcAs": 
+              thisSensorImageUrl = "/sensors/sensor-tca.png";
+          break; 
+          default: 
+          break;   
+        }
+        thisRowsData.push(
+          createData(monitoringPoint.name, monitoringPoint.sensorName, monitoringPoint._machineName, monitoringPoint._machineType, thisSensorImageUrl),
+        )
+    })
+  
+    setRows(thisRowsData);
+  }
   const isMobile = false;
 
   const [order, setOrder] = React.useState<Order>("asc");

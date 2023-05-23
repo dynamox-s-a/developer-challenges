@@ -1,21 +1,34 @@
-import * as React from "react";
-import { Drawer, Toolbar, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText,Divider, Link } from "@mui/material";
+import React, { useEffect } from "react";
+import { Drawer, Toolbar, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Link } from "@mui/material";
 import { FormatListBulleted, Home, Inbox, Mail } from "@mui/icons-material";
+import { useSelector } from "react-redux";
+import Router from 'next/router'
 
 const drawerWidth = 240;
 
 export default function Sidebar() {
 
+    const user = useSelector((state: any) => state.user.value)
+
+    useEffect(() => {
+      if(user.userId === "") {
+        Router.push("/auth/login");
+      }
+    }, []);
     const sidebarItems = [
         {
             label: "Máquinas",
             icon: <Home color="primary" />,
-            href: "/profile/dashboard"
+            action: () => {
+              Router.push("/profile/dashboard");
+          }
         },
         {
             label: "Pontos de monitoramento",
             icon: <FormatListBulleted color="primary" />,
-            href: "/profile/monitoringPointsList"
+            action: () => {
+              Router.push("/profile/monitoringPointsList");
+          }
         }
     ]
 
@@ -31,14 +44,16 @@ export default function Sidebar() {
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
           <List>
-            {sidebarItems.map(({ label, icon, href }) => (
+            {sidebarItems.map(({ label, icon, action }) => (
               <ListItem key={label} disablePadding>
-                <ListItemButton>
+                <ListItemButton
+                  onClick={action}
+                >
                   <ListItemIcon>
                     { icon }
                   </ListItemIcon>
                   <ListItemText>
-                    <Link href={ href } underline="none">
+                    <Link underline="none">
                         { label }
                     </Link>
                   </ListItemText>

@@ -1,25 +1,14 @@
-import { createStore } from 'redux';
+import { configureStore } from "@reduxjs/toolkit";
+import userReducer from "@/features/user";
+import machineReducer from "@/features/machine";
+import monitoringPointReducer from "@/features/monitoringPoint";
 
-const initialState = {
-
-};
-
-const myAction = {
-    type: 'MY_ACTION',
-    payload: null
-}
-
-const myReducer = (state = initialState, action) => {
-    switch(action.type) {
-        case 'MY_ACTION':
-            return {
-                ...state,
-            };
-        default:
-            return state;
+const store = configureStore({
+    reducer: {
+        user: userReducer,
+        machine: machineReducer,
+        monitoringPoint: monitoringPointReducer
     }
-}
-
-const store = createStore(myReducer);
+});
 
 export default store;

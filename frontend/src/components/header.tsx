@@ -1,16 +1,33 @@
-import * as React from "react";
-import { AppBar, Button, Toolbar, Typography } from "@mui/material";
-
-const headersData = [
-    {
-        label: "Logout",
-        href: "/auth/login"
-    }
-];
+import React, { useEffect } from "react";
+import { AppBar, Button, Toolbar, Typography, Grid } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from '@/features/user';
+import { updateMachine } from "@/features/machine";
+import { updateMonitoringPoint } from "@/features/monitoringPoint";
+import Router from "next/router";
+import axios from "axios";
 
 
 export default function Header() {
     const isOnMobile = false;
+
+    //Redux variables
+    const dispatch = useDispatch();
+    const user = useSelector((state: any) => state.user.value);
+
+    
+
+    const headersData = [
+        {
+            label: "Logout",
+            action: () => {
+                dispatch(logout());
+                dispatch(updateMonitoringPoint([]));
+                dispatch(updateMachine([]));
+                Router.push("/auth/login");
+            }
+        }
+    ];
 
     const displayDesktop = () => {
         return (
@@ -31,25 +48,38 @@ export default function Header() {
     }
 
     const dynamoxLogo = (
-        <Typography variant="h6" component="h1">
-            Dynamox
-        </Typography>
+        <Grid
+            container
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-end"
+            spacing={2}
+        >
+            <Grid item>
+                <Typography variant="h6" component="h1">
+                    Dynamox
+                </Typography>
+            </Grid>
+            <Grid item>
+                <Typography sx={{fontSize: 10}}>Seja bem vindo {user.name}</Typography>
+            </Grid>
+        </Grid>
     )
 
     const getMenuButtons = () => {
-        return headersData.map(({ label, href }) => {
+        return headersData.map(({ label, action }) => {
             return (
                 <Button
                     {...{
                         key: label,
                         color: "inherit",
-                        to: href,
                         sx: {
                             "fontWeight": 700,
                             "size": "18px",
                             "marginLeft": "38px"
                         }
                     }}
+                    onClick={action}
                 >
                     {label}
                 </Button>

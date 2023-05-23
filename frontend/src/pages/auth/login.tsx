@@ -18,10 +18,40 @@ import {
     VisibilityOff,
     Email,
     LockOpen,
+    LineAxisOutlined,
 } from "@mui/icons-material";
 import Image from "next/image";
+import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import { login } from "@/features/user";
+import Router from "next/router";
 
 export default function Login() {
+
+    //State variables
+    const [ loginEmail, setLoginEmail ] = React.useState("");
+    const [ loginPassword, setLoginPassword ] = React.useState("");
+
+    //Redux variables
+    const dispatch = useDispatch();
+    const user = useSelector((state: any) => state.user.value);
+
+    const handleLogin = () =>  {
+        
+        const url = "http://localhost:8000/login";
+
+        axios
+            .post(url, { "email": loginEmail, "password": loginPassword }, { headers: { "Content-Type": "application/json" }})
+            .then(response => {
+                dispatch(login(response.data));
+                Router.push("/profile/dashboard");
+            })
+            .catch((error) => {
+                console.log(error);
+                alert(error.response.data.message);
+            })
+    }
+
     const [showPassword, setShowPassword] = React.useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -40,13 +70,15 @@ export default function Login() {
                     <Typography gutterBottom variant="h5" component="div">
                         Login
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color="text.secondary" sx={{ m: 2, marginBottom: 2 }}>
                         Efetue seu login para acessar a aplicação.
                     </Typography>
                     <FormControl fullWidth sx={{ m: 1 }}>
                         <InputLabel htmlFor="login-email">Email</InputLabel>
                         <Input
                             id="login-email"
+                            value={loginEmail}
+                            onChange={(e) => { setLoginEmail(e.target.value) }}
                             startAdornment={
                                 <InputAdornment position="start">
                                     <Email />
@@ -58,6 +90,8 @@ export default function Login() {
                         <InputLabel htmlFor="login-password">Senha</InputLabel>
                         <Input
                             id="login-password"
+                            value={loginPassword} 
+                            onChange={(e) => { setLoginPassword(e.target.value) }}
                             type={showPassword ? "text" : "password"}
                             startAdornment={
                                 <InputAdornment position="start">
@@ -79,12 +113,10 @@ export default function Login() {
                     </FormControl>
                 </CardContent>
                 <CardActions variant="align-right">
-                    <Link href="/auth/register">Não possui uma conta? Cadastre-se</Link>
+                    <Link href="/auth/register" sx={{ marginRight: 4 }}>Não possui uma conta? Cadastre-se</Link>
                     <Button
                         variant="contained"
-                        onClick={() => {
-                            alert("Logou");
-                        }}
+                        onClick={handleLogin}
                     >
                         Entrar
                     </Button>

@@ -1,10 +1,15 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import Header from "@/components/header";
 import Sidebar from "@/components/sidebar";
 import { Box, Button, Card, CardActions, CardContent, Grid, IconButton, Modal, Typography, FormControl, InputLabel, Input, InputAdornment, Select, SelectChangeEvent, MenuItem, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, ImageListItem } from "@mui/material";
-import { List, Abc, Delete } from "@mui/icons-material";
+import { List, Abc, Delete, Edit } from "@mui/icons-material";
+import { useSelector, useDispatch } from "react-redux";
+import { updateMachine } from "@/features/machine";
+import { updateMonitoringPoint } from "@/features/monitoringPoint";
+import axios from "axios";
 
 interface MonitoringPointListData {
+    machineId: string;
     id: string;
     name: string;
     sensorName: string;
@@ -12,12 +17,14 @@ interface MonitoringPointListData {
   }
 
 function createMonitoringPointListData(
+    machineId: string,
     id: string,
     name: string,
     sensorName: string,
     imageSource: string,
   ): MonitoringPointListData {
     return {
+      machineId,
       id,
       name,
       sensorName,
@@ -40,6 +47,86 @@ const style = {
   };
 
 export default function Dashboard() {
+    //Redux variables
+    const dispatch = useDispatch();
+    const user = useSelector((state: any) => state.user.value);
+    const machines = useSelector((state: any) => state.machine.value);
+    const monitoringPoints = useSelector((state: any) => state.monitoringPoint.value);
+
+    useEffect(() => {
+
+        if(user.userId !== "") {
+            renewStoreMachineVariables();
+            renewStoreMonitoringPointsVariables();
+        }
+            
+    }, []);
+
+    useEffect(() => {
+        setUserMachines(machines);
+        renewMonitoringPointsLists();
+    }, [monitoringPoints, machines]);
+
+    const renewStoreMachineVariables = () => {
+        //Request that gets all the user Machines
+        const urlMachines = 'http://localhost:8000/machines/' + user.userId;
+
+        axios
+        .get(urlMachines)
+        .then(response => {
+            dispatch(updateMachine(response.data));
+        })
+        .catch((error) => {
+            console.log(error);
+            alert(error.response.data.message);                    
+        });        
+    }
+
+    const renewStoreMonitoringPointsVariables = () => {
+        //Request that gets all the user Monitoring Points   
+        const urlMonitoringPoints = 'http://localhost:8000/monitoringPoints/' + user.userId;
+
+        axios
+        .get(urlMonitoringPoints)
+        .then(response => {
+            dispatch(updateMonitoringPoint(response.data));
+            })
+        .catch((error) => {
+            console.log(error);
+            alert(error.response.data.message);
+        })
+        
+    }
+
+    const renewMonitoringPointsLists = () => {
+        let thisMonitoringPoints = [];
+
+        monitoringPoints.map((monitoringPoint) => {
+            let thisSensorImageUrl = "";
+            switch(monitoringPoint.sensorName){ 
+                case "HF+": 
+                    thisSensorImageUrl = "/sensors/sensor-hf.png";
+                break;   
+                case "TcAg": 
+                    thisSensorImageUrl = "/sensors/sensor-af.png";
+                break;
+                case "TcAs": 
+                    thisSensorImageUrl = "/sensors/sensor-tca.png";
+                break; 
+                default: 
+                break;   
+                }
+            thisMonitoringPoints.push(
+                createMonitoringPointListData(monitoringPoint._machineId, monitoringPoint._id, monitoringPoint.name, monitoringPoint.sensorName, thisSensorImageUrl),
+            )
+        })
+
+        setMonitoringPointRows(thisMonitoringPoints);
+    }
+
+    const [ userMachines, setUserMachines ] = React.useState(machines);
+    const [ userMonitoringPoints, setUserMonitoringPoints ] = React.useState(monitoringPoints);
+    const [ monitoringPointsByMachine, setMonitoringPointsByMachine ] = React.useState({});
 
     //Modal's variables
     const [ addMonitoringPointModal, setAddMonitoringPointModal ] = React.useState(false);
@@ -49,31 +136,17 @@ export default function Dashboard() {
     const [ selectedMachineId, setSelectedMachineId] = React.useState("");
     const [ selectedMachineName, setSelectedMachineName] = React.useState("");
     const [ selectedMachineType, setSelectedMachineType] = React.useState("");
+    const [ newMonitoringPointName, setNewMonitoringPointName] = React.useState("");
     const [ newMonitoringPointType, setNewMonitoringPointType] = React.useState("");
     //Create new Machine variables
+    const [ isMachineUpdate, setIsMachineUpdate] = React.useState(false);
+    const [ newMachineName, setNewMachineName] = React.useState("");
     const [ newMachineType, setNewMachineType] = React.useState("");
     //Select input variables
     const [ monitoringPointTypes, setMonitoringPointTypes] = React.useState(["TcAg", "TcAs", "HF+"]);
     const [ machineTypes, setMachineTypes] = React.useState(["Fan", "Pump"]);
     //Monitoring Point list variables
-    const [ monitoringPointRows, setMonitoringPointRows] = React.useState([
-        createMonitoringPointListData("12314", "Sensor Teste 2", "HF+", "/sensors/sensor-hf.png"),
-        createMonitoringPointListData("45346", "Sensor Teste 3", "HF+", "/sensors/sensor-hf.png"),
-        createMonitoringPointListData("45346", "Sensor Teste 3", "HF+", "/sensors/sensor-hf.png"),
-        createMonitoringPointListData("45346", "Sensor Teste 3", "HF+", "/sensors/sensor-hf.png"),
-        createMonitoringPointListData("45346", "Sensor Teste 3", "HF+", "/sensors/sensor-hf.png"),
-        createMonitoringPointListData("45346", "Sensor Teste 3", "HF+", "/sensors/sensor-hf.png"),
-        createMonitoringPointListData("45346", "Sensor Teste 3", "HF+", "/sensors/sensor-hf.png"),
-        createMonitoringPointListData("45346", "Sensor Teste 3", "HF+", "/sensors/sensor-hf.png"),
-        createMonitoringPointListData("45346", "Sensor Teste 3", "HF+", "/sensors/sensor-hf.png"),
-        createMonitoringPointListData("45346", "Sensor Teste 3", "HF+", "/sensors/sensor-hf.png"),
-        createMonitoringPointListData("45346", "Sensor Teste 3", "HF+", "/sensors/sensor-hf.png"),
-        createMonitoringPointListData("45346", "Sensor Teste 3", "HF+", "/sensors/sensor-hf.png"),
-        createMonitoringPointListData("45346", "Sensor Teste 3", "HF+", "/sensors/sensor-hf.png"),
-        createMonitoringPointListData("45346", "Sensor Teste 3", "HF+", "/sensors/sensor-hf.png"),
-        createMonitoringPointListData("45346", "Sensor Teste 3", "HF+", "/sensors/sensor-hf.png"),
-        createMonitoringPointListData("12346346314", "Sensor Teste 4", "HF+", "/sensors/sensor-hf.png"),
-    ]);
+    const [ monitoringPointRows, setMonitoringPointRows] = React.useState([]);
 
     //State management variables
     //Monitoring Point creation
@@ -91,7 +164,16 @@ export default function Dashboard() {
         setNewMonitoringPointType(event.target.value as string);
     }
     //Machine
-    const handleMachineOpen = () => setAddMachineModal(true);
+    const handleMachineOpen = (isUpdate: boolean, machineId: string, machineName: string, machineType: string) => {
+        setIsMachineUpdate(isUpdate);
+        setSelectedMachineId(machineId);
+        setSelectedMachineName(machineName);
+        setSelectedMachineType(machineType);
+        setNewMachineName(machineName);
+        setNewMachineType(machineType);
+
+        setAddMachineModal(true);
+    }
     const handleMachineClose = () => setAddMachineModal(false);
     const handleNewMachineTypeChange = (event: SelectChangeEvent) => {
         setNewMachineType(event.target.value as string);
@@ -104,8 +186,99 @@ export default function Dashboard() {
 
         setListMonitoringPointsModal(true);   
     }
+
     const handleMonitoringPoingListClose = () => setListMonitoringPointsModal(false);
+
+    //Functions for Monitoring Points Management
+    //Create new Monitoring Point
+    const handleCreateMonitoringPoint = () =>  {
+        
+        const url = "http://localhost:8000/monitoringPoints";
+
+        axios
+            .post(url, { "userId": user.userId, "machineId": selectedMachineId, "machineName": selectedMachineName, "machineType": selectedMachineType, "name": newMonitoringPointName, "sensorName": newMonitoringPointType, }, { headers: { "Content-Type": "application/json" }})
+            .then(response => {
+                renewStoreMonitoringPointsVariables();
+                setNewMonitoringPointName("");
+                setNewMonitoringPointType("");
+                setAddMonitoringPointModal(false);
+                alert("Adicionado com sucesso");
+            })
+            .catch((error) => {
+                console.log(error);
+                alert(error.response.data.message);
+            })
+    }
+    //Delete Monitoring Point
+    const handleDeleteMonitoringPoint = (thisMonitoringPointId: string) =>  {
+        
+        const url = "http://localhost:8000/monitoringPoints/" + thisMonitoringPointId;
+
+        axios
+            .delete(url, { headers: { "Content-Type": "application/json" }})
+            .then(response => {
+                renewStoreMonitoringPointsVariables();
+                alert("Deletado com sucesso");
+            })
+            .catch((error) => {
+                console.log(error);
+                alert(error.response.data.message);
+            })
+    }
     
+
+    //Functions for Machine Management
+    //Create Machine
+    const handleCreateMachine = () =>  {
+        
+        const url = (isMachineUpdate) ? "http://localhost:8000/machines/" + selectedMachineId : "http://localhost:8000/machines";
+
+        (isMachineUpdate) ? 
+            axios
+                .put(url, { "userId": user.userId, "name": newMachineName, "type": newMachineType, }, { headers: { "Content-Type": "application/json" }})
+                .then(response => {
+                    renewStoreMachineVariables();
+                    setNewMachineName("");
+                    setNewMachineType("");
+                    setAddMachineModal(false);
+                    alert("Máquina atualizada com sucesso");
+                })
+                .catch((error) => {
+                    console.log(error);
+                    alert(error.response.data.message);
+                })
+        :
+            axios
+                .post(url, { "userId": user.userId, "name": newMachineName, "type": newMachineType, }, { headers: { "Content-Type": "application/json" }})
+                .then(response => {
+                    renewStoreMachineVariables();
+                    setNewMachineName("");
+                    setNewMachineType("");
+                    setAddMachineModal(false);
+                    alert("Máquina adicionada com sucesso");
+                })
+                .catch((error) => {
+                    console.log(error);
+                    alert(error.response.data.message);
+                });
+        
+    }
+    //Delete Machine
+    const handleDeleteMachine = (thisMachineId: string) =>  {
+        
+        const url = "http://localhost:8000/machines/" + thisMachineId;
+
+        axios
+            .delete(url, { headers: { "Content-Type": "application/json" }})
+            .then(response => {
+                renewStoreMachineVariables();
+                alert("Máquina deletada com sucesso");
+            })
+            .catch((error) => {
+                console.log(error);
+                alert(error.response.data.message);
+            })
+    }
 
     const isMobile = false;
 
@@ -127,7 +300,7 @@ export default function Dashboard() {
                         <Button
                             variant="contained"
                             onClick={() => {
-                                handleMachineOpen();
+                                handleMachineOpen(false, "", "", "");
                             }}
                         >
                             Adicionar Máquina
@@ -141,61 +314,96 @@ export default function Dashboard() {
                     justifyContent="flex-start"
                     alignItems="flex-start"
                 >
-                    <Grid item>
-                        <Card>
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    Nome da máquina
-                                </Typography>
-                                <Grid
-                                    container
-                                    direction="row"
-                                    justifyContent="space-between"
-                                    alignItems="center"
-                                >
+                    {
+                        userMachines.length === 0 ? (
+                            <Grid item>
+                                <Typography>Procurando máquinas...</Typography>
+                            </Grid>
+                        ) : userMachines.map((machine: any) => {
+                                return (
                                     <Grid item>
-                                        <Typography color="primary">
-                                            Tipo da máquina
-                                        </Typography>
+                                        <Card>
+                                            <CardContent>
+                                                <Grid
+                                                    container
+                                                    direction="row"
+                                                    justifyContent="space-between"
+                                                    alignItems="center"
+                                                >
+                                                    <Grid item>
+                                                        <Typography gutterBottom variant="h5" component="div">
+                                                            { machine.name }
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item>
+                                                        <IconButton
+                                                            aria-label="Editar máquina"
+                                                            onClick={() => {
+                                                                handleMachineOpen(true, machine._id, machine.name, machine.type);
+                                                            }}
+                                                        >
+                                                            <Edit></Edit>
+                                                        </IconButton>
+                                                    </Grid>
+                                                </Grid>
+                                                <Grid
+                                                    container
+                                                    direction="row"
+                                                    justifyContent="space-between"
+                                                    alignItems="center"
+                                                >
+                                                    <Grid item>
+                                                        <Typography color="primary">
+                                                            { machine.type }
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item>
+                                                        <Grid
+                                                            container
+                                                            direction="row"
+                                                            justifyContent="flex-end"
+                                                            alignItems="center"
+                                                        >
+                                                            <Typography>
+                                                                Pontos de monitoramento
+                                                            </Typography>
+                                                            <IconButton
+                                                                aria-label="Listar pontos de monitoramento"
+                                                                onClick={() => {
+                                                                    handleMonitoringPoingListOpen(machine._id, machine.name, machine.type);
+                                                                }}
+                                                            >
+                                                                <List></List>
+                                                            </IconButton>
+                                                        </Grid>
+                                                    </Grid>
+                                                </Grid>
+                                            </CardContent>
+                                            <CardActions variant="align-right">
+                                                <Button
+                                                    variant="contained"
+                                                    onClick={() => {
+                                                        handleMonitoringPointOpen(machine._id, machine.name, machine.type);
+                                                    }}
+                                                >
+                                                    Adicionar Ponto de Monitoramento
+                                                </Button>
+                                                <Button
+                                                    variant="contained"
+                                                    color="error"
+                                                    onClick={() => {
+                                                        handleDeleteMachine(machine._id);
+                                                    }}
+                                                >
+                                                    Deletar
+                                                </Button>
+                                            </CardActions>
+                                        </Card>
                                     </Grid>
-                                    <Grid item>
-                                        <Typography color="secondary">
-                                            Pontos de monitoramento (0)
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item>
-                                        <IconButton
-                                            aria-label="Listar pontos de monitoramento"
-                                            onClick={() => {
-                                                handleMonitoringPoingListOpen("123", "Nome da máquina", "Fan");
-                                            }}
-                                        >
-                                            <List></List>
-                                        </IconButton>
-                                    </Grid>
-                                </Grid>
-                            </CardContent>
-                            <CardActions variant="align-right">
-                                <Button
-                                    variant="contained"
-                                    onClick={() => {
-                                        handleMonitoringPointOpen("123", "Nome da máquina", "Fan");
-                                    }}
-                                >
-                                    Adicionar Ponto de Monitoramento
-                                </Button>
-                                <Button
-                                    variant="contained"
-                                    color="error"
-                                    onClick={() => {
-                                        alert("Deletou");
-                                    }}
-                                >
-                                    Deletar
-                                </Button>
-                            </CardActions>
-                        </Card>
-                    </Grid>
+                                )
+                            }
+                        )
+                    }
                 </Grid>
             </Box>
             <Modal
@@ -212,6 +420,8 @@ export default function Dashboard() {
                         <InputLabel htmlFor="monitoringPoint-name">Nome do sensor</InputLabel>
                         <Input
                             id="monitoringPoint-name"
+                            value={newMonitoringPointName}
+                            onChange={(e) => { setNewMonitoringPointName(e.target.value) }}
                             startAdornment={
                                 <InputAdornment position="start">
                                     <Abc />
@@ -243,9 +453,7 @@ export default function Dashboard() {
                     >
                         <Button
                                     variant="contained"
-                                    onClick={() => {
-                                        alert("Criou ponto");
-                                    }}
+                                    onClick={handleCreateMonitoringPoint}
                                 >
                                     Adicionar
                                 </Button>
@@ -266,6 +474,8 @@ export default function Dashboard() {
                         <InputLabel htmlFor="machine-name">Nome da Máquina</InputLabel>
                         <Input
                             id="machine-name"
+                            value={newMachineName}
+                            onChange={(e) => { setNewMachineName(e.target.value) }}
                             startAdornment={
                                 <InputAdornment position="start">
                                     <Abc />
@@ -297,9 +507,7 @@ export default function Dashboard() {
                     >
                         <Button
                                     variant="contained"
-                                    onClick={() => {
-                                        alert("Criou máquina");
-                                    }}
+                                    onClick={handleCreateMachine}
                                 >
                                     Adicionar
                                 </Button>
@@ -326,7 +534,8 @@ export default function Dashboard() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {monitoringPointRows.map((row) => (
+                                {monitoringPointRows.map((row: any) => {
+                                   return (row.machineId === selectedMachineId) ? (
                                     <TableRow
                                         key={row.name}
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -356,14 +565,16 @@ export default function Dashboard() {
                                                 aria-label="Listar pontos de monitoramento"
                                                 color="error"
                                                 onClick={() => {
-                                                    alert(row.id);
+                                                    handleDeleteMonitoringPoint(row.id);
                                                 }}
                                             >
                                                 <Delete></Delete>
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>
-                                ))}
+                                ) : (
+                                    <></>
+                                )})}
                             </TableBody>
                         </Table>
                     </TableContainer>
