@@ -193,14 +193,10 @@ export default function MonitoringPointsList() {
   const [rows, setRows] = React.useState([]);
 
   useEffect(() => {
-    createRowsData();
-  }, []);
-
-  useEffect(() => {
-    createRowsData();
+    createRowsData(false);
   }, [monitoringPoints]);
 
-  const createRowsData = () => {
+  const createRowsData = (isFirstRender: boolean) => {
     let thisRowsData = [];
   
     monitoringPoints.map((monitoringPoint) => {
@@ -222,8 +218,12 @@ export default function MonitoringPointsList() {
           createData(monitoringPoint.name, monitoringPoint.sensorName, monitoringPoint._machineName, monitoringPoint._machineType, thisSensorImageUrl),
         )
     })
-  
-    setRows(thisRowsData);
+
+    if(isFirstRender) {
+      return (thisRowsData);
+    } else {
+      setRows(thisRowsData);
+    }
   }
   const isMobile = false;
 
@@ -290,7 +290,7 @@ export default function MonitoringPointsList() {
 
   const visibleRows = React.useMemo(
     () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
+      stableSort(createRowsData(true), getComparator(order, orderBy)).slice(
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage
       ),

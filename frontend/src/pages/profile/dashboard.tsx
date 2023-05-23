@@ -468,7 +468,7 @@ export default function Dashboard() {
             >
                 <Box sx={style}>
                   <Typography id="addMachineLabel" variant="h6" component="h2">
-                    Adicione uma nova Máquina
+                    {isMachineUpdate ? "Editar " + selectedMachineName : "Adicione uma nova Máquina" }
                   </Typography>
                   <FormControl fullWidth sx={{ m: 1, marginTop: 4 }}>
                         <InputLabel htmlFor="machine-name">Nome da Máquina</InputLabel>
@@ -509,7 +509,7 @@ export default function Dashboard() {
                                     variant="contained"
                                     onClick={handleCreateMachine}
                                 >
-                                    Adicionar
+                                    { isMachineUpdate ? "Atualizar" : "Adicionar" }
                                 </Button>
                     </Grid>
                 </Box>

@@ -57,8 +57,7 @@ export default function Register() {
     };
 
     return (
-        <Grid container spacing={0} direction="column" alignItems="center" justifyContent='center' sx={{ minHeight: '100vh' }}>
-            Imagem aqui
+        <Grid container spacing={0} direction="column" alignItems="center" justifyContent='center' sx={{ minHeight: '100vh',  background: "url('/grafismo.png') no-repeat center center fixed"  }}>
             <Card sx={{ maxWidth: '566px' }}>
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
