@@ -160,7 +160,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={"left"}
+            align={"center"}
             padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -339,6 +339,7 @@ export default function MonitoringPointsList() {
                           id={labelId}
                           scope="row"
                           padding="none"
+                          align="center"
                         >
                           {row.name}
                         </TableCell>
@@ -359,8 +360,8 @@ export default function MonitoringPointsList() {
                             </Grid>
                           </Grid>
                         </TableCell>
-                        <TableCell align="left">{row.machineName}</TableCell>
-                        <TableCell align="left">{row.machineType}</TableCell>
+                        <TableCell align="center">{row.machineName}</TableCell>
+                        <TableCell align="center">{row.machineType}</TableCell>
                       </TableRow>
                     );
                   })}

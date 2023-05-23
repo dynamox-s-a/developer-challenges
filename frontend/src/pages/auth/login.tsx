@@ -25,6 +25,7 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "@/features/user";
 import Router from "next/router";
+import { makeStyles } from "@mui/material";
 
 export default function Login() {
 
@@ -41,7 +42,7 @@ export default function Login() {
         const url = "http://localhost:8000/login";
 
         axios
-            .post(url, { "email": loginEmail, "password": loginPassword }, { headers: { "Content-Type": "application/json" }})
+            .post(url, { "email": loginEmail, "password": loginPassword }, { headers: { "Content-Type": "application/json",}})
             .then(response => {
                 dispatch(login(response.data));
                 Router.push("/profile/dashboard");
@@ -63,8 +64,7 @@ export default function Login() {
     };
 
     return (
-        <Grid container spacing={0} direction="column" alignItems="center" justifyContent='center' sx={{ minHeight: '100vh' }}>
-            Imagem aqui
+        <Grid container spacing={0} direction="column" alignItems="center" justifyContent='center' sx={{ minHeight: "100vh",  background: "url('/grafismo.png') no-repeat center center fixed" }}>
             <Card sx={{ maxWidth: '566px' }}>
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">

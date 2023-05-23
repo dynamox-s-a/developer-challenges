@@ -66,8 +66,10 @@ exports.loginUser = (req, res) => {
     User.authenticate(email, password)
         .then(user => {
             const sessionId = jwt.sign({ userId: user._id }, 'seu-segredo-aqui');
+            const userEmail = user.email;
+            const userName = user.name;
 
-            res.json({ userId: user._id, sessionId });
+            res.json({ userId: user._id, sessionId, email: userEmail, name: userName });
         })
         .catch(error => {
             res.status(401).json({ message: "Falha na autenticação" });
