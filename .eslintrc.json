@@ -1,0 +1,35 @@
+{
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "extends": [
+    "next/core-web-vitals",
+    "eslint:recommended",
+    "prettier",
+    "prettier/react",
+    "plugin:cypress/recommended",
+    "plugin:react/recommended"
+  ],
+  "globals": {
+    "cy": true
+  },
+  "env": {
+    "cypress/globals": true
+  },
+  "parser": "babel-eslint",
+  "plugins": ["@typescript-eslint", "cypress"],
+  "parserOptions": {
+    "project": ["./tsconfig.eslint.json"]
+  },
+  "rules": {
+    "no-unused-vars": "off",
+    "@typescript-eslint/consistent-type-definitions": "off",
+    "@typescript-eslint/strict-boolean-expressions": "off",
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
+    "react/react-in-jsx-scope": "off",
+    "@next/next/no-img-element": "off"
+  }
+}
