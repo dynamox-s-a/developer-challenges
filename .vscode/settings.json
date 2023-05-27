@@ -1,0 +1,10 @@
+{
+  "editor.tabSize": 2,
+  "typescript.suggest.paths": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
