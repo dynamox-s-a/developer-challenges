@@ -18,8 +18,8 @@ model User {
 model MonitoringPoint {
   id       Int    @id @default(autoincrement())
   name     String
-  sensor   Sensor @relation(fields: [sensorId], references: [id])
-  sensorId Int    @unique
+  sensor   Sensor? @relation(fields: [sensorId], references: [id])
+  sensorId Int?    @unique
 }
 
 model Sensor {
@@ -33,6 +33,6 @@ model Machine {
   id       Int    @id @default(autoincrement())
   name     String
   type     String
-  sensor   Sensor @relation(fields: [sensorId], references: [id])
-  sensorId Int    @unique
+  sensor   Sensor? @relation(fields: [sensorId], references: [id])
+  sensorId Int?    @unique
 }
