@@ -10,10 +10,16 @@ export default async function handler(
   if (!isSigned) {
     res.status(401).json(req.body);
   } else {
+    const id: number = req.body.id;
     const name: string = req.body.name;
     const type: string = req.body.type;
     const sensorId: number = req.body.sensorId;
 
-    res.status(200).json(req.body);
+    const machine = await prisma.machine.update({
+      where: { id },
+      data: { name, type, sensorId },
+    });
+
+    res.status(200).json(machine);
   }
 }
