@@ -27,20 +27,32 @@ const defaultTheme = createTheme();
 export default function Layout({ children }: Props): ReactElement {
   const router = useRouter();
   // const title = routeTitles[router.pathname] || "";
-  return (
-    <>
-      <Head>
-        {/* <title>{`${title || "404"}`}</title> */}
-        <title>{"teste"}</title>
-      </Head>
-      <ThemeProvider theme={defaultTheme}>
-        <Box sx={{ display: "flex" }}>
-          <CssBaseline />
-          <Navigation />
-          <Header title={"teste"} />
-          {children}
-        </Box>
-      </ThemeProvider>
-    </>
-  );
+
+  const isLoginPage = router.pathname === "/login";
+  const logedIn = true;
+
+  if (!logedIn && !isLoginPage) {
+    router.push("/login");
+  } else if (logedIn && isLoginPage) {
+    router.push("/");
+  }
+
+  if (!isLoginPage)
+    return (
+      <>
+        <Head>
+          {/* <title>{`${title || "404"}`}</title> */}
+          <title>{"teste"}</title>
+        </Head>
+        <ThemeProvider theme={defaultTheme}>
+          <Box sx={{ display: "flex" }}>
+            <CssBaseline />
+            <Navigation />
+            <Header title={"teste"} />
+            {children}
+          </Box>
+        </ThemeProvider>
+      </>
+    );
+  else return <>{children}</>;
 }

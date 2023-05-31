@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { toggle } from "redux/reducers/navStateReducer";
 
 export default function Navigation(): ReactElement {
-  const open = useAppSelector((state) => state.value);
+  const open = useAppSelector((state) => state.navStateReducer.value);
   const dispatch = useAppDispatch();
 
   return (
@@ -30,11 +30,7 @@ export default function Navigation(): ReactElement {
         </IconButton>
       </Toolbar>
       <Divider />
-      <List component="nav">
-        {mainListItems}
-        <Divider sx={{ my: 1 }} />
-        {secondaryListItems}
-      </List>
+      <List component="nav">{mainListItems}</List>
     </Drawer>
   );
 }

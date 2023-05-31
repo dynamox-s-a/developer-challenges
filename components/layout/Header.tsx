@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement } from "react";
 
 import { styled } from "@mui/material/styles";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
@@ -40,7 +40,7 @@ interface Props {
 }
 
 export default function Header({ title }: Props): ReactElement {
-  const open = useAppSelector((state) => state.value);
+  const open = useAppSelector((state) => state.navStateReducer.value);
   const dispatch = useAppDispatch();
 
   return (

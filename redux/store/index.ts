@@ -1,8 +1,10 @@
+import { combineReducers } from "redux";
 import { configureStore } from "@reduxjs/toolkit";
+import navStateReducer from "../reducers/navStateReducer";
+import sessionReducer from "redux/reducers/sessionReducer";
 
-import navStateSlicer from "../reducers/navStateReducer";
-
-const store = configureStore({ reducer: navStateSlicer });
+const reducer = combineReducers({ navStateReducer, sessionReducer });
+const store = configureStore({ reducer });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
