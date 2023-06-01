@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 
 import { styled } from "@mui/material/styles";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
@@ -41,7 +41,13 @@ interface Props {
 
 export default function Header({ title }: Props): ReactElement {
   const open = useAppSelector((state) => state.navStateReducer.value);
+  const session = useAppSelector((state) => state.sessionReducer.session);
   const dispatch = useAppDispatch();
+
+  const [name, setName] = useState("");
+  useEffect(() => {
+    setName(session?.name || "");
+  }, [session, name]);
 
   return (
     <AppBar position="absolute" open={open}>
@@ -69,7 +75,7 @@ export default function Header({ title }: Props): ReactElement {
           noWrap
           sx={{ flexGrow: 1 }}
         >
-          Dashboard
+          {name}
         </Typography>
         <IconButton color="inherit">
           <Badge badgeContent={4} color="secondary">
