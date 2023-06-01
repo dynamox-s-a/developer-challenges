@@ -14,9 +14,17 @@ export default async function handler(
     const email: string = req.body.email;
     const password: string = req.body.password;
 
-    const user = await prisma.user.create({
-      data: { name, email, password },
+    const userConflict = await prisma.user.findUnique({
+      where: { email },
     });
-    res.status(200).json(user);
+
+    if (!!userConflict)
+      res.status(409).json({ error: "Esse email já está cadastrado" });
+    else {
+      const user = await prisma.user.create({
+        data: { name, email, password },
+      });
+      res.status(200).json(user);
+    }
   }
 }
