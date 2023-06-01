@@ -26,7 +26,7 @@ export const AuthGuard = (props: Props): ReactElement | null => {
         dispatch(setSession(getBrowserSession()));
       }
     }
-  }, []);
+  }, [logedIn]);
 
   useEffect(() => {
     if (router.isReady) {

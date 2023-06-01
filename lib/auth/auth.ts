@@ -3,16 +3,17 @@ import { z } from "zod";
 const isBrowser = typeof window !== "undefined";
 
 const jwtDecoded = z.object({
+  iss: z.string(),
   exp: z.number(),
   iat: z.number(),
-  groupId: z.number(),
-  tenant: z.string(),
+  aud: z.string(),
+  sub: z.string(),
 });
 
 const sessionObject = z.object({
   token: z.string().refine((token) => !!parseJwt(token)),
   email: z.string().email(),
-  username: z.string(),
+  name: z.string(),
 });
 
 export type Session = z.infer<typeof sessionObject>;
@@ -49,14 +50,14 @@ export function hasSession() {
   return session ? !expiredSession(session) : false;
 }
 
-export function signIn(session: Session): boolean {
-  if (!isBrowser) return false;
+export function signIn(session: Session): Session | null {
+  if (!isBrowser) return null;
   try {
     session = sessionObject.parse(session);
     localStorage.setItem("session", JSON.stringify(session));
-    return true;
+    return session;
   } catch (err) {
-    return false;
+    return null;
   }
 }
 
