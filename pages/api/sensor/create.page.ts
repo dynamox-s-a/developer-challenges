@@ -11,9 +11,9 @@ export default async function handler(
     res.status(401).json(req.body);
   } else {
     const model: string = req.body.model;
-
+    const name: string = req.body.name;
     const sensor = await prisma.sensor.create({
-      data: { model },
+      data: { model, name },
     });
     res.status(200).json(sensor);
   }
