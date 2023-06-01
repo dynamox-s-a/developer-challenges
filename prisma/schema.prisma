@@ -20,19 +20,20 @@ model MonitoringPoint {
   name     String
   sensor   Sensor? @relation(fields: [sensorId], references: [id])
   sensorId Int?    @unique
+  machine  Machine? @relation(fields: [machineId], references: [id])
+  machineId Int?    @unique  
 }
 
 model Sensor {
   id      Int               @id @default(autoincrement())
+  name    String            @unique
   model   String
   mPoints MonitoringPoint[]
-  Machine Machine?
 }
 
 model Machine {
   id       Int    @id @default(autoincrement())
   name     String
   type     String
-  sensor   Sensor? @relation(fields: [sensorId], references: [id])
-  sensorId Int?    @unique
+  mPoints MonitoringPoint[]
 }
