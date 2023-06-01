@@ -6,7 +6,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const token = await getToken({ req, raw: true });
-  console.log(token);
   if (token) {
     return true;
   } else {
