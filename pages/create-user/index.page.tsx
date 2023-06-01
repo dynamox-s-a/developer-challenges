@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 
-import User from "lib/utils/user/types";
+import User from "lib/utils/types/user";
 
 import { useAppSelector } from "redux/hooks";
 import { Session } from "lib/auth/auth";
@@ -22,7 +22,7 @@ export const postResultMsg: PostResult = {
   UNKNOW_ERROR: "Erro desconhecido",
 };
 
-export async function post(
+export async function postUser(
   user: User,
   session: Session | null
 ): Promise<string> {
@@ -111,8 +111,13 @@ export default function CreateUser() {
     if (emailError || nameError || passwordError || passwordConfirmationError)
       return;
 
-    const responseStatus = await post(
-      { email: email || "", name: name || "", password: password || "" },
+    const responseStatus = await postUser(
+      {
+        id: null,
+        email: email || "",
+        name: name || "",
+        password: password || "",
+      },
       session
     );
 
