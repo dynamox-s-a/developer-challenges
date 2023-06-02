@@ -141,7 +141,10 @@ export default function CreateMachine() {
           autoFocus
           error={!!nameError}
           helperText={nameError}
-          onChange={() => setNameError(null)}
+          onChange={() => {
+            setNameError(null);
+            setConflictError(null);
+          }}
         />
         <FormControl sx={{ marginTop: 1, width: "100%" }}>
           <InputLabel id="type-label">Tipo</InputLabel>
