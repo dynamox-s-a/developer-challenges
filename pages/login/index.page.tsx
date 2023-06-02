@@ -99,16 +99,18 @@ export default function Login() {
             onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
+            data-testid="form"
           >
             <TextField
               margin="normal"
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Email"
               name="email"
               autoComplete="email"
               autoFocus
+              inputProps={{ "data-testid": "email-input" }}
             />
             <TextField
               margin="normal"
@@ -119,6 +121,7 @@ export default function Login() {
               type="password"
               id="password"
               autoComplete="current-password"
+              inputProps={{ "data-testid": "password-input" }}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -129,6 +132,7 @@ export default function Login() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              data-testid="submit-button"
             >
               Sign In
             </Button>

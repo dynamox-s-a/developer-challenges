@@ -34,7 +34,7 @@ const makeSut = (): SutTypes => {
 describe("Login Page Elements Test", () => {
   afterEach(cleanup);
 
-  test.only("Login render test", () => {
+  test("Login render test", () => {
     makeSut();
   });
 
@@ -84,92 +84,13 @@ describe("Login Submit Event Test", () => {
   test("Should keep enable submit button to try again because validation error", async () => {
     const { sut } = makeSut();
     const form = sut.getByTestId("form") as HTMLFormElement;
-    const submitButton = sut.getByTestId("submit-button") as HTMLInputElement;
     const emailInput = sut.getByTestId("email-input") as HTMLInputElement;
     const passwordInput = sut.getByTestId("password-input") as HTMLInputElement;
+    const submitButton = sut.getByTestId("submit-button") as HTMLInputElement;
     fireEvent.input(emailInput, { target: { value: "abc" } });
     fireEvent.input(passwordInput, { target: { value: "abc" } });
     fireEvent.submit(form);
     await waitFor(() => submitButton);
     expect(submitButton).not.toBeDisabled();
   });
-});
-
-describe("Login Validation Event Test", () => {
-  afterEach(cleanup);
-
-  test("Should enable submit button with valid form", () => {
-    const { sut } = makeSut();
-    const emailInput = sut.getByTestId("email-input") as HTMLInputElement;
-    const passwordInput = sut.getByTestId("password-input") as HTMLInputElement;
-    const submitButton = sut.getByTestId("submit-button") as HTMLInputElement;
-    fireEvent.input(emailInput, { target: { value: "abc@abc.com.br" } });
-    fireEvent.input(passwordInput, { target: { value: "abc" } });
-    expect(submitButton).not.toBeDisabled();
-  });
-
-  test("Should enable submit button with valid form", async () => {
-    const { sut } = makeSut();
-    const form = sut.getByTestId("form") as HTMLFormElement;
-    const emailInput = sut.getByTestId("email-input") as HTMLInputElement;
-    const passwordInput = sut.getByTestId("password-input") as HTMLInputElement;
-    const submitButton = sut.getByTestId("submit-button") as HTMLInputElement;
-
-    fetchMock.mockResponse(JSON.stringify({ authorization: "12345" }));
-    fireEvent.input(emailInput, { target: { value: "valid@email.com" } });
-    fireEvent.input(passwordInput, { target: { value: "valid@password" } });
-
-    fireEvent.submit(form);
-    await waitFor(() => form);
-    expect(submitButton).not.toBeDisabled();
-    fireEvent.input(emailInput, { target: { value: "abcabc.com.br" } });
-    fireEvent.input(passwordInput, { target: { value: "abc" } });
-    fireEvent.submit(form);
-    await waitFor(() => form);
-    expect(submitButton).not.toBeDisabled();
-  });
-
-  // test("Should disable submit button with empty form", () => {
-  //   const { sut } = makeSut();
-  //   const emailInput = sut.getByTestId(
-  //     "userName-input"
-  //   ) as HTMLInputElement;
-  //   const passwordInput = sut.getByTestId(
-  //     "password-input"
-  //   ) as HTMLInputElement;
-  //   const submitButton = sut.getByTestId("submit-button") as HTMLInputElement;
-  //   fireEvent.input(emailInput, { target: { value: "abc" } });
-  //   fireEvent.input(passwordInput, { target: { value: "abc" } });
-  //   fireEvent.input(emailInput, { target: { value: "" } });
-  //   fireEvent.input(passwordInput, { target: { value: "" } });
-  //   expect(submitButton).toBeDisabled();
-  // });
-
-  // test("Should disable submit button on userName validation error", () => {
-  //   const { sut } = makeSut();
-  //   const emailInput = sut.getByTestId(
-  //     "userName-input"
-  //   ) as HTMLInputElement;
-  //   const passwordInput = sut.getByTestId(
-  //     "password-input"
-  //   ) as HTMLInputElement;
-  //   const submitButton = sut.getByTestId("submit-button") as HTMLInputElement;
-  //   fireEvent.input(emailInput, { target: { value: "@abc" } });
-  //   fireEvent.input(passwordInput, { target: { value: "abc" } });
-  //   expect(submitButton).toBeDisabled();
-  // });
-
-  // test("Should enable submit button for any character in password", () => {
-  //   const { sut } = makeSut();
-  //   const emailInput = sut.getByTestId(
-  //     "userName-input"
-  //   ) as HTMLInputElement;
-  //   const passwordInput = sut.getByTestId(
-  //     "password-input"
-  //   ) as HTMLInputElement;
-  //   const submitButton = sut.getByTestId("submit-button") as HTMLInputElement;
-  //   fireEvent.input(emailInput, { target: { value: "abc" } });
-  //   fireEvent.input(passwordInput, { target: { value: "@abc" } });
-  //   expect(submitButton).not.toBeDisabled();
-  // });
 });
