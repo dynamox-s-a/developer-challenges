@@ -11,10 +11,11 @@ export default async function handler(
     res.status(401).json(req.body);
   } else {
     const name: string = req.body.name;
-    const sensorId: number = req.body.sensorId;
+    const sensorId: number = parseInt(req.body.sensorId);
+    const machineId: number = parseInt(req.body.machineId);
 
     const monitoringPoint = await prisma.monitoringPoint.create({
-      data: { name, sensorId },
+      data: { name, sensorId, machineId },
     });
     res.status(200).json(monitoringPoint);
   }
