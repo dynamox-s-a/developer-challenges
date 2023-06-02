@@ -10,6 +10,7 @@ import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
+import Paper from "@mui/material/Paper";
 
 import MonitoringPoint from "lib/utils/types/monitoring-point";
 
@@ -236,82 +237,95 @@ export default function CreateMachine() {
         paddingX: "30%",
       }}
     >
-      <Typography component="h1" variant="h5">
-        Criar Ponto de Monitoramento
-      </Typography>
-      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="name"
-          label="Nome da Máquina"
-          name="name"
-          autoFocus
-          error={!!nameError}
-          helperText={nameError}
-          onChange={() => {
-            setNameError(null);
-            setConflictNameError(null);
-          }}
-        />
-        <FormControl sx={{ marginTop: 1, width: "100%" }}>
-          <InputLabel id="sensor-label">Sensor</InputLabel>
-          <Select
-            value={sensorId}
-            fullWidth
-            labelId="sensor-label"
-            id="sensor"
-            label="Sensor"
-            onChange={handleSetSensorId}
-            error={!!conflictSensorModelError || !!sensorListError}
-          >
-            {sensorList.map((sensor) => (
-              <MenuItem key={sensor.id} value={sensor.id || 0}>
-                {sensor.name + " | " + sensor.model}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        {sensorListError && <Alert severity="error">{sensorListError}</Alert>}
-        <FormControl sx={{ marginTop: 1, width: "100%" }}>
-          <InputLabel id="machine-label">Máquina</InputLabel>
-          <Select
-            value={machineId}
-            fullWidth
-            labelId="machine-label"
-            id="machine"
-            label="Máquina"
-            onChange={handleSetMachineId}
-            error={!!conflictSensorModelError || !!machineListError}
-          >
-            {machineList.map((machine) => (
-              <MenuItem key={machine.id} value={machine.id || 0}>
-                {machine.name + " | " + machine.type}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        {sensorListError && <Alert severity="error">{sensorListError}</Alert>}
-        {conflictSensorModelError && (
-          <Alert severity="error">{conflictSensorModelError}</Alert>
-        )}
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-          color={
-            !!error || !!conflictSensorModelError || !!machineListError
-              ? "error"
-              : "primary"
-          }
-          disabled={!!error || !!conflictSensorModelError || !!machineListError}
-        >
+      {" "}
+      <Paper
+        sx={{
+          p: 2,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Typography component="h1" variant="h5">
           Criar Ponto de Monitoramento
-        </Button>
-        {error && <Alert severity="error">{error}</Alert>}
-      </Box>
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="name"
+            label="Nome da Máquina"
+            name="name"
+            autoFocus
+            error={!!nameError}
+            helperText={nameError}
+            onChange={() => {
+              setNameError(null);
+              setConflictNameError(null);
+            }}
+          />
+          <FormControl sx={{ marginTop: 1, width: "100%" }}>
+            <InputLabel id="sensor-label">Sensor</InputLabel>
+            <Select
+              value={sensorId}
+              fullWidth
+              labelId="sensor-label"
+              id="sensor"
+              label="Sensor"
+              onChange={handleSetSensorId}
+              error={!!conflictSensorModelError || !!sensorListError}
+            >
+              {sensorList.map((sensor) => (
+                <MenuItem key={sensor.id} value={sensor.id || 0}>
+                  {sensor.name + " | " + sensor.model}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          {sensorListError && <Alert severity="error">{sensorListError}</Alert>}
+          <FormControl sx={{ marginTop: 1, width: "100%" }}>
+            <InputLabel id="machine-label">Máquina</InputLabel>
+            <Select
+              value={machineId}
+              fullWidth
+              labelId="machine-label"
+              id="machine"
+              label="Máquina"
+              onChange={handleSetMachineId}
+              error={!!conflictSensorModelError || !!machineListError}
+            >
+              {machineList.map((machine) => (
+                <MenuItem key={machine.id} value={machine.id || 0}>
+                  {machine.name + " | " + machine.type}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          {sensorListError && <Alert severity="error">{sensorListError}</Alert>}
+          {conflictSensorModelError && (
+            <Alert severity="error">{conflictSensorModelError}</Alert>
+          )}
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            color={
+              !!error || !!conflictSensorModelError || !!machineListError
+                ? "error"
+                : "primary"
+            }
+            disabled={
+              !!error || !!conflictSensorModelError || !!machineListError
+            }
+          >
+            Criar Ponto de Monitoramento
+          </Button>
+          {error && <Alert severity="error">{error}</Alert>}
+        </Box>
+      </Paper>
     </Box>
   );
 }

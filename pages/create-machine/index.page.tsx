@@ -10,6 +10,7 @@ import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
+import Paper from "@mui/material/Paper";
 
 import Machine from "lib/utils/types/machine";
 
@@ -127,51 +128,61 @@ export default function CreateMachine() {
         paddingX: "30%",
       }}
     >
-      <Typography component="h1" variant="h5">
-        Criar Máquina
-      </Typography>
-      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="name"
-          label="Nome da Máquina"
-          name="name"
-          autoFocus
-          error={!!nameError}
-          helperText={nameError}
-          onChange={() => {
-            setNameError(null);
-            setConflictError(null);
-          }}
-        />
-        <FormControl sx={{ marginTop: 1, width: "100%" }}>
-          <InputLabel id="type-label">Tipo</InputLabel>
-          <Select
-            value={type}
-            fullWidth
-            labelId="type-label"
-            id="type"
-            label="Tipo"
-            onChange={handleSetType}
-          >
-            <MenuItem value={"Pump"}>Pump</MenuItem>
-            <MenuItem value={"Fan"}>Fan</MenuItem>
-          </Select>
-        </FormControl>
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-          color={!!error ? "error" : "primary"}
-          disabled={!!error}
-        >
+      <Paper
+        sx={{
+          p: 2,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Typography component="h1" variant="h5">
           Criar Máquina
-        </Button>
-        {error && <Alert severity="error">{error}</Alert>}
-      </Box>
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="name"
+            label="Nome da Máquina"
+            name="name"
+            autoFocus
+            error={!!nameError}
+            helperText={nameError}
+            onChange={() => {
+              setNameError(null);
+              setConflictError(null);
+            }}
+          />
+          <FormControl sx={{ marginTop: 1, width: "100%" }}>
+            <InputLabel id="type-label">Tipo</InputLabel>
+            <Select
+              value={type}
+              fullWidth
+              labelId="type-label"
+              id="type"
+              label="Tipo"
+              onChange={handleSetType}
+            >
+              <MenuItem value={"Pump"}>Pump</MenuItem>
+              <MenuItem value={"Fan"}>Fan</MenuItem>
+            </Select>
+          </FormControl>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            color={!!error ? "error" : "primary"}
+            disabled={!!error}
+          >
+            Criar Máquina
+          </Button>
+          {error && <Alert severity="error">{error}</Alert>}
+        </Box>
+      </Paper>
     </Box>
   );
 }

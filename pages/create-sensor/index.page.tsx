@@ -10,6 +10,7 @@ import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
+import Paper from "@mui/material/Paper";
 
 import Sensor from "lib/utils/types/sensor";
 
@@ -127,52 +128,62 @@ export default function CreateMachine() {
         paddingX: "30%",
       }}
     >
-      <Typography component="h1" variant="h5">
-        Criar Máquina
-      </Typography>
-      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="name"
-          label="Nome do Sensor"
-          name="name"
-          autoFocus
-          error={!!nameError}
-          helperText={nameError}
-          onChange={() => {
-            setNameError(null);
-            setConflictError(null);
-          }}
-        />
-        <FormControl sx={{ marginTop: 1, width: "100%" }}>
-          <InputLabel id="type-label">Modelo</InputLabel>
-          <Select
-            value={model}
+      <Paper
+        sx={{
+          p: 2,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Typography component="h1" variant="h5">
+          Criar Máquina
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
             fullWidth
-            labelId="type-label"
-            id="type"
-            label="Modelo"
-            onChange={handleSetModel}
+            id="name"
+            label="Nome do Sensor"
+            name="name"
+            autoFocus
+            error={!!nameError}
+            helperText={nameError}
+            onChange={() => {
+              setNameError(null);
+              setConflictError(null);
+            }}
+          />
+          <FormControl sx={{ marginTop: 1, width: "100%" }}>
+            <InputLabel id="type-label">Modelo</InputLabel>
+            <Select
+              value={model}
+              fullWidth
+              labelId="type-label"
+              id="type"
+              label="Modelo"
+              onChange={handleSetModel}
+            >
+              <MenuItem value={"HF+"}>HF+</MenuItem>
+              <MenuItem value={"TcAg"}>TcAg</MenuItem>
+              <MenuItem value={"TcAs"}>TcAs</MenuItem>
+            </Select>
+          </FormControl>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            color={!!error ? "error" : "primary"}
+            disabled={!!error}
           >
-            <MenuItem value={"HF+"}>HF+</MenuItem>
-            <MenuItem value={"TcAg"}>TcAg</MenuItem>
-            <MenuItem value={"TcAs"}>TcAs</MenuItem>
-          </Select>
-        </FormControl>
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-          color={!!error ? "error" : "primary"}
-          disabled={!!error}
-        >
-          Criar Sensor
-        </Button>
-        {error && <Alert severity="error">{error}</Alert>}
-      </Box>
+            Criar Sensor
+          </Button>
+          {error && <Alert severity="error">{error}</Alert>}
+        </Box>
+      </Paper>
     </Box>
   );
 }

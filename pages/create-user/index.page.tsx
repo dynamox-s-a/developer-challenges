@@ -6,6 +6,7 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
+import Paper from "@mui/material/Paper";
 
 import User from "lib/utils/types/user";
 
@@ -146,76 +147,86 @@ export default function CreateUser() {
         paddingX: "30%",
       }}
     >
-      <Typography component="h1" variant="h5">
-        Criar Usuário
-      </Typography>
-      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="Email Address"
-          name="email"
-          autoComplete="email"
-          autoFocus
-          error={!!emailError}
-          helperText={emailError}
-          onChange={() => {
-            setEmailError(null);
-            setConflictError(null);
-          }}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="name"
-          label="Nome do Usuário"
-          name="name"
-          autoFocus
-          error={!!nameError}
-          helperText={nameError}
-          onChange={() => setNameError(null)}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          error={!!passwordError}
-          helperText={passwordError}
-          onChange={() => setPasswordError(null)}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="passwordConfirmation"
-          label="Repita o Password"
-          type="password"
-          id="passwordConfirmation"
-          autoComplete="current-password"
-          error={!!passwordConfirmationError}
-          helperText={passwordConfirmationError}
-          onChange={() => setPasswordConfirmationError(null)}
-        />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-          color={!!error ? "error" : "primary"}
-          disabled={!!error}
-        >
-          Sign In
-        </Button>
-        {error && <Alert severity="error">{error}</Alert>}
-      </Box>
+      <Paper
+        sx={{
+          p: 2,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Typography component="h1" variant="h5">
+          Criar Usuário
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            error={!!emailError}
+            helperText={emailError}
+            onChange={() => {
+              setEmailError(null);
+              setConflictError(null);
+            }}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="name"
+            label="Nome do Usuário"
+            name="name"
+            autoFocus
+            error={!!nameError}
+            helperText={nameError}
+            onChange={() => setNameError(null)}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            error={!!passwordError}
+            helperText={passwordError}
+            onChange={() => setPasswordError(null)}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="passwordConfirmation"
+            label="Repita o Password"
+            type="password"
+            id="passwordConfirmation"
+            autoComplete="current-password"
+            error={!!passwordConfirmationError}
+            helperText={passwordConfirmationError}
+            onChange={() => setPasswordConfirmationError(null)}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            color={!!error ? "error" : "primary"}
+            disabled={!!error}
+          >
+            Sign In
+          </Button>
+          {error && <Alert severity="error">{error}</Alert>}
+        </Box>
+      </Paper>
     </Box>
   );
 }
