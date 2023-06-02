@@ -2,9 +2,6 @@ import React, { useEffect, useState } from "react";
 
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
 import Pagination from "@mui/material/Pagination";
 import Alert from "@mui/material/Alert";
 
@@ -94,7 +91,6 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    console.log(Math.round(7 / 5));
     if (session?.token) getList(page);
   }, [session?.token, page]);
 
