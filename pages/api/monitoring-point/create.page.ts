@@ -14,9 +14,19 @@ export default async function handler(
     const sensorId: number = parseInt(req.body.sensorId);
     const machineId: number = parseInt(req.body.machineId);
 
-    const monitoringPoint = await prisma.monitoringPoint.create({
-      data: { name, sensorId, machineId },
+    const monitorinPointConflict = await prisma.monitoringPoint.findUnique({
+      where: { name },
     });
-    res.status(200).json(monitoringPoint);
+
+    if (!!monitorinPointConflict)
+      res.status(409).json({
+        error: "Esse nome de ponto de monitoramento já está cadastrado",
+      });
+    else {
+      const monitoringPoint = await prisma.monitoringPoint.create({
+        data: { name, sensorId, machineId },
+      });
+      res.status(200).json(monitoringPoint);
+    }
   }
 }

@@ -12,11 +12,20 @@ export default async function handler(
   } else {
     const name: string = req.body.name;
     const type: string = req.body.type;
-    const sensorId: number = req.body.sensorId;
 
-    const machine = await prisma.machine.create({
-      data: { name, type, sensorId },
+    const machineConflict = await prisma.machine.findUnique({
+      where: { name },
     });
-    res.status(200).json(machine);
+
+    if (!!machineConflict)
+      res
+        .status(409)
+        .json({ error: "Esse nome de máquina já está cadastrada" });
+    else {
+      const machine = await prisma.machine.create({
+        data: { name, type },
+      });
+      res.status(200).json(machine);
+    }
   }
 }

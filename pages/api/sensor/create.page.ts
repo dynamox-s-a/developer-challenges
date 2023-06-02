@@ -10,11 +10,20 @@ export default async function handler(
   if (!isSigned) {
     res.status(401).json(req.body);
   } else {
-    const model: string = req.body.model;
     const name: string = req.body.name;
-    const sensor = await prisma.sensor.create({
-      data: { model, name },
+    const model: string = req.body.model;
+
+    const sensorConflict = await prisma.sensor.findUnique({
+      where: { name },
     });
-    res.status(200).json(sensor);
+
+    if (!!sensorConflict)
+      res.status(409).json({ error: "Esse nome de sensor já está cadastrado" });
+    else {
+      const sensor = await prisma.sensor.create({
+        data: { model, name },
+      });
+      res.status(200).json(sensor);
+    }
   }
 }
