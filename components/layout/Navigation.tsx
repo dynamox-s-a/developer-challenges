@@ -7,7 +7,7 @@ import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 
 import Drawer from "./Drawer";
-import { mainListItems, secondaryListItems } from "./listItems";
+import MenuNavegation from "./MenuNavegation";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { toggle } from "redux/reducers/navStateReducer";
 
@@ -30,7 +30,7 @@ export default function Navigation(): ReactElement {
         </IconButton>
       </Toolbar>
       <Divider />
-      <List component="nav">{mainListItems}</List>
+      <List component="nav">{MenuNavegation()}</List>
     </Drawer>
   );
 }
