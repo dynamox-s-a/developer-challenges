@@ -34,10 +34,10 @@ const makeSut = (): SutTypes => {
   return { sut };
 };
 
-describe("CreateUser Page Elements Test", () => {
+describe("Create User Page Elements Test", () => {
   afterEach(cleanup);
 
-  test("CreateUser render test", () => {
+  test("Create User render test", () => {
     makeSut();
   });
 
@@ -78,7 +78,7 @@ describe("CreateUser Page Elements Test", () => {
   });
 });
 
-describe("CreateUser Page Initial State Test", () => {
+describe("Create User Page Initial State Test", () => {
   afterEach(cleanup);
 
   test("Should start with submit button enable", () => {
@@ -94,7 +94,7 @@ describe("CreateUser Page Initial State Test", () => {
   });
 });
 
-describe("CreateUser Page Error Test", () => {
+describe("Create User Page Error Test", () => {
   beforeEach(() => {
     fetchMock.resetMocks();
     fetchMock.doMock();
