@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "prisma/client";
 import IsSigned from "lib/auth/is-signed";
+import { machinePostResultMsg as postResultMsg } from "lib/utils/post/post-result";
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,9 +19,7 @@ export default async function handler(
     });
 
     if (!!machineConflict)
-      res
-        .status(409)
-        .json({ error: "Esse nome de máquina já está cadastrada" });
+      res.status(409).json({ error: postResultMsg.DATA_CONFLICT });
     else {
       const machine = await prisma.machine.create({
         data: { name, type },

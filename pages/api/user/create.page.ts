@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "prisma/client";
 import IsSigned from "lib/auth/is-signed";
+import { userPostResultMsg as postResultMsg } from "lib/utils/post/post-result";
 
 export default async function handler(
   req: NextApiRequest,
@@ -19,7 +20,7 @@ export default async function handler(
     });
 
     if (!!userConflict)
-      res.status(409).json({ error: "Esse email já está cadastrado" });
+      res.status(409).json({ error: postResultMsg.DATA_CONFLICT });
     else {
       const user = await prisma.user.create({
         data: { name, email, password },

@@ -13,21 +13,12 @@ import Alert from "@mui/material/Alert";
 import Paper from "@mui/material/Paper";
 
 import MonitoringPoint from "lib/utils/types/monitoring-point";
-
-import { useAppSelector } from "redux/hooks";
-import { Session } from "lib/auth/auth";
-import { PostResult } from "lib/utils/post/post-result";
 import Sensor from "lib/utils/types/sensor";
 import Machine from "lib/utils/types/machine";
 
-export const postResultMsg: PostResult = {
-  SUCCESS: "Usuário criado com sucesso",
-  DATA_CONFLICT: "Esse email já está cadastrado",
-  BAD_CREDENTIALS: "Você precisa estar logado",
-  BAD_RESPONSE: "Servidor respondeu de forma inesperada",
-  FETCH_ERROR: "Servidor parece estar offline. Tente mais tarde",
-  UNKNOW_ERROR: "Erro desconhecido",
-};
+import { useAppSelector } from "redux/hooks";
+import { Session } from "lib/auth/auth";
+import { monitoringPointPostResultMsg as postResultMsg } from "lib/utils/post/post-result";
 
 export async function post(
   monitoringPoint: MonitoringPoint,
@@ -164,9 +155,7 @@ export default function CreateMachine() {
     );
 
     if (responseStatus == postResultMsg.DATA_CONFLICT)
-      setConflictNameError(
-        "uma ponto de monitoramento com esse nome já está cadastrada"
-      );
+      setConflictNameError(postResultMsg.DATA_CONFLICT);
 
     if (responseStatus == postResultMsg.SUCCESS) router.push("/");
   };

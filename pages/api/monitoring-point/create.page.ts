@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "prisma/client";
 import IsSigned from "lib/auth/is-signed";
+import { userPostResultMsg as postResultMsg } from "lib/utils/post/post-result";
 
 export default async function handler(
   req: NextApiRequest,
@@ -20,7 +21,7 @@ export default async function handler(
 
     if (!!monitorinPointConflict)
       res.status(409).json({
-        error: "Esse nome de ponto de monitoramento já está cadastrado",
+        error: postResultMsg.DATA_CONFLICT,
       });
     else {
       const monitoringPoint = await prisma.monitoringPoint.create({

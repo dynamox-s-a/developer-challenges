@@ -16,16 +16,7 @@ import Sensor from "lib/utils/types/sensor";
 
 import { useAppSelector } from "redux/hooks";
 import { Session } from "lib/auth/auth";
-import { PostResult } from "lib/utils/post/post-result";
-
-export const postResultMsg: PostResult = {
-  SUCCESS: "Usuário criado com sucesso",
-  DATA_CONFLICT: "Esse email já está cadastrado",
-  BAD_CREDENTIALS: "Você precisa estar logado",
-  BAD_RESPONSE: "Servidor respondeu de forma inesperada",
-  FETCH_ERROR: "Servidor parece estar offline. Tente mais tarde",
-  UNKNOW_ERROR: "Erro desconhecido",
-};
+import { sensorPostResultMsg as postResultMsg } from "lib/utils/post/post-result";
 
 export async function post(
   sensor: Sensor,
@@ -67,7 +58,7 @@ export async function post(
   }
 }
 
-export default function CreateMachine() {
+export default function CreateSensor() {
   const session = useAppSelector((state) => state.sessionReducer.session);
   const router = useRouter();
 
@@ -100,7 +91,7 @@ export default function CreateMachine() {
     );
 
     if (responseStatus == postResultMsg.DATA_CONFLICT)
-      setConflictError("um sensor com esse nome já está cadastrado");
+      setConflictError(postResultMsg.DATA_CONFLICT);
 
     if (responseStatus == postResultMsg.SUCCESS) router.push("/");
   };

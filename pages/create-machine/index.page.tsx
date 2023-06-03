@@ -16,16 +16,7 @@ import Machine from "lib/utils/types/machine";
 
 import { useAppSelector } from "redux/hooks";
 import { Session } from "lib/auth/auth";
-import { PostResult } from "lib/utils/post/post-result";
-
-export const postResultMsg: PostResult = {
-  SUCCESS: "Usuário criado com sucesso",
-  DATA_CONFLICT: "Esse email já está cadastrado",
-  BAD_CREDENTIALS: "Você precisa estar logado",
-  BAD_RESPONSE: "Servidor respondeu de forma inesperada",
-  FETCH_ERROR: "Servidor parece estar offline. Tente mais tarde",
-  UNKNOW_ERROR: "Erro desconhecido",
-};
+import { machinePostResultMsg as postResultMsg } from "lib/utils/post/post-result";
 
 export async function post(
   machine: Machine,
@@ -100,7 +91,7 @@ export default function CreateMachine() {
     );
 
     if (responseStatus == postResultMsg.DATA_CONFLICT)
-      setConflictError("uma máquina com esse nome já está cadastrada");
+      setConflictError(postResultMsg.DATA_CONFLICT);
 
     if (responseStatus == postResultMsg.SUCCESS) router.push("/");
   };

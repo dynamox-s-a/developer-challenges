@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 
 import Button from "@mui/material/Button";
@@ -12,21 +12,9 @@ import User from "lib/utils/types/user";
 
 import { useAppSelector } from "redux/hooks";
 import { Session } from "lib/auth/auth";
-import { PostResult } from "lib/utils/post/post-result";
+import { userPostResultMsg as postResultMsg } from "lib/utils/post/post-result";
 
-export const postResultMsg: PostResult = {
-  SUCCESS: "Usuário criado com sucesso",
-  DATA_CONFLICT: "Esse email já está cadastrado",
-  BAD_CREDENTIALS: "Você precisa estar logado",
-  BAD_RESPONSE: "Servidor respondeu de forma inesperada",
-  FETCH_ERROR: "Servidor parece estar offline. Tente mais tarde",
-  UNKNOW_ERROR: "Erro desconhecido",
-};
-
-export async function postUser(
-  user: User,
-  session: Session | null
-): Promise<string> {
+async function post(user: User, session: Session | null): Promise<string> {
   if (!session) {
     return postResultMsg.BAD_CREDENTIALS;
   }
@@ -56,7 +44,6 @@ export async function postUser(
   }
 
   const postResponse = await response.json().catch(() => null);
-
   if (
     postResponse.name != user.name ||
     postResponse.email != user.email ||
@@ -72,18 +59,16 @@ export default function CreateUser() {
   const session = useAppSelector((state) => state.sessionReducer.session);
   const router = useRouter();
 
-  const [error, setError] = useState<string | null>(null);
-  const [emailError, setEmailError] = useState<string | null>(null);
-  const [nameError, setNameError] = useState<string | null>(null);
-  const [passwordError, setPasswordError] = useState<string | null>(null);
-  const [passwordConfirmationError, setPasswordConfirmationError] = useState<
-    string | null
-  >(null);
-  const [conflictError, setConflictError] = useState<string | null>(null);
+  const [error, setError] = React.useState<string | null>(null);
+  const [emailError, setEmailError] = React.useState<string | null>(null);
+  const [nameError, setNameError] = React.useState<string | null>(null);
+  const [passwordError, setPasswordError] = React.useState<string | null>(null);
+  const [passwordConfirmationError, setPasswordConfirmationError] =
+    React.useState<string | null>(null);
+  const [conflictError, setConflictError] = React.useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     if (!session) {
       router.push("/login");
       return;
@@ -109,10 +94,16 @@ export default function CreateUser() {
       );
     }
 
-    if (emailError || nameError || passwordError || passwordConfirmationError)
+    if (
+      !email ||
+      !name ||
+      !password ||
+      !passwordConfirmation ||
+      password != passwordConfirmation
+    )
       return;
 
-    const responseStatus = await postUser(
+    const responseStatus = await post(
       {
         id: null,
         email: email || "",
@@ -123,7 +114,7 @@ export default function CreateUser() {
     );
 
     if (responseStatus == postResultMsg.DATA_CONFLICT)
-      setConflictError("esse email já está cadastrado");
+      setConflictError(postResultMsg.DATA_CONFLICT);
 
     if (responseStatus == postResultMsg.SUCCESS) router.push("/");
   };
@@ -159,7 +150,13 @@ export default function CreateUser() {
         <Typography component="h1" variant="h5">
           Criar Usuário
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+          sx={{ mt: 1 }}
+          data-testid="form"
+        >
           <TextField
             margin="normal"
             required
@@ -175,6 +172,7 @@ export default function CreateUser() {
               setEmailError(null);
               setConflictError(null);
             }}
+            inputProps={{ "data-testid": "email-input" }}
           />
           <TextField
             margin="normal"
@@ -187,6 +185,7 @@ export default function CreateUser() {
             error={!!nameError}
             helperText={nameError}
             onChange={() => setNameError(null)}
+            inputProps={{ "data-testid": "name-input" }}
           />
           <TextField
             margin="normal"
@@ -200,6 +199,7 @@ export default function CreateUser() {
             error={!!passwordError}
             helperText={passwordError}
             onChange={() => setPasswordError(null)}
+            inputProps={{ "data-testid": "password-input" }}
           />
           <TextField
             margin="normal"
@@ -213,6 +213,7 @@ export default function CreateUser() {
             error={!!passwordConfirmationError}
             helperText={passwordConfirmationError}
             onChange={() => setPasswordConfirmationError(null)}
+            inputProps={{ "data-testid": "password-confirmation-input" }}
           />
           <Button
             type="submit"
@@ -221,10 +222,15 @@ export default function CreateUser() {
             sx={{ mt: 3, mb: 2 }}
             color={!!error ? "error" : "primary"}
             disabled={!!error}
+            data-testid="submit-button"
           >
             Sign In
           </Button>
-          {error && <Alert severity="error">{error}</Alert>}
+          {error && (
+            <Alert severity="error" data-testid="alert-error">
+              {error}
+            </Alert>
+          )}
         </Box>
       </Paper>
     </Box>
