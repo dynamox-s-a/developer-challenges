@@ -292,7 +292,7 @@ describe("Create User Post Event Test", () => {
   });
 
   test("Should keep in create user page if server response is a error", async () => {
-    fetchMock.mockResponseOnce("{}", {
+    fetchMock.mockResponseOnce(postResultMsg.DATA_CONFLICT, {
       status: 409,
       headers: { "content-type": "application/json" },
     });
