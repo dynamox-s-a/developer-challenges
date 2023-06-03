@@ -146,6 +146,7 @@ export default function CreateSensor() {
               setNameError(null);
               setConflictError(null);
             }}
+            inputProps={{ "data-testid": "email-input" }}
           />
           <FormControl sx={{ marginTop: 1, width: "100%" }}>
             <InputLabel id="type-label">Modelo</InputLabel>
@@ -156,6 +157,7 @@ export default function CreateSensor() {
               id="type"
               label="Modelo"
               onChange={handleSetModel}
+              inputProps={{ "data-testid": "email-input" }}
             >
               <MenuItem value={"HF+"}>HF+</MenuItem>
               <MenuItem value={"TcAg"}>TcAg</MenuItem>
@@ -169,10 +171,15 @@ export default function CreateSensor() {
             sx={{ mt: 3, mb: 2 }}
             color={!!error ? "error" : "primary"}
             disabled={!!error}
+            data-testid="submit-button"
           >
             Criar Sensor
           </Button>
-          {error && <Alert severity="error">{error}</Alert>}
+          {error && (
+            <Alert severity="error" data-testid="alert-error">
+              {error}
+            </Alert>
+          )}
         </Box>
       </Paper>
     </Box>
