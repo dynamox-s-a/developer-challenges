@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 
 import FormControl from "@mui/material/FormControl";
@@ -62,11 +62,12 @@ export default function CreateSensor() {
   const session = useAppSelector((state) => state.sessionReducer.session);
   const router = useRouter();
 
-  const [model, setModel] = useState("HF+");
-  const [error, setError] = useState<string | null>(null);
-  const [nameError, setNameError] = useState<string | null>(null);
-  const [modelError, setModelError] = useState<string | null>(null);
-  const [conflictError, setConflictError] = useState<string | null>(null);
+  const [error, setError] = React.useState<string | null>(null);
+  const [nameError, setNameError] = React.useState<string | null>(null);
+  const [modelError, setModelError] = React.useState<string | null>(null);
+  const [conflictError, setConflictError] = React.useState<string | null>(null);
+
+  const [model, setModel] = React.useState("HF+");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -83,7 +84,7 @@ export default function CreateSensor() {
     if (!name) setNameError("faltou inserir o nome do sensor");
     if (!model) setModelError("faltou selecionar o modelo do sensor");
 
-    if (nameError || modelError) return;
+    if (!name || !model) return;
 
     const responseStatus = await post(
       { id: null, name: name || "", model: model || "" },
@@ -146,7 +147,7 @@ export default function CreateSensor() {
               setNameError(null);
               setConflictError(null);
             }}
-            inputProps={{ "data-testid": "email-input" }}
+            inputProps={{ "data-testid": "name-input" }}
           />
           <FormControl sx={{ marginTop: 1, width: "100%" }}>
             <InputLabel id="model-label">Modelo</InputLabel>
