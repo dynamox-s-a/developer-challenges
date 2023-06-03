@@ -254,6 +254,7 @@ export default function CreateMachine() {
               setNameError(null);
               setConflictNameError(null);
             }}
+            inputProps={{ "data-testid": "name-input" }}
           />
           <FormControl sx={{ marginTop: 1, width: "100%" }}>
             <InputLabel id="sensor-label">Sensor</InputLabel>
@@ -265,6 +266,7 @@ export default function CreateMachine() {
               label="Sensor"
               onChange={handleSetSensorId}
               error={!!conflictSensorModelError || !!sensorListError}
+              inputProps={{ "data-testid": "sensor-input" }}
             >
               {sensorList.map((sensor) => (
                 <MenuItem key={sensor.id} value={sensor.id || 0}>
@@ -284,6 +286,7 @@ export default function CreateMachine() {
               label="Máquina"
               onChange={handleSetMachineId}
               error={!!conflictSensorModelError || !!machineListError}
+              inputProps={{ "data-testid": "machine-input" }}
             >
               {machineList.map((machine) => (
                 <MenuItem key={machine.id} value={machine.id || 0}>
@@ -309,10 +312,15 @@ export default function CreateMachine() {
             disabled={
               !!error || !!conflictSensorModelError || !!machineListError
             }
+            data-testid="submit-button"
           >
             Criar Ponto de Monitoramento
           </Button>
-          {error && <Alert severity="error">{error}</Alert>}
+          {error && (
+            <Alert severity="error" data-testid="alert-error">
+              {error}
+            </Alert>
+          )}
         </Box>
       </Paper>
     </Box>
