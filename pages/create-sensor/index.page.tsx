@@ -149,15 +149,15 @@ export default function CreateSensor() {
             inputProps={{ "data-testid": "email-input" }}
           />
           <FormControl sx={{ marginTop: 1, width: "100%" }}>
-            <InputLabel id="type-label">Modelo</InputLabel>
+            <InputLabel id="model-label">Modelo</InputLabel>
             <Select
               value={model}
               fullWidth
-              labelId="type-label"
-              id="type"
+              labelId="model-label"
+              id="model"
               label="Modelo"
               onChange={handleSetModel}
-              inputProps={{ "data-testid": "email-input" }}
+              inputProps={{ "data-testid": "model-input" }}
             >
               <MenuItem value={"HF+"}>HF+</MenuItem>
               <MenuItem value={"TcAg"}>TcAg</MenuItem>
