@@ -16,7 +16,7 @@ export default async function handler(
     where: { email },
   });
 
-  if (user.password == password)
+  if (user?.password == password)
     res.status(200).json({ token: fakeToken, email, name: user.name });
   else res.status(401).json({ error: "BadCredentials" });
 }
