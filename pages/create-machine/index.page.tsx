@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 
 import FormControl from "@mui/material/FormControl";
@@ -62,11 +62,11 @@ export default function CreateMachine() {
   const session = useAppSelector((state) => state.sessionReducer.session);
   const router = useRouter();
 
-  const [type, setType] = useState("Pump");
-  const [error, setError] = useState<string | null>(null);
-  const [nameError, setNameError] = useState<string | null>(null);
-  const [typeError, setTypeError] = useState<string | null>(null);
-  const [conflictError, setConflictError] = useState<string | null>(null);
+  const [error, setError] = React.useState<string | null>(null);
+  const [nameError, setNameError] = React.useState<string | null>(null);
+  const [typeError, setTypeError] = React.useState<string | null>(null);
+  const [conflictError, setConflictError] = React.useState<string | null>(null);
+  const [type, setType] = React.useState("Pump");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -83,7 +83,7 @@ export default function CreateMachine() {
     if (!name) setNameError("faltou inserir o nome da máquina");
     if (!type) setTypeError("faltou selecionar o tipo da máquina");
 
-    if (nameError || typeError) return;
+    if (!name || !type) return;
 
     const responseStatus = await post(
       { id: null, name: name || "", type: type || "" },
@@ -146,6 +146,7 @@ export default function CreateMachine() {
               setNameError(null);
               setConflictError(null);
             }}
+            inputProps={{ "data-testid": "name-input" }}
           />
           <FormControl sx={{ marginTop: 1, width: "100%" }}>
             <InputLabel id="type-label">Tipo</InputLabel>
@@ -156,6 +157,7 @@ export default function CreateMachine() {
               id="type"
               label="Tipo"
               onChange={handleSetType}
+              data-testid="type-input"
             >
               <MenuItem value={"Pump"}>Pump</MenuItem>
               <MenuItem value={"Fan"}>Fan</MenuItem>
@@ -168,10 +170,15 @@ export default function CreateMachine() {
             sx={{ mt: 3, mb: 2 }}
             color={!!error ? "error" : "primary"}
             disabled={!!error}
+            data-testid="submit-button"
           >
             Criar Máquina
           </Button>
-          {error && <Alert severity="error">{error}</Alert>}
+          {error && (
+            <Alert severity="error" data-testid="alert-error">
+              {error}
+            </Alert>
+          )}
         </Box>
       </Paper>
     </Box>
