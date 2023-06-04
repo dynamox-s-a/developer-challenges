@@ -7,6 +7,14 @@ export interface PostResult {
   UNKNOW_ERROR: string;
 }
 
+export const loginResultMsg = {
+  SUCCESS: "Login efetuado com sucesso",
+  BAD_CREDENTIALS: "Email ou Senha parecem estar errados",
+  BAD_RESPONSE: "Servidor respondeu de forma inesperada",
+  FETCH_ERROR: "Servidor parece estar offline. Tente mais tarde",
+  UNKNOW_ERROR: "Erro desconhecido",
+};
+
 export const userPostResultMsg: PostResult = {
   SUCCESS: "Usuário criado com sucesso",
   DATA_CONFLICT: "Um usuário com esse email já está cadastrado",
