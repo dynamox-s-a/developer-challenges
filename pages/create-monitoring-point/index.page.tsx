@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 
 import FormControl from "@mui/material/FormControl";
@@ -91,7 +91,6 @@ export async function getAll(
   }
 
   const postResponse = await response.json().catch(() => null);
-
   if (!Array.isArray(postResponse)) {
     return postResultMsg.BAD_RESPONSE;
   } else {
@@ -103,28 +102,34 @@ export default function CreateMachine() {
   const session = useAppSelector((state) => state.sessionReducer.session);
   const router = useRouter();
 
-  const [sensor, setSensor] = useState<Sensor | null>(null);
-  const [machine, setMachine] = useState<Machine | null>(null);
-
-  const [sensorId, setSensorId] = useState<string>("");
-  const [machineId, setMachineId] = useState<string>("");
-
-  const [sensorList, setSensorList] = useState<Sensor[]>([]);
-  const [machineList, setMachineList] = useState<Machine[]>([]);
-
-  const [sensorListError, setSensorListError] = useState<string | null>(null);
-  const [machineListError, setMachineListError] = useState<string | null>(null);
-
-  const [error, setError] = useState<string | null>(null);
-  const [nameError, setNameError] = useState<string | null>(null);
-  const [sensorIdError, setSensorIdError] = useState<string | null>(null);
-  const [machineIdError, setMachineIdError] = useState<string | null>(null);
-  const [conflictNameError, setConflictNameError] = useState<string | null>(
+  const [error, setError] = React.useState<string | null>(null);
+  const [nameError, setNameError] = React.useState<string | null>(null);
+  const [sensorIdError, setSensorIdError] = React.useState<string | null>(null);
+  const [machineIdError, setMachineIdError] = React.useState<string | null>(
     null
   );
-  const [conflictSensorModelError, setConflictSensorModelError] = useState<
+  const [conflictNameError, setConflictNameError] = React.useState<
     string | null
   >(null);
+
+  const [sensor, setSensor] = React.useState<Sensor | null>(null);
+  const [machine, setMachine] = React.useState<Machine | null>(null);
+
+  const [sensorId, setSensorId] = React.useState<string>("");
+  const [machineId, setMachineId] = React.useState<string>("");
+
+  const [listsIsReady, setListsIsReady] = React.useState(false);
+  const [sensorList, setSensorList] = React.useState<Sensor[]>([]);
+  const [machineList, setMachineList] = React.useState<Machine[]>([]);
+  const [sensorListError, setSensorListError] = React.useState<string | null>(
+    null
+  );
+  const [machineListError, setMachineListError] = React.useState<string | null>(
+    null
+  );
+
+  const [conflictSensorModelError, setConflictSensorModelError] =
+    React.useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -141,7 +146,6 @@ export default function CreateMachine() {
     if (!name) setNameError("faltou inserir o nome da máquina");
     if (sensorId == "") setSensorIdError("faltou selecionar o sensor");
     if (machineId == "") setMachineIdError("faltou selecionar a máquina");
-
     if (!name || sensorId == "" || machineId == "") return;
 
     const responseStatus = await post(
@@ -175,6 +179,7 @@ export default function CreateMachine() {
       setMachineList(machineResponse as Machine[]);
       setMachineListError(null);
     }
+    setListsIsReady(true);
   };
 
   useEffect(() => {
@@ -182,11 +187,11 @@ export default function CreateMachine() {
   }, [session?.token]);
 
   useEffect(() => {
-    if (machine?.type == "Pump" && sensor?.model != "HF+")
+    if (machine?.type == "Pump" && sensor?.model != "HF+") {
       setConflictSensorModelError(
         "O tipo Pump de máquina só pode ser associado com o modelo HF+ de sensor"
       );
-    else setConflictSensorModelError(null);
+    } else setConflictSensorModelError(null);
   }, [machine, sensor]);
 
   useEffect(() => {
@@ -195,6 +200,10 @@ export default function CreateMachine() {
     else if (conflictNameError) setError(conflictNameError);
     else setError(null);
   });
+
+  // useEffect(() => {
+  //   console.log(error);
+  // }, [error]);
 
   const handleSetSensorId = (e: SelectChangeEvent) => {
     e.preventDefault();
@@ -256,47 +265,61 @@ export default function CreateMachine() {
             }}
             inputProps={{ "data-testid": "name-input" }}
           />
-          <FormControl sx={{ marginTop: 1, width: "100%" }}>
-            <InputLabel id="sensor-label">Sensor</InputLabel>
-            <Select
-              value={sensorId}
-              fullWidth
-              labelId="sensor-label"
-              id="sensor"
-              label="Sensor"
-              onChange={handleSetSensorId}
-              error={!!conflictSensorModelError || !!sensorListError}
-              inputProps={{ "data-testid": "sensor-input" }}
-            >
-              {sensorList.map((sensor) => (
-                <MenuItem key={sensor.id} value={sensor.id || 0}>
-                  {sensor.name + " | " + sensor.model}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          {sensorListError && <Alert severity="error">{sensorListError}</Alert>}
-          <FormControl sx={{ marginTop: 1, width: "100%" }}>
-            <InputLabel id="machine-label">Máquina</InputLabel>
-            <Select
-              value={machineId}
-              fullWidth
-              labelId="machine-label"
-              id="machine"
-              label="Máquina"
-              onChange={handleSetMachineId}
-              error={!!conflictSensorModelError || !!machineListError}
-              inputProps={{ "data-testid": "machine-input" }}
-            >
-              {machineList.map((machine) => (
-                <MenuItem key={machine.id} value={machine.id || 0}>
-                  {machine.name + " | " + machine.type}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          {sensorListError && <Alert severity="error">{sensorListError}</Alert>}
-          {conflictSensorModelError && (
+          {listsIsReady && (
+            <FormControl sx={{ marginTop: 1, width: "100%" }}>
+              <InputLabel id="sensor-label">Sensor</InputLabel>
+              <Select
+                value={sensorId}
+                fullWidth
+                labelId="sensor-label"
+                id="sensor"
+                label="Sensor"
+                onChange={(e) => {
+                  handleSetSensorId(e);
+                  setSensorIdError(null);
+                }}
+                error={!!conflictSensorModelError || !!sensorListError}
+                data-testid="sensor-input"
+              >
+                {sensorList.map((sensor) => (
+                  <MenuItem key={sensor.id} value={sensor.id || 0}>
+                    {sensor.name + " | " + sensor.model}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+          {listsIsReady && sensorListError && (
+            <Alert severity="error">{sensorListError}</Alert>
+          )}
+          {listsIsReady && (
+            <FormControl sx={{ marginTop: 1, width: "100%" }}>
+              <InputLabel id="machine-label">Máquina</InputLabel>
+              <Select
+                value={machineId}
+                fullWidth
+                labelId="machine-label"
+                id="machine"
+                label="Máquina"
+                onChange={(e) => {
+                  handleSetMachineId(e);
+                  setMachineIdError(null);
+                }}
+                error={!!conflictSensorModelError || !!machineListError}
+                data-testid="machine-input"
+              >
+                {machineList.map((machine) => (
+                  <MenuItem key={machine.id} value={machine.id || 0}>
+                    {machine.name + " | " + machine.type}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+          {listsIsReady && sensorListError && (
+            <Alert severity="error">{sensorListError}</Alert>
+          )}
+          {listsIsReady && conflictSensorModelError && (
             <Alert severity="error">{conflictSensorModelError}</Alert>
           )}
           <Button
@@ -310,7 +333,10 @@ export default function CreateMachine() {
                 : "primary"
             }
             disabled={
-              !!error || !!conflictSensorModelError || !!machineListError
+              !listsIsReady ||
+              !!error ||
+              !!conflictSensorModelError ||
+              !!machineListError
             }
             data-testid="submit-button"
           >
