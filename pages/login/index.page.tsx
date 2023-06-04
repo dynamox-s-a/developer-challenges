@@ -4,10 +4,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
+import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
@@ -15,31 +12,18 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { signIn } from "lib/auth/auth";
+import { loginResultMsg } from "lib/utils/post/post-result";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-enum LoginResult {
-  SUCCESS,
-  BAD_CREDENTIALS,
-  BAD_RESPONSE,
-  FETCH_ERROR,
-  UNKNOW_ERROR,
-}
-
-export const LoginResultMsg = {
-  SUCCESS: "Login efetuado com sucesso",
-  BAD_CREDENTIALS: "Email ou Senha parecem estar errados",
-  BAD_RESPONSE: "Servidor respondeu de forma inesperada",
-  FETCH_ERROR: "Servidor parece estar offline. Tente mais tarde",
-  UNKNOW_ERROR: "Erro desconhecido",
-};
-
 export default function Login() {
+  const [error, setError] = React.useState<string | null>(null);
+
   const login = async function (
     email: string,
     password: string
-  ): Promise<LoginResult> {
+  ): Promise<string> {
     const loginRoute = "/api/login";
 
     const response = await fetch(loginRoute, {
@@ -49,31 +33,36 @@ export default function Login() {
     }).catch(() => null);
 
     if (!response) {
-      return LoginResult.FETCH_ERROR;
+      return loginResultMsg.FETCH_ERROR;
     } else if (response.status === 401) {
-      return LoginResult.BAD_CREDENTIALS;
+      return loginResultMsg.BAD_CREDENTIALS;
     } else if (response.status !== 200) {
-      return LoginResult.UNKNOW_ERROR;
+      return loginResultMsg.UNKNOW_ERROR;
     }
 
     const loginResponse = await response.json().catch(() => null);
     const session = signIn(loginResponse);
     if (!!session) {
       window.location.reload();
-      return LoginResult.SUCCESS;
+      return loginResultMsg.SUCCESS;
     }
 
-    return LoginResult.BAD_RESPONSE;
+    return loginResultMsg.BAD_RESPONSE;
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
     const email = data.get("email")?.toString();
     const password = data.get("password")?.toString();
 
-    if (email && password) login(email, password);
+    if (!email || !password) {
+      setError("Insira todas as informações necessárias para efetuar o login");
+      return;
+    }
+    const response = await login(email, password);
+    if (response != loginResultMsg.SUCCESS) setError(response);
   };
 
   return (
@@ -132,6 +121,11 @@ export default function Login() {
             >
               Sign In
             </Button>
+            {error && (
+              <Alert severity="error" data-testid="alert-error">
+                {error}
+              </Alert>
+            )}
           </Box>
         </Box>
       </Container>
