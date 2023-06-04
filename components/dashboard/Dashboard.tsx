@@ -122,7 +122,7 @@ export default function Dashboard() {
         )}
       </Grid>
       <Pagination
-        count={Math.round(count / 5) + 1}
+        count={Math.floor(count / 5) + 1}
         shape="rounded"
         onChange={handlePaginationChange}
       />
