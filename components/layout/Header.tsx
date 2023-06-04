@@ -6,12 +6,12 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
-import Badge from "@mui/material/Badge";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 import { drawerWidth } from "./Drawer";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 import { toggle } from "redux/reducers/navStateReducer";
+import { signOut } from "lib/auth/auth";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -77,6 +77,15 @@ export default function Header({ title }: Props): ReactElement {
         >
           {name}
         </Typography>
+        <IconButton
+          color="inherit"
+          onClick={() => {
+            signOut();
+            window.location.reload();
+          }}
+        >
+          <LogoutIcon />
+        </IconButton>
       </Toolbar>
     </AppBar>
   );
