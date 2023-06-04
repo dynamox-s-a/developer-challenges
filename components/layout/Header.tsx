@@ -77,11 +77,6 @@ export default function Header({ title }: Props): ReactElement {
         >
           {name}
         </Typography>
-        <IconButton color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
       </Toolbar>
     </AppBar>
   );
