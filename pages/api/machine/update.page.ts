@@ -13,11 +13,10 @@ export default async function handler(
     const id: number = req.body.id;
     const name: string = req.body.name;
     const type: string = req.body.type;
-    const sensorId: number = req.body.sensorId;
 
     const machine = await prisma.machine.update({
       where: { id },
-      data: { name, type, sensorId },
+      data: { name, type },
     });
 
     res.status(200).json(machine);
