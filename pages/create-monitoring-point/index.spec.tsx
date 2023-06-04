@@ -138,8 +138,8 @@ describe("Create Monitoring Point Page Initial State Test", () => {
 
   test("Should start without alert error", async () => {
     const { sut } = await makeSut();
-    const submitButton = sut.queryByTestId("alert-error") as HTMLInputElement;
-    expect(submitButton).toBeFalsy();
+    const alert = sut.queryByTestId("alert-error") as HTMLInputElement;
+    expect(alert).toBeFalsy();
   });
 });
 
