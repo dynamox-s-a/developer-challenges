@@ -13,14 +13,22 @@ datasource db {
 model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
-  name  String?
   machines Machine[]
 }
 
 model Machine {
   id        Int     @id @default(autoincrement())
   title     String
-  type   String?
-  owner    User    @relation(fields: [userId], references: [id])
+  type   String
+  user    User    @relation(fields: [userId], references: [id])
   userId  Int
+  monitoringPoints MonitoringPoint[]
+}
+
+model MonitoringPoint {
+  id        Int     @id @default(autoincrement())
+  title     String
+  sensor    String
+  machine   Machine  @relation(fields: [machineId], references: [id])
+  machineId Int
 }
