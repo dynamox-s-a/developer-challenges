@@ -1,5 +1,5 @@
 import "../styles/globals.css";
-import { wrapper, store } from "../../store/store";
+import { store } from "../../store/store";
 import { Provider } from "react-redux";
 import { AppProps } from "next/app";
 
@@ -13,4 +13,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default wrapper.withRedux(MyApp);
+export default MyApp;
