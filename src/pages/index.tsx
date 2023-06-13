@@ -45,7 +45,10 @@ export default function Home() {
       ) : (
         <MachineList />
       )}
-      <Link href="/MonitoringPointsList" />
+      <br />
+      <a href="/MonitoringPointsList" className="py-4 text-2xl text-blue-500">
+        See All Monitoring Points
+      </a>
     </div>
   );
 }

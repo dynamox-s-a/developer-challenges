@@ -2,7 +2,10 @@ import { Machine, MonitoringPoint } from "../storeTypes";
 import {
   SET_MACHINES,
   ADD_MACHINE,
+  ADD_MONITORING_POINT,
   DELETE_MACHINE,
+  SET_MONITORING_POINTS,
+  EDIT_MACHINE,
 } from "../actions/machineActions";
 
 interface GlobalState {
@@ -22,15 +25,29 @@ const machineReducer = (state = initialState, action: any): GlobalState => {
         ...state,
         machines: action.payload,
       };
-    case SET_MACHINES:
+    case SET_MONITORING_POINTS:
       return {
         ...state,
         monitoringPoints: action.payload,
+      };
+    case EDIT_MACHINE:
+      const updatedMachine = action.payload;
+      const editedMachines = state.machines.map((machine) =>
+        machine.id === updatedMachine.id ? updatedMachine : machine
+      );
+      return {
+        ...state,
+        machines: editedMachines,
       };
     case ADD_MACHINE:
       return {
         ...state,
         machines: [...state.machines, action.payload],
+      };
+    case ADD_MONITORING_POINT:
+      return {
+        ...state,
+        monitoringPoints: [...state.monitoringPoints, action.payload],
       };
     case DELETE_MACHINE:
       const deletedMachineId = action.payload;

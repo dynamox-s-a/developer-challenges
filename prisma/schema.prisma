@@ -32,6 +32,8 @@ model MonitoringPoint {
   sensor    String
   machine   Machine  @relation(fields: [machineId], references: [id])
   machineId Int
+  machineType  String        
+  machineTitle String
   user    User    @relation(fields: [userId], references: [id])
   userId  Int
 }

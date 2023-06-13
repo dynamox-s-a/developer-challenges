@@ -1,61 +1,75 @@
 import React, { useState, useEffect } from "react";
 import { Button, Grid, MenuItem, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { setMachines, deleteMachine } from "../../store/actions/machineActions";
-import { Machine } from "../types/types";
-import { AppDispatch, RootState } from "../../store/store";
+import { useRouter } from "next/navigation";
 import {
-  TrashIcon,
-  PencilIcon,
-  XMarkIcon,
-  CheckIcon,
-} from "@heroicons/react/24/solid";
+  deleteMachine,
+  editMachine,
+  addMonitoringPoint,
+} from "../../store/actions/machineActions";
+import { Machine, MonitoringPoint } from "../types/types";
+import { AppDispatch, RootState } from "../../store/store";
+import { TrashIcon, PencilIcon, CheckIcon } from "@heroicons/react/24/solid";
 
 const MachineList = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
   const machines = useSelector((state: RootState) => state.machines.machines);
   const [expandedMachine, setExpandedMachine] = useState<number | null>(null);
-  const [newMonitoringPoint, setNewMonitoringPoint] = useState({
-    name: "",
-    sensorModel: "",
-  });
+  const [editedMachine, setEditedMachine] = useState<Machine | null>(null);
+  const [newMonitoringPoint, setNewMonitoringPoint] =
+    useState<Partial<MonitoringPoint> | null>(null);
 
   const [isEditing, setIsEditing] = useState<number | null>(null);
 
   const handleEditMachine = (index: number) => {
     setIsEditing(index);
+    setEditedMachine(machines[index]);
   };
 
-  const handleFinishEdit = () => {
+  const handleFinishEdit = (machine: Machine | null) => {
     setIsEditing(null);
+    if (editedMachine) {
+      dispatch(editMachine(editedMachine));
+      setEditedMachine(null);
+    }
   };
 
   const handleTitleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index: number
   ) => {
-    const updatedMachines = [...machines];
-    updatedMachines[index].title = event.target.value;
-    dispatch(setMachines(updatedMachines));
+    const updatedMachines = machines.map((machine, i) =>
+      i === index ? { ...machine, title: event.target.value } : machine
+    );
+    setEditedMachine(updatedMachines[index]);
   };
 
   const handleTypeChange = (
     event: React.ChangeEvent<{ value: unknown }>,
     index: number
   ) => {
-    const updatedMachines = [...machines];
-    updatedMachines[index].type = event.target.value as string;
-    dispatch(setMachines(updatedMachines));
+    const updatedMachines = machines.map((machine, i) =>
+      i === index ? { ...machine, type: event.target.value as string } : machine
+    );
+    setEditedMachine(updatedMachines[index]);
   };
 
-  const handleAddMonitoringPoint = (machineIndex: number) => {
+  const handleAddMonitoringPoint = (machineIndex: number, machine: Machine) => {
     setExpandedMachine(machineIndex);
+    setNewMonitoringPoint({
+      title: "",
+      sensor: "",
+      machineId: machine.id,
+      machineType: machine.type,
+      machineTitle: machine.title,
+    });
   };
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewMonitoringPoint({
       ...newMonitoringPoint,
-      name: event.target.value,
+      title: event.target.value as string,
     });
   };
 
@@ -64,17 +78,18 @@ const MachineList = () => {
   ) => {
     setNewMonitoringPoint({
       ...newMonitoringPoint,
-      sensorModel: event.target.value as string,
+      sensor: event.target.value as string,
     });
   };
 
   const handleMonitoringPointSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    // Handle form submission logic here
-    console.log("New Monitoring Point:", newMonitoringPoint);
-    // Reset form
-    setNewMonitoringPoint({ name: "", sensorModel: "" });
-    setExpandedMachine(null);
+    if (newMonitoringPoint) {
+      dispatch(addMonitoringPoint(newMonitoringPoint as MonitoringPoint));
+      setNewMonitoringPoint(null);
+      setExpandedMachine(null);
+      router.push("/MonitoringPointsList");
+    }
   };
 
   return (
@@ -96,7 +111,7 @@ const MachineList = () => {
               <label className="text-xs underline">Name</label>
               {isEditing === index ? (
                 <TextField
-                  value={machine.title}
+                  value={editedMachine?.title}
                   onChange={(event) => handleTitleChange(event, index)}
                   variant="outlined"
                   margin="dense"
@@ -117,7 +132,7 @@ const MachineList = () => {
               {isEditing === index ? (
                 <TextField
                   select
-                  value={machine.type}
+                  value={editedMachine?.type}
                   onChange={(event) => handleTypeChange(event, index)}
                   variant="outlined"
                   margin="dense"
@@ -140,19 +155,14 @@ const MachineList = () => {
               <div className="flex justify-center items-center flex-row w-2/12 mr-4">
                 <CheckIcon
                   className="px-6 text-green-500 hover:cursor-pointer"
-                  onClick={() => handleFinishEdit()}
+                  onClick={() => handleFinishEdit(machine)}
                 />
               </div>
             ) : null}
-
-            <div className="flex justify-between items-center flex-col w-8/12">
-              <label className="text-xs underline">Monitoring Points</label>
-              <h2 className="text-xl">0</h2>
-            </div>
             <div className="py-4">
               <Button
                 variant="outlined"
-                onClick={() => handleAddMonitoringPoint(index)}
+                onClick={() => handleAddMonitoringPoint(index, machine)}
               >
                 Add Monitoring Point
               </Button>
@@ -169,7 +179,7 @@ const MachineList = () => {
 
               <TextField
                 label="Name"
-                value={newMonitoringPoint.name}
+                value={newMonitoringPoint?.title}
                 onChange={handleNameChange}
                 variant="outlined"
                 margin="dense"
@@ -191,7 +201,7 @@ const MachineList = () => {
                 <TextField
                   label="Sensor Model"
                   select
-                  value={newMonitoringPoint.sensorModel}
+                  value={newMonitoringPoint?.sensor}
                   onChange={handleSensorModelChange}
                   variant="outlined"
                   margin="dense"

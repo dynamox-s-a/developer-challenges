@@ -6,6 +6,9 @@ export interface Machine {
 }
 
 export interface MonitoringPoint {
-  name: string;
-  sensorModel: string;
+  title: string;
+  sensor: string;
+  machineId: number | null;
+  machineType: string;
+  machineTitle: string;
 }

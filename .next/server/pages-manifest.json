@@ -1,7 +1,7 @@
 {
-  "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
+  "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
-  "/api/getMachines/[id]": "pages/api/getMachines/[id].js",
-  "/": "pages/index.js"
+  "/api/getMonitoringPoints/[id]": "pages/api/getMonitoringPoints/[id].js",
+  "/MonitoringPointsList": "pages/MonitoringPointsList.js"
 }
