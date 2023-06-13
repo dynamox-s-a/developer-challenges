@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Button, Grid, MenuItem, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { setMachines } from "../../store/actions/machineActions";
+import { setMachines, deleteMachine } from "../../store/actions/machineActions";
 import { Machine } from "../types/types";
-import { RootState } from "../../store/store";
+import { AppDispatch, RootState } from "../../store/store";
+import {
+  TrashIcon,
+  PencilIcon,
+  XMarkIcon,
+  CheckIcon,
+} from "@heroicons/react/24/solid";
 
 const MachineList = () => {
-  const dispatch = useDispatch();
-
-  const machines = useSelector((state: RootState) => state.machines);
-
+  const dispatch = useDispatch<AppDispatch>();
+  const machines = useSelector((state: RootState) => state.machines.machines);
   const [expandedMachine, setExpandedMachine] = useState<number | null>(null);
   const [newMonitoringPoint, setNewMonitoringPoint] = useState({
     name: "",
@@ -18,12 +22,12 @@ const MachineList = () => {
 
   const [isEditing, setIsEditing] = useState<number | null>(null);
 
-  const handleEditTitle = (index: number) => {
+  const handleEditMachine = (index: number) => {
     setIsEditing(index);
   };
 
-  const handleEditType = (index: number) => {
-    setIsEditing(-index);
+  const handleFinishEdit = () => {
+    setIsEditing(null);
   };
 
   const handleTitleChange = (
@@ -64,7 +68,7 @@ const MachineList = () => {
     });
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleMonitoringPointSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     // Handle form submission logic here
     console.log("New Monitoring Point:", newMonitoringPoint);
@@ -78,7 +82,17 @@ const MachineList = () => {
       {machines.map((machine: Machine, index: number) => (
         <Grid item xs={12} key={index} className="px-8">
           <div className="flex justify-evenly items-center bg-gray-200 px-8 border rounded border-gray-900 -mt-2">
-            <div className="flex justify-center items-center flex-col w-full">
+            <div className="flex justify-between items-center flex-row w-2/12 mr-4">
+              <TrashIcon
+                className="hover:cursor-pointer text-red-500"
+                onClick={() => dispatch(deleteMachine(machine.id))}
+              />
+              <PencilIcon
+                className="hover:cursor-pointer px-4"
+                onClick={() => handleEditMachine(index)}
+              />
+            </div>
+            <div className="flex justify-center items-center flex-col w-8/12">
               <label className="text-xs underline">Name</label>
               {isEditing === index ? (
                 <TextField
@@ -92,15 +106,15 @@ const MachineList = () => {
               ) : (
                 <h2
                   className="text-xl hover:underline cursor-pointer"
-                  onClick={() => handleEditTitle(index)}
+                  onClick={() => handleEditMachine(index)}
                 >
                   {machine.title}
                 </h2>
               )}
             </div>
-            <div className="flex justify-center items-center flex-col w-full">
+            <div className="flex justify-center items-center flex-col w-8/12 pl-4">
               <label className="text-xs underline">Type</label>
-              {isEditing === -index ? (
+              {isEditing === index ? (
                 <TextField
                   select
                   value={machine.type}
@@ -116,14 +130,22 @@ const MachineList = () => {
               ) : (
                 <h2
                   className="text-xl hover:underline cursor-pointer"
-                  onClick={() => handleEditType(index)}
+                  onClick={() => handleEditMachine(index)}
                 >
                   {machine.type}
                 </h2>
               )}
             </div>
+            {isEditing === index ? (
+              <div className="flex justify-center items-center flex-row w-2/12 mr-4">
+                <CheckIcon
+                  className="px-6 text-green-500 hover:cursor-pointer"
+                  onClick={() => handleFinishEdit()}
+                />
+              </div>
+            ) : null}
 
-            <div className="flex justify-between items-center flex-col w-full">
+            <div className="flex justify-between items-center flex-col w-8/12">
               <label className="text-xs underline">Monitoring Points</label>
               <h2 className="text-xl">0</h2>
             </div>
@@ -137,7 +159,7 @@ const MachineList = () => {
             </div>
           </div>
           {expandedMachine === index ? (
-            <form className="mt-2 mb-4" onSubmit={handleSubmit}>
+            <form className="mt-2 mb-4" onSubmit={handleMonitoringPointSubmit}>
               <Button
                 variant="outlined"
                 onClick={() => setExpandedMachine(null)}

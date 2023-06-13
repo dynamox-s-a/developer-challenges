@@ -11,12 +11,14 @@ import {
 
 import { addMachine } from "../../store/actions/machineActions";
 import { useDispatch } from "react-redux";
+import { Machine } from "../types/types";
+import { AppDispatch } from "../../store/store";
 
 const CreateMachineForm: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
   const [name, setName] = useState("");
   const [type, setType] = useState("");
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleCreateClick = () => {
     setShowForm(true);
@@ -33,13 +35,15 @@ const CreateMachineForm: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    const newMachine = {
+    const newMachine: Machine = {
       title: name,
       type: type,
       monitoringPoints: [],
+      id: null,
     };
 
     dispatch(addMachine(newMachine));
+
     console.log(`Name: ${name}, Type: ${type}`);
 
     setName("");

@@ -1,25 +1,14 @@
-import { createStore, applyMiddleware, combineReducers } from "redux";
-import thunk from "redux-thunk";
-import { composeWithDevTools } from "redux-devtools-extension";
-import { createWrapper } from "next-redux-wrapper";
+import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers } from "redux"; // Import from "redux" instead of "@reduxjs/toolkit"
 import machineReducer from "./reducers/machineReducers";
-
-const initalState = {};
-
-const middleware = [thunk];
-
-export type RootState = ReturnType<typeof rootReducer>;
 
 const rootReducer = combineReducers({
   machines: machineReducer,
 });
 
-export const store = createStore(
-  rootReducer,
-  initalState,
-  composeWithDevTools(applyMiddleware(...middleware))
-);
+export const store = configureStore({
+  reducer: rootReducer,
+});
 
-const makeStore = () => store;
-
-export const wrapper = createWrapper(makeStore);
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

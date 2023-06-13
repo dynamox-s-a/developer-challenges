@@ -4,6 +4,7 @@ import { ClipLoader } from "react-spinners";
 import React, { useState, useEffect } from "react";
 import { setMachines } from "../../store/actions/machineActions";
 import { useDispatch } from "react-redux";
+import Link from "next/link";
 
 export default function Home() {
   const [machinesLoadidng, setMachinesLoading] = useState(true);
@@ -35,7 +36,7 @@ export default function Home() {
   }, []);
 
   return (
-    <>
+    <div className="px-8 py-8">
       <h1 className="text-4xl">Machine Maker 2000</h1>
       <CreateMachineForm />
       <h1 className="text-2xl mb-8">Current Machines List:</h1>
@@ -44,6 +45,7 @@ export default function Home() {
       ) : (
         <MachineList />
       )}
-    </>
+      <Link href="/MonitoringPointsList" />
+    </div>
   );
 }
