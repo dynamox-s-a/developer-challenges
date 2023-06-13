@@ -17,6 +17,7 @@ const MachineList = () => {
   const machines = useSelector((state: RootState) => state.machines.machines);
   const [expandedMachine, setExpandedMachine] = useState<number | null>(null);
   const [editedMachine, setEditedMachine] = useState<Machine | null>(null);
+  const dbUser = useSelector((state: RootState) => state.machines.dbUser);
   const [newMonitoringPoint, setNewMonitoringPoint] =
     useState<Partial<MonitoringPoint> | null>(null);
 
@@ -29,7 +30,9 @@ const MachineList = () => {
 
   const handleFinishEdit = (machine: Machine | null) => {
     setIsEditing(null);
+    if (dbUser.id === null) return;
     if (editedMachine) {
+      editedMachine.userId = dbUser.id;
       dispatch(editMachine(editedMachine));
       setEditedMachine(null);
     }
@@ -57,12 +60,14 @@ const MachineList = () => {
 
   const handleAddMonitoringPoint = (machineIndex: number, machine: Machine) => {
     setExpandedMachine(machineIndex);
+    if (dbUser.id === null) return;
     setNewMonitoringPoint({
       title: "",
       sensor: "",
       machineId: machine.id,
       machineType: machine.type,
       machineTitle: machine.title,
+      userId: dbUser.id,
     });
   };
 
@@ -85,6 +90,9 @@ const MachineList = () => {
   const handleMonitoringPointSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (newMonitoringPoint) {
+      if (newMonitoringPoint.machineType === "Pump") {
+        newMonitoringPoint.sensor = "HF+";
+      }
       dispatch(addMonitoringPoint(newMonitoringPoint as MonitoringPoint));
       setNewMonitoringPoint(null);
       setExpandedMachine(null);
@@ -94,13 +102,13 @@ const MachineList = () => {
 
   return (
     <Grid container>
-      {machines.map((machine: Machine, index: number) => (
+      {machines?.map((machine: Machine, index: number) => (
         <Grid item xs={12} key={index} className="px-8">
           <div className="flex justify-evenly items-center bg-gray-200 px-8 border rounded border-gray-900 -mt-2">
             <div className="flex justify-between items-center flex-row w-2/12 mr-4">
               <TrashIcon
                 className="hover:cursor-pointer text-red-500"
-                onClick={() => dispatch(deleteMachine(machine.id))}
+                onClick={() => dispatch(deleteMachine(machine.id, dbUser.id))}
               />
               <PencilIcon
                 className="hover:cursor-pointer px-4"

@@ -10,13 +10,14 @@ export default async function handler(
     if (req.method !== "POST") {
       return res.status(405).json({ error: "Method Not Allowed" });
     }
-    const { title, sensor, machineId, machineTitle, machineType } = req.body;
+    const { title, sensor, machineId, machineTitle, machineType, userId } =
+      req.body;
 
     const newMonitoringPoint = await prisma.monitoringPoint.create({
       data: {
         title: title,
         sensor: sensor,
-        userId: 1,
+        userId: userId,
         machineId: machineId,
         machineTitle: machineTitle,
         machineType: machineType,

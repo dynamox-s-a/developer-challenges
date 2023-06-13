@@ -10,14 +10,15 @@ import {
 } from "@mui/material";
 
 import { addMachine } from "../../store/actions/machineActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Machine } from "../types/types";
-import { AppDispatch } from "../../store/store";
+import { AppDispatch, RootState } from "../../store/store";
 
 const CreateMachineForm: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
   const [name, setName] = useState("");
   const [type, setType] = useState("");
+  const dbUser = useSelector((state: RootState) => state.machines.dbUser);
   const dispatch = useDispatch<AppDispatch>();
 
   const handleCreateClick = () => {
@@ -35,11 +36,13 @@ const CreateMachineForm: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    if (dbUser.id === null) return;
     const newMachine: Machine = {
       title: name,
       type: type,
       monitoringPoints: [],
       id: null,
+      userId: dbUser.id,
     };
 
     dispatch(addMachine(newMachine));

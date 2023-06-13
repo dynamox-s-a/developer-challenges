@@ -1,19 +1,26 @@
-import { Machine, MonitoringPoint } from "../storeTypes";
+import { Machine, MonitoringPoint, User } from "../storeTypes";
 import {
   SET_MACHINES,
+  SET_USER,
   ADD_MACHINE,
   ADD_MONITORING_POINT,
   DELETE_MACHINE,
   SET_MONITORING_POINTS,
   EDIT_MACHINE,
+  ADD_USER,
 } from "../actions/machineActions";
 
 interface GlobalState {
   machines: Machine[];
   monitoringPoints: MonitoringPoint[];
+  dbUser: User;
 }
 
 const initialState: GlobalState = {
+  dbUser: {
+    email: "",
+    id: null,
+  },
   machines: [],
   monitoringPoints: [],
 };
@@ -24,6 +31,11 @@ const machineReducer = (state = initialState, action: any): GlobalState => {
       return {
         ...state,
         machines: action.payload,
+      };
+    case SET_USER:
+      return {
+        ...state,
+        dbUser: action.payload,
       };
     case SET_MONITORING_POINTS:
       return {
@@ -43,6 +55,11 @@ const machineReducer = (state = initialState, action: any): GlobalState => {
       return {
         ...state,
         machines: [...state.machines, action.payload],
+      };
+    case ADD_USER:
+      return {
+        ...state,
+        dbUser: action.payload,
       };
     case ADD_MONITORING_POINT:
       return {

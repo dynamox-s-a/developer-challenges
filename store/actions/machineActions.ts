@@ -1,17 +1,29 @@
-import { Machine, MonitoringPoint } from "../../src/types/types";
+import { Machine, MonitoringPoint, User } from "../../src/types/types";
 import { Dispatch } from "redux";
 import axios from "axios";
 
 export const SET_MACHINES = "SET_MACHINES";
 export const SET_MONITORING_POINTS = "SET_MONITORING_POINTS";
+export const SET_USER = "SET_USER";
 export const EDIT_MACHINE = "EDIT_MACHINE";
 export const ADD_MACHINE = "ADD_MACHINE";
+export const ADD_USER = "ADD_USER";
 export const ADD_MONITORING_POINT = "ADD_MONITORING_POINT";
 export const DELETE_MACHINE = "DELETE_MACHINE";
 
 interface SetMachinesAction {
   type: typeof SET_MACHINES;
   payload: Machine[];
+}
+
+interface SetUserAction {
+  type: typeof SET_USER;
+  payload: User;
+}
+
+interface AddUserAction {
+  type: typeof ADD_USER;
+  payload: User;
 }
 
 interface SetMonitoringPointsAction {
@@ -39,9 +51,36 @@ interface DeleteMachineAction {
   payload: Machine;
 }
 
+export const addUser = (user: User) => {
+  return async (dispatch: Dispatch<AddUserAction>) => {
+    try {
+      const response = await axios.post("/api/postUser", user, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status !== 200) {
+        throw new Error("Failed to add user");
+      }
+
+      const addedUser = response.data;
+      console.log(addedUser);
+      dispatch({ type: ADD_USER, payload: addedUser });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
 export const setMachines = (machines: Machine[]): SetMachinesAction => ({
   type: SET_MACHINES,
   payload: machines,
+});
+
+export const setUser = (user: User): SetUserAction => ({
+  type: SET_USER,
+  payload: user,
 });
 
 export const setMonitoringPoints = (
@@ -122,10 +161,10 @@ export const addMonitoringPoint = (monitoringPoint: MonitoringPoint) => {
   };
 };
 
-export const deleteMachine = (id: number | null) => {
+export const deleteMachine = (id: number | null, userId: number | null) => {
   return async (dispatch: Dispatch<DeleteMachineAction>) => {
     try {
-      const response = await axios.post(`/api/deleteMachine/${id}`, {
+      const response = await axios.post(`/api/deleteMachine/${id}`, userId, {
         headers: {
           "Content-Type": "application/json",
         },

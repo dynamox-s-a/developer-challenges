@@ -10,13 +10,13 @@ export default async function handler(
     if (req.method !== "POST") {
       return res.status(405).json({ error: "Method Not Allowed" });
     }
-    const { title, type } = req.body;
+    const { title, type, userId } = req.body;
 
     const newMachine = await prisma.machine.create({
       data: {
         title: title,
         type: type,
-        userId: 1,
+        userId: userId,
       },
     });
 

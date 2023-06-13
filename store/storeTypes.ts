@@ -3,6 +3,7 @@ export interface Machine {
   type: string;
   monitoringPoints: MonitoringPoint[];
   id: number;
+  userId: number;
 }
 
 export interface MonitoringPoint {
@@ -11,4 +12,10 @@ export interface MonitoringPoint {
   machineId: number;
   machineType: string;
   machineTitle: string;
+  userId: number;
+}
+
+export interface User {
+  email: string;
+  id: number | null;
 }
