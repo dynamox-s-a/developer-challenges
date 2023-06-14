@@ -29,7 +29,7 @@ export default function MonitoringPointsList() {
 
   useEffect(() => {
     if (!user && !error && !isLoading) {
-      window.location.assign(`http://localhost:3000/api/auth/login`);
+      window.location.assign(`${process.env.BASE_URL}/api/auth/login`);
     }
   }, [user, error, isLoading]);
 
@@ -166,7 +166,10 @@ export default function MonitoringPointsList() {
 
   return (
     <div className="px-8 py-8">
-      <a href="/" className="py-4 text-2xl text-blue-500">
+      <a className="mb-8 text-xl w-full block" href="/api/auth/logout">
+        Logout
+      </a>
+      <a href="/" className="py-4 text-2xl text-blue-500 mt-4">
         Back
       </a>
       <h1 className="text-2xl py-6">Monitoring Points List</h1>

@@ -26,7 +26,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!user && !error && !isLoading) {
-      window.location.assign(`http://localhost:3000/api/auth/login`);
+      window.location.assign(`${process.env.BASE_URL}/api/auth/login`);
     }
   }, [user, error, isLoading]);
 
@@ -98,10 +98,7 @@ export default function Home() {
 
   return (
     <div className="px-8 py-8">
-      <a
-        className="py-8 mb-8 text-xl"
-        href="http://localhost:3000/api/auth/logout"
-      >
+      <a className="py-8 mb-8 text-xl" href="/api/auth/logout">
         Logout
       </a>
       <h1 className="text-4xl mt-10">Machine Maker 2000</h1>

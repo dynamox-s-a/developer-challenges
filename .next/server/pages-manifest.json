@@ -2,8 +2,8 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/api/getMonitoringPoints/[id]": "pages/api/getMonitoringPoints/[id].js",
   "/api/auth/[...auth0]": "pages/api/auth/[...auth0].js",
+  "/api/getMonitoringPoints/[id]": "pages/api/getMonitoringPoints/[id].js",
   "/MonitoringPointsList": "pages/MonitoringPointsList.js",
   "/api/getUser/[email]": "pages/api/getUser/[email].js"
 }
