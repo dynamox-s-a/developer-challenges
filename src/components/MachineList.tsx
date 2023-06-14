@@ -6,22 +6,37 @@ import {
   deleteMachine,
   editMachine,
   addMonitoringPoint,
+  setMachineChangeLoading,
 } from "../../store/actions/machineActions";
 import { Machine, MonitoringPoint } from "../types/types";
 import { AppDispatch, RootState } from "../../store/store";
 import { TrashIcon, PencilIcon, CheckIcon } from "@heroicons/react/24/solid";
+import { ClipLoader } from "react-spinners";
 
 const MachineList = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const machines = useSelector((state: RootState) => state.machines.machines);
+  const newMachineLoading = useSelector(
+    (state: RootState) => state.machines.newMachineLoading
+  );
+  const machineChangeLoading = useSelector(
+    (state: RootState) => state.machines.machineChangeLoading
+  );
   const [expandedMachine, setExpandedMachine] = useState<number | null>(null);
   const [editedMachine, setEditedMachine] = useState<Machine | null>(null);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
   const dbUser = useSelector((state: RootState) => state.machines.dbUser);
   const [newMonitoringPoint, setNewMonitoringPoint] =
     useState<Partial<MonitoringPoint> | null>(null);
 
   const [isEditing, setIsEditing] = useState<number | null>(null);
+
+  const handleDelete = (id: number | null) => {
+    setDeletingId(id);
+    // dispatch(setMachineChangeLoading(true));
+    dispatch(deleteMachine(id));
+  };
 
   const handleEditMachine = (index: number) => {
     setIsEditing(index);
@@ -32,9 +47,9 @@ const MachineList = () => {
     setIsEditing(null);
     if (dbUser.id === null) return;
     if (editedMachine) {
+      // dispatch(setMachineChangeLoading(true));
       editedMachine.userId = dbUser.id;
       dispatch(editMachine(editedMachine));
-      setEditedMachine(null);
     }
   };
 
@@ -104,78 +119,85 @@ const MachineList = () => {
     <Grid container>
       {machines?.map((machine: Machine, index: number) => (
         <Grid item xs={12} key={index} className="px-8">
-          <div className="flex justify-evenly items-center bg-gray-200 px-8 border rounded border-gray-900 -mt-2">
-            <div className="flex justify-between items-center flex-row w-2/12 mr-4">
-              <TrashIcon
-                className="hover:cursor-pointer text-red-500"
-                onClick={() => dispatch(deleteMachine(machine.id, dbUser.id))}
-              />
-              <PencilIcon
-                className="hover:cursor-pointer px-4"
-                onClick={() => handleEditMachine(index)}
-              />
+          {(machineChangeLoading && editedMachine?.id === machine.id) ||
+          (deletingId === machine.id && machineChangeLoading) ? (
+            <div className="flex justify-evenly items-center bg-gray-200 px-8 border rounded border-gray-900 -mt-2">
+              <ClipLoader className="h-12 w-12 my-12" />
             </div>
-            <div className="flex justify-center items-center flex-col w-8/12">
-              <label className="text-xs underline">Name</label>
-              {isEditing === index ? (
-                <TextField
-                  value={editedMachine?.title}
-                  onChange={(event) => handleTitleChange(event, index)}
-                  variant="outlined"
-                  margin="dense"
-                  required
-                  fullWidth
+          ) : (
+            <div className="flex justify-evenly items-center bg-gray-200 px-8 border rounded border-gray-900 -mt-2">
+              <div className="flex justify-between items-center flex-row w-2/12 mr-4">
+                <TrashIcon
+                  className="hover:cursor-pointer text-red-500"
+                  onClick={() => handleDelete(machine.id)}
                 />
-              ) : (
-                <h2
-                  className="text-xl hover:underline cursor-pointer"
+                <PencilIcon
+                  className="hover:cursor-pointer px-4"
                   onClick={() => handleEditMachine(index)}
-                >
-                  {machine.title}
-                </h2>
-              )}
-            </div>
-            <div className="flex justify-center items-center flex-col w-8/12 pl-4">
-              <label className="text-xs underline">Type</label>
-              {isEditing === index ? (
-                <TextField
-                  select
-                  value={editedMachine?.type}
-                  onChange={(event) => handleTypeChange(event, index)}
-                  variant="outlined"
-                  margin="dense"
-                  required
-                  fullWidth
-                >
-                  <MenuItem value="Pump">Pump</MenuItem>
-                  <MenuItem value="Fan">Fan</MenuItem>
-                </TextField>
-              ) : (
-                <h2
-                  className="text-xl hover:underline cursor-pointer"
-                  onClick={() => handleEditMachine(index)}
-                >
-                  {machine.type}
-                </h2>
-              )}
-            </div>
-            {isEditing === index ? (
-              <div className="flex justify-center items-center flex-row w-2/12 mr-4">
-                <CheckIcon
-                  className="px-6 text-green-500 hover:cursor-pointer"
-                  onClick={() => handleFinishEdit(machine)}
                 />
               </div>
-            ) : null}
-            <div className="py-4">
-              <Button
-                variant="outlined"
-                onClick={() => handleAddMonitoringPoint(index, machine)}
-              >
-                Add Monitoring Point
-              </Button>
+              <div className="flex justify-center items-center flex-col w-8/12">
+                <label className="text-xs underline">Name</label>
+                {isEditing === index ? (
+                  <TextField
+                    value={editedMachine?.title}
+                    onChange={(event) => handleTitleChange(event, index)}
+                    variant="outlined"
+                    margin="dense"
+                    required
+                    fullWidth
+                  />
+                ) : (
+                  <h2
+                    className="text-xl hover:underline cursor-pointer"
+                    onClick={() => handleEditMachine(index)}
+                  >
+                    {machine.title}
+                  </h2>
+                )}
+              </div>
+              <div className="flex justify-center items-center flex-col w-8/12 pl-4">
+                <label className="text-xs underline">Type</label>
+                {isEditing === index ? (
+                  <TextField
+                    select
+                    value={editedMachine?.type}
+                    onChange={(event) => handleTypeChange(event, index)}
+                    variant="outlined"
+                    margin="dense"
+                    required
+                    fullWidth
+                  >
+                    <MenuItem value="Pump">Pump</MenuItem>
+                    <MenuItem value="Fan">Fan</MenuItem>
+                  </TextField>
+                ) : (
+                  <h2
+                    className="text-xl hover:underline cursor-pointer"
+                    onClick={() => handleEditMachine(index)}
+                  >
+                    {machine.type}
+                  </h2>
+                )}
+              </div>
+              {isEditing === index ? (
+                <div className="flex justify-center items-center flex-row w-2/12 mr-4">
+                  <CheckIcon
+                    className="px-6 text-green-500 hover:cursor-pointer"
+                    onClick={() => handleFinishEdit(machine)}
+                  />
+                </div>
+              ) : null}
+              <div className="py-4">
+                <Button
+                  variant="outlined"
+                  onClick={() => handleAddMonitoringPoint(index, machine)}
+                >
+                  Add Monitoring Point
+                </Button>
+              </div>
             </div>
-          </div>
+          )}
           {expandedMachine === index ? (
             <form className="mt-2 mb-4" onSubmit={handleMonitoringPointSubmit}>
               <Button
@@ -228,6 +250,13 @@ const MachineList = () => {
           ) : null}
         </Grid>
       ))}
+      {newMachineLoading ? (
+        <Grid item xs={12} className="px-8">
+          <div className="flex justify-evenly items-center bg-gray-200 px-8 border rounded border-gray-900 -mt-2">
+            <ClipLoader className="h-12 w-12 my-12" />
+          </div>
+        </Grid>
+      ) : null}
     </Grid>
   );
 };

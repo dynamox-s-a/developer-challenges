@@ -10,6 +10,18 @@ export const ADD_MACHINE = "ADD_MACHINE";
 export const ADD_USER = "ADD_USER";
 export const ADD_MONITORING_POINT = "ADD_MONITORING_POINT";
 export const DELETE_MACHINE = "DELETE_MACHINE";
+export const SET_NEW_MACHINE_LOADING = "SET_NEW_MACHINE_LOADING";
+export const SET_MACHINE_CHANGE_LOADING = "SET_MACHINE_CHANGE_LOADING";
+
+interface SetNewMachineLoadingAction {
+  type: typeof SET_NEW_MACHINE_LOADING;
+  payload: boolean;
+}
+
+interface SetMachineChangeLoadingAction {
+  type: typeof SET_MACHINE_CHANGE_LOADING;
+  payload: boolean;
+}
 
 interface SetMachinesAction {
   type: typeof SET_MACHINES;
@@ -65,13 +77,26 @@ export const addUser = (user: User) => {
       }
 
       const addedUser = response.data;
-      console.log(addedUser);
       dispatch({ type: ADD_USER, payload: addedUser });
     } catch (error) {
       console.error(error);
     }
   };
 };
+
+export const setNewMachineLoading = (
+  vari: boolean
+): SetNewMachineLoadingAction => ({
+  type: SET_NEW_MACHINE_LOADING,
+  payload: vari,
+});
+
+export const setMachineChangeLoading = (
+  vari: boolean
+): SetMachineChangeLoadingAction => ({
+  type: SET_MACHINE_CHANGE_LOADING,
+  payload: vari,
+});
 
 export const setMachines = (machines: Machine[]): SetMachinesAction => ({
   type: SET_MACHINES,
@@ -91,8 +116,10 @@ export const setMonitoringPoints = (
 });
 
 export const editMachine = (machine: Machine | null) => {
-  return async (dispatch: Dispatch<EditMachineAction>) => {
+  return async (dispatch: Dispatch<any>) => {
     try {
+      dispatch({ type: EDIT_MACHINE, payload: machine }); // Optimistic update
+
       const response = await axios.post(
         `/api/editMachine/${machine?.id}`,
         machine,
@@ -104,19 +131,21 @@ export const editMachine = (machine: Machine | null) => {
       );
 
       if (response.status !== 200) {
-        throw new Error("Failed to add machine");
+        throw new Error("Failed to edit machine");
       }
 
       const editedMachine = response.data;
       dispatch({ type: EDIT_MACHINE, payload: editedMachine });
+      dispatch(setMachineChangeLoading(false));
     } catch (error) {
       console.error(error);
+      dispatch({ type: EDIT_MACHINE, payload: machine, error: true });
     }
   };
 };
 
 export const addMachine = (machine: Machine) => {
-  return async (dispatch: Dispatch<AddMachineAction>) => {
+  return async (dispatch: Dispatch<any>) => {
     try {
       const response = await axios.post("/api/postMachine", machine, {
         headers: {
@@ -130,6 +159,7 @@ export const addMachine = (machine: Machine) => {
 
       const addedMachine = response.data;
       dispatch({ type: ADD_MACHINE, payload: addedMachine });
+      dispatch(setNewMachineLoading(false));
     } catch (error) {
       console.error(error);
     }
@@ -161,23 +191,26 @@ export const addMonitoringPoint = (monitoringPoint: MonitoringPoint) => {
   };
 };
 
-export const deleteMachine = (id: number | null, userId: number | null) => {
-  return async (dispatch: Dispatch<DeleteMachineAction>) => {
+export const deleteMachine = (id: number | null) => {
+  return async (dispatch: Dispatch<any>) => {
     try {
-      const response = await axios.post(`/api/deleteMachine/${id}`, userId, {
+      dispatch({ type: DELETE_MACHINE, payload: id }); // Optimistic update
+
+      const response = await axios.post(`/api/deleteMachine/${id}`, {
         headers: {
           "Content-Type": "application/json",
         },
       });
 
       if (response.status !== 200) {
-        throw new Error("Failed to add machine");
+        throw new Error("Failed to delete machine");
       }
 
       const deletedMachineId = response.data.id;
       dispatch({ type: DELETE_MACHINE, payload: deletedMachineId });
     } catch (error) {
       console.error(error);
+      dispatch({ type: DELETE_MACHINE, payload: id, error: true });
     }
   };
 };

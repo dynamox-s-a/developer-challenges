@@ -8,12 +8,16 @@ import {
   SET_MONITORING_POINTS,
   EDIT_MACHINE,
   ADD_USER,
+  SET_NEW_MACHINE_LOADING,
+  SET_MACHINE_CHANGE_LOADING,
 } from "../actions/machineActions";
 
 interface GlobalState {
   machines: Machine[];
   monitoringPoints: MonitoringPoint[];
   dbUser: User;
+  newMachineLoading: boolean;
+  machineChangeLoading: boolean;
 }
 
 const initialState: GlobalState = {
@@ -21,6 +25,8 @@ const initialState: GlobalState = {
     email: "",
     id: null,
   },
+  newMachineLoading: false,
+  machineChangeLoading: false,
   machines: [],
   monitoringPoints: [],
 };
@@ -31,6 +37,16 @@ const machineReducer = (state = initialState, action: any): GlobalState => {
       return {
         ...state,
         machines: action.payload,
+      };
+    case SET_NEW_MACHINE_LOADING:
+      return {
+        ...state,
+        newMachineLoading: action.payload,
+      };
+    case SET_MACHINE_CHANGE_LOADING:
+      return {
+        ...state,
+        machineChangeLoading: action.payload,
       };
     case SET_USER:
       return {

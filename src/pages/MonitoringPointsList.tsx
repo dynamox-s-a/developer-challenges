@@ -4,9 +4,11 @@ import React, { useState, useEffect } from "react";
 import { setMonitoringPoints } from "../../store/actions/machineActions";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import { MonitoringPoint } from "../types/types";
 
 export default function MonitoringPointsList() {
+  const { user, error, isLoading } = useUser();
   const [monitoringPointsLoading, setMonitoringPointsLoading] = useState(true);
   const dbUser = useSelector((state: RootState) => state.machines.dbUser);
   const dispatch = useDispatch();
@@ -14,6 +16,12 @@ export default function MonitoringPointsList() {
   const [sortedMonitoringPoints, setSortedMonitoringPoints] = useState<
     MonitoringPoint[]
   >([]);
+
+  useEffect(() => {
+    if (!user && !error && !isLoading) {
+      window.location.assign(`http://localhost:3000/api/auth/login`);
+    }
+  }, [user, error, isLoading]);
 
   const monitoringPoints = useSelector(
     (state: RootState) => state.machines.monitoringPoints
@@ -70,8 +78,6 @@ export default function MonitoringPointsList() {
 
       return 0;
     });
-
-    console.log(sortedPoints);
 
     setSortedMonitoringPoints(sortedPoints);
   };
