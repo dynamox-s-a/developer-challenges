@@ -9,7 +9,10 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 
-import { addMachine } from "../../store/actions/machineActions";
+import {
+  addMachine,
+  setNewMachineLoading,
+} from "../../store/actions/machineActions";
 import { useDispatch, useSelector } from "react-redux";
 import { Machine } from "../types/types";
 import { AppDispatch, RootState } from "../../store/store";
@@ -46,9 +49,7 @@ const CreateMachineForm: React.FC = () => {
     };
 
     dispatch(addMachine(newMachine));
-
-    console.log(`Name: ${name}, Type: ${type}`);
-
+    dispatch(setNewMachineLoading(true));
     setName("");
     setType("");
     setShowForm(false);

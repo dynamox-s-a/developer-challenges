@@ -2,7 +2,10 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/api/postMachine": "pages/api/postMachine.js",
-  "/api/editMachine/[id]": "pages/api/editMachine/[id].js",
-  "/": "pages/index.js"
+  "/": "pages/index.js",
+  "/MonitoringPointsList": "pages/MonitoringPointsList.js",
+  "/api/getMachines/[id]": "pages/api/getMachines/[id].js",
+  "/api/postUser": "pages/api/postUser.js",
+  "/api/auth/[...auth0]": "pages/api/auth/[...auth0].js",
+  "/api/getUser/[email]": "pages/api/getUser/[email].js"
 }
