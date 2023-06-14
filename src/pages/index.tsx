@@ -98,7 +98,13 @@ export default function Home() {
 
   return (
     <div className="px-8 py-8">
-      <h1 className="text-4xl">Machine Maker 2000</h1>
+      <a
+        className="py-8 mb-8 text-xl"
+        href="http://localhost:3000/api/auth/logout"
+      >
+        Logout
+      </a>
+      <h1 className="text-4xl mt-10">Machine Maker 2000</h1>
       <CreateMachineForm />
       <h1 className="text-2xl mb-8">Current Machines List:</h1>
       {machinesLoading ? (

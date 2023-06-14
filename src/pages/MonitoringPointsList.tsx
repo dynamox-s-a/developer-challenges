@@ -1,17 +1,27 @@
 import { ClipLoader } from "react-spinners";
 import { Grid, MenuItem, TextField } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { setMonitoringPoints } from "../../store/actions/machineActions";
+import {
+  setMonitoringPoints,
+  setUser,
+  addUser,
+} from "../../store/actions/machineActions";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { MonitoringPoint } from "../types/types";
+import { MonitoringPoint, User } from "../types/types";
 
 export default function MonitoringPointsList() {
   const { user, error, isLoading } = useUser();
   const [monitoringPointsLoading, setMonitoringPointsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [monitoringPointsPerPage] = useState(5);
   const dbUser = useSelector((state: RootState) => state.machines.dbUser);
-  const dispatch = useDispatch();
+  const monitoringPoints = useSelector(
+    (state: RootState) => state.machines.monitoringPoints
+  );
+
+  const dispatch = useDispatch<AppDispatch>();
   const [sortBy, setSortBy] = useState("Machine Name");
   const [sortedMonitoringPoints, setSortedMonitoringPoints] = useState<
     MonitoringPoint[]
@@ -23,9 +33,42 @@ export default function MonitoringPointsList() {
     }
   }, [user, error, isLoading]);
 
-  const monitoringPoints = useSelector(
-    (state: RootState) => state.machines.monitoringPoints
-  );
+  useEffect(() => {
+    if (!user) return;
+    getUser();
+  }, [user]);
+
+  useEffect(() => {
+    if (!dbUser) return;
+    if (dbUser.id === null) return;
+    getMonitoringPoints();
+  }, [dbUser]);
+
+  async function getUser() {
+    const res = await fetch(`/api/getUser/${user?.email}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (res.ok) {
+      const resUser = await res.json();
+      dispatch(setUser(resUser));
+    } else {
+      createUser();
+    }
+  }
+
+  const createUser = () => {
+    if (typeof user?.email !== "string") {
+      console.error("Invalid username or email");
+      return;
+    }
+    const newUser: User = {
+      email: user.email,
+    };
+    dispatch(addUser(newUser));
+  };
 
   async function getMonitoringPoints() {
     let res;
@@ -49,10 +92,6 @@ export default function MonitoringPointsList() {
   }
 
   useEffect(() => {
-    getMonitoringPoints();
-  }, []);
-
-  useEffect(() => {
     sortMonitoringPoints(sortBy);
   }, [sortBy, monitoringPoints]);
 
@@ -63,23 +102,63 @@ export default function MonitoringPointsList() {
   };
 
   const sortMonitoringPoints = (option: string) => {
-    const sortedPoints = [...monitoringPoints];
+    if (Array.isArray(monitoringPoints)) {
+      const sortedPoints = [...monitoringPoints];
 
-    sortedPoints.sort((a, b) => {
-      if (option === "Machine Name") {
-        return a.machineTitle.localeCompare(b.machineTitle);
-      } else if (option === "Machine Type") {
-        return a.machineType.localeCompare(b.machineType);
-      } else if (option === "Monitoring Point Name") {
-        return a.title.localeCompare(b.title);
-      } else if (option === "Sensor Model") {
-        return a.sensor.localeCompare(b.sensor);
-      }
+      sortedPoints.sort((a, b) => {
+        if (option === "Machine Name") {
+          return a.machineTitle.localeCompare(b.machineTitle);
+        } else if (option === "Machine Type") {
+          return a.machineType.localeCompare(b.machineType);
+        } else if (option === "Monitoring Point Name") {
+          return a.title.localeCompare(b.title);
+        } else if (option === "Sensor Model") {
+          return a.sensor.localeCompare(b.sensor);
+        }
 
-      return 0;
-    });
+        return 0;
+      });
 
-    setSortedMonitoringPoints(sortedPoints);
+      setSortedMonitoringPoints(sortedPoints);
+    }
+  };
+
+  const indexOfLastMonitoringPoint = currentPage * monitoringPointsPerPage;
+  const indexOfFirstMonitoringPoint =
+    indexOfLastMonitoringPoint - monitoringPointsPerPage;
+  const currentMonitoringPoints = sortedMonitoringPoints.slice(
+    indexOfFirstMonitoringPoint,
+    indexOfLastMonitoringPoint
+  );
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const renderPagination = () => {
+    const pageNumbers = Math.ceil(
+      sortedMonitoringPoints.length / monitoringPointsPerPage
+    );
+
+    return (
+      <div className="flex justify-center mt-6">
+        {Array.from({ length: pageNumbers }, (_, index) => index + 1).map(
+          (pageNumber) => (
+            <button
+              key={pageNumber}
+              onClick={() => handlePageChange(pageNumber)}
+              className={`px-3 py-1 mx-1 rounded ${
+                pageNumber === currentPage
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-300"
+              }`}
+            >
+              {pageNumber}
+            </button>
+          )
+        )}
+      </div>
+    );
   };
 
   return (
@@ -107,7 +186,7 @@ export default function MonitoringPointsList() {
         <ClipLoader className="h-10 w-10 mt-6" />
       ) : (
         <Grid container className="py-6">
-          {sortedMonitoringPoints?.map(
+          {currentMonitoringPoints?.map(
             (monitoringPoint: MonitoringPoint, index: number) => (
               <Grid item xs={12} key={index} className="px-8">
                 <div className="flex justify-evenly items-center bg-gray-200 px-8 py-6 border rounded border-gray-900 -mt-2">
@@ -141,6 +220,7 @@ export default function MonitoringPointsList() {
           )}
         </Grid>
       )}
+      {renderPagination()}
     </div>
   );
 }
