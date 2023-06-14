@@ -106,14 +106,17 @@ export default function MonitoringPointsList() {
       const sortedPoints = [...monitoringPoints];
 
       sortedPoints.sort((a, b) => {
-        if (option === "Machine Name") {
-          return a.machineTitle.localeCompare(b.machineTitle);
-        } else if (option === "Machine Type") {
-          return a.machineType.localeCompare(b.machineType);
-        } else if (option === "Monitoring Point Name") {
-          return a.title.localeCompare(b.title);
-        } else if (option === "Sensor Model") {
-          return a.sensor.localeCompare(b.sensor);
+        const [sortOrder, sortField] = option.split(" - ");
+        const sortMultiplier = sortOrder === "Ascending" ? 1 : -1;
+
+        if (sortField === "Machine Name") {
+          return a.machineTitle.localeCompare(b.machineTitle) * sortMultiplier;
+        } else if (sortField === "Machine Type") {
+          return a.machineType.localeCompare(b.machineType) * sortMultiplier;
+        } else if (sortField === "Monitoring Point Name") {
+          return a.title.localeCompare(b.title) * sortMultiplier;
+        } else if (sortField === "Sensor Model") {
+          return a.sensor.localeCompare(b.sensor) * sortMultiplier;
         }
 
         return 0;
@@ -177,10 +180,30 @@ export default function MonitoringPointsList() {
         fullWidth
         value={sortBy}
       >
-        <MenuItem value="Machine Name">Machine Name</MenuItem>
-        <MenuItem value="Machine Type">Machine Type</MenuItem>
-        <MenuItem value="Monitoring Point Name">Monitoring Point Name</MenuItem>
-        <MenuItem value="Sensor Model">Sensor Model</MenuItem>
+        <MenuItem value="Ascending - Machine Name">
+          Ascending - Machine Name
+        </MenuItem>
+        <MenuItem value="Ascending - Machine Type">
+          Ascending - Machine Type
+        </MenuItem>
+        <MenuItem value="Ascending - Monitoring Point Name">
+          Ascending - Monitoring Point Name
+        </MenuItem>
+        <MenuItem value="Ascending - Sensor Model">
+          Ascending - Sensor Model
+        </MenuItem>
+        <MenuItem value="Descending - Machine Name">
+          Descending - Machine Name
+        </MenuItem>
+        <MenuItem value="Descending - Machine Type">
+          Descending - Machine Type
+        </MenuItem>
+        <MenuItem value="Descending - Monitoring Point Name">
+          Descending - Monitoring Point Name
+        </MenuItem>
+        <MenuItem value="Descending - Sensor Model">
+          Descending - Sensor Model
+        </MenuItem>
       </TextField>
       {monitoringPointsLoading ? (
         <ClipLoader className="h-10 w-10 mt-6" />
