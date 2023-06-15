@@ -1,4 +1,3 @@
-// pages/_app.tsx
 import Head from "next/head";
 import { AppProps } from "next/app";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -8,6 +7,7 @@ import createEmotionCache from "../../utils/createEmotionCache";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { Provider } from "react-redux";
 import { store } from "../../store/store";
+import "@/styles/globals.css";
 
 const clientSideEmotionCache = createEmotionCache();
 
