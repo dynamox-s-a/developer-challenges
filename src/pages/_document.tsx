@@ -1,4 +1,4 @@
-import * as React from "react";
+// pages/_document.tsx
 import Document, {
   Html,
   Head,
@@ -7,11 +7,10 @@ import Document, {
   DocumentProps,
   DocumentContext,
 } from "next/document";
-import createEmotionServer from "@emotion/server/create-instance";
 import { AppType } from "next/app";
-import theme, { roboto } from "./theme";
-import createEmotionCache from "./createEmotionCache";
 import { MyAppProps } from "./_app";
+import createEmotionCache from "../../utils/createEmotionCache";
+import createEmotionServer from "@emotion/server/create-instance";
 
 interface MyDocumentProps extends DocumentProps {
   emotionStyleTags: JSX.Element[];
@@ -19,11 +18,10 @@ interface MyDocumentProps extends DocumentProps {
 
 export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
   return (
-    <Html lang="en" className={roboto.className}>
+    <Html lang="en">
       <Head>
-        {/* PWA primary color */}
-        <meta name="theme-color" content={theme.palette.primary.main} />
         <link rel="shortcut icon" href="/favicon.ico" />
+        {/* Insertion point for client. This connects with createEmotionCache.ts */}
         <meta name="emotion-insertion-point" content="" />
         {emotionStyleTags}
       </Head>
@@ -38,28 +36,6 @@ export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
 // `getInitialProps` belongs to `_document` (instead of `_app`),
 // it's compatible with static-site generation (SSG).
 MyDocument.getInitialProps = async (ctx: DocumentContext) => {
-  // Resolution order
-  //
-  // On the server:
-  // 1. app.getInitialProps
-  // 2. page.getInitialProps
-  // 3. document.getInitialProps
-  // 4. app.render
-  // 5. page.render
-  // 6. document.render
-  //
-  // On the server with error:
-  // 1. document.getInitialProps
-  // 2. app.render
-  // 3. page.render
-  // 4. document.render
-  //
-  // On the client
-  // 1. app.getInitialProps
-  // 2. page.getInitialProps
-  // 3. app.render
-  // 4. page.render
-
   const originalRenderPage = ctx.renderPage;
 
   // You can consider sharing the same Emotion cache between all the SSR requests to speed up performance.
@@ -67,6 +43,7 @@ MyDocument.getInitialProps = async (ctx: DocumentContext) => {
   const cache = createEmotionCache();
   const { extractCriticalToChunks } = createEmotionServer(cache);
 
+  // We're passing `emotionCache` to App component
   ctx.renderPage = () =>
     originalRenderPage({
       enhanceApp: (
@@ -92,6 +69,7 @@ MyDocument.getInitialProps = async (ctx: DocumentContext) => {
 
   return {
     ...initialProps,
+    // return emotionStyleTags as props
     emotionStyleTags,
   };
 };
