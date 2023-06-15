@@ -1,9 +1,18 @@
 {
-  "/_app": "pages/_app.js",
-  "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
+  "/_app": "pages/_app.js",
+  "/MonitoringPointsList": "pages/MonitoringPointsList.html",
   "/api/auth/[...auth0]": "pages/api/auth/[...auth0].js",
+  "/api/deleteMachine/[id]": "pages/api/deleteMachine/[id].js",
+  "/api/editMachine/[id]": "pages/api/editMachine/[id].js",
+  "/api/getMachines/[id]": "pages/api/getMachines/[id].js",
   "/api/getMonitoringPoints/[id]": "pages/api/getMonitoringPoints/[id].js",
-  "/MonitoringPointsList": "pages/MonitoringPointsList.js",
-  "/api/getUser/[email]": "pages/api/getUser/[email].js"
+  "/api/getUser/[email]": "pages/api/getUser/[email].js",
+  "/api/hello": "pages/api/hello.js",
+  "/api/postMachine": "pages/api/postMachine.js",
+  "/api/postMonitoringPoint": "pages/api/postMonitoringPoint.js",
+  "/api/postUser": "pages/api/postUser.js",
+  "/": "pages/index.html",
+  "/_error": "pages/_error.js",
+  "/404": "pages/404.html"
 }
