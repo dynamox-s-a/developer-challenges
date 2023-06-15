@@ -29,7 +29,9 @@ export default function MonitoringPointsList() {
 
   useEffect(() => {
     if (!user && !error && !isLoading) {
-      window.location.assign(`${process.env.BASE_URL}/api/auth/login`);
+      window.location.assign(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/login`
+      );
     }
   }, [user, error, isLoading]);
 
