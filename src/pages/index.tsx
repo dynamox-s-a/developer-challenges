@@ -27,7 +27,7 @@ export default function Home() {
   useEffect(() => {
     if (!user && !error && !isLoading) {
       window.location.assign(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/login`
+        "https://js-ts-full-stack-test-one.vercel.app/api/auth/login"
       );
     }
   }, [user, error, isLoading]);
