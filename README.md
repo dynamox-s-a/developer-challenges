@@ -1,3 +1,7 @@
+Deployed here:
+
+https://js-ts-full-stack-test-one.vercel.app/
+
 Instructions:
 
 Sign in with
