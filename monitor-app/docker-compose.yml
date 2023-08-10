@@ -1,0 +1,11 @@
+services:
+  monitor-app-postgres-dev:
+    container_name: monitor-app-postgres-dev
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    restart: always  
