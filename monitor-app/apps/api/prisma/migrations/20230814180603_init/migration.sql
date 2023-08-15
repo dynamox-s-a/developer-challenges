@@ -18,19 +18,12 @@ CREATE TABLE "machines" (
 );
 
 -- CreateTable
-CREATE TABLE "sensors" (
-    "id" TEXT NOT NULL,
-    "model" TEXT NOT NULL,
-
-    CONSTRAINT "sensors_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "spots" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "machineId" TEXT NOT NULL,
     "sensorId" TEXT,
+    "sensorModel" TEXT,
 
     CONSTRAINT "spots_pkey" PRIMARY KEY ("id")
 );
@@ -41,8 +34,11 @@ CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 -- CreateIndex
 CREATE UNIQUE INDEX "machines_name_key" ON "machines"("name");
 
--- AddForeignKey
-ALTER TABLE "spots" ADD CONSTRAINT "spots_machineId_fkey" FOREIGN KEY ("machineId") REFERENCES "machines"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateIndex
+CREATE UNIQUE INDEX "spots_name_key" ON "spots"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "spots_sensorId_key" ON "spots"("sensorId");
 
 -- AddForeignKey
-ALTER TABLE "spots" ADD CONSTRAINT "spots_sensorId_fkey" FOREIGN KEY ("sensorId") REFERENCES "sensors"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "spots" ADD CONSTRAINT "spots_machineId_fkey" FOREIGN KEY ("machineId") REFERENCES "machines"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

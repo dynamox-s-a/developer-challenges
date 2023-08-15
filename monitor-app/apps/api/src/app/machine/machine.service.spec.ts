@@ -40,19 +40,20 @@ describe('MachineService', () => {
     service = module.get<MachineService>(MachineService)
   })
 
-  it('should handle unique constraint violation on create when machine already exist', async () => {
+  it('should handle unique constraint violation on create when machine already exists', async () => {
     const createMock = jest.spyOn(prisma.machine, 'create').mockRejectedValueOnce(
       new Prisma.PrismaClientKnownRequestError('P2002', {
         code: 'P2002',
-        clientVersion: ''
+        clientVersion: '',
+        meta: { target: ['name'] }
       })
     )
 
     expect.assertions(2)
     try {
       await service.create(mockNewMachine)
-    } catch (e) {
-      expect(e.response.message).toMatch('Error: Machine already exists. Try another name.')
+    } catch (error) {
+      expect(error.response.message).toMatch('Error: Machine already exists. Try another name.')
     }
 
     expect(createMock).toHaveBeenCalledWith({
@@ -64,15 +65,16 @@ describe('MachineService', () => {
     const createMock = jest.spyOn(prisma.machine, 'create').mockRejectedValueOnce(
       new Prisma.PrismaClientKnownRequestError('SOME_OTHER_ERROR', {
         code: 'P9999',
-        clientVersion: ''
+        clientVersion: '',
+        meta: {}
       })
     )
 
     expect.assertions(2)
     try {
       await service.create(mockNewMachine)
-    } catch (e) {
-      expect(e.message).toMatch('SOME_OTHER_ERROR')
+    } catch (error) {
+      expect(error.message).toMatch('SOME_OTHER_ERROR')
     }
 
     expect(createMock).toHaveBeenCalledWith({
@@ -105,7 +107,7 @@ describe('MachineService', () => {
     expect(response).toEqual(expected)
   })
 
-  it('should handle unique constraint violation on update when machine already exist', async () => {
+  it('should handle unique constraint violation on update when machine already exists', async () => {
     jest.spyOn(prisma.machine, 'update').mockRejectedValueOnce(
       new Prisma.PrismaClientKnownRequestError('P2002', {
         code: 'P2002',
@@ -116,8 +118,8 @@ describe('MachineService', () => {
     expect.assertions(2)
     try {
       await service.update('my-unique-id', { ...mockUpdatedMachine })
-    } catch (e) {
-      expect(e.response.message).toMatch('Error: Machine already exists. Try another name.')
+    } catch (error) {
+      expect(error.response.message).toMatch('Error: Machine already exists. Try another name.')
     }
     expect(prisma.machine.update).toHaveBeenCalledWith({
       data: { name: mockUpdatedMachine.name, type: mockUpdatedMachine.type },
@@ -136,11 +138,14 @@ describe('MachineService', () => {
     expect.assertions(2)
     try {
       await service.update('my-unique-id', { ...mockUpdatedMachine })
-    } catch (e) {
-      expect(e.message).toMatch('SOME_OTHER_ERROR')
+    } catch (error) {
+      expect(error.message).toMatch('SOME_OTHER_ERROR')
     }
 
-    expect(prisma.machine.update).toHaveBeenCalled()
+    expect(prisma.machine.update).toHaveBeenCalledWith({
+      data: { name: mockUpdatedMachine.name, type: mockUpdatedMachine.type },
+      where: { id: 'my-unique-id' }
+    })
   })
 
   it('should update a machine by id', async () => {

@@ -28,21 +28,13 @@ model Machine {
    @@map("machines")
 }
 
-model Sensor {
-  id String @default(cuid()) @id
-  model String
-  spot Spot[]
-
-  @@map("sensors")
-}
-
 model Spot {
   id String @default(cuid()) @id
-  name String
+  name String @unique
   machine Machine @relation(fields: [machineId], references: [id])
   machineId String
-  sensor Sensor? @relation(fields: [sensorId], references: [id])
-  sensorId String?
+  sensorId String? @unique
+  sensorModel String?
 
   @@map("spots")
 }
