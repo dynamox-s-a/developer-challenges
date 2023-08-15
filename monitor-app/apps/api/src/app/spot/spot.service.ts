@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common'
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
 import { CreateSpotDto } from './dto/create-spot.dto'
 import { UpdateSpotDto } from './dto/update-spot.dto'
 import { PrismaService } from '../prisma/prisma.service'
@@ -41,8 +41,12 @@ export class SpotService {
   }
 
   async findOne(id: string) {
-    const spot = await this.prisma.spot.findFirst({ where: { id: id } })
-    return spot
+    try {
+      const spot = await this.prisma.spot.findUniqueOrThrow({ where: { id: id } })
+      return spot
+    } catch (error) {
+      throw new NotFoundException('Error: Spot not found')
+    }
   }
 
   async update(id: string, { name, machineId, sensorId, sensorModel }: UpdateSpotDto) {

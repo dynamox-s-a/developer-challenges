@@ -3,6 +3,7 @@ import { SpotService } from './spot.service'
 import { PrismaService } from '../prisma/prisma.service'
 import { Prisma } from '@prisma/client'
 import { MachineService } from '../machine/machine.service'
+import { NotFoundException } from '@nestjs/common'
 
 describe('SpotService', () => {
   let service: SpotService
@@ -50,7 +51,7 @@ describe('SpotService', () => {
     spot: {
       create: jest.fn().mockReturnValue({ ...mockNewSpot, id: 'my-unique-id' }),
       findMany: jest.fn().mockResolvedValue(mockSpot),
-      findFirst: jest.fn().mockResolvedValue(mockSpot[0]),
+      findUniqueOrThrow: jest.fn().mockResolvedValue(mockSpot[0]),
       update: jest.fn().mockResolvedValue({ id: 'my-unique-id', ...mockUpdatedSpot }),
       delete: jest.fn()
     }
@@ -73,7 +74,7 @@ describe('SpotService', () => {
     expect(service).toBeDefined()
   })
 
-  it('should throw forbidden exception on create when sensor cannot be associated with machine', async () => {
+  it('should throw ForbiddenException on create when sensor cannot be associated with machine', async () => {
     const createMock = jest.spyOn(machineService, 'findOne').mockResolvedValue(mockMachine)
     try {
       await service.create(mockValidSpot)
@@ -169,10 +170,24 @@ describe('SpotService', () => {
     expect(response).toEqual(expected)
   })
 
+  it('should throw NotFoundException when spot id not found', async () => {
+    const findOneMock = jest
+      .spyOn(prisma.spot, 'findUniqueOrThrow')
+      .mockRejectedValueOnce(new NotFoundException(`Error: Spot not found`))
+    try {
+      await service.findOne('invalid-id')
+    } catch (error) {
+      expect(error.message).toMatch('Error: Spot not found')
+    }
+    expect(findOneMock).toHaveBeenCalledWith({
+      where: { id: 'invalid-id' }
+    })
+  })
+
   it('should return a spot by id', async () => {
     const response = await service.findOne('cllb7aysh0002ve6n6fqn1a94')
     const expected = mockSpot[0]
-    expect(prisma.spot.findFirst).toHaveBeenCalledWith({
+    expect(prisma.spot.findUniqueOrThrow).toHaveBeenCalledWith({
       where: { id: 'cllb7aysh0002ve6n6fqn1a94' }
     })
     expect(response).toEqual(expected)

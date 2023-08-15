@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common'
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
 import { CreateMachineDto } from './dto/create-machine.dto'
 import { UpdateMachineDto } from './dto/update-machine.dto'
 import { PrismaService } from '../prisma/prisma.service'
@@ -30,12 +30,16 @@ export class MachineService {
   }
 
   async findOne(id: string) {
-    const machine = await this.prisma.machine.findFirst({
-      where: {
-        id: id
-      }
-    })
-    return machine
+    try {
+      const machine = await this.prisma.machine.findUniqueOrThrow({
+        where: {
+          id: id
+        }
+      })
+      return machine
+    } catch (error) {
+      throw new NotFoundException('Error: Machine not found')
+    }
   }
 
   async update(id: string, { name, type }: UpdateMachineDto) {

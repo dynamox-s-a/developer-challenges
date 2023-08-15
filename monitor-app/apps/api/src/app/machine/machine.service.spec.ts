@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { MachineService } from './machine.service'
 import { PrismaService } from '../prisma/prisma.service'
 import { Prisma } from '@prisma/client'
+import { NotFoundException } from '@nestjs/common'
 
 describe('MachineService', () => {
   let service: MachineService
@@ -26,7 +27,7 @@ describe('MachineService', () => {
     machine: {
       create: jest.fn().mockReturnValue({ ...mockNewMachine, id: 'my-unique-id' }),
       findMany: jest.fn().mockResolvedValue(mockMachine),
-      findFirst: jest.fn().mockResolvedValue(mockMachine[0]),
+      findUniqueOrThrow: jest.fn().mockResolvedValue(mockMachine[0]),
       update: jest.fn().mockResolvedValue({ id: 'my-unique-id', ...mockUpdatedMachine }),
       delete: jest.fn()
     }
@@ -98,10 +99,24 @@ describe('MachineService', () => {
     expect(response).toEqual(expected)
   })
 
+  it('should throw NotFoundException when machine id not found', async () => {
+    const findOneMock = jest
+      .spyOn(prisma.machine, 'findUniqueOrThrow')
+      .mockRejectedValueOnce(new NotFoundException(`Error: Machine not found`))
+    try {
+      await service.findOne('invalid-id')
+    } catch (error) {
+      expect(error.message).toMatch('Error: Machine not found')
+    }
+    expect(findOneMock).toHaveBeenCalledWith({
+      where: { id: 'invalid-id' }
+    })
+  })
+
   it('should return a machine by id', async () => {
     const response = await service.findOne('cll5luz8p0000veihrodwvomu')
     const expected = mockMachine[0]
-    expect(prisma.machine.findFirst).toHaveBeenCalledWith({
+    expect(prisma.machine.findUniqueOrThrow).toHaveBeenCalledWith({
       where: { id: 'cll5luz8p0000veihrodwvomu' }
     })
     expect(response).toEqual(expected)
