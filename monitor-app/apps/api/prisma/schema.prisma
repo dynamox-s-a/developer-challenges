@@ -31,7 +31,7 @@ model Machine {
 model Spot {
   id String @default(cuid()) @id
   name String @unique
-  machine Machine @relation(fields: [machineId], references: [id])
+  machine Machine @relation(fields: [machineId], references: [id], onDelete: Cascade)
   machineId String
   sensorId String? @unique
   sensorModel String?
