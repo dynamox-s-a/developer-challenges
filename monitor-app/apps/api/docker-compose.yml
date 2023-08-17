@@ -1,6 +1,6 @@
 services:
-  monitor-app-postgres-dev:
-    container_name: monitor-app-postgres-dev
+  monitor-app-postgres:
+    container_name: monitor-app-postgres
     image: postgres:latest
     environment:
       - POSTGRES_USER=${POSTGRES_USER}

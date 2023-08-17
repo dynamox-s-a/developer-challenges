@@ -58,6 +58,38 @@
           "codeCoverage": true
         }
       }
+    },
+    "docker-compose-up": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/api",
+        "commands": ["docker compose up -d monitor-app-postgres && sleep 5"]
+      }
+    },
+    "prisma-migrate-dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/api",
+        "commands": ["npx prisma migrate dev"]
+      },
+      "dependsOn": [{ "target": "docker-compose-up" }]
+    },
+    "prisma-db-seed": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/api",
+        "commands": ["npx prisma db seed"]
+      },
+      "dependsOn": [{ "target": "prisma-migrate-dev" }]
+    },
+    "start:prod": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/api",
+        "commands": ["nx build api", "nx serve api --configuration production"],
+        "paralel": false
+      },
+      "dependsOn": [{ "target": "prisma-db-seed" }]
     }
   },
   "tags": []
