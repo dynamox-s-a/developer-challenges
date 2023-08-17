@@ -76,6 +76,8 @@ describe('SpotService', () => {
 
   it('should throw ForbiddenException on create when sensor cannot be associated with machine', async () => {
     const createMock = jest.spyOn(machineService, 'findOne').mockResolvedValue(mockMachine)
+
+    expect.assertions(2)
     try {
       await service.create(mockValidSpot)
     } catch (error) {
@@ -174,6 +176,8 @@ describe('SpotService', () => {
     const findOneMock = jest
       .spyOn(prisma.spot, 'findUniqueOrThrow')
       .mockRejectedValueOnce(new NotFoundException(`Error: Spot not found`))
+
+    expect.assertions(2)
     try {
       await service.findOne('invalid-id')
     } catch (error) {
@@ -195,6 +199,8 @@ describe('SpotService', () => {
 
   it('should throw forbidden exception on update when sensor cannot be associated with machine', async () => {
     const createMock = jest.spyOn(machineService, 'findOne').mockResolvedValue(mockMachine)
+
+    expect.assertions(2)
     try {
       await service.update('my-unique-id', mockValidSpot)
     } catch (error) {

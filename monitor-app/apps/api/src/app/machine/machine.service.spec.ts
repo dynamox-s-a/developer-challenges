@@ -41,6 +41,10 @@ describe('MachineService', () => {
     service = module.get<MachineService>(MachineService)
   })
 
+  it('should be defined', () => {
+    expect(service).toBeDefined()
+  })
+
   it('should handle unique constraint violation on create when machine already exists', async () => {
     const createMock = jest.spyOn(prisma.machine, 'create').mockRejectedValueOnce(
       new Prisma.PrismaClientKnownRequestError('P2002', {
@@ -103,6 +107,8 @@ describe('MachineService', () => {
     const findOneMock = jest
       .spyOn(prisma.machine, 'findUniqueOrThrow')
       .mockRejectedValueOnce(new NotFoundException(`Error: Machine not found`))
+
+    expect.assertions(2)
     try {
       await service.findOne('invalid-id')
     } catch (error) {
