@@ -8,6 +8,9 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.5",
     "@nestjs/common": "^10.0.2",
     "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^10.0.2",
