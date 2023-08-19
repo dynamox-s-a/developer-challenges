@@ -1,7 +1,9 @@
+import LoginForm from '../components/login-form/LoginForm'
+
 export default async function Index() {
   return (
     <>
-      <h1>monitor-app</h1>
+      <LoginForm />
     </>
   )
 }

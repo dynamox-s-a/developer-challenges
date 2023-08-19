@@ -1,4 +1,6 @@
+import { ThemeProvider } from '@mui/material/styles/'
 import { CssBaseline } from '@mui/material'
+import { theme } from '../theme'
 
 export const metadata = {
   title: 'monitor-app',
@@ -9,8 +11,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <CssBaseline />
-        {children}
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )

@@ -11,6 +11,14 @@ const nextConfig = {
     // Set this to true if you would like to to use SVGR
     // See: https://github.com/gregberge/svgr
     svgr: false
+  },
+  modularizeImports: {
+    '@mui/material': {
+      transform: '@mui/material/{{member}}'
+    },
+    '@mui/icons-material': {
+      transform: '@mui/icons-material/{{member}}'
+    }
   }
 }
 
