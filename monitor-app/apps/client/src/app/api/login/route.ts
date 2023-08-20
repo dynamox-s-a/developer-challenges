@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest, res: NextResponse) {
   const { email, userPassword } = await request.json()
-  const response = await fetch('http://localhost:3000/api/login', {
+
+  const response = await fetch(process.env.API_URL + '/api/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
