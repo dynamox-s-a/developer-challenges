@@ -13,10 +13,15 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { useState } from 'react'
+import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { enqueueSnackbar, SnackbarProvider } from 'notistack'
 
 export default function LoginForm() {
   const [buttonDisabled, setButtonDisabled] = useState(true)
   const [showPassword, setShowPassword] = useState(false)
+
+  const router = useRouter()
 
   const handleClickShowPassword = () => setShowPassword((showPassword) => !showPassword)
 
@@ -25,7 +30,7 @@ export default function LoginForm() {
   }
 
   type FormValues = {
-    username: string
+    email: string
     password: string
   }
 
@@ -35,8 +40,21 @@ export default function LoginForm() {
     register
   } = useForm<FormValues>()
 
-  const onSubmit: SubmitHandler<FormValues> = async ({ username, password }) => {
-    console.log(username, password)
+  const onSubmit: SubmitHandler<FormValues> = async ({ email, password }) => {
+    const response = await signIn('credentials', {
+      email: email,
+      userPassword: password,
+      redirect: false,
+      callbackUrl: '/dashboard'
+    })
+    if (response?.error) {
+      enqueueSnackbar(response?.error, {
+        variant: 'error',
+        anchorOrigin: { horizontal: 'center', vertical: 'bottom' }
+      })
+      return
+    }
+    router.push('/dashboard')
   }
 
   return (
@@ -52,10 +70,11 @@ export default function LoginForm() {
           <Typography variant="h4" component="h1">
             Login
           </Typography>
+          <SnackbarProvider />
           <TextField
             fullWidth
             label="E-mail"
-            {...register('username', {
+            {...register('email', {
               required: 'E-mail is required',
               pattern: {
                 value: /\S+@\S+\.\S+/,
@@ -63,8 +82,8 @@ export default function LoginForm() {
               }
             })}
             onChange={(text) => setButtonDisabled(!text.target.value)}
-            error={!!errors.username}
-            helperText={errors.username?.message}
+            error={!!errors.email}
+            helperText={errors.email?.message}
           />
           <TextField
             label="Password"
