@@ -1,5 +1,4 @@
-'use client'
-import { Box, Divider, Drawer, Stack, SvgIcon, Typography, useMediaQuery } from '@mui/material'
+import { Box, Divider, Drawer, Stack, Typography, useMediaQuery } from '@mui/material'
 import NextLink from 'next/link'
 import { theme } from '../../theme'
 import SideNav from './SideNav'
@@ -35,7 +34,14 @@ export default function Sidebar(props: SideBarProps) {
         }}
       >
         <Box sx={{ p: 3 }}>
-          <Stack sx={{ display: 'flex', flexDirection: 'row', marginTop: 8 }}>
+          <Stack
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              marginTop: 8,
+              justifyContent: 'space-evenly'
+            }}
+          >
             <Box
               component={NextLink}
               href="/dashboard"
@@ -47,7 +53,7 @@ export default function Sidebar(props: SideBarProps) {
             >
               <Logo />
             </Box>
-            <Typography variant="h6" sx={{ color: theme.palette.primary.main, marginLeft: 1 }}>
+            <Typography variant="h6" sx={{ color: theme.palette.primary.main }}>
               <strong>monitor-app</strong>
             </Typography>
           </Stack>

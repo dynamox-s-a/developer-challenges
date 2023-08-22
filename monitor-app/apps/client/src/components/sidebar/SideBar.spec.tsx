@@ -4,7 +4,7 @@ import Sidebar from './Sidebar'
 const handleDrawerToggle = jest.fn()
 const drawerWidth = 240
 
-describe('TopBar', () => {
+describe('Sidebar', () => {
   it('should render open sidebar successfully', () => {
     const { baseElement } = render(
       <Sidebar
@@ -26,7 +26,6 @@ describe('TopBar', () => {
       />
     )
     expect(baseElement).toBeTruthy()
-    screen.debug()
     const menuItem = screen.queryByText('Dashboard')
     expect(menuItem).not.toBeInTheDocument()
   })

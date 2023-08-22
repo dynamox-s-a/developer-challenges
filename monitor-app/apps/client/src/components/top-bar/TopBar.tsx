@@ -1,6 +1,7 @@
 import { AppBar, Box, Toolbar, Typography } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
+import AccountPopover from './AccountPopover'
 
 type TopBarProps = {
   isLgUp: boolean
@@ -28,6 +29,9 @@ export default function TopBar(props: TopBarProps) {
               monitor-app
             </Typography>
           )}
+        </Box>
+        <Box sx={{ flexGrow: 0 }}>
+          <AccountPopover />
         </Box>
       </Toolbar>
     </AppBar>

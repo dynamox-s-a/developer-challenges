@@ -13,5 +13,6 @@ export async function POST(request: NextRequest, res: NextResponse) {
   if (!response.ok) {
     return response
   }
-  return NextResponse.json(response)
+  const user = await response.json()
+  return NextResponse.json(user)
 }
