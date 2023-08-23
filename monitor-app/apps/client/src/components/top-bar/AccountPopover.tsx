@@ -12,11 +12,13 @@ import IconButton from '@mui/material/IconButton'
 import { useState } from 'react'
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { useAppSelector } from '../../redux/hooks'
 
 export default function AccountPopover() {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
-  const { data: session } = useSession()
+  // const { data: session } = useSession()
   const router = useRouter()
+  const user = useAppSelector((state) => state.login)
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)
@@ -60,7 +62,7 @@ export default function AccountPopover() {
           }}
         >
           <Typography variant="overline">Account</Typography>
-          <Typography>{session?.user?.name}</Typography>
+          <Typography>{user.name}</Typography>
         </Box>
         <Divider />
         <MenuList

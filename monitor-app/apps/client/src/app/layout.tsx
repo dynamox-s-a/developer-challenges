@@ -1,7 +1,8 @@
 import { ThemeProvider } from '@mui/material/styles/'
-import { CssBaseline } from '@mui/material'
+import { Container, CssBaseline } from '@mui/material'
 import { theme } from '../theme'
 import AuthProvider from '../next-auth/auth-provider'
+import ReduxProvider from '../redux/provider'
 
 export const metadata = {
   title: 'monitor-app',
@@ -15,7 +16,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AuthProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            {children}
+            <Container disableGutters maxWidth="xl">
+              <ReduxProvider>{children}</ReduxProvider>
+            </Container>
           </ThemeProvider>
         </AuthProvider>
       </body>

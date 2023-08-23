@@ -32,8 +32,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             flexGrow: 1,
             p: 3
           }}
-        ></Box>
-        {children}
+        >
+          {children}
+        </Box>
       </Box>
     </>
   )
