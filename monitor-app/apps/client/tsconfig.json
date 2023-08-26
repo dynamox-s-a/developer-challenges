@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "baseUrl": "./src",
     "jsx": "preserve",
     "allowJs": true,
     "esModuleInterop": true,

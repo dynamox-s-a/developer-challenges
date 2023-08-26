@@ -1,6 +1,6 @@
 import { Box, Divider, Drawer, Stack, Typography, useMediaQuery } from '@mui/material'
 import NextLink from 'next/link'
-import { theme } from '../../theme'
+import { theme } from 'theme'
 import SideNav from './SideNav'
 import { Logo } from '../logo'
 

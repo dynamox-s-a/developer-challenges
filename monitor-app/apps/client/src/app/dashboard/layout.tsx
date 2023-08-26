@@ -2,8 +2,8 @@
 import { useState } from 'react'
 import { Box, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import TopBar from '../../components/top-bar/TopBar'
-import Sidebar from '../../components/sidebar/Sidebar'
+import TopBar from 'components/top-bar/TopBar'
+import Sidebar from 'components/sidebar/Sidebar'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false)
