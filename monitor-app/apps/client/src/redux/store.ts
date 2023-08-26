@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
+import { machinesSlice } from './slices/machinesSlice'
 import { loginSlice } from './slices/loginSlice'
 
 const store = configureStore({
   reducer: {
+    machines: machinesSlice.reducer,
     login: loginSlice.reducer
   }
 })
