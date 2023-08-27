@@ -2,16 +2,22 @@
 import Head from 'next/head';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import {
-  Alert,
-  Box,
-  Button,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Alert, Box, Stack, TextField, Typography } from '@mui/material';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { loginUser } from 'store/features/user-slice';
+import { useAppDispatch, useAppSelector } from 'store/store';
+import Button from 'components/button';
 
 const Page = () => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const isLoading = useAppSelector((state) => state.loading.loginUser);
+  const error = useAppSelector((state) => state.error.loginUser);
+  const user = useAppSelector((state) => state.user.user);
+
+  console.log('user', user);
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -25,10 +31,18 @@ const Page = () => {
         .required('Email is required'),
       password: Yup.string().max(255).required('Password is required'),
     }),
-    onSubmit: async (values, helpers) => {
-      //   TODO: integrate
+    onSubmit: (values) => {
+      const payload = { email: values.email, password: values.password };
+
+      dispatch(loginUser(payload));
     },
   });
+
+  useEffect(() => {
+    if (user.accessToken) {
+      router.push('/');
+    }
+  }, [router, user.accessToken]);
 
   return (
     <>
@@ -93,16 +107,16 @@ const Page = () => {
                 sx={{ mt: 3 }}
                 type="submit"
                 variant="contained"
+                isLoading={isLoading}
               >
                 Continue
               </Button>
 
-              <Alert severity="info" sx={{ mt: 3 }}>
-                <div>
-                  You can use <b>demo@devias.io</b> and password{' '}
-                  <b>Password123!</b>
-                </div>
-              </Alert>
+              {!!error && (
+                <Alert severity="error" sx={{ mt: 3 }}>
+                  <div>{error}</div>
+                </Alert>
+              )}
             </form>
           </div>
         </Box>
