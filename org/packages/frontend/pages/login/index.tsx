@@ -40,6 +40,7 @@ const Page = () => {
 
   useEffect(() => {
     if (user.accessToken) {
+      // TODO: Update to Redirect
       router.push('/');
     }
   }, [router, user.accessToken]);

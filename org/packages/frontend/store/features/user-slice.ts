@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import cookies from 'react-cookies';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -8,8 +9,14 @@ export interface User {
   email: string;
 }
 
+const user = cookies.load('user');
+
 const INITIAL_STATE: { user: User } = {
-  user: { id: '', accessToken: '', email: '' },
+  user: {
+    id: user?.id || '',
+    accessToken: user?.accessToken || '',
+    email: user?.email || '',
+  },
 };
 
 export const loginUser = createAsyncThunk(
@@ -47,6 +54,7 @@ export const userSlice = createSlice({
   initialState: INITIAL_STATE,
   reducers: {
     logout: () => {
+      cookies.remove('user');
       return INITIAL_STATE;
     },
   },
@@ -58,8 +66,10 @@ export const userSlice = createSlice({
         email: payload.user.email,
         id: payload.user.id,
       };
-
-      console.log('newUser', newUser);
+      cookies.save('user', newUser, {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 6,
+      });
 
       state.user = newUser;
     });
