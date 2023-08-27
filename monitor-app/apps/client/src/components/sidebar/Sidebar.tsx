@@ -59,7 +59,7 @@ export default function Sidebar(props: SideBarProps) {
           </Stack>
         </Box>
         <Divider />
-        <SideNav />
+        <SideNav handleDrawerToggle={handleDrawerToggle} />
       </Drawer>
     </Box>
   )

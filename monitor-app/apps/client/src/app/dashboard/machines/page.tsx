@@ -1,13 +1,12 @@
 'use client'
 
 import { useEffect } from 'react'
-import { Box, useMediaQuery } from '@mui/material'
+import { Box } from '@mui/material'
 import { SnackbarProvider, enqueueSnackbar } from 'notistack'
 import { useAppDispatch, useAppSelector } from 'redux/hooks'
 import { getMachines } from 'redux/slices/machinesSlice'
 import DataTable from 'components/data-table/DataTable'
 import Loading from 'app/loading'
-import { theme } from 'theme'
 
 export default function Machines() {
   const machines = useAppSelector((state) => state.machines.machines)
@@ -15,13 +14,11 @@ export default function Machines() {
   const getMachinesError = useAppSelector((state) => state.machines.error)
   const dispatch = useAppDispatch()
 
-  const isLgUp = useMediaQuery(theme.breakpoints.up('lg'))
-
   useEffect(() => {
     if (getMachinesStatus === 'idle') {
       dispatch(getMachines())
     }
-  }, [dispatch])
+  }, [dispatch, getMachinesStatus])
 
   useEffect(() => {
     if (getMachinesError) {

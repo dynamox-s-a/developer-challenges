@@ -24,8 +24,8 @@ import EditIcon from '@mui/icons-material/Edit'
 import IconButton from '@mui/material/IconButton'
 import SettingsIcon from '@mui/icons-material/Settings'
 import { visuallyHidden } from '@mui/utils'
-import Link from 'next/link'
 import { useMemo, useState } from 'react'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { theme } from 'theme'
 
@@ -36,12 +36,9 @@ interface TableProps<T> {
 
 type Order = 'asc' | 'desc'
 
-export default function DataTable<T extends Record<string, any>>({
-  data,
-  tableTitle
-}: TableProps<T>) {
+export default function DataTable<T extends object>({ data, tableTitle }: TableProps<T>) {
   const [order, setOrder] = useState<Order>('asc')
-  const [orderBy, setOrderBy] = useState<keyof T | ''>('')
+  const [orderBy, setOrderBy] = useState<keyof T | string>('')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const isLgUp = useMediaQuery(theme.breakpoints.up('lg'))
@@ -57,7 +54,7 @@ export default function DataTable<T extends Record<string, any>>({
   }
   const pathname = usePathname()
 
-  const handleRequestSort = (property: keyof T) => {
+  const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
     setOrderBy(property)
@@ -79,11 +76,11 @@ export default function DataTable<T extends Record<string, any>>({
     () =>
       data.slice().sort((a, b) => {
         if (order === 'asc') {
-          return a[orderBy] < b[orderBy] ? -1 : 1
+          return a[orderBy as keyof T] < b[orderBy as keyof T] ? -1 : 1
         }
-        return b[orderBy] < a[orderBy] ? -1 : 1
+        return b[orderBy as keyof T] < a[orderBy as keyof T] ? -1 : 1
       }),
-    [order, orderBy, page, rowsPerPage]
+    [data, order, orderBy]
   )
 
   return (
@@ -99,7 +96,13 @@ export default function DataTable<T extends Record<string, any>>({
             <Typography sx={{ flex: '1 1 100%' }} variant="h5" id="tableTitle" component="div">
               {tableTitle}
             </Typography>
-            <Button variant="contained" startIcon={<AddIcon />} sx={{ px: isSmUp ? '' : 3 }}>
+            <Button
+              component={Link}
+              href={`${pathname}/create`}
+              variant="contained"
+              startIcon={<AddIcon />}
+              sx={{ px: isSmUp ? '' : 3 }}
+            >
               {tableTitle.slice(0, -1)}
             </Button>
           </Toolbar>
@@ -138,7 +141,7 @@ export default function DataTable<T extends Record<string, any>>({
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
                     return (
-                      <TableRow hover tabIndex={-1} key={row.name}>
+                      <TableRow hover tabIndex={-1} key={Object.values(row)[1]}>
                         {Object.values(row)
                           .slice(1)
                           .map((cell, index) => (
@@ -158,7 +161,10 @@ export default function DataTable<T extends Record<string, any>>({
                             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                           >
-                            <MenuItem component={Link} href={`${pathname}/edit/${row.id}`}>
+                            <MenuItem
+                              component={Link}
+                              href={`${pathname}/edit/${Object.values(row)[0]}`}
+                            >
                               <ListItemIcon>
                                 <EditIcon fontSize="small" />
                               </ListItemIcon>

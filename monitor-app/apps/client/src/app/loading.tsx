@@ -1,9 +1,11 @@
 'use client'
 import { Backdrop, Box, LinearProgress, Typography, useMediaQuery } from '@mui/material'
+import { usePathname } from 'next/navigation'
 import { theme } from 'theme'
 
 export default function Loading() {
   const isLgUp = useMediaQuery(theme.breakpoints.up('lg'))
+  const pathname = usePathname()
 
   return (
     <Backdrop
@@ -15,7 +17,12 @@ export default function Loading() {
       open
     >
       <Box
-        sx={{ width: isLgUp ? '50%' : '100%', marginLeft: isLgUp ? 30 : 0, maxWidth: 'sm', px: 5 }}
+        sx={{
+          width: pathname.includes('dashboard') && isLgUp ? '50%' : '100%',
+          marginLeft: isLgUp ? 30 : 0,
+          maxWidth: 'sm',
+          px: 5
+        }}
       >
         <LinearProgress />
         <Typography sx={{ marginTop: 2, textAlign: 'center' }}>LOADING ...</Typography>
