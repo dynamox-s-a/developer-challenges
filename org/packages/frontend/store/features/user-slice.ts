@@ -11,6 +11,14 @@ export interface User {
 
 const user = cookies.load('user');
 
+const EMPTY_STATE = {
+  user: {
+    id: '',
+    accessToken: '',
+    email: '',
+  },
+};
+
 const INITIAL_STATE: { user: User } = {
   user: {
     id: user?.id || '',
@@ -53,14 +61,13 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: INITIAL_STATE,
   reducers: {
-    logout: () => {
+    logout: (state) => {
       cookies.remove('user');
-      return INITIAL_STATE;
+      return EMPTY_STATE;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(loginUser.fulfilled, (state, { payload }) => {
-      console.log('state', state);
       const newUser = {
         accessToken: payload.accessToken,
         email: payload.user.email,

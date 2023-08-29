@@ -17,7 +17,6 @@ const Page = () => {
   const error = useAppSelector((state) => state.error.loginUser);
   const user = useAppSelector((state) => state.user.user);
 
-  console.log('user', user);
   const formik = useFormik({
     initialValues: {
       email: '',
