@@ -1,14 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { loginUser } from './user-slice';
+import { addMachine, getMachines, editMachine } from './machines-slice';
 
 type LoadingType = {
   loginUser?: boolean;
+  addMachine?: boolean;
+  getMachines?: boolean;
+  editMachine?: boolean;
 };
 
 const INITIAL_STATE: LoadingType = {
   loginUser: undefined,
+  addMachine: undefined,
+  getMachines: undefined,
+  editMachine: undefined,
 };
+
 export const loadingSlice = createSlice({
   name: 'loading',
   initialState: INITIAL_STATE,
@@ -22,6 +30,33 @@ export const loadingSlice = createSlice({
     });
     builder.addCase(loginUser.pending, (state) => {
       state.loginUser = true;
+    });
+    builder.addCase(addMachine.fulfilled, (state) => {
+      state.addMachine = false;
+    });
+    builder.addCase(addMachine.rejected, (state) => {
+      state.addMachine = false;
+    });
+    builder.addCase(addMachine.pending, (state) => {
+      state.addMachine = true;
+    });
+    builder.addCase(getMachines.fulfilled, (state) => {
+      state.getMachines = false;
+    });
+    builder.addCase(getMachines.rejected, (state) => {
+      state.getMachines = false;
+    });
+    builder.addCase(getMachines.pending, (state) => {
+      state.getMachines = true;
+    });
+    builder.addCase(editMachine.fulfilled, (state) => {
+      state.editMachine = false;
+    });
+    builder.addCase(editMachine.rejected, (state) => {
+      state.editMachine = false;
+    });
+    builder.addCase(editMachine.pending, (state) => {
+      state.editMachine = true;
     });
   },
 });

@@ -5,5 +5,22 @@
       "password": "$2a$10$GOO6jL1oN2w8tQVzXdcc5u6ZMuuoN5lH1luMnX59hIaz1Xgfis7BS",
       "id": 1
     }
+  ],
+  "machines": [
+    {
+      "name": "New Machine fixed name",
+      "type": "Pump",
+      "id": 1
+    },
+    {
+      "name": "Name",
+      "type": "Pump",
+      "id": 2
+    },
+    {
+      "name": "New one but actually new",
+      "type": "Fan",
+      "id": 3
+    }
   ]
 }
