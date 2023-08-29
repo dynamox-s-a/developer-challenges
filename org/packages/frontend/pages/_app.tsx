@@ -7,6 +7,11 @@ import { useMemo, ReactElement, ReactNode } from 'react';
 import RouteGuard from 'hocs/auth-guard';
 import { useRouter } from 'next/router';
 import type { NextPage } from 'next';
+import { ThemeProvider } from '@mui/material/styles';
+import { CssBaseline } from '@mui/material';
+import 'simplebar-react/dist/simplebar.min.css';
+
+import { createTheme } from 'theme';
 
 type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
   P,
@@ -21,6 +26,8 @@ type AppPropsWithLayout = AppProps & {
 
 function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
   const router = useRouter();
+
+  const theme = createTheme();
 
   const isPublicRoute = router.asPath === '/login';
 
@@ -42,7 +49,10 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
         <title>Welcome to frontend!</title>
       </Head>
       <main className="app">
-        <Provider store={store}>{renderContent}</Provider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Provider store={store}>{renderContent}</Provider>
+        </ThemeProvider>
       </main>
     </>
   );
