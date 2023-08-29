@@ -1,4 +1,5 @@
 {
   "machines": 660,
-  "machines/:id": 660
+  "machines/:id": 660,
+  "monitoring-points": 660
 }

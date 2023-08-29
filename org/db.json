@@ -8,19 +8,45 @@
   ],
   "machines": [
     {
-      "name": "New Machine fixed name",
+      "name": "New Pump",
       "type": "Pump",
       "id": 1
     },
     {
-      "name": "Name",
+      "name": "New Pump",
       "type": "Pump",
       "id": 2
     },
     {
-      "name": "New one but actually new",
+      "name": "New machine",
       "type": "Fan",
       "id": 3
+    }
+  ],
+  "monitoring-points": [
+    {
+      "name": "new NP",
+      "sensorModel": "HF+",
+      "machineId": 2,
+      "id": 1
+    },
+    {
+      "name": "test",
+      "sensorModel": "HF+",
+      "machineId": 1,
+      "id": 2
+    },
+    {
+      "name": "tasd",
+      "sensorModel": "HF+",
+      "machineId": 1,
+      "id": 3
+    },
+    {
+      "name": "New fan monitor",
+      "sensorModel": "HF",
+      "machineId": 3,
+      "id": 4
     }
   ]
 }

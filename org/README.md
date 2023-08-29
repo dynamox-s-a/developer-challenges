@@ -1,59 +1,65 @@
+# Machine Monitoring Dashboard
+
+This application is the coding challenge for Dynamox.
+
+It consists of an application where a user can read, create, edit and delete Machines, as well as add and review monitoring points for those machines.
+
 ## Instructions to run
 
-Json-Server:
+### Preparation
+
+Create `.env` file inside `packages/frontend` folder and add the following variable:
+
+```
+NEXT_PUBLIC_API_URL=http://localhost:3000
+```
+
+Install packages:
+
+```
+npm i
+```
+
+### Backend
+
+Start json-server:
 
 ```
 json-server db.json -m ./node_modules/json-server-auth
 ```
 
-## Generate code
+### Frontend
 
-If you happen to use Nx plugins, you can leverage code generators that might come with it.
-
-Run `nx list` to get a list of available plugins and whether they have generators. Then run `nx list <plugin-name>` to see what generators are available.
-
-Learn more about [Nx generators on the docs](https://nx.dev/plugin-features/use-code-generators).
-
-## Running tasks
-
-To execute tasks with Nx use the following syntax:
+The application was created using an NX monorepo.
 
 ```
-nx <target> <project> <...options>
+nx serve frontend
 ```
 
-You can also run multiple targets:
+- If you don't have NX globally installed, you might need to use `npx` to run.
 
-```
-nx run-many -t <target1> <target2>
-```
+## Considerations
 
-..or add `-p` to filter specific projects
+- The only public url is `login`. Dashboard (`/`) is an authenticated route, to which all logged users can access.
+- I didn't implement a register page for new users, so you can either create a new user directly from the API, or use the ones provided.
+- As it wasn't specified, all logged users have read and write permission to all machines.
+- A machine can't be deleted if it's in use. I'll be assuming that a machine is in use if it has any monitoring points connected to it.
+- A monitoring point will always have a sensor connected to it.
+- While editing a machine, if it is of type Pump and has any monitoring points on it, `type` field is not editable.
 
-```
-nx run-many -t <target1> <target2> -p <proj1> <proj2>
-```
+### Tools used
 
-Targets can be defined in the `package.json` or `projects.json`. Learn more [in the docs](https://nx.dev/core-features/run-tasks).
+- I used [Devias Kit](https://mui.com/store/items/devias-kit/) as partial base for this application, for defining the theme and some base structures.
+- I used redux toolkip for global state management and createAsyncThunk for handling the API calls responses.
 
-## Want better Editor Integration?
+## Next Steps
 
-Have a look at the [Nx Console extensions](https://nx.dev/nx-console). It provides autocomplete support, a UI for exploring and running tasks & generators, and more! Available for VSCode, IntelliJ and comes with a LSP for Vim users.
+- Implement backend: Due to my lack of availability to dedicate more hours to this challenge, I ended up using json-server instead of an actual NestJS backend application.
 
-## Ready to deploy?
+- Handle API errors: I did add the logic to catch API errors, and I am blocking default behavior if any happens, but I didn't add any UI feedback for that.
 
-Just run `nx build demoapp` to build the application. The build artifacts will be stored in the `dist/` directory, ready to be deployed.
+- Allow editing and deleting monitoring points, so it's possible to delete machines.
 
-## Set up CI!
+## Know Issues
 
-Nx comes with local caching already built-in (check your `nx.json`). On CI you might want to go a step further.
-
-- [Set up remote caching](https://nx.dev/core-features/share-your-cache)
-- [Set up task distribution across multiple machines](https://nx.dev/core-features/distribute-task-execution)
-- [Learn more how to setup CI](https://nx.dev/recipes/ci)
-
-## Connect with us!
-
-- [Join the community](https://nx.dev/community)
-- [Subscribe to the Nx Youtube Channel](https://www.youtube.com/@nxdevtools)
-- [Follow us on Twitter](https://twitter.com/nxdevtools)
+- json-server: There's an open issue on json-server related to relationships on nested elements. So there is a chance that the api will save the data wrong, having the `machineId` be saved as a `string` instead of a number. This will cause json-server db to not connect the monitoring points to the correct machines, as the id will be different. In case this happens, you can check `db.json` and manually update the `machineId` to a number.

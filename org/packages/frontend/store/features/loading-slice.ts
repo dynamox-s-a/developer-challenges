@@ -1,13 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { loginUser } from './user-slice';
-import { addMachine, getMachines, editMachine } from './machines-slice';
+import {
+  addMachine,
+  getMachines,
+  editMachine,
+  deleteMachine,
+} from './machines-slice';
 
 type LoadingType = {
   loginUser?: boolean;
   addMachine?: boolean;
   getMachines?: boolean;
   editMachine?: boolean;
+  deleteMachine?: boolean;
 };
 
 const INITIAL_STATE: LoadingType = {
@@ -15,6 +21,7 @@ const INITIAL_STATE: LoadingType = {
   addMachine: undefined,
   getMachines: undefined,
   editMachine: undefined,
+  deleteMachine: undefined,
 };
 
 export const loadingSlice = createSlice({
@@ -57,6 +64,15 @@ export const loadingSlice = createSlice({
     });
     builder.addCase(editMachine.pending, (state) => {
       state.editMachine = true;
+    });
+    builder.addCase(deleteMachine.fulfilled, (state) => {
+      state.deleteMachine = false;
+    });
+    builder.addCase(deleteMachine.rejected, (state) => {
+      state.deleteMachine = false;
+    });
+    builder.addCase(deleteMachine.pending, (state) => {
+      state.deleteMachine = true;
     });
   },
 });

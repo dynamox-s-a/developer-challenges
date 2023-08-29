@@ -3,6 +3,7 @@ import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
 import PropTypes from 'prop-types';
 import ServerStackIcon from '@heroicons/react/24/solid/ServerStackIcon';
+import Square3Stack3DIcon from '@heroicons/react/24/solid/Square3Stack3DIcon';
 import {
   Box,
   Divider,
@@ -24,6 +25,15 @@ export const items = [
     icon: (
       <SvgIcon fontSize="small">
         <ServerStackIcon />
+      </SvgIcon>
+    ),
+  },
+  {
+    title: 'Monitoring Points',
+    path: '/monitoring-points',
+    icon: (
+      <SvgIcon fontSize="small">
+        <Square3Stack3DIcon />
       </SvgIcon>
     ),
   },

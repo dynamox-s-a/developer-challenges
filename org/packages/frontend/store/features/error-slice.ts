@@ -1,13 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { loginUser } from './user-slice';
-import { addMachine, getMachines, editMachine } from './machines-slice';
+import {
+  addMachine,
+  getMachines,
+  editMachine,
+  deleteMachine,
+} from './machines-slice';
 
 type ErrorType = {
   loginUser?: string;
   addMachine?: string;
   getMachines?: string;
   editMachine?: string;
+  deleteMachine?: string;
 };
 
 const INITIAL_STATE: ErrorType = {
@@ -15,6 +21,7 @@ const INITIAL_STATE: ErrorType = {
   addMachine: undefined,
   getMachines: undefined,
   editMachine: undefined,
+  deleteMachine: undefined,
 };
 
 export const errorSlice = createSlice({
@@ -57,6 +64,15 @@ export const errorSlice = createSlice({
     });
     builder.addCase(editMachine.rejected, (state, action) => {
       state.editMachine = action.payload as string;
+    });
+    builder.addCase(deleteMachine.fulfilled, (state) => {
+      state.deleteMachine = '';
+    });
+    builder.addCase(deleteMachine.pending, (state) => {
+      state.deleteMachine = '';
+    });
+    builder.addCase(deleteMachine.rejected, (state, action) => {
+      state.deleteMachine = action.payload as string;
     });
   },
 });

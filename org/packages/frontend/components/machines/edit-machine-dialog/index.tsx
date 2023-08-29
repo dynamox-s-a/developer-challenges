@@ -9,7 +9,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'store/store';
 import { editMachine } from 'store/features/machines-slice';
 import { MACHINE_OPTIONS, MachineType } from 'utils/constants';
@@ -21,13 +21,15 @@ type EditMachineDialogTypes = {
     name: string;
     type: MachineType;
   };
-  id: string;
+  id: number | string;
+  shouldEditType: boolean;
 };
 
 const EditMachineDialog = ({
   handleClose,
   initialState,
   id,
+  shouldEditType,
 }: EditMachineDialogTypes) => {
   const dispatch = useAppDispatch();
   const editMachineError = useAppSelector((state) => state.error.editMachine);
@@ -90,13 +92,14 @@ const EditMachineDialog = ({
           />
         </Box>
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Age</InputLabel>
+          <InputLabel id="type-select-label">Machine Type</InputLabel>
           <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
+            labelId="type-select-label"
+            id="type-select"
             value={type}
-            label="Age"
+            label="Machine Type"
             onChange={handleChange}
+            disabled={!shouldEditType}
           >
             {MACHINE_OPTIONS.map((item) => (
               <MenuItem key={item} value={item}>
@@ -104,6 +107,12 @@ const EditMachineDialog = ({
               </MenuItem>
             ))}
           </Select>
+          {!shouldEditType && (
+            <Typography color="gray">
+              Can&apos;t edit machine type if it&apos;s Fan and has a sensor
+              model as TcAg or TcAs
+            </Typography>
+          )}
         </FormControl>
       </DialogContent>
       <DialogActions>

@@ -76,13 +76,13 @@ You can use the following user stories as a guide to implement the application f
 
 5 - Technical requirements
 
-1. [ ] Use TypeScript.
-1. [ ] Use React.
-1. [ ] Use Redux for managing global states.
-1. [ ] Use Redux Thunks or Redux Saga for managing asynchronous side effects.
-1. [ ] Use Next.js or Vite.
-1. [ ] Use Material UI 5 for styling the application.
-1. [ ] Create reusable components.
+1. [x] Use TypeScript.
+1. [x] Use React.
+1. [x] Use Redux for managing global states.
+1. [x] Use Redux Thunks or Redux Saga for managing asynchronous side effects.
+1. [x] Use Next.js or Vite.
+1. [x] Use Material UI 5 for styling the application.
+1. [x] Create reusable components.
 1. [ ] The code is well-organized and documented.
 1. [ ] The application layout is responsive.
        The choice of remaining tools is at your discretion.
@@ -95,14 +95,14 @@ You can use the following user stories as a guide to implement the application f
 1. [ ] If you choose to use PostgreSQL, use Prisma ORM (or even try Drizzle, or Kysely) to interact with PostgreSQL.
 1. [ ] If you choose to use MongoDB, use Mongoose ORM to interact with the database;
 1. [ ] Use Nest.js Framework for the back-end (we are moving some services to that tool).
-1. [ ] Use Nx to manage the whole application as a monorepo (we use that tool a lot here).
+1. [x] Use Nx to manage the whole application as a monorepo (we use that tool a lot here).
 1. [ ] Add e2e tests with Cypress (use it to test a full user flow).
 1. [ ] If you were provided with a baseline code, identify any areas of bad code or suboptimal implementations and refactor them.
 1. [ ] Deploy your application to a cloud provider and provide a link for the running app.
 
 7 - Tips
 
-1. [ ] There is no need to reinvent the wheel. You can use a Material UI 5 free template like [Devias Kit](https://mui.com/store/items/devias-kit/) to speed up the development process.
+1. [x] There is no need to reinvent the wheel. You can use a Material UI 5 free template like [Devias Kit](https://mui.com/store/items/devias-kit/) to speed up the development process.
 1. [ ] Not familiar with Redux? Check out [this tutorial](https://egghead.io/courses/modern-redux-with-redux-toolkit-rtk-and-typescript-64f243c8) to get started.
 1. [ ] Not familiar with Cypress? Check out [these tutorials](https://learn.cypress.io/) to get started.
 1. [ ] You can mock your back-end using a package like [json-server](https://www.npmjs.com/package/json-server), which creates a fake REST API. Bear in mind that those implementing their own back-end will check more boxes in the evaluation process.

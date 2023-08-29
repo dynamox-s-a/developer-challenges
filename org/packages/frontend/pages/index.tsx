@@ -5,12 +5,11 @@ import {
   Box,
   Button,
   Container,
-  Pagination,
   Stack,
   SvgIcon,
   Typography,
-  Unstable_Grid2 as Grid,
 } from '@mui/material';
+
 import { useAppDispatch, useAppSelector } from 'store/store';
 import DashboardLayout from 'layouts/dashboard';
 import AddMachineDialog from 'components/machines/add-machine-dialog';
@@ -37,16 +36,12 @@ export const Index = () => {
 
   const content = useMemo(() => {
     if (isGettingMachines) {
+      // TODO: Add Spinner
       return 'Loading';
     }
 
     return machines.map((machine) => (
-      <Machine
-        key={machine.id}
-        id={machine.id}
-        name={machine.name}
-        type={machine.type}
-      />
+      <Machine key={machine.id} machine={machine} />
     ));
   }, [isGettingMachines, machines]);
   return (
@@ -81,28 +76,9 @@ export const Index = () => {
                 </Button>
               </div>
             </Stack>
-            {/* <CompaniesSearch /> */}
             <Stack direction="column" spacing={1}>
               {content}
-              {/* {companies.map((company) => (
-            <Grid
-              xs={12}
-              md={6}
-              lg={4}
-              key={company.id}
-            >
-              <CompanyCard company={company} />
-            </Grid>
-          ))} */}
             </Stack>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <Pagination count={3} size="small" />
-            </Box>
           </Stack>
         </Container>
         {isAddMachineDialogOpen && (

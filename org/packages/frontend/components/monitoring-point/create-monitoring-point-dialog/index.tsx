@@ -11,25 +11,36 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Box } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'store/store';
-import { addMachine } from 'store/features/machines-slice';
-import { MACHINE_OPTIONS } from 'utils/constants';
+import { createMonitoringPoint } from 'store/features/monitoring-points-slice';
+import {
+  SENSOR_MODEL_OPTIONS,
+  MachineType,
+  SensorModel,
+} from 'utils/constants';
 import usePrevious from 'hooks/use-previous';
 
-type AddMachineDialogTypes = {
+type CreateMonitoringPointDialogTypes = {
   handleClose: () => void;
+  machineId: number | string;
+  machineType: MachineType;
 };
 
-const AddMachineDialog = ({ handleClose }: AddMachineDialogTypes) => {
+const CreateMonitoringPointDialog = ({
+  handleClose,
+  machineId,
+  machineType,
+}: CreateMonitoringPointDialogTypes) => {
   const dispatch = useAppDispatch();
   const addMachineError = useAppSelector((state) => state.error.addMachine);
   const isLoading = useAppSelector((state) => state.loading.addMachine);
   const wasLoading = usePrevious(isLoading);
 
   const [name, setName] = useState('');
-  const [type, setType] = useState('');
+  const [sensorModel, setSensorModel] = useState('');
+  // TODO: Make sensor model automatically HFp if machine type is Pump
 
   const handleChange = useCallback((event: SelectChangeEvent) => {
-    setType(event.target.value as string);
+    setSensorModel(event.target.value as string);
   }, []);
 
   const onChangeName = useCallback(
@@ -39,14 +50,15 @@ const AddMachineDialog = ({ handleClose }: AddMachineDialogTypes) => {
     []
   );
 
-  const onAddClick = useCallback(() => {
+  const onCreateClick = useCallback(() => {
     const payload = {
+      machineId: Number(machineId),
       name,
-      type,
+      sensorModel,
     };
 
-    dispatch(addMachine(payload));
-  }, [dispatch, name, type]);
+    dispatch(createMonitoringPoint(payload));
+  }, [dispatch, machineId, name, sensorModel]);
 
   useEffect(() => {
     if (wasLoading && !isLoading) {
@@ -58,9 +70,11 @@ const AddMachineDialog = ({ handleClose }: AddMachineDialogTypes) => {
     }
   }, [addMachineError, handleClose, isLoading, wasLoading]);
 
+  const selectOptions =
+    machineType === MachineType.Pump ? [SensorModel.HFp] : SENSOR_MODEL_OPTIONS;
   return (
     <Dialog open onClose={handleClose}>
-      <DialogTitle>Add new machine</DialogTitle>
+      <DialogTitle>Create monitoring point</DialogTitle>
       <DialogContent sx={{ width: '400px' }}>
         <Box
           sx={{
@@ -80,15 +94,15 @@ const AddMachineDialog = ({ handleClose }: AddMachineDialogTypes) => {
           />
         </Box>
         <FormControl fullWidth>
-          <InputLabel id="type-select-label">Machine Type</InputLabel>
+          <InputLabel id="sensor-select-label">Sensor Model</InputLabel>
           <Select
-            labelId="type-select-label"
-            id="type-select"
-            value={type}
-            label="Machine Type"
+            labelId="sensor-select-label"
+            id="sensor-select"
+            value={sensorModel}
+            label="Sensor Model"
             onChange={handleChange}
           >
-            {MACHINE_OPTIONS.map((item) => (
+            {selectOptions.map((item) => (
               <MenuItem key={item} value={item}>
                 {item}
               </MenuItem>
@@ -101,16 +115,16 @@ const AddMachineDialog = ({ handleClose }: AddMachineDialogTypes) => {
         <Button
           color="primary"
           variant="contained"
-          onClick={onAddClick}
+          onClick={onCreateClick}
           isLoading={isLoading}
           loadingSize={16}
-          disabled={!name || !type}
+          disabled={!name || !sensorModel}
         >
-          Add
+          Create
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
 
-export default AddMachineDialog;
+export default CreateMonitoringPointDialog;
