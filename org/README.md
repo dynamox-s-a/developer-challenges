@@ -70,7 +70,9 @@ nx serve frontend
 
 - Refactor loading and error reducers to reduce repeated code.
 
-- Update json-server to handle sorting through nested elements. It's not working to sort by machine name or machine type
+- Update json-server to handle sorting through nested elements. It's not working to sort by machine name or machine type.
+
+- Update Route guard to now allow the dashboard and monitoring points pages to blink before redirecting to login page.
 
 - Implement tests:
   - Authentication Route:
