@@ -25,7 +25,6 @@ export const Index = () => {
 
   const [isAddMachineDialogOpen, setAddMachineDialogOpen] = useState(false);
 
-  console.log('machines', machines);
   const onToggleAddMachineDialog = useCallback(() => {
     setAddMachineDialogOpen((prevState) => !prevState);
   }, []);

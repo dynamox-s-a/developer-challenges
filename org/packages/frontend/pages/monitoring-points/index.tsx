@@ -31,8 +31,6 @@ const MonitoringPoints = () => {
   const [orderBy, setOrderBy] = useState<OrderBy>(OrderBy.MachineName);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
 
-  console.log('orderBy', orderBy);
-  console.log('order', order);
   const monitoringPoints = useAppSelector(
     (state) => state.monitoringPoints.monitoringPoints
   );
@@ -62,13 +60,11 @@ const MonitoringPoints = () => {
   // Function to handle pagination
   const handleChangePage = useCallback(
     (event: React.ChangeEvent<unknown>, value: number) => {
-      console.log('value', value);
       setPage(value);
     },
     []
   );
 
-  console.log('page', page);
   return (
     <>
       <Head>
