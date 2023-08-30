@@ -83,7 +83,6 @@ export const SideNav = ({ open, onClose }: SideNavType) => {
               width: 32,
             }}
           >
-            {/* <Logo /> */}
             Logo
           </Box>
         </Box>
