@@ -11,6 +11,7 @@ import {
   Stack,
   SvgIcon,
   useMediaQuery,
+  Theme,
 } from '@mui/material';
 import { Scrollbar } from 'components/scroll-bar';
 import { SideNavItem } from 'components/scroll-bar/side-nav-item';
@@ -46,7 +47,7 @@ type SideNavType = {
 
 export const SideNav = ({ open, onClose }: SideNavType) => {
   const pathname = usePathname();
-  const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
+  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   const dispatch = useAppDispatch();
 
   const onLogoutClick = useCallback(() => {

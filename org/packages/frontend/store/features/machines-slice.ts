@@ -1,15 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { MachineType } from 'utils/constants';
 import humps from 'humps';
-import { MonitoringPont } from './monitoring-points-slice';
-
+import { MonitoringPoint } from './monitoring-points-slice';
+import { User } from './user-slice';
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export interface Machine {
   id: number;
   name: string;
   type: MachineType;
-  monitoringPoints: MonitoringPont[];
+  monitoringPoints: MonitoringPoint[];
 }
 
 const INITIAL_STATE: { machines: Machine[] } = {
@@ -18,9 +18,12 @@ const INITIAL_STATE: { machines: Machine[] } = {
 
 export const addMachine = createAsyncThunk(
   'addMachine',
-  async (payload, { getState, rejectWithValue }) => {
+  async (
+    payload: { name: string; type: string },
+    { getState, rejectWithValue }
+  ) => {
     try {
-      const state = getState();
+      const state = getState() as { user: User };
 
       const accessToken = state?.user?.accessToken;
 
@@ -56,7 +59,7 @@ export const getMachines = createAsyncThunk(
   'getMachines',
   async (_, { getState, rejectWithValue }) => {
     try {
-      const state = getState();
+      const state = getState() as { user: User };
 
       const accessToken = state?.user?.accessToken;
 
@@ -92,9 +95,12 @@ export const getMachines = createAsyncThunk(
 
 export const editMachine = createAsyncThunk(
   'editMachine',
-  async (payload, { getState, rejectWithValue }) => {
+  async (
+    payload: { id: string | number; name: string; type: string },
+    { getState, rejectWithValue }
+  ) => {
     try {
-      const state = getState();
+      const state = getState() as { user: User };
       const accessToken = state?.user?.accessToken;
 
       const { id, ...restPayload } = payload;
@@ -129,9 +135,9 @@ export const editMachine = createAsyncThunk(
 
 export const deleteMachine = createAsyncThunk(
   'deleteMachine',
-  async (payload, { getState, rejectWithValue }) => {
+  async (payload: number | string, { getState, rejectWithValue }) => {
     try {
-      const state = getState();
+      const state = getState() as { user: User };
       const accessToken = state?.user?.accessToken;
 
       const response = await fetch(`${API_URL}/machines/${payload}`, {
@@ -167,17 +173,19 @@ export const machineSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(addMachine.fulfilled, (state, { payload }) => {
-      state.machines.push(payload);
+      state.machines.push(payload as Machine);
     });
     builder.addCase(getMachines.fulfilled, (state, { payload }) => {
-      state.machines = payload;
+      state.machines = payload as Machine[];
     });
     builder.addCase(editMachine.fulfilled, (state, { payload }) => {
+      const { id } = payload as Machine;
+
       const currentMachineIndex = state.machines.findIndex(
-        (machine) => machine.id === payload.id
+        (machine) => machine.id === id
       );
 
-      state.machines[currentMachineIndex] = payload;
+      state.machines[currentMachineIndex] = payload as Machine;
     });
     builder.addCase(deleteMachine.fulfilled, (state, { meta }) => {
       const deletedId = meta.arg;

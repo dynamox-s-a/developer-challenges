@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { SensorModel } from 'utils/constants';
 import { Machine } from './machines-slice';
+import { User } from './user-slice';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export interface MonitoringPont {
+export interface MonitoringPoint {
   id: number | string;
   name: string;
   sensorModel: SensorModel;
@@ -13,20 +14,20 @@ export interface MonitoringPont {
 }
 
 export interface Pagination {
-  first?: string | number;
-  next?: string | number;
-  last?: string | number;
+  first: string | number;
+  next: string | number;
+  last: string | number;
 }
 
 const INITIAL_STATE: {
-  monitoringPoints: MonitoringPont[];
+  monitoringPoints: MonitoringPoint[];
   pagination: Pagination;
 } = {
   monitoringPoints: [],
   pagination: {
-    first: undefined,
-    next: undefined,
-    last: undefined,
+    first: '',
+    next: '',
+    last: '',
   },
 };
 
@@ -39,11 +40,15 @@ const formatPage = (url: string) => {
 
   return Number(url.split('page=')[1].split('&')[0]);
 };
+
 export const getMonitoringPoints = createAsyncThunk(
   'getMonitoringPoints',
-  async (payload, { getState, rejectWithValue }) => {
+  async (
+    payload: { page: number; order: string; orderBy: string },
+    { getState, rejectWithValue }
+  ) => {
     try {
-      const state = getState();
+      const state = getState() as { user: User };
 
       const accessToken = state?.user?.accessToken;
 
@@ -60,7 +65,12 @@ export const getMonitoringPoints = createAsyncThunk(
         }
       );
 
-      const linkInfo: Pagination = {};
+      const linkInfo = {
+        first: '',
+        next: '',
+        last: '',
+      };
+
       response.headers
         .get('Link')
         ?.split(', ')
@@ -106,9 +116,12 @@ export const getMonitoringPoints = createAsyncThunk(
 
 export const createMonitoringPoint = createAsyncThunk(
   'createMonitoringPoint',
-  async (payload, { getState, rejectWithValue }) => {
+  async (
+    payload: { machineId: number; name: string; sensorModel: string },
+    { getState, rejectWithValue }
+  ) => {
     try {
-      const state = getState();
+      const state = getState() as { user: User };
       const accessToken = state?.user?.accessToken;
 
       const { machineId, ...restPayload } = payload;
@@ -150,9 +163,9 @@ export const monitoringPointSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getMonitoringPoints.fulfilled, (state, { payload }) => {
-      const monitoringPoints = payload.data;
+      const monitoringPoints: MonitoringPoint[] = payload?.data;
 
-      state.pagination = payload?.pagination;
+      state.pagination = payload?.pagination as Pagination;
       state.monitoringPoints = monitoringPoints;
     });
     builder.addCase(createMonitoringPoint.fulfilled, (state, { payload }) => {
