@@ -7,6 +7,10 @@ import {
   editMachine,
   deleteMachine,
 } from './machines-slice';
+import {
+  createMonitoringPoint,
+  getMonitoringPoints,
+} from './monitoring-points-slice';
 
 type LoadingType = {
   loginUser?: boolean;
@@ -14,6 +18,8 @@ type LoadingType = {
   getMachines?: boolean;
   editMachine?: boolean;
   deleteMachine?: boolean;
+  createMonitoringPoint?: boolean;
+  getMonitoringPoints?: boolean;
 };
 
 const INITIAL_STATE: LoadingType = {
@@ -22,6 +28,8 @@ const INITIAL_STATE: LoadingType = {
   getMachines: undefined,
   editMachine: undefined,
   deleteMachine: undefined,
+  createMonitoringPoint: undefined,
+  getMonitoringPoints: undefined,
 };
 
 export const loadingSlice = createSlice({
@@ -73,6 +81,24 @@ export const loadingSlice = createSlice({
     });
     builder.addCase(deleteMachine.pending, (state) => {
       state.deleteMachine = true;
+    });
+    builder.addCase(createMonitoringPoint.fulfilled, (state) => {
+      state.createMonitoringPoint = false;
+    });
+    builder.addCase(createMonitoringPoint.rejected, (state) => {
+      state.createMonitoringPoint = false;
+    });
+    builder.addCase(createMonitoringPoint.pending, (state) => {
+      state.createMonitoringPoint = true;
+    });
+    builder.addCase(getMonitoringPoints.fulfilled, (state) => {
+      state.getMonitoringPoints = false;
+    });
+    builder.addCase(getMonitoringPoints.rejected, (state) => {
+      state.getMonitoringPoints = false;
+    });
+    builder.addCase(getMonitoringPoints.pending, (state) => {
+      state.getMonitoringPoints = true;
     });
   },
 });

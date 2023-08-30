@@ -31,8 +31,12 @@ const CreateMonitoringPointDialog = ({
   machineType,
 }: CreateMonitoringPointDialogTypes) => {
   const dispatch = useAppDispatch();
-  const addMachineError = useAppSelector((state) => state.error.addMachine);
-  const isLoading = useAppSelector((state) => state.loading.addMachine);
+  const createMonitoringPointError = useAppSelector(
+    (state) => state.error.createMonitoringPoint
+  );
+  const isLoading = useAppSelector(
+    (state) => state.loading.createMonitoringPoint
+  );
   const wasLoading = usePrevious(isLoading);
 
   const [name, setName] = useState('');
@@ -62,13 +66,13 @@ const CreateMonitoringPointDialog = ({
 
   useEffect(() => {
     if (wasLoading && !isLoading) {
-      if (addMachineError) {
+      if (createMonitoringPointError) {
         // Handle Error
       } else {
         handleClose();
       }
     }
-  }, [addMachineError, handleClose, isLoading, wasLoading]);
+  }, [createMonitoringPointError, handleClose, isLoading, wasLoading]);
 
   const selectOptions =
     machineType === MachineType.Pump ? [SensorModel.HFp] : SENSOR_MODEL_OPTIONS;

@@ -7,6 +7,10 @@ import {
   editMachine,
   deleteMachine,
 } from './machines-slice';
+import {
+  createMonitoringPoint,
+  getMonitoringPoints,
+} from './monitoring-points-slice';
 
 type ErrorType = {
   loginUser?: string;
@@ -14,6 +18,8 @@ type ErrorType = {
   getMachines?: string;
   editMachine?: string;
   deleteMachine?: string;
+  createMonitoringPoint?: string;
+  getMonitoringPoints?: string;
 };
 
 const INITIAL_STATE: ErrorType = {
@@ -22,6 +28,8 @@ const INITIAL_STATE: ErrorType = {
   getMachines: undefined,
   editMachine: undefined,
   deleteMachine: undefined,
+  createMonitoringPoint: undefined,
+  getMonitoringPoints: undefined,
 };
 
 export const errorSlice = createSlice({
@@ -73,6 +81,24 @@ export const errorSlice = createSlice({
     });
     builder.addCase(deleteMachine.rejected, (state, action) => {
       state.deleteMachine = action.payload as string;
+    });
+    builder.addCase(createMonitoringPoint.fulfilled, (state) => {
+      state.createMonitoringPoint = '';
+    });
+    builder.addCase(createMonitoringPoint.pending, (state) => {
+      state.createMonitoringPoint = '';
+    });
+    builder.addCase(createMonitoringPoint.rejected, (state, action) => {
+      state.createMonitoringPoint = action.payload as string;
+    });
+    builder.addCase(getMonitoringPoints.fulfilled, (state) => {
+      state.getMonitoringPoints = '';
+    });
+    builder.addCase(getMonitoringPoints.pending, (state) => {
+      state.getMonitoringPoints = '';
+    });
+    builder.addCase(getMonitoringPoints.rejected, (state, action) => {
+      state.getMonitoringPoints = action.payload as string;
     });
   },
 });

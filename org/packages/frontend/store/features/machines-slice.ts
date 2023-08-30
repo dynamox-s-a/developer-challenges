@@ -39,7 +39,7 @@ export const addMachine = createAsyncThunk(
         throw rejectWithValue(data);
       }
 
-      return data;
+      return humps.camelizeKeys(data);
     } catch (err) {
       const error = err as { response?: any };
 

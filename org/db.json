@@ -13,7 +13,7 @@
       "id": 1
     },
     {
-      "name": "New Pump",
+      "name": "Another Pump",
       "type": "Pump",
       "id": 2
     },
@@ -21,6 +21,21 @@
       "name": "New machine",
       "type": "Fan",
       "id": 3
+    },
+    {
+      "name": "Z machine",
+      "type": "Fan",
+      "id": 4
+    },
+    {
+      "name": "1",
+      "type": "Fan",
+      "id": 5
+    },
+    {
+      "name": "_ name",
+      "type": "Fan",
+      "id": 6
     }
   ],
   "monitoring-points": [
@@ -41,6 +56,48 @@
       "sensorModel": "HF+",
       "machineId": 1,
       "id": 3
+    },
+    {
+      "name": "askldlakjd",
+      "sensorModel": "HF+",
+      "machineId": 4,
+      "id": 5
+    },
+    {
+      "name": "asda20-394-09asdtasd",
+      "sensorModel": "HF+",
+      "machineId": 2,
+      "id": 6
+    },
+    {
+      "name": "asda=-0a=-s0d",
+      "sensorModel": "HF+",
+      "machineId": 1,
+      "id": 7
+    },
+    {
+      "name": "tst",
+      "sensorModel": "HF+",
+      "machineId": 3,
+      "id": 8
+    },
+    {
+      "name": "11111sadasd",
+      "sensorModel": "HF+",
+      "machineId": 1,
+      "id": 9
+    },
+    {
+      "name": "tasd",
+      "sensorModel": "HF+",
+      "machineId": 2,
+      "id": 10
+    },
+    {
+      "name": "tasdasddds",
+      "sensorModel": "TsAg",
+      "machineId": 1,
+      "id": 11
     },
     {
       "name": "New fan monitor",
