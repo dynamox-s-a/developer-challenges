@@ -29,7 +29,7 @@ const INITIAL_STATE: { user: User } = {
 
 export const loginUser = createAsyncThunk(
   'loginUser',
-  async (payload, { rejectWithValue }) => {
+  async (payload: { email: string; password: string }, { rejectWithValue }) => {
     try {
       const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
