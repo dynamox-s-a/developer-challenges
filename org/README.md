@@ -95,3 +95,10 @@ nx serve frontend
 - It was also my first time using MUI with TS. I'm sure there was a better way to type it.
 
 - I had issues with json-server, as described on `Know issues` section, which ended up contributing to some time lost trying to figure it out (which had no solution, as it's a bug on the library that wasn't fixed).
+
+# Credentials
+You can login with the following user:
+```
+email: email@test.com
+password: myPassword
+```
