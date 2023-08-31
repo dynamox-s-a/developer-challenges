@@ -7,11 +7,13 @@ import { useAppDispatch, useAppSelector } from 'redux/hooks'
 import { getMachines } from 'redux/slices/machinesSlice'
 import DataTable from 'components/data-table/DataTable'
 import Loading from 'app/loading'
+import { notify } from 'redux/slices/notificationSlice'
 
 export default function Machines() {
   const machines = useAppSelector((state) => state.machines.machines)
   const getMachinesStatus = useAppSelector((state) => state.machines.status)
   const getMachinesError = useAppSelector((state) => state.machines.error)
+  const notification = useAppSelector((state) => state.notification)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -21,25 +23,24 @@ export default function Machines() {
   }, [dispatch, getMachinesStatus])
 
   useEffect(() => {
-    if (getMachinesError) {
-      enqueueSnackbar(getMachinesError, {
-        variant: 'error',
+    if (notification.message) {
+      enqueueSnackbar(`${notification.message}`, {
+        variant: notification.variant === 'success' ? 'success' : 'error',
         anchorOrigin: { horizontal: 'center', vertical: 'bottom' }
       })
+      dispatch(notify({ variant: '', message: '' }))
     }
-  }, [getMachinesError])
+  }, [dispatch, notification])
 
   return (
     <>
-      <Box sx={{ backgroundColor: '#fff', flexGrow: 1 }}>
-        <SnackbarProvider />
-        {/* <h1>machines</h1>
-        {machines.map((machine) => (
-          <p key={machine.id}>{machine.name}</p>
-        ))} */}
+      <Box sx={{ background: '#ffffff', flexGrow: 1 }}>
         {getMachinesStatus === 'loading' && <Loading />}
         {getMachinesStatus === 'failed' && getMachinesError}
-        {getMachinesStatus === 'succeeded' && <DataTable data={machines} tableTitle={'Machines'} />}
+        {getMachinesStatus === 'succeeded' && (
+          <DataTable data={[...machines].reverse()} tableTitle={'Machines'} />
+        )}
+        <SnackbarProvider />
       </Box>
     </>
   )

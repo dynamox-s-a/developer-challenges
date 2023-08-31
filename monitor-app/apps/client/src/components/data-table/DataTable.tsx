@@ -6,6 +6,7 @@ import {
   Menu,
   MenuItem,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -14,7 +15,6 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
-  Toolbar,
   Typography,
   useMediaQuery
 } from '@mui/material'
@@ -86,26 +86,30 @@ export default function DataTable<T extends object>({ data, tableTitle }: TableP
   return (
     <Box sx={{ overflow: 'auto' }}>
       <Box sx={{ width: '100%', display: isLgUp ? 'block' : 'table', tableLayout: 'fixed' }}>
-        <Paper sx={{ width: '100%', mb: 2 }}>
-          <Toolbar
-            sx={{
-              pl: { sm: 2 },
-              pr: { xs: 1, sm: 1 }
-            }}
+        <Stack
+          sx={{
+            backgroundColor: '#ffffff',
+            borderRadius: 1,
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            padding: 2
+          }}
+        >
+          <Typography sx={{ flex: '1 1 100%' }} variant="h5" id="tableTitle" component="div">
+            {tableTitle}
+          </Typography>
+          <Button
+            component={Link}
+            href={`${pathname}/create`}
+            variant="contained"
+            startIcon={<AddIcon />}
+            sx={{ px: isSmUp ? '' : 3 }}
           >
-            <Typography sx={{ flex: '1 1 100%' }} variant="h5" id="tableTitle" component="div">
-              {tableTitle}
-            </Typography>
-            <Button
-              component={Link}
-              href={`${pathname}/create`}
-              variant="contained"
-              startIcon={<AddIcon />}
-              sx={{ px: isSmUp ? '' : 3 }}
-            >
-              {tableTitle.slice(0, -1)}
-            </Button>
-          </Toolbar>
+            {tableTitle.slice(0, -1)}
+          </Button>
+        </Stack>
+        <Paper sx={{ width: '100%', mb: 1 }}>
           <TableContainer>
             <Table sx={{ minWidth: 325 }}>
               <TableHead>

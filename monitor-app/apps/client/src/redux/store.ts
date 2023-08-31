@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { machinesSlice } from './slices/machinesSlice'
 import { loginSlice } from './slices/loginSlice'
+import { notificationSlice } from './slices/notificationSlice'
 
 const store = configureStore({
   reducer: {
+    login: loginSlice.reducer,
     machines: machinesSlice.reducer,
-    login: loginSlice.reducer
+    notification: notificationSlice.reducer
   }
 })
 

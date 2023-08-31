@@ -1,4 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { Machine } from 'types/machine'
+
+export interface MachinesState {
+  machines: Machine[]
+  status: string
+  error: string | undefined
+}
 
 type FetchErrorResponseProps = {
   message: string
@@ -15,17 +22,26 @@ export const getMachines = createAsyncThunk('machines/getMachines', async () => 
   return machines
 })
 
-export interface Machine {
-  id?: string
-  name: string
-  type: string
-}
-
-export interface MachinesState {
-  machines: Machine[]
-  status: string
-  error: string | undefined
-}
+export const createMachine = createAsyncThunk(
+  'machines/createMachine',
+  async ({ name, type }: Machine) => {
+    const options: RequestInit = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name, type })
+    }
+    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/machine', options)
+    if (!response.ok) {
+      const apiError: FetchErrorResponseProps = await response.json()
+      const { message } = apiError
+      throw new Error(`${message}`)
+    }
+    const machine = response.json()
+    return machine
+  }
+)
 
 const initialState: MachinesState = {
   machines: [],
@@ -49,6 +65,17 @@ export const machinesSlice = createSlice({
         state.machines = action.payload
       })
       .addCase(getMachines.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message
+      })
+      .addCase(createMachine.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(createMachine.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.machines.push(action.payload)
+      })
+      .addCase(createMachine.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message
       })
