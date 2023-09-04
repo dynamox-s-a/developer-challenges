@@ -22,6 +22,17 @@ export const getMachines = createAsyncThunk('machines/getMachines', async () => 
   return machines
 })
 
+export const getMachineById = createAsyncThunk('machines/getMachineById', async (id: string) => {
+  const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/machine?id=' + id)
+  if (!response.ok) {
+    const apiError: FetchErrorResponseProps = await response.json()
+    const { message } = apiError
+    throw new Error(`${message}`)
+  }
+  const machine = response.json()
+  return machine
+})
+
 export const createMachine = createAsyncThunk(
   'machines/createMachine',
   async ({ name, type }: Machine) => {
@@ -31,6 +42,27 @@ export const createMachine = createAsyncThunk(
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ name, type })
+    }
+    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/machine', options)
+    if (!response.ok) {
+      const apiError: FetchErrorResponseProps = await response.json()
+      const { message } = apiError
+      throw new Error(`${message}`)
+    }
+    const machine = response.json()
+    return machine
+  }
+)
+
+export const updateMachine = createAsyncThunk(
+  'machines/updateMachine',
+  async ({ id, name, type }: Machine) => {
+    const options: RequestInit = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id, name, type })
     }
     const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/machine', options)
     if (!response.ok) {
@@ -68,14 +100,35 @@ export const machinesSlice = createSlice({
         state.status = 'failed'
         state.error = action.error.message
       })
+      .addCase(getMachineById.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(getMachineById.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.machines = action.payload
+      })
+      .addCase(getMachineById.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message
+      })
       .addCase(createMachine.pending, (state) => {
         state.status = 'loading'
       })
       .addCase(createMachine.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.machines.push(action.payload)
+        state.machines.concat(action.payload)
       })
       .addCase(createMachine.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message
+      })
+      .addCase(updateMachine.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(updateMachine.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+      })
+      .addCase(updateMachine.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message
       })

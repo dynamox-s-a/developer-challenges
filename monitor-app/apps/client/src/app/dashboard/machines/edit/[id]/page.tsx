@@ -3,26 +3,33 @@
 import { Box, IconButton, Stack, Typography } from '@mui/material'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import { SnackbarProvider, enqueueSnackbar } from 'notistack'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useAppDispatch } from 'redux/hooks'
-import { createMachine } from 'redux/slices/machinesSlice'
+import { getMachineById, updateMachine } from 'redux/slices/machinesSlice'
 import { notify } from 'redux/slices/notificationSlice'
 import MachineForm from 'components/machine-form/MachineForm'
 import { Machine } from 'types/machine'
+import { useEffect, useState } from 'react'
 
-export default function CreateMachinesPage() {
+export default function EditMachinesPage() {
+  const [updateData, setUpdateData] = useState<Machine | undefined>(undefined)
+
   const dispatch = useAppDispatch()
   const router = useRouter()
+  const params = useParams()
+  const { id } = params
 
   const handleBackClick = () => {
     router.back()
   }
 
-  const handleCreate = async (data: Machine) => {
+  const handleUpdate = async (data: Machine) => {
     try {
-      const machine = await dispatch(createMachine(data)).unwrap()
-      dispatch(notify({ variant: 'success', message: `Success: ${machine.name} added` }))
-      router.push('/dashboard/machines')
+      const machine = await dispatch(updateMachine(data)).unwrap()
+      if (machine) {
+        dispatch(notify({ variant: 'success', message: `Success: ${machine.name} edited` }))
+        router.push('/dashboard/machines')
+      }
     } catch (error) {
       if (error && typeof error === 'object' && 'message' in error) {
         enqueueSnackbar(`${error.message}`, {
@@ -32,6 +39,25 @@ export default function CreateMachinesPage() {
       }
     }
   }
+
+  useEffect(() => {
+    const getMachineData = async () => {
+      try {
+        const machine: Machine = await dispatch(getMachineById(id)).unwrap()
+        setUpdateData(machine)
+      } catch (error) {
+        if (error && typeof error === 'object' && 'message' in error) {
+          enqueueSnackbar(`${error.message}`, {
+            variant: 'error',
+            anchorOrigin: { horizontal: 'center', vertical: 'bottom' }
+          })
+        }
+      }
+    }
+    id && getMachineData()
+  }, [dispatch, id])
+
+  if (id && !updateData) return null
 
   return (
     <>
@@ -46,13 +72,13 @@ export default function CreateMachinesPage() {
           }}
         >
           <Typography sx={{ flex: '1 1 100%' }} variant="h5" id="tableTitle" component="div">
-            Add Machine
+            Edit Machine
           </Typography>
           <IconButton aria-label="back" color="primary" onClick={handleBackClick}>
             <ArrowBackIosNewIcon />
           </IconButton>
         </Stack>
-        <MachineForm onSubmit={handleCreate} />
+        <MachineForm onSubmit={handleUpdate} updateData={updateData} />
         <SnackbarProvider />
       </Box>
     </>

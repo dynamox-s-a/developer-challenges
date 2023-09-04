@@ -8,23 +8,27 @@ import {
   Stack,
   TextField
 } from '@mui/material'
+import { useParams } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
 import { Machine } from 'types/machine'
 
 export interface MachineFormProps {
   onSubmit: (data: Machine) => void
+  updateData?: Machine | undefined
 }
 
-export function MachineForm({ onSubmit }: MachineFormProps) {
+export function MachineForm({ onSubmit, updateData }: MachineFormProps) {
+  const params = useParams()
+  const { id } = params
   const {
     control,
     handleSubmit,
     formState: { errors },
     register
-  } = useForm<Machine>()
+  } = useForm<Machine>({ defaultValues: updateData ? updateData : {} })
 
   const handleFormSubmit = (data: Machine) => {
-    onSubmit(data)
+    onSubmit({ ...data, id: id })
   }
 
   return (

@@ -44,13 +44,15 @@ export default function DataTable<T extends object>({ data, tableTitle }: TableP
   const isLgUp = useMediaQuery(theme.breakpoints.up('lg'))
   const isSmUp = useMediaQuery(theme.breakpoints.up('sm'))
 
+  const [openElem, setOpenElem] = useState<string | null>(null)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const open = Boolean(anchorEl)
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (elem: string) => (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
+    setOpenElem(elem)
   }
   const handleClose = () => {
     setAnchorEl(null)
+    setOpenElem(null)
   }
   const pathname = usePathname()
 
@@ -154,13 +156,13 @@ export default function DataTable<T extends object>({ data, tableTitle }: TableP
                             </TableCell>
                           ))}
                         <TableCell padding="checkbox">
-                          <IconButton onClick={handleClick} size={'small'}>
+                          <IconButton onClick={handleClick(Object.values(row)[0])} size={'small'}>
                             <SettingsIcon />
                           </IconButton>
                           <Menu
                             elevation={1}
                             anchorEl={anchorEl}
-                            open={open}
+                            open={openElem === Object.values(row)[0]}
                             onClose={handleClose}
                             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
