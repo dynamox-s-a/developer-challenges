@@ -1,18 +1,17 @@
 'use client'
 
-import { Box, IconButton, Stack, Typography } from '@mui/material'
+import { Alert, AlertTitle, Box, Button, IconButton, Stack, Typography } from '@mui/material'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import { SnackbarProvider, enqueueSnackbar } from 'notistack'
 import { useParams, useRouter } from 'next/navigation'
 import { useAppDispatch } from 'redux/hooks'
-import { getMachineById, updateMachine } from 'redux/slices/machinesSlice'
+import { getMachineById, deleteMachine } from 'redux/slices/machinesSlice'
 import { notify } from 'redux/slices/notificationSlice'
-import MachineForm from 'components/machine-form/MachineForm'
 import { Machine } from 'types/machine'
 import { useEffect, useState } from 'react'
 
-export default function EditMachinesPage() {
-  const [updateData, setUpdateData] = useState<Machine | undefined>(undefined)
+export default function DeleteMachinesPage() {
+  const [deleteData, setDeleteData] = useState<Machine | undefined>(undefined)
 
   const dispatch = useAppDispatch()
   const router = useRouter()
@@ -23,13 +22,16 @@ export default function EditMachinesPage() {
     router.back()
   }
 
-  const handleUpdate = async (data: Machine) => {
+  const handleDelete = async (id: string) => {
     try {
-      const machine = await dispatch(updateMachine(data)).unwrap()
-      if (machine) {
-        dispatch(notify({ variant: 'success', message: `Success: ${machine.name} edited` }))
-        router.push('/dashboard/machines')
-      }
+      await dispatch(deleteMachine(id)).unwrap()
+      dispatch(
+        notify({
+          variant: 'success',
+          message: `Machine: ${deleteData?.name} - Type: ${deleteData?.type} deleted`
+        })
+      )
+      router.push('/dashboard/machines')
     } catch (error) {
       if (error && typeof error === 'object' && 'message' in error) {
         enqueueSnackbar(`${error.message}`, {
@@ -43,8 +45,8 @@ export default function EditMachinesPage() {
   useEffect(() => {
     const getMachineData = async () => {
       try {
-        const machine: Machine = await dispatch(getMachineById(`${id}`)).unwrap()
-        setUpdateData(machine)
+        const machine: Machine = await dispatch(getMachineById(id as string)).unwrap()
+        setDeleteData(machine)
       } catch (error) {
         if (error && typeof error === 'object' && 'message' in error) {
           enqueueSnackbar(`${error.message}`, {
@@ -57,7 +59,7 @@ export default function EditMachinesPage() {
     id && getMachineData()
   }, [dispatch, id])
 
-  if (id && !updateData) return null
+  if (id && !deleteData) return null
 
   return (
     <>
@@ -72,13 +74,37 @@ export default function EditMachinesPage() {
           }}
         >
           <Typography sx={{ flex: '1 1 100%' }} variant="h5" id="tableTitle" component="div">
-            Edit Machine
+            Delete Machine
           </Typography>
           <IconButton aria-label="back" color="primary" onClick={handleBackClick}>
             <ArrowBackIosNewIcon />
           </IconButton>
         </Stack>
-        <MachineForm onSubmit={handleUpdate} updateData={updateData} />
+        <Stack spacing={2}>
+          <Alert severity="warning" color="error">
+            <AlertTitle>Warning</AlertTitle>
+            Are you sure you want to delete: <br />
+            <br /> Machine: {deleteData?.name} <br /> Type: {deleteData?.type}
+            <br />
+            <br />
+            <strong>
+              All SPOTS associated with this machine will be deleted as well! This action is
+              irreversible.
+            </strong>
+          </Alert>
+          <Stack sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Button onClick={handleBackClick} variant="outlined">
+              Cancel
+            </Button>
+            <Button
+              onClick={() => handleDelete(deleteData?.id as string)}
+              variant="contained"
+              color="error"
+            >
+              Delete
+            </Button>
+          </Stack>
+        </Stack>
         <SnackbarProvider />
       </Box>
     </>

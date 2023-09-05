@@ -75,6 +75,18 @@ export const updateMachine = createAsyncThunk(
   }
 )
 
+export const deleteMachine = createAsyncThunk('machines/deleteMachine', async (id: string) => {
+  const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/machine?id=' + id, {
+    method: 'DELETE'
+  })
+  if (!response.ok) {
+    const apiError: FetchErrorResponseProps = await response.json()
+    const { message } = apiError
+    throw new Error(`${message}`)
+  }
+  return response.json()
+})
+
 const initialState: MachinesState = {
   machines: [],
   status: 'idle', //'idle' | 'loading' | 'succeeded' | 'failed'
@@ -129,6 +141,16 @@ export const machinesSlice = createSlice({
         state.status = 'succeeded'
       })
       .addCase(updateMachine.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message
+      })
+      .addCase(deleteMachine.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(deleteMachine.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+      })
+      .addCase(deleteMachine.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message
       })

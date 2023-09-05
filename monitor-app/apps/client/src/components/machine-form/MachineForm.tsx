@@ -28,7 +28,7 @@ export function MachineForm({ onSubmit, updateData }: MachineFormProps) {
   } = useForm<Machine>({ defaultValues: updateData ? updateData : {} })
 
   const handleFormSubmit = (data: Machine) => {
-    onSubmit({ ...data, id: id })
+    onSubmit({ ...data, id: `${id}` })
   }
 
   return (

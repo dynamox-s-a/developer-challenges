@@ -44,3 +44,14 @@ export async function PATCH(request: NextRequest) {
   const machine = await response.json()
   return NextResponse.json(machine)
 }
+
+export async function DELETE(request: NextRequest) {
+  const id = request.nextUrl.searchParams.get('id')
+  const response = await fetch(process.env.API_URL + '/api/machine/' + id, {
+    method: 'DELETE'
+  })
+  if (!response.ok) {
+    return response
+  }
+  return NextResponse.json({ status: 200, ok: true })
+}

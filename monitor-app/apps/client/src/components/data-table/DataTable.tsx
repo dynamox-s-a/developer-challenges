@@ -176,7 +176,10 @@ export default function DataTable<T extends object>({ data, tableTitle }: TableP
                               </ListItemIcon>
                               <ListItemText>Edit</ListItemText>
                             </MenuItem>
-                            <MenuItem>
+                            <MenuItem
+                              component={Link}
+                              href={`${pathname}/delete/${Object.values(row)[0]}`}
+                            >
                               <ListItemIcon>
                                 <DeleteIcon fontSize="small" />
                               </ListItemIcon>
