@@ -96,9 +96,7 @@ const initialState: MachinesState = {
 export const machinesSlice = createSlice({
   name: 'machines',
   initialState,
-  reducers: {
-    //
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getMachines.pending, (state) => {
@@ -128,7 +126,7 @@ export const machinesSlice = createSlice({
       })
       .addCase(createMachine.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.machines.concat(action.payload)
+        state.machines.push(action.payload)
       })
       .addCase(createMachine.rejected, (state, action) => {
         state.status = 'failed'
@@ -156,7 +154,5 @@ export const machinesSlice = createSlice({
       })
   }
 })
-
-// export const { change } = machinesSlice.actions
 
 export default machinesSlice.reducer

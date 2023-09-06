@@ -1,6 +1,7 @@
-import { ThemeProvider } from '@mui/material/styles/'
+import dynamic from 'next/dynamic'
+// import { ThemeProvider } from '@mui/material/styles/'
 import { Container, CssBaseline } from '@mui/material'
-import { theme } from '../theme'
+import { theme } from 'theme'
 import AuthProvider from '../next-auth/auth-provider'
 import ReduxProvider from '../redux/provider'
 
@@ -10,6 +11,7 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const ThemeProvider = dynamic(() => import('@mui/material/styles/ThemeProvider'), { ssr: false })
   return (
     <html lang="en">
       <body>
