@@ -5,13 +5,13 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import { SnackbarProvider, enqueueSnackbar } from 'notistack'
 import { useParams, useRouter } from 'next/navigation'
 import { useAppDispatch } from 'redux/hooks'
-import { getMachineById, deleteMachine } from 'redux/slices/machinesSlice'
+import { getSpotById, deleteSpot } from 'redux/slices/spotsSlice'
 import { notify } from 'redux/slices/notificationSlice'
-import { Machine } from 'types/machine'
+import { type Spot } from 'types/spot'
 import { useEffect, useState } from 'react'
 
-export default function DeleteMachinesPage() {
-  const [deleteData, setDeleteData] = useState<Machine | undefined>(undefined)
+export default function DeleteSpotsPage() {
+  const [deleteData, setDeleteData] = useState<Spot | undefined>(undefined)
 
   const dispatch = useAppDispatch()
   const router = useRouter()
@@ -24,14 +24,14 @@ export default function DeleteMachinesPage() {
 
   const handleDelete = async (id: string) => {
     try {
-      await dispatch(deleteMachine(id)).unwrap()
+      await dispatch(deleteSpot(id)).unwrap()
       dispatch(
         notify({
           variant: 'success',
-          message: `Machine: ${deleteData?.name} - Type: ${deleteData?.type} deleted`
+          message: `Spot: ${deleteData?.name} deleted`
         })
       )
-      router.push('/dashboard/machines')
+      router.push('/dashboard/spots')
     } catch (error) {
       if (error && typeof error === 'object' && 'message' in error) {
         enqueueSnackbar(`${error.message}`, {
@@ -43,10 +43,10 @@ export default function DeleteMachinesPage() {
   }
 
   useEffect(() => {
-    const getMachineData = async () => {
+    const getSpotData = async () => {
       try {
-        const machine: Machine = await dispatch(getMachineById(`${id}`)).unwrap()
-        setDeleteData(machine)
+        const spot: Spot = await dispatch(getSpotById(`${id}`)).unwrap()
+        setDeleteData(spot)
       } catch (error) {
         if (error && typeof error === 'object' && 'message' in error) {
           enqueueSnackbar(`${error.message}`, {
@@ -56,7 +56,7 @@ export default function DeleteMachinesPage() {
         }
       }
     }
-    id && getMachineData()
+    id && getSpotData()
   }, [dispatch, id])
 
   if (id && !deleteData) return null
@@ -74,7 +74,7 @@ export default function DeleteMachinesPage() {
           }}
         >
           <Typography sx={{ flex: '1 1 100%' }} variant="h5" id="tableTitle" component="div">
-            Delete Machine
+            Delete Spot
           </Typography>
           <IconButton aria-label="back" color="primary" onClick={handleBackClick}>
             <ArrowBackIosNewIcon />
@@ -84,20 +84,17 @@ export default function DeleteMachinesPage() {
           <Alert severity="warning" color="error">
             <AlertTitle>Warning</AlertTitle>
             Are you sure you want to delete? <br />
-            <br /> Machine: {deleteData?.name} <br /> Type: {deleteData?.type}
+            <br /> Spot: {deleteData?.name}
             <br />
             <br />
-            <strong>
-              All SPOTS associated with this machine will be deleted as well! This action is
-              irreversible.
-            </strong>
+            <strong>This action is irreversible.</strong>
           </Alert>
           <Stack sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
             <Button onClick={handleBackClick} variant="outlined">
               Cancel
             </Button>
             <Button
-              onClick={() => handleDelete(`${deleteData?.id}`)}
+              onClick={() => handleDelete(deleteData?.id as string)}
               variant="contained"
               color="error"
             >

@@ -8,7 +8,7 @@ import {
   Stack,
   TextField
 } from '@mui/material'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
 import { Machine } from 'types/machine'
 
@@ -18,8 +18,10 @@ export interface MachineFormProps {
 }
 
 export function MachineForm({ onSubmit, updateData }: MachineFormProps) {
+  const router = useRouter()
   const params = useParams()
   const { id } = params
+
   const {
     control,
     handleSubmit,
@@ -66,7 +68,11 @@ export function MachineForm({ onSubmit, updateData }: MachineFormProps) {
       </FormControl>
 
       <Stack sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Button type="reset" variant="outlined">
+        <Button
+          type={updateData ? 'button' : 'reset'}
+          onClick={updateData ? () => router.push('/dashboard/machines') : () => ''}
+          variant="outlined"
+        >
           Cancel
         </Button>
         <Button type="submit" variant="contained">
