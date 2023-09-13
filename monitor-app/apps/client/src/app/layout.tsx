@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic'
 // import { ThemeProvider } from '@mui/material/styles/'
-import { Container, CssBaseline } from '@mui/material'
+import { CssBaseline } from '@mui/material'
 import { theme } from 'theme'
 import AuthProvider from '../next-auth/auth-provider'
 import ReduxProvider from '../redux/provider'
@@ -18,9 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AuthProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Container disableGutters maxWidth="xl">
-              <ReduxProvider>{children}</ReduxProvider>
-            </Container>
+            <ReduxProvider>{children}</ReduxProvider>
           </ThemeProvider>
         </AuthProvider>
       </body>

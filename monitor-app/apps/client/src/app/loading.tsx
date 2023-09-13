@@ -1,16 +1,11 @@
 'use client'
-import { Backdrop, Box, LinearProgress, Typography, useMediaQuery } from '@mui/material'
-import { usePathname } from 'next/navigation'
-import { theme } from 'theme'
+import { Backdrop, Box, LinearProgress, Typography } from '@mui/material'
 
 export default function Loading() {
-  const isLgUp = useMediaQuery(theme.breakpoints.up('lg'))
-  const pathname = usePathname()
-
   return (
     <Backdrop
       sx={{
-        backgroundColor: 'rgba(0, 0, 0, 0.05)',
+        backgroundColor: '#ffffff',
         color: 'primary.main',
         zIndex: (theme) => theme.zIndex.drawer + 1
       }}
@@ -18,8 +13,7 @@ export default function Loading() {
     >
       <Box
         sx={{
-          width: pathname.includes('dashboard') && isLgUp ? '50%' : '100%',
-          marginLeft: isLgUp ? 30 : 0,
+          width: '100%',
           maxWidth: 'sm',
           px: 5
         }}

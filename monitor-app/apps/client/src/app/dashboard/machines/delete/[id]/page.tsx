@@ -80,7 +80,7 @@ export default function DeleteMachinesPage() {
             <ArrowBackIosNewIcon />
           </IconButton>
         </Stack>
-        <Stack spacing={2} padding={2}>
+        <Stack spacing={2} sx={{ padding: '0 16px 16px 16px' }}>
           <Alert severity="warning" color="error">
             <AlertTitle>Warning</AlertTitle>
             Are you sure you want to delete? <br />
