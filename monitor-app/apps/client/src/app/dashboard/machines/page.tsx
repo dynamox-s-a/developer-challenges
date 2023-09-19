@@ -1,16 +1,13 @@
 'use client'
 
 import { useEffect } from 'react'
-import { Box, Button, Typography } from '@mui/material'
-import AddIcon from '@mui/icons-material/Add'
 import { SnackbarProvider, enqueueSnackbar } from 'notistack'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import { useAppDispatch, useAppSelector } from 'redux/hooks'
 import { getMachines } from 'redux/slices/machinesSlice'
 import { notify } from 'redux/slices/notificationSlice'
 import DataTable from 'components/data-table/DataTable'
 import Loading from 'app/loading'
+import NoRegister from 'components/no-register/NoRegister'
 
 export default function Machines() {
   const machines = useAppSelector((state) => state.machines.machines)
@@ -18,7 +15,6 @@ export default function Machines() {
   const getMachinesError = useAppSelector((state) => state.machines.error)
   const notification = useAppSelector((state) => state.notification)
   const dispatch = useAppDispatch()
-  const pathname = usePathname()
 
   useEffect(() => {
     dispatch(getMachines())
@@ -36,29 +32,13 @@ export default function Machines() {
 
   return (
     <>
-      <Box sx={{ background: '#ffffff', flexGrow: 1 }}>
-        {getMachinesStatus === 'loading' && <Loading />}
-        {getMachinesStatus === 'failed' && getMachinesError}
-        {getMachinesStatus === 'succeeded' && machines.length > 0 && (
-          <DataTable data={[...machines].reverse()} tableTitle={'Machines'} />
-        )}
-        {getMachinesStatus === 'succeeded' && machines.length === 0 && (
-          <>
-            <Typography sx={{ padding: 1 }}>
-              No machines registered:{' '}
-              <Button
-                component={Link}
-                href={`${pathname}/create`}
-                variant="contained"
-                startIcon={<AddIcon />}
-              >
-                machine
-              </Button>
-            </Typography>
-          </>
-        )}
-        <SnackbarProvider />
-      </Box>
+      {getMachinesStatus === 'loading' && <Loading />}
+      {getMachinesStatus === 'failed' && getMachinesError}
+      {getMachinesStatus === 'succeeded' && machines.length > 0 && (
+        <DataTable data={[...machines].reverse()} tableTitle={'Machines'} />
+      )}
+      {getMachinesStatus === 'succeeded' && machines.length === 0 && <NoRegister item="machine" />}
+      <SnackbarProvider />
     </>
   )
 }

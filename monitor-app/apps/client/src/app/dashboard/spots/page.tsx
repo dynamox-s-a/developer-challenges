@@ -1,17 +1,14 @@
 'use client'
 
 import { useEffect } from 'react'
-import { Box, Button, Typography } from '@mui/material'
-import AddIcon from '@mui/icons-material/Add'
 import { SnackbarProvider, enqueueSnackbar } from 'notistack'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import { useAppDispatch, useAppSelector } from 'redux/hooks'
 import { getSpots } from 'redux/slices/spotsSlice'
 import { getMachines } from 'redux/slices/machinesSlice'
 import { notify } from 'redux/slices/notificationSlice'
 import DataTable from 'components/data-table/DataTable'
 import Loading from 'app/loading'
+import NoRegister from 'components/no-register/NoRegister'
 
 export default function Spots() {
   const spots = useAppSelector((state) => state.spots.spots)
@@ -21,7 +18,6 @@ export default function Spots() {
   const machines = useAppSelector((state) => state.machines.machines)
 
   const dispatch = useAppDispatch()
-  const pathname = usePathname()
 
   const prepareToTable = () => {
     const prepared = spots.map((spot) => {
@@ -54,29 +50,13 @@ export default function Spots() {
 
   return (
     <>
-      <Box sx={{ background: '#ffffff', flexGrow: 1 }}>
-        {getSpotsStatus === 'loading' && <Loading />}
-        {getSpotsStatus === 'failed' && getSpotsError}
-        {getSpotsStatus === 'succeeded' && spots.length > 0 && machines.length > 0 && (
-          <DataTable data={prepareToTable().reverse()} tableTitle={'Spots'} />
-        )}
-        {getSpotsStatus === 'succeeded' && spots.length === 0 && (
-          <>
-            <Typography sx={{ padding: 1 }}>
-              No spots registered:{' '}
-              <Button
-                component={Link}
-                href={`${pathname}/create`}
-                variant="contained"
-                startIcon={<AddIcon />}
-              >
-                spot
-              </Button>
-            </Typography>
-          </>
-        )}
-        <SnackbarProvider />
-      </Box>
+      {getSpotsStatus === 'loading' && <Loading />}
+      {getSpotsStatus === 'failed' && getSpotsError}
+      {getSpotsStatus === 'succeeded' && spots.length > 0 && machines.length > 0 && (
+        <DataTable data={prepareToTable().reverse()} tableTitle={'Spots'} />
+      )}
+      {getSpotsStatus === 'succeeded' && spots.length === 0 && <NoRegister item="spot" />}
+      <SnackbarProvider />
     </>
   )
 }
