@@ -1,22 +1,17 @@
 'use client'
 
-import { Box, IconButton, Stack, Typography } from '@mui/material'
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import { SnackbarProvider, enqueueSnackbar } from 'notistack'
 import { useRouter } from 'next/navigation'
 import { useAppDispatch } from 'redux/hooks'
 import { createSpot } from 'redux/slices/spotsSlice'
 import { notify } from 'redux/slices/notificationSlice'
 import SpotForm from 'components/spot-form/SpotForm'
-import { Spot } from 'types/spot'
+import { type Spot } from 'types/spot'
+import PagesHeader from 'components/pages-header/PagesHeader'
 
 export default function CreateSpotsPage() {
   const dispatch = useAppDispatch()
   const router = useRouter()
-
-  const handleBackClick = () => {
-    router.back()
-  }
 
   const handleCreate = async (data: Spot) => {
     try {
@@ -35,26 +30,9 @@ export default function CreateSpotsPage() {
 
   return (
     <>
-      <Box sx={{ backgroundColor: '#ffffff', flexGrow: 1 }}>
-        <Stack
-          sx={{
-            borderRadius: 1,
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            padding: 2
-          }}
-        >
-          <Typography sx={{ flex: '1 1 100%' }} variant="h5" id="tableTitle" component="div">
-            Add Spot
-          </Typography>
-          <IconButton aria-label="back" color="primary" onClick={handleBackClick}>
-            <ArrowBackIosNewIcon />
-          </IconButton>
-        </Stack>
-        <SpotForm onSubmit={handleCreate} />
-        <SnackbarProvider />
-      </Box>
+      <PagesHeader title="Add Spot" />
+      <SpotForm onSubmit={handleCreate} />
+      <SnackbarProvider />
     </>
   )
 }

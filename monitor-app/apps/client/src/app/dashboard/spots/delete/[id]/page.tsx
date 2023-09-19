@@ -1,7 +1,6 @@
 'use client'
 
-import { Alert, AlertTitle, Box, Button, IconButton, Stack, Typography } from '@mui/material'
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
+import { Alert, AlertTitle, Button, Stack } from '@mui/material'
 import { SnackbarProvider, enqueueSnackbar } from 'notistack'
 import { useParams, useRouter } from 'next/navigation'
 import { useAppDispatch } from 'redux/hooks'
@@ -9,6 +8,7 @@ import { getSpotById, deleteSpot } from 'redux/slices/spotsSlice'
 import { notify } from 'redux/slices/notificationSlice'
 import { type Spot } from 'types/spot'
 import { useEffect, useState } from 'react'
+import PagesHeader from 'components/pages-header/PagesHeader'
 
 export default function DeleteSpotsPage() {
   const [deleteData, setDeleteData] = useState<Spot | undefined>(undefined)
@@ -63,47 +63,30 @@ export default function DeleteSpotsPage() {
 
   return (
     <>
-      <Box sx={{ backgroundColor: '#ffffff', flexGrow: 1 }}>
-        <Stack
-          sx={{
-            borderRadius: 1,
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            padding: 2
-          }}
-        >
-          <Typography sx={{ flex: '1 1 100%' }} variant="h5" id="tableTitle" component="div">
-            Delete Spot
-          </Typography>
-          <IconButton aria-label="back" color="primary" onClick={handleBackClick}>
-            <ArrowBackIosNewIcon />
-          </IconButton>
+      <PagesHeader title="Delete Spot" />
+      <Stack spacing={2} sx={{ padding: '0 16px 16px 16px' }}>
+        <Alert severity="warning" color="error">
+          <AlertTitle>Warning</AlertTitle>
+          Are you sure you want to delete? <br />
+          <br /> Spot: {deleteData?.name}
+          <br />
+          <br />
+          <strong>This action is irreversible.</strong>
+        </Alert>
+        <Stack sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Button onClick={handleBackClick} variant="outlined">
+            Cancel
+          </Button>
+          <Button
+            onClick={() => handleDelete(deleteData?.id as string)}
+            variant="contained"
+            color="error"
+          >
+            Delete
+          </Button>
         </Stack>
-        <Stack spacing={2} sx={{ padding: '0 16px 16px 16px' }}>
-          <Alert severity="warning" color="error">
-            <AlertTitle>Warning</AlertTitle>
-            Are you sure you want to delete? <br />
-            <br /> Spot: {deleteData?.name}
-            <br />
-            <br />
-            <strong>This action is irreversible.</strong>
-          </Alert>
-          <Stack sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Button onClick={handleBackClick} variant="outlined">
-              Cancel
-            </Button>
-            <Button
-              onClick={() => handleDelete(deleteData?.id as string)}
-              variant="contained"
-              color="error"
-            >
-              Delete
-            </Button>
-          </Stack>
-        </Stack>
-        <SnackbarProvider />
-      </Box>
+      </Stack>
+      <SnackbarProvider />
     </>
   )
 }

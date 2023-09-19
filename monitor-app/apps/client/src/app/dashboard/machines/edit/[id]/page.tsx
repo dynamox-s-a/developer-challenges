@@ -1,7 +1,5 @@
 'use client'
 
-import { Box, IconButton, Stack, Typography } from '@mui/material'
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import { SnackbarProvider, enqueueSnackbar } from 'notistack'
 import { useParams, useRouter } from 'next/navigation'
 import { useAppDispatch } from 'redux/hooks'
@@ -10,6 +8,7 @@ import { notify } from 'redux/slices/notificationSlice'
 import MachineForm from 'components/machine-form/MachineForm'
 import { Machine } from 'types/machine'
 import { useEffect, useState } from 'react'
+import PagesHeader from 'components/pages-header/PagesHeader'
 
 export default function EditMachinesPage() {
   const [updateData, setUpdateData] = useState<Machine | undefined>(undefined)
@@ -18,10 +17,6 @@ export default function EditMachinesPage() {
   const router = useRouter()
   const params = useParams()
   const { id } = params
-
-  const handleBackClick = () => {
-    router.back()
-  }
 
   const handleUpdate = async (data: Machine) => {
     try {
@@ -61,26 +56,9 @@ export default function EditMachinesPage() {
 
   return (
     <>
-      <Box sx={{ backgroundColor: '#ffffff', flexGrow: 1 }}>
-        <Stack
-          sx={{
-            borderRadius: 1,
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            padding: 2
-          }}
-        >
-          <Typography sx={{ flex: '1 1 100%' }} variant="h5" id="tableTitle" component="div">
-            Edit Machine
-          </Typography>
-          <IconButton aria-label="back" color="primary" onClick={handleBackClick}>
-            <ArrowBackIosNewIcon />
-          </IconButton>
-        </Stack>
-        <MachineForm onSubmit={handleUpdate} updateData={updateData} />
-        <SnackbarProvider />
-      </Box>
+      <PagesHeader title="Edit Machine" />
+      <MachineForm onSubmit={handleUpdate} updateData={updateData} />
+      <SnackbarProvider />
     </>
   )
 }

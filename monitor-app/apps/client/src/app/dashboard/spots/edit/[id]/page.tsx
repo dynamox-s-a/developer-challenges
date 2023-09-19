@@ -1,7 +1,5 @@
 'use client'
 
-import { Box, IconButton, Stack, Typography } from '@mui/material'
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import { SnackbarProvider, enqueueSnackbar } from 'notistack'
 import { useParams, useRouter } from 'next/navigation'
 import { useAppDispatch } from 'redux/hooks'
@@ -10,6 +8,7 @@ import { notify } from 'redux/slices/notificationSlice'
 import SpotForm from 'components/spot-form/SpotForm'
 import { type Spot } from 'types/spot'
 import { useEffect, useState } from 'react'
+import PagesHeader from 'components/pages-header/PagesHeader'
 
 export default function EditSpotsPage() {
   const [updateData, setUpdateData] = useState<Spot | undefined>(undefined)
@@ -18,10 +17,6 @@ export default function EditSpotsPage() {
   const router = useRouter()
   const params = useParams()
   const { id } = params
-
-  const handleBackClick = () => {
-    router.back()
-  }
 
   const handleUpdate = async (data: Spot) => {
     try {
@@ -61,26 +56,9 @@ export default function EditSpotsPage() {
 
   return (
     <>
-      <Box sx={{ backgroundColor: '#ffffff', flexGrow: 1 }}>
-        <Stack
-          sx={{
-            borderRadius: 1,
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            padding: 2
-          }}
-        >
-          <Typography sx={{ flex: '1 1 100%' }} variant="h5" id="tableTitle" component="div">
-            Edit Spot
-          </Typography>
-          <IconButton aria-label="back" color="primary" onClick={handleBackClick}>
-            <ArrowBackIosNewIcon />
-          </IconButton>
-        </Stack>
-        <SpotForm onSubmit={handleUpdate} updateData={updateData} />
-        <SnackbarProvider />
-      </Box>
+      <PagesHeader title="Edit Spot" />
+      <SpotForm onSubmit={handleUpdate} updateData={updateData} />
+      <SnackbarProvider />
     </>
   )
 }
