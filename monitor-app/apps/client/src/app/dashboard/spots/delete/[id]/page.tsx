@@ -1,6 +1,6 @@
 'use client'
 
-import { Alert, AlertTitle, Button, Stack } from '@mui/material'
+import { Alert, AlertTitle, Button } from '@mui/material'
 import { SnackbarProvider, enqueueSnackbar } from 'notistack'
 import { useParams, useRouter } from 'next/navigation'
 import { useAppDispatch } from 'redux/hooks'
@@ -9,6 +9,8 @@ import { notify } from 'redux/slices/notificationSlice'
 import { type Spot } from 'types/spot'
 import { useEffect, useState } from 'react'
 import PagesHeader from 'components/pages-header/PagesHeader'
+import { AlertWrapper } from 'components/alert-wrapper/AlertWrapper'
+import { ActionsWrapper } from 'components/actions-wrapper/ActionsWrapper'
 
 export default function DeleteSpotsPage() {
   const [deleteData, setDeleteData] = useState<Spot | undefined>(undefined)
@@ -64,16 +66,17 @@ export default function DeleteSpotsPage() {
   return (
     <>
       <PagesHeader title="Delete Spot" />
-      <Stack spacing={2} sx={{ padding: '0 16px 16px 16px' }}>
+      <AlertWrapper>
         <Alert severity="warning" color="error">
           <AlertTitle>Warning</AlertTitle>
           Are you sure you want to delete? <br />
-          <br /> Spot: {deleteData?.name}
+          <br />
+          Spot: {deleteData?.name}
           <br />
           <br />
           <strong>This action is irreversible.</strong>
         </Alert>
-        <Stack sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+        <ActionsWrapper>
           <Button onClick={handleBackClick} variant="outlined">
             Cancel
           </Button>
@@ -84,8 +87,8 @@ export default function DeleteSpotsPage() {
           >
             Delete
           </Button>
-        </Stack>
-      </Stack>
+        </ActionsWrapper>
+      </AlertWrapper>
       <SnackbarProvider />
     </>
   )

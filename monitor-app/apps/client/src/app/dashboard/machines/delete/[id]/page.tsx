@@ -1,14 +1,16 @@
 'use client'
 
-import { Alert, AlertTitle, Button, Stack } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { Alert, AlertTitle, Button } from '@mui/material'
 import { SnackbarProvider, enqueueSnackbar } from 'notistack'
 import { useParams, useRouter } from 'next/navigation'
 import { useAppDispatch } from 'redux/hooks'
 import { getMachineById, deleteMachine } from 'redux/slices/machinesSlice'
 import { notify } from 'redux/slices/notificationSlice'
-import { Machine } from 'types/machine'
-import { useEffect, useState } from 'react'
+import { type Machine } from 'types/machine'
 import PagesHeader from 'components/pages-header/PagesHeader'
+import { AlertWrapper } from 'components/alert-wrapper/AlertWrapper'
+import { ActionsWrapper } from 'components/actions-wrapper/ActionsWrapper'
 
 export default function DeleteMachinesPage() {
   const [deleteData, setDeleteData] = useState<Machine | undefined>(undefined)
@@ -64,7 +66,7 @@ export default function DeleteMachinesPage() {
   return (
     <>
       <PagesHeader title="Delete Machine" />
-      <Stack spacing={2} sx={{ padding: '0 16px 16px 16px' }}>
+      <AlertWrapper>
         <Alert severity="warning" color="error">
           <AlertTitle>Warning</AlertTitle>
           Are you sure you want to delete? <br />
@@ -76,7 +78,7 @@ export default function DeleteMachinesPage() {
             irreversible.
           </strong>
         </Alert>
-        <Stack sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+        <ActionsWrapper>
           <Button onClick={handleBackClick} variant="outlined">
             Cancel
           </Button>
@@ -87,8 +89,8 @@ export default function DeleteMachinesPage() {
           >
             Delete
           </Button>
-        </Stack>
-      </Stack>
+        </ActionsWrapper>
+      </AlertWrapper>
       <SnackbarProvider />
     </>
   )
