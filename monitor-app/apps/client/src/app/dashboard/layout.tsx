@@ -1,41 +1,39 @@
 'use client'
+
 import { useState } from 'react'
-import { Box, useMediaQuery } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
+import { Box, BoxProps, Stack, useMediaQuery } from '@mui/material'
+import { styled, useTheme } from '@mui/material/styles'
 import TopBar from 'components/top-bar/TopBar'
 import Sidebar from 'components/sidebar/Sidebar'
+
+const StyledMainBox = styled(Box)<BoxProps>({
+  background: '#ffffff',
+  flex: 1,
+  margin: 24
+})
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false)
   const theme = useTheme()
   const isLgUp = useMediaQuery(theme.breakpoints.up('lg'))
+  const drawerWidth = 240
 
   const handleDrawerToggle = () => {
     setIsOpen(!isOpen)
   }
 
-  const drawerWidth = 240
-
   return (
     <>
       <TopBar isLgUp={isLgUp} handleDrawerToggle={handleDrawerToggle} />
-      <Box sx={{ display: 'flex' }}>
+      <Stack direction="row">
         <Sidebar
           drawerWidth={drawerWidth}
           isLgUp={isLgUp}
           isOpen={isOpen}
           handleDrawerToggle={handleDrawerToggle}
         />
-        <Box
-          component="main"
-          sx={{
-            flexGrow: 1,
-            p: 3
-          }}
-        >
-          {children}
-        </Box>
-      </Box>
+        <StyledMainBox component="main">{children}</StyledMainBox>
+      </Stack>
     </>
   )
 }

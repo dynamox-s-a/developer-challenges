@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { Box, LinearProgress } from '@mui/material'
+import { LinearProgress } from '@mui/material'
 import RadarIcon from '@mui/icons-material/Radar'
 import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing'
 import GpsFixed from '@mui/icons-material/GpsFixed'
@@ -71,18 +71,16 @@ export default function Dashboard() {
       {(getSpotsStatus === 'loading' || getMachinesStatus === 'loading') && <Loading />}
       {getMachinesStatus === 'failed' && getMachinesError}
       {getSpotsStatus === 'failed' && getSpotsError}
-      <Box sx={{ flexGrow: 1 }}>
-        {cardsData.map(({ title, amount, caption, icon, progress }) => (
-          <DataCard
-            key={'card-' + title}
-            title={title}
-            amount={amount}
-            caption={caption}
-            icon={icon}
-            progress={progress}
-          />
-        ))}
-      </Box>
+      {cardsData.map(({ title, amount, caption, icon, progress }) => (
+        <DataCard
+          key={'card-' + title}
+          title={title}
+          amount={amount}
+          caption={caption}
+          icon={icon}
+          progress={progress}
+        />
+      ))}
     </>
   )
 }

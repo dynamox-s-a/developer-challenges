@@ -15,7 +15,7 @@ const StyledStack = styled(Stack)<StackProps>({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-  padding: 16
+  padding: 24
 })
 
 const StyledTypography = styled(Typography)<TypographyProps>({

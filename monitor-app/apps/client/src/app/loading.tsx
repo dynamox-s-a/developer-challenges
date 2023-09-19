@@ -1,26 +1,36 @@
 'use client'
-import { Backdrop, Box, LinearProgress, Typography } from '@mui/material'
+
+import {
+  Backdrop,
+  BackdropProps,
+  Box,
+  BoxProps,
+  LinearProgress,
+  Typography,
+  TypographyProps
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+
+const StyledBackdrop = styled(Backdrop)<BackdropProps>(({ theme }) => ({
+  backgroundColor: '#ffffff',
+  color: 'primary.main',
+  zIndex: theme.zIndex.drawer + 1
+}))
+
+const LoadingWrapper = styled(Box)<BoxProps>({ width: '100%', maxWidth: 600, px: 5 })
+
+const LoadingText = styled(Typography)<TypographyProps>({
+  paddingTop: 4,
+  textAlign: 'center'
+})
 
 export default function Loading() {
   return (
-    <Backdrop
-      sx={{
-        backgroundColor: '#ffffff',
-        color: 'primary.main',
-        zIndex: (theme) => theme.zIndex.drawer + 1
-      }}
-      open
-    >
-      <Box
-        sx={{
-          width: '100%',
-          maxWidth: 'sm',
-          px: 5
-        }}
-      >
+    <StyledBackdrop open>
+      <LoadingWrapper>
         <LinearProgress />
-        <Typography sx={{ marginTop: 2, textAlign: 'center' }}>LOADING ...</Typography>
-      </Box>
-    </Backdrop>
+        <LoadingText>LOADING ...</LoadingText>
+      </LoadingWrapper>
+    </StyledBackdrop>
   )
 }

@@ -26,6 +26,7 @@ export default function Spots() {
         id: spot.id,
         name: spot.name,
         machine: machine?.name,
+        type: machine?.type,
         sensor: spot.sensorId,
         model: spot.sensorModel
       }

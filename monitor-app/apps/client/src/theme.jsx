@@ -8,14 +8,14 @@ export const theme = createTheme({
     primary: {
       main: '#2e3552',
       dark: '#66788a',
-      contrastText: '#fff'
+      contrastText: '#ffffff'
     },
     secondary: {
       main: '#44142d'
     },
     background: {
       default: '#fbfbfb',
-      paper: '#fff'
+      paper: '#ffffff'
     }
   }
 })
