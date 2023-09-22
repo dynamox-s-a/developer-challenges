@@ -5,8 +5,14 @@ import { Box, BoxProps, Stack, useMediaQuery } from '@mui/material'
 import { styled, useTheme } from '@mui/material/styles'
 import TopBar from 'components/top-bar/TopBar'
 import Sidebar from 'components/sidebar/Sidebar'
+import { usePathname } from 'next/navigation'
 
 const StyledMainBox = styled(Box)<BoxProps>({
+  flex: 1,
+  margin: 24
+})
+
+const StyledMainBoxWhite = styled(Box)<BoxProps>({
   background: '#ffffff',
   flex: 1,
   margin: 24
@@ -17,6 +23,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const theme = useTheme()
   const isLgUp = useMediaQuery(theme.breakpoints.up('lg'))
   const drawerWidth = 240
+  const pathname = usePathname()
 
   const handleDrawerToggle = () => {
     setIsOpen(!isOpen)
@@ -32,7 +39,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           isOpen={isOpen}
           handleDrawerToggle={handleDrawerToggle}
         />
-        <StyledMainBox component="main">{children}</StyledMainBox>
+        {pathname === '/dashboard' ? (
+          <StyledMainBox component="main">{children}</StyledMainBox>
+        ) : (
+          <StyledMainBoxWhite component="main">{children}</StyledMainBoxWhite>
+        )}
       </Stack>
     </>
   )
