@@ -5,6 +5,9 @@ export const config = {
     '/dashboard',
     '/dashboard/machines',
     '/dashboard/machines/create',
-    '/dashboard/machines/edit'
+    '/dashboard/machines/edit',
+    '/dashboard/spots',
+    '/dashboard/spots/create',
+    '/dashboard/spots/edit'
   ]
 }

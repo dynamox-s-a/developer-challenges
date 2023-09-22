@@ -5,9 +5,10 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  Stack,
   TextField
 } from '@mui/material'
+import { ActionsWrapper } from 'components/actions-wrapper/ActionsWrapper'
+import FormStack from 'components/form-stack/FormStack'
 import { useParams, useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
 import { Machine } from 'types/machine'
@@ -34,12 +35,7 @@ export function MachineForm({ onSubmit, updateData }: MachineFormProps) {
   }
 
   return (
-    <Stack
-      spacing={2}
-      component={'form'}
-      onSubmit={handleSubmit(handleFormSubmit)}
-      sx={{ padding: 2 }}
-    >
+    <FormStack spacing={3} component={'form'} onSubmit={handleSubmit(handleFormSubmit)}>
       <TextField
         fullWidth
         label="Machine Name"
@@ -67,10 +63,10 @@ export function MachineForm({ onSubmit, updateData }: MachineFormProps) {
         <FormHelperText error={!!errors.type}>{errors.type?.message}</FormHelperText>
       </FormControl>
 
-      <Stack sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+      <ActionsWrapper>
         <Button
           type={updateData ? 'button' : 'reset'}
-          onClick={updateData ? () => router.push('/dashboard/machines') : () => ''}
+          onClick={updateData && (() => router.push('/dashboard/machines'))}
           variant="outlined"
         >
           Cancel
@@ -78,8 +74,8 @@ export function MachineForm({ onSubmit, updateData }: MachineFormProps) {
         <Button type="submit" variant="contained">
           Save
         </Button>
-      </Stack>
-    </Stack>
+      </ActionsWrapper>
+    </FormStack>
   )
 }
 

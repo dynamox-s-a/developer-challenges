@@ -5,11 +5,17 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
+  ListItemIconProps,
   ListItemText
 } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { sideNavItems } from './side-nav-items'
+
+const StyledListItemIcon = styled(ListItemIcon)<ListItemIconProps>({
+  minWidth: 36
+})
 
 type SideNavProps = {
   handleDrawerToggle: () => void
@@ -31,7 +37,7 @@ export default function SideNav(props: SideNavProps) {
                 selected={item.link === pathname ? true : false}
                 onClick={handleDrawerToggle}
               >
-                <ListItemIcon sx={{ minWidth: '36px' }}>{item.icon}</ListItemIcon>
+                <StyledListItemIcon>{item.icon}</StyledListItemIcon>
                 <ListItemText primary={item.text} primaryTypographyProps={{ fontWeight: 600 }} />
               </ListItemButton>
             </ListItem>

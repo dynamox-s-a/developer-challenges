@@ -86,133 +86,131 @@ export default function DataTable<T extends object>({ data, tableTitle }: TableP
   )
 
   return (
-    <Box sx={{ overflow: 'auto' }}>
-      <Box sx={{ width: '100%', display: isLgUp ? 'block' : 'table', tableLayout: 'fixed' }}>
-        <Stack
-          sx={{
-            backgroundColor: '#ffffff',
-            borderRadius: 1,
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            padding: 2
-          }}
+    <Box sx={{ width: '100%', display: isLgUp ? 'block' : 'table', tableLayout: 'fixed' }}>
+      <Stack
+        sx={{
+          backgroundColor: '#ffffff',
+          borderRadius: 1,
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          padding: 3
+        }}
+      >
+        <Typography sx={{ flex: '1 1 100%' }} variant="h5" id="tableTitle" component="div">
+          {tableTitle}
+        </Typography>
+        <Button
+          component={Link}
+          href={`${pathname}/create`}
+          variant="contained"
+          startIcon={<AddIcon />}
+          sx={{ px: isSmUp ? '' : 3 }}
         >
-          <Typography sx={{ flex: '1 1 100%' }} variant="h5" id="tableTitle" component="div">
-            {tableTitle}
-          </Typography>
-          <Button
-            component={Link}
-            href={`${pathname}/create`}
-            variant="contained"
-            startIcon={<AddIcon />}
-            sx={{ px: isSmUp ? '' : 3 }}
-          >
-            {tableTitle.slice(0, -1)}
-          </Button>
-        </Stack>
-        <Paper sx={{ width: '100%', mb: 1 }}>
-          <TableContainer>
-            <Table sx={{ minWidth: 325 }}>
-              <TableHead>
-                <TableRow>
-                  {Object.keys(data[0])
-                    .slice(1)
-                    .map((headCell, index) => (
-                      <TableCell
-                        key={headCell}
-                        align={index === 0 ? 'left' : 'right'}
-                        sortDirection={orderBy === headCell ? order : false}
+          {tableTitle.slice(0, -1)}
+        </Button>
+      </Stack>
+      <Paper sx={{ mb: 0.125 }}>
+        <TableContainer>
+          <Table sx={{ minWidth: 325 }}>
+            <TableHead>
+              <TableRow>
+                {Object.keys(data[0])
+                  .slice(1)
+                  .map((headCell, index) => (
+                    <TableCell
+                      key={headCell}
+                      align={index === 0 ? 'left' : 'right'}
+                      sortDirection={orderBy === headCell ? order : false}
+                    >
+                      <TableSortLabel
+                        active={orderBy === headCell}
+                        direction={orderBy === headCell ? order : 'asc'}
+                        onClick={() => handleRequestSort(headCell)}
+                        sx={{ fontWeight: '600', textTransform: 'capitalize' }}
                       >
-                        <TableSortLabel
-                          active={orderBy === headCell}
-                          direction={orderBy === headCell ? order : 'asc'}
-                          onClick={() => handleRequestSort(headCell)}
-                          sx={{ fontWeight: '600', textTransform: 'capitalize' }}
+                        {headCell}
+                        {orderBy === headCell ? (
+                          <Box component="span" sx={visuallyHidden}>
+                            {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                          </Box>
+                        ) : null}
+                      </TableSortLabel>
+                    </TableCell>
+                  ))}
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {visibleRows
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => {
+                  return (
+                    <TableRow hover tabIndex={-1} key={Object.values(row)[1]}>
+                      {Object.values(row)
+                        .slice(1)
+                        .map((cell, index) => (
+                          <TableCell align={index === 0 ? 'left' : 'right'} key={cell}>
+                            {cell}
+                          </TableCell>
+                        ))}
+                      <TableCell padding="checkbox">
+                        <IconButton onClick={handleClick(Object.values(row)[0])} size={'small'}>
+                          <SettingsIcon />
+                        </IconButton>
+                        <Menu
+                          elevation={1}
+                          anchorEl={anchorEl}
+                          open={openElem === Object.values(row)[0]}
+                          onClose={handleClose}
+                          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                         >
-                          {headCell}
-                          {orderBy === headCell ? (
-                            <Box component="span" sx={visuallyHidden}>
-                              {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                            </Box>
-                          ) : null}
-                        </TableSortLabel>
-                      </TableCell>
-                    ))}
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {visibleRows
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => {
-                    return (
-                      <TableRow hover tabIndex={-1} key={Object.values(row)[1]}>
-                        {Object.values(row)
-                          .slice(1)
-                          .map((cell, index) => (
-                            <TableCell align={index === 0 ? 'left' : 'right'} key={cell}>
-                              {cell}
-                            </TableCell>
-                          ))}
-                        <TableCell padding="checkbox">
-                          <IconButton onClick={handleClick(Object.values(row)[0])} size={'small'}>
-                            <SettingsIcon />
-                          </IconButton>
-                          <Menu
-                            elevation={1}
-                            anchorEl={anchorEl}
-                            open={openElem === Object.values(row)[0]}
-                            onClose={handleClose}
-                            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                          <MenuItem
+                            component={Link}
+                            href={`${pathname}/edit/${Object.values(row)[0]}`}
                           >
-                            <MenuItem
-                              component={Link}
-                              href={`${pathname}/edit/${Object.values(row)[0]}`}
-                            >
-                              <ListItemIcon>
-                                <EditIcon fontSize="small" />
-                              </ListItemIcon>
-                              <ListItemText>Edit</ListItemText>
-                            </MenuItem>
-                            <MenuItem
-                              component={Link}
-                              href={`${pathname}/delete/${Object.values(row)[0]}`}
-                            >
-                              <ListItemIcon>
-                                <DeleteIcon fontSize="small" />
-                              </ListItemIcon>
-                              <ListItemText>Delete</ListItemText>
-                            </MenuItem>
-                          </Menu>
-                        </TableCell>
-                      </TableRow>
-                    )
-                  })}
-                {emptyRows > 0 && (
-                  <TableRow
-                    style={{
-                      height: 53 * emptyRows
-                    }}
-                  >
-                    <TableCell colSpan={6} />
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={data.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Paper>
-      </Box>
+                            <ListItemIcon>
+                              <EditIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText>Edit</ListItemText>
+                          </MenuItem>
+                          <MenuItem
+                            component={Link}
+                            href={`${pathname}/delete/${Object.values(row)[0]}`}
+                          >
+                            <ListItemIcon>
+                              <DeleteIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText>Delete</ListItemText>
+                          </MenuItem>
+                        </Menu>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+              {emptyRows > 0 && (
+                <TableRow
+                  style={{
+                    height: 53 * emptyRows
+                  }}
+                >
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={data.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Paper>
     </Box>
   )
 }

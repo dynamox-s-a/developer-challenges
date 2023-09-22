@@ -17,7 +17,12 @@ const StyledBackdrop = styled(Backdrop)<BackdropProps>(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1
 }))
 
-const LoadingWrapper = styled(Box)<BoxProps>({ width: '100%', maxWidth: 600, px: 5 })
+const LoadingWrapper = styled(Box)<BoxProps>({
+  width: '100%',
+  maxWidth: 600,
+  marginLeft: 24,
+  marginRight: 24
+})
 
 const LoadingText = styled(Typography)<TypographyProps>({
   paddingTop: 4,

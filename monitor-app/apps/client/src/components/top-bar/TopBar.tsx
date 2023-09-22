@@ -1,20 +1,25 @@
-import { AppBar, Box, Toolbar, Typography } from '@mui/material'
+import { AppBar, Box, BoxProps, Toolbar, Typography } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
 import AccountPopover from './AccountPopover'
+import { styled } from '@mui/material/styles'
+
+const StyledBox = styled(Box)<BoxProps>({
+  display: 'flex',
+  flex: 1,
+  alignItems: 'center'
+})
 
 type TopBarProps = {
   isLgUp: boolean
   handleDrawerToggle: () => void
 }
 
-export default function TopBar(props: TopBarProps) {
-  const { isLgUp, handleDrawerToggle } = props
-
+export default function TopBar({ isLgUp, handleDrawerToggle }: TopBarProps) {
   return (
     <AppBar position="sticky" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
       <Toolbar>
-        <Box sx={{ display: 'flex', flexGrow: 1, alignItems: 'center' }}>
+        <StyledBox>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -29,10 +34,8 @@ export default function TopBar(props: TopBarProps) {
               monitor-app
             </Typography>
           )}
-        </Box>
-        <Box sx={{ flexGrow: 0 }}>
-          <AccountPopover />
-        </Box>
+        </StyledBox>
+        <AccountPopover />
       </Toolbar>
     </AppBar>
   )

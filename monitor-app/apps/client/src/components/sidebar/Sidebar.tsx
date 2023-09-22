@@ -1,5 +1,5 @@
 import { Box, Divider, Drawer, Stack, Typography } from '@mui/material'
-import NextLink from 'next/link'
+import Link from 'next/link'
 import { theme } from 'theme'
 import SideNav from './SideNav'
 import { Logo } from '../logo'
@@ -37,7 +37,7 @@ export default function Sidebar(props: SideBarProps) {
             }}
           >
             <Box
-              component={NextLink}
+              component={Link}
               href="/dashboard"
               sx={{
                 display: 'flex',

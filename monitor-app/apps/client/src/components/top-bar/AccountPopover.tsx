@@ -1,18 +1,34 @@
 import {
   Avatar,
   Box,
+  BoxProps,
   Divider,
   MenuItem,
   MenuList,
+  MenuListProps,
   Popover,
   Tooltip,
   Typography
 } from '@mui/material'
-import IconButton from '@mui/material/IconButton'
+import IconButton, { IconButtonProps } from '@mui/material/IconButton'
+import { styled } from '@mui/material/styles'
 import { useState } from 'react'
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useAppSelector } from 'redux/hooks'
+
+const StyledIconButton = styled(IconButton)<IconButtonProps>({
+  padding: 0
+})
+
+const StyledBox = styled(Box)<BoxProps>({
+  padding: 8,
+  width: 200
+})
+
+const StyledMenuList = styled(MenuList)<MenuListProps>({
+  padding: 8
+})
 
 export default function AccountPopover() {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
@@ -36,9 +52,9 @@ export default function AccountPopover() {
   return (
     <>
       <Tooltip title="Open Account Menu">
-        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+        <StyledIconButton onClick={handleOpenUserMenu}>
           <Avatar />
-        </IconButton>
+        </StyledIconButton>
       </Tooltip>
       <Popover
         anchorEl={anchorElUser}
@@ -54,29 +70,14 @@ export default function AccountPopover() {
         onClose={handleCloseUserMenu}
         open={Boolean(anchorElUser)}
       >
-        <Box
-          sx={{
-            py: 1.5,
-            px: 2,
-            width: '200px'
-          }}
-        >
+        <StyledBox>
           <Typography variant="overline">Account</Typography>
           <Typography>{user.name}</Typography>
-        </Box>
+        </StyledBox>
         <Divider />
-        <MenuList
-          disablePadding
-          dense
-          sx={{
-            p: '8px',
-            '& > *': {
-              borderRadius: 1
-            }
-          }}
-        >
+        <StyledMenuList disablePadding dense>
           <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
-        </MenuList>
+        </StyledMenuList>
       </Popover>
     </>
   )
