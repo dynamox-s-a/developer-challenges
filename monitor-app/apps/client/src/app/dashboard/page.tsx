@@ -26,12 +26,13 @@ export default function Dashboard() {
   const getSpotsError = useAppSelector((state) => state.spots.error)
 
   const getMonitoredMachines = () => {
-    let total = 0
-    machines &&
-      machines.map((machine) => {
-        spots.find((spot) => spot.machineId === machine.id && total++)
-      })
-    return total > 0 ? Math.round((total / machines.length) * 100) + '%' : '0'
+    const unique =
+      spots &&
+      spots.reduce((acc: string[], curr) => {
+        if (!acc.includes(curr.machineId)) acc.push(curr.machineId)
+        return acc
+      }, [])
+    return unique.length > 0 ? Math.round((unique.length / machines.length) * 100) + '%' : '0'
   }
 
   const cardsData = [
@@ -72,16 +73,18 @@ export default function Dashboard() {
       {(getSpotsStatus === 'loading' || getMachinesStatus === 'loading') && <Loading />}
       {getMachinesStatus === 'failed' && getMachinesError}
       {getSpotsStatus === 'failed' && getSpotsError}
-      {cardsData.map(({ title, amount, caption, icon, progress }) => (
-        <DataCard
-          key={'card-' + title}
-          title={title}
-          amount={amount}
-          caption={caption}
-          icon={icon}
-          progress={progress}
-        />
-      ))}
+      {getSpotsStatus === 'succeeded' &&
+        getMachinesStatus === 'succeeded' &&
+        cardsData.map(({ title, amount, caption, icon, progress }) => (
+          <DataCard
+            key={'card-' + title}
+            title={title}
+            amount={amount}
+            caption={caption}
+            icon={icon}
+            progress={progress}
+          />
+        ))}
     </>
   )
 }

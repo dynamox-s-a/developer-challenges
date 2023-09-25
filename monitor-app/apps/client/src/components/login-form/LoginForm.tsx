@@ -41,6 +41,7 @@ export default function LoginForm() {
   } = useForm<FormValues>()
 
   const onSubmit: SubmitHandler<FormValues> = async ({ email, password }) => {
+    setButtonDisabled(true)
     const response = await signIn('credentials', {
       email: email,
       userPassword: password,
@@ -52,6 +53,7 @@ export default function LoginForm() {
         variant: 'error',
         anchorOrigin: { horizontal: 'center', vertical: 'bottom' }
       })
+      setButtonDisabled(false)
       return
     }
     router.push('/dashboard')
