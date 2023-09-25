@@ -8,7 +8,6 @@ import { NotFoundException } from '@nestjs/common'
 describe('SpotService', () => {
   let service: SpotService
   let prisma: PrismaService
-  let machineService: MachineService
 
   const mockSpot = [
     {
@@ -54,6 +53,10 @@ describe('SpotService', () => {
       findUniqueOrThrow: jest.fn().mockResolvedValue(mockSpot[0]),
       update: jest.fn().mockResolvedValue({ id: 'my-unique-id', ...mockUpdatedSpot }),
       delete: jest.fn()
+    },
+    machine: {
+      findFirst: jest.fn().mockResolvedValue(mockSpot[0]),
+      findUniqueOrThrow: jest.fn().mockResolvedValue(mockSpot[0])
     }
   }
 
@@ -67,7 +70,7 @@ describe('SpotService', () => {
     }).compile()
     prisma = module.get<PrismaService>(PrismaService)
     service = module.get<SpotService>(SpotService)
-    machineService = module.get<MachineService>(MachineService)
+    // machineService = module.get<MachineService>(MachineService)
   })
 
   it('should be defined', () => {
@@ -75,7 +78,9 @@ describe('SpotService', () => {
   })
 
   it('should throw ForbiddenException on create when sensor cannot be associated with machine', async () => {
-    const createMock = jest.spyOn(machineService, 'findOne').mockResolvedValue(mockMachine)
+    const createMock = jest
+      .spyOn(prisma.machine, 'findUniqueOrThrow')
+      .mockResolvedValue(mockMachine)
 
     expect.assertions(2)
     try {
@@ -85,7 +90,7 @@ describe('SpotService', () => {
         `Error: model ${mockValidSpot.sensorModel} sensors cannot be associated with machines of type Pump`
       )
     }
-    expect(createMock).toHaveBeenCalledWith(mockValidSpot.machineId)
+    expect(createMock).toHaveBeenCalledWith({ where: { id: mockValidSpot.machineId } })
   })
 
   it('should handle unique constraint violation on create when spot already exists', async () => {
@@ -198,7 +203,7 @@ describe('SpotService', () => {
   })
 
   it('should throw forbidden exception on update when sensor cannot be associated with machine', async () => {
-    const createMock = jest.spyOn(machineService, 'findOne').mockResolvedValue(mockMachine)
+    const createMock = jest.spyOn(prisma.machine, 'findFirst').mockResolvedValue(mockMachine)
 
     expect.assertions(2)
     try {
@@ -208,7 +213,7 @@ describe('SpotService', () => {
         `Error: model ${mockValidSpot.sensorModel} sensors cannot be associated with machines of type Pump`
       )
     }
-    expect(createMock).toHaveBeenCalledWith(mockValidSpot.machineId)
+    expect(createMock).toHaveBeenCalledWith({ where: { id: mockValidSpot.machineId } })
   })
 
   it('should handle unique constraint violation on update when spot already exists', async () => {

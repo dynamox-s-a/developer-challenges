@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { MachineService } from './machine.service'
 import { PrismaService } from '../prisma/prisma.service'
 import { Prisma } from '@prisma/client'
-import { NotFoundException } from '@nestjs/common'
+import { ForbiddenException, NotFoundException } from '@nestjs/common'
 
 describe('MachineService', () => {
   let service: MachineService
@@ -23,6 +23,14 @@ describe('MachineService', () => {
     type: 'Fan'
   }
 
+  const mockSpot = {
+    id: 'cllb7aysh0002ve6n6fqn1a94',
+    name: 'spot 001',
+    machineId: 'cllb77zgp0000ve6n8vyz4uf9',
+    sensorId: 'Dyp.30.000.0001',
+    sensorModel: 'TcAs'
+  }
+
   const mockPrismaService = {
     machine: {
       create: jest.fn().mockReturnValue({ ...mockNewMachine, id: 'my-unique-id' }),
@@ -30,6 +38,9 @@ describe('MachineService', () => {
       findUniqueOrThrow: jest.fn().mockResolvedValue(mockMachine[0]),
       update: jest.fn().mockResolvedValue({ id: 'my-unique-id', ...mockUpdatedMachine }),
       delete: jest.fn()
+    },
+    spot: {
+      findMany: jest.fn().mockResolvedValue(mockMachine)
     }
   }
 
@@ -177,6 +188,33 @@ describe('MachineService', () => {
       where: { id: 'my-unique-id' }
     })
     expect(response).toEqual(expected)
+  })
+
+  it('should handle machine type error on update', async () => {
+    jest.spyOn(prisma.spot, 'findMany').mockResolvedValueOnce([mockSpot])
+    jest
+      .spyOn(prisma.machine, 'update')
+      .mockRejectedValueOnce(
+        new ForbiddenException(
+          `Error: model ${mockSpot.sensorModel} sensors cannot be associated with machines of type Pump`
+        )
+      )
+    const expected = `Error: model ${mockSpot.sensorModel} sensors cannot be associated with machines of type Pump`
+    try {
+      await service.update('my-unique-id', {
+        name: 'updated machine',
+        type: 'Pump'
+      })
+    } catch (error) {
+      expect(error.message).toMatch(expected)
+    }
+    expect(prisma.machine.update).toHaveBeenCalledWith({
+      data: {
+        name: 'updated machine',
+        type: 'Fan'
+      },
+      where: { id: 'my-unique-id' }
+    })
   })
 
   it('should remove a machine by id', async () => {

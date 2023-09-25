@@ -43,6 +43,14 @@ export class MachineService {
   }
 
   async update(id: string, { name, type }: UpdateMachineDto) {
+    const spots = await this.prisma.spot.findMany({ where: { machineId: id } })
+    spots.map((spot) => {
+      if (type === 'Pump' && spot.sensorModel !== 'HF+') {
+        throw new ForbiddenException(
+          `Error: model ${spot.sensorModel} sensors cannot be associated with machines of type Pump`
+        )
+      }
+    })
     try {
       const machine = await this.prisma.machine.update({
         where: {

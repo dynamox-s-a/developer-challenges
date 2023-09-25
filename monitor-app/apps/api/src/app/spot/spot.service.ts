@@ -3,14 +3,13 @@ import { CreateSpotDto } from './dto/create-spot.dto'
 import { UpdateSpotDto } from './dto/update-spot.dto'
 import { PrismaService } from '../prisma/prisma.service'
 import { Prisma } from '@prisma/client'
-import { MachineService } from '../machine/machine.service'
 
 @Injectable()
 export class SpotService {
-  constructor(private prisma: PrismaService, private readonly machineService: MachineService) {}
+  constructor(private prisma: PrismaService) {}
 
   async create({ name, machineId, sensorId, sensorModel }: CreateSpotDto) {
-    const machine = await this.machineService.findOne(machineId)
+    const machine = await this.prisma.machine.findUniqueOrThrow({ where: { id: machineId } })
     if (machine.type === 'Pump' && sensorModel !== 'HF+') {
       throw new ForbiddenException(
         `Error: model ${sensorModel} sensors cannot be associated with machines of type Pump`
@@ -50,7 +49,7 @@ export class SpotService {
   }
 
   async update(id: string, { name, machineId, sensorId, sensorModel }: UpdateSpotDto) {
-    const machine = await this.machineService.findOne(machineId)
+    const machine = await this.prisma.machine.findFirst({ where: { id: machineId } })
     if (machine.type === 'Pump' && sensorModel !== 'HF+') {
       throw new ForbiddenException(
         `Error: model ${sensorModel} sensors cannot be associated with machines of type Pump`

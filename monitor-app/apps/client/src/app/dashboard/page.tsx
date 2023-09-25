@@ -27,9 +27,10 @@ export default function Dashboard() {
 
   const getMonitoredMachines = () => {
     let total = 0
-    machines.map((machine) => {
-      spots.find((spot) => spot.machineId === machine.id && total++)
-    })
+    machines &&
+      machines.map((machine) => {
+        spots.find((spot) => spot.machineId === machine.id && total++)
+      })
     return total > 0 ? Math.round((total / machines.length) * 100) + '%' : '0'
   }
 
