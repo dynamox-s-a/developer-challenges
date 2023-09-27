@@ -10,13 +10,13 @@ import { styled } from '@mui/material/styles'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import { useRouter } from 'next/navigation'
 
-const StyledStack = styled(Stack)<StackProps>({
+const StyledStack = styled(Stack)<StackProps>(({ theme }) => ({
   borderRadius: 1,
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-  padding: 24
-})
+  padding: theme.spacing(2)
+}))
 
 const StyledTypography = styled(Typography)<TypographyProps>({
   flex: '1 1 100%',

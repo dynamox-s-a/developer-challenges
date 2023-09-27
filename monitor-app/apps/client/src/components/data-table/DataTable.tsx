@@ -7,6 +7,7 @@ import {
   MenuItem,
   Paper,
   Stack,
+  StackProps,
   Table,
   TableBody,
   TableCell,
@@ -24,6 +25,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import IconButton from '@mui/material/IconButton'
 import SettingsIcon from '@mui/icons-material/Settings'
 import { visuallyHidden } from '@mui/utils'
+import { styled } from '@mui/material/styles'
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -85,18 +87,17 @@ export default function DataTable<T extends object>({ data, tableTitle }: TableP
     [data, order, orderBy]
   )
 
+  const StyledStack = styled(Stack)<StackProps>(({ theme }) => ({
+    borderRadius: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: theme.spacing(2)
+  }))
+
   return (
     <Box sx={{ width: '100%', display: isLgUp ? 'block' : 'table', tableLayout: 'fixed' }}>
-      <Stack
-        sx={{
-          backgroundColor: '#ffffff',
-          borderRadius: 1,
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          padding: 3
-        }}
-      >
+      <StyledStack>
         <Typography sx={{ flex: '1 1 100%' }} variant="h5" id="tableTitle" component="div">
           {tableTitle}
         </Typography>
@@ -109,7 +110,7 @@ export default function DataTable<T extends object>({ data, tableTitle }: TableP
         >
           {tableTitle.slice(0, -1)}
         </Button>
-      </Stack>
+      </StyledStack>
       <Paper sx={{ mb: 0.125 }}>
         <TableContainer>
           <Table sx={{ minWidth: 325 }}>

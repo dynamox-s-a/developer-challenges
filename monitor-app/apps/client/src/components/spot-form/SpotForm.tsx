@@ -53,7 +53,7 @@ export function SpotForm({ onSubmit, updateData }: SpotFormProps) {
   }, [dispatch, machines])
 
   return (
-    <FormStack spacing={3} component={'form'} onSubmit={handleSubmit(handleFormSubmit)}>
+    <FormStack spacing={2} component={'form'} onSubmit={handleSubmit(handleFormSubmit)}>
       <TextField
         fullWidth
         label="Spot Name"

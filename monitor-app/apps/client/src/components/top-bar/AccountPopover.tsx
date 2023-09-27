@@ -5,7 +5,6 @@ import {
   Divider,
   MenuItem,
   MenuList,
-  MenuListProps,
   Popover,
   Tooltip,
   Typography
@@ -15,26 +14,20 @@ import { styled } from '@mui/material/styles'
 import { useState } from 'react'
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useAppSelector } from 'redux/hooks'
 
 const StyledIconButton = styled(IconButton)<IconButtonProps>({
   padding: 0
 })
 
-const StyledBox = styled(Box)<BoxProps>({
-  padding: 8,
+const StyledBox = styled(Box)<BoxProps>(({ theme }) => ({
+  padding: theme.spacing(2),
   width: 200
-})
-
-const StyledMenuList = styled(MenuList)<MenuListProps>({
-  padding: 8
-})
+}))
 
 export default function AccountPopover() {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
-  // const { data: session } = useSession()
+  const { data: session } = useSession()
   const router = useRouter()
-  const user = useAppSelector((state) => state.login)
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)
@@ -72,12 +65,12 @@ export default function AccountPopover() {
       >
         <StyledBox>
           <Typography variant="overline">Account</Typography>
-          <Typography>{user.name}</Typography>
+          <Typography>{session?.user?.name}</Typography>
         </StyledBox>
         <Divider />
-        <StyledMenuList disablePadding dense>
+        <MenuList>
           <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
-        </StyledMenuList>
+        </MenuList>
       </Popover>
     </>
   )

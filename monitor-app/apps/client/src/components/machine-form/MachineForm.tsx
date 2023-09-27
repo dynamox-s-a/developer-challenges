@@ -35,7 +35,7 @@ export function MachineForm({ onSubmit, updateData }: MachineFormProps) {
   }
 
   return (
-    <FormStack spacing={3} component={'form'} onSubmit={handleSubmit(handleFormSubmit)}>
+    <FormStack spacing={2} component={'form'} onSubmit={handleSubmit(handleFormSubmit)}>
       <TextField
         fullWidth
         label="Machine Name"

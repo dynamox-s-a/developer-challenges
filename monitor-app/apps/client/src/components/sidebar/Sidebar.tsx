@@ -1,8 +1,39 @@
-import { Box, Divider, Drawer, Stack, Typography } from '@mui/material'
-import Link from 'next/link'
-import { theme } from 'theme'
+import {
+  Box,
+  BoxProps,
+  Divider,
+  Drawer,
+  Stack,
+  StackProps,
+  Typography,
+  TypographyProps
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
 import SideNav from './SideNav'
 import { Logo } from '../logo'
+
+const StyledBox = styled(Stack)<BoxProps>(({ theme }) => ({
+  padding: theme.spacing(3),
+  marginTop: theme.spacing(8)
+}))
+
+const StyledStack = styled(Stack)<StackProps>(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  marginTop: theme.spacing(1),
+  justifyContent: 'space-evenly'
+}))
+
+const LogoWrapperBox = styled(Box)<BoxProps>(({ theme }) => ({
+  display: 'flex',
+  height: 32,
+  width: 32
+}))
+
+const StyledTypography = styled(Typography)<TypographyProps>(({ theme }) => ({
+  fontSize: 20,
+  color: theme.palette.primary.main
+}))
 
 type SideBarProps = {
   drawerWidth: number
@@ -27,31 +58,16 @@ export default function Sidebar(props: SideBarProps) {
           }
         }}
       >
-        <Box sx={{ p: 3 }}>
-          <Stack
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              marginTop: 8,
-              justifyContent: 'space-evenly'
-            }}
-          >
-            <Box
-              component={Link}
-              href="/dashboard"
-              sx={{
-                display: 'flex',
-                height: 32,
-                width: 32
-              }}
-            >
+        <StyledBox>
+          <StyledStack>
+            <LogoWrapperBox>
               <Logo />
-            </Box>
-            <Typography variant="h6" sx={{ color: theme.palette.primary.main }}>
+            </LogoWrapperBox>
+            <StyledTypography>
               <strong>monitor-app</strong>
-            </Typography>
-          </Stack>
-        </Box>
+            </StyledTypography>
+          </StyledStack>
+        </StyledBox>
         <Divider />
         <SideNav handleDrawerToggle={handleDrawerToggle} />
       </Drawer>

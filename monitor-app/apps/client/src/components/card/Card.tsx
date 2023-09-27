@@ -12,13 +12,13 @@ import {
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
 
-const StyledCard = styled(Card)<CardProps>({
-  marginBottom: 24
-})
+const StyledCard = styled(Card)<CardProps>(({ theme }) => ({
+  marginBottom: theme.spacing(2)
+}))
 
-const StyledCardContent = styled(CardContent)<CardContentProps>({
-  padding: 24
-})
+const StyledCardContent = styled(CardContent)<CardContentProps>(({ theme }) => ({
+  padding: theme.spacing(2)
+}))
 
 const StyledStack = styled(Stack)<StackProps>({
   alignItems: 'flex-start',
@@ -26,9 +26,9 @@ const StyledStack = styled(Stack)<StackProps>({
   justifyContent: 'space-between'
 })
 
-const ProgressWrapper = styled(Stack)<StackProps>({
-  marginTop: 16
-})
+const ProgressWrapper = styled(Stack)<StackProps>(({ theme }) => ({
+  marginTop: theme.spacing(2)
+}))
 
 const StyledCardTitle = styled(Typography)<TypographyProps>({
   fontWeight: 600,

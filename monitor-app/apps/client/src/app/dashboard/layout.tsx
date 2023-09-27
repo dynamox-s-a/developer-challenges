@@ -7,16 +7,16 @@ import TopBar from 'components/top-bar/TopBar'
 import Sidebar from 'components/sidebar/Sidebar'
 import { usePathname } from 'next/navigation'
 
-const StyledMainBox = styled(Box)<BoxProps>({
+const StyledMainBox = styled(Box)<BoxProps>(({ theme }) => ({
   flex: 1,
-  margin: 24
-})
+  margin: theme.spacing(2)
+}))
 
-const StyledMainBoxWhite = styled(Box)<BoxProps>({
-  background: '#ffffff',
+const StyledMainBoxWhite = styled(Box)<BoxProps>(({ theme }) => ({
+  background: theme.palette.background.paper,
   flex: 1,
-  margin: 24
-})
+  margin: theme.spacing(2)
+}))
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false)

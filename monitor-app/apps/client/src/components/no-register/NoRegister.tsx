@@ -4,9 +4,9 @@ import { styled } from '@mui/material/styles'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-const StyledTypography = styled(Typography)<TypographyProps>({
-  padding: 1
-})
+const StyledTypography = styled(Typography)<TypographyProps>(({ theme }) => ({
+  padding: theme.spacing(2)
+}))
 
 export interface NoRegisterProps {
   item: 'machine' | 'spot'
