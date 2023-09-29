@@ -80,7 +80,7 @@ export function SpotForm({ onSubmit, updateData }: SpotFormProps) {
             >
               {machines.map((machine) => (
                 <MenuItem key={machine.id} value={machine.id}>
-                  {machine.name}
+                  {machine.name + ' - ' + machine.type}
                 </MenuItem>
               ))}
             </Select>

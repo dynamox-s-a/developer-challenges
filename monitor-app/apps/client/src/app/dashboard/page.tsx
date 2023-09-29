@@ -5,8 +5,6 @@ import { LinearProgress } from '@mui/material'
 import RadarIcon from '@mui/icons-material/Radar'
 import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing'
 import GpsFixed from '@mui/icons-material/GpsFixed'
-import { useSession } from 'next-auth/react'
-import { setUser } from 'redux/slices/loginSlice'
 import { useAppDispatch, useAppSelector } from 'redux/hooks'
 import { getMachines } from 'redux/slices/machinesSlice'
 import { getSpots } from 'redux/slices/spotsSlice'
@@ -14,7 +12,6 @@ import Loading from 'app/loading'
 import { DataCard } from 'components/card/Card'
 
 export default function Dashboard() {
-  const { data: session } = useSession()
   const dispatch = useAppDispatch()
 
   const machines = useAppSelector((state) => state.machines.machines)
@@ -26,12 +23,10 @@ export default function Dashboard() {
   const getSpotsError = useAppSelector((state) => state.spots.error)
 
   const getMonitoredMachines = () => {
-    const unique =
-      spots &&
-      spots.reduce((acc: string[], curr) => {
-        if (!acc.includes(curr.machineId)) acc.push(curr.machineId)
-        return acc
-      }, [])
+    const unique = spots.reduce((acc: string[], curr) => {
+      if (!acc.includes(curr.machineId)) acc.push(curr.machineId)
+      return acc
+    }, [])
     return unique.length > 0 ? Math.round((unique.length / machines.length) * 100) + '%' : '0'
   }
 
@@ -60,19 +55,19 @@ export default function Dashboard() {
   ]
 
   useEffect(() => {
-    session && dispatch(setUser(session?.user))
-  }, [dispatch, session])
-
-  useEffect(() => {
-    dispatch(getMachines())
-    dispatch(getSpots())
-  }, [dispatch])
+    if (machines.length === 0) {
+      dispatch(getMachines())
+    }
+    if (spots.length === 0) {
+      dispatch(getSpots())
+    }
+  }, [dispatch, machines.length, spots.length])
 
   return (
     <>
-      {(getSpotsStatus === 'loading' || getMachinesStatus === 'loading') && <Loading />}
-      {getMachinesStatus === 'failed' && getMachinesError}
-      {getSpotsStatus === 'failed' && getSpotsError}
+      {getSpotsStatus === 'loading' && <Loading />}
+      {getMachinesStatus === 'loading' && <Loading />}
+
       {getSpotsStatus === 'succeeded' &&
         getMachinesStatus === 'succeeded' &&
         cardsData.map(({ title, amount, caption, icon, progress }) => (
@@ -85,6 +80,9 @@ export default function Dashboard() {
             progress={progress}
           />
         ))}
+
+      {getMachinesStatus === 'failed' && getMachinesError + ' machines '}
+      {getSpotsStatus === 'failed' && getSpotsError + ' spots '}
     </>
   )
 }

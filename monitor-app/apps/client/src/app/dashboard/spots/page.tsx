@@ -14,8 +14,10 @@ export default function Spots() {
   const spots = useAppSelector((state) => state.spots.spots)
   const getSpotsStatus = useAppSelector((state) => state.spots.status)
   const getSpotsError = useAppSelector((state) => state.spots.error)
-  const notification = useAppSelector((state) => state.notification)
   const machines = useAppSelector((state) => state.machines.machines)
+  const getMachinesStatus = useAppSelector((state) => state.machines.status)
+  const getMachinesError = useAppSelector((state) => state.machines.error)
+  const notification = useAppSelector((state) => state.notification)
 
   const dispatch = useAppDispatch()
 
@@ -35,9 +37,13 @@ export default function Spots() {
   }
 
   useEffect(() => {
-    dispatch(getSpots())
-    dispatch(getMachines())
-  }, [dispatch])
+    if (machines.length === 0) {
+      dispatch(getMachines())
+    }
+    if (spots.length === 0) {
+      dispatch(getSpots())
+    }
+  }, [dispatch, machines.length, spots.length])
 
   useEffect(() => {
     if (notification.message) {
@@ -52,11 +58,19 @@ export default function Spots() {
   return (
     <>
       {getSpotsStatus === 'loading' && <Loading />}
-      {getSpotsStatus === 'failed' && getSpotsError}
-      {getSpotsStatus === 'succeeded' && spots.length > 0 && machines.length > 0 && (
+      {getMachinesStatus === 'loading' && <Loading />}
+
+      {getSpotsStatus === 'succeeded' &&
+      getMachinesStatus === 'succeeded' &&
+      spots.length > 0 &&
+      machines.length > 0 ? (
         <DataTable data={prepareToTable().reverse()} tableTitle={'Spots'} />
+      ) : (
+        <NoRegister item="spot" />
       )}
-      {getSpotsStatus === 'succeeded' && spots.length === 0 && <NoRegister item="spot" />}
+
+      {getSpotsStatus === 'failed' && getSpotsError + ' spots '}
+      {getMachinesStatus === 'failed' && getMachinesError + ' machines '}
       <SnackbarProvider />
     </>
   )

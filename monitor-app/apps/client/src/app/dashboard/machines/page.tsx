@@ -17,8 +17,10 @@ export default function Machines() {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getMachines())
-  }, [dispatch])
+    if (machines.length === 0) {
+      dispatch(getMachines())
+    }
+  }, [dispatch, machines.length])
 
   useEffect(() => {
     if (notification.message) {
@@ -33,11 +35,12 @@ export default function Machines() {
   return (
     <>
       {getMachinesStatus === 'loading' && <Loading />}
-      {getMachinesStatus === 'failed' && getMachinesError}
-      {getMachinesStatus === 'succeeded' && machines.length > 0 && (
+      {getMachinesStatus === 'succeeded' && machines.length > 0 ? (
         <DataTable data={[...machines].reverse()} tableTitle={'Machines'} />
+      ) : (
+        <NoRegister item="machine" />
       )}
-      {getMachinesStatus === 'succeeded' && machines.length === 0 && <NoRegister item="machine" />}
+      {getMachinesStatus === 'failed' && getMachinesError + 'machines'}
       <SnackbarProvider />
     </>
   )

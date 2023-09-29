@@ -3,6 +3,7 @@ import { Machine } from 'types/machine'
 
 export interface MachinesState {
   machines: Machine[]
+  machine: Machine
   status: string
   error: string | undefined
 }
@@ -89,6 +90,7 @@ export const deleteMachine = createAsyncThunk('machines/deleteMachine', async (i
 
 const initialState: MachinesState = {
   machines: [],
+  machine: { id: '', name: '', type: '' },
   status: 'idle', //'idle' | 'loading' | 'succeeded' | 'failed'
   error: undefined
 }
@@ -115,7 +117,7 @@ export const machinesSlice = createSlice({
       })
       .addCase(getMachineById.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.machines = action.payload
+        state.machine = action.payload
       })
       .addCase(getMachineById.rejected, (state, action) => {
         state.status = 'failed'
@@ -137,6 +139,10 @@ export const machinesSlice = createSlice({
       })
       .addCase(updateMachine.fulfilled, (state, action) => {
         state.status = 'succeeded'
+        state.machines = state.machines.map((machine) =>
+          machine.id === action.payload.id ? (machine = action.payload) : machine
+        )
+        state.machine = initialState.machine
       })
       .addCase(updateMachine.rejected, (state, action) => {
         state.status = 'failed'
@@ -147,6 +153,8 @@ export const machinesSlice = createSlice({
       })
       .addCase(deleteMachine.fulfilled, (state, action) => {
         state.status = 'succeeded'
+        state.machines = state.machines.filter((machine) => machine.id !== action.meta.arg)
+        state.machine = initialState.machine
       })
       .addCase(deleteMachine.rejected, (state, action) => {
         state.status = 'failed'

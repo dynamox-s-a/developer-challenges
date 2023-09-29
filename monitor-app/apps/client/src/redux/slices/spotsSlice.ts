@@ -3,6 +3,7 @@ import { type Spot } from 'types/spot'
 
 export interface SpotsState {
   spots: Spot[]
+  spot: Spot
   status: string
   error: string | undefined
 }
@@ -89,6 +90,7 @@ export const deleteSpot = createAsyncThunk('spots/deleteSpot', async (id: string
 
 const initialState: SpotsState = {
   spots: [],
+  spot: { id: '', name: '', machineId: '', sensorId: '', sensorModel: '' },
   status: 'idle', //'idle' | 'loading' | 'succeeded' | 'failed'
   error: undefined
 }
@@ -115,7 +117,7 @@ export const spotsSlice = createSlice({
       })
       .addCase(getSpotById.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.spots = action.payload
+        state.spot = action.payload
       })
       .addCase(getSpotById.rejected, (state, action) => {
         state.status = 'failed'
@@ -137,6 +139,10 @@ export const spotsSlice = createSlice({
       })
       .addCase(updateSpot.fulfilled, (state, action) => {
         state.status = 'succeeded'
+        state.spots = state.spots.map((spot) =>
+          spot.id === action.payload.id ? (spot = action.payload) : spot
+        )
+        state.spot = initialState.spot
       })
       .addCase(updateSpot.rejected, (state, action) => {
         state.status = 'failed'
@@ -147,6 +153,8 @@ export const spotsSlice = createSlice({
       })
       .addCase(deleteSpot.fulfilled, (state, action) => {
         state.status = 'succeeded'
+        state.spots = state.spots.filter((spot) => spot.id !== action.meta.arg)
+        state.spot = initialState.spot
       })
       .addCase(deleteSpot.rejected, (state, action) => {
         state.status = 'failed'
