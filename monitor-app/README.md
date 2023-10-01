@@ -108,6 +108,8 @@ Start server:
 nx start:prod api
 ```
 
+Inside `apps/client-e2e/` directory, rename cypress.env.json.example file to cypress.env.json
+
 Inside `monitor-app/` directory, run:
 
 ```

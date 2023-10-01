@@ -2,6 +2,7 @@
 
 # dotenv environment variables files
 .env
+cypress.env.json
 
 # compiled output
 dist

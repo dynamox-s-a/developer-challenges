@@ -1,6 +1,6 @@
 describe('client/machines', () => {
   it('should create a new machine', () => {
-    cy.login('teste@dynamox.net', 'dynamox')
+    cy.login(Cypress.env('email'), Cypress.env('password'))
     cy.get('button[aria-label="open drawer"]').click()
     cy.get('a[href*="/dashboard/machines"]').click()
     cy.get('a[href*="/dashboard/machines/create"]').click()
@@ -12,7 +12,7 @@ describe('client/machines', () => {
     cy.get('tr td:nth-child(2)').contains('Pump')
   })
   it('should update a machine', () => {
-    cy.login('teste@dynamox.net', 'dynamox')
+    cy.login(Cypress.env('email'), Cypress.env('password'))
     cy.get('button[aria-label="open drawer"]').click()
     cy.get('a[href*="/dashboard/machines"]').click()
     cy.get('tr td:last button').click()
@@ -25,7 +25,7 @@ describe('client/machines', () => {
     cy.get('tr td:nth-child(2)').contains('Fan')
   })
   it('should delete a machine', () => {
-    cy.login('teste@dynamox.net', 'dynamox')
+    cy.login(Cypress.env('email'), Cypress.env('password'))
     cy.get('button[aria-label="open drawer"]').click()
     cy.get('a[href*="/dashboard/machines"]').click()
     cy.get('tr td:last button').click()
@@ -37,7 +37,7 @@ describe('client/machines', () => {
 
 describe('client/spots', () => {
   it('should create a new spot', () => {
-    cy.login('teste@dynamox.net', 'dynamox')
+    cy.login(Cypress.env('email'), Cypress.env('password'))
     cy.get('button[aria-label="open drawer"]').click()
     cy.get('a[href*="/dashboard/machines"]').click()
     cy.get('a[href*="/dashboard/machines/create"]').click()
@@ -61,7 +61,7 @@ describe('client/spots', () => {
   })
 
   it('should update a spot', () => {
-    cy.login('teste@dynamox.net', 'dynamox')
+    cy.login(Cypress.env('email'), Cypress.env('password'))
     cy.get('button[aria-label="open drawer"]').click()
     cy.get('a[href*="/dashboard/spots"]').click()
     cy.get('tr td:last button').click()
@@ -72,7 +72,7 @@ describe('client/spots', () => {
   })
 
   it('should delete a spot', () => {
-    cy.login('teste@dynamox.net', 'dynamox')
+    cy.login(Cypress.env('email'), Cypress.env('password'))
     cy.get('button[aria-label="open drawer"]').click()
     cy.get('a[href*="/dashboard/spots"]').click()
     cy.get('tr td:last button').click()
@@ -82,7 +82,7 @@ describe('client/spots', () => {
   })
 
   it('should delete a machine', () => {
-    cy.login('teste@dynamox.net', 'dynamox')
+    cy.login(Cypress.env('email'), Cypress.env('password'))
     cy.get('button[aria-label="open drawer"]').click()
     cy.get('a[href*="/dashboard/machines"]').click()
     cy.get('tr td:last button').click()
@@ -93,7 +93,7 @@ describe('client/spots', () => {
 })
 describe('client/logout', () => {
   it('should logout', () => {
-    cy.login('teste@dynamox.net', 'dynamox')
+    cy.login(Cypress.env('email'), Cypress.env('password'))
     cy.get('button[aria-label="Open Account Menu"]').click()
     cy.get('ul li:first').should('contain', 'Sign out')
     cy.get('ul li:first').click()
