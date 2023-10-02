@@ -2,7 +2,7 @@ import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/commo
 import { CreateSpotDto } from './dto/create-spot.dto'
 import { UpdateSpotDto } from './dto/update-spot.dto'
 import { PrismaService } from '../prisma/prisma.service'
-import { Prisma } from '@prisma/client'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 @Injectable()
 export class SpotService {
@@ -21,7 +21,7 @@ export class SpotService {
       })
       return spot
     } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
           const { target } = error.meta
           if (target[0] === 'name') {
@@ -62,7 +62,7 @@ export class SpotService {
       })
       return spot
     } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
           const { target } = error.meta
           if (target[0] === 'name') {

@@ -2,7 +2,7 @@ import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/commo
 import { CreateMachineDto } from './dto/create-machine.dto'
 import { UpdateMachineDto } from './dto/update-machine.dto'
 import { PrismaService } from '../prisma/prisma.service'
-import { Prisma } from '@prisma/client'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 @Injectable()
 export class MachineService {
@@ -15,7 +15,7 @@ export class MachineService {
       })
       return machine
     } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
           throw new ForbiddenException('Error: Machine already exists. Try another name.')
         }
@@ -63,7 +63,7 @@ export class MachineService {
       })
       return machine
     } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
           throw new ForbiddenException('Error: Machine already exists. Try another name.')
         }
