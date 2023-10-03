@@ -34,7 +34,7 @@ export interface PagesHeaderProps {
 export function PagesHeader({ title }: PagesHeaderProps) {
   const router = useRouter()
   const handleBackClick = () => {
-    router.back()
+    router.push('/dashboard/machines')
   }
 
   return (
