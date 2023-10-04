@@ -115,3 +115,13 @@ Inside `monitor-app/` directory, run:
 ```
 nx e2e client-e2e --configuration production
 ```
+
+## Online Access
+
+You can access the online demo: <a href="https://monitor-app-orpin.vercel.app/" target="_blank">[monitor-app-orpin.vercel.app]</a>
+
+and login with:
+
+email: teste@dynamox.net
+
+password: dynamox
