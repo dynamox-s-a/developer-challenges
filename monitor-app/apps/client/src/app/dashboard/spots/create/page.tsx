@@ -3,7 +3,7 @@
 import { SnackbarProvider, enqueueSnackbar } from 'notistack'
 import { useRouter } from 'next/navigation'
 import { useAppDispatch } from 'redux/hooks'
-import { createSpot } from 'redux/slices/spotsSlice'
+import { createSpot, resetError } from 'redux/slices/spotsSlice'
 import { notify } from 'redux/slices/notificationSlice'
 import SpotForm from 'components/spot-form/SpotForm'
 import { type Spot } from 'types/spot'
@@ -24,6 +24,7 @@ export default function CreateSpotsPage() {
           variant: 'error',
           anchorOrigin: { horizontal: 'center', vertical: 'bottom' }
         })
+        dispatch(resetError({}))
       }
     }
   }

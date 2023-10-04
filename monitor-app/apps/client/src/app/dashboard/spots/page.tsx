@@ -61,13 +61,14 @@ export default function Spots() {
       {getMachinesStatus === 'loading' && <Loading />}
 
       {getSpotsStatus === 'succeeded' &&
-      getMachinesStatus === 'succeeded' &&
-      spots.length > 0 &&
-      machines.length > 0 ? (
-        <DataTable data={prepareToTable().reverse()} tableTitle={'Spots'} />
-      ) : (
-        <NoRegister item="spot" />
-      )}
+        getMachinesStatus === 'succeeded' &&
+        spots.length > 0 &&
+        machines.length > 0 && <DataTable data={prepareToTable().reverse()} tableTitle={'Spots'} />}
+
+      {getSpotsStatus === 'succeeded' &&
+        getMachinesStatus === 'succeeded' &&
+        spots.length === 0 &&
+        machines.length === 0 && <NoRegister item="spot" />}
 
       {getSpotsStatus === 'failed' && getSpotsError + ' spots '}
       {getMachinesStatus === 'failed' && getMachinesError + ' machines '}

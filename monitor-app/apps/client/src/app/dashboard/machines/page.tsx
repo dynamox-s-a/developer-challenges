@@ -35,11 +35,13 @@ export default function Machines() {
   return (
     <>
       {getMachinesStatus === 'loading' && <Loading />}
-      {getMachinesStatus === 'succeeded' && machines.length > 0 ? (
+
+      {getMachinesStatus === 'succeeded' && machines.length > 0 && (
         <DataTable data={[...machines].reverse()} tableTitle={'Machines'} />
-      ) : (
-        <NoRegister item="machine" />
       )}
+
+      {getMachinesStatus === 'succeeded' && machines.length === 0 && <NoRegister item="machine" />}
+
       {getMachinesStatus === 'failed' && getMachinesError + 'machines'}
       <SnackbarProvider />
     </>

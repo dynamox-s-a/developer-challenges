@@ -98,7 +98,12 @@ const initialState: SpotsState = {
 export const spotsSlice = createSlice({
   name: 'spots',
   initialState,
-  reducers: {},
+  reducers: {
+    resetError(state, action) {
+      state.error = undefined
+      state.status = 'succeeded'
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getSpots.pending, (state) => {
@@ -162,5 +167,7 @@ export const spotsSlice = createSlice({
       })
   }
 })
+
+export const { resetError } = spotsSlice.actions
 
 export default spotsSlice.reducer

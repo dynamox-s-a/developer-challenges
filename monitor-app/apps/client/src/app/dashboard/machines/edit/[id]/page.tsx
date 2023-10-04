@@ -3,7 +3,7 @@
 import { SnackbarProvider, enqueueSnackbar } from 'notistack'
 import { useParams, useRouter } from 'next/navigation'
 import { useAppDispatch } from 'redux/hooks'
-import { getMachineById, updateMachine } from 'redux/slices/machinesSlice'
+import { getMachineById, resetError, updateMachine } from 'redux/slices/machinesSlice'
 import { notify } from 'redux/slices/notificationSlice'
 import MachineForm from 'components/machine-form/MachineForm'
 import { Machine } from 'types/machine'
@@ -31,6 +31,7 @@ export default function EditMachinesPage() {
           variant: 'error',
           anchorOrigin: { horizontal: 'center', vertical: 'bottom' }
         })
+        dispatch(resetError({}))
       }
     }
   }
