@@ -2,6 +2,24 @@
 
 Code for Dynamox Full-Stack Developer Challenge
 
+## Clone the Repository
+
+```
+git clone https://github.com/pagnojp/js-ts-full-stack-test.git
+```
+
+## Open the Project Directory
+
+```
+cd js-ts-full-stack-test/
+```
+
+## Checkout to Branch
+
+```
+git checkout joaopedro-pagno
+```
+
 ## Install packages
 
 Inside `monitor-app/` directory, run:
@@ -13,6 +31,10 @@ npm i
 ## Backend
 
 Inside `apps/api/` directory, rename .env.example file to .env
+
+```
+mv .env.example .env
+```
 
 To start the database docker container, inside `apps/api/` directory run:
 
@@ -41,6 +63,10 @@ nx start:prod api
 ## Frontend
 
 Inside `apps/client/` directory, rename .env.example file to .env
+
+```
+mv .env.example .env
+```
 
 Inside `monitor-app/` directory, run:
 
@@ -109,6 +135,16 @@ nx start:prod api
 ```
 
 Inside `apps/client-e2e/` directory, rename cypress.env.json.example file to cypress.env.json
+
+```
+mv cypress.env.json.example cypress.env.json
+```
+
+Inside `apps/client-e2e/` directory, rename .env.example file to .env
+
+```
+mv .env.example .env
+```
 
 Inside `monitor-app/` directory, run:
 
