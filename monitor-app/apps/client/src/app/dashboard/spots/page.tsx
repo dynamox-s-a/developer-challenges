@@ -68,7 +68,7 @@ export default function Spots() {
       {getSpotsStatus === 'succeeded' &&
         getMachinesStatus === 'succeeded' &&
         spots.length === 0 &&
-        machines.length === 0 && <NoRegister item="spot" />}
+        machines.length > 0 && <NoRegister item="spot" />}
 
       {getSpotsStatus === 'failed' && getSpotsError + ' spots '}
       {getMachinesStatus === 'failed' && getMachinesError + ' machines '}
