@@ -24,7 +24,7 @@ export const getSpots = createAsyncThunk('spots/getSpots', async () => {
 })
 
 export const getSpotById = createAsyncThunk('spots/getSpotById', async (id: string) => {
-  const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/spot?id=' + id)
+  const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/spot/' + id)
   if (!response.ok) {
     const apiError: FetchErrorResponseProps = await response.json()
     const { message } = apiError
@@ -65,7 +65,7 @@ export const updateSpot = createAsyncThunk(
       },
       body: JSON.stringify({ id, name, machineId, sensorId, sensorModel })
     }
-    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/spot', options)
+    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/spot/' + id, options)
     if (!response.ok) {
       const apiError: FetchErrorResponseProps = await response.json()
       const { message } = apiError
@@ -77,7 +77,7 @@ export const updateSpot = createAsyncThunk(
 )
 
 export const deleteSpot = createAsyncThunk('spots/deleteSpot', async (id: string) => {
-  const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/spot?id=' + id, {
+  const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/spot/' + id, {
     method: 'DELETE'
   })
   if (!response.ok) {
@@ -85,7 +85,7 @@ export const deleteSpot = createAsyncThunk('spots/deleteSpot', async (id: string
     const { message } = apiError
     throw new Error(`${message}`)
   }
-  return response.json()
+  return response.status
 })
 
 const initialState: SpotsState = {

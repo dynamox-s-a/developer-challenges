@@ -1,11 +1,12 @@
 import 'whatwg-fetch'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
-import {
+import machinesSlice, {
   createMachine,
   deleteMachine,
   getMachineById,
   getMachines,
+  resetError,
   updateMachine
 } from './machinesSlice'
 import store from 'redux/store'
@@ -47,10 +48,10 @@ export const handlers = [
   rest.post(baseUrl + '/api/machine', (req, res, ctx) => {
     return res(ctx.json({ id: 'newId', name: 'machine test', type: 'Pump' }), ctx.delay(100))
   }),
-  rest.patch(baseUrl + '/api/machine', (req, res, ctx) => {
-    return res(ctx.json({ id: 'id', name: 'machine test', type: 'Pump' }))
+  rest.patch(baseUrl + '/api/machine/cllo1jq950000vev2qykl9o6j', (req, res, ctx) => {
+    return res(ctx.json(mockData[0]))
   }),
-  rest.delete(baseUrl + '/api/machine', (req, res, ctx) => {
+  rest.delete(baseUrl + '/api/machine/id', (req, res, ctx) => {
     return res(ctx.json({}))
   })
 ]
@@ -71,6 +72,7 @@ describe('machinesSlice', () => {
     const response = await store.dispatch(getMachines())
     expect(response.payload).toEqual(mockData)
   })
+
   test('should return a error when the machine list fetch fails', async () => {
     server.use(
       rest.get(baseUrl + '/api/machine', (req, res, ctx) => {
@@ -88,26 +90,24 @@ describe('machinesSlice', () => {
 
   test('should return a machine by id', async () => {
     server.use(
-      rest.get(baseUrl + '/api/machine', (req, res, ctx) => {
-        const id = req.url.searchParams.get('id')
+      rest.get(baseUrl + '/api/machine/cllo1jq950000vev2qykl9o6j', (req, res, ctx) => {
         return res(
           ctx.status(200),
-          ctx.json([
-            {
-              id: id,
-              name: 'machine 001',
-              type: 'Fan'
-            }
-          ])
+          ctx.json({
+            id: 'cllo1jq950000vev2qykl9o6j',
+            name: 'machine 001',
+            type: 'Fan'
+          })
         )
       })
     )
     const response = await store.dispatch(getMachineById('cllo1jq950000vev2qykl9o6j'))
-    expect(response.payload).toEqual([mockData[0]])
+    expect(response.payload).toEqual(mockData[0])
   })
+
   test('should return a error when id is invalid', async () => {
     server.use(
-      rest.get(baseUrl + '/api/machine', (req, res, ctx) => {
+      rest.get(baseUrl + '/api/machine/invalid-id', (req, res, ctx) => {
         return res(
           ctx.status(500),
           ctx.json({
@@ -125,6 +125,7 @@ describe('machinesSlice', () => {
     const response = await store.dispatch(createMachine(newMachine))
     expect(response.payload).toEqual({ id: 'newId', name: 'machine test', type: 'Pump' })
   })
+
   test('should return a error when create a new machine fails', async () => {
     server.use(
       rest.post(baseUrl + '/api/machine', (req, res, ctx) => {
@@ -142,13 +143,13 @@ describe('machinesSlice', () => {
   })
 
   test('should update a machine', async () => {
-    const machine = { id: 'id', name: 'machine test', type: 'Pump' }
-    const response = await store.dispatch(updateMachine(machine))
-    expect(response.payload).toEqual(machine)
+    const response = await store.dispatch(updateMachine(mockData[0]))
+    expect(response.payload).toEqual(mockData[0])
   })
+
   test('should return a error when update machine fails', async () => {
     server.use(
-      rest.patch(baseUrl + '/api/machine', (req, res, ctx) => {
+      rest.patch(baseUrl + '/api/machine/id', (req, res, ctx) => {
         return res(
           ctx.status(500),
           ctx.json({
@@ -157,18 +158,20 @@ describe('machinesSlice', () => {
         )
       })
     )
-    const machine = { name: '', type: '' }
+    const machine = { id: 'id', name: 'machine test', type: 'Pump' }
     const response = await store.dispatch(updateMachine(machine))
     expect(response.type).toBe('machines/updateMachine/rejected')
   })
+
   test('should delete a machine', async () => {
-    const machine = { id: 'id' }
+    const machine = { id: 'id', name: 'machine test', type: 'Pump' }
     const response = await store.dispatch(deleteMachine(machine.id))
-    expect(response.payload).toEqual({})
+    expect(response.payload).toEqual(200)
   })
+
   test('should return a error when delete machine fails', async () => {
     server.use(
-      rest.delete(baseUrl + '/api/machine', (req, res, ctx) => {
+      rest.delete(baseUrl + '/api/machine/id', (req, res, ctx) => {
         return res(
           ctx.status(500),
           ctx.json({
@@ -177,8 +180,28 @@ describe('machinesSlice', () => {
         )
       })
     )
-    const machine = { id: '' }
+    const machine = { id: 'id', name: 'machine test', type: 'Pump' }
     const response = await store.dispatch(deleteMachine(machine.id))
     expect(response.type).toBe('machines/deleteMachine/rejected')
+  })
+
+  test('should reset error state', () => {
+    const state = {
+      machines: [],
+      machine: { id: '', name: '', type: '' },
+      status: 'failed',
+      error: undefined
+    }
+    const action = {
+      type: 'machines/resetError',
+      payload: {
+        machines: [],
+        machine: { id: '', name: '', type: '' },
+        status: 'succeeded',
+        error: undefined
+      }
+    }
+    const newState = machinesSlice(state, resetError(action.payload))
+    expect(newState).toEqual(action.payload)
   })
 })

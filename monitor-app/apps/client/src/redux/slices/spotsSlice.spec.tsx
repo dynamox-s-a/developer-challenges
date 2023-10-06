@@ -1,7 +1,14 @@
 import 'whatwg-fetch'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
-import { createSpot, deleteSpot, getSpotById, getSpots, updateSpot } from './spotsSlice'
+import spotsSlice, {
+  createSpot,
+  deleteSpot,
+  getSpotById,
+  getSpots,
+  resetError,
+  updateSpot
+} from './spotsSlice'
 import store from 'redux/store'
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL
@@ -39,18 +46,10 @@ export const handlers = [
       ctx.delay(100)
     )
   }),
-  rest.patch(baseUrl + '/api/spot', (req, res, ctx) => {
-    return res(
-      ctx.json({
-        id: 'id',
-        name: 'spot test',
-        machineId: 'machine-id',
-        sensorId: 'sensor-id',
-        sensorModel: 'HF+'
-      })
-    )
+  rest.patch(baseUrl + '/api/spot/clmb65ywp0001ve5536pogu57', (req, res, ctx) => {
+    return res(ctx.json(mockData[0]))
   }),
-  rest.delete(baseUrl + '/api/spot', (req, res, ctx) => {
+  rest.delete(baseUrl + '/api/spot/id', (req, res, ctx) => {
     return res(ctx.json({}))
   })
 ]
@@ -71,6 +70,7 @@ describe('spotsSlice', () => {
     const response = await store.dispatch(getSpots())
     expect(response.payload).toEqual(mockData)
   })
+
   test('should return a error when the spot list fetch fails', async () => {
     server.use(
       rest.get(baseUrl + '/api/spot', (req, res, ctx) => {
@@ -88,23 +88,17 @@ describe('spotsSlice', () => {
 
   test('should return a spot by id', async () => {
     server.use(
-      rest.get(baseUrl + '/api/spot', (req, res, ctx) => {
-        return res(
-          ctx.status(200),
-          ctx.json([
-            {
-              ...mockData[0]
-            }
-          ])
-        )
+      rest.get(baseUrl + '/api/spot/clmb65ywp0001ve5536pogu57', (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(mockData[0]))
       })
     )
-    const response = await store.dispatch(getSpotById('cllo1jq950000vev2qykl9o6j'))
-    expect(response.payload).toEqual([mockData[0]])
+    const response = await store.dispatch(getSpotById('clmb65ywp0001ve5536pogu57'))
+    expect(response.payload).toEqual(mockData[0])
   })
+
   test('should return a error when id is invalid', async () => {
     server.use(
-      rest.get(baseUrl + '/api/spot', (req, res, ctx) => {
+      rest.get(baseUrl + '/api/spot/invalid-id', (req, res, ctx) => {
         return res(
           ctx.status(500),
           ctx.json({
@@ -133,6 +127,7 @@ describe('spotsSlice', () => {
       sensorModel: 'HF+'
     })
   })
+
   test('should return a error when create a new spot fails', async () => {
     server.use(
       rest.post(baseUrl + '/api/spot', (req, res, ctx) => {
@@ -150,19 +145,13 @@ describe('spotsSlice', () => {
   })
 
   test('should update a spot', async () => {
-    const spot = {
-      id: 'id',
-      name: 'spot test',
-      machineId: 'machine-id',
-      sensorId: 'sensor-id',
-      sensorModel: 'HF+'
-    }
-    const response = await store.dispatch(updateSpot(spot))
-    expect(response.payload).toEqual(spot)
+    const response = await store.dispatch(updateSpot(mockData[0]))
+    expect(response.payload).toEqual(mockData[0])
   })
+
   test('should return a error when update spot fails', async () => {
     server.use(
-      rest.patch(baseUrl + '/api/spot', (req, res, ctx) => {
+      rest.patch(baseUrl + '/api/spot/id', (req, res, ctx) => {
         return res(
           ctx.status(500),
           ctx.json({
@@ -171,18 +160,20 @@ describe('spotsSlice', () => {
         )
       })
     )
-    const spot = { name: '', machineId: '', sensorId: '', sensorModel: '' }
+    const spot = { id: 'id', name: '', machineId: '', sensorId: '', sensorModel: '' }
     const response = await store.dispatch(updateSpot(spot))
     expect(response.type).toBe('spots/updateSpot/rejected')
   })
+
   test('should delete a spot', async () => {
-    const spot = { id: 'id' }
+    const spot = { id: 'id', name: '', machineId: '', sensorId: '', sensorModel: '' }
     const response = await store.dispatch(deleteSpot(spot.id))
-    expect(response.payload).toEqual({})
+    expect(response.payload).toEqual(200)
   })
+
   test('should return a error when delete spot fails', async () => {
     server.use(
-      rest.delete(baseUrl + '/api/spot', (req, res, ctx) => {
+      rest.delete(baseUrl + '/api/spot/id', (req, res, ctx) => {
         return res(
           ctx.status(500),
           ctx.json({
@@ -191,8 +182,28 @@ describe('spotsSlice', () => {
         )
       })
     )
-    const spot = { id: '' }
+    const spot = { id: 'id', name: '', machineId: '', sensorId: '', sensorModel: '' }
     const response = await store.dispatch(deleteSpot(spot.id))
     expect(response.type).toBe('spots/deleteSpot/rejected')
+  })
+
+  test('should reset error state', () => {
+    const state = {
+      spots: [],
+      spot: { id: '', name: '', machineId: '', sensorId: '', sensorModel: '' },
+      status: 'failed',
+      error: undefined
+    }
+    const action = {
+      type: 'spots/resetError',
+      payload: {
+        spots: [],
+        spot: { id: '', name: '', machineId: '', sensorId: '', sensorModel: '' },
+        status: 'succeeded',
+        error: undefined
+      }
+    }
+    const newState = spotsSlice(state, resetError(action.payload))
+    expect(newState).toEqual(action.payload)
   })
 })

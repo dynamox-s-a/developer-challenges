@@ -24,7 +24,7 @@ export const getMachines = createAsyncThunk('machines/getMachines', async () => 
 })
 
 export const getMachineById = createAsyncThunk('machines/getMachineById', async (id: string) => {
-  const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/machine?id=' + id)
+  const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/machine/' + id)
   if (!response.ok) {
     const apiError: FetchErrorResponseProps = await response.json()
     const { message } = apiError
@@ -65,7 +65,7 @@ export const updateMachine = createAsyncThunk(
       },
       body: JSON.stringify({ id, name, type })
     }
-    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/machine', options)
+    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/machine/' + id, options)
     if (!response.ok) {
       const apiError: FetchErrorResponseProps = await response.json()
       const { message } = apiError
@@ -77,7 +77,7 @@ export const updateMachine = createAsyncThunk(
 )
 
 export const deleteMachine = createAsyncThunk('machines/deleteMachine', async (id: string) => {
-  const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/machine?id=' + id, {
+  const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/machine/' + id, {
     method: 'DELETE'
   })
   if (!response.ok) {
@@ -85,7 +85,7 @@ export const deleteMachine = createAsyncThunk('machines/deleteMachine', async (i
     const { message } = apiError
     throw new Error(`${message}`)
   }
-  return response.json()
+  return response.status
 })
 
 const initialState: MachinesState = {
