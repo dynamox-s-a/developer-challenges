@@ -25,6 +25,12 @@ export const options: NextAuthOptions = {
           body: JSON.stringify(credentials)
         }
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/login', options)
+
+        //vercel 10s timeout
+        if (response.status === 504) {
+          throw new Error(`${response.statusText} - please wait a minute and try again`)
+        }
+
         if (!response.ok) {
           const apiError: FetchErrorResponseProps = await response.json()
           const { message } = apiError
