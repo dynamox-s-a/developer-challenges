@@ -67,8 +67,7 @@ You can use the following user stories as a guide to implement the application f
 1. [ ] As a user, I want to associate a sensor to an existing monitoring point so that I can monitor the machine's performance. The sensor should have a unique ID, and the sensor model name should be one of ["TcAg", "TcAs", "HF+"].
 1. [ ] As a user, I want the system to prevent me from setting up "TcAg" and "TcAs" sensors for machines of the type "Pump".
 1. [ ] As a user, I want to see all my monitoring points in a paginated list so that I can manage them. The list should display up to 5 monitoring points per page and should include the following information: "Machine Name", "Machine Type", "Monitoring Point Name", and "Sensor Model".
-1. [ ] As a user, I want to sort the monitoring points list by "Machine Name", "Machine Type", "Monitoring Point Name", and "Sensor Model" so that I can easily find the information I'm looking for.
-1. [ ] As a user, I want to be able to sort the list of monitoring points by any of its columns in ascending or descending order.
+1. [ ] As a user, I want to sort the monitoring points list by any of its columns in ascending or descending order, so that I can easily find the information I'm looking for.
 
 4 - Ambiguity Handling
 
