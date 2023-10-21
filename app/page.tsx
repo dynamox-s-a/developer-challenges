@@ -4,6 +4,7 @@
 import { useSelector } from "react-redux";
 import { selectActiveComponent } from "../lib/redux/slices/pageSlice";
 import { selectAuthToken } from "../lib/redux/slices/authSlice";
+import { selectUserId } from "../lib/redux/slices/authSlice";
 
 import Sidebar from "./components/Sidebar/Sidebar";
 import Header from "./components/Header/Header";
@@ -17,6 +18,7 @@ import LoginPage from "./components/Login/LoginPage";
 export default function IndexPage() {
   const activeComponent = useSelector(selectActiveComponent);
   const authToken = useSelector(selectAuthToken);
+  const userId = useSelector(selectUserId);
 
   if (!authToken) {
     // Se o usuário não estiver autenticado, renderize a tela de login.

@@ -3,13 +3,14 @@
     {
       "id": 1,
       "nome": "João",
-      "sobrenome": "Silva",
+      "sobrenome": "Silva Matos",
       "código": "12345",
       "setor": "TI",
       "email": "joao",
       "password": "123",
-      "telefone": "555-1234",
-      "token": ""
+      "telefone": "555-1235",
+      "token": "&Bz6075@s$",
+      "senha": "325"
     },
     {
       "id": 2,

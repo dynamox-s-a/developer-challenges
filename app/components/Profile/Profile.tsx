@@ -1,55 +1,94 @@
-"use client";
-
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from 'react-redux';
-import { selectUser, updateUser } from '../../../lib/redux/slices/userSlice';
+import { useSelector, useDispatch } from "react-redux";
+import { selectAuthToken } from "../../../lib/redux/slices/authSlice";
+import { User, updateUser } from "../../../lib/redux/slices/userSlice";
+import { selectUserId } from "../../../lib/redux/slices/authSlice";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const currentUser = useSelector(selectUser);
+  const authToken = useSelector(selectAuthToken);
+  const userId = useSelector(selectUserId);
 
-  const [formData, setFormData] = useState(currentUser || {
-    nome: '',
-    sobrenome: '',
-    código: '',
-    setor: '',
-    email: '',
-    senha: '',
-    telefone: '',
+  const [formData, setFormData] = useState<User>({
+    id: 0,
+    nome: "",
+    sobrenome: "",
+    código: "",
+    setor: "",
+    email: "",
+    password: "",
+    telefone: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async () => {
+  const fetchUserData = async (userId: any) => {
     try {
-      const response = await fetch('http://localhost:3001/users', {
-        method: 'PUT',
+      if (!authToken) {
+        return;
+      }
+
+      // Faz a requisição para o servidor para obter os dados do usuário com o ID fornecido.
+      const response = await fetch(`http://localhost:3001/users/${userId}`, {
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`,
         },
-        body: JSON.stringify(formData),
       });
-  
+
       if (response.ok) {
-        dispatch(updateUser(formData));
+        const userData = await response.json();
+        setFormData(userData);
       } else {
-        console.error('Erro ao atualizar dados do usuário.');
+        console.error("Erro ao obter dados do usuário.");
       }
     } catch (error) {
-      console.error('Erro ao fazer a solicitação:', error);
+      console.error("Erro ao fazer a solicitação:", error);
     }
   };
 
   useEffect(() => {
-    if (currentUser) {
-      setFormData(currentUser); // Atualiza o estado local com os dados do usuário atual
+    if (authToken && userId) {
+      fetchUserData(userId); // Busca os dados do usuário com base no token de autenticação e no ID do usuário
     }
-  }, [currentUser]);
+  }, [authToken, userId]);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      if (!authToken) {
+        return;
+      }
+
+      // Faz a requisição para o servidor para atualizar os dados do usuário.
+      const response = await fetch(
+        `http://localhost:3001/users/${formData.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      if (response.ok) {
+        dispatch(updateUser(formData));
+      } else {
+        console.error("Erro ao atualizar dados do usuário.");
+      }
+    } catch (error) {
+      console.error("Erro ao fazer a solicitação:", error);
+    }
+  };
 
   return (
     <div className="ml-20 p-4 w-100 h-full bg-gray-200 flex">
@@ -106,12 +145,12 @@ const Profile = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="senha">Senha</label>
+          <label htmlFor="password">Senha</label>
           <input
             type="password"
-            id="senha"
-            name="senha"
-            value={formData.senha}
+            id="password"
+            name="password"
+            value={formData.password}
             onChange={handleChange}
           />
         </div>
@@ -125,7 +164,11 @@ const Profile = () => {
             onChange={handleChange}
           />
         </div>
-        <button type="button" onClick={handleSubmit} className="bg-blue-500 text-white px-4 py-2 rounded-lg">
+        <button
+          type="button"
+          onClick={handleSubmit}
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+        >
           Atualizar Dados
         </button>
       </form>

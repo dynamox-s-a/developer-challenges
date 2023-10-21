@@ -8,19 +8,19 @@ interface User {
   código: string;
   setor: string;
   email: string;
-  senha: string;
+  password: string;
   telefone: string;
 }
 
 const initialUser: User = {
-  id: 1,
-  nome: 'Seu Nome',
-  sobrenome: 'Seu Sobrenome',
-  código: '12345',
-  setor: 'RH',
-  email: 'seuemail@example.com',
-  senha: 'suasenha',
-  telefone: '123-456-7890',
+  id: 0,
+  nome: '',
+  sobrenome: '',
+  código: '',
+  setor: '',
+  email: '',
+  password: '',
+  telefone: '',
 };
 
 const userSlice = createSlice({
@@ -39,3 +39,5 @@ export const { updateUser } = userSlice.actions;
 export const selectUser = (state: { user: User }) => state.user;
 
 export default userSlice.reducer;
+
+export type { User }; // Exporta o tipo User

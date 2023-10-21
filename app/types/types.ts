@@ -7,4 +7,5 @@ export type RootState = {
 
 export type AuthState = {
   authToken: string | null; 
+  userId: string | null;
 };
