@@ -1,0 +1,54 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "nome": "João",
+      "sobrenome": "Silva",
+      "código": "12345",
+      "setor": "TI",
+      "email": "joao.silva@example.com",
+      "senha": "senhasupersegura",
+      "telefone": "555-1234"
+    },
+    {
+      "id": 2,
+      "nome": "Maria",
+      "sobrenome": "Santos",
+      "código": "54321",
+      "setor": "RH",
+      "email": "maria.santos@example.com",
+      "senha": "outrasenha",
+      "telefone": "555-5678"
+    },
+    {
+      "id": 3,
+      "nome": "Carlos",
+      "sobrenome": "Ferreira",
+      "código": "98765",
+      "setor": "Vendas",
+      "email": "carlos.ferreira@example.com",
+      "senha": "senhasecreta",
+      "telefone": "555-9876"
+    },
+    {
+      "id": 4,
+      "nome": "Ana",
+      "sobrenome": "Oliveira",
+      "código": "56789",
+      "setor": "Marketing",
+      "email": "ana.oliveira@example.com",
+      "senha": "outrasenha123",
+      "telefone": "555-4321"
+    },
+    {
+      "id": 5,
+      "nome": "Lucas",
+      "sobrenome": "Pereira",
+      "código": "34567",
+      "setor": "Finanças",
+      "email": "lucas.pereira@example.com",
+      "senha": "senhasegura456",
+      "telefone": "555-8765"
+    }
+  ]
+}

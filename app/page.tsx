@@ -1,17 +1,29 @@
-import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
-import TopCards from "@/components/TopCards";
-import BarChart from "@/components/BarChart";
+/* Components */
+"use client";
+import Sidebar from "./components/Sidebar/Sidebar";
+import Header from "./components/Header/Header";
+import TopCards from "./components/TopCards/TopCards";
+import Profile from "./components/Profile/Profile";
+import Machines from "./components/Machines/Machines";
+import Daschboard from "./components/Dashboard/Daschboard";
+import Sensors from "./components/Sensors/Sensors";
 
-export default function Home() {
+import { useSelector } from "react-redux";
+import { selectActiveComponent } from "../lib/redux/slices/pageSlice";
+
+export default function IndexPage() {
+  const activeComponent = useSelector(selectActiveComponent);
   return (
     <>
-      <main className="bg-gray-100 min-h-screen">
-        <Sidebar />
-        <Header />
-        <TopCards />
-        <BarChart/>
-      </main>
+      <Sidebar />
+      <Header />
+      <TopCards />
+      <div>
+        {activeComponent === "Daschboard" && <Daschboard />}
+        {activeComponent === "Sensors" && <Sensors />}
+        {activeComponent === "Machines" && <Machines />}
+        {activeComponent === "Profile" && <Profile />}
+      </div>
     </>
   );
 }

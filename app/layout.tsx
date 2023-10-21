@@ -1,19 +1,23 @@
-import type { Metadata } from "next";
-import "./globals.css";
+/* Components */
+import { Providers } from "@/lib/providers";
 
-export const metadata: Metadata = {
-  title: "Dynamox",
-  description: "Dynamox Dashboard",
-};
+/* Instruments */
+import "./styles/globals.css";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout(props: React.PropsWithChildren) {
   return (
-    <html lang="pt-br">
-      <body>{children}</body>
-    </html>
+    <Providers>
+      <html lang="pt-br">
+        <body>
+          <section>
+            <main>{props.children}</main>
+          </section>
+        </body>
+      </html>
+    </Providers>
   );
 }
+
+export const metadata = {
+  title: "Dynamox",
+};
