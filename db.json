@@ -9,7 +9,7 @@
       "email": "joao",
       "password": "123",
       "telefone": "555-1235",
-      "token": "&Bz6075@s$",
+      "token": "&Q2c4xEbTE",
       "senha": "325"
     },
     {
@@ -21,7 +21,7 @@
       "email": "maria.santos@example.com",
       "password": "outrapassword",
       "telefone": "555-5678",
-      "token": ""
+      "token": "L83IJ6zb%R"
     },
     {
       "id": 3,
@@ -55,6 +55,40 @@
       "password": "passwordsegura456",
       "telefone": "555-8765",
       "token": ""
+    }
+  ],
+  "machine_types": [
+    {
+      "id": 8,
+      "machine_type": "vibrador"
+    },
+    {
+      "id": 16,
+      "machine_type": "soprador"
+    },
+    {
+      "id": 1,
+      "machine_type": "bomba"
+    }
+  ],
+  "machine": [
+    {
+      "id": 2,
+      "name": "extrusora",
+      "sector": "produção",
+      "machine_type_selected": "bomba"
+    },
+    {
+      "id": 6,
+      "name": "empacotadora",
+      "sector": "embalagem",
+      "machine_type_selected": "ventilador"
+    },
+    {
+      "id": 8,
+      "name": "contadora",
+      "sector": "transporte",
+      "machine_type_selected": "bomba"
     }
   ]
 }

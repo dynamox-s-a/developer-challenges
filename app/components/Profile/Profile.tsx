@@ -91,77 +91,102 @@ const Profile = () => {
   };
 
   return (
-    <div className="ml-20 p-4 w-100 h-full bg-gray-200 flex">
-      <h2>Profile</h2>
+    <div className="ml-20 p-4">
+      <h2 className="text-xl font-semibold mb-4">Usuário</h2>
       <form>
-        <div className="mb-4">
-          <label htmlFor="nome">Nome</label>
-          <input
-            type="text"
-            id="nome"
-            name="nome"
-            value={formData.nome}
-            onChange={handleChange}
-          />
+        <div className="mb-4 grid grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="nome" className="block text-sm font-medium text-gray-700">
+              Nome
+            </label>
+            <input
+              type="text"
+              id="nome"
+              name="nome"
+              value={formData.nome}
+              onChange={handleChange}
+              className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
+            />
+          </div>
+          <div>
+            <label htmlFor="sobrenome" className="block text-sm font-medium text-gray-700">
+              Sobrenome
+            </label>
+            <input
+              type="text"
+              id="sobrenome"
+              name="sobrenome"
+              value={formData.sobrenome}
+              onChange={handleChange}
+              className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
+            />
+          </div>
         </div>
         <div className="mb-4">
-          <label htmlFor="sobrenome">Sobrenome</label>
-          <input
-            type="text"
-            id="sobrenome"
-            name="sobrenome"
-            value={formData.sobrenome}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="código">Código</label>
+          <label htmlFor="código" className="block text-sm font-medium text-gray-700">
+            Código
+          </label>
           <input
             type="text"
             id="código"
             name="código"
             value={formData.código}
             onChange={handleChange}
+            className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="setor">Setor</label>
+          <label htmlFor="setor" className="block text-sm font-medium text-gray-700">
+            Setor
+          </label>
           <input
             type="text"
             id="setor"
             name="setor"
             value={formData.setor}
             onChange={handleChange}
+            className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="email">Email</label>
-          <input
-            type="text"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
+        <div className="mb-4 grid grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
+            />
+          </div>
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              Senha
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
+            />
+          </div>
         </div>
         <div className="mb-4">
-          <label htmlFor="password">Senha</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="telefone">Telefone</label>
+          <label htmlFor="telefone" className="block text-sm font-medium text-gray-700">
+            Telefone
+          </label>
           <input
             type="text"
             id="telefone"
             name="telefone"
             value={formData.telefone}
             onChange={handleChange}
+            className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
           />
         </div>
         <button
@@ -174,6 +199,7 @@ const Profile = () => {
       </form>
     </div>
   );
+  
 };
 
 export default Profile;

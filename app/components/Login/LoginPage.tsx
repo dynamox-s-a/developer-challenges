@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { setAuthToken } from "../../../lib/redux/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setAuthToken, selectAuthToken } from "../../../lib/redux/slices/authSlice";
 import { updateUser } from "../../../lib/redux/slices/userSlice";
 import { generateRandomToken } from "../../utils/tokenGenerator";
 
 const LoginPage = () => {
+  const authToken = useSelector(selectAuthToken);
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,6 +14,11 @@ const LoginPage = () => {
     message: string;
     user: any;
   }>(null);
+
+  if (authToken) {
+    window.location.href = "/"; 
+    return null; 
+  }
 
   const handleLogin = async (e: any) => {
     // Verifica as credenciais do usuário no db.json
