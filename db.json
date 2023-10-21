@@ -9,8 +9,7 @@
       "email": "joao",
       "password": "123",
       "telefone": "555-1235",
-      "token": "&Q2c4xEbTE",
-      "senha": "325"
+      "token": "R@EOh$571D"
     },
     {
       "id": 2,
@@ -73,22 +72,16 @@
   ],
   "machine": [
     {
-      "id": 2,
-      "name": "extrusora",
-      "sector": "produção",
-      "machine_type_selected": "bomba"
-    },
-    {
       "id": 6,
-      "name": "empacotadora",
-      "sector": "embalagem",
-      "machine_type_selected": "ventilador"
+      "name": "contadora",
+      "sector": "produção",
+      "machine_type_selected": "vibrador"
     },
     {
-      "id": 8,
-      "name": "contadora",
-      "sector": "transporte",
-      "machine_type_selected": "bomba"
+      "id": 7,
+      "name": "empacotadora",
+      "sector": "canteiro",
+      "machine_type_selected": "soprador"
     }
   ]
 }
