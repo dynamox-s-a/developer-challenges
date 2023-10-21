@@ -6,9 +6,10 @@
       "sobrenome": "Silva",
       "código": "12345",
       "setor": "TI",
-      "email": "joao.silva@example.com",
-      "senha": "senhasupersegura",
-      "telefone": "555-1234"
+      "email": "joao",
+      "password": "123",
+      "telefone": "555-1234",
+      "token": ""
     },
     {
       "id": 2,
@@ -17,8 +18,9 @@
       "código": "54321",
       "setor": "RH",
       "email": "maria.santos@example.com",
-      "senha": "outrasenha",
-      "telefone": "555-5678"
+      "password": "outrapassword",
+      "telefone": "555-5678",
+      "token": ""
     },
     {
       "id": 3,
@@ -27,8 +29,9 @@
       "código": "98765",
       "setor": "Vendas",
       "email": "carlos.ferreira@example.com",
-      "senha": "senhasecreta",
-      "telefone": "555-9876"
+      "password": "passwordsecreta",
+      "telefone": "555-9876",
+      "token": ""
     },
     {
       "id": 4,
@@ -37,8 +40,9 @@
       "código": "56789",
       "setor": "Marketing",
       "email": "ana.oliveira@example.com",
-      "senha": "outrasenha123",
-      "telefone": "555-4321"
+      "password": "outrapassword123",
+      "telefone": "555-4321",
+      "token": ""
     },
     {
       "id": 5,
@@ -47,8 +51,9 @@
       "código": "34567",
       "setor": "Finanças",
       "email": "lucas.pereira@example.com",
-      "senha": "senhasegura456",
-      "telefone": "555-8765"
+      "password": "passwordsegura456",
+      "telefone": "555-8765",
+      "token": ""
     }
   ]
 }

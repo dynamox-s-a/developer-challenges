@@ -3,7 +3,8 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "server": "json-server -p 3001 db.json"
   },
   "dependencies": {
     "@reduxjs/toolkit": "1.9.5",

@@ -3,6 +3,7 @@ import { Providers } from "@/lib/providers";
 
 /* Instruments */
 import "./styles/globals.css";
+import LoginPage from "./components/Login/LoginPage";
 
 export default function RootLayout(props: React.PropsWithChildren) {
   return (

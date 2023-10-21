@@ -1,5 +1,10 @@
 /* Components */
 "use client";
+
+import { useSelector } from "react-redux";
+import { selectActiveComponent } from "../lib/redux/slices/pageSlice";
+import { selectAuthToken } from "../lib/redux/slices/authSlice";
+
 import Sidebar from "./components/Sidebar/Sidebar";
 import Header from "./components/Header/Header";
 import TopCards from "./components/TopCards/TopCards";
@@ -7,12 +12,17 @@ import Profile from "./components/Profile/Profile";
 import Machines from "./components/Machines/Machines";
 import Daschboard from "./components/Dashboard/Daschboard";
 import Sensors from "./components/Sensors/Sensors";
-
-import { useSelector } from "react-redux";
-import { selectActiveComponent } from "../lib/redux/slices/pageSlice";
+import LoginPage from "./components/Login/LoginPage";
 
 export default function IndexPage() {
   const activeComponent = useSelector(selectActiveComponent);
+  const authToken = useSelector(selectAuthToken);
+
+  if (!authToken) {
+    // Se o usuário não estiver autenticado, renderize a tela de login.
+    return <LoginPage />;
+  }
+
   return (
     <>
       <Sidebar />
