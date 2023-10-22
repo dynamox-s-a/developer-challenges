@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setAuthToken, selectAuthToken } from "../../../lib/redux/slices/authSlice";
+import {
+  setAuthToken,
+  selectAuthToken,
+} from "../../../lib/redux/slices/authSlice";
 import { updateUser } from "../../../lib/redux/slices/userSlice";
 import { generateRandomToken } from "../../utils/tokenGenerator";
+import Image from "next/image";
 
 const LoginPage = () => {
   const authToken = useSelector(selectAuthToken);
@@ -16,8 +20,8 @@ const LoginPage = () => {
   }>(null);
 
   if (authToken) {
-    window.location.href = "/"; 
-    return null; 
+    window.location.href = "/";
+    return null;
   }
 
   const handleLogin = async (e: any) => {
@@ -37,7 +41,7 @@ const LoginPage = () => {
       const matchingUser = data.find(
         (user: any) => user.email === email && user.password === password
       );
-      
+
       if (matchingUser) {
         const token = generateRandomToken(10);
         matchingUser.token = token;
@@ -88,26 +92,62 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="p-4 w-screen h-screen bg-gray-500 flex">
-      <h1>Login</h1>
-      <form method="POST" onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="email"
-          name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Senha"
-          name="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button onClick={handleLogin}>Entrar</button>
-      </form>
-      {loginResult && !loginResult.success && <p>{loginResult.message}</p>}
+    <div className="w-screen h-screen flex items-center justify-center bg-gray-100">
+      <div className="max-w-md p-8 bg-white rounded shadow-lg">
+        
+
+        <h1 className="text-2xl font-bold mb-4">DynaPredict Dashboard</h1>
+        <div className="flex justify-center mx-auto mb-4">
+          <Image
+            src="/assets/img/dynapredict.png"
+            alt="Logotipo da Empresa"
+            width={200} // Defina a largura desejada
+            height={50} // Defina a altura desejada
+          />
+        </div>
+        
+        <form onSubmit={handleLogin}>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-gray-700">
+              Email
+            </label>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              value={email}
+              placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="password" className="block text-gray-700">
+              Senha
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={password}
+              placeholder="Senha"
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+          >
+            Entrar
+          </button>
+        </form>
+        {loginResult && !loginResult.success && (
+          <p className="mt-4 text-red-600 flex justify-center">
+            {loginResult.message}
+          </p>
+        )}
+      </div>
     </div>
   );
 };
