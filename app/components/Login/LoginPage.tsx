@@ -101,8 +101,8 @@ const LoginPage = () => {
           <Image
             src="/assets/img/dynapredict.png"
             alt="Logotipo da Empresa"
-            width={200} // Defina a largura desejada
-            height={50} // Defina a altura desejada
+            width={200}
+            height={50}
           />
         </div>
         
