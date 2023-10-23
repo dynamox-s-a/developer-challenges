@@ -5,7 +5,7 @@ import {
   setMachines,
 } from '../actions/machinesActions';
 
-import { Machines } from '../../../app/types/types';
+import { MachinesType } from '../../../app/types/types';
 
 const initialMachines: Machines[] = [];
 

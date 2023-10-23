@@ -9,6 +9,16 @@ import {
 /* Instruments */
 import { rootReducer} from './rootReducer'
 import { middleware } from './middleware'
+import machinesReducer from "../redux/slices/machinesSlice";
+
+export const store = configureStore({
+  reducer: {
+    machines: machinesReducer, 
+  },
+  middleware: (getDefaultMiddleware) => {
+    return getDefaultMiddleware().concat(middleware);
+  },
+});
 
 export const reduxStore = configureStore({
   reducer: rootReducer,
@@ -16,6 +26,13 @@ export const reduxStore = configureStore({
     return getDefaultMiddleware().concat(middleware)
   },
 })
+
+import type { MachinesType } from '../../app/types/types'; 
+export type RootState = {
+  machines: MachinesType[]; 
+
+};
+
 export const useDispatch = () => useReduxDispatch<ReduxDispatch>()
 export const useSelector: TypedUseSelectorHook<ReduxState> = useReduxSelector
 

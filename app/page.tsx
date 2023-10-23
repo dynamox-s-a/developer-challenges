@@ -21,7 +21,6 @@ export default function IndexPage() {
   const userId = useSelector(selectUserId);
 
   if (!authToken) {
-    // Se o usuário não estiver autenticado, renderize a tela de login.
     return <LoginPage />;
   }
 

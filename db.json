@@ -9,7 +9,7 @@
       "email": "joao",
       "password": "123",
       "telefone": "555-1233",
-      "token": "d95baIt3cw"
+      "token": "c4%xx%E0BC"
     },
     {
       "id": 2,
@@ -58,30 +58,44 @@
   ],
   "machine_types": [
     {
-      "id": 8,
-      "machine_type": "vibrador"
-    },
-    {
       "id": 16,
       "machine_type": "soprador"
     },
     {
       "id": 17,
       "machine_type": "bomba"
+    },
+    {
+      "id": 18,
+      "machine_type": "ventilador"
     }
   ],
   "machine": [
     {
-      "id": 6,
-      "name": "contadora",
-      "sector": "produção",
-      "machine_type_selected": "vibrador"
+      "id": 4,
+      "name": "nome 01",
+      "sector": "canteiro",
+      "machine_type_selected": "bomba"
     },
     {
-      "id": 7,
-      "name": "empacotadora",
-      "sector": "canteiro",
+      "id": 5,
+      "name": "Nome da M´áquina",
+      "sector": "Setor da Máquina",
       "machine_type_selected": "soprador"
+    }
+  ],
+  "sensors": [
+    {
+      "id": 1,
+      "sensor_name": "TcAg"
+    },
+    {
+      "id": 2,
+      "sensor_name": "TcAs"
+    },
+    {
+      "id": 3,
+      "sensor_name": "HF+"
     }
   ]
 }

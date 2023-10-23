@@ -1,19 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
 
-// export const addMachineType = createAction('machineTypes/addMachineType', (newType) => ({
-//     type: 'ADD_MACHINE_TYPE',
-//     payload: newType,
-// }));
-
-// export const deleteMachineType = createAction('machineTypes/deleteMachineType', (machineTypeId) => ({
-//     type: 'DELETE_MACHINE_TYPE',
-//      payload: machineTypeId,
-// }));
-
-// export const setMachineTypes = createAction('machineTypes/setMachineTypes');
-
-
-
 export const addMachine = createAction('machines/addMachine', (machine) => ({
     type: 'ADD_MACHINE',
     payload: machine,
@@ -27,3 +13,12 @@ export const deleteMachine = createAction('machines/deleteMachine', (machineId) 
 
 export const setMachines = createAction('machines/setMachines');
 
+export const consultMachines = createAction('machines/consultMachines');
+
+export const setNewMachineNameInput = createAction('machinesForm/setNewMachineNameInput');
+export const setNewMachineName = createAction('machinesForm/setNewMachineName');
+export const setNewMachineSector = createAction('machinesForm/setNewMachineSector');
+export const setSelectedMachine = createAction('machinesForm/setSelectedMachine');
+export const setSelectedMachineId = createAction('machinesForm/setSelectedMachineId');
+export const setSelectedSector = createAction('machinesForm/setSelectedSector');
+export const setSelectedMachineTypeSelected = createAction('machinesForm/setSelectedMachineTypeSelected');

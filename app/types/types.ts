@@ -15,7 +15,7 @@ export interface MachineType {
   machine_type: string;
 }
 
-export interface Machines {
+export interface  MachinesType {
   id: number;
   name: string,
   sector: string,
@@ -23,7 +23,6 @@ export interface Machines {
 }
 
 export interface AppState {
-  machineTypes: string; 
-  machines: string; 
-  
+  machineTypes: MachineType[]; 
+  machines: MachinesType[]; 
 }
