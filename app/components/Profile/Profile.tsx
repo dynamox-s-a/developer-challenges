@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectAuthToken } from "../../../lib/redux/slices/authSlice";
 import { User, updateUser } from "../../../lib/redux/slices/userSlice";
 import { selectUserId } from "../../../lib/redux/slices/authSlice";
+import API_BASE_URL from "../../api/config";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ const Profile = () => {
       }
 
       // Faz a requisição para o servidor para obter os dados do usuário com o ID fornecido.
-      const response = await fetch(`http://localhost:3001/users/${userId}`, {
+      const response = await fetch(`${API_BASE_URL}/users/${userId}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${authToken}`,
@@ -69,7 +70,7 @@ const Profile = () => {
 
       // Faz a requisição para o servidor para atualizar os dados do usuário.
       const response = await fetch(
-        `http://localhost:3001/users/${formData.id}`,
+        `${API_BASE_URL}/users/${formData.id}`,
         {
           method: "PUT",
           headers: {
