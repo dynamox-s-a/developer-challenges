@@ -1,5 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { formValidation } from "../../hook/formValidation";
+import InputMask from "react-input-mask";
+import PasswordValidation from "../../hook/PassWordValidation";
+
 import { selectAuthToken } from "../../../lib/redux/slices/authSlice";
 import { User, updateUser } from "../../../lib/redux/slices/userSlice";
 import { selectUserId } from "../../../lib/redux/slices/authSlice";
@@ -12,6 +17,10 @@ const Profile = () => {
 
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [updateError, setUpdateError] = useState(false);
+  const [telefoneError, setTelefoneError] = useState("");
+  const [isPasswordIsValid, setPasswordIsValid] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
+  const passwordInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState<User>({
     id: 0,
@@ -60,11 +69,34 @@ const Profile = () => {
     }));
   };
 
+  const removerFormatacaoTelefone = (telefone: any) => {
+    return telefone.replace(/\D/g, "");
+  };
+
   const handleSubmit = async () => {
     try {
       if (!authToken) {
         return;
       }
+
+       const telefoneSemFormatacao = removerFormatacaoTelefone(
+        formData.telefone
+      );
+
+      if (
+        telefoneSemFormatacao.length !== 10 &&
+        telefoneSemFormatacao.length !== 11
+      ) {
+        setTelefoneError("Telefone deve ter 10 ou 11 caracteres!");
+        return;
+      } else {
+        setTelefoneError("");
+      }
+
+      setFormData((prevData) => ({
+        ...prevData,
+        telefone: telefoneSemFormatacao,
+      }));
 
       // Faz a requisição para o servidor para atualizar os dados do usuário.
       const response = await fetch(`${API_BASE_URL}/users/${formData.id}`, {
@@ -100,8 +132,7 @@ const Profile = () => {
       <div className="pb-4 border-b grid grid-cols-1 gap-4">
         <h4 className="pt-4 text-lg">Dados do Usuário</h4>
         <div className="grid grid-cols-12 gap-4">
-
-        <div className="grid grid-cols-1 col-span-3 gap-4 flex self-center ">
+          <div className="grid grid-cols-1 col-span-3 gap-4 flex self-center ">
             <img
               src={formData.foto}
               alt="Foto do Usuário"
@@ -109,158 +140,196 @@ const Profile = () => {
             />
           </div>
 
-          <form className="grid grid-cols-12 col-span-9 gap-4">
-            <div className="relative col-span-4">
-              <input
-                type="text"
-                id="name"
-                name="name"
-                readOnly={true}
-                value={formData.nome}
-                onChange={handleChange}
-                className="mt-1 p-2 border border-gray-300 rounded-lg w-full block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=""
-              />
-              <label
-                htmlFor="name"
-                className="absolute text-sm text-gray-500 dark:text-gray-400 -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 left-1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500"
-              >
-                Nome
-              </label>
-            </div>
-
-            <div className="relative col-span-4">
-              <input
-                type="text"
-                id="lastname"
-                name="lastname"
-                readOnly={true}
-                value={formData.sobrenome}
-                onChange={handleChange}
-                className="mt-1 p-2 border border-gray-300 rounded-lg w-full block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=""
-              />
-              <label
-                htmlFor="lastname"
-                className="absolute text-sm text-gray-500 dark:text-gray-400 -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 left-1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500"
-              >
-                Sobrenome
-              </label>
-            </div>
-
-            <div className="relative col-span-4">
-              <input
-                type="text"
-                id="código"
-                name="código"
-                readOnly={true}
-                value={formData.código}
-                onChange={handleChange}
-                className="mt-1 p-2 border border-gray-300 rounded-lg w-full block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=""
-              />
-              <label
-                htmlFor="código"
-                className="absolute text-sm text-gray-500 dark:text-gray-400 -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 left-1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500"
-              >
-                Código Funcionário
-              </label>
-            </div>
-
-            <div className="relative col-span-4">
-              <input
-                type="text"
-                id="setor"
-                name="setor"
-                value={formData.setor}
-                onChange={handleChange}
-                className="mt-1 p-2 border border-gray-300 rounded-lg w-full block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=""
-              />
-              <label
-                htmlFor="setor"
-                className="absolute text-sm text-gray-500 dark:text-gray-400 -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 left-1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500"
-              >
-                Setor de Trabalho
-              </label>
-            </div>
-
-            <div className="relative col-span-4">
-              <input
-                type="text"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="mt-1 p-2 border border-gray-300 rounded-lg w-full block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=""
-              />
-              <label
-                htmlFor="email"
-                className="absolute text-sm text-gray-500 dark:text-gray-400 -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 left-1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500"
-              >
-                Email
-              </label>
-            </div>
-
-            <div className="relative col-span-4">
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="mt-1 p-2 border border-gray-300 rounded-lg w-full block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=""
-              />
-              <label
-                htmlFor="password"
-                className="absolute text-sm text-gray-500 dark:text-gray-400 -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 left-1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500"
-              >
-                Senha
-              </label>
-            </div>
-
-            <div className="relative col-span-4">
-              <input
-                type="text"
-                id="telefone"
-                name="telefone"
-                value={formData.telefone}
-                onChange={handleChange}
-                className="mt-1 p-2 border border-gray-300 rounded-lg w-full block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=""
-              />
-              <label
-                htmlFor="telefone"
-                className="absolute text-sm text-gray-500 dark:text-gray-400 -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 left-1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500"
-              >
-                Telefone
-              </label>
-            </div>
-
-            <button
-              type="button"
-              onClick={handleSubmit}
-              className="col-span-4 bg-blue-500 text-white px-4 py-2 rounded-lg"
-            >
-              Atualizar Dados
-            </button>
-
-            {updateSuccess && (
-              <div className="text-green-600 col-span-4 self-center justify-self-center">
-                Dados atualizados com sucesso!
+          <Formik
+            initialValues={formData}
+            validationSchema={formValidation}
+            onSubmit={handleSubmit}
+          >
+            <Form className="grid grid-cols-12 col-span-9 gap-4">
+              <div className="relative col-span-4">
+                <Field
+                  type="text"
+                  id="name"
+                  name="name"
+                  readOnly={true}
+                  value={formData.nome}
+                  onChange={handleChange}
+                  className="mt-1 p-2 border border-gray-300 rounded-lg w-full block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=""
+                />
+                <label
+                  htmlFor="name"
+                  className="absolute text-sm text-gray-500 dark:text-gray-400 -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 left-1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500"
+                >
+                  Nome
+                </label>
               </div>
-            )}
 
-            {updateError && (
-              <div className="text-red-600 col-span-4 self-center justify-self-center">
-                Erro ao atualizar os dados do usuário.
+              <div className="relative col-span-4">
+                <input
+                  type="text"
+                  id="lastname"
+                  name="lastname"
+                  readOnly={true}
+                  value={formData.sobrenome}
+                  onChange={handleChange}
+                  className="mt-1 p-2 border border-gray-300 rounded-lg w-full block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=""
+                />
+                <label
+                  htmlFor="lastname"
+                  className="absolute text-sm text-gray-500 dark:text-gray-400 -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 left-1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500"
+                >
+                  Sobrenome
+                </label>
               </div>
-            )}
-          </form>
 
-          
+              <div className="relative col-span-4">
+                <input
+                  type="text"
+                  id="código"
+                  name="código"
+                  readOnly={true}
+                  value={formData.código}
+                  onChange={handleChange}
+                  className="mt-1 p-2 border border-gray-300 rounded-lg w-full block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=""
+                />
+                <label
+                  htmlFor="código"
+                  className="absolute text-sm text-gray-500 dark:text-gray-400 -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 left-1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500"
+                >
+                  Código Funcionário
+                </label>
+              </div>
+
+              <div className="relative col-span-4">
+                <input
+                  type="text"
+                  id="setor"
+                  name="setor"
+                  value={formData.setor}
+                  onChange={handleChange}
+                  className="mt-1 p-2 border border-gray-300 rounded-lg w-full block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=""
+                />
+                <label
+                  htmlFor="setor"
+                  className="absolute text-sm text-gray-500 dark:text-gray-400 -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 left-1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500"
+                >
+                  Setor de Trabalho
+                </label>
+              </div>
+
+              <div className="relative col-span-4">
+                <input
+                  type="text"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="mt-1 p-2 border border-gray-300 rounded-lg w-full block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=""
+                />
+                <label
+                  htmlFor="email"
+                  className="absolute text-sm text-gray-500 dark:text-gray-400 -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 left-1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500"
+                >
+                  Email
+                </label>
+              </div>
+
+              <div className="relative col-span-4">
+                <ErrorMessage
+                  name="password"
+                  component="div"
+                  className="text-red-600"
+                />
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  ref={passwordInputRef}
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="mt-1 p-2 border border-gray-300 rounded-lg w-full block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=""
+                />
+                <label
+                  htmlFor="password"
+                  className="absolute text-sm text-gray-500 dark:text-gray-400 -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 left-1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500"
+                >
+                  Senha
+                </label>
+              </div>
+
+              <div className="relative col-span-4">
+                <Field
+                  as={InputMask}
+                  mask={
+                    formData.telefone.length === 10
+                      ? "(99) 9999 9999"
+                      : "(99) 999 999 999"
+                  }
+                  type="tel"
+                  id="telefone"
+                  name="telefone"
+                  value={formData.telefone}
+                  onChange={handleChange}
+                  className="mt-1 p-2 border border-gray-300 rounded-lg w-full block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                />
+                <label
+                  htmlFor="telefone"
+                  className="absolute text-sm text-gray-500 dark:text-gray-400 -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 left-1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500"
+                >
+                  Telefone
+                </label>
+              </div>
+
+              <div className="grid col-span-8 grid-cols-8">
+                <div className="col-span-4 flex justify-center">
+                  {passwordError && (
+                    <div className="text-red-600 text-sm self-center justify-self-center">
+                      {passwordError}
+                    </div>
+                  )}
+                  {telefoneError && (
+                    <div className="text-red-600 text-sm self-center justify-self-center">
+                      {telefoneError}
+                    </div>
+                  )}
+                  {updateSuccess && (
+                    <div className="text-green-600 text-sm self-center justify-self-center">
+                      Dados atualizados com sucesso!
+                    </div>
+                  )}
+                </div>
+
+                <div className="col-span-4 flex justify-center">
+                  <ErrorMessage
+                    name="password"
+                    component="div"
+                    className="text-red-600"
+                  />
+
+                  <PasswordValidation
+                    value={formData.password}
+                    onValidationChange={setPasswordIsValid}
+                    onPasswordErrorChange={setPasswordError}
+                    passwordInputRef={passwordInputRef}
+                  />
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="col-span-12 bg-blue-500 text-white px-4 py-2 rounded-lg"
+              >
+                Atualizar Dados
+              </button>
+            </Form>
+          </Formik>
         </div>
       </div>
     </div>
