@@ -10,6 +10,7 @@ interface User {
   email: string;
   password: string;
   telefone: string;
+  foto: string;
 }
 
 const initialUser: User = {
@@ -21,6 +22,7 @@ const initialUser: User = {
   email: '',
   password: '',
   telefone: '',
+  foto: '',
 };
 
 const userSlice = createSlice({

@@ -4,56 +4,61 @@
       "id": 1,
       "nome": "João",
       "sobrenome": "Silva Matos",
-      "código": "12345",
+      "código": "645725",
       "setor": "Produção",
       "email": "joao",
       "password": "123",
-      "telefone": "555-1233333",
-      "token": "jdvoTrY#OP"
+      "telefone": "48853215846",
+      "token": "jdvoTrY#OP",
+      "foto": "https://images.unsplash.com/photo-1633332755192-727a05c4013d?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D"
     },
     {
       "id": 2,
       "nome": "Maria",
       "sobrenome": "Santos",
-      "código": "54321",
+      "código": "954321",
       "setor": "RH",
       "email": "maria.santos@example.com",
-      "password": "outrapassword",
-      "telefone": "555-5678",
-      "token": "L83IJ6zb%R"
+      "password": "password",
+      "telefone": "11998325476",
+      "token": "L83IJ6zb%R",
+      "foto": "https://img.freepik.com/premium-photo/close-up-portrait-smiling-european-woman_262288-2358.jpg?size=626&ext=jpg&ga=GA1.1.537286303.1696550400&semt=ais"
     },
     {
       "id": 3,
       "nome": "Carlos",
       "sobrenome": "Ferreira",
-      "código": "98765",
+      "código": "698765",
       "setor": "Vendas",
       "email": "carlos.ferreira@example.com",
-      "password": "passwordsecreta",
-      "telefone": "555-9876",
-      "token": ""
+      "password": "password",
+      "telefone": "31885624587",
+      "token": "",
+      "foto": "https://wac-cdn.atlassian.com/br/dam/jcr:ba03a215-2f45-40f5-8540-b2015223c918/Max-R_Headshot%20(1).jpg?cdnVersion=1275"
     },
     {
       "id": 4,
       "nome": "Ana",
       "sobrenome": "Oliveira",
-      "código": "56789",
+      "código": "566789",
       "setor": "Marketing",
       "email": "ana.oliveira@example.com",
-      "password": "outrapassword123",
-      "telefone": "555-4321",
-      "token": ""
+      "password": "password",
+      "telefone": "21998654321",
+      "token": "",
+      "foto": "https://img.freepik.com/free-photo/silly-cute-young-woman-making-innocent-face-raising-eyebrows-smirking-standing-white-wall-casual-blouse_176420-34107.jpg"
     },
     {
       "id": 5,
       "nome": "Lucas",
       "sobrenome": "Pereira",
-      "código": "34567",
+      "código": "345657",
       "setor": "Finanças",
       "email": "lucas.pereira@example.com",
-      "password": "passwordsegura456",
-      "telefone": "555-8765",
-      "token": ""
+      "password": "password",
+      "telefone": "11989564325",
+      "token": "",
+      "foto":"https://media.licdn.com/dms/image/C4D03AQEoib-YA8eDTg/profile-displayphoto-shrink_400_400/0/1628687347918?e=1703116800&v=beta&t=d_rz9Wr3RBkNtEYhZzDV9q2nNMIlqHCPRZmBpaxyM3c"
     }
   ],
   "machine_types": [

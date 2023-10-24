@@ -22,6 +22,7 @@ const Profile = () => {
     email: "",
     password: "",
     telefone: "",
+    foto: "",
   });
 
   const fetchUserData = async (userId: any) => {
@@ -98,8 +99,17 @@ const Profile = () => {
       <h2 className="text-xl font-semibold mb-4">Usuário</h2>
       <div className="pb-4 border-b grid grid-cols-1 gap-4">
         <h4 className="pt-4 text-lg">Dados do Usuário</h4>
-        <div className="grid grid-cols-1 gap-4">
-          <form className="grid grid-cols-12 gap-4">
+        <div className="grid grid-cols-12 gap-4">
+
+        <div className="grid grid-cols-1 col-span-3 gap-4 flex self-center ">
+            <img
+              src={formData.foto}
+              alt="Foto do Usuário"
+              className="w-2/3 rounded-full mx-auto m-4"
+            />
+          </div>
+
+          <form className="grid grid-cols-12 col-span-9 gap-4">
             <div className="relative col-span-4">
               <input
                 type="text"
@@ -248,8 +258,9 @@ const Profile = () => {
                 Erro ao atualizar os dados do usuário.
               </div>
             )}
-
           </form>
+
+          
         </div>
       </div>
     </div>
