@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// Define o estado do usuário
 interface User {
   id: number;
   nome: string;
@@ -30,7 +29,6 @@ const userSlice = createSlice({
   initialState: initialUser,
   reducers: {
     updateUser: (state, action: PayloadAction<User>) => {
-      // Atualize os dados do usuário com os dados fornecidos
       return { ...state, ...action.payload };
     },
   },
@@ -39,7 +37,9 @@ const userSlice = createSlice({
 export const { updateUser } = userSlice.actions;
 
 export const selectUser = (state: { user: User }) => state.user;
+export const selectUserName = (state: { user: User }) => state.user?.nome ?? '';
+export const selectUserLastName = (state: { user: User }) => state.user?.sobrenome ?? '';
 
 export default userSlice.reducer;
 
-export type { User }; // Exporta o tipo User
+export type { User }; 

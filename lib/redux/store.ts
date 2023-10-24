@@ -11,9 +11,14 @@ import { rootReducer} from './rootReducer'
 import { middleware } from './middleware'
 import machinesReducer from "../redux/slices/machinesSlice";
 
+import authReducer from "../redux/slices/authSlice";
+import userReducer from "../redux/slices/userSlice";
+
 export const store = configureStore({
   reducer: {
     machines: machinesReducer, 
+    auth: authReducer,
+    user: userReducer,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware().concat(middleware);
@@ -30,6 +35,8 @@ export const reduxStore = configureStore({
 import type { MachinesType } from '../../app/types/types'; 
 export type RootState = {
   machines: MachinesType[]; 
+  auth: any; 
+    user: any;
 
 };
 

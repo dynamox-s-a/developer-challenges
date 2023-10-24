@@ -5,21 +5,22 @@ import { setActiveComponent } from "../../../lib/redux/slices/pageSlice";
 import { clearAuthToken } from "../../../lib/redux/slices/authSlice";
 
 import Link from "next/link";
-import { RxGear, RxDashboard, RxPerson,} from "react-icons/rx";
+import { RxDashboard, RxGear, RxPerson } from "react-icons/rx";
 import { MdSensors } from "react-icons/md";
 import { FiLogOut } from "react-icons/fi";
 
-const Sidebar = () => {
+interface SidebarProps {
+  handleComponentChange: (componentName: string) => void;
+  setShowDashboard: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Sidebar = ({ handleComponentChange, setShowDashboard }: SidebarProps) => {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
     // Limpa o token de autenticação do Redux
     dispatch(clearAuthToken);
     window.location.href = "/";
-  };
-
-  const handleComponentChange = (componentName: string) => {
-    dispatch(setActiveComponent(componentName));
   };
 
   return (

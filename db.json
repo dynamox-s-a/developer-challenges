@@ -7,9 +7,9 @@
       "código": "645725",
       "setor": "Produção",
       "email": "joao",
-      "password": "Mudar@123",
+      "password": "mUDAR@123",
       "telefone": "(98) 978 984 999",
-      "token": "TJGXD1Cx@w",
+      "token": "3CJ8oyk&Vy",
       "foto": "https://images.unsplash.com/photo-1633332755192-727a05c4013d?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D"
     },
     {
@@ -19,9 +19,9 @@
       "código": "954321",
       "setor": "RH",
       "email": "maria.santos@example.com",
-      "password": "password",
+      "password": "Mudar@123",
       "telefone": "(48) 895 565 689",
-      "token": "L83IJ6zb%R",
+      "token": "cbf#AvdLx8",
       "foto": "https://img.freepik.com/premium-photo/close-up-portrait-smiling-european-woman_262288-2358.jpg?size=626&ext=jpg&ga=GA1.1.537286303.1696550400&semt=ais"
     },
     {
@@ -73,6 +73,10 @@
     {
       "id": 19,
       "machine_type": "contador"
+    },
+    {
+      "id": 20,
+      "machine_type": "soprador"
     }
   ],
   "machine": [
@@ -93,6 +97,12 @@
       "name": "Nome da Máquina 2222",
       "sector": "Setor da Máquina Sim",
       "machine_type_selected": "bomba"
+    },
+    {
+      "id": 6,
+      "name": "Cortadeira de Papel",
+      "sector": "Produção de Livros",
+      "machine_type_selected": "soprador"
     }
   ],
   "sensors": [
@@ -253,6 +263,29 @@
         }
       ],
       "id": 8
+    },
+    {
+      "machine_name": "Cortadeira de Papel",
+      "machine_sector": "Produção de Livros",
+      "machine_type_selected": "soprador",
+      "controls": [
+        {
+          "monitoring_point_0": "1",
+          "sensor_name": "Sensor de Entrada",
+          "sensor_type": "TcAg"
+        },
+        {
+          "monitoring_point_1": "2",
+          "sensor_name": "Sensor de Saída",
+          "sensor_type": "TcAs"
+        },
+        {
+          "monitoring_point_2": "3",
+          "sensor_name": "Sensor livre",
+          "sensor_type": "HF+"
+        }
+      ],
+      "id": 9
     }
   ]
 }
