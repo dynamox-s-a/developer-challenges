@@ -32,3 +32,30 @@ export interface AppState {
   machines: MachinesType[];
   sensors: SensorsType[];
 }
+
+export interface Control {
+  machine_name: string;
+  machine_sector: string;
+  machine_type_selected: string;
+  controls: {
+    [key: string]: string | null;
+  }[];
+}
+
+export interface DashboardProps {
+  controls: Control[];
+}
+
+
+export interface ControlData {
+  id: number;
+  machine_name: string;
+  machine_type_selected: string;
+  machine_sector: string;
+  controls: {
+    sensor_name: any;
+    sensor_type: any;
+    monitoring_point_0?: string;
+    monitoring_point_1?: string;
+  }[];
+}

@@ -7,9 +7,9 @@
       "código": "645725",
       "setor": "Produção",
       "email": "joao",
-      "password": "123",
+      "password": "Mudar@123",
       "telefone": "(98) 978 984 999",
-      "token": "j5XEHaG@St",
+      "token": "TJGXD1Cx@w",
       "foto": "https://images.unsplash.com/photo-1633332755192-727a05c4013d?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D"
     },
     {
@@ -107,6 +107,152 @@
     {
       "id": 3,
       "sensor_type": "HF+"
+    }
+  ],
+  "controls": [
+    {
+      "machine_name": "Nome da Máquina",
+      "machine_sector": "Setor da Máquina",
+      "machine_type_selected": "soprador",
+      "controls": [
+        {
+          "monitoring_point_0": "1",
+          "sensor_name": "nome aleatório",
+          "sensor_type": "TcAg"
+        },
+        {
+          "monitoring_point_1": "2",
+          "sensor_name": "nome aleatório 2",
+          "sensor_type": "TcAs"
+        }
+      ],
+      "id": 1
+    },
+    {
+      "machine_name": "Nome da Máquina",
+      "machine_sector": "Setor da Máquina",
+      "machine_type_selected": "soprador",
+      "controls": [
+        {
+          "monitoring_point_0": "1",
+          "sensor_name": "nome aleatório",
+          "sensor_type": "TcAg"
+        },
+        {
+          "monitoring_point_1": "2",
+          "sensor_name": "nome aleatório 2",
+          "sensor_type": "TcAs"
+        }
+      ],
+      "id": 2
+    },
+    {
+      "machine_name": "Máquina",
+      "machine_sector": "Setor da Máquina",
+      "machine_type_selected": "soprador",
+      "controls": [
+        {
+          "monitoring_point_0": "1",
+          "sensor_name": "nome aleatório",
+          "sensor_type": "TcAg"
+        },
+        {
+          "monitoring_point_1": "2",
+          "sensor_name": "nome aleatório 2",
+          "sensor_type": "TcAs"
+        }
+      ],
+      "id": 3
+    },
+    {
+      "machine_name": "Nome da Máquina 1111",
+      "machine_sector": "Setor da Máquina 13",
+      "machine_type_selected": "contador",
+      "controls": [
+        {
+          "monitoring_point_0": "3",
+          "sensor_name": "Teste 2",
+          "sensor_type": "HF+"
+        },
+        {
+          "monitoring_point_1": "2",
+          "sensor_name": "Teste 3",
+          "sensor_type": "TcAs"
+        }
+      ],
+      "id": 4
+    },
+    {
+      "machine_name": "Nome da Máquina",
+      "machine_sector": "Setor da Máquina",
+      "machine_type_selected": "soprador",
+      "controls": [
+        {
+          "monitoring_point_0": "1",
+          "sensor_name": "nome aleatório",
+          "sensor_type": "TcAg"
+        },
+        {
+          "monitoring_point_1": "2",
+          "sensor_name": "nome aleatório 2",
+          "sensor_type": "TcAs"
+        }
+      ],
+      "id": 5
+    },
+    {
+      "machine_name": "Nome da Máquina",
+      "machine_sector": "Setor da Máquina",
+      "machine_type_selected": "soprador",
+      "controls": [
+        {
+          "monitoring_point_0": "1",
+          "sensor_name": "nome aleatório",
+          "sensor_type": "TcAg"
+        },
+        {
+          "monitoring_point_1": "2",
+          "sensor_name": "nome aleatório 2",
+          "sensor_type": "TcAs"
+        }
+      ],
+      "id": 6
+    },
+    {
+      "machine_name": "Máquina",
+      "machine_sector": "Setor da Máquina",
+      "machine_type_selected": "soprador",
+      "controls": [
+        {
+          "monitoring_point_0": "1",
+          "sensor_name": "nome aleatório",
+          "sensor_type": "TcAg"
+        },
+        {
+          "monitoring_point_1": "2",
+          "sensor_name": "nome aleatório 2",
+          "sensor_type": "TcAs"
+        }
+      ],
+      "id": 7
+    },
+    {
+      "machine_name": "Nome da Máquina 1111",
+      "machine_sector": "Setor da Máquina 13",
+      "machine_type_selected": "contador",
+      "controls": [
+        {
+          "monitoring_point_0": "3",
+          "sensor_name": "Teste 2",
+          "sensor_type": "HF+"
+        },
+        {
+          "monitoring_point_1": "2",
+          "sensor_name": "Teste 3",
+          "sensor_type": "TcAs"
+        }
+      ],
+      "id": 8
     }
   ]
 }

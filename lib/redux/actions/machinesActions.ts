@@ -11,6 +11,8 @@ export const deleteMachine = createAction('machines/deleteMachine', (machineId) 
 
 }));
 
+
+
 export const setMachines = createAction('machines/setMachines');
 
 export const consultMachines = createAction('machines/consultMachines');

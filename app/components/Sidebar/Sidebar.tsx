@@ -26,7 +26,7 @@ const Sidebar = () => {
     <div className="flex">
       <div className="fixed w-20 h-screen p-4 bg-white border-r-[1px] flex flex-col justify-between">
         <div className="flex flex-col items-center">
-          <Link href="/" onClick={() => handleComponentChange("Daschboard")}>
+          <Link href="/" onClick={() => handleComponentChange("Dashboard")}>
             <div className="bg-blue-500 text-white p-3 rounded-lg inline-block">
               <RxDashboard size={20} />
             </div>

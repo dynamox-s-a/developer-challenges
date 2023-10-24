@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { formValidation } from "../../hook/formValidation";
 import InputMask from "react-input-mask";
-import PasswordValidation from "../../hook/PassWordValidation";
+import PasswordValidation from "../../hook/PasswordValidation";
 
 import { selectAuthToken } from "../../../lib/redux/slices/authSlice";
 import { User, updateUser } from "../../../lib/redux/slices/userSlice";

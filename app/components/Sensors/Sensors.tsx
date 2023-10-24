@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppState, SensorsType } from "../../types/types";
 import API_BASE_URL from "../../api/config";
-import { consultMachines } from "../../../lib/redux/actions/machinesActions";
+import {
+  setMachines,
+  selectMachines,
+} from "../../../lib/redux/slices/machinesSlice";
 
 const Sensors = () => {
-  const machines = useSelector((state: AppState) => state.machines);
-  const sensors = useSelector((state: AppState) => state.sensors);
+  const machines = useSelector(selectMachines);
+  // const sensors = useSelector((state: AppState) => state.sensors);
   const dispatch = useDispatch();
 
   const [newMachineName, setNewMachineName] = useState("");
@@ -45,15 +48,11 @@ const Sensors = () => {
         return;
       }
     }
-    if (index === -5 || index === -6) {
-      setSelectedSensor(e.target.value);
-    } else {
-      setSelectedSensor((prevSelectedSensor) => {
-        const updatedSensor = [...prevSelectedSensor];
-        updatedSensor[index] = e.target.value;
-        return updatedSensor;
-      });
-    }
+    setSelectedSensor((prevSelectedSensor) => {
+      const updatedSensor = [...prevSelectedSensor];
+      updatedSensor[index] = e.target.value;
+      return updatedSensor;
+    });
   };
 
   const handleSensorNameChange = (e: any, index: number) => {
@@ -68,7 +67,7 @@ const Sensors = () => {
 
     setSelectedMachineId(selectedValue);
     const selectedMachine = machines.find(
-      (machine) => machine.id === parseInt(selectedValue)
+      (machine: { id: number }) => machine.id === parseInt(selectedValue)
     );
     if (selectedMachine) {
       setNewMachineName(selectedMachine.name);
@@ -81,17 +80,76 @@ const Sensors = () => {
     setSelectedMachineTypeSelected(e.target.value);
   };
 
-  useEffect(() => {
-    fetch(`${API_BASE_URL}/sensors`)
+  const addControls = (e: any) => {
+    e.preventDefault();
+
+    const newControl = {
+      machine_name: newMachineName,
+      machine_sector: selectedSector,
+      machine_type_selected: selectedMachineTypeSelected,
+      controls: [],
+    };
+
+    for (let i = 0; i < sensorGroup; i++) {
+      const monitoringPoint = (
+        document.getElementById(`sensorTypeSelect${i}`) as HTMLSelectElement
+      )?.value;
+      const sensorName = (
+        document.getElementById(`sensorName${i}`) as HTMLInputElement
+      )?.value;
+      const sensorType = (
+        document.getElementById(`sensorTypeSelect${i}`) as HTMLSelectElement
+      )?.options[
+        (document.getElementById(`sensorTypeSelect${i}`) as HTMLSelectElement)
+          ?.selectedIndex
+      ].text;
+
+      newControl.controls.push({
+        [`monitoring_point_${i}`]: monitoringPoint,
+        ["sensor_name"]: sensorName,
+        ["sensor_type"]: sensorType,
+      } as never);
+    }
+
+    fetch(`${API_BASE_URL}/controls`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newControl),
+    })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Dados do sensor:", data.sensors);
-        setSensorOptions(data);
+        console.log("Novos controles adicionados:", data);
+        setNewMachineName("");
+        setSelectedSector("");
+        setSelectedMachineTypeSelected("");
+        setSensorGroup(2);
+        setNewSensorName([]);
+        setSelectedSensor([]);
       })
       .catch((error) => {
-        console.error("Erro ao buscar a lista de sensores:", error);
+        console.error("Erro ao adicionar novos controles:", error);
       });
-    dispatch(consultMachines());
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [sensorResponse, machineResponse] = await Promise.all([
+          fetch(`${API_BASE_URL}/sensors`).then((response) => response.json()),
+          fetch(`${API_BASE_URL}/machine`).then((response) => response.json()),
+        ]);
+        const sensorData = sensorResponse;
+        const machineData = machineResponse;
+        setSensorOptions(sensorData);
+        dispatch(setMachines(machineData));
+      } catch (error) {
+        console.error("Erro ao buscar a lista de sensores ou máquinas:", error);
+      }
+    };
+
+    fetchData();
   }, [dispatch]);
 
   return (
@@ -115,8 +173,7 @@ const Sensors = () => {
                       setSelectedSector("");
                       setSelectedMachineTypeSelected("");
                       setSelectedSensor([]);
-                      setNewSensorName([])
-
+                      setNewSensorName([]);
                     }
                   }}
                   className="mt-1 p-2 border border-gray-300 rounded-lg w-full block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -216,7 +273,7 @@ const Sensors = () => {
                         id={`sensorName${index}`}
                         name={`sensorName${index}`}
                         value={newSensorName[index] || ""}
-                onChange={(e) => handleSensorNameChange(e, index)}
+                        onChange={(e) => handleSensorNameChange(e, index)}
                         className="mt-1 p-2 border border-gray-300 rounded-lg w-full block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                         placeholder=""
                       />
@@ -240,13 +297,20 @@ const Sensors = () => {
                 </div>
               ))}
             </div>
-
-            <button
-              onClick={addSensorGroup}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg col-span-12 mt-4"
-            >
-              Adicionar
-            </button>
+            <div className="col-span-12 grid grid-cols-12 gap-4">
+              <button
+                onClick={addSensorGroup}
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg col-span-6 mt-4"
+              >
+                Adicionar ponto de monitoramento
+              </button>
+              <button
+                onClick={addControls}
+                className="bg-green-500 text-white px-4 py-2 rounded-lg col-span-6 mt-4"
+              >
+                Salvar sistema de monitoramento
+              </button>
+            </div>
           </form>
         </div>
       </div>
