@@ -16,6 +16,9 @@ import { AppState } from "../../types/types";
 import { updateMachine } from "../../../lib/redux/slices/machinesSlice";
 import API_BASE_URL from "../../api/config";
 
+// passar funções para hook externo
+// import useMachineFunctions from "../../hook/useMachineFunctions"
+
 const Machines = () => {
   const machineTypes = useSelector((state: AppState) => state.machineTypes);
   const machines = useSelector((state: AppState) => state.machines);

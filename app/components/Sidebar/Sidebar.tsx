@@ -5,61 +5,41 @@ import { setActiveComponent } from "../../../lib/redux/slices/pageSlice";
 import { clearAuthToken } from "../../../lib/redux/slices/authSlice";
 
 import Link from "next/link";
-import {
-  RxGear,
-  RxMixerVertical,
-  RxCodesandboxLogo,
-  RxDashboard,
-  RxPerson,
-  RxRulerHorizontal,
-  RxShuffle,
-} from "react-icons/rx";
+import { RxGear, RxDashboard, RxPerson,} from "react-icons/rx";
 import { MdSensors } from "react-icons/md";
 import { FiLogOut } from "react-icons/fi";
 
 const Sidebar = () => {
-
   const dispatch = useDispatch();
 
   const handleLogout = () => {
-    // Limpe o token de autenticação do Redux
+    // Limpa o token de autenticação do Redux
     dispatch(clearAuthToken);
     window.location.href = "/";
   };
 
-  const handleComponentChange = (componentName:string) => {
+  const handleComponentChange = (componentName: string) => {
     dispatch(setActiveComponent(componentName));
   };
 
-    return (
+  return (
     <div className="flex">
       <div className="fixed w-20 h-screen p-4 bg-white border-r-[1px] flex flex-col justify-between">
         <div className="flex flex-col items-center">
           <Link href="/" onClick={() => handleComponentChange("Daschboard")}>
             <div className="bg-blue-500 text-white p-3 rounded-lg inline-block">
-            <RxDashboard size={20} />
+              <RxDashboard size={20} />
             </div>
           </Link>
           <span className="border-b-[2px] border-blue-300 w-full p-2"></span>
-                   {/* <Link href="/">
+          <Link href="/" onClick={() => handleComponentChange("Machines")}>
             <div className="bg-gray-500 hover:bg-blue-500 text-white my-4 p-3 rounded-lg inline-block">
-              <RxRulerHorizontal size={20} />
+              <RxGear size={20} />
             </div>
-          </Link> */}
+          </Link>
           <Link href="/" onClick={() => handleComponentChange("Sensors")}>
             <div className="bg-gray-500 hover:bg-blue-500 text-white my-4 p-3 rounded-lg inline-block">
               <MdSensors size={20} />
-            </div>
-          </Link>
-          {/* <Link href="/">
-            <div className="bg-gray-500 hover:bg-blue-500 text-white my-4 p-3 rounded-lg inline-block">
-              <RxMixerVertical size={20} />
-            </div>
-          </Link> */}
-          <Link href="/"  onClick={() => handleComponentChange("Machines")}>
-            <div className="bg-gray-500 hover:bg-blue-500 text-white my-4 p-3 rounded-lg inline-block"
-            >
-              <RxGear size={20}/>
             </div>
           </Link>
           <Link href="/" onClick={() => handleComponentChange("Profile")}>

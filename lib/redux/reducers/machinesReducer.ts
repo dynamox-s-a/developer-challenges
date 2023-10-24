@@ -7,7 +7,7 @@ import {
 
 import { MachinesType } from '../../../app/types/types';
 
-const initialMachines: Machines[] = [];
+const initialMachines: MachinesType[] = [];
 
 const machinesReducer = createReducer(
   {
