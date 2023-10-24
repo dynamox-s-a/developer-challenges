@@ -7,6 +7,7 @@ import {
 import { updateUser } from "../../../lib/redux/slices/userSlice";
 import { generateRandomToken } from "../../utils/tokenGenerator";
 import Image from "next/image";
+import API_BASE_URL from "../../api/config";
 
 const LoginPage = () => {
   const authToken = useSelector(selectAuthToken);
@@ -30,7 +31,7 @@ const LoginPage = () => {
     const headers = new Headers();
     headers.append("Cache-Control", "no-cache");
 
-    const response = await fetch("http://localhost:3001/users", {
+    const response = await fetch(`${API_BASE_URL}/users`, {
       method: "GET",
       headers,
     });
@@ -47,7 +48,7 @@ const LoginPage = () => {
         matchingUser.token = token;
 
         const updateResponse = await fetch(
-          `http://localhost:3001/users/${matchingUser.id}`,
+          `${API_BASE_URL}/users/${matchingUser.id}`,
           {
             method: "PUT",
             headers: {
