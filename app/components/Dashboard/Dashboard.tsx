@@ -88,7 +88,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
 
   return (
     <div className="ml-20 p-4 ">
-      <h2 className="text-xl font-semibold mb-4">Dashboard</h2>
+      <h2 className="text-xl font-semibold mb-4">Uso de Sensores</h2>
       <div className="grid grid-cols-1 gap-4 relative overflow-x-auto sm:rounded-lg">
         <table className="table-fixed w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

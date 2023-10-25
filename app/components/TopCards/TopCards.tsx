@@ -59,8 +59,8 @@ const TopCards = () => {
     .replace(".", ",");
 
   return (
-    <div className="ml-20 grid lg:grid-cols-12 gap-4 p-4">
-      <div className="lg:col-span-4 col-span-4 bg-white flex justify-between w-full border p-4 rounded-lg">
+    <div className="ml-20 grid lg:grid-cols-12 grid-cols-12 gap-4 p-4">
+      <div className="lg:col-span-4 md:col-span-4 sm:col-span-12 col-span-4 bg-white flex justify-between w-full border p-4 rounded-lg">
         <div className="flex flex-col w-full">
           <Image
             src="/assets/img/sensor_hf.png"
@@ -83,7 +83,7 @@ const TopCards = () => {
           </p>
         </div>
       </div>
-      <div className="lg:col-span-4 col-span-4 bg-white flex justify-between w-full border p-4 rounded-lg">
+      <div className="lg:col-span-4 md:col-span-4 sm:col-span-12 bg-white flex justify-between w-full border p-4 rounded-lg">
         <div className="flex flex-col w-full">
           <Image
             src="/assets/img/sensor_tcag.png"
@@ -106,7 +106,7 @@ const TopCards = () => {
           </p>
         </div>
       </div>
-      <div className="lg:col-span-4 col-span-4 bg-white flex justify-between w-full border p-4 rounded-lg">
+      <div className="lg:col-span-4 md:col-span-4 sm:col-span-12 bg-white flex justify-between w-full border p-4 rounded-lg">
         <div className="flex flex-col w-full">
           <Image
             src="/assets/img/sensor_tcas.png"
