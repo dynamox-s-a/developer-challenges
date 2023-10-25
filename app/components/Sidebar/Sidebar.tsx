@@ -1,13 +1,15 @@
 "use client";
-import React from "react";
-import { useDispatch } from "react-redux";
-import { setActiveComponent } from "../../../lib/redux/slices/pageSlice";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { clearAuthToken } from "../../../lib/redux/slices/authSlice";
 
 import Link from "next/link";
 import { RxDashboard, RxGear, RxPerson } from "react-icons/rx";
 import { MdSensors } from "react-icons/md";
 import { FiLogOut } from "react-icons/fi";
+import { selectAuthToken, selectUserId } from "../../../lib/redux/slices/authSlice";
+import { User } from "../../../lib/redux/slices/userSlice";
+import API_BASE_URL from "../../api/config";
 
 interface SidebarProps {
   handleComponentChange: (componentName: string) => void;
@@ -15,7 +17,53 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ handleComponentChange, setShowDashboard }: SidebarProps) => {
+
   const dispatch = useDispatch();
+  const authToken = useSelector(selectAuthToken);
+  const userId = useSelector(selectUserId);
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
+
+  const [formData, setFormData] = useState<User>({
+    id: 0,
+    nome: "",
+    sobrenome: "",
+    código: "",
+    setor: "",
+    email: "",
+    password: "",
+    telefone: "",
+    foto: "",
+  });
+
+  const fetchUserData = async (userId: any) => {
+    try {
+      if (!authToken) {
+        return;
+      }
+
+      const response = await fetch(`${API_BASE_URL}/users/${userId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      if (response.ok) {
+        const userData = await response.json();
+        setFormData(userData);
+      } else {
+        console.error("Erro ao obter dados do usuário.");
+      }
+    } catch (error) {
+      console.error("Erro ao fazer a solicitação:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (authToken && userId) {
+      fetchUserData(userId);
+    }
+  }, [authToken, userId]);
 
   const handleLogout = () => {
     // Limpa o token de autenticação do Redux
@@ -49,7 +97,13 @@ const Sidebar = ({ handleComponentChange, setShowDashboard }: SidebarProps) => {
             </div>
           </Link>
         </div>
+        
         <div>
+          <img
+            src={formData.foto}
+            alt={formData.nome}
+            className="h-[50px] rounded-full mx-auto "
+          />
           <Link href="/" onClick={handleLogout}>
             <div className="bg-gray-500 hover:bg-blue-500 text-white my-4 p-3 rounded-lg inline-block">
               <FiLogOut size={20} />

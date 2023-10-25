@@ -6,18 +6,55 @@ import API_BASE_URL from "../../api/config";
 
 const Dashboard: React.FC<DashboardProps> = () => {
   const [controls, setControls] = useState<ControlData[]>([]);
-  const [sortBy, setSortBy] = useState(null);
-  const [sortedColumn, setSortedColumn] = useState<number | null>(null);
   const [sortOrder, setSortOrder] = useState("asc");
-  const [fetchedControls, setFetchedControls] = useState([]);
+  const [fetchedControls, setFetchedControls] = useState<ControlData[]>([]);
+  const [sortColumn, setSortColumn] = useState<number | null>(null);
 
-  const handleSort = (column: number, dataType: string) => {
-    if (column === sortedColumn) {
+  const handleSort = (column: number) => {
+    console.log("handleSort called with column:", column);
+    console.log("Current sortColumn:", sortColumn);
+    console.log("Current sortOrder:", sortOrder);
+
+    if (column === sortColumn) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
-      setSortedColumn(column);
+      setSortColumn(column);
       setSortOrder("asc");
     }
+
+    const sortedControls = [...fetchedControls];
+    sortedControls.sort((a, b) => {
+      switch (column) {
+        case 0: // Nome da Máquina
+          return sortOrder === "asc"
+            ? a.machine_name.localeCompare(b.machine_name)
+            : b.machine_name.localeCompare(a.machine_name);
+        case 1: // Tipo de Máquina
+          return sortOrder === "asc"
+            ? a.machine_type_selected.localeCompare(b.machine_type_selected)
+            : b.machine_type_selected.localeCompare(a.machine_type_selected);
+        case 2: // Setor da Máquina
+          return sortOrder === "asc"
+            ? a.machine_sector.localeCompare(b.machine_sector)
+            : b.machine_sector.localeCompare(a.machine_sector);
+        case 3: // Nome do Primeiro Sensor
+          return sortOrder === "asc"
+            ? a.controls[0].sensor_name.localeCompare(b.controls[0].sensor_name)
+            : b.controls[0].sensor_name.localeCompare(
+                a.controls[0].sensor_name
+              );
+        case 4: // Tipo do Primeiro Sensor
+          return sortOrder === "asc"
+            ? a.controls[0].sensor_type.localeCompare(b.controls[0].sensor_type)
+            : b.controls[0].sensor_type.localeCompare(
+                a.controls[0].sensor_type
+              );
+        default:
+          return 0;
+      }
+    });
+
+    setControls(sortedControls);
   };
 
   useEffect(() => {
@@ -26,38 +63,16 @@ const Dashboard: React.FC<DashboardProps> = () => {
       .then((data) => {
         setControls(data);
         setFetchedControls(data);
-        console.log("Dados carregados:", data);
       })
       .catch((error) => console.error("Erro ao carregar os dados:", error));
   }, []);
-
-  const sortedControls = controls
-    .filter((control) => control.controls && control.controls[0])
-    .sort((a, b) => {
-      if (sortedColumn === null) return 0;
-
-      const columnKey =
-        `monitoring_point_${sortedColumn}` as keyof (typeof a.controls)[0];
-      const monitoringPointA = a.controls[0][columnKey];
-      const monitoringPointB = b.controls[0][columnKey];
-
-      if (monitoringPointA !== null && monitoringPointB !== null) {
-        if (monitoringPointA < monitoringPointB) {
-          return sortOrder === "asc" ? -1 : 1;
-        }
-        if (monitoringPointA > monitoringPointB) {
-          return sortOrder === "asc" ? 1 : -1;
-        }
-      }
-      return 0;
-    });
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
-  const currentItems = sortedControls.slice(firstItemIndex, lastItemIndex);
-  const totalPages = Math.ceil(sortedControls.length / itemsPerPage);
+  const currentItems = controls.slice(firstItemIndex, lastItemIndex);
+  const totalPages = Math.ceil(controls.length / itemsPerPage);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -75,55 +90,68 @@ const Dashboard: React.FC<DashboardProps> = () => {
     <div className="ml-20 p-4 ">
       <h2 className="text-xl font-semibold mb-4">Dashboard</h2>
       <div className="grid grid-cols-1 gap-4 relative overflow-x-auto sm:rounded-lg">
-        
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          
+        <table className="table-fixed w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr className="bg-blue-300">
               <th
-                onClick={() => handleSort(0, "string")}
                 scope="col"
-                className={`cursor-pointer px-6 py-3 ${
-                  sortedColumn === 0 ? `sorted-${sortOrder}` : ""
-                }`}
+                className="px-3 py-3 text-center"
+                onClick={() => handleSort(0)}
               >
                 Nome da Máquina
+                {sortColumn === 0 && (
+                  <span className="relative left-2 top-0 text-sm">
+                    {sortOrder === "asc" ? "▲" : "▼"}
+                  </span>
+                )}
               </th>
               <th
-                onClick={() => handleSort(1, "string")}
                 scope="col"
-                className={`cursor-pointer px-6 py-3 ${
-                  sortedColumn === 1 ? `sorted-${sortOrder}` : ""
-                }`}
+                className=" px-3 py-3 text-center"
+                onClick={() => handleSort(1)}
               >
                 Tipo de Máquina
+                {sortColumn === 1 && (
+                  <span className="relative left-2 top-0 text-sm">
+                    {sortOrder === "asc" ? "▲" : "▼"}
+                  </span>
+                )}
               </th>
               <th
-                onClick={() => handleSort(2, "string")}
                 scope="col"
-                className={`cursor-pointer px-6 py-3 ${
-                  sortedColumn === 2 ? `sorted-${sortOrder}` : ""
-                }`}
+                className=" px-3 py-3 text-center"
+                onClick={() => handleSort(2)}
               >
                 Setor da Máquina
+                {sortColumn === 2 && (
+                  <span className="relative left-2 top-0 text-sm">
+                    {sortOrder === "asc" ? "▲" : "▼"}
+                  </span>
+                )}
               </th>
               <th
-                onClick={() => handleSort(3, "string")}
                 scope="col"
-                className={`cursor-pointer px-6 py-3 ${
-                  sortedColumn === 3 ? `sorted-${sortOrder}` : ""
-                }`}
+                className=" px-3 py-3 text-center"
+                onClick={() => handleSort(3)}
               >
                 Nome do Sensor
+                {sortColumn === 3 && (
+                  <span className="relative left-2 top-0 text-sm">
+                    {sortOrder === "asc" ? "▲" : "▼"}
+                  </span>
+                )}
               </th>
               <th
-                onClick={() => handleSort(4, "string")}
                 scope="col"
-                className={`cursor-pointer px-6 py-3 ${
-                  sortedColumn === 4 ? `sorted-${sortOrder}` : ""
-                }`}
+                className=" px-3 py-3 text-center"
+                onClick={() => handleSort(4)}
               >
                 Tipo do Sensor
+                {sortColumn === 4 && (
+                  <span className="relative left-2 top-0 text-sm">
+                    {sortOrder === "asc" ? "▲" : "▼"}
+                  </span>
+                )}
               </th>
             </tr>
           </thead>
@@ -134,21 +162,21 @@ const Dashboard: React.FC<DashboardProps> = () => {
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                 key={index}
               >
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                <td className="px-3 py-3 text-center font-medium text-gray-900 whitespace-nowrap dark:text-white">
                   {control.machine_name}
                 </td>
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                <td className="px-3 py-3 text-center font-medium text-gray-900 whitespace-nowrap dark:text-white">
                   {control.machine_type_selected}
                 </td>
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                <td className="px-3 py-3 text-center font-medium text-gray-900 whitespace-nowrap dark:text-white">
                   {control.machine_sector}
                 </td>
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                <td className="px-3 py-3 text-center font-medium text-gray-900 whitespace-nowrap dark:text-white">
                   {control.controls.map((sensor) => (
                     <div key={sensor.sensor_name}>{sensor.sensor_name}</div>
                   ))}
                 </td>
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                <td className="px-3 py-3 text-center font-medium text-gray-900 whitespace-nowrap dark:text-white">
                   {control.controls.map((sensor) => (
                     <div key={sensor.sensor_name}>{sensor.sensor_type}</div>
                   ))}
@@ -156,7 +184,6 @@ const Dashboard: React.FC<DashboardProps> = () => {
               </tr>
             ))}
           </tbody>
-
         </table>
 
         <nav

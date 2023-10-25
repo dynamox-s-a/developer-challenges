@@ -7,9 +7,9 @@
       "código": "645725",
       "setor": "Produção",
       "email": "joao",
-      "password": "mUDAR@123",
+      "password": "Mudar@123",
       "telefone": "(98) 978 984 999",
-      "token": "3CJ8oyk&Vy",
+      "token": "DL$SMI4Exo",
       "foto": "https://images.unsplash.com/photo-1633332755192-727a05c4013d?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D"
     },
     {
@@ -31,7 +31,7 @@
       "código": "698765",
       "setor": "Vendas",
       "email": "carlos.ferreira@example.com",
-      "password": "password",
+      "password": "Mudar@123",
       "telefone": "(48) 895 565 689",
       "token": "",
       "foto": "https://wac-cdn.atlassian.com/br/dam/jcr:ba03a215-2f45-40f5-8540-b2015223c918/Max-R_Headshot%20(1).jpg?cdnVersion=1275"
@@ -43,7 +43,7 @@
       "código": "566789",
       "setor": "Marketing",
       "email": "ana.oliveira@example.com",
-      "password": "password",
+      "password": "Mudar@123",
       "telefone": "(48) 895 565 689",
       "token": "",
       "foto": "https://img.freepik.com/free-photo/silly-cute-young-woman-making-innocent-face-raising-eyebrows-smirking-standing-white-wall-casual-blouse_176420-34107.jpg"
@@ -55,7 +55,7 @@
       "código": "345657",
       "setor": "Finanças",
       "email": "lucas.pereira@example.com",
-      "password": "password",
+      "password": "Mudar@123",
       "telefone": "(48) 895 565 689",
       "token": "",
       "foto": "https://media.licdn.com/dms/image/C4D03AQEoib-YA8eDTg/profile-displayphoto-shrink_400_400/0/1628687347918?e=1703116800&v=beta&t=d_rz9Wr3RBkNtEYhZzDV9q2nNMIlqHCPRZmBpaxyM3c"
@@ -64,45 +64,45 @@
   "machine_types": [
     {
       "id": 17,
-      "machine_type": "bomba"
+      "machine_type": "Bomba"
     },
     {
       "id": 18,
-      "machine_type": "ventilador"
+      "machine_type": "Ventilador"
     },
     {
       "id": 19,
-      "machine_type": "contador"
+      "machine_type": "Contador"
     },
     {
       "id": 20,
-      "machine_type": "soprador"
+      "machine_type": "Soprador"
     }
   ],
   "machine": [
     {
       "id": 5,
-      "name": "Nome da Máquina",
-      "sector": "Setor da Máquina",
-      "machine_type_selected": "soprador"
+      "name": "Embaladora",
+      "sector": "Despacho",
+      "machine_type_selected": "Soprador"
     },
     {
       "id": 1,
-      "name": "Nome da Máquina 1111",
-      "sector": "Setor da Máquina 13",
-      "machine_type_selected": "contador"
+      "name": "Cortadora",
+      "sector": "Produção",
+      "machine_type_selected": "Contador"
     },
     {
       "id": 4,
-      "name": "Nome da Máquina 2222",
-      "sector": "Setor da Máquina Sim",
-      "machine_type_selected": "bomba"
+      "name": "Extrusora",
+      "sector": "Produção",
+      "machine_type_selected": "Bomba"
     },
     {
       "id": 6,
       "name": "Cortadeira de Papel",
       "sector": "Produção de Livros",
-      "machine_type_selected": "soprador"
+      "machine_type_selected": "Soprador"
     }
   ],
   "sensors": [
@@ -121,144 +121,144 @@
   ],
   "controls": [
     {
-      "machine_name": "Nome da Máquina",
-      "machine_sector": "Setor da Máquina",
-      "machine_type_selected": "soprador",
+      "machine_name": "Cortadora",
+      "machine_sector": "Produção",
+      "machine_type_selected": "Bomba",
       "controls": [
         {
           "monitoring_point_0": "1",
-          "sensor_name": "nome aleatório",
+          "sensor_name": "Sensor de Entrada",
           "sensor_type": "TcAg"
         },
         {
           "monitoring_point_1": "2",
-          "sensor_name": "nome aleatório 2",
+          "sensor_name": "Sensor de Saída",
           "sensor_type": "TcAs"
         }
       ],
       "id": 1
     },
     {
-      "machine_name": "Nome da Máquina",
-      "machine_sector": "Setor da Máquina",
-      "machine_type_selected": "soprador",
+      "machine_name": "Extrusora Plus",
+      "machine_sector": "Produção",
+      "machine_type_selected": "Ventilador",
       "controls": [
         {
           "monitoring_point_0": "1",
-          "sensor_name": "nome aleatório",
+          "sensor_name": "Sensor de Entrada",
           "sensor_type": "TcAg"
         },
         {
           "monitoring_point_1": "2",
-          "sensor_name": "nome aleatório 2",
+          "sensor_name": "Sensor de Saída",
           "sensor_type": "TcAs"
         }
       ],
       "id": 2
     },
     {
-      "machine_name": "Máquina",
-      "machine_sector": "Setor da Máquina",
-      "machine_type_selected": "soprador",
+      "machine_name": "Extrusora",
+      "machine_sector": "Produção",
+      "machine_type_selected": "Bomba",
       "controls": [
         {
           "monitoring_point_0": "1",
-          "sensor_name": "nome aleatório",
+          "sensor_name": "Sensor de Entrada",
           "sensor_type": "TcAg"
         },
         {
           "monitoring_point_1": "2",
-          "sensor_name": "nome aleatório 2",
+          "sensor_name": "Sensor de Saída",
           "sensor_type": "TcAs"
         }
       ],
       "id": 3
     },
     {
-      "machine_name": "Nome da Máquina 1111",
-      "machine_sector": "Setor da Máquina 13",
-      "machine_type_selected": "contador",
+      "machine_name": "Embaladora",
+      "machine_sector": "Despacho",
+      "machine_type_selected": "Contador",
       "controls": [
         {
           "monitoring_point_0": "3",
-          "sensor_name": "Teste 2",
+          "sensor_name": "Sensor de Entrada",
           "sensor_type": "HF+"
         },
         {
           "monitoring_point_1": "2",
-          "sensor_name": "Teste 3",
+          "sensor_name": "Sensor de Saída",
           "sensor_type": "TcAs"
         }
       ],
       "id": 4
     },
     {
-      "machine_name": "Nome da Máquina",
-      "machine_sector": "Setor da Máquina",
-      "machine_type_selected": "soprador",
+      "machine_name": "Correia Transportadora",
+      "machine_sector": "Produção",
+      "machine_type_selected": "Soprador",
       "controls": [
         {
           "monitoring_point_0": "1",
-          "sensor_name": "nome aleatório",
+          "sensor_name": "Sensor de Entrada",
           "sensor_type": "TcAg"
         },
         {
           "monitoring_point_1": "2",
-          "sensor_name": "nome aleatório 2",
+          "sensor_name": "Sensor de Saída",
           "sensor_type": "TcAs"
         }
       ],
       "id": 5
     },
     {
-      "machine_name": "Nome da Máquina",
-      "machine_sector": "Setor da Máquina",
-      "machine_type_selected": "soprador",
+      "machine_name": "Correia Transportadora",
+      "machine_sector": "Transporte",
+      "machine_type_selected": "Soprador",
       "controls": [
         {
           "monitoring_point_0": "1",
-          "sensor_name": "nome aleatório",
+          "sensor_name": "Sensor de Entrada",
           "sensor_type": "TcAg"
         },
         {
           "monitoring_point_1": "2",
-          "sensor_name": "nome aleatório 2",
+          "sensor_name": "Sensor de Saída",
           "sensor_type": "TcAs"
         }
       ],
       "id": 6
     },
     {
-      "machine_name": "Máquina",
-      "machine_sector": "Setor da Máquina",
-      "machine_type_selected": "soprador",
+      "machine_name": "Encolhedora",
+      "machine_sector": "Embalagam",
+      "machine_type_selected": "Soprador",
       "controls": [
         {
           "monitoring_point_0": "1",
-          "sensor_name": "nome aleatório",
+          "sensor_name": "Sensor de Entrada",
           "sensor_type": "TcAg"
         },
         {
           "monitoring_point_1": "2",
-          "sensor_name": "nome aleatório 2",
+          "sensor_name": "Sensor de Saída",
           "sensor_type": "TcAs"
         }
       ],
       "id": 7
     },
     {
-      "machine_name": "Nome da Máquina 1111",
-      "machine_sector": "Setor da Máquina 13",
-      "machine_type_selected": "contador",
+      "machine_name": "Embalador Plus",
+      "machine_sector": "Embalagem",
+      "machine_type_selected": "Contador",
       "controls": [
         {
           "monitoring_point_0": "3",
-          "sensor_name": "Teste 2",
+          "sensor_name": "Sensor de Entrada",
           "sensor_type": "HF+"
         },
         {
           "monitoring_point_1": "2",
-          "sensor_name": "Teste 3",
+          "sensor_name": "Sensor de Saída",
           "sensor_type": "TcAs"
         }
       ],
@@ -266,8 +266,8 @@
     },
     {
       "machine_name": "Cortadeira de Papel",
-      "machine_sector": "Produção de Livros",
-      "machine_type_selected": "soprador",
+      "machine_sector": "Produção",
+      "machine_type_selected": "Soprador",
       "controls": [
         {
           "monitoring_point_0": "1",
@@ -281,11 +281,11 @@
         },
         {
           "monitoring_point_2": "3",
-          "sensor_name": "Sensor livre",
+          "sensor_name": "Sensor Livre",
           "sensor_type": "HF+"
         }
       ],
       "id": 9
     }
-  ]
+    ]
 }

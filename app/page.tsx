@@ -51,7 +51,6 @@ export default function IndexPage() {
       <Header />
       <TopCards />
       <div>
-        {/* {activeComponent === "Dashboard" && <Dashboard controls={controls} />} */}
         {showDashboard && <Dashboard controls={controls} />}
         {activeComponent === "Sensors" && <Sensors />}
         {activeComponent === "Machines" && <Machines />}

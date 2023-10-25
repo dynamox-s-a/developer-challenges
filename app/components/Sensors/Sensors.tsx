@@ -7,6 +7,11 @@ import {
   selectMachines,
 } from "../../../lib/redux/slices/machinesSlice";
 
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { MdSensors, MdPostAdd } from "react-icons/md";
+
+
+
 const Sensors = () => {
   const machines = useSelector(selectMachines);
   // const sensors = useSelector((state: AppState) => state.sensors);
@@ -162,7 +167,7 @@ const Sensors = () => {
         <div className="grid grid-cols-1 gap-4">
           <form className="grid grid-cols-12 gap-4">
             <div className="grid grid-cols-12 col-span-12 gap-4">
-              <div className="relative col-span-4">
+              <div className="relative col-span-4 max-lg:col-span-4   max-md:col-span-12">
                 <select
                   id="selectMachineEdit"
                   name="selectMachineEdit"
@@ -196,7 +201,7 @@ const Sensors = () => {
                 </label>
               </div>
 
-              <div className=" relative col-span-4 ">
+              <div className=" relative col-span-4 max-lg:col-span-4   max-md:col-span-12">
                 <input
                   type="text"
                   id="machineSector"
@@ -217,7 +222,7 @@ const Sensors = () => {
                 </label>
               </div>
 
-              <div className=" relative col-span-4 ">
+              <div className=" relative col-span-4 max-lg:col-span-4   max-md:col-span-12">
                 <input
                   type="text"
                   id="machineTypeSelectedEdit"
@@ -239,7 +244,7 @@ const Sensors = () => {
 
             <div className="grid grid-cols-12 col-span-12 gap-4">
               {Array.from({ length: sensorGroup }).map((_, index) => (
-                <div key={index} className="grid col-span-6 gap-4 ">
+                <div key={index} className="grid col-span-6  max-lg:col-span-6   max-md:col-span-12 gap-4 ">
                   <div className="grid grid-cols-6 gap-4 ">
                     <div className="relative col-span-2">
                       <select
@@ -288,9 +293,14 @@ const Sensors = () => {
                     {index >= 2 ? (
                       <button
                         onClick={(e) => removeSensorGroup(e, index)}
-                        className="bg-red-500 text-white px-4 py-2 rounded-lg col-span-1 "
+                        className="border border-red-500 flex justify-center items-center text-white px-4 py-2 rounded-lg col-span-1 max-lg:col-span-1   max-md:col-span-1"
                       >
-                        Excluir
+                        
+                        <RiDeleteBin6Line color="red" size={25} />
+
+                        
+
+
                       </button>
                     ) : null}
                   </div>
@@ -300,15 +310,18 @@ const Sensors = () => {
             <div className="col-span-12 grid grid-cols-12 gap-4">
               <button
                 onClick={addSensorGroup}
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg col-span-6 mt-4"
+                className="border border-blue-500 flex justify-center items-center text-white px-4 py-2 rounded-lg col-span-6 mt-4"
               >
-                Adicionar ponto de monitoramento
+                <MdSensors color="blue" size={25} />
               </button>
               <button
                 onClick={addControls}
-                className="bg-green-500 text-white px-4 py-2 rounded-lg col-span-6 mt-4"
+                className="border border-green-500 flex justify-center items-center text-white px-4 py-2 rounded-lg col-span-6 mt-4"
               >
-                Salvar sistema de monitoramento
+                <MdPostAdd color="green" size={25} />
+
+
+                
               </button>
             </div>
           </form>

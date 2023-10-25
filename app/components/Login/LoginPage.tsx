@@ -104,6 +104,8 @@ const LoginPage = () => {
             alt="Logotipo da Empresa"
             width={200}
             height={50}
+            className="w-auto h-auto"
+            priority={true}
           />
         </div>
         

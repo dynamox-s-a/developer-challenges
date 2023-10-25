@@ -7,7 +7,7 @@ import {
 } from 'react-redux'
 
 /* Instruments */
-import { rootReducer} from './rootReducer'
+import { rootReducer } from './rootReducer'
 import { middleware } from './middleware'
 import machinesReducer from "../redux/slices/machinesSlice";
 
@@ -16,7 +16,7 @@ import userReducer from "../redux/slices/userSlice";
 
 export const store = configureStore({
   reducer: {
-    machines: machinesReducer, 
+    machines: machinesReducer,
     auth: authReducer,
     user: userReducer,
   },
@@ -32,11 +32,12 @@ export const reduxStore = configureStore({
   },
 })
 
-import type { MachinesType } from '../../app/types/types'; 
+import type { MachinesType } from '../../app/types/types';
 export type RootState = {
-  machines: MachinesType[]; 
-  auth: any; 
-    user: any;
+  machines: MachinesType[];
+  auth: any;
+  user: any;
+  faviconUrl: string
 
 };
 

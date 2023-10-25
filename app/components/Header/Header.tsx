@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { selectAuthToken } from "../../../lib/redux/slices/authSlice";
-import { User, updateUser } from "../../../lib/redux/slices/userSlice";
-import { selectUserId } from "../../../lib/redux/slices/authSlice";
+import { selectAuthToken, selectUserId } from "../../../lib/redux/slices/authSlice";
+import { User } from "../../../lib/redux/slices/userSlice";
 import API_BASE_URL from "../../api/config";
 
 const Header = () => {

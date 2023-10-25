@@ -15,9 +15,13 @@ import {
 import { AppState } from "../../types/types";
 import { updateMachine } from "../../../lib/redux/slices/machinesSlice";
 import API_BASE_URL from "../../api/config";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { MdOutlineAddchart, MdDomainAdd } from "react-icons/md";
+import { TbDatabasePlus, TbDatabaseEdit } from "react-icons/tb";
 
-// passar funções para hook externo
-// import useMachineFunctions from "../../hook/useMachineFunctions"
+
+
+
 
 const Machines = () => {
   const machineTypes = useSelector((state: AppState) => state.machineTypes);
@@ -277,11 +281,6 @@ const Machines = () => {
       });
   }, []);
 
-  const selectMachineEdit = document.getElementById("selectMachineEdit");
-  const labelMachineEdit = document.querySelector(
-    "label[for=selectMachineEdit]"
-  );
-
   return (
     <div className="ml-20 p-4">
       <h2 className="text-xl font-semibold mb-4">Maquinário</h2>
@@ -289,7 +288,7 @@ const Machines = () => {
       <div className="grid grid-cols-1 gap-4">
         <h4 className="pt-4 text-lg">Adicionar Tipos de Máquina</h4>
 
-        <div className="pb-4 border-b grid grid-cols-2 gap-4">
+        <div className="pb-4 border-b grid grid-cols-1 gap-4 md:grid-cols-2">
           <form
             onSubmit={handleAddMachineTypes}
             className="grid grid-cols-4 gap-2 col-span-1"
@@ -314,9 +313,11 @@ const Machines = () => {
 
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg col-span-1"
+              className="border border-blue-500 flex justify-center items-center text-white px-4 py-2 rounded-lg col-span-1"
             >
-              Adicionar
+              
+              <MdOutlineAddchart color="blue" size={25} />
+              
             </button>
           </form>
 
@@ -352,20 +353,20 @@ const Machines = () => {
 
             <button
               type="submit"
-              className="bg-red-500 text-white px-4 py-2 rounded-lg col-span-1"
+              className="border border-red-500 flex justify-center items-center text-white px-4 py-2 rounded-lg col-span-1"
             >
-              Excluir
+              <RiDeleteBin6Line color="red" size={25} />
             </button>
           </form>
         </div>
       </div>
 
-      <div className="pb-4 border-b grid grid-cols-1 gap-4">
+      <div className="pb-4 border-b grid grid-cols-1 gap-4 ">
         <h4 className="pt-4 text-lg">Adicionar Máquina</h4>
 
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 gap-4 ">
           <form onSubmit={handleAddMachine} className="grid grid-cols-4 gap-2">
-            <div className=" relative col-span-1">
+            <div className=" relative col-span-1 max-lg:col-span-1   max-md:col-span-4">
               <input
                 type="text"
                 id="machineName"
@@ -383,25 +384,25 @@ const Machines = () => {
               </label>
             </div>
 
-            <div className=" relative col-span-1">
+            <div className=" relative col-span-1 max-lg:col-span-1 max-md:col-span-4">
               <input
                 type="text"
-                id="machineSector"
-                name="machineSector"
+                id="machineSectorAdd"
+                name="machineSectorAdd"
                 value={newMachineSector}
                 onChange={(e) => setNewMachineSector(e.target.value)}
                 className="mt-1 p-2 border border-gray-300 rounded-lg w-full block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=""
               />
               <label
-                htmlFor="machineSector"
+                htmlFor="machineSectorAdd"
                 className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
               >
                 Setor da máquina
               </label>
             </div>
 
-            <div className=" relative col-span-1">
+            <div className=" relative col-span-1 max-lg:col-span-1  max-md:col-span-4">
               <select
                 id="machineTypeSelected"
                 name="machineTypeSelected"
@@ -429,9 +430,10 @@ const Machines = () => {
 
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg col-span-1"
+              className="border border-blue-500 flex justify-center items-center  text-white px-4 py-2 rounded-lg col-span-1 max-lg:col-span-1 max-md:col-span-4"
             >
-              Adicionar Máquina
+             <TbDatabasePlus color="blue" size={25}/>
+            
             </button>
           </form>
         </div>
@@ -442,7 +444,7 @@ const Machines = () => {
 
         <div className="grid grid-cols-1 gap-4">
           <form className="grid grid-cols-8 gap-2">
-            <div className="relative col-span-2">
+            <div className="relative  col-span-2 max-lg:col-span-2 max-md:col-span-8">
               <select
                 id="selectMachineEdit"
                 name="selectMachineEdit"
@@ -474,12 +476,12 @@ const Machines = () => {
               </label>
             </div>
 
-            <div className=" relative col-span-2">
+            <div className=" relative  col-span-2 max-lg:col-span-2 max-md:col-span-8">
               <input
                 type="text"
                 id="machineSectorEdit"
                 name="machineSectorEdit"
-                value={selectedSector !== "" ? selectedSector : newMachineSector}
+                value={selectedSector !== "" ? selectedSector : selectedSector}
                 onChange={(e) => setSelectedSector(e.target.value)}
                 className="mt-1 p-2 border border-gray-300 rounded-lg w-full block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=""
@@ -492,7 +494,7 @@ const Machines = () => {
               </label>
             </div>
 
-            <div className="relative col-span-2">
+            <div className="relative  col-span-2 max-lg:col-span-2 max-md:col-span-8">
               <select
                 id="machineTypeSelectedEdit"
                 name="machineTypeSelectedEdit"
@@ -520,16 +522,16 @@ const Machines = () => {
             
             <button
               onClick={handleEditMachine}
-              className="bg-green-500 text-white px-4 py-2 rounded-lg col-span-1 "
+              className="border border-green-500 flex justify-center items-center text-white px-4 col-span-1 max-lg:col-span-1 max-md:col-span-8 py-2 rounded-lg "
             >
-              Editar
+                            <TbDatabaseEdit color="green" size={25}/>
             </button>
 
             <button
               onClick={handleDeleteMachine}
-              className="bg-red-500 text-white px-4 py-2 rounded-lg col-span-1 "
+              className="border border-red-500 flex justify-center items-center text-white px-4 col-span-1 max-lg:col-span-1 max-md:col-span-8 py-2 rounded-lg "
             >
-              Excluir
+               <RiDeleteBin6Line color="red" size={25} />
             </button>
           </form>
         </div>

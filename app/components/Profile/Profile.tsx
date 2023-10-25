@@ -9,6 +9,8 @@ import { selectAuthToken } from "../../../lib/redux/slices/authSlice";
 import { User, updateUser } from "../../../lib/redux/slices/userSlice";
 import { selectUserId } from "../../../lib/redux/slices/authSlice";
 import API_BASE_URL from "../../api/config";
+import { BsFillPersonCheckFill } from "react-icons/bs";
+
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -132,7 +134,7 @@ const Profile = () => {
       <div className="pb-4 border-b grid grid-cols-1 gap-4">
         <h4 className="pt-4 text-lg">Dados do Usuário</h4>
         <div className="grid grid-cols-12 gap-4">
-          <div className="grid grid-cols-1 col-span-3 gap-4 flex self-center ">
+          <div className="grid grid-cols-1 col-span-3 max-lg:col-span-4 max-md:col-span-12 gap-4 flex self-center ">
             <img
               src={formData.foto}
               alt="Foto do Usuário"
@@ -145,8 +147,8 @@ const Profile = () => {
             validationSchema={formValidation}
             onSubmit={handleSubmit}
           >
-            <Form className="grid grid-cols-12 col-span-9 gap-4">
-              <div className="relative col-span-4">
+            <Form className="grid grid-cols-12 col-span-9 max-lg:col-span-8 max-md:col-span-12 gap-4">
+              <div className="relative col-span-4 max-lg:col-span-6 max-md:col-span-12">
                 <Field
                   type="text"
                   id="name"
@@ -165,7 +167,7 @@ const Profile = () => {
                 </label>
               </div>
 
-              <div className="relative col-span-4">
+              <div className="relative col-span-4 max-lg:col-span-6 max-md:col-span-12">
                 <input
                   type="text"
                   id="lastname"
@@ -184,7 +186,7 @@ const Profile = () => {
                 </label>
               </div>
 
-              <div className="relative col-span-4">
+              <div className="relative col-span-4 max-lg:col-span-6 max-md:col-span-12">
                 <input
                   type="text"
                   id="código"
@@ -203,7 +205,7 @@ const Profile = () => {
                 </label>
               </div>
 
-              <div className="relative col-span-4">
+              <div className="relative col-span-4 max-lg:col-span-6 max-md:col-span-12">
                 <input
                   type="text"
                   id="setor"
@@ -221,7 +223,7 @@ const Profile = () => {
                 </label>
               </div>
 
-              <div className="relative col-span-4">
+              <div className="relative col-span-4 max-lg:col-span-6 max-md:col-span-12">
                 <input
                   type="text"
                   id="email"
@@ -239,7 +241,7 @@ const Profile = () => {
                 </label>
               </div>
 
-              <div className="relative col-span-4">
+              <div className="relative col-span-4 max-lg:col-span-6 max-md:col-span-12">
                 <ErrorMessage
                   name="password"
                   component="div"
@@ -263,7 +265,7 @@ const Profile = () => {
                 </label>
               </div>
 
-              <div className="relative col-span-4">
+              <div className="relative col-span-4 max-lg:col-span-6 max-md:col-span-12">
                 <Field
                   as={InputMask}
                   mask={
@@ -286,7 +288,7 @@ const Profile = () => {
                 </label>
               </div>
 
-              <div className="grid col-span-8 grid-cols-8">
+              <div className="grid grid-cols-8 col-span-8 max-lg:col-span-12 max-md:col-span-12">
                 <div className="col-span-4 flex justify-center">
                   {passwordError && (
                     <div className="text-red-600 text-sm self-center justify-self-center">
@@ -324,9 +326,10 @@ const Profile = () => {
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="col-span-12 bg-blue-500 text-white px-4 py-2 rounded-lg"
+                className="col-span-12 border border-blue-500 flex justify-center items-center  text-white px-4 py-2 rounded-lg"
               >
-                Atualizar Dados
+                
+<BsFillPersonCheckFill color="blue" size={25} />
               </button>
             </Form>
           </Formik>
