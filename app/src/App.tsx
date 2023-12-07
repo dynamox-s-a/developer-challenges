@@ -3,11 +3,12 @@ import { ThemeProvider } from "@mui/material";
 import { GlobalStyle } from "./shared/themes/globalStyle";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-import { MaterialTheme } from "./shared/themes/MUI";
+import { createTheme } from "./shared/themes/MUI";
 
 function App() {
+  const theme = createTheme();
   return (
-    <ThemeProvider theme={MaterialTheme}>
+    <ThemeProvider theme={theme}>
       <GlobalStyle />
       <BrowserRouter>
         <Routes>
