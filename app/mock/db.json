@@ -1,0 +1,40 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "user1@dynamox.com",
+      "password": "user222"
+    },
+    {
+      "email": "user2@dynamox.com",
+      "password": "user322",
+      "id": 2
+    }
+  ],
+  "machines": [
+    {
+      "id": 1,
+      "name": "Máquina de Tritura",
+      "type": "Pump"
+    },
+    {
+      "id": 2,
+      "name": "Ventoinha",
+      "type": "Fan"
+    }
+  ],
+  "monitoring_points": [
+    {
+      "id": 1,
+      "name": "Entrada",
+      "machineId": 1,
+      "sensor": "HF+"
+    },
+    {
+      "id": 1,
+      "name": "Saída",
+      "machineId": 1,
+      "sensor": "HF+"
+    }
+  ]
+}
