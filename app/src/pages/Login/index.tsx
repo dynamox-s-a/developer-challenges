@@ -14,7 +14,6 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useLayoutEffect, useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import { IUser } from "../../types";
-import { login } from "../../utils/login";
 import { UsersService } from "../../services/api/users/UsersService";
 import * as St from "./styles";
 

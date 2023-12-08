@@ -4,11 +4,6 @@
       "id": 1,
       "email": "user1@dynamox.com",
       "password": "user222"
-    },
-    {
-      "email": "user2@dynamox.com",
-      "password": "user322",
-      "id": 2
     }
   ],
   "machines": [

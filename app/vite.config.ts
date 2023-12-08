@@ -5,6 +5,9 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: [{ find: "@assets", replacement: "/src/assets/" }],
+    alias: [
+      { find: "@assets", replacement: "/src/assets/" },
+      { find: "@types", replacement: "/src/types.d.ts" },
+    ],
   },
 });

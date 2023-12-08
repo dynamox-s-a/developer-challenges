@@ -16,12 +16,6 @@ export interface IUser {
   password: string;
 }
 
-export interface IMachine {
-  id: number;
-  name: string;
-  type: MachineTypes;
-}
-
 export interface IMonitoringPoint {
   id: number;
   name: string;
