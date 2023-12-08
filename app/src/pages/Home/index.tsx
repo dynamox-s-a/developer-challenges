@@ -1,12 +1,12 @@
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as St from "./styles";
 
 export default function Home() {
   const navigate = useNavigate();
 
-  useLayoutEffect(() => {
-    !window.localStorage.getItem("isLogged") && navigate("/");
+  useEffect(() => {
+    window.localStorage.getItem("isLogged") === "false" && navigate("/");
   }, [navigate]);
 
   return (
