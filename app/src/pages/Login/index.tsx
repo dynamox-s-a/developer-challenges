@@ -11,10 +11,12 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { useNavigate } from "react-router-dom";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useLayoutEffect, useState } from "react";
+import { useState } from "react";
 import IconButton from "@mui/material/IconButton";
+import { useDispatch } from "react-redux";
 import { IUser } from "../../types";
 import { UsersService } from "../../services/api/users/UsersService";
+import { setUser } from "../../redux/store/users/userSlice";
 import * as St from "./styles";
 
 type IUserLogin = Omit<IUser, "id">;
@@ -25,10 +27,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const errors = formState.errors;
   const handleClickShowPassword = () => setShowPassword(!showPassword);
-
-  useLayoutEffect(() => {
-    window.localStorage.setItem("isLogged", "false");
-  }, [navigate]);
+  const dispatch = useDispatch();
 
   const userLogin: SubmitHandler<IUserLogin> = async ({
     email,
@@ -36,9 +35,9 @@ export default function Login() {
   }: IUserLogin) => {
     await UsersService.getByEmail(email, password)
       .then(({ data }) => {
-        console.log(data);
-        if (data.length !== 0) {
-          window.localStorage.setItem("isLogged", "true");
+        const user = data[0];
+        if (user) {
+          dispatch(setUser(user));
           navigate("/monitoring");
         }
       })
@@ -46,8 +45,6 @@ export default function Login() {
         console.log(err.message);
       });
   };
-
-  console.log(window.localStorage.getItem("isLogged"));
 
   return (
     <St.Container>

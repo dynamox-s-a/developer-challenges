@@ -1,3 +1,5 @@
+import { FetchStatus } from "../../types";
+
 export interface IUser {
   id: number;
   name: string;
@@ -8,6 +10,8 @@ export interface IUser {
 export interface IUserState {
   readonly user: IUser | undefined;
   readonly isLogged: boolean;
-  readonly loading: boolean;
-  readonly error: boolean;
+  readonly status: FetchStatus;
+  readonly error: string | undefined;
 }
+
+export type IUserLogin = Omit<IUser, "id">;

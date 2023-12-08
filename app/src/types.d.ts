@@ -16,6 +16,8 @@ export interface IUser {
   password: string;
 }
 
+e;
+
 export interface IMonitoringPoint {
   id: number;
   name: string;

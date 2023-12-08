@@ -1,13 +1,16 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 import * as St from "./styles";
 
 export default function Home() {
   const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
-    window.localStorage.getItem("isLogged") === "false" && navigate("/");
-  }, [navigate]);
+    !user.isLogged && navigate("/");
+  }, [navigate, user]);
 
   return (
     <St.MyHistory>
