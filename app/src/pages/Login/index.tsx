@@ -14,13 +14,11 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useEffect, useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import { useDispatch, useSelector } from "react-redux";
-import { IUser } from "../../types";
 import { fetchUser } from "../../redux/store/users/userSlice";
 import { AppDispatch, RootState } from "../../redux/store";
 import { FetchStatus } from "../../redux/types";
+import { IUserLogin } from "../../redux/store/users/types";
 import * as St from "./styles";
-
-type IUserLogin = Omit<IUser, "id">;
 
 export default function Login() {
   const navigate = useNavigate();

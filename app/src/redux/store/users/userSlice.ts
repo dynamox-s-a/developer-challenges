@@ -23,7 +23,7 @@ const userSlice = createSlice({
   name: "user",
   initialState: initialUsers,
   reducers: {
-    clearUser: () => {
+    logout: () => {
       return initialUsers;
     },
   },
@@ -47,7 +47,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { clearUser } = userSlice.actions;
+export const { logout } = userSlice.actions;
 
 export const getUser = (state: RootState) => state.user.user;
 export const getUsersStatus = (state: RootState) => state.user.status;
