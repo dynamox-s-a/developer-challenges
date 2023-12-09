@@ -19,7 +19,7 @@ export const deleteMonitoringPointAsyncBuilder = (
   builder: ActionReducerMapBuilder<IMonitoringPointsState>,
 ) => {
   builder
-    .addCase(deleteMonitoringPoint.pending, (state, action) => {
+    .addCase(deleteMonitoringPoint.pending, (state, _action) => {
       state.status = FetchStatus.loading;
     })
     .addCase(

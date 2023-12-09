@@ -23,7 +23,7 @@ export const createMonitoringPointAsyncBuilder = (
   builder: ActionReducerMapBuilder<IMonitoringPointsState>,
 ) => {
   builder
-    .addCase(createMonitoringPoint.pending, (state, action) => {
+    .addCase(createMonitoringPoint.pending, (state, _action) => {
       state.status = FetchStatus.loading;
     })
     .addCase(

@@ -19,7 +19,7 @@ export const updateMachineAsyncBuilder = (
   builder: ActionReducerMapBuilder<IMachinesState>,
 ) => {
   builder
-    .addCase(updateMachine.pending, (state, action) => {
+    .addCase(updateMachine.pending, (state, _action) => {
       state.status = FetchStatus.loading;
     })
     .addCase(

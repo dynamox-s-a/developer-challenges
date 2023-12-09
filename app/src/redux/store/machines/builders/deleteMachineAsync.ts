@@ -19,7 +19,7 @@ export const deleteMachineAsyncBuilder = (
   builder: ActionReducerMapBuilder<IMachinesState>,
 ) => {
   builder
-    .addCase(deleteMachine.pending, (state, action) => {
+    .addCase(deleteMachine.pending, (state, _action) => {
       state.status = FetchStatus.loading;
     })
     .addCase(
