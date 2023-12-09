@@ -1,6 +1,7 @@
 import { Api } from "../ApiConfig";
+import { IUserLogin } from "./../../../redux/store/users/types";
 
-const getByEmail = async (email: string, password: string) => {
+const getByEmail = async ({ email, password }: IUserLogin) => {
   return Api().get(`/users?email=${email}&password=${password}`);
 };
 

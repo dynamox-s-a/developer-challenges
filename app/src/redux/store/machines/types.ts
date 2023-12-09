@@ -1,4 +1,5 @@
 import { MachineTypes } from "../../../types";
+import { FetchStatus } from "../../types";
 
 export interface IMachine {
   id: number;
@@ -8,6 +9,6 @@ export interface IMachine {
 
 export interface IMachinesState {
   readonly machines: IMachine[];
-  readonly loading: boolean;
-  readonly error: boolean;
+  readonly status: FetchStatus;
+  readonly error: string | undefined;
 }

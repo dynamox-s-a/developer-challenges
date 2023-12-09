@@ -13,8 +13,8 @@ const initialUsers: IUserState = {
 
 export const fetchUser = createAsyncThunk(
   "user/fetchUser",
-  async ({ email, password }: IUserLogin) => {
-    const response = await UsersService.getByEmail(email, password);
+  async (user: IUserLogin) => {
+    const response = await UsersService.getByEmail(user);
     return response.data[0];
   },
 );
@@ -23,9 +23,6 @@ const userSlice = createSlice({
   name: "user",
   initialState: initialUsers,
   reducers: {
-    setUser: (state, { payload }: PayloadAction<IUser>) => {
-      return { ...state, user: payload, isLogged: true };
-    },
     clearUser: () => {
       return initialUsers;
     },
@@ -50,7 +47,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUser, clearUser } = userSlice.actions;
+export const { clearUser } = userSlice.actions;
 
 export const getUser = (state: RootState) => state.user.user;
 export const getUsersStatus = (state: RootState) => state.user.status;

@@ -11,12 +11,13 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { useNavigate } from "react-router-dom";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import IconButton from "@mui/material/IconButton";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { IUser } from "../../types";
-import { UsersService } from "../../services/api/users/UsersService";
-import { setUser } from "../../redux/store/users/userSlice";
+import { fetchUser } from "../../redux/store/users/userSlice";
+import { AppDispatch, RootState } from "../../redux/store";
+import { FetchStatus } from "../../redux/types";
 import * as St from "./styles";
 
 type IUserLogin = Omit<IUser, "id">;
@@ -27,24 +28,16 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const errors = formState.errors;
   const handleClickShowPassword = () => setShowPassword(!showPassword);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+  const fetchStatus = useSelector((state: RootState) => state.user.status);
 
-  const userLogin: SubmitHandler<IUserLogin> = async ({
-    email,
-    password,
-  }: IUserLogin) => {
-    await UsersService.getByEmail(email, password)
-      .then(({ data }) => {
-        const user = data[0];
-        if (user) {
-          dispatch(setUser(user));
-          navigate("/monitoring");
-        }
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+  const userLogin: SubmitHandler<IUserLogin> = async ({ email, password }) => {
+    dispatch(fetchUser({ email, password }));
   };
+
+  useEffect(() => {
+    fetchStatus === FetchStatus.succeeded && navigate("/monitoring");
+  }, [fetchStatus, navigate]);
 
   return (
     <St.Container>

@@ -1,39 +1,28 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { FetchStatus } from "../../types";
 import { IMachine, IMachinesState } from "./types";
+import { getMachinesAsyncBuilder } from "./builders/getMachinesAsync";
+import { createMachineAsyncBuilder } from "./builders/createMachineAsync";
+import { updateMachineAsyncBuilder } from "./builders/updateMachineAsync";
+import { deleteMachineAsyncBuilder } from "./builders/deleteMachineAsync";
 
 const initialMachines: IMachinesState = {
   machines: [],
-  error: false,
-  loading: false,
+  status: FetchStatus.idle,
+  error: undefined,
 };
 
 const machinesSlice = createSlice({
   name: "machines",
   initialState: initialMachines,
-  reducers: {
-    setMachines: (state, { payload }: PayloadAction<IMachine[]>) => {
-      return { ...state, machines: payload };
-    },
-    createMachine: (state, { payload }: PayloadAction<IMachine>) => {
-      return { ...state, machines: [...state.machines, payload] };
-    },
-    updateMachine: (state, { payload }: PayloadAction<IMachine>) => {
-      const { id, name, type } = payload;
-      state.machines
-        .filter((machine) => machine.id === id)
-        .map((machine) => {
-          machine.name = name;
-          machine.type = type;
-        });
-    },
-    deleteMachine: (state, { payload }: PayloadAction<IMachine>) => {
-      state.machines.filter((machine) => machine.id !== payload.id);
-    },
+  reducers: {},
+  extraReducers(builder) {
+    getMachinesAsyncBuilder(builder);
+    createMachineAsyncBuilder(builder);
+    updateMachineAsyncBuilder(builder);
+    deleteMachineAsyncBuilder(builder);
   },
 });
-
-export const { setMachines, createMachine, updateMachine, deleteMachine } =
-  machinesSlice.actions;
 
 export const getMachines = (state: { machine: IMachine }) => state.machine;
 
