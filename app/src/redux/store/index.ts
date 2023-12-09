@@ -1,4 +1,5 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { Middleware, configureStore } from "@reduxjs/toolkit";
+import logger from "redux-logger";
 import userReducer from "./users/userSlice";
 import machineReducer from "./machines/machineSlice";
 import monitoringPointReducer from "./monitoringPoints/monitoringPointsSlicer";
@@ -9,7 +10,8 @@ const store = configureStore({
     machine: machineReducer,
     monitoringPoint: monitoringPointReducer,
   },
-  // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(logger as Middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
