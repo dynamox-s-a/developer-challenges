@@ -8,7 +8,7 @@ import { FetchStatus } from "../../../types";
 import { IMachine, IMachinesState } from "../types";
 
 export const deleteMachine = createAsyncThunk(
-  "machines/fetchMachines",
+  "machines/deleteMachines",
   async (id: number) => {
     const response = await MachinesService.deleteById(id);
     return response.data;

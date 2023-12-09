@@ -10,20 +10,6 @@ export enum MachineTypes {
   "Pump",
   "Fan",
 }
-export interface IUser {
-  id: number;
-  email: string;
-  password: string;
-}
-
-e;
-
-export interface IMonitoringPoint {
-  id: number;
-  name: string;
-  machineId: number;
-  sensor: Sensors;
-}
 
 export interface ITextFieldProps {
   formRef: {

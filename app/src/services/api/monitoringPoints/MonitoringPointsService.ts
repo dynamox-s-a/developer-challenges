@@ -1,60 +1,29 @@
-import { IMonitoringPoint } from "../../../types";
+import { IMonitoringPoint } from "../../../redux/store/monitoringPoints/types";
 import { Api } from "../ApiConfig";
-import { ApiException } from "../ErrorException";
 
-const getAll = async (): Promise<IMonitoringPoint[] | ApiException> => {
-  try {
-    const { data } = await Api().get("/monitoring_points");
-    return data;
-  } catch (error: any) {
-    return new ApiException(error.message || "Erro ao buscar os registros");
-  }
+const getAll = () => {
+  return Api().get("/monitoring_points");
 };
 
-const getById = async (
-  id: number,
-): Promise<IMonitoringPoint | ApiException> => {
-  try {
-    const { data } = await Api().get(`/monitoring_points/${id}}`);
-    return data;
-  } catch (error: any) {
-    return new ApiException(error.message || "Erro ao buscar o registro");
-  }
+const getById = (id: number) => {
+  return Api().get(`/monitoring_points/${id}}`);
 };
 
-const create = async (
-  NewMonitoringPoint: Omit<IMonitoringPoint, "id">,
-): Promise<IMonitoringPoint | ApiException> => {
-  try {
-    const { data } = await Api().post("/monitoring_points", NewMonitoringPoint);
-    return data;
-  } catch (error: any) {
-    return new ApiException(error.message || "Erro ao criar o registro");
-  }
+const create = (NewMonitoringPoint: IMonitoringPoint) => {
+  return Api().post("/monitoring_points", NewMonitoringPoint);
 };
 
-const updateById = async (
-  NewMonitoringPoint: IMonitoringPoint,
-): Promise<IMonitoringPoint | ApiException> => {
-  try {
-    const { data } = await Api().put(
-      `/monitoring_points/${NewMonitoringPoint.id}}`,
-      NewMonitoringPoint,
-    );
-    return data;
-  } catch (error: any) {
-    return new ApiException(error.message || "Erro ao atualizar o registro");
-  }
+const updateById = (NewMonitoringPoint: IMonitoringPoint) => {
+  return Api().put(
+    `/monitoring_points/${NewMonitoringPoint.id}}`,
+    NewMonitoringPoint,
+  );
 };
 
-const deleteById = async (id: number): Promise<undefined | ApiException> => {
-  try {
-    await Api().delete(`/monitoring_points/${id}}`);
-    return;
-  } catch (error: any) {
-    return new ApiException(error.message || "Erro ao apagar o registro");
-  }
+const deleteById = (id: number) => {
+  return Api().delete(`/monitoring_points/${id}}`);
 };
+
 export const MonitoringPointsService = {
   getAll,
   getById,

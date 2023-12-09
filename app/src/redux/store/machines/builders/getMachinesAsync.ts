@@ -8,7 +8,7 @@ import { FetchStatus } from "../../../types";
 import { IMachine, IMachinesState } from "../types";
 
 export const getMachines = createAsyncThunk(
-  "machines/fetchMachines",
+  "machines/getMachines",
   async () => {
     const response = await MachinesService.getAll();
     return response.data;

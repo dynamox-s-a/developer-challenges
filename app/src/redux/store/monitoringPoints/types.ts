@@ -1,6 +1,7 @@
 import { Sensors } from "../../../types";
+import { FetchStatus } from "../../types";
 
-export interface IMonitoringPoint {
+export interface IMonitoringPointStore {
   id: number;
   name: string;
   machineName: string;
@@ -9,7 +10,14 @@ export interface IMonitoringPoint {
 }
 
 export interface IMonitoringPointsState {
-  readonly monitoringPoints: IMonitoringPoint[];
-  readonly loading: boolean;
-  readonly error: boolean;
+  readonly monitoringPoints: IMonitoringPointStore[];
+  readonly status: FetchStatus;
+  readonly error: string | undefined;
+}
+
+export interface IMonitoringPoint {
+  id: number;
+  name: string;
+  machineId: number;
+  sensor: Sensors;
 }

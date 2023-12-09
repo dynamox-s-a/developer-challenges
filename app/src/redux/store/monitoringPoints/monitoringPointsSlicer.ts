@@ -1,63 +1,31 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { IMonitoringPoint, IMonitoringPointsState } from "./types";
+import { createSlice } from "@reduxjs/toolkit";
+import { FetchStatus } from "../../types";
+import { RootState } from "..";
+import { IMonitoringPointsState } from "./types";
+import { getMonitoringPointsAsyncBuilder } from "./builders/getMonitoringPointsAsync";
+import { createMonitoringPointAsyncBuilder } from "./builders/createMonitoringPointsAsync";
+import { updateMonitoringPointAsyncBuilder } from "./builders/updateMonitoringPointsAsync";
+import { deleteMonitoringPointAsyncBuilder } from "./builders/deleteMonitoringPointsAsync";
 
 const initialMonitoringPoints: IMonitoringPointsState = {
   monitoringPoints: [],
-  error: false,
-  loading: false,
+  status: FetchStatus.idle,
+  error: undefined,
 };
 
 const monitoringPointsSlice = createSlice({
   name: "monitoringPoints",
   initialState: initialMonitoringPoints,
-  reducers: {
-    setMonitoringPoints: (
-      state,
-      { payload }: PayloadAction<IMonitoringPoint[]>,
-    ) => {
-      return { ...state, monitoringPoints: payload };
-    },
-    createMonitoringPoint: (
-      state,
-      { payload }: PayloadAction<IMonitoringPoint>,
-    ) => {
-      return {
-        ...state,
-        monitoringPoints: [...state.monitoringPoints, payload],
-      };
-    },
-    updateMonitoringPoint: (
-      state,
-      { payload }: PayloadAction<IMonitoringPoint>,
-    ) => {
-      const { id, name, machineName, machineType, sensor } = payload;
-      state.monitoringPoints
-        .filter((point) => point.id === id)
-        .map((point) => {
-          point.name = name;
-          point.machineName = machineName;
-          point.machineType = machineType;
-          point.sensor = sensor;
-        });
-    },
-    deleteMonitoringPoint: (
-      state,
-      { payload }: PayloadAction<IMonitoringPoint>,
-    ) => {
-      state.monitoringPoints.filter((point) => point.id !== payload.id);
-    },
+  reducers: {},
+  extraReducers(builder) {
+    getMonitoringPointsAsyncBuilder(builder);
+    createMonitoringPointAsyncBuilder(builder);
+    updateMonitoringPointAsyncBuilder(builder);
+    deleteMonitoringPointAsyncBuilder(builder);
   },
 });
 
-export const {
-  setMonitoringPoints,
-  createMonitoringPoint,
-  updateMonitoringPoint,
-  deleteMonitoringPoint,
-} = monitoringPointsSlice.actions;
-
-export const getMonitoringPoints = (state: {
-  monitoringPoint: IMonitoringPoint;
-}) => state.monitoringPoint;
-
+export const getMonitoringPoints = (state: RootState) => state.monitoringPoint;
+export const getMonitoringPointStatus = (state: RootState) => state.user.status;
+export const getMonitoringPointError = (state: RootState) => state.user.error;
 export default monitoringPointsSlice.reducer;
