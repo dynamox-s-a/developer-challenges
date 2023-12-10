@@ -1,6 +1,9 @@
-import { MachineTypes } from "../../../types";
 import { FetchStatus } from "../../types";
 
+export enum MachineTypes {
+  pump = "Pump",
+  fan = "Fan",
+}
 export interface IMachine {
   id: number;
   name: string;
@@ -9,6 +12,7 @@ export interface IMachine {
 
 export interface IMachinesState {
   readonly machines: IMachine[];
+  readonly types: MachineTypes[];
   readonly status: FetchStatus;
   readonly error: string | undefined;
 }

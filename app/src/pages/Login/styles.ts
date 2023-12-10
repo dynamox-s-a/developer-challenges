@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import BackgDesktop from "@assets/background.jpg";
+import styled from "styled-components";
 
 export const Container = styled.div`
   height: 100vh;
@@ -29,7 +29,11 @@ export const Login = styled.section`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 50%;
+  width: 80%;
+
+  @media (min-width: 1024px) {
+    width: 50%;
+  }
 `;
 
 export const Form = styled.form`

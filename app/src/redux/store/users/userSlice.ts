@@ -1,7 +1,7 @@
-import { PayloadAction, createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { RootState } from "..";
 import { UsersService } from "../../../services/api/users/UsersService";
 import { FetchStatus } from "../../types";
-import { RootState } from "..";
 import { IUser, IUserLogin, IUserState } from "./types";
 
 const initialUsers: IUserState = {
@@ -36,8 +36,12 @@ const userSlice = createSlice({
         fetchUser.fulfilled,
         (state, { payload }: PayloadAction<IUser>) => {
           state.status = FetchStatus.succeeded;
-          state.user = payload;
-          state.isLogged = true;
+          if (payload) {
+            state.user = payload;
+            state.isLogged = true;
+          } else {
+            state.error = "Usuário e/ou senha Incorretos";
+          }
         },
       )
       .addCase(fetchUser.rejected, (state, { error }) => {

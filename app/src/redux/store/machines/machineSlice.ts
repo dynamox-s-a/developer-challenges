@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { FetchStatus } from "../../types";
 import { RootState } from "..";
-import { IMachinesState } from "./types";
+import { IMachinesState, MachineTypes } from "./types";
 import { getMachinesAsyncBuilder } from "./builders/getMachinesAsync";
 import { createMachineAsyncBuilder } from "./builders/createMachineAsync";
 import { updateMachineAsyncBuilder } from "./builders/updateMachineAsync";
@@ -9,6 +9,7 @@ import { deleteMachineAsyncBuilder } from "./builders/deleteMachineAsync";
 
 const initialMachines: IMachinesState = {
   machines: [],
+  types: [MachineTypes.pump, MachineTypes.fan],
   status: FetchStatus.idle,
   error: undefined,
 };
