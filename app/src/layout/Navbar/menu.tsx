@@ -70,10 +70,12 @@ export default function Menu({ isMobile, setOpen, setTab }: IMenuProps) {
             sx={{ height: "fit-content" }}
             onClick={() => setOpen(false)}
             aria-label="Fechar Menu"
+            size="small"
           >
             <CloseIcon
               sx={{
                 color: "neutral.50",
+                fontSize: "1rem",
               }}
             />
           </IconButton>

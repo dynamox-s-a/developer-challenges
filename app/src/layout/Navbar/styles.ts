@@ -8,8 +8,8 @@ export const MenuDesktop = styled.div`
 `;
 
 export const Logo = styled.img`
-  width: 3rem;
-  margin-left: 10px;
+  width: 8rem;
+  margin: 10px;
 
   @media (min-width: 1024px) {
     width: 8rem;
