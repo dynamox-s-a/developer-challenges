@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "../../redux/store";
 import { IUserLogin } from "../../redux/store/users/types";
-import { fetchUser } from "../../redux/store/users/userSlice";
+import { fetchUser, logout } from "../../redux/store/users/userSlice";
 import LoginField from "../../shared/components/Fields/loginField";
 import Alert from "../../shared/components/alert";
 import * as St from "./styles";
@@ -23,6 +23,10 @@ export default function Login() {
   };
 
   useEffect(() => {
+    dispatch(logout());
+  }, [dispatch]);
+
+  useEffect(() => {
     isLogged && navigate("/monitoring");
   }, [navigate, isLogged]);
 
@@ -30,6 +34,7 @@ export default function Login() {
     <St.Container>
       <St.Login>
         <St.Logo src={Logo} alt="Logo" />
+        <St.Title>DynaPredict</St.Title>
         <St.Form autoComplete="off" onSubmit={formHook.handleSubmit(userLogin)}>
           <section>
             <LoginField label="E-mail" formRef={{ name: "email", formHook }} />

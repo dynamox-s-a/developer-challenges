@@ -24,6 +24,12 @@ export const Logo = styled.img`
   width: 13rem;
 `;
 
+export const Title = styled.p`
+  font-size: 2rem;
+  margin-top: 0.5rem;
+  font-weight: bold;
+`;
+
 export const Login = styled.section`
   display: flex;
   flex-direction: column;

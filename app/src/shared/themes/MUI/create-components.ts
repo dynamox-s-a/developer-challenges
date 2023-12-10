@@ -6,6 +6,7 @@ import {
   paperClasses,
   tableCellClasses,
 } from "@mui/material";
+import { indigo, neutral } from "./colors";
 
 // Used only to create transitions
 const muiTheme = createTheme();
@@ -14,12 +15,16 @@ export function createComponents(config: { palette: any }) {
   const { palette } = config;
 
   return {
-    MuiAvatar: {
+    MuiDrawer: {
       styleOverrides: {
-        root: {
-          fontSize: 14,
-          fontWeight: 600,
-          letterSpacing: 0,
+        paper: {
+          backgroundColor: indigo.dark,
+          color: neutral[50],
+          padding: 10,
+          width: 300,
+          [muiTheme.breakpoints.up("md")]: {
+            backgroundColor: palette.primary.main,
+          },
         },
       },
     },
@@ -82,47 +87,6 @@ export function createComponents(config: { palette: any }) {
       styleOverrides: {
         root: {
           padding: "32px 24px 16px",
-        },
-      },
-    },
-    MuiCssBaseline: {
-      styleOverrides: {
-        "*": {
-          boxSizing: "border-box",
-        },
-        html: {
-          MozOsxFontSmoothing: "grayscale",
-          WebkitFontSmoothing: "antialiased",
-          display: "flex",
-          flexDirection: "column",
-          minHeight: "100%",
-          width: "100%",
-        },
-        body: {
-          display: "flex",
-          flex: "1 1 auto",
-          flexDirection: "column",
-          minHeight: "100%",
-          width: "100%",
-        },
-        "#__next": {
-          display: "flex",
-          flex: "1 1 auto",
-          flexDirection: "column",
-          height: "100%",
-          width: "100%",
-        },
-        "#nprogress": {
-          pointerEvents: "none",
-        },
-        "#nprogress .bar": {
-          backgroundColor: palette.primary.main,
-          height: 3,
-          left: 0,
-          position: "fixed",
-          top: 0,
-          width: "100%",
-          zIndex: 2000,
         },
       },
     },
