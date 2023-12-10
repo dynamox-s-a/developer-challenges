@@ -1,14 +1,14 @@
 import { Middleware, configureStore } from "@reduxjs/toolkit";
 import logger from "redux-logger";
-import userReducer from "./users/userSlice";
 import machineReducer from "./machines/machineSlice";
 import monitoringPointReducer from "./monitoringPoints/monitoringPointsSlicer";
+import userReducer from "./users/userSlice";
 
 const store = configureStore({
   reducer: {
     user: userReducer,
-    machine: machineReducer,
-    monitoringPoint: monitoringPointReducer,
+    machines: machineReducer,
+    monitoringPoints: monitoringPointReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(logger as Middleware),

@@ -1,11 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { FetchStatus } from "../../types";
-import { RootState } from "..";
-import { IMachinesState, MachineTypes } from "./types";
-import { getMachinesAsyncBuilder } from "./builders/getMachinesAsync";
 import { createMachineAsyncBuilder } from "./builders/createMachineAsync";
-import { updateMachineAsyncBuilder } from "./builders/updateMachineAsync";
 import { deleteMachineAsyncBuilder } from "./builders/deleteMachineAsync";
+import { getMachinesAsyncBuilder } from "./builders/getMachinesAsync";
+import { updateMachineAsyncBuilder } from "./builders/updateMachineAsync";
+import { IMachinesState, MachineTypes } from "./types";
 
 const initialMachines: IMachinesState = {
   machines: [],
@@ -26,7 +25,7 @@ const machinesSlice = createSlice({
   },
 });
 
-export const getMachines = (state: RootState) => state.machine;
-export const getMachineStatus = (state: RootState) => state.user.status;
-export const getMachineError = (state: RootState) => state.user.error;
+// export const getMachines = (state: RootState) => state.machines;
+// export const getMachineStatus = (state: RootState) => state.user.status;
+// export const getMachineError = (state: RootState) => state.user.error;
 export default machinesSlice.reducer;

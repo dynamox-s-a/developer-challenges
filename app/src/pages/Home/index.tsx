@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Header from "../../layout/Header";
-import MonitoringPoints from "../../layout/Machines";
 import NavBar from "../../layout/Navbar";
-import Machines from "../../layout/monitoringPoints";
+
+import Machines from "../../layout/Machines";
+import MonitoringPoints from "../../layout/monitoringPoints";
 import { RootState } from "../../redux/store";
 import { IUserState } from "../../redux/store/users/types";
 import * as St from "./styles";

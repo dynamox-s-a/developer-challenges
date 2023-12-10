@@ -1,11 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { FetchStatus } from "../../types";
-import { RootState } from "..";
-import { IMonitoringPointsState, Sensors } from "./types";
-import { getMonitoringPointsAsyncBuilder } from "./builders/getMonitoringPointsAsync";
 import { createMonitoringPointAsyncBuilder } from "./builders/createMonitoringPointsAsync";
-import { updateMonitoringPointAsyncBuilder } from "./builders/updateMonitoringPointsAsync";
 import { deleteMonitoringPointAsyncBuilder } from "./builders/deleteMonitoringPointsAsync";
+import { getMonitoringPointsAsyncBuilder } from "./builders/getMonitoringPointsAsync";
+import { updateMonitoringPointAsyncBuilder } from "./builders/updateMonitoringPointsAsync";
+import { IMonitoringPointsState, Sensors } from "./types";
 
 const initialMonitoringPoints: IMonitoringPointsState = {
   monitoringPoints: [],
@@ -26,7 +25,7 @@ const monitoringPointsSlice = createSlice({
   },
 });
 
-export const getMonitoringPoints = (state: RootState) => state.monitoringPoint;
-export const getMonitoringPointStatus = (state: RootState) => state.user.status;
-export const getMonitoringPointError = (state: RootState) => state.user.error;
+// export const getMonitoringPoints = (state: RootState) => state.monitoringPoints;
+// export const getMonitoringPointStatus = (state: RootState) => state.user.status;
+// export const getMonitoringPointError = (state: RootState) => state.user.error;
 export default monitoringPointsSlice.reducer;

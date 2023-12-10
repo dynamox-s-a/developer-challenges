@@ -1,11 +1,12 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { ThemeProvider } from "@mui/material";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+
+import { ThemeProvider } from "@mui/material/styles";
 import { Provider } from "react-redux";
-import { GlobalStyle } from "./shared/themes/globalStyle";
-import Login from "./pages/Login";
 import Home from "./pages/Home";
-import { createTheme } from "./shared/themes/MUI";
+import Login from "./pages/Login";
 import store from "./redux/store";
+import { createTheme } from "./shared/themes/MUI";
+import { GlobalStyle } from "./shared/themes/globalStyle";
 
 function App() {
   const theme = createTheme();

@@ -46,7 +46,7 @@ export const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  margin: 2rem auto;
+  margin: 4rem auto;
 
   @media (min-width: 1024px) {
     margin: 2rem 0;
