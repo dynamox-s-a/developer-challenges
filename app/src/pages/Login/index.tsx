@@ -1,6 +1,6 @@
 import LoginImage from "@assets/Example.png";
 import Logo from "@assets/logo.png";
-import { Button } from "@mui/material";
+import { Alert, Button } from "@mui/material";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "../../redux/store";
 import { IUserLogin } from "../../redux/store/users/types";
 import { fetchUser } from "../../redux/store/users/userSlice";
-import Alert from "../../shared/components/alert";
 import LoginField from "../../shared/components/fields/loginField";
 import * as St from "./styles";
 
@@ -19,7 +18,7 @@ export default function Login() {
   const { isLogged, error } = useSelector((state: RootState) => state.user);
 
   const userLogin: SubmitHandler<IUserLogin> = async ({ email, password }) => {
-    dispatch(fetchUser({ email, password }));
+    await dispatch(fetchUser({ email, password }));
   };
 
   useEffect(() => {
@@ -45,7 +44,11 @@ export default function Login() {
             Entrar
           </Button>
         </St.Form>
-        {error && <Alert type="error" error={error} />}
+        {error && (
+          <Alert variant="filled" severity="error">
+            {error}
+          </Alert>
+        )}
       </St.Login>
 
       {window.innerWidth >= 1024 && (

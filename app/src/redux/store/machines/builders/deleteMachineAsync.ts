@@ -1,16 +1,15 @@
-import {
-  ActionReducerMapBuilder,
-  PayloadAction,
-  createAsyncThunk,
-} from "@reduxjs/toolkit";
+import { ActionReducerMapBuilder, createAsyncThunk } from "@reduxjs/toolkit";
 import { MachinesService } from "../../../../services/api/machines/MachinesSrevice";
 import { FetchStatus } from "../../../types";
-import { IMachine, IMachinesState } from "../types";
+import { IMachinesState } from "../types";
+
+let machineId: number;
 
 export const deleteMachine = createAsyncThunk(
   "machines/deleteMachines",
   async (id: number) => {
-    const response = await MachinesService.deleteById(id);
+    const response = await MachinesService.delete(id);
+    machineId = id;
     return response.data;
   },
 );
@@ -22,13 +21,13 @@ export const deleteMachineAsyncBuilder = (
     .addCase(deleteMachine.pending, (state, _action) => {
       state.status = FetchStatus.loading;
     })
-    .addCase(
-      deleteMachine.fulfilled,
-      (state, { payload }: PayloadAction<IMachine>) => {
-        state.status = FetchStatus.succeeded;
-        state.machines.filter((machine) => machine.id !== payload.id);
-      },
-    )
+    .addCase(deleteMachine.fulfilled, (state) => {
+      state.status = FetchStatus.succeeded;
+      state.machines = state.machines.filter(
+        (machine) => machine.id !== machineId,
+      );
+      state.total -= 1;
+    })
     .addCase(deleteMachine.rejected, (state, { error }) => {
       state.status = FetchStatus.failed;
       state.error = error.message;

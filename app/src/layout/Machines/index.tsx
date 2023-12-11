@@ -8,9 +8,14 @@ import IconButton from "@mui/material/IconButton";
 import Pagination from "@mui/material/Pagination";
 import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
 import { AppDispatch, RootState } from "../../redux/store";
 import { getMachines } from "../../redux/store/machines/builders/getMachinesAsync";
-import { IMachinesState, MachineTypes } from "../../redux/store/machines/types";
+import {
+  IMachine,
+  IMachinesState,
+  MachineTypes,
+} from "../../redux/store/machines/types";
 import { FetchStatus } from "../../redux/types";
 import Loading from "../../shared/components/loading";
 import ModalMachines from "./modal";
@@ -21,8 +26,9 @@ interface IMachineProps {
 }
 export default function Machines({ isMobile }: IMachineProps) {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-  const [machineId, setMachineId] = useState<number>();
-  const [modalType, setModalType] = useState<string>("");
+  const formHook = useForm<IMachine>();
+  const [machineId, setMachineId] = useState<number>(0);
+  const [modalType, setModalType] = useState<string>("edit");
   const dispatch = useDispatch<AppDispatch>();
   const [page, setPage] = useState<number>(1);
   const { machines, total, status }: IMachinesState = useSelector(
@@ -37,14 +43,10 @@ export default function Machines({ isMobile }: IMachineProps) {
 
   const limit = isMobile ? 5 : 6;
 
-  const getListMachines = () => {
-    dispatch(getMachines({ page, limit }));
-  };
-
   useMemo(() => {
-    getListMachines();
+    dispatch(getMachines({ page, limit }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, limit, page]);
+  }, [dispatch, limit, page, total]);
 
   const cardMachines = machines.map((mach) => {
     return (
@@ -100,9 +102,9 @@ export default function Machines({ isMobile }: IMachineProps) {
       <ModalMachines
         isOpen={modalIsOpen}
         setOpen={setModalIsOpen}
-        type={modalType}
-        getFunction={getListMachines}
+        modalType={modalType}
         machine={machines.filter((machine) => machine.id === machineId)[0]}
+        formHook={formHook}
       />
     </St.Container>
   );

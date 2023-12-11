@@ -44,3 +44,23 @@ export const Actions = styled.div`
 export const Avatar = styled.img`
   width: 4rem;
 `;
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 4rem auto;
+
+  @media (min-width: 1024px) {
+    margin: 2rem 0;
+  }
+`;
+
+export const ErrorMessage = styled.div`
+  color: var(--red-100);
+  font-size: 0.8rem;
+  margin-top: 3%;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+`;

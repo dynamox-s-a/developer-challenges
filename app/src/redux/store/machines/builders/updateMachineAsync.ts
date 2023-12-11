@@ -10,7 +10,8 @@ import { IMachine, IMachinesState } from "../types";
 export const updateMachine = createAsyncThunk(
   "machines/updateMachines",
   async (machine: IMachine) => {
-    const response = await MachinesService.updateById(machine);
+    const response = await MachinesService.update(machine);
+
     return response.data;
   },
 );

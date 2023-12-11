@@ -5,11 +5,11 @@ import {
 } from "@reduxjs/toolkit";
 import { MachinesService } from "../../../../services/api/machines/MachinesSrevice";
 import { FetchStatus } from "../../../types";
-import { IMachine, IMachinesState } from "../types";
+import { IMachine, IMachinesState, NewMachine } from "../types";
 
 export const createMachine = createAsyncThunk(
   "machines/createMachines",
-  async (machine: IMachine) => {
+  async (machine: NewMachine) => {
     const response = await MachinesService.create(machine);
     return response.data;
   },

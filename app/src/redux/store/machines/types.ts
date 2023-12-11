@@ -10,6 +10,8 @@ export interface IMachine {
   type: MachineTypes;
 }
 
+export type NewMachine = Omit<IMachine, "id">;
+
 export interface IMachinesState {
   readonly machines: IMachine[];
   readonly total: number;

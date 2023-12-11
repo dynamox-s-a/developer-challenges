@@ -13,9 +13,9 @@
       "type": "Pump"
     },
     {
-      "id": 2,
       "name": "Exaustora",
-      "type": "Fan"
+      "type": "Fan",
+      "id": 2
     },
     {
       "id": 3,
@@ -26,16 +26,6 @@
       "id": 4,
       "name": "Caldeira",
       "type": "Pump"
-    },
-    {
-      "id": 5,
-      "name": "Ventilador",
-      "type": "Fan"
-    },
-    {
-      "id": 6,
-      "name": "Evo56",
-      "type": "Fan"
     },
     {
       "id": 7,
@@ -51,20 +41,22 @@
       "id": 9,
       "name": "Evo59",
       "type": "Fan"
-    }
-  ],
-  "monitoring_points": [
-    {
-      "id": 1,
-      "name": "Entrada",
-      "machineId": 1,
-      "sensor": "HF+"
     },
     {
-      "id": 1,
-      "name": "Saída",
-      "machineId": 1,
-      "sensor": "HF+"
+      "id": 10,
+      "name": "Evo60",
+      "type": "Fan"
+    },
+    {
+      "id": 11,
+      "name": "Evo61",
+      "type": "Pump"
+    },
+    {
+      "id": 12,
+      "name": "Evo62",
+      "type": "Fan"
     }
-  ]
+  ],
+  "monitoring_points": []
 }
