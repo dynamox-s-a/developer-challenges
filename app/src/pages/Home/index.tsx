@@ -32,7 +32,11 @@ export default function Home() {
           setOpen={setIsMenuOpen}
         />
       )}
-      {tab === "machines" ? <Machines /> : <MonitoringPoints />}
+      {tab === "machines" ? (
+        <Machines isMobile={isMobile} />
+      ) : (
+        <MonitoringPoints />
+      )}
     </St.Container>
   );
 }

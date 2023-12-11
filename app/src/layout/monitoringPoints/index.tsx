@@ -6,15 +6,13 @@ import Loading from "../../shared/components/loading";
 import * as St from "./styles";
 
 export default function MonitoringPoints() {
-  const machines: IMonitoringPointsState = useSelector(
+  const monitoringPoints: IMonitoringPointsState = useSelector(
     (state: RootState) => state.monitoringPoints,
   );
 
-  console.log({ machines });
-
   return (
     <St.Container>
-      {machines.status === FetchStatus.loading && <Loading />}
+      {monitoringPoints.status === FetchStatus.loading && <Loading />}
     </St.Container>
   );
 }

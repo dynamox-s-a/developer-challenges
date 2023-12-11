@@ -8,6 +8,7 @@ import { IMonitoringPointsState, Sensors } from "./types";
 
 const initialMonitoringPoints: IMonitoringPointsState = {
   monitoringPoints: [],
+  total: 0,
   sensors: [Sensors.tcAg, Sensors.tcAf, Sensors.hf],
   status: FetchStatus.idle,
   error: undefined,

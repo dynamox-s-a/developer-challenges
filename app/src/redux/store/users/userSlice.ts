@@ -1,5 +1,4 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { RootState } from "..";
 import { UsersService } from "../../../services/api/users/UsersService";
 import { FetchStatus } from "../../types";
 import { IUser, IUserLogin, IUserState } from "./types";
@@ -53,7 +52,4 @@ const userSlice = createSlice({
 
 export const { logout } = userSlice.actions;
 
-export const getUser = (state: RootState) => state.user.user;
-export const getUsersStatus = (state: RootState) => state.user.status;
-export const getUsersError = (state: RootState) => state.user.error;
 export default userSlice.reducer;

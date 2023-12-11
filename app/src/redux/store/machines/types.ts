@@ -12,6 +12,7 @@ export interface IMachine {
 
 export interface IMachinesState {
   readonly machines: IMachine[];
+  readonly total: number;
   readonly types: MachineTypes[];
   readonly status: FetchStatus;
   readonly error: string | undefined;

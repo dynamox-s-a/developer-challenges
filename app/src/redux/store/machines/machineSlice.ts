@@ -8,6 +8,7 @@ import { IMachinesState, MachineTypes } from "./types";
 
 const initialMachines: IMachinesState = {
   machines: [],
+  total: 0,
   types: [MachineTypes.pump, MachineTypes.fan],
   status: FetchStatus.idle,
   error: undefined,
@@ -25,7 +26,4 @@ const machinesSlice = createSlice({
   },
 });
 
-// export const getMachines = (state: RootState) => state.machines;
-// export const getMachineStatus = (state: RootState) => state.user.status;
-// export const getMachineError = (state: RootState) => state.user.error;
 export default machinesSlice.reducer;

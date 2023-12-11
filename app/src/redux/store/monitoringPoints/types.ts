@@ -16,6 +16,7 @@ export interface IMonitoringPointStore {
 
 export interface IMonitoringPointsState {
   readonly monitoringPoints: IMonitoringPointStore[];
+  readonly total: number;
   readonly sensors: Sensors[];
   readonly status: FetchStatus;
   readonly error: string | undefined;

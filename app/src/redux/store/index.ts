@@ -1,7 +1,7 @@
 import { Middleware, configureStore } from "@reduxjs/toolkit";
 import logger from "redux-logger";
 import machineReducer from "./machines/machineSlice";
-import monitoringPointReducer from "./monitoringPoints/monitoringPointsSlicer";
+import monitoringPointReducer from "./monitoringPoints/monitoringPointsSlice";
 import userReducer from "./users/userSlice";
 
 const store = configureStore({

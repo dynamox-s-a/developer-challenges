@@ -9,12 +9,47 @@
   "machines": [
     {
       "id": 1,
-      "name": "Máquina de Tritura",
+      "name": "Bomba",
       "type": "Pump"
     },
     {
       "id": 2,
-      "name": "Ventoinha",
+      "name": "Exaustora",
+      "type": "Fan"
+    },
+    {
+      "id": 3,
+      "name": "Extrusora",
+      "type": "Pump"
+    },
+    {
+      "id": 4,
+      "name": "Caldeira",
+      "type": "Pump"
+    },
+    {
+      "id": 5,
+      "name": "Ventilador",
+      "type": "Fan"
+    },
+    {
+      "id": 6,
+      "name": "Evo56",
+      "type": "Fan"
+    },
+    {
+      "id": 7,
+      "name": "Evo57",
+      "type": "Fan"
+    },
+    {
+      "id": 8,
+      "name": "Evo58",
+      "type": "Fan"
+    },
+    {
+      "id": 9,
+      "name": "Evo59",
       "type": "Fan"
     }
   ],

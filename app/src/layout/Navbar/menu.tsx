@@ -1,6 +1,6 @@
 import Logo from "@assets/logo.png";
+import MenuIcon from "@assets/pump-icon.png";
 import CloseIcon from "@mui/icons-material/Close";
-import HeatPumpIcon from "@mui/icons-material/HeatPump";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import Box from "@mui/material/Box";
@@ -41,7 +41,7 @@ export default function Menu({ isMobile, setOpen, setTab }: IMenuProps) {
     {
       text: "Máquinas",
       function: () => changeTab("machines"),
-      icon: <HeatPumpIcon />,
+      icon: <St.MenuIcon src={MenuIcon} alt="Link Máquinas" />,
     },
     {
       text: "Pontos de Monitoramento",

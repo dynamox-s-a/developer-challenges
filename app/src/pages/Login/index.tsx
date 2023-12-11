@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "../../redux/store";
 import { IUserLogin } from "../../redux/store/users/types";
-import { fetchUser, logout } from "../../redux/store/users/userSlice";
+import { fetchUser } from "../../redux/store/users/userSlice";
 import Alert from "../../shared/components/alert";
 import LoginField from "../../shared/components/fields/loginField";
 import * as St from "./styles";
@@ -21,10 +21,6 @@ export default function Login() {
   const userLogin: SubmitHandler<IUserLogin> = async ({ email, password }) => {
     dispatch(fetchUser({ email, password }));
   };
-
-  useEffect(() => {
-    dispatch(logout());
-  }, [dispatch]);
 
   useEffect(() => {
     isLogged && navigate("/monitoring");
