@@ -9,6 +9,9 @@ import Pagination from "@mui/material/Pagination";
 import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
+import { Tooltip } from "@mui/material";
 import { AppDispatch, RootState } from "../../redux/store";
 import { getMachines } from "../../redux/store/machines/builders/getMachinesAsync";
 import {
@@ -19,6 +22,7 @@ import {
 import { FetchStatus } from "../../redux/types";
 import Loading from "../../shared/components/loading";
 import ModalMachines from "./modal";
+
 import * as St from "./styles";
 
 interface IMachineProps {
@@ -27,7 +31,7 @@ interface IMachineProps {
 export default function Machines({ isMobile }: IMachineProps) {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const formHook = useForm<IMachine>();
-  const [machineId, setMachineId] = useState<number>(0);
+  const [machineId, setMachineId] = useState<number | undefined>();
   const [modalType, setModalType] = useState<string>("edit");
   const dispatch = useDispatch<AppDispatch>();
   const [page, setPage] = useState<number>(1);
@@ -35,10 +39,14 @@ export default function Machines({ isMobile }: IMachineProps) {
     (state: RootState) => state.machines,
   );
 
-  const openModal = (type: string, id: number) => {
+  const openModal = (type: string, mach?: IMachine) => {
+    if (type === "edit" && mach) {
+      formHook.setValue("name", mach.name);
+      formHook.setValue("type", mach.type);
+    }
     setModalIsOpen(true);
     setModalType(type);
-    setMachineId(id);
+    mach && setMachineId(mach.id);
   };
 
   const limit = isMobile ? 5 : 6;
@@ -59,13 +67,13 @@ export default function Machines({ isMobile }: IMachineProps) {
           action={
             <St.Actions>
               <IconButton
-                onClick={() => openModal("edit", mach.id)}
+                onClick={() => openModal("edit", mach)}
                 aria-label="settings"
               >
                 <EditIcon />
               </IconButton>
               <IconButton
-                onClick={() => openModal("delete", mach.id)}
+                onClick={() => openModal("delete", mach)}
                 aria-label="settings"
               >
                 <DeleteIcon />
@@ -103,9 +111,20 @@ export default function Machines({ isMobile }: IMachineProps) {
         isOpen={modalIsOpen}
         setOpen={setModalIsOpen}
         modalType={modalType}
-        machine={machines.filter((machine) => machine.id === machineId)[0]}
+        machineId={machineId}
         formHook={formHook}
       />
+      <Tooltip title="Adicionar Máquina">
+        <Fab
+          size="large"
+          sx={{ position: "absolute", bottom: 0, right: 16 }}
+          color="primary"
+          aria-label="Adicionar Máquina"
+          onClick={() => openModal("create")}
+        >
+          <AddIcon />
+        </Fab>
+      </Tooltip>
     </St.Container>
   );
 }

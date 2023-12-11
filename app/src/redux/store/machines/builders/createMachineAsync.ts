@@ -27,6 +27,7 @@ export const createMachineAsyncBuilder = (
       (state, { payload }: PayloadAction<IMachine>) => {
         state.status = FetchStatus.succeeded;
         state.machines.push(payload);
+        state.total += 1;
       },
     )
     .addCase(createMachine.rejected, (state, { error }) => {

@@ -17,7 +17,7 @@ interface IModalMachineProps {
   modalType: string;
   isOpen: boolean;
   setOpen: SetStateFunction<boolean>;
-  machine: IMachine;
+  machineId: number | undefined;
   formHook: UseFormReturn<IMachine>;
 }
 
@@ -25,7 +25,7 @@ export default function ModalMachines({
   isOpen,
   setOpen,
   modalType,
-  machine,
+  machineId,
   formHook,
 }: IModalMachineProps) {
   const dispatch = useDispatch<AppDispatch>();
@@ -37,7 +37,7 @@ export default function ModalMachines({
   };
 
   const delMachine = () => {
-    dispatch(deleteMachine(machine.id));
+    machineId && dispatch(deleteMachine(machineId));
     closeModal();
   };
 
@@ -45,29 +45,28 @@ export default function ModalMachines({
     name,
     type,
   }) => {
-    const newMachine = {
-      id: machine.id,
-      name,
-      type,
-    };
     closeModal();
-    if (modalType === "edit") return await dispatch(updateMachine(newMachine));
+    if (modalType === "edit" && machineId) {
+      const newMachine = {
+        id: machineId,
+        name,
+        type,
+      };
+      return await dispatch(updateMachine(newMachine));
+    }
+
     if (modalType === "create")
       return await dispatch(createMachine({ name, type }));
   };
 
   return (
-    <Dialog
-      fullWidth
-      maxWidth="sm"
-      open={isOpen}
-      onClose={() => closeModal}
-      scroll="paper"
-    >
+    <Dialog open={isOpen} onClose={() => closeModal}>
       <DialogTitle id="dialog-title">
-        {modalType === "edit" ? "Editar Máquina" : "Você tem certeza?"}
+        {modalType === "delete"
+          ? "Você tem certeza?"
+          : `${modalType === "edit" ? "Editar" : "Criar"} Máquina`}
       </DialogTitle>
-      <DialogContent dividers>
+      <DialogContent>
         {(modalType === "edit" || modalType === "create") && (
           <MachineForm formHook={formHook} formSubmit={createOrUpdateMachine} />
         )}

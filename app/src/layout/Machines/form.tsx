@@ -1,6 +1,5 @@
 import { SubmitHandler, UseFormReturn } from "react-hook-form";
 import { Button } from "@mui/material";
-import DialogContent from "@mui/material/DialogContent";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import ErrorIcon from "@mui/icons-material/Error";
@@ -48,56 +47,56 @@ export default function MachineForm({
   }, [machineType, setValue]);
 
   return (
-    <DialogContent id="dialog-description">
-      <St.Form autoComplete="off" onSubmit={handleSubmit(formSubmit)}>
-        <div>
-          <FormControl variant="standard">
-            <InputLabel htmlFor="name">Nome da Máquina</InputLabel>
-            <Input
-              required
-              value={machineName}
-              type="text"
-              error={!!errors.name}
-              autoComplete="off"
-              onChange={(e) => {
-                setMachineName(changeName(e.target.value));
-              }}
-              name="name"
-              id="name"
-            />
-          </FormControl>
-          {errors.name && (
-            <St.ErrorMessage>
-              <ErrorIcon color="error" fontSize="small" />
-              <p>{errors.name.message as string} </p>
-            </St.ErrorMessage>
-          )}
-        </div>
-        <div>
-          <FormControl variant="standard">
-            <InputLabel htmlFor="name">Tipo de Máquina</InputLabel>
-            <Select
-              labelId="demo-simple-select-standard-label"
-              id="demo-simple-select-standard"
-              value={machineType}
-              onChange={(e) => setMachineType(e.target.value as MachineTypes)}
-              label="Tipo de Máquina"
-            >
-              <MenuItem value={MachineTypes.pump}>Bomba</MenuItem>
-              <MenuItem value={MachineTypes.fan}>Ventilador</MenuItem>
-            </Select>
-          </FormControl>
-          {errors.type && (
-            <St.ErrorMessage>
-              <ErrorIcon color="error" fontSize="small" />
-              <p>{errors.type.message as string} </p>
-            </St.ErrorMessage>
-          )}
-        </div>
-        <Button type="submit" variant="contained">
-          Salvar
-        </Button>
-      </St.Form>
-    </DialogContent>
+    <St.Form autoComplete="off" onSubmit={handleSubmit(formSubmit)}>
+      <St.Input>
+        <FormControl variant="standard">
+          <InputLabel htmlFor="name">Nome da Máquina</InputLabel>
+          <Input
+            sx={{ width: "12rem" }}
+            required
+            value={machineName}
+            type="text"
+            error={!!errors.name}
+            autoComplete="off"
+            onChange={(e) => {
+              setMachineName(changeName(e.target.value));
+            }}
+            name="name"
+            id="name"
+          />
+        </FormControl>
+        {errors.name && (
+          <St.ErrorMessage>
+            <ErrorIcon color="error" fontSize="small" />
+            <p>{errors.name.message as string} </p>
+          </St.ErrorMessage>
+        )}
+      </St.Input>
+      <St.Input>
+        <FormControl variant="standard">
+          <InputLabel htmlFor="name">Tipo de Máquina</InputLabel>
+          <Select
+            sx={{ width: "12rem" }}
+            labelId="demo-simple-select-standard-label"
+            id="demo-simple-select-standard"
+            value={machineType}
+            onChange={(e) => setMachineType(e.target.value as MachineTypes)}
+            label="Tipo de Máquina"
+          >
+            <MenuItem value={MachineTypes.pump}>Bomba</MenuItem>
+            <MenuItem value={MachineTypes.fan}>Ventilador</MenuItem>
+          </Select>
+        </FormControl>
+        {errors.type && (
+          <St.ErrorMessage>
+            <ErrorIcon color="error" fontSize="small" />
+            <p>{errors.type.message as string} </p>
+          </St.ErrorMessage>
+        )}
+      </St.Input>
+      <Button type="submit" variant="contained">
+        Salvar
+      </Button>
+    </St.Form>
   );
 }

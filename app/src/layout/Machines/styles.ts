@@ -28,6 +28,7 @@ export const Machines = styled.section`
   flex-direction: column;
   gap: 1rem;
   width: 90%;
+  position: relative;
 
   @media (min-width: 1024px) {
     display: grid;
@@ -49,11 +50,8 @@ export const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  margin: 4rem auto;
-
-  @media (min-width: 1024px) {
-    margin: 2rem 0;
-  }
+  width: 100%;
+  margin: 0 auto;
 `;
 
 export const ErrorMessage = styled.div`
@@ -63,4 +61,9 @@ export const ErrorMessage = styled.div`
   display: flex;
   align-items: center;
   gap: 0.2rem;
+`;
+
+export const Input = styled.section`
+  width: fit-content;
+  margin: 0 auto;
 `;

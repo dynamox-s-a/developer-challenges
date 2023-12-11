@@ -28,11 +28,6 @@
       "type": "Pump"
     },
     {
-      "id": 7,
-      "name": "Evo57",
-      "type": "Fan"
-    },
-    {
       "id": 8,
       "name": "Evo58",
       "type": "Fan"
@@ -51,11 +46,6 @@
       "id": 11,
       "name": "Evo61",
       "type": "Pump"
-    },
-    {
-      "id": 12,
-      "name": "Evo62",
-      "type": "Fan"
     }
   ],
   "monitoring_points": []
