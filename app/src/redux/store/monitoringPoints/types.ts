@@ -1,9 +1,15 @@
+import { IPagination, ITableSort } from "../../../types";
 import { FetchStatus } from "../../types";
 
 export enum Sensors {
   tcAg = "TcAg",
   tcAf = "TcAs",
   hf = "HF+",
+}
+
+export interface IGetProps {
+  pagination: IPagination;
+  sort: ITableSort;
 }
 
 export interface IMonitoringPointStore {

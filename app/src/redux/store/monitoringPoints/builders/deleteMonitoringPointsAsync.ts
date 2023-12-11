@@ -7,10 +7,13 @@ import { FetchStatus } from "../../../types";
 import { IMonitoringPointStore, IMonitoringPointsState } from "../types";
 import { MonitoringPointsService } from "../../../../services/api/monitoringPoints/MonitoringPointsService";
 
+let pointId: number;
+
 export const deleteMonitoringPoint = createAsyncThunk(
   "monitoringPoints/deleteMonitoringPoints",
   async (id: number) => {
-    const response = await MonitoringPointsService.deleteById(id);
+    const response = await MonitoringPointsService.delete(id);
+    pointId = id;
     return response.data;
   },
 );
@@ -26,7 +29,10 @@ export const deleteMonitoringPointAsyncBuilder = (
       deleteMonitoringPoint.fulfilled,
       (state, { payload }: PayloadAction<IMonitoringPointStore>) => {
         state.status = FetchStatus.succeeded;
-        state.monitoringPoints.filter((point) => point.id !== payload.id);
+        state.monitoringPoints = state.monitoringPoints.filter(
+          (point) => point.id !== payload.id,
+        );
+        state.total -= 1;
       },
     )
     .addCase(deleteMonitoringPoint.rejected, (state, { error }) => {

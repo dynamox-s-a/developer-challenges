@@ -26,7 +26,4 @@ const monitoringPointsSlice = createSlice({
   },
 });
 
-// export const getMonitoringPoints = (state: RootState) => state.monitoringPoints;
-// export const getMonitoringPointStatus = (state: RootState) => state.user.status;
-// export const getMonitoringPointError = (state: RootState) => state.user.error;
 export default monitoringPointsSlice.reducer;

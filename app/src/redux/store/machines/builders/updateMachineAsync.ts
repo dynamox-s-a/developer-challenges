@@ -11,7 +11,6 @@ export const updateMachine = createAsyncThunk(
   "machines/updateMachines",
   async (machine: IMachine) => {
     const response = await MachinesService.update(machine);
-
     return response.data;
   },
 );

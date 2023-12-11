@@ -31,6 +31,7 @@ export const createMonitoringPointAsyncBuilder = (
       (state, { payload }: PayloadAction<IMonitoringPointStore>) => {
         state.status = FetchStatus.succeeded;
         state.monitoringPoints.push(payload);
+        state.total += 1;
       },
     )
     .addCase(createMonitoringPoint.rejected, (state, { error }) => {

@@ -5,4 +5,13 @@ interface IPagination {
   limit: number;
 }
 
+export enum ColumnOrder {
+  asc = "ASC",
+  desc = "DESC",
+}
+interface ITableSort {
+  orderBy: string;
+  order: ColumnOrder;
+}
+
 type SetStateFunction<T = any> = Dispatch<SetStateAction<T>>;

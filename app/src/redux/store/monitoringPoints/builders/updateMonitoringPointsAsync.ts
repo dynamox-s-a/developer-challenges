@@ -14,7 +14,7 @@ import { MonitoringPointsService } from "../../../../services/api/monitoringPoin
 export const updateMonitoringPoint = createAsyncThunk(
   "monitoringPoints/fetchMonitoringPoints",
   async (monitoringPoint: IMonitoringPoint) => {
-    const response = await MonitoringPointsService.updateById(monitoringPoint);
+    const response = await MonitoringPointsService.update(monitoringPoint);
     return response.data;
   },
 );
