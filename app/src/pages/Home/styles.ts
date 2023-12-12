@@ -46,6 +46,8 @@ export const Machines = styled.section`
   }
 `;
 
+export const Points = styled.section``;
+
 export const Actions = styled.div`
   display: flex;
   flex-direction: column;

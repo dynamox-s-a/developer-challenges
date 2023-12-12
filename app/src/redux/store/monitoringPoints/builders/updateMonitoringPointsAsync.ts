@@ -5,15 +5,15 @@ import {
 } from "@reduxjs/toolkit";
 import { FetchStatus } from "../../../types";
 import {
+  IListPoint,
   IMonitoringPoint,
-  IMonitoringPointStore,
   IMonitoringPointsState,
 } from "../types";
 import { MonitoringPointsService } from "../../../../services/api/monitoringPoints/MonitoringPointsService";
 
 export const updateMonitoringPoint = createAsyncThunk(
   "monitoringPoints/fetchMonitoringPoints",
-  async (monitoringPoint: IMonitoringPoint) => {
+  async (monitoringPoint: IListPoint) => {
     const response = await MonitoringPointsService.update(monitoringPoint);
     return response.data;
   },
@@ -28,7 +28,7 @@ export const updateMonitoringPointAsyncBuilder = (
     })
     .addCase(
       updateMonitoringPoint.fulfilled,
-      (state, { payload }: PayloadAction<IMonitoringPointStore>) => {
+      (state, { payload }: PayloadAction<IMonitoringPoint>) => {
         state.status = FetchStatus.succeeded;
         const { id, name, machineName, machineType, sensor } = payload;
         state.monitoringPoints

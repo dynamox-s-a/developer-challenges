@@ -40,9 +40,7 @@ export default function Login() {
               formRef={{ name: "password", formHook }}
             />
           </section>
-          <Button type="submit" variant="contained">
-            Entrar
-          </Button>
+          <Button type="submit">Entrar</Button>
         </St.Form>
         {error && (
           <Alert variant="filled" severity="error">

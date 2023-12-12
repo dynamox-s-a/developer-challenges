@@ -1,26 +1,19 @@
-import {
-  IGetPagination,
-  IMonitoringPoint,
-  IPagination,
-  ITableSort,
-} from "../../../redux/store/monitoringPoints/types";
+import { IListPoint } from "../../../redux/store/monitoringPoints/types";
 import { Api } from "../ApiConfig";
 
-const getAll = ({ pagination, sort }: IGetPagination) => {
-  const { page, limit }: IPagination = pagination;
-  const { orderBy, order }: ITableSort = sort;
-  return Api().get(
-    `/machines?_embed=monitoring_points&_sort=${
-      orderBy || "machineId"
-    }&_order=${order || "DESC"}&_page=${page || 1}&_limit=${limit || 5}`,
-  );
+const getAll = () => {
+  return Api().get("/machines?_embed=monitoring_points");
 };
 
-const create = (NewMonitoringPoint: IMonitoringPoint) => {
+const list = () => {
+  return Api().get("/monitoring_points");
+};
+
+const create = (NewMonitoringPoint: IListPoint) => {
   return Api().post("/monitoring_points", NewMonitoringPoint);
 };
 
-const update = (NewMonitoringPoint: IMonitoringPoint) => {
+const update = (NewMonitoringPoint: IListPoint) => {
   return Api().put(
     `/monitoring_points/${NewMonitoringPoint.id}`,
     NewMonitoringPoint,
@@ -35,5 +28,6 @@ export const MonitoringPointsService = {
   getAll,
   create,
   update,
+  list,
   delete: deleteMonitoringPoint,
 };

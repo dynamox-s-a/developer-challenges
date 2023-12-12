@@ -5,18 +5,14 @@ import {
 } from "@reduxjs/toolkit";
 import { FetchStatus } from "../../../types";
 import { MonitoringPointsService } from "../../../../services/api/monitoringPoints/MonitoringPointsService";
-import {
-  IGetPagination,
-  IMonitoringPointStore,
-  IMonitoringPointsState,
-} from "../types";
+import { IMonitoringPoint, IMonitoringPointsState } from "../types";
 
 let count = 0;
 
 export const getMonitoringPoints = createAsyncThunk(
   "machines/getMonitoringPoints",
-  async (payload: IGetPagination) => {
-    const response = await MonitoringPointsService.getAll(payload);
+  async () => {
+    const response = await MonitoringPointsService.getAll();
     count = response.headers["x-total-count"];
     return response.data;
   },
@@ -31,7 +27,7 @@ export const getMonitoringPointsAsyncBuilder = (
     })
     .addCase(
       getMonitoringPoints.fulfilled,
-      (state, { payload }: PayloadAction<IMonitoringPointStore[]>) => {
+      (state, { payload }: PayloadAction<IMonitoringPoint[]>) => {
         state.total = count;
         state.status = FetchStatus.succeeded;
         state.monitoringPoints = payload;

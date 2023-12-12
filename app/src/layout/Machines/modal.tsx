@@ -75,7 +75,9 @@ export default function ModalMachines({
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={() => closeModal()}>Cancelar</Button>
+        <Button variant="text" onClick={() => closeModal()}>
+          Cancelar
+        </Button>
         {modalType === "delete" && (
           <Button variant="contained" onClick={delMachine}>
             Excluir

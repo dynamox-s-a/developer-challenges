@@ -7,38 +7,20 @@ export enum Sensors {
   hf = "HF+",
 }
 
-export interface IPagination {
-  page: number;
-  limit: number;
-}
-
-export enum ColumnOrder {
-  asc = "ASC",
-  desc = "DESC",
-}
-export interface ITableSort {
-  orderBy: string;
-  order: ColumnOrder;
-}
-
-export interface IGetPagination {
-  pagination: IPagination;
-  sort: ITableSort;
-}
-
-export interface IMonitoringPoint {
+export interface IListPoint {
   id: number;
   name: string;
   machineId: number;
   sensor: Sensors;
 }
 
-export interface IMonitoringPointStore extends IMachine {
-  monitoring_points: IMonitoringPoint[];
+export interface IMonitoringPoint extends IMachine {
+  monitoring_points: IListPoint[];
 }
 
 export interface IMonitoringPointsState {
-  readonly monitoringPoints: IMonitoringPointStore[];
+  readonly monitoringPoints: IMonitoringPoint[];
+  readonly listPoints: IListPoint[];
   readonly total: number;
   readonly sensors: Sensors[];
   readonly status: FetchStatus;

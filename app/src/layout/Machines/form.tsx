@@ -94,9 +94,7 @@ export default function MachineForm({
           </St.ErrorMessage>
         )}
       </St.Input>
-      <Button type="submit" variant="contained">
-        Salvar
-      </Button>
+      <Button type="submit">Salvar</Button>
     </St.Form>
   );
 }
