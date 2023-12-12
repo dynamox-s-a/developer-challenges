@@ -21,7 +21,7 @@ export default function Home() {
   }, [navigate, user]);
 
   return (
-    <St.Container>
+    <St.HomeContainer>
       {isMobile && <Header openNavbar={setIsMenuOpen} />}
       {isMenuOpen && (
         <NavBar
@@ -34,8 +34,8 @@ export default function Home() {
       {tab === "machines" ? (
         <Machines isMobile={isMobile} />
       ) : (
-        <MonitoringPoints />
+        <MonitoringPoints isMobile={isMobile} />
       )}
-    </St.Container>
+    </St.HomeContainer>
   );
 }

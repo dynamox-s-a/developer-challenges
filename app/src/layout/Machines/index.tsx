@@ -21,9 +21,8 @@ import {
 } from "../../redux/store/machines/types";
 import { FetchStatus } from "../../redux/types";
 import Loading from "../../shared/components/loading";
+import * as St from "../../pages/Home/styles";
 import ModalMachines from "./modal";
-
-import * as St from "./styles";
 
 interface IMachineProps {
   isMobile: boolean;
@@ -90,7 +89,7 @@ export default function Machines({ isMobile }: IMachineProps) {
   });
 
   return (
-    <St.Container>
+    <St.ComponentContainer>
       <St.Title>MÁQUINAS</St.Title>
       {status === FetchStatus.loading ? (
         <Loading />
@@ -125,6 +124,6 @@ export default function Machines({ isMobile }: IMachineProps) {
           <AddIcon />
         </Fab>
       </Tooltip>
-    </St.Container>
+    </St.ComponentContainer>
   );
 }

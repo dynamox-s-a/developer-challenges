@@ -12,7 +12,7 @@ import {
   MachineTypes,
   NewMachine,
 } from "../../redux/store/machines/types";
-import * as St from "./styles";
+import * as St from "../../pages/Home/styles";
 
 interface IFormMachineProps {
   formHook: UseFormReturn<IMachine>;

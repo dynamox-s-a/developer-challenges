@@ -6,7 +6,7 @@ import {
 import { FetchStatus } from "../../../types";
 import { MonitoringPointsService } from "../../../../services/api/monitoringPoints/MonitoringPointsService";
 import {
-  IGetProps,
+  IGetPagination,
   IMonitoringPointStore,
   IMonitoringPointsState,
 } from "../types";
@@ -15,7 +15,7 @@ let count = 0;
 
 export const getMonitoringPoints = createAsyncThunk(
   "machines/getMonitoringPoints",
-  async (payload: IGetProps) => {
+  async (payload: IGetPagination) => {
     const response = await MonitoringPointsService.getAll(payload);
     count = response.headers["x-total-count"];
     return response.data;

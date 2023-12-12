@@ -28,22 +28,22 @@
       "type": "Pump"
     },
     {
-      "id": 8,
+      "id": 5,
       "name": "Evo58",
       "type": "Fan"
     },
     {
-      "id": 9,
+      "id": 6,
       "name": "Evo59",
       "type": "Fan"
     },
     {
-      "id": 10,
+      "id": 7,
       "name": "Evo60",
       "type": "Fan"
     },
     {
-      "id": 11,
+      "id": 8,
       "name": "Evo61",
       "type": "Pump"
     }
@@ -57,9 +57,9 @@
     },
     {
       "id": 2,
-      "name": "Motor Saída",
-      "machineId": 3,
-      "sensor":  "HF+"
+      "name": "Sensor Saída",
+      "machineId": 1,
+      "sensor": "HF+"
     },
     {
       "id": 3,
@@ -69,9 +69,9 @@
     },
     {
       "id": 4,
-      "name": "Sensor Saída",
-      "machineId": 1,
-      "sensor": "HF+"
+      "name": "Ventoinha Principal",
+      "machineId": 2,
+      "sensor":  "TcAs"
     },
     {
       "id": 5,
@@ -87,9 +87,9 @@
     },
     {
       "id": 7,
-      "name": "Ventoinha Principal",
-      "machineId": 2,
-      "sensor":  "TcAs"
+      "name": "Motor Saída",
+      "machineId": 3,
+      "sensor":  "HF+"
     }
   ]
 }

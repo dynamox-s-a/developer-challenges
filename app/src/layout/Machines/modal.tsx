@@ -67,7 +67,9 @@ export default function ModalMachines({
           : `${modalType === "edit" ? "Editar" : "Criar"} Máquina`}
       </DialogTitle>
       <DialogContent>
-        {(modalType === "edit" || modalType === "create") && (
+        {modalType === "delete" ? (
+          <p>Isso apagará também os registros dos sensores correspondentes </p>
+        ) : (
           <MachineForm formHook={formHook} formSubmit={createOrUpdateMachine} />
         )}
       </DialogContent>
@@ -75,7 +77,9 @@ export default function ModalMachines({
       <DialogActions>
         <Button onClick={() => closeModal()}>Cancelar</Button>
         {modalType === "delete" && (
-          <Button onClick={delMachine}>Excluir</Button>
+          <Button variant="contained" onClick={delMachine}>
+            Excluir
+          </Button>
         )}
       </DialogActions>
     </Dialog>
