@@ -4,12 +4,12 @@ import {
   createAsyncThunk,
 } from "@reduxjs/toolkit";
 import { FetchStatus } from "../../../types";
-import { IMonitoringPoint, IMonitoringPointsState, IListPoint } from "../types";
+import { IMonitoringPoint, IMonitoringPointsState, NewPoint } from "../types";
 import { MonitoringPointsService } from "../../../../services/api/monitoringPoints/MonitoringPointsService";
 
 export const createMonitoringPoint = createAsyncThunk(
   "monitoringPoints/createMonitoringPoints",
-  async (monitoringPoint: IListPoint) => {
+  async (monitoringPoint: NewPoint) => {
     const response = await MonitoringPointsService.create(monitoringPoint);
     return response.data;
   },

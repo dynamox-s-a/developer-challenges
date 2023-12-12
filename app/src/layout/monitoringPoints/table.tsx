@@ -6,20 +6,22 @@ import {
   gridClasses,
 } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
-import { SetStateAction, useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState, useEffect } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { useForm } from "react-hook-form";
+import { UseFormReturn, useForm } from "react-hook-form";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { Tooltip, useTheme } from "@mui/material";
 import { useDispatch } from "react-redux";
 import {
   IListPoint,
   IMonitoringPoint,
+  NewPoint,
 } from "../../redux/store/monitoringPoints/types";
 import { AppDispatch } from "../../redux/store";
+import Modal from "./modal";
+import PointForm from "./form";
 
 interface ITableProps {
   machinesPoints: IMonitoringPoint[];
@@ -35,21 +37,40 @@ export default function PointsTable({
   const dispatch = useDispatch<AppDispatch>();
   const [modalType, setModalType] = useState<string>("edit");
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-  const formHook = useForm<IListPoint>();
-  const [listPointId, setListPointId] = useState<number | undefined>();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
+  const formHook = useForm<UseFormReturn<IListPoint>>();
+  const [selectedPointId, setSelectedPointId] = useState<number | undefined>();
+  
   const openModal = (type: string, id?: GridRowId) => {
     if (type === "edit" && id) {
       const point = listPoints.filter((pt) => pt.id === id)[0];
+
+      listPoints.filter((pt) => pt.id === id)[0];
       formHook.setValue("name", point.name);
       formHook.setValue("machineId", point.machineId);
       formHook.setValue("sensor", point.sensor);
 
-      setListPointId(point.id);
+      setSelectedPointId(point.id);
     }
     setModalIsOpen(true);
     setModalType(type);
+  };
+  
+  const createOrUpdatePoint: SubmitHandler<IListPoint | NewPoint> = async ({
+    name,
+    type,
+  }) => {
+    closeModal();
+    if (modalType === "edit" && machineId) {
+      const newMachine = {
+        id: machineId,
+        name,
+        type,
+      };
+      return await dispatch(updateMachine(newMachine));
+    }
+
+    if (modalType === "create")
+      return await dispatch(createMachine({ name, type }));
   };
 
   useLayoutEffect(() => {
@@ -66,9 +87,6 @@ export default function PointsTable({
         });
       });
     });
-
-    console.log({ rowsTable });
-
     setRows(rowsTable);
   }, [machinesPoints]);
 
@@ -123,13 +141,15 @@ export default function PointsTable({
         <GridActionsCellItem
           key="edit"
           icon={<EditIcon />}
-          label="Delete"
-          onClick={() => openModal("edit", point.id)}
+          label="Edit"
+          onClick={() => {
+            openModal("edit", point.id);
+          }}
         />,
         <GridActionsCellItem
           key="delete"
           icon={<DeleteIcon />}
-          label="Toggle Admin"
+          label="Delete"
           onClick={() => openModal("delete", point.id)}
         />,
       ],
@@ -146,23 +166,18 @@ export default function PointsTable({
           },
           [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]:
             {
-              outline: "none",
+              outline: "none !important",
             },
           [`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]:
             {
-              outline: "none",
+              outline: "none !important",
             },
-          ...(isMobile && {
-            "& .super-app-theme--cell": {
-              fontSize: "12px",
-            },
-            "& .super-app-theme--header": {
-              fontSize: "14px",
-            },
-          }),
         }}
       >
         <DataGrid
+          sx={{
+            [theme.breakpoints.down("lg")]: { width: "40%", margin: "0 auto" },
+          }}
           rows={rows}
           columns={columns}
           initialState={{
@@ -176,6 +191,14 @@ export default function PointsTable({
           disableColumnMenu
         />
       </Box>
+      <Modal
+        isOpen={modalIsOpen}
+        setOpen={setModalIsOpen}
+        modalType={modalType}
+        id={selectedPointId}
+        formHook={formHook}
+        machineId={selectedPointId}
+      />
       <Tooltip title="Adicionar Máquina">
         <Fab
           size="large"

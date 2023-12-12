@@ -10,6 +10,12 @@ export interface IMachine {
   type: MachineTypes;
 }
 
+
+export interface IPagination {
+  page: number,
+  limit: number
+}
+
 export type NewMachine = Omit<IMachine, "id">;
 
 export interface IMachinesState {

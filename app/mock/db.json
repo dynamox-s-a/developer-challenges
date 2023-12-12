@@ -41,11 +41,6 @@
       "id": 7,
       "name": "Evo60",
       "type": "Fan"
-    },
-    {
-      "id": 8,
-      "name": "Evo61",
-      "type": "Pump"
     }
   ],
   "monitoring_points": [
@@ -71,25 +66,25 @@
       "id": 4,
       "name": "Ventoinha Principal",
       "machineId": 2,
-      "sensor":  "TcAs"
+      "sensor": "TcAs"
     },
     {
       "id": 5,
       "name": "Ventoinha Saída",
       "machineId": 2,
-      "sensor":  "TcAg"
+      "sensor": "TcAg"
     },
     {
       "id": 6,
       "name": "Motor Entrada",
       "machineId": 3,
-      "sensor":  "HF+"
+      "sensor": "HF+"
     },
     {
       "id": 7,
       "name": "Motor Saída",
       "machineId": 3,
-      "sensor":  "HF+"
+      "sensor": "HF+"
     }
   ]
 }

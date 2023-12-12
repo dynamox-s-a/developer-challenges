@@ -32,6 +32,15 @@ export const Title = styled.p`
   margin-bottom: 2rem;
 `;
 
+export const MachineName = styled.p`
+  font-weight: bold;
+`;
+
+export const MachineType = styled.p`
+  font-size: 0.7rem;
+  color: var(--grey-200)
+`;
+
 export const Machines = styled.section`
   display: flex;
   flex-direction: column;

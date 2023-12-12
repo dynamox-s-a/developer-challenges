@@ -8,50 +8,61 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { useEffect, useState } from "react";
 import {
-  IMachine,
-  MachineTypes,
-  NewMachine,
-} from "../../redux/store/machines/types";
+  IListPoint,
+  Sensors,
+  NewPoint,
+} from "../../redux/store/monitoringPoints/types";
+import { IMachine, MachineTypes } from "../../redux/store/machines/types";
 import * as St from "../../pages/Home/styles";
 import { changeName } from "../../shared/utils";
 
 interface IFormMachineProps {
-  formHook: UseFormReturn<IMachine>;
-  formSubmit: SubmitHandler<IMachine | NewMachine>;
+  formHook: UseFormReturn<IListPoint>;
+  formSubmit: SubmitHandler<IListPoint | NewPoint>;
+  selectedMachine: IMachine
 }
 
-export default function MachineForm({
+export default function PointForm({
   formHook,
   formSubmit,
+  selectedMachine
 }: IFormMachineProps) {
   const { formState, handleSubmit, getValues, setValue } = formHook;
   const errors = formState.errors;
-  const [machineName, setMachineName] = useState<string>(() => {
+  const [pointName, setMachineName] = useState<string>(() => {
     const values = getValues("name") || "";
     return values;
   });
-  const [machineType, setMachineType] = useState<MachineTypes>(() => {
-    const values = getValues("type") || MachineTypes.pump;
+  const [sensor, setSensor] = useState<Sensors>(() => {
+    const values = getValues("sensor") || Sensors.hf;
     return values;
   });
+  
+
+  
 
   useEffect(() => {
-    setValue("name", machineName);
-  }, [machineName, setValue]);
+    setValue("name", pointName);
+  }, [pointName, setValue]);
 
   useEffect(() => {
-    setValue("type", machineType);
-  }, [machineType, setValue]);
+    setValue("sensor", sensor);
+  }, [sensor, setValue]);
+
 
   return (
     <St.Form autoComplete="off" onSubmit={handleSubmit(formSubmit)}>
+      <section>
+        <St.MachineName>Máquina: {selectedMachine.name}</St.MachineName>
+        <St.MachineType>Tipo: {selectedMachine.type === MachineTypes.pump? "Bomba": "Ventilador"}</St.MachineType>
+      </section>
       <St.Input>
         <FormControl variant="standard">
-          <InputLabel htmlFor="name">Nome da Máquina</InputLabel>
+          <InputLabel htmlFor="name">Nome do Ponto de Monitoramento</InputLabel>
           <Input
             sx={{ width: "12rem" }}
             required
-            value={machineName}
+            value={pointName}
             type="text"
             error={!!errors.name}
             autoComplete="off"
@@ -71,23 +82,29 @@ export default function MachineForm({
       </St.Input>
       <St.Input>
         <FormControl variant="standard">
-          <InputLabel htmlFor="name">Tipo de Máquina</InputLabel>
+          <InputLabel htmlFor="name">Tipo de Sensor</InputLabel>
           <Select
             sx={{ width: "12rem" }}
             labelId="demo-simple-select-standard-label"
             id="demo-simple-select-standard"
-            value={machineType}
-            onChange={(e) => setMachineType(e.target.value as MachineTypes)}
-            label="Tipo de Máquina"
+            value={sensor}
+            onChange={(e) => setSensor(e.target.value as Sensors)}
+            label="Tipo de Sensor"
+            disabled={selectedMachine.type === MachineTypes.pump}
           >
-            <MenuItem value={MachineTypes.pump}>Bomba</MenuItem>
-            <MenuItem value={MachineTypes.fan}>Ventilador</MenuItem>
+            <MenuItem value={Sensors.hf}>HF+</MenuItem>
+            {selectedMachine.type !== MachineTypes.pump && (
+              <MenuItem value={Sensors.tcAg}>TcAg</MenuItem>
+            )}
+            {selectedMachine.type !== MachineTypes.pump && (
+              <MenuItem value={Sensors.tcAf}>TcAs</MenuItem>
+            )}
           </Select>
         </FormControl>
-        {errors.type && (
+        {errors.sensor && (
           <St.ErrorMessage>
             <ErrorIcon color="error" fontSize="small" />
-            <p>{errors.type.message as string} </p>
+            <p>{errors.sensor.message as string} </p>
           </St.ErrorMessage>
         )}
       </St.Input>
