@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useMemo } from "react";
+import { useMemo, useLayoutEffect } from "react";
 import { AppDispatch, RootState } from "../../redux/store";
 import { FetchStatus } from "../../redux/types";
 import Loading from "../../shared/components/loading";
@@ -16,9 +16,13 @@ export default function MonitoringPoints() {
     useSelector((state: RootState) => state.monitoringPoints);
 
   useMemo(() => {
-    dispatch(getMonitoringPoints());
     dispatch(getListPoints());
   }, [dispatch]);
+
+  useLayoutEffect(() => {
+    dispatch(getMonitoringPoints());
+  }, [listPoints]);
+ 
 
   return (
     <St.ComponentContainer>

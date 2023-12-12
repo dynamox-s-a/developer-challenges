@@ -58,6 +58,8 @@ export default function PointsTable({
   useLayoutEffect(() => {
     const rowsTable: any[] = [];
 
+    console.log ("LISYOU ESTA MERDA", machinesPoints)
+
     machinesPoints.forEach((mach: IMonitoringPoint) => {
       mach.monitoring_points.map((point: IListPoint) => {
         rowsTable.push({
@@ -70,7 +72,7 @@ export default function PointsTable({
       });
     });
     setRows(rowsTable);
-  }, [machinesPoints]);
+  }, [machinesPoints, listPoints]);
 
   const columns: GridColDef[] = [
     {
