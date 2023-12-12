@@ -7,7 +7,6 @@ import {
 } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import { useLayoutEffect, useState, useEffect } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { UseFormReturn, useForm } from "react-hook-form";
 import Fab from "@mui/material/Fab";
@@ -21,7 +20,7 @@ import {
 } from "../../redux/store/monitoringPoints/types";
 import { AppDispatch } from "../../redux/store";
 import Modal from "./modal";
-import PointForm from "./form";
+import PointForm from "./editPoint";
 
 interface ITableProps {
   machinesPoints: IMonitoringPoint[];
@@ -58,8 +57,6 @@ export default function PointsTable({
   useLayoutEffect(() => {
     const rowsTable: any[] = [];
 
-    console.log ("LISYOU ESTA MERDA", machinesPoints)
-
     machinesPoints.forEach((mach: IMonitoringPoint) => {
       mach.monitoring_points.map((point: IListPoint) => {
         rowsTable.push({
@@ -79,7 +76,7 @@ export default function PointsTable({
       field: "id",
       headerName: "ID",
       sortable: true,
-      width: 100,
+      width: 80,
       headerClassName: "super-app-theme--header",
       cellClassName: "super-app-theme--cell",
     },
@@ -87,14 +84,14 @@ export default function PointsTable({
       field: "machName",
       headerName: "Máquina",
       sortable: true,
-      width: 200,
+      width: 220,
       headerClassName: "super-app-theme--header",
       cellClassName: "super-app-theme--cell",
     },
     {
       field: "machType",
       headerName: "Tipo Máquina",
-      width: 200,
+      width: 180,
       headerClassName: "super-app-theme--header",
       cellClassName: "super-app-theme--cell",
     },
@@ -102,7 +99,7 @@ export default function PointsTable({
       field: "pointName",
       headerName: "Ponto Monitoramento",
       sortable: true,
-      width: 220,
+      width: 250,
       headerClassName: "super-app-theme--header",
       cellClassName: "super-app-theme--cell",
     },
@@ -110,15 +107,15 @@ export default function PointsTable({
       field: "sensor",
       headerName: "Sensor",
       sortable: true,
-      width: 140,
+      width: 120,
       headerClassName: "super-app-theme--header",
       cellClassName: "super-app-theme--cell",
     },
     {
       field: "actions",
       type: "actions",
-      headerName: "Ações",
-      width: 80,
+      headerName: "Editar",
+      width: 60,
       headerClassName: "super-app-theme--header",
       cellClassName: "super-app-theme--cell",
       getActions: (point) => [
@@ -129,13 +126,7 @@ export default function PointsTable({
           onClick={() => {
             openModal("edit", point.id);
           }}
-        />,
-        <GridActionsCellItem
-          key="delete"
-          icon={<DeleteIcon />}
-          label="Delete"
-          onClick={() => openModal("delete", point.id)}
-        />,
+        />
       ],
     },
   ];

@@ -1,5 +1,4 @@
-import { SubmitHandler, UseFormReturn } from "react-hook-form";
-import { Button } from "@mui/material";
+import { UseFormReturn } from "react-hook-form";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import ErrorIcon from "@mui/icons-material/Error";
@@ -10,7 +9,6 @@ import { useEffect, useState } from "react";
 import {
   IListPoint,
   Sensors,
-  NewPoint,
 } from "../../redux/store/monitoringPoints/types";
 import { IMachine, MachineTypes } from "../../redux/store/machines/types";
 import * as St from "../../pages/Home/styles";
@@ -18,16 +16,14 @@ import { changeName } from "../../shared/utils";
 
 interface IFormMachineProps {
   formHook: UseFormReturn<IListPoint>;
-  formSubmit: SubmitHandler<IListPoint | NewPoint>;
   selectedMachine: IMachine
 }
 
-export default function EditPointForm({
+export default function PointForm({
   formHook,
-  formSubmit,
   selectedMachine
 }: IFormMachineProps) {
-  const { formState, handleSubmit, getValues, setValue } = formHook;
+  const { formState, getValues, setValue } = formHook;
   const errors = formState.errors;
   const [pointName, setMachineName] = useState<string>(() => {
     const values = getValues("name") || "";
@@ -48,17 +44,13 @@ export default function EditPointForm({
 
 
   return (
-    <St.Form autoComplete="off" onSubmit={handleSubmit(formSubmit)}>
-      <section>
-        <St.MachineName>Máquina: {selectedMachine.name}</St.MachineName>
-        <St.MachineType>Tipo: {selectedMachine.type === MachineTypes.pump? "Bomba": "Ventilador"}</St.MachineType>
-      </section>
+    <St.PointForm>
       <St.Input>
         <FormControl variant="standard">
-          <InputLabel htmlFor="name">Nome do Ponto de Monitoramento</InputLabel>
+          <InputLabel htmlFor="name">Nome do Ponto</InputLabel>
           <Input
-            sx={{ width: "12rem" }}
             required
+            sx={{ width: "12rem" }}
             value={pointName}
             type="text"
             error={!!errors.name}
@@ -105,7 +97,6 @@ export default function EditPointForm({
           </St.ErrorMessage>
         )}
       </St.Input>
-      <Button type="submit">Salvar</Button>
-    </St.Form>
+    </St.PointForm>
   );
 }

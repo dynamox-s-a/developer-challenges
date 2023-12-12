@@ -90,6 +90,12 @@
       "name": "Motor Saída",
       "machineId": 3,
       "sensor": "HF+"
+    },
+    {
+      "name": "Saída",
+      "sensor": "TcAs",
+      "machineId": 7,
+      "id": 8
     }
   ]
 }

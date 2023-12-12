@@ -20,14 +20,9 @@ const update = (NewMonitoringPoint: IListPoint) => {
   );
 };
 
-const deleteMonitoringPoint = (id: number) => {
-  return Api().delete(`/monitoring_points/${id}`);
-};
-
 export const MonitoringPointsService = {
   getAll,
   create,
   update,
   list,
-  delete: deleteMonitoringPoint,
 };

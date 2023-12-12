@@ -32,6 +32,11 @@ export const Title = styled.p`
   margin-bottom: 2rem;
 `;
 
+export const PointTitle = styled.p`
+  color: var(--blue-400);
+  font-weight: bold;
+`;
+
 export const MachineName = styled.p`
   font-weight: bold;
 `;
@@ -55,7 +60,22 @@ export const Machines = styled.section`
   }
 `;
 
-export const Points = styled.section``;
+export const FormPoints = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    gap: 3rem;
+  }
+`;
+
+export const PointForm = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+`;
 
 export const Actions = styled.div`
   display: flex;
@@ -75,7 +95,8 @@ export const Form = styled.form`
   flex-direction: column;
   gap: 2rem;
   width: 100%;
-  margin: 0 auto;
+  margin: 1rem auto 0 auto;
+
 `;
 
 export const ErrorMessage = styled.div`

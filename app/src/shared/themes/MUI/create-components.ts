@@ -34,6 +34,14 @@ export function createComponents(config: { palette: any }) {
         },
       },
     },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          maxWidth: "80vw !important",
+          maxHeight: "80vh !important"
+        },
+      },
+    },
     MuiFormLabel: {
       styleOverrides: {
         root: {
