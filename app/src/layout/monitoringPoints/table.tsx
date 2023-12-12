@@ -12,7 +12,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useForm } from "react-hook-form";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import { Tooltip } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { Tooltip, useTheme } from "@mui/material";
 import { useDispatch } from "react-redux";
 import {
   IListPoint,
@@ -30,11 +31,13 @@ export default function PointsTable({
   listPoints,
 }: ITableProps) {
   const [rows, setRows] = useState<any[]>([]);
+  const theme = useTheme();
   const dispatch = useDispatch<AppDispatch>();
   const [modalType, setModalType] = useState<string>("edit");
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const formHook = useForm<IListPoint>();
   const [listPointId, setListPointId] = useState<number | undefined>();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const openModal = (type: string, id?: GridRowId) => {
     if (type === "edit" && id) {
@@ -149,6 +152,14 @@ export default function PointsTable({
             {
               outline: "none",
             },
+          ...(isMobile && {
+            "& .super-app-theme--cell": {
+              fontSize: "12px",
+            },
+            "& .super-app-theme--header": {
+              fontSize: "14px",
+            },
+          }),
         }}
       >
         <DataGrid

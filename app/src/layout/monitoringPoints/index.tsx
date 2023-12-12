@@ -9,7 +9,6 @@ import Pagination from "@mui/material/Pagination";
 import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-
 import { AppDispatch, RootState } from "../../redux/store";
 import { FetchStatus } from "../../redux/types";
 import Loading from "../../shared/components/loading";
@@ -51,16 +50,10 @@ export default function MonitoringPoints({ isMobile }: IPointProps) {
       {status === FetchStatus.loading ? (
         <Loading />
       ) : (
-        <St.Points>
-          {isMobile ? (
-            <p>Lista</p>
-          ) : (
-            <PointsTable
-              machinesPoints={monitoringPoints}
-              listPoints={listPoints}
-            />
-          )}
-        </St.Points>
+        <PointsTable
+          machinesPoints={monitoringPoints}
+          listPoints={listPoints}
+        />
       )}
     </St.ComponentContainer>
   );
