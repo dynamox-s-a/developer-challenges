@@ -11,8 +11,7 @@ import { AppDispatch } from "../../redux/store";
 import { SetStateFunction } from "../../types";
 import { updateMonitoringPoint } from "../../redux/store/monitoringPoints/builders/updateMonitoringPointsAsync";
 import { createMonitoringPoint } from "../../redux/store/monitoringPoints/builders/createMonitoringPointsAsync";
-import PointsForm from "./form";
-import { ReactNode } from "react";
+import EditPointForm from "./form";
 import { useEffect, useState } from "react";
 import { IMachine } from "../../redux/store/machines/types";
 import { MachinesService } from "../../services/api/machines/MachinesSrevice";
@@ -23,8 +22,6 @@ interface IModalPointsProps {
   setOpen: SetStateFunction<boolean>;
   pointId: number | undefined;
   formHook: UseFormReturn<IListPoint>;
-  machineId: number;
-  childre: ReactNode;
 }
 
 export default function ModalPoints({
@@ -33,7 +30,6 @@ export default function ModalPoints({
   modalType,
   pointId,
   formHook,
-  machineId
 }: IModalPointsProps) {
   const [selectedMachine, setSelectedMachine] = useState<IMachine>()
   const [machines, setMachines] = useState<IMachine[]>([]);
@@ -46,15 +42,13 @@ export default function ModalPoints({
   useEffect(() => {
     fetchData().then((data) => {
       setMachines(data);
+      const machinePointId = formHook.getValues("machineId")
 
-      console.log({machines})
-
-      const mach: IMachine = data.filter((mach: IMachine) => mach.id === machineId)[0]
+      const mach: IMachine = data.filter((mach: IMachine) => mach.id === machinePointId)[0]
       setSelectedMachine(mach);
     }).catch((err) => console.log(err))
-  }, [machines]);
+  }, []);
 
-  
   const dispatch = useDispatch<AppDispatch>();
   const { reset } = formHook;
 
@@ -68,29 +62,24 @@ export default function ModalPoints({
     closeModal();
   };
 
-  const createOrUpdateMachine: SubmitHandler<IListPoint | NewPoint> = async ({
+  const createOrUpdatePoint: SubmitHandler<IListPoint | NewPoint> = async ({
     name,
-    machineId,
     sensor,
+    machineId
   }) => {
     closeModal();
     if (modalType === "edit" && pointId) {
       const newPoint = {
         id: pointId,
+        machineId,
         name,
         sensor,
       };
       return await dispatch(updateMonitoringPoint(newPoint));
     }
 
-    if (modalType === "create"){
-      const newPoint = {
-        name, 
-        machineId, 
-        sensor 
-      }
-      return await dispatch(createMonitoringPoint(newPoint));
-    }
+    if (modalType === "create")
+      return await dispatch(createMonitoringPoint({ name, sensor, machineId }));
   };
 
   return (
@@ -104,7 +93,7 @@ export default function ModalPoints({
         {modalType === "delete" ? (
           <p>Essa operação não poderá ser desfeita </p>
         ) : (
-          selectedMachine && <PointsForm formHook={formHook} formSubmit={createOrUpdateMachine} selectedMachine={selectedMachine}/>
+          selectedMachine && <EditPointForm formHook={formHook} formSubmit={createOrUpdatePoint} selectedMachine={selectedMachine}/>
         )}
       </DialogContent>
 

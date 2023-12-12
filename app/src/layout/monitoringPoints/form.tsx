@@ -22,7 +22,7 @@ interface IFormMachineProps {
   selectedMachine: IMachine
 }
 
-export default function PointForm({
+export default function EditPointForm({
   formHook,
   formSubmit,
   selectedMachine
@@ -38,9 +38,6 @@ export default function PointForm({
     return values;
   });
   
-
-  
-
   useEffect(() => {
     setValue("name", pointName);
   }, [pointName, setValue]);

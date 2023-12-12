@@ -1,4 +1,4 @@
-import { EditPoint, IListPoint, NewPoint } from "../../../redux/store/monitoringPoints/types";
+import { IListPoint, NewPoint } from "../../../redux/store/monitoringPoints/types";
 import { Api } from "../ApiConfig";
 
 const getAll = () => {
@@ -13,7 +13,7 @@ const create = (NewMonitoringPoint: NewPoint) => {
   return Api().post("/monitoring_points", NewMonitoringPoint);
 };
 
-const update = (NewMonitoringPoint: EditPoint) => {
+const update = (NewMonitoringPoint: IListPoint) => {
   return Api().put(
     `/monitoring_points/${NewMonitoringPoint.id}`,
     NewMonitoringPoint,

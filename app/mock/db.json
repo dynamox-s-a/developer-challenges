@@ -41,31 +41,36 @@
       "id": 7,
       "name": "Evo60",
       "type": "Fan"
+    },
+    {
+      "name": "Teste",
+      "type": "Pump",
+      "id": 8
     }
   ],
   "monitoring_points": [
     {
       "id": 1,
-      "name": "Sensor Entrada",
       "machineId": 1,
+      "name": "Sensor Entrada",
       "sensor": "HF+"
     },
     {
       "id": 2,
-      "name": "Sensor Saída",
       "machineId": 1,
+      "name": "Sensor Saída",
       "sensor": "HF+"
     },
     {
       "id": 3,
-      "name": "Ventoinha Entrada",
       "machineId": 2,
+      "name": "Ventoinha Entrada",
       "sensor": "TcAg"
     },
     {
       "id": 4,
-      "name": "Ventoinha Principal",
       "machineId": 2,
+      "name": "Ventoinha Principal4",
       "sensor": "TcAs"
     },
     {

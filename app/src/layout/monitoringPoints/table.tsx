@@ -54,24 +54,6 @@ export default function PointsTable({
     setModalIsOpen(true);
     setModalType(type);
   };
-  
-  const createOrUpdatePoint: SubmitHandler<IListPoint | NewPoint> = async ({
-    name,
-    type,
-  }) => {
-    closeModal();
-    if (modalType === "edit" && machineId) {
-      const newMachine = {
-        id: machineId,
-        name,
-        type,
-      };
-      return await dispatch(updateMachine(newMachine));
-    }
-
-    if (modalType === "create")
-      return await dispatch(createMachine({ name, type }));
-  };
 
   useLayoutEffect(() => {
     const rowsTable: any[] = [];
@@ -191,14 +173,16 @@ export default function PointsTable({
           disableColumnMenu
         />
       </Box>
-      <Modal
-        isOpen={modalIsOpen}
-        setOpen={setModalIsOpen}
-        modalType={modalType}
-        id={selectedPointId}
-        formHook={formHook}
-        machineId={selectedPointId}
-      />
+      {
+        modalIsOpen && 
+        <Modal
+          isOpen={modalIsOpen}
+          setOpen={setModalIsOpen}
+          modalType={modalType}
+          pointId={selectedPointId}
+          formHook={formHook}
+        />
+      }
       <Tooltip title="Adicionar Máquina">
         <Fab
           size="large"

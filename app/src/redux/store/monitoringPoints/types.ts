@@ -19,7 +19,6 @@ export interface IMonitoringPoint extends IMachine {
 }
 
 export type NewPoint = Omit<IListPoint, "id">;
-export type EditPoint = Omit<IListPoint, "machineId">;
 
 export interface IMonitoringPointsState {
   readonly monitoringPoints: IMonitoringPoint[];
