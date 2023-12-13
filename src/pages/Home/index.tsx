@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { IUserState } from "../../redux/store/users/types";
-import { RootState } from "../../redux/store";
-import MonitoringPoints from "../../layout/monitoringPoints";
+import Header from "../../layout/Header";
 import Machines from "../../layout/Machines";
 import NavBar from "../../layout/Navbar";
-import Header from "../../layout/Header";
+import MonitoringPoints from "../../layout/monitoringPoints";
+import { RootState } from "../../redux/store";
+import { IUserState } from "../../redux/store/users/types";
 import * as St from "./styles";
 
 export default function Home() {
@@ -34,7 +34,7 @@ export default function Home() {
       {tab === "machines" ? (
         <Machines isMobile={isMobile} />
       ) : (
-        <MonitoringPoints isMobile={isMobile} />
+        <MonitoringPoints />
       )}
     </St.HomeContainer>
   );
