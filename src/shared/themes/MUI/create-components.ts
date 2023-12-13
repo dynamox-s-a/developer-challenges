@@ -38,7 +38,7 @@ export function createComponents(config: { palette: any }) {
       styleOverrides: {
         paper: {
           maxWidth: "80vw !important",
-          maxHeight: "80vh !important"
+          maxHeight: "80vh !important",
         },
       },
     },
