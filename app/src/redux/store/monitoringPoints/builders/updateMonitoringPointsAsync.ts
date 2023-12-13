@@ -3,12 +3,9 @@ import {
   PayloadAction,
   createAsyncThunk,
 } from "@reduxjs/toolkit";
-import { FetchStatus } from "../../../types";
-import {
-  IListPoint,
-  IMonitoringPointsState,
-} from "../types";
 import { MonitoringPointsService } from "../../../../services/api/monitoringPoints/MonitoringPointsService";
+import { FetchStatus } from "../../../types";
+import { IListPoint, IMonitoringPointsState } from "../types";
 
 export const updateMonitoringPoint = createAsyncThunk(
   "monitoringPoints/fetchMonitoringPoints",
@@ -35,7 +32,7 @@ export const updateMonitoringPointAsyncBuilder = (
           .map((point) => {
             point.name = name;
             point.sensor = sensor;
-            point.machineId = machineId
+            point.machineId = machineId;
           });
       },
     )

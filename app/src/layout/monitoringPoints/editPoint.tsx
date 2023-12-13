@@ -1,23 +1,20 @@
-import { SubmitHandler, UseFormReturn } from "react-hook-form";
 import { Button } from "@mui/material";
-import {
-  IListPoint,
-  NewPoint,
-} from "../../redux/store/monitoringPoints/types";
-import { IMachine, MachineTypes } from "../../redux/store/machines/types";
+import { SubmitHandler, UseFormReturn } from "react-hook-form";
 import * as St from "../../pages/Home/styles";
+import { IMachine, MachineTypes } from "../../redux/store/machines/types";
+import { IListPoint } from "../../redux/store/monitoringPoints/types";
 import PointForm from "./pointForm";
 
 interface IFormMachineProps {
   formHook: UseFormReturn<IListPoint>;
   formSubmit: SubmitHandler<IListPoint>;
-  selectedMachine: IMachine
+  selectedMachine: IMachine;
 }
 
 export default function EditPointForm({
   formHook,
   formSubmit,
-  selectedMachine
+  selectedMachine,
 }: IFormMachineProps) {
   const { handleSubmit } = formHook;
 
@@ -25,9 +22,12 @@ export default function EditPointForm({
     <St.Form autoComplete="off" onSubmit={handleSubmit(formSubmit)}>
       <section>
         <St.MachineName>Máquina: {selectedMachine.name}</St.MachineName>
-        <St.MachineType>Tipo: {selectedMachine.type === MachineTypes.pump? "Bomba": "Ventilador"}</St.MachineType>
+        <St.MachineType>
+          Tipo:{" "}
+          {selectedMachine.type === MachineTypes.pump ? "Bomba" : "Ventilador"}
+        </St.MachineType>
       </section>
-      <PointForm formHook={formHook} selectedMachine={selectedMachine}/>
+      <PointForm formHook={formHook} selectedMachine={selectedMachine} />
       <Button type="submit">Salvar</Button>
     </St.Form>
   );

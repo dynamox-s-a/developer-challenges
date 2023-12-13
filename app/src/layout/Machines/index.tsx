@@ -1,17 +1,18 @@
 import Fan from "@assets/fan.png";
 import Pump from "@assets/pump.png";
+import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { Tooltip } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
+import Fab from "@mui/material/Fab";
 import IconButton from "@mui/material/IconButton";
 import Pagination from "@mui/material/Pagination";
 import { useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
-import { Tooltip } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import * as St from "../../pages/Home/styles";
 import { AppDispatch, RootState } from "../../redux/store";
 import { getMachines } from "../../redux/store/machines/builders/getMachinesAsync";
 import {
@@ -21,7 +22,6 @@ import {
 } from "../../redux/store/machines/types";
 import { FetchStatus } from "../../redux/types";
 import Loading from "../../shared/components/loading";
-import * as St from "../../pages/Home/styles";
 import ModalMachines from "./modal";
 
 interface IMachineProps {

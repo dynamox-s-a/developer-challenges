@@ -1,18 +1,18 @@
-import { SubmitHandler, UseFormReturn } from "react-hook-form";
-import { Button } from "@mui/material";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
 import ErrorIcon from "@mui/icons-material/Error";
+import { Button } from "@mui/material";
+import FormControl from "@mui/material/FormControl";
 import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { useEffect, useState } from "react";
+import { SubmitHandler, UseFormReturn } from "react-hook-form";
+import * as St from "../../pages/Home/styles";
 import {
   IMachine,
   MachineTypes,
   NewMachine,
 } from "../../redux/store/machines/types";
-import * as St from "../../pages/Home/styles";
 import { changeName } from "../../shared/utils";
 
 interface IFormMachineProps {

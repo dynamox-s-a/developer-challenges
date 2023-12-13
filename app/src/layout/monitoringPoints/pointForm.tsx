@@ -1,16 +1,13 @@
-import { UseFormReturn } from "react-hook-form";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
 import ErrorIcon from "@mui/icons-material/Error";
+import FormControl from "@mui/material/FormControl";
 import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { useEffect, useState } from "react";
-import {
-  Sensors,
-} from "../../redux/store/monitoringPoints/types";
-import { IMachine, MachineTypes } from "../../redux/store/machines/types";
 import * as St from "../../pages/Home/styles";
+import { IMachine, MachineTypes } from "../../redux/store/machines/types";
+import { Sensors } from "../../redux/store/monitoringPoints/types";
 import { changeName } from "../../shared/utils";
 
 interface IFormMachineProps {
@@ -22,13 +19,13 @@ interface IFormMachineProps {
 export default function PointForm({
   formHook,
   selectedMachine,
-  pointNumber
+  pointNumber,
 }: IFormMachineProps) {
   const { formState, getValues, setValue } = formHook;
   const errors = formState.errors;
-  const nameForm = pointNumber? `name${pointNumber}` : "name"
-  const sensorForm = pointNumber? `sensor${pointNumber}` : "sensor"
-  
+  const nameForm = pointNumber ? `name${pointNumber}` : "name";
+  const sensorForm = pointNumber ? `sensor${pointNumber}` : "sensor";
+
   const [pointName, setMachineName] = useState<string>(() => {
     const values = getValues(nameForm) || "";
     return values;
@@ -38,16 +35,13 @@ export default function PointForm({
     return values;
   });
 
-  
-  
   useEffect(() => {
     setValue(nameForm, pointName);
-  }, [pointName, setValue]);
+  }, [nameForm, pointName, setValue]);
 
   useEffect(() => {
     setValue(sensorForm, sensor);
-  }, [sensor, setValue]);
-
+  }, [sensor, sensorForm, setValue]);
 
   return (
     <St.PointForm>

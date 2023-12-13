@@ -1,4 +1,8 @@
-import { IMachine, IPagination, NewMachine } from "../../../redux/store/machines/types";
+import {
+  IMachine,
+  IPagination,
+  NewMachine,
+} from "../../../redux/store/machines/types";
 import { Api } from "../ApiConfig";
 
 const getAll = () => {
@@ -22,7 +26,7 @@ const deleteMachine = (id: number) => {
 };
 
 export const MachinesService = {
-  getAll, 
+  getAll,
   getPaged,
   create,
   update,

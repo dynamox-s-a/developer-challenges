@@ -20,7 +20,6 @@ export interface ICreateFormPoint {
   sensor1: Sensors;
   name2: string;
   sensor2: Sensors;
-  
 }
 
 export interface IMonitoringPoint extends IMachine {

@@ -41,16 +41,6 @@
       "id": 7,
       "name": "Evo60",
       "type": "Fan"
-    },
-    {
-      "name": "Teste",
-      "type": "Pump",
-      "id": 8
-    },
-    {
-      "name": "Gislaine Costa Pereira",
-      "type": "Pump",
-      "id": 9
     }
   ],
   "monitoring_points": [
@@ -87,7 +77,7 @@
     {
       "id": 6,
       "machineId": 3,
-      "name": "Motor Entrada2",
+      "name": "Motor Entrada",
       "sensor": "HF+"
     },
     {

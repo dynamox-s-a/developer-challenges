@@ -1,14 +1,18 @@
+import { useLayoutEffect } from "react";
+import { UseFormReturn, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { useMemo, useLayoutEffect } from "react";
-import { AppDispatch, RootState } from "../../redux/store";
-import { FetchStatus } from "../../redux/types";
-import Loading from "../../shared/components/loading";
 import * as St from "../../pages/Home/styles";
-import { ICreateFormPoint, IListPoint, IMonitoringPointsState } from "../../redux/store/monitoringPoints/types";
+import { AppDispatch, RootState } from "../../redux/store";
 import { getMonitoringPoints } from "../../redux/store/monitoringPoints/builders/getMonitoringPointsAsync";
 import { getListPoints } from "../../redux/store/monitoringPoints/builders/listPointsAsync";
+import {
+  ICreateFormPoint,
+  IListPoint,
+  IMonitoringPointsState,
+} from "../../redux/store/monitoringPoints/types";
+import { FetchStatus } from "../../redux/types";
+import Loading from "../../shared/components/loading";
 import PointsTable from "./table";
-import { UseFormReturn, useForm } from "react-hook-form";
 
 export default function MonitoringPoints() {
   const dispatch = useDispatch<AppDispatch>();
@@ -24,9 +28,7 @@ export default function MonitoringPoints() {
 
   useLayoutEffect(() => {
     dispatch(getMonitoringPoints());
-  }, [listPoints]);
-  
- 
+  }, [dispatch, listPoints]);
 
   return (
     <St.ComponentContainer>

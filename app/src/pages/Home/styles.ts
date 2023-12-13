@@ -43,7 +43,7 @@ export const MachineName = styled.p`
 
 export const MachineType = styled.p`
   font-size: 0.7rem;
-  color: var(--grey-200)
+  color: var(--grey-200);
 `;
 
 export const Machines = styled.section`
@@ -96,7 +96,6 @@ export const Form = styled.form`
   gap: 2rem;
   width: 100%;
   margin: 1rem auto 0 auto;
-
 `;
 
 export const ErrorMessage = styled.div`

@@ -1,16 +1,16 @@
-import { useDispatch } from "react-redux";
-import { SubmitHandler, UseFormReturn } from "react-hook-form";
 import { Button } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { IMachine, NewMachine } from "../../redux/store/machines/types";
-import { deleteMachine } from "../../redux/store/machines/builders/deleteMachineAsync";
+import { SubmitHandler, UseFormReturn } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
-import { SetStateFunction } from "../../types";
-import { updateMachine } from "../../redux/store/machines/builders/updateMachineAsync";
 import { createMachine } from "../../redux/store/machines/builders/createMachineAsync";
+import { deleteMachine } from "../../redux/store/machines/builders/deleteMachineAsync";
+import { updateMachine } from "../../redux/store/machines/builders/updateMachineAsync";
+import { IMachine, NewMachine } from "../../redux/store/machines/types";
+import { SetStateFunction } from "../../types";
 import MachineForm from "./form";
 
 interface IModalMachineProps {

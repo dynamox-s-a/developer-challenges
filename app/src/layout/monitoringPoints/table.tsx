@@ -15,7 +15,7 @@ import { Tooltip, useTheme } from "@mui/material";
 import {
   IListPoint,
   IMonitoringPoint,
-  ICreateFormPoint
+  ICreateFormPoint,
 } from "../../redux/store/monitoringPoints/types";
 import Modal from "./modal";
 
@@ -23,22 +23,25 @@ interface ITableProps {
   machinesPoints: IMonitoringPoint[];
   listPoints: IListPoint[];
   editFormHook: UseFormReturn<UseFormReturn<IListPoint>, any, undefined>;
-  createFormHook: UseFormReturn<UseFormReturn<ICreateFormPoint>, any, undefined>
+  createFormHook: UseFormReturn<
+    UseFormReturn<ICreateFormPoint>,
+    any,
+    undefined
+  >;
 }
 
 export default function PointsTable({
   machinesPoints,
   listPoints,
   editFormHook,
-  createFormHook
+  createFormHook,
 }: ITableProps) {
   const [rows, setRows] = useState<any[]>([]);
   const theme = useTheme();
   const [modalType, setModalType] = useState<string>("edit");
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [selectedPointId, setSelectedPointId] = useState<number | undefined>();
-  
-  
+
   const openModal = (type: string, id?: GridRowId) => {
     if (type === "edit" && id) {
       const point = listPoints.filter((pt) => pt.id === id)[0];
@@ -57,17 +60,19 @@ export default function PointsTable({
   useLayoutEffect(() => {
     const rowsTable: any[] = [];
 
-    machinesPoints && machinesPoints.forEach((mach: IMonitoringPoint) => {
-      mach.monitoring_points && mach.monitoring_points.map((point: IListPoint) => {
-        rowsTable.push({
-          id: point.id,
-          machName: mach.name,
-          machType: mach.type,
-          pointName: point.name,
-          sensor: point.sensor,
-        });
+    machinesPoints &&
+      machinesPoints.forEach((mach: IMonitoringPoint) => {
+        mach.monitoring_points &&
+          mach.monitoring_points.map((point: IListPoint) => {
+            rowsTable.push({
+              id: point.id,
+              machName: mach.name,
+              machType: mach.type,
+              pointName: point.name,
+              sensor: point.sensor,
+            });
+          });
       });
-    });
 
     setRows(rowsTable);
   }, [machinesPoints, listPoints, modalIsOpen]);
@@ -127,7 +132,7 @@ export default function PointsTable({
           onClick={() => {
             openModal("edit", point.id);
           }}
-        />
+        />,
       ],
     },
   ];
@@ -167,8 +172,7 @@ export default function PointsTable({
           disableColumnMenu
         />
       </Box>
-      {
-        modalIsOpen && 
+      {modalIsOpen && (
         <Modal
           isOpen={modalIsOpen}
           setOpen={setModalIsOpen}
@@ -177,7 +181,7 @@ export default function PointsTable({
           editFormHook={editFormHook}
           createFormHook={createFormHook}
         />
-      }
+      )}
       <Tooltip title="Adicionar Máquina">
         <Fab
           size="large"

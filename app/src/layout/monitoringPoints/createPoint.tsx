@@ -1,35 +1,31 @@
-import { SubmitHandler, UseFormReturn } from "react-hook-form";
-import { Button } from "@mui/material";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
 import ErrorIcon from "@mui/icons-material/Error";
+import { Button } from "@mui/material";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { useEffect, useState } from "react";
-import {
-  ICreateFormPoint,
-  IListPoint,
-  NewPoint,
-} from "../../redux/store/monitoringPoints/types";
-import { IMachine } from "../../redux/store/machines/types";
+import { SubmitHandler, UseFormReturn } from "react-hook-form";
 import * as St from "../../pages/Home/styles";
+import { IMachine } from "../../redux/store/machines/types";
+import { ICreateFormPoint } from "../../redux/store/monitoringPoints/types";
 import PointForm from "./pointForm";
 
 interface IFormMachineProps {
   formHook: UseFormReturn<ICreateFormPoint>;
   formSubmit: SubmitHandler<ICreateFormPoint>;
-  machines: IMachine[]
+  machines: IMachine[];
 }
 
 export default function EditPointForm({
   formHook,
   formSubmit,
-  machines
+  machines,
 }: IFormMachineProps) {
   const { formState, handleSubmit, setValue } = formHook;
   const errors = formState.errors;
   const [selectedMachine, setSelectedMachine] = useState<IMachine>(machines[0]);
-  
+
   useEffect(() => {
     setValue("machineId", selectedMachine.id);
   }, [selectedMachine, setValue]);
@@ -48,11 +44,13 @@ export default function EditPointForm({
             onChange={(e) => setSelectedMachine(e.target.value as IMachine)}
             label="machine"
           >
-            {
-              machines.map((mach, index)=> {
-                return <MenuItem key={index} value={mach as any}>{mach.name}</MenuItem>
-              })
-            }
+            {machines.map((mach, index) => {
+              return (
+                <MenuItem key={index} value={mach as any}>
+                  {mach.name}
+                </MenuItem>
+              );
+            })}
           </Select>
         </FormControl>
         {errors.machineId && (
@@ -65,11 +63,19 @@ export default function EditPointForm({
       <St.FormPoints>
         <article>
           <St.PointTitle>Ponto 1</St.PointTitle>
-          <PointForm formHook={formHook} selectedMachine={selectedMachine} pointNumber={1} />
+          <PointForm
+            formHook={formHook}
+            selectedMachine={selectedMachine}
+            pointNumber={1}
+          />
         </article>
         <article>
           <St.PointTitle>Ponto 2</St.PointTitle>
-          <PointForm formHook={formHook} selectedMachine={selectedMachine} pointNumber={2}/>
+          <PointForm
+            formHook={formHook}
+            selectedMachine={selectedMachine}
+            pointNumber={2}
+          />
         </article>
       </St.FormPoints>
       <Button type="submit">Salvar</Button>

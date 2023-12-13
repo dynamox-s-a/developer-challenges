@@ -1,4 +1,7 @@
-import { IListPoint, NewPoint } from "../../../redux/store/monitoringPoints/types";
+import {
+  IListPoint,
+  NewPoint,
+} from "../../../redux/store/monitoringPoints/types";
 import { Api } from "../ApiConfig";
 
 const getAll = () => {

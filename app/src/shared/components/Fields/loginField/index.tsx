@@ -1,14 +1,14 @@
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import ErrorIcon from "@mui/icons-material/Error";
-import { UseFormReturn } from "react-hook-form";
-import Input from "@mui/material/Input";
-import { useState } from "react";
 import EmailIcon from "@mui/icons-material/Email";
-import InputAdornment from "@mui/material/InputAdornment";
+import ErrorIcon from "@mui/icons-material/Error";
 import Visibility from "@mui/icons-material/Visibility";
-import IconButton from "@mui/material/IconButton";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import FormControl from "@mui/material/FormControl";
+import IconButton from "@mui/material/IconButton";
+import Input from "@mui/material/Input";
+import InputAdornment from "@mui/material/InputAdornment";
+import InputLabel from "@mui/material/InputLabel";
+import { useState } from "react";
+import { UseFormReturn } from "react-hook-form";
 import * as St from "./styles";
 
 interface ITextFieldProps {
