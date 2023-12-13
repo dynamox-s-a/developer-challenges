@@ -1,30 +1,38 @@
-# React + TypeScript + Vite
+# Desafio Front-end
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### *Este teste foi desenvolvido pela Dynamox para o cargo de Desenvolvedor web frontend, sendo realizado por Gislaine Costa.* [Link do Repositório Inicial](https://github.com/dynamox-s-a/js-ts-developer-challenges)
+<br>
 
-Currently, two official plugins are available:
+## Sumário
+  - [Requisitos do projeto](#requisitos-do-projeto)
+  - [Ferramentas e Tecnologias Utilizadas](#ferramentas-e-tecnologias-utilizadas)
+  - [Iniciar Repositório](#iniciar-repositório)
+  - [Melhorias Futuras](#melhorias-futuras)
+<br>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Requisitos do projeto
+- O projeto teve que atender os requisitos contidos [neste documento](./Requisitos%20do%20Teste.md)
+<br>
 
-## Expanding the ESLint configuration
+## Ferramentas e Tecnologias Utilizadas
+- ReactJs com Vite e Typescript
+- React Router DOM
+- Redux Thunk
+- Styled Components
+- Material UI
+- Git
+<br>
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Iniciar Repositório
+1. Após clonar e acessar o repositório, instale as dependências e inicialize o projeto
+  * Instale as dependências:
+    * `yarn`
+  * Inicialize o projeto:
+    * `yarn dev` (A aplicação será iniciada em http://localhost:3000/)
+<br>
+   
+## Melhorias Futuras
+1. Testes unitários
+2. Testes e2e
+3. Criação de um Backend com monorepo
+4. Deploy com CD e CI
