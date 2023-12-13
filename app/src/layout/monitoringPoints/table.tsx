@@ -6,47 +6,47 @@ import {
   gridClasses,
 } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
-import { useLayoutEffect, useState, useEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
-import { UseFormReturn, useForm } from "react-hook-form";
+import { UseFormReturn } from "react-hook-form";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import { Tooltip, useTheme } from "@mui/material";
-import { useDispatch } from "react-redux";
 import {
   IListPoint,
   IMonitoringPoint,
-  NewPoint,
+  ICreateFormPoint
 } from "../../redux/store/monitoringPoints/types";
-import { AppDispatch } from "../../redux/store";
 import Modal from "./modal";
-import PointForm from "./editPoint";
 
 interface ITableProps {
   machinesPoints: IMonitoringPoint[];
   listPoints: IListPoint[];
+  editFormHook: UseFormReturn<UseFormReturn<IListPoint>, any, undefined>;
+  createFormHook: UseFormReturn<UseFormReturn<ICreateFormPoint>, any, undefined>
 }
 
 export default function PointsTable({
   machinesPoints,
   listPoints,
+  editFormHook,
+  createFormHook
 }: ITableProps) {
   const [rows, setRows] = useState<any[]>([]);
   const theme = useTheme();
-  const dispatch = useDispatch<AppDispatch>();
   const [modalType, setModalType] = useState<string>("edit");
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-  const formHook = useForm<UseFormReturn<IListPoint>>();
   const [selectedPointId, setSelectedPointId] = useState<number | undefined>();
+  
   
   const openModal = (type: string, id?: GridRowId) => {
     if (type === "edit" && id) {
       const point = listPoints.filter((pt) => pt.id === id)[0];
 
       listPoints.filter((pt) => pt.id === id)[0];
-      formHook.setValue("name", point.name);
-      formHook.setValue("machineId", point.machineId);
-      formHook.setValue("sensor", point.sensor);
+      editFormHook.setValue("name", point.name);
+      editFormHook.setValue("machineId", point.machineId);
+      editFormHook.setValue("sensor", point.sensor);
 
       setSelectedPointId(point.id);
     }
@@ -57,8 +57,8 @@ export default function PointsTable({
   useLayoutEffect(() => {
     const rowsTable: any[] = [];
 
-    machinesPoints.forEach((mach: IMonitoringPoint) => {
-      mach.monitoring_points.map((point: IListPoint) => {
+    machinesPoints && machinesPoints.forEach((mach: IMonitoringPoint) => {
+      mach.monitoring_points && mach.monitoring_points.map((point: IListPoint) => {
         rowsTable.push({
           id: point.id,
           machName: mach.name,
@@ -68,8 +68,9 @@ export default function PointsTable({
         });
       });
     });
+
     setRows(rowsTable);
-  }, [machinesPoints, listPoints]);
+  }, [machinesPoints, listPoints, modalIsOpen]);
 
   const columns: GridColDef[] = [
     {
@@ -173,7 +174,8 @@ export default function PointsTable({
           setOpen={setModalIsOpen}
           modalType={modalType}
           pointId={selectedPointId}
-          formHook={formHook}
+          editFormHook={editFormHook}
+          createFormHook={createFormHook}
         />
       }
       <Tooltip title="Adicionar Máquina">

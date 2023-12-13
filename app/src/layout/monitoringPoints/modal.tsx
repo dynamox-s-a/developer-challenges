@@ -1,11 +1,11 @@
 import { useDispatch } from "react-redux";
-import { SubmitHandler, UseFormReturn } from "react-hook-form";
+import { SubmitHandler, UseFormReturn, useForm } from "react-hook-form";
 import { Button } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { IListPoint, NewPoint } from "../../redux/store/monitoringPoints/types";
+import { IListPoint, NewPoint, ICreateFormPoint } from "../../redux/store/monitoringPoints/types";
 import { AppDispatch } from "../../redux/store";
 import { SetStateFunction } from "../../types";
 import { updateMonitoringPoint } from "../../redux/store/monitoringPoints/builders/updateMonitoringPointsAsync";
@@ -21,7 +21,8 @@ interface IModalPointsProps {
   isOpen: boolean;
   setOpen: SetStateFunction<boolean>;
   pointId: number | undefined;
-  formHook: UseFormReturn<IListPoint>;
+  editFormHook: UseFormReturn<IListPoint>;
+  createFormHook: UseFormReturn<ICreateFormPoint>
 }
 
 export default function ModalPoints({
@@ -29,10 +30,13 @@ export default function ModalPoints({
   setOpen,
   modalType,
   pointId,
-  formHook,
+  editFormHook,
+  createFormHook
 }: IModalPointsProps) {
   const [selectedMachine, setSelectedMachine] = useState<IMachine>()
   const [machines, setMachines] = useState<IMachine[]>([]);
+  const dispatch = useDispatch<AppDispatch>();
+  // const reset = modalType === "edit" ? editFormHook.reset : createFormHook.reset
 
   const fetchData = async () => {
     const response = await MachinesService.getAll();
@@ -42,28 +46,25 @@ export default function ModalPoints({
   useEffect(() => {
     fetchData().then((data) => {
       setMachines(data);
-      const machinePointId = formHook.getValues("machineId")
+      const machinePointId = editFormHook.getValues("machineId")
 
       const mach: IMachine = data.filter((mach: IMachine) => mach.id === machinePointId)[0]
       setSelectedMachine(mach);
     }).catch((err) => console.log(err))
   }, []);
 
-  const dispatch = useDispatch<AppDispatch>();
-  const { reset } = formHook;
-
   const closeModal = () => {
     setOpen(false);
-    reset();
+    // reset();
   };
 
-  const createOrUpdatePoint: SubmitHandler<IListPoint | NewPoint> = async ({
+  const updatePoint: SubmitHandler<IListPoint> = async ({
     name,
     sensor,
     machineId
   }) => {
     closeModal();
-    if (modalType === "edit" && pointId) {
+    if (pointId) {
       const newPoint = {
         id: pointId,
         machineId,
@@ -72,14 +73,37 @@ export default function ModalPoints({
       };
       return await dispatch(updateMonitoringPoint(newPoint));
     }
+  };
 
-    if (modalType === "create")
-      return await dispatch(createMonitoringPoint({ name, sensor, machineId }));
+  const createPoint: SubmitHandler<ICreateFormPoint> = async ({
+    name1,
+    sensor1,
+    name2,
+    sensor2,
+    machineId
+  }) => {
+    closeModal();
+    
+    const fristPoint: NewPoint ={
+      machineId,
+      name: name1,
+      sensor: sensor1
+    }
+
+    const secondPoint: NewPoint ={
+      machineId,
+      name: name2,
+      sensor: sensor2
+    }
+
+    await dispatch(createMonitoringPoint(fristPoint));
+    await dispatch(createMonitoringPoint(secondPoint));
+    return 
   };
 
   const modalBody = () => {
-    if (modalType === "edit" && selectedMachine) return <EditPointForm formHook={formHook} formSubmit={createOrUpdatePoint} selectedMachine={selectedMachine}/>
-    if (modalType === "create" && machines.length) return <CreateForm formHook={formHook} formSubmit={createOrUpdatePoint} machines={machines}/> 
+    if (modalType === "edit" && selectedMachine) return <EditPointForm formHook={editFormHook} formSubmit={updatePoint} selectedMachine={selectedMachine}/>
+    if (modalType === "create" && machines.length) return <CreateForm formHook={createFormHook} formSubmit={createPoint} machines={machines}/> 
   }
 
   return (

@@ -14,6 +14,15 @@ export interface IListPoint {
   sensor: Sensors;
 }
 
+export interface ICreateFormPoint {
+  machineId: number;
+  name1: string;
+  sensor1: Sensors;
+  name2: string;
+  sensor2: Sensors;
+  
+}
+
 export interface IMonitoringPoint extends IMachine {
   monitoring_points: IListPoint[];
 }

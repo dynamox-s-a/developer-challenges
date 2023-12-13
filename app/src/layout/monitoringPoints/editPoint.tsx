@@ -10,7 +10,7 @@ import PointForm from "./pointForm";
 
 interface IFormMachineProps {
   formHook: UseFormReturn<IListPoint>;
-  formSubmit: SubmitHandler<IListPoint | NewPoint>;
+  formSubmit: SubmitHandler<IListPoint>;
   selectedMachine: IMachine
 }
 

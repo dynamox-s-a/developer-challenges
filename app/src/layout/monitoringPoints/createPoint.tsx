@@ -7,6 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { useEffect, useState } from "react";
 import {
+  ICreateFormPoint,
   IListPoint,
   NewPoint,
 } from "../../redux/store/monitoringPoints/types";
@@ -15,8 +16,8 @@ import * as St from "../../pages/Home/styles";
 import PointForm from "./pointForm";
 
 interface IFormMachineProps {
-  formHook: UseFormReturn<IListPoint>;
-  formSubmit: SubmitHandler<IListPoint | NewPoint>;
+  formHook: UseFormReturn<ICreateFormPoint>;
+  formSubmit: SubmitHandler<ICreateFormPoint>;
   machines: IMachine[]
 }
 
@@ -32,8 +33,6 @@ export default function EditPointForm({
   useEffect(() => {
     setValue("machineId", selectedMachine.id);
   }, [selectedMachine, setValue]);
-
-  console.log({selectedMachine})
 
   return (
     <St.Form autoComplete="off" onSubmit={handleSubmit(formSubmit)}>
@@ -56,21 +55,21 @@ export default function EditPointForm({
             }
           </Select>
         </FormControl>
-        {errors.sensor && (
+        {errors.machineId && (
           <St.ErrorMessage>
             <ErrorIcon color="error" fontSize="small" />
-            <p>{errors.sensor.message as string} </p>
+            <p>{errors.machineId.message as string} </p>
           </St.ErrorMessage>
         )}
       </St.Input>
       <St.FormPoints>
         <article>
           <St.PointTitle>Ponto 1</St.PointTitle>
-          <PointForm formHook={formHook} selectedMachine={selectedMachine}/>
+          <PointForm formHook={formHook} selectedMachine={selectedMachine} pointNumber={1} />
         </article>
         <article>
           <St.PointTitle>Ponto 2</St.PointTitle>
-          <PointForm formHook={formHook} selectedMachine={selectedMachine}/>
+          <PointForm formHook={formHook} selectedMachine={selectedMachine} pointNumber={2}/>
         </article>
       </St.FormPoints>
       <Button type="submit">Salvar</Button>

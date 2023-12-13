@@ -7,7 +7,6 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { useEffect, useState } from "react";
 import {
-  IListPoint,
   Sensors,
 } from "../../redux/store/monitoringPoints/types";
 import { IMachine, MachineTypes } from "../../redux/store/machines/types";
@@ -15,31 +14,38 @@ import * as St from "../../pages/Home/styles";
 import { changeName } from "../../shared/utils";
 
 interface IFormMachineProps {
-  formHook: UseFormReturn<IListPoint>;
-  selectedMachine: IMachine
+  formHook: any;
+  selectedMachine: IMachine;
+  pointNumber?: number;
 }
 
 export default function PointForm({
   formHook,
-  selectedMachine
+  selectedMachine,
+  pointNumber
 }: IFormMachineProps) {
   const { formState, getValues, setValue } = formHook;
   const errors = formState.errors;
+  const nameForm = pointNumber? `name${pointNumber}` : "name"
+  const sensorForm = pointNumber? `sensor${pointNumber}` : "sensor"
+  
   const [pointName, setMachineName] = useState<string>(() => {
-    const values = getValues("name") || "";
+    const values = getValues(nameForm) || "";
     return values;
   });
   const [sensor, setSensor] = useState<Sensors>(() => {
-    const values = getValues("sensor") || Sensors.hf;
+    const values = getValues(sensorForm) || Sensors.hf;
     return values;
   });
+
+  
   
   useEffect(() => {
-    setValue("name", pointName);
+    setValue(nameForm, pointName);
   }, [pointName, setValue]);
 
   useEffect(() => {
-    setValue("sensor", sensor);
+    setValue(sensorForm, sensor);
   }, [sensor, setValue]);
 
 

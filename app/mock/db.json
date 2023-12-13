@@ -46,6 +46,11 @@
       "name": "Teste",
       "type": "Pump",
       "id": 8
+    },
+    {
+      "name": "Gislaine Costa Pereira",
+      "type": "Pump",
+      "id": 9
     }
   ],
   "monitoring_points": [
@@ -70,7 +75,7 @@
     {
       "id": 4,
       "machineId": 2,
-      "name": "Ventoinha Principal4",
+      "name": "Ventoinha Principal",
       "sensor": "TcAs"
     },
     {
@@ -81,8 +86,8 @@
     },
     {
       "id": 6,
-      "name": "Motor Entrada",
       "machineId": 3,
+      "name": "Motor Entrada2",
       "sensor": "HF+"
     },
     {
@@ -90,12 +95,6 @@
       "name": "Motor Saída",
       "machineId": 3,
       "sensor": "HF+"
-    },
-    {
-      "name": "Saída",
-      "sensor": "TcAs",
-      "machineId": 7,
-      "id": 8
     }
   ]
 }
