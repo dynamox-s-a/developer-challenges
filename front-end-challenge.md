@@ -68,7 +68,7 @@ In general we will be looking for the following:
 * Create a new branch using your first name and last name. For example: `caroline-oliveira`.
 * After completing the challenge, create a pull request to this repository (https://github.com/dynamox-s-a/js-ts-full-stack-test) pointing to the main branch.
 * We will receive a notification about your pull request, review your solution and get in touch with you.
-
+<br>
 **Good luck! We look forward to reviewing your submission.** 🚀
 
 ## Frequently Asked Questions
@@ -77,4 +77,4 @@ In general we will be looking for the following:
   **Yes, this allows us to see how much time you spent on the challenge.**
 
 * If I have more questions, who can I contact?
-  **Please reach out to [Rafael]<rafael.schmitz@dynamox.net> (Front end dev).**
+  **Please reach out to <rafael.schmitz@dynamox.net> (Front end dev).**
