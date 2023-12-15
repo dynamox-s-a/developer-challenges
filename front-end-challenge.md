@@ -23,25 +23,25 @@ The page that displays this information in Dynapredict, our asset condition moni
 Use the figma as a reference to build an interface and develop the following user stories:
 
 1 - User Stories
-1. [ ] As an user I want to acess the route */data* of my app and view a screnn containing a small header with information about the machine and a couple of time-series charts.
+1. [ ] As an user I want to acess the route */data* of my app and view a screen containing a small header with information about the machine and a couple of time-series charts.
 
-1. [ ] As an user I want to view 3 time-series charts of the following metrics: acceleration, velocity and displacement. Each time series should have a horizontal axis for the time and a vertical axis for the metric magnitude.
+1. [ ] As an user I want to view 3 time-series charts of the following metrics: *acceleration, velocity and displacement*. Each time series should have a horizontal axis for the time and a vertical axis for the metric magnitude.
 
 1. [ ] As an user I want that the data that will populate these charts should be fetched each time I access the route */data*. Use the data available in (./response.json) as a mock and use a package like [json-server](https://www.npmjs.com/package/json-server) to build an REST API.
 
-1. [ ] As an user i want to hover over a point of a chart and see a vertical crosshair marking equivalent timestamps in all time-series charts, with a tooltip describing that point. [Check out](https://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/demo/synchronized-charts) to view a sample of this feature.
+1. [ ] As an user I want to hover over a point of a chart and see a vertical crosshair marking equivalent timestamps in all time-series charts, with a tooltip describing that point. [Check out](https://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/demo/synchronized-charts) to view a sample of this feature.
 
 
 2 - Technical requirements
-We encourage using our frontend stack tooling to make the challenge resemble our everyday tasks.
-
 1. [ ] Use TypeScript.
 1. [ ] Use React.
 1. [ ] Use Redux for managing global states. [Check out](https://redux-toolkit.js.org/introduction/getting-started) to get started.
 1. [ ] Use Redux Saga for asynchronous side effects. [Check out](https://redux-saga.js.org/docs/introduction/GettingStarted) to get started.
-1. [ ] Use Vite for building the app.[Check out](https://vitejs.dev/guide/) to get started.
+1. [ ] Use Vite for building the app. [Check out](https://vitejs.dev/guide/) to get started.
 1. [ ] Use Material UI 5 for styling the application. [Check out](https://mui.com/material-ui/getting-started/) to get started.
 1. [ ] Use Highcharts to display the plots. [Check out](https://www.highcharts.com/docs/index) to get started.
+
+We encourage using our frontend stack tooling to make the challenge resemble our everyday tasks.
 
 3 - Bonus
 1. [ ] Add unit tests with Vitest. [Check out](https://vitest.dev/guide/) to get started.
@@ -71,12 +71,10 @@ In general we will be looking for the following:
 
 **Good luck! We look forward to reviewing your submission.** 🚀
 
-</br>
-
 ## Frequently Asked Questions
 
 * Is it necessary to fork the project?
   **Yes, this allows us to see how much time you spent on the challenge.**
 
 * If I have more questions, who can I contact?
-  **Please reach out to [Rafael](rafael.schmitz@dynamox.net) (Front end dev).**
+  **Please reach out to [Rafael]<rafael.schmitz@dynamox.net> (Front end dev).**
