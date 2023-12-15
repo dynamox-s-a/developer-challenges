@@ -8,7 +8,7 @@ Dynamox front-end development team presents you with the following challenge:
 
 ---
 
-Keep in mind the challenge aims to reproduce an environament where you could demonstrate your skills. 
+Keep in mind the challenge aims to reproduce an environment where you could demonstrate your skills. 
 
 In order to help guiding your development process we will provide some requirements. It is not mandatory to fulfill all requirements to submit your implementation. The more requirements you implement, the more resources we will have to assess your skills and knowledge. 
 
@@ -18,7 +18,7 @@ Use your best judgement to prioritize tasks to meet the time you have available.
 
 In maintenance industry, vibration analysis plays a main role: It uses physical quantities like acceleration and velocity to find evidences that help predict occurence of faults or degradations in machines. 
 
-The page that displays this information in Dynapredict, our asset condition monitoring platform, is designed pretty much like [this](https://www.figma.com/file/QxUZkTUIzQA7cvyiMvVyxK/Front-end---Teste?type=design&node-id=1001%3A3&mode=design&t=JLnbGmQJcSlnYYE2-1).
+The page that displays this information in DynaPredict, our asset condition monitoring platform, is designed pretty much like [this](https://www.figma.com/file/QxUZkTUIzQA7cvyiMvVyxK/Front-end---Teste?type=design&node-id=1001%3A3&mode=design&t=JLnbGmQJcSlnYYE2-1).
 
 Use the figma as a reference to build an interface and develop the following user stories:
 
@@ -39,7 +39,7 @@ Use the figma as a reference to build an interface and develop the following use
 1. [ ] Use Redux Saga for asynchronous side effects. [Check out](https://redux-saga.js.org/docs/introduction/GettingStarted) to get started.
 1. [ ] Use Vite for building the app. [Check out](https://vitejs.dev/guide/) to get started.
 1. [ ] Use Material UI 5 for styling the application. [Check out](https://mui.com/material-ui/getting-started/) to get started.
-1. [ ] Use Highcharts to display the plots. [Check out](https://www.highcharts.com/docs/index) to get started.
+1. [ ] Use Highcharts, Plotly, D3 or any similar library to display the plots. [Check out](https://www.highcharts.com/docs/index) to get started.
 
 We encourage using our frontend stack tooling to make the challenge resemble our everyday tasks.
 

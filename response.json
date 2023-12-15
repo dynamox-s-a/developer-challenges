@@ -1,5 +1,5 @@
 [{
-    "name": "acceleration/x/continuous/rms",
+    "name": "accelerationRms/x",
     "data": [
       {
         "datetime": "2023-11-07T11:53:38.187Z",
@@ -728,7 +728,7 @@
     ]
   },
   {
-    "name": "acceleration/y/continuous/rms",
+    "name": "accelerationRms/y",
     "data": [
       {
         "datetime": "2023-11-07T11:53:38.187Z",
@@ -1457,7 +1457,7 @@
     ]
   },
   {
-    "name": "acceleration/z/continuous/rms",
+    "name": "accelerationRms/z",
     "data": [
       {
         "datetime": "2023-11-07T11:53:38.187Z",
@@ -2186,7 +2186,7 @@
     ]
   },
   {
-    "name": "velocity/x/continuous/rms",
+    "name": "velocityRms/x",
     "data": [
       {
         "datetime": "2023-11-07T11:53:38.187Z",
@@ -2915,7 +2915,7 @@
     ]
   },
   {
-    "name": "velocity/y/continuous/rms",
+    "name": "velocityRms/y",
     "data": [
       {
         "datetime": "2023-11-07T11:53:38.187Z",
@@ -3644,7 +3644,7 @@
     ]
   },
   {
-    "name": "velocity/z/continuous/rms",
+    "name": "velocityRms/z",
     "data": [
       {
         "datetime": "2023-11-07T11:53:38.187Z",
@@ -4373,7 +4373,7 @@
     ]
   },
   {
-    "name": "temperature/continuous",
+    "name": "temperature",
     "data": [
       {
         "datetime": "2023-11-07T11:53:38.187Z",
