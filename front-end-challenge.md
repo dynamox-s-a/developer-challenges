@@ -16,7 +16,7 @@ Use your best judgement to prioritize tasks to meet the time you have available.
 
 ## Functional Requirements and User Stories
 
-In maintenance industry, vibration analysis plays a main role: It uses physical quantities like acceleration, velocity and displacement to find evidences that help predict occurence of faults or degradations in machines. 
+In maintenance industry, vibration analysis plays a main role: It uses physical quantities like acceleration and velocity to find evidences that help predict occurence of faults or degradations in machines. 
 
 The page that displays this information in Dynapredict, our asset condition monitoring platform, is designed pretty much like [this](https://www.figma.com/file/QxUZkTUIzQA7cvyiMvVyxK/Front-end---Teste?type=design&node-id=1001%3A3&mode=design&t=JLnbGmQJcSlnYYE2-1).
 
@@ -25,7 +25,7 @@ Use the figma as a reference to build an interface and develop the following use
 1 - User Stories
 1. [ ] As an user I want to acess the route */data* of my app and view a screen containing a small header with information about the machine and a couple of time-series charts.
 
-1. [ ] As an user I want to view 3 time-series charts of the following metrics: *acceleration, velocity and displacement*. Each time series should have a horizontal axis for the time and a vertical axis for the metric magnitude.
+1. [ ] As an user I want to view 3 time-series charts of the following metrics: *acceleration, velocity and temperature*. Each time series should have a horizontal axis for the time and a vertical axis for the metric magnitude.
 
 1. [ ] As an user I want that the data that will populate these charts should be fetched each time I access the route */data*. Use the data available in (./response.json) as a mock and use a package like [json-server](https://www.npmjs.com/package/json-server) to build an REST API.
 
@@ -69,6 +69,7 @@ In general we will be looking for the following:
 * After completing the challenge, create a pull request to this repository (https://github.com/dynamox-s-a/js-ts-full-stack-test) pointing to the main branch.
 * We will receive a notification about your pull request, review your solution and get in touch with you.
 <br>
+
 **Good luck! We look forward to reviewing your submission.** 🚀
 
 ## Frequently Asked Questions
