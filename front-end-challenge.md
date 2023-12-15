@@ -58,9 +58,8 @@ In general we will be looking for the following:
 1. [ ] Stories were implemented according to the functional requirements.
 1. [ ] Problem-solving skills and ability to handle ambiguity.
 1. [ ] Code quality, readability, and maintainability.
-1. [ ] Create reusable components.
-1. [ ] The code is well-organized and documented.
-1. [ ] The application layout is responsive.
+1. [ ] Code is well-organized and documented.
+1. [ ] Application layout is responsive.
 
 ## Ready to Begin the Challenges?
 
