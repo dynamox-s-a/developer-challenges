@@ -14,22 +14,26 @@ In order to help guiding your development process we will provide some requireme
 
 Use your best judgement to prioritize tasks to meet the time you have available. Feel free to make any assumptions you consider necessary to complete the task.
 
-## Stories and Functional Requirements
+## Functional Requirements and User Stories
 
-In maintenance industry, vibration analysis plays a main role. These technique uses physical quantities like acceleration, velocity and diplacement to find evidences that help predict occurence of faults or degradations in machines. 
+In maintenance industry, vibration analysis plays a main role: It uses physical quantities like acceleration, velocity and displacement to find evidences that help predict occurence of faults or degradations in machines. 
 
-The page that displays this information in Dynapredict, the asset condition monitoring platform of Dynamox, is vital and holds a design pretty much like [these](https://www.figma.com/file/QxUZkTUIzQA7cvyiMvVyxK/Front-end---Teste?type=design&node-id=1001%3A3&mode=design&t=JLnbGmQJcSlnYYE2-1).
+The page that displays this information in Dynapredict, our asset condition monitoring platform, is designed pretty much like [this](https://www.figma.com/file/QxUZkTUIzQA7cvyiMvVyxK/Front-end---Teste?type=design&node-id=1001%3A3&mode=design&t=JLnbGmQJcSlnYYE2-1).
 
-1 - Data Stories
-1. [ ] Use the data available in (./response.json) as a model for the responses. Mock your back-end using a package like [json-server](https://www.npmjs.com/package/json-server).
+Use the figma as a reference to build an interface and develop the following user stories:
 
-2 - Front-end stories
-1. [ ] Use the fimga to build an interface and display the required information.
+1 - User Stories
+1. [ ] As an user I want to acess the route */data* of my app and view a screnn containing a small header with information about the machine and a couple of time-series charts.
 
-1. [ ] Develop an integrated cursor between the plots, that render a vertical line and displays a tooltip over the hovered point. [Check out](https://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/demo/synchronized-charts) to view a sample of this kind of feature.
+1. [ ] As an user I want to view 3 time-series charts of the following metrics: acceleration, velocity and displacement. Each time series should have a horizontal axis for the time and a vertical axis for the metric magnitude.
 
-3 - Technical requirements
-We encourage using our stack tools to make the challenge resemble your everyday tasks. The choice of remaining tools is at your discretion.
+1. [ ] As an user I want that the data that will populate these charts should be fetched each time I access the route */data*. Use the data available in (./response.json) as a mock and use a package like [json-server](https://www.npmjs.com/package/json-server) to build an REST API.
+
+1. [ ] As an user i want to hover over a point of a chart and see a vertical crosshair marking equivalent timestamps in all time-series charts, with a tooltip describing that point. [Check out](https://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/demo/synchronized-charts) to view a sample of this feature.
+
+
+2 - Technical requirements
+We encourage using our frontend stack tooling to make the challenge resemble our everyday tasks.
 
 1. [ ] Use TypeScript.
 1. [ ] Use React.
@@ -39,7 +43,7 @@ We encourage using our stack tools to make the challenge resemble your everyday 
 1. [ ] Use Material UI 5 for styling the application. [Check out](https://mui.com/material-ui/getting-started/) to get started.
 1. [ ] Use Highcharts to display the plots. [Check out](https://www.highcharts.com/docs/index) to get started.
 
-4 - Bonus
+3 - Bonus
 1. [ ] Add unit tests with Vitest. [Check out](https://vitest.dev/guide/) to get started.
 1. [ ] Add e2e tests with Cypress. [Check out](https://learn.cypress.io/) to get started.
 1. [ ] Deploy your application to a cloud provider and provide a link for the running app.
@@ -62,8 +66,8 @@ In general we will be looking for the following:
 
 * Fork this repository to your own Github account.
 * Create a new branch using your first name and last name. For example: `caroline-oliveira`.
-* After completing the challenge, create a pull request to this repository (https://github.com/dynamox-s-a/js-ts-full-stack-test), aimed at the main branch.
-* We will receive a notification about your pull request, review your solution, and get in touch with you.
+* After completing the challenge, create a pull request to this repository (https://github.com/dynamox-s-a/js-ts-full-stack-test) pointing to the main branch.
+* We will receive a notification about your pull request, review your solution and get in touch with you.
 
 **Good luck! We look forward to reviewing your submission.** 🚀
 
@@ -75,4 +79,4 @@ In general we will be looking for the following:
   **Yes, this allows us to see how much time you spent on the challenge.**
 
 * If I have more questions, who can I contact?
-  **Please reach out to [Rafael](https://www.linkedin.com/in/calil-amaral-84005b67/) (Front end dev).**
+  **Please reach out to [Rafael](rafael.schmitz@dynamox.net) (Front end dev).**
