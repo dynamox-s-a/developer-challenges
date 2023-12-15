@@ -4,13 +4,13 @@
 
 Dynamox front-end development team presents you with the following challenge:
 
-**Using React and TypeScript, develop a robust and intuitive dashboard application to assess the data acquired by our sensor.**
+**Using React and TypeScript, develop a robust and intuitive dashboard application that allows assessing the data acquired by our sensors.**
 
 ---
 
 Keep in mind the challenge aims to reproduce an environament where you could demonstrate your skills. 
 
-In order to help guiding your development process we will provide some requirements. It is not mandatory to implement all the listed requirements to submit your implementation. The more requirements you implement, the more resources we will have to assess your skills and knowledge. 
+In order to help guiding your development process we will provide some requirements. It is not mandatory to fulfill all requirements to submit your implementation. The more requirements you implement, the more resources we will have to assess your skills and knowledge. 
 
 Use your best judgement to prioritize tasks to meet the time you have available. Feel free to make any assumptions you consider necessary to complete the task.
 
@@ -18,14 +18,15 @@ Use your best judgement to prioritize tasks to meet the time you have available.
 
 In maintenance industry, vibration analysis plays a main role. These technique uses physical quantities like acceleration, velocity and diplacement to find evidences that help predict occurence of faults or degradations in machines. 
 
-The page that displays this information in Dynapredict, the asset condition monitoring platform of Dynamox, is vital and holds a design pretty much like [these](https://www.npmjs.com/package/json-server).
+The page that displays this information in Dynapredict, the asset condition monitoring platform of Dynamox, is vital and holds a design pretty much like [these](https://www.figma.com/file/QxUZkTUIzQA7cvyiMvVyxK/Front-end---Teste?type=design&node-id=1001%3A3&mode=design&t=JLnbGmQJcSlnYYE2-1).
 
 1 - Data Stories
 1. [ ] Use the data available in (./response.json) as a model for the responses. Mock your back-end using a package like [json-server](https://www.npmjs.com/package/json-server).
 
 2 - Front-end stories
-1. [ ] Plot Build an interface following our [figma design](https://www.npmjs.com/package/json-server).
-1. [ ] Develop an integrated cursor as i hover through the plots.
+1. [ ] Use the fimga to build an interface and display the required information.
+
+1. [ ] Develop an integrated cursor between the plots, that render a vertical line and displays a tooltip over the hovered point. [Check out](https://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/demo/synchronized-charts) to view a sample of this kind of feature.
 
 3 - Technical requirements
 We encourage using our stack tools to make the challenge resemble your everyday tasks. The choice of remaining tools is at your discretion.
