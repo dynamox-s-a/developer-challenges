@@ -1,0 +1,11 @@
+.nav {
+  background-color: #45132d;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.img {
+  height: 48px;
+}
