@@ -1,12 +1,17 @@
-import { Link } from 'react-router-dom';
+import { Box, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import Footer from './Footer';
 
 function Home() {
+  const navigate = useNavigate();
   return (
     <>
-      <div>
-        <h1>Home</h1>
-        <Link to="/data">access data</Link>
-      </div>
+      <Box>
+        <Button onClick={() => navigate('/data')}>
+          Acessar dados da máquina
+        </Button>
+      </Box>
+      <Footer />
     </>
   );
 }

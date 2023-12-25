@@ -1,5 +1,6 @@
 import { Box, CardHeader, Container } from '@mui/material';
 import InfoCard from './InfoCard';
+import LineChart from '../../components/LineChart';
 
 function PageData() {
   return (
@@ -22,9 +23,15 @@ function PageData() {
       <Container>
         <InfoCard />
         <Box>
-          <Box>graph 1</Box>
-          <Box>graph 2</Box>
-          <Box>graph 3</Box>
+          <Box>
+            <LineChart title="Aceleração RMS" yAxisTitle="Aceleração RMS (g)" />
+          </Box>
+          <Box>
+            <LineChart title="Temperatura" yAxisTitle="Temperatura (°C)" />
+          </Box>
+          <Box>
+            <LineChart title="Velocidade RMS" yAxisTitle="Aceleração (g)" />
+          </Box>
         </Box>
       </Container>
     </>
