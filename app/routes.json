@@ -1,0 +1,4 @@
+{
+  "/chart/*": "/$1",
+  "/chart/:name": "/chart?name=:name"
+}
