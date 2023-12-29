@@ -6,6 +6,7 @@ const initialState: TChart = {
   id: 'accelerationRms',
   lines: [],
   name: '',
+  status: '',
   title: 'Aceleração RMS',
   yAxisTitle: 'Aceleração RMS (g)',
 };
@@ -14,16 +15,24 @@ const accelerationRmsSlice = createSlice({
   name: 'accelerationRms',
   initialState,
   reducers: {
-    setAccelerationRmsData: (state, { payload }) => ({
-      ...state,
-      data: { ...state.data, payload },
-    }),
-    getAccelerationRmsData: (state, { payload }) => {
+    getAccRmsData: (state, { payload }) => {
       console.log('State: ', state, 'Payload: ', payload);
     },
+    setAccRmsData: (state, { payload }) => ({
+      ...state,
+      data: { ...state.data, ...payload },
+    }),
+    setLines: (state, { payload }) => ({
+      ...state,
+      lines: state.lines.concat(payload),
+    }),
+    setStatus: (state, { payload }) => ({
+      ...state,
+      status: payload,
+    }),
   },
 });
 
-export const { getAccelerationRmsData, setAccelerationRmsData } =
+export const { getAccRmsData, setAccRmsData, setLines, setStatus } =
   accelerationRmsSlice.actions;
 export default accelerationRmsSlice;

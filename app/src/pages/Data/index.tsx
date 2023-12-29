@@ -1,10 +1,17 @@
 import { Box, CardHeader, Container } from '@mui/material';
 import InfoCard from './InfoCard';
 import LineChart from '../../components/LineChart';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../../store';
+import { useEffect } from 'react';
+import { getAccRmsData } from '../../store/reducers/accelerationRms';
 
 function PageData() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAccRmsData([]));
+  }, [dispatch, getAccRmsData]);
+
   const { accelerationRms, temperature, velocityRms } = useSelector(
     (state: IRootState) => ({
       accelerationRms: state.chartAccelerationRms,

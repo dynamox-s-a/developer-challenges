@@ -3,10 +3,10 @@ type TDataChart = {
   max: number;
 };
 
-type TDataChartLine = {
+export type TDataChartLine = {
   name?: string;
-  xAxioData: Array<string>;
-  yAxioData: Array<number>;
+  xAxisData: Array<string>;
+  yAxisData: Array<number>;
 };
 
 export type TResponseChart = {
@@ -16,7 +16,8 @@ export type TResponseChart = {
 
 export interface TChart extends TResponseChart {
   id: string;
-  lines?: Array<TDataChartLine>;
+  lines: Array<TDataChartLine>;
+  status: '' | 'loading' | 'error' | 'success';
   title: string;
   yAxisTitle: string;
 }
