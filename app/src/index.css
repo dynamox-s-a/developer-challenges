@@ -5,5 +5,23 @@
 body {
   background-color: #f8fafc;
   margin: 0;
-  overflow-x: hidden;
+  overflow: scroll;
+}
+
+.home-container {
+  display: flex;
+  height: calc(100vh - 72px);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.not-found-container {
+  display: flex;
+  height: calc(100vh - 72px);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
 }

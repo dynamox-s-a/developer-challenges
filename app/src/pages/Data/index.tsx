@@ -1,5 +1,5 @@
 import { Box, CardHeader, Container, Grid } from '@mui/material';
-import InfoCard from './InfoCard';
+import InfoCard from '../../components/InfoCard';
 import LineChart from '../../components/LineChart';
 import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../../store';
