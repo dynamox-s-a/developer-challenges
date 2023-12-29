@@ -15,27 +15,14 @@ type TItem = {
 };
 
 const InfoCard = () => {
-  const RenderItem = ({
-    hideDivisor = false,
-    icon,
-    title,
-    value,
-    xs,
-  }: TItem) => {
-    const borderRight = !hideDivisor ? '1px solid #ddd' : 'none';
+  const RenderItem = ({ icon, title, value, xs }: TItem) => {
     return (
-      <Grid
-        item
-        key={title}
-        sx={{ lineHeight: '20px', padding: '24px' }}
-        xs={xs}
-      >
+      <Grid item key={title} className="cardItem" xs={12} sm={6} md={xs}>
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'center',
-            borderRight: { borderRight },
           }}
         >
           <Box sx={{ marginRight: '12px', alignSelf: 'center' }}>
@@ -54,7 +41,6 @@ const InfoCard = () => {
         border: '1px solid #dfe3e8',
         margin: '24px 24px',
         padding: '12px 24px',
-        height: '46px',
         backgroundColor: '#fff',
       }}
     >

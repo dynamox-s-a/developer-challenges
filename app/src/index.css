@@ -15,6 +15,31 @@ body {
   align-items: center;
   justify-content: center;
   padding: 40px;
+  text-align: center;
+  @media (max-width: 960px) {
+    h3:first-of-type {
+      font-size: 32px;
+    }
+    h5:first-of-type {
+      font-size: 16px;
+    }
+  }
+  @media (max-width: 600px) {
+    h3:first-of-type {
+      font-size: 32px;
+    }
+    h5:first-of-type {
+      font-size: 14px;
+    }
+  }
+  @media (max-width: 480px) {
+    h3:first-of-type {
+      font-size: 20px;
+    }
+    h5:first-of-type {
+      font-size: 12px;
+    }
+  }
 }
 
 .not-found-container {

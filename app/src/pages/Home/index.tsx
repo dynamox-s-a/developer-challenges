@@ -7,10 +7,10 @@ function Home() {
 
   return (
     <div className="home-container">
-      <Typography variant="h3">
+      <Typography variant="h3" component="h3">
         Dynamox Front-end Developer Challenge
       </Typography>
-      <Typography variant="h6">
+      <Typography variant="h6" component="h5">
         Clique no botão abaixo para acessar a aba Análise de Dados.
       </Typography>
       <Button
