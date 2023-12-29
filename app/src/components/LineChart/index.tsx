@@ -20,8 +20,6 @@ export default function LineChart({
 
   const options = {
     chart: {
-      renderTo: 'container',
-      type: 'line',
       borderColor: '#dfe3e8',
       borderRadius: 4,
       borderWidth: 1,
@@ -41,7 +39,9 @@ export default function LineChart({
       categories: lines.length > 0 ? lines[0].range : [],
     },
     plotOptions: {
-      series: {},
+      series: {
+        cursor: 'crosshair',
+      },
     },
 
     series: series,

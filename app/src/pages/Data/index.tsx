@@ -56,10 +56,10 @@ function PageData() {
               <LineChart {...accelerationRms} />
             </Grid>
             <Grid item xs={12}>
-              <LineChart {...temperature} />
+              <LineChart {...velocityRms} />
             </Grid>
             <Grid item xs={12}>
-              <LineChart {...velocityRms} />
+              <LineChart {...temperature} />
             </Grid>
           </Grid>
         </Box>
