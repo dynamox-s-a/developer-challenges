@@ -15,9 +15,7 @@ const accelerationRmsSlice = createSlice({
   name: 'accelerationRms',
   initialState,
   reducers: {
-    getAccRmsData: (state, { payload }) => {
-      console.log('State: ', state, 'Payload: ', payload);
-    },
+    getAccRmsData: () => {},
     setAccRmsData: (state, { payload }) => ({
       ...state,
       data: { ...state.data, ...payload },

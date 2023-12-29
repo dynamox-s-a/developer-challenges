@@ -1,22 +1,27 @@
-import { Box, CardHeader, Container } from '@mui/material';
+import { Box, CardHeader, Container, Grid } from '@mui/material';
 import InfoCard from './InfoCard';
 import LineChart from '../../components/LineChart';
 import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../../store';
 import { useEffect } from 'react';
 import { getAccRmsData } from '../../store/reducers/accelerationRms';
+import { getTemperatureData } from '../../store/reducers/temperature';
+import { getVelocityRmsData } from '../../store/reducers/velocityRms';
 
 function PageData() {
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(getAccRmsData([]));
-  }, [dispatch, getAccRmsData]);
+    dispatch(getAccRmsData());
+    dispatch(getTemperatureData());
+    dispatch(getVelocityRmsData());
+  }, [dispatch]);
 
   const { accelerationRms, temperature, velocityRms } = useSelector(
     (state: IRootState) => ({
-      accelerationRms: state.chartAccelerationRms,
-      temperature: state.chartTemperature,
-      velocityRms: state.chartVelocityRms,
+      accelerationRms: state.accelerationRms,
+      temperature: state.temperature,
+      velocityRms: state.velocityRms,
     }),
   );
 
@@ -39,16 +44,24 @@ function PageData() {
       </header>
       <Container>
         <InfoCard />
-        <Box>
-          <Box>
-            <LineChart {...accelerationRms} />
-          </Box>
-          <Box>
-            <LineChart {...temperature} />
-          </Box>
-          <Box>
-            <LineChart {...velocityRms} />
-          </Box>
+        <Box
+          sx={{
+            margin: '24px 0px',
+            padding: '24px',
+            backgroundColor: '#fff',
+          }}
+        >
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <LineChart {...accelerationRms} />
+            </Grid>
+            <Grid item xs={12}>
+              <LineChart {...temperature} />
+            </Grid>
+            <Grid item xs={12}>
+              <LineChart {...velocityRms} />
+            </Grid>
+          </Grid>
         </Box>
       </Container>
     </>

@@ -4,9 +4,9 @@ type TDataChart = {
 };
 
 export type TDataChartLine = {
-  name?: string;
-  xAxisData: Array<string>;
-  yAxisData: Array<number>;
+  axisName?: string;
+  range: Array<string>;
+  series: Array<number>;
 };
 
 export type TResponseChart = {

@@ -1,4 +1,4 @@
-import { call, delay, put, takeEvery } from 'redux-saga/effects';
+import { call, delay, put, takeLatest } from 'redux-saga/effects';
 import {
   getAccRmsData,
   setAccRmsData,
@@ -29,18 +29,18 @@ function* monitorAcceleration() {
     yield put(setAccRmsData(yAccelerationRmsData));
     yield put(setAccRmsData(zAccelerationRmsData));
 
-    const xAccLine: TDataChartLine = yield call(
-      generateLineChart,
-      xAccelerationRmsData,
-    );
-    const yAccLine: TDataChartLine = yield call(
-      generateLineChart,
-      yAccelerationRmsData,
-    );
-    const zAccLine: TDataChartLine = yield call(
-      generateLineChart,
-      zAccelerationRmsData,
-    );
+    const xAccLine: TDataChartLine = yield call(generateLineChart, {
+      data: xAccelerationRmsData,
+      axisName: 'Axial',
+    });
+    const yAccLine: TDataChartLine = yield call(generateLineChart, {
+      data: yAccelerationRmsData,
+      axisName: 'Radial',
+    });
+    const zAccLine: TDataChartLine = yield call(generateLineChart, {
+      data: zAccelerationRmsData,
+      axisName: 'Horizontal',
+    });
 
     yield put(setLines(xAccLine));
     yield put(setLines(yAccLine));
@@ -54,5 +54,5 @@ function* monitorAcceleration() {
 }
 
 export function* accelerationRmsSaga() {
-  yield takeEvery(getAccRmsData, monitorAcceleration);
+  yield takeLatest(getAccRmsData, monitorAcceleration);
 }
