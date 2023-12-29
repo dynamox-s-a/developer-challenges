@@ -1,6 +1,6 @@
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import { TChart } from '../../common/types';
+import { TChart } from '@/common/types';
 import { Skeleton } from '@mui/material';
 
 export default function LineChart({
@@ -9,7 +9,7 @@ export default function LineChart({
   title,
   yAxisTitle,
 }: TChart) {
-  const series: Array<{ data: Array<number>; name?: string }> = [];
+  const series: Array<{ data: Array<[string, number]>; name?: string }> = [];
 
   lines.forEach(element => {
     series.push({
@@ -43,9 +43,12 @@ export default function LineChart({
         cursor: 'crosshair',
       },
     },
-
+    tooltip: {
+      shared: true,
+      followPointer: true,
+      borderRadius: 4,
+    },
     series: series,
-
     responsive: {
       rules: [
         {

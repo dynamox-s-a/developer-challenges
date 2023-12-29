@@ -1,12 +1,13 @@
-import { Box, CardHeader, Container, Grid } from '@mui/material';
-import InfoCard from '../../components/InfoCard';
-import LineChart from '../../components/LineChart';
-import { useDispatch, useSelector } from 'react-redux';
-import { IRootState } from '../../store';
 import { useEffect } from 'react';
-import { getAccRmsData } from '../../store/reducers/accelerationRms';
-import { getTemperatureData } from '../../store/reducers/temperature';
-import { getVelocityRmsData } from '../../store/reducers/velocityRms';
+import { useDispatch, useSelector } from 'react-redux';
+import { Box, CardHeader, Grid } from '@mui/material';
+
+import InfoCard from '@/components/InfoCard';
+import LineChart from '@/components/LineChart';
+import { IRootState } from '@/store';
+import { getAccRmsData } from '@/store/reducers/accelerationRms';
+import { getTemperatureData } from '@/store/reducers/temperature';
+import { getVelocityRmsData } from '@/store/reducers/velocityRms';
 
 function PageData() {
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ function PageData() {
         <CardHeader
           title="Análise de Dados"
           sx={{
-            padding: '20px 24px',
+            padding: '20px 48px',
             backgroundColor: '#fff',
             borderBottom: '1px solid #dfe3e8',
           }}
@@ -42,15 +43,15 @@ function PageData() {
           }}
         />
       </header>
-      <Container>
+      <Box
+        sx={{
+          margin: '24px',
+          padding: '24px',
+          backgroundColor: '#fff',
+        }}
+      >
         <InfoCard />
-        <Box
-          sx={{
-            margin: '24px 0px',
-            padding: '24px',
-            backgroundColor: '#fff',
-          }}
-        >
+        <div>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <LineChart {...accelerationRms} />
@@ -62,8 +63,8 @@ function PageData() {
               <LineChart {...temperature} />
             </Grid>
           </Grid>
-        </Box>
-      </Container>
+        </div>
+      </Box>
     </>
   );
 }

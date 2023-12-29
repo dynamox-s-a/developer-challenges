@@ -1,3 +1,5 @@
+import { HighchartsReactRefObject } from 'highcharts-react-official';
+
 type TDataChart = {
   datetime: string;
   max: number;
@@ -6,7 +8,7 @@ type TDataChart = {
 export type TDataChartLine = {
   axisName?: string;
   range: Array<string>;
-  series: Array<number>;
+  series: Array<[string, number]>;
 };
 
 export type TResponseChart = {
@@ -21,3 +23,13 @@ export interface TChart extends TResponseChart {
   title: string;
   yAxisTitle: string;
 }
+
+export interface TLineChart extends TChart {
+  ref: React.RefObject<HighchartsReactRefObject>;
+}
+
+export type TCardItem = {
+  icon: unknown;
+  title: string;
+  xs: number;
+};
