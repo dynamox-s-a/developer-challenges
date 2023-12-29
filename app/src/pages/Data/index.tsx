@@ -32,7 +32,7 @@ function PageData() {
         <CardHeader
           title="Análise de Dados"
           sx={{
-            padding: '20px 48px',
+            padding: '20px 24px',
             backgroundColor: '#fff',
             borderBottom: '1px solid #dfe3e8',
           }}
@@ -43,27 +43,26 @@ function PageData() {
           }}
         />
       </header>
+      <InfoCard />
       <Box
         sx={{
           margin: '24px',
           padding: '24px',
           backgroundColor: '#fff',
+          border: '1px solid #dfe3e8',
         }}
       >
-        <InfoCard />
-        <div>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <LineChart {...accelerationRms} />
-            </Grid>
-            <Grid item xs={12}>
-              <LineChart {...velocityRms} />
-            </Grid>
-            <Grid item xs={12}>
-              <LineChart {...temperature} />
-            </Grid>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <LineChart {...accelerationRms} />
           </Grid>
-        </div>
+          <Grid item xs={12}>
+            <LineChart {...velocityRms} />
+          </Grid>
+          <Grid item xs={12}>
+            <LineChart {...temperature} />
+          </Grid>
+        </Grid>
       </Box>
     </>
   );
