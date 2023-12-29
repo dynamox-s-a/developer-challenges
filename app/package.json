@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:mock": "json-server --watch db.json --port 3001",
+    "dev:mock": "json-server --watch db.json --port 3001 --routes routes.json",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
@@ -14,13 +14,16 @@
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.15.1",
+    "@reduxjs/toolkit": "^2.0.1",
     "axios": "^1.6.2",
     "highcharts": "^11.2.0",
     "highcharts-react-official": "^3.2.1",
     "json-server": "^0.17.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.21.1"
+    "react-redux": "^9.0.4",
+    "react-router-dom": "^6.21.1",
+    "redux-saga": "^1.2.3"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

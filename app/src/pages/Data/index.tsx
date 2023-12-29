@@ -1,8 +1,18 @@
 import { Box, CardHeader, Container } from '@mui/material';
 import InfoCard from './InfoCard';
 import LineChart from '../../components/LineChart';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../../store';
 
 function PageData() {
+  const { accelerationRms, temperature, velocityRms } = useSelector(
+    (state: IRootState) => ({
+      accelerationRms: state.chartAccelerationRms,
+      temperature: state.chartTemperature,
+      velocityRms: state.chartVelocityRms,
+    }),
+  );
+
   return (
     <>
       <header>
@@ -24,13 +34,13 @@ function PageData() {
         <InfoCard />
         <Box>
           <Box>
-            <LineChart title="Aceleração RMS" yAxisTitle="Aceleração RMS (g)" />
+            <LineChart {...accelerationRms} />
           </Box>
           <Box>
-            <LineChart title="Temperatura" yAxisTitle="Temperatura (°C)" />
+            <LineChart {...temperature} />
           </Box>
           <Box>
-            <LineChart title="Velocidade RMS" yAxisTitle="Aceleração (g)" />
+            <LineChart {...velocityRms} />
           </Box>
         </Box>
       </Container>
