@@ -27,7 +27,6 @@ export async function PUT(request: NextRequest, { params: { id } }: Props) {
   }
 
   const validatedBody = validation.data;
-
   const updatedMachine = await prisma.machine.update({
     where: { id: parseInt(id) },
     data: {

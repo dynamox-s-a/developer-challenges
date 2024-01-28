@@ -19,7 +19,6 @@ export async function POST(request: NextRequest) {
   }
 
   const validatedBody = validation.data;
-
   const machine = await prisma.machine.create({
     data: {
       name: validatedBody.name,
