@@ -12,11 +12,12 @@ datasource db {
 }
 
 model User {
-  id             Int       @id @default(autoincrement())
-  email          String    @unique
-  name           String
-  hashedPassword String
-  machines       Machine[]
+  id               Int               @id @default(autoincrement())
+  email            String            @unique
+  name             String
+  hashedPassword   String
+  machines         Machine[]
+  monitoringPoints MonitoringPoint[]
 }
 
 model Machine {
@@ -34,4 +35,6 @@ model MonitoringPoint {
   sensor    String
   machine   Machine @relation(fields: [machineId], references: [id])
   machineId Int
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int     
 }
