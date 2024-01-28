@@ -15,7 +15,7 @@ function typeValidation(type: string) {
 const postSchema = z.object({
   name: z.string().min(3),
   type: z.string().toLowerCase().refine(typeValidation, {
-    message: "Invalid machine type. Machine type needs to be fan or pump.",
+    message: "Invalid machine type. Machine type needs to be 'fan' or 'pump'.",
   }),
   userId: z.number(),
 });
@@ -25,7 +25,7 @@ export { postSchema };
 const putSchema = z.object({
   name: z.string().min(3),
   type: z.string().toLowerCase().refine(typeValidation, {
-    message: "Invalid machine type. Machine type needs to be fan or pump.",
+    message: "Invalid machine type. Machine type needs to be 'fan' or 'pump'.",
   }),
 });
 
