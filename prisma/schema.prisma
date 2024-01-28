@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model User {
+  id             Int       @id @default(autoincrement())
+  email          String    @unique
+  name           String
+  hashedPassword String
+  machines       Machine[]
+}
+
+model Machine {
+  id               Int               @id @default(autoincrement())
+  name             String
+  type             String
+  monitoringPoints MonitoringPoint[]
+  user             User              @relation(fields: [userId], references: [id])
+  userId           Int
+}
+
+model MonitoringPoint {
+  id        Int     @id @default(autoincrement())
+  name      String
+  sensor    String
+  machine   Machine @relation(fields: [machineId], references: [id])
+  machineId Int
+}
