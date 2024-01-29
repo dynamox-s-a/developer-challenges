@@ -1,16 +1,20 @@
 import { prisma } from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-import { postSchema } from "./schema";
+import { schema } from "./schema";
+import getUserId from "../utils/getUserId";
 
-export async function GET(request: NextRequest) {
-  const machines = await prisma.machine.findMany();
+export async function GET(req: NextRequest) {
+  const userId = await getUserId(req);
+  const machines = await prisma.machine.findMany({
+    where: { userId },
+  });
 
   return NextResponse.json(machines);
 }
 
-export async function POST(request: NextRequest) {
-  const body = await request.json();
-  const validation = postSchema.safeParse(body);
+export async function POST(req: NextRequest) {
+  const body = await req.json();
+  const validation = schema.safeParse(body);
 
   if (!validation.success) {
     return NextResponse.json(validation.error.errors, {
@@ -19,11 +23,12 @@ export async function POST(request: NextRequest) {
   }
 
   const validatedBody = validation.data;
+  const userId = await getUserId(req);
   const machine = await prisma.machine.create({
     data: {
+      userId,
       name: validatedBody.name,
       type: validatedBody.type,
-      userId: validatedBody.userId,
     },
   });
 

@@ -1,6 +1,7 @@
 import { prisma } from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-import { putSchema } from "../schema";
+import { schema } from "../schema";
+import getUserId from "../../utils/getUserId";
 
 interface Props {
   params: {
@@ -8,9 +9,9 @@ interface Props {
   };
 }
 
-export async function PUT(request: NextRequest, { params: { id } }: Props) {
-  const body = await request.json();
-  const validation = putSchema.safeParse(body);
+export async function PUT(req: NextRequest, { params: { id } }: Props) {
+  const body = await req.json();
+  const validation = schema.safeParse(body);
 
   if (!validation.success) {
     return NextResponse.json(validation.error.errors, {
@@ -38,13 +39,24 @@ export async function PUT(request: NextRequest, { params: { id } }: Props) {
   return NextResponse.json(updatedMachine);
 }
 
-export async function DELETE(request: NextRequest, { params: { id } }: Props) {
+export async function DELETE(req: NextRequest, { params: { id } }: Props) {
   const machine = await prisma.machine.findUnique({
     where: { id: parseInt(id) },
   });
 
   if (!machine) {
     return NextResponse.json({ message: "Machine not found" }, { status: 404 });
+  }
+
+  const userId = await getUserId(req);
+
+  if (machine.userId !== userId) {
+    return NextResponse.json(
+      {
+        message: `This user does not have a machine with the specified id (${id})`,
+      },
+      { status: 401 }
+    );
   }
 
   await prisma.machine.delete({
