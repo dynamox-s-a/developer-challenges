@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { postSchema } from "./schema";
 import bcrypt from "bcrypt";
 
-export async function GET(request: NextRequest) {
+export async function GET(req: NextRequest) {
   const user = await prisma.user.findUnique({
     where: { id: 1 },
   });
@@ -11,8 +11,8 @@ export async function GET(request: NextRequest) {
   return NextResponse.json(user);
 }
 
-export async function POST(request: NextRequest) {
-  const body = await request.json();
+export async function POST(req: NextRequest) {
+  const body = await req.json();
   const validation = postSchema.safeParse(body);
 
   if (!validation.success) {
