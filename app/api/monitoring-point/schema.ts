@@ -13,7 +13,7 @@ function sensorValidation(sensor: string) {
   return sensor;
 }
 
-const postSchema = z.object({
+const schema = z.object({
   machineId: z.number(),
   name: z.string().min(1),
   sensor: z
@@ -28,4 +28,4 @@ const postSchema = z.object({
     }),
 });
 
-export { postSchema };
+export { schema };

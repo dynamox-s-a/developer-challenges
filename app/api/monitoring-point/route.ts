@@ -1,17 +1,20 @@
 import { prisma } from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-import { postSchema } from "./schema";
+import { schema } from "./schema";
+import getUserId from "../utils/getUserId";
 
-export async function GET(request: NextRequest) {
-  const monitoringPoints = await prisma.monitoringPoint.findMany();
-  //TODO: pegar somente os monitoringPoints do usuário da sessão
+export async function GET(req: NextRequest) {
+  const userId = await getUserId(req);
+  const monitoringPoints = await prisma.monitoringPoint.findMany({
+    where: { userId },
+  });
 
   return NextResponse.json(monitoringPoints);
 }
 
-export async function POST(request: NextRequest) {
-  const body = await request.json();
-  const validation = postSchema.safeParse(body);
+export async function POST(req: NextRequest) {
+  const body = await req.json();
+  const validation = schema.safeParse(body);
 
   if (!validation.success) {
     return NextResponse.json(validation.error.errors, {
@@ -45,9 +48,10 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const userId = await getUserId(req);
   const createdMonitoringPoint = await prisma.monitoringPoint.create({
     data: {
-      userId: 1, //TODO: passar o id do usuário da sessão
+      userId,
       machineId: validatedBody.machineId,
       name: validatedBody.name,
       sensor: validatedBody.sensor,
