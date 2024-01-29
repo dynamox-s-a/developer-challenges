@@ -1,7 +1,7 @@
 import { prisma } from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { schema } from "./schema";
-import getUserId from "../utils/getUserId";
+import getUserId from "../utils/get-user-id";
 
 export async function GET(req: NextRequest) {
   const userId = await getUserId(req);
