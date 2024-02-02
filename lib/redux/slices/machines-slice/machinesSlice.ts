@@ -34,12 +34,22 @@ export const machinesSlice = createSlice({
       .addCase(createMachine.pending, (state) => {
         state.status = "loading";
       })
+      .addCase(createMachine.fulfilled, (state, action) => {
+        state.status = "iddle";
+        state.data.push(action.payload);
+      })
+      .addCase(updateMachine.pending, (state) => {
+        state.status = "loading";
+      })
       .addCase(updateMachine.fulfilled, (state, action) => {
         state.status = "iddle";
         const machineIndex = state.data.findIndex((machine) => machine.id === action.payload.id);
         state.data[machineIndex].id = action.payload.id;
         state.data[machineIndex].name = action.payload.name;
         state.data[machineIndex].type = action.payload.type;
+      })
+      .addCase(deleteMachine.pending, (state) => {
+        state.status = "loading";
       })
       .addCase(deleteMachine.fulfilled, (state, action) => {
         state.status = "iddle";

@@ -4,8 +4,7 @@ import { schema } from "./schema";
 import getUserId from "app/api/utils/getUserId";
 
 export async function GET(req: NextRequest) {
-  // const userId = await getUserId(req);
-  const userId = 11;
+  const userId = await getUserId(req);
   const monitoringPoints = await prisma.monitoringPoint.findMany({
     where: {
       machine: {
