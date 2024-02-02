@@ -2,15 +2,49 @@ import Box from "@mui/material/Box"
 import { Chart } from "./Chart"
 import { useAppSelector } from "../app/hooks"
 import { selectAxis } from "../features/axis/axisSlice"
+import { selectSensor } from "../features/sensors/sensorSlice"
 
 export const ChartContainer = () => {
-  const data = [1, 2, 1, 4, 3, 6, 7, 3, 8, 6, 9]
   const axis = useAppSelector(selectAxis)
+  const sensorData = useAppSelector(selectSensor).info
+
+  const formatDateString = (rawDate: string) => {
+    return ""
+  }
+
+  const filterByMetric = (metric: string) => {
+    const metricResult = sensorData.filter(item => {
+      if (metric === "temp" && item.name.toLowerCase().includes(metric)) {
+        return true
+      }
+      if (
+        item.name.toLowerCase().includes(metric) &&
+        item.name.toLowerCase().includes(axis)
+      ) {
+        return true
+      }
+      return false
+    })
+    const result = metricResult[0].data.map(item => [
+      new Date(item.datetime).getTime(),
+      item.max,
+    ])
+    return result
+  }
+
   return (
     <Box sx={{ border: 1 }}>
-      <Chart chartTitle={`Acceleration ${axis}`} axis={axis} chartData={data} />
-      <Chart chartTitle={`Velocity ${axis}`} axis={axis} chartData={data} />
-      <Chart chartTitle="Temperature" chartData={data} />
+      <Chart
+        chartTitle={`Acceleration ${axis}`}
+        axis={axis}
+        chartData={filterByMetric("acc")}
+      />
+      <Chart
+        chartTitle={`Velocity ${axis}`}
+        axis={axis}
+        chartData={filterByMetric("vel")}
+      />
+      <Chart chartTitle="Temperature" chartData={filterByMetric("temp")} />
     </Box>
   )
 }

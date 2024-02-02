@@ -6,7 +6,7 @@ interface IPageTitle extends React.HTMLAttributes<HTMLElement> {
 
 export const PageTitle = ({ text, ...props }: IPageTitle) => {
   return (
-    <Typography variant="h3" component="h1">
+    <Typography variant="h5" component="h1">
       {text}
     </Typography>
   )

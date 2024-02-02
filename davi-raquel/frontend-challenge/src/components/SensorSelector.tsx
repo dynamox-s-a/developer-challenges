@@ -6,11 +6,7 @@ import FormControl from "@mui/material/FormControl"
 import Select from "@mui/material/Select"
 
 import { useAppDispatch, useAppSelector } from "../app/hooks"
-import {
-  getByIdAsync,
-  selectSensor,
-  selectStatus,
-} from "../features/sensors/sensorSlice"
+import { getByIdAsync, selectSensor } from "../features/sensors/sensorSlice"
 
 export const SensorSelector = () => {
   const sensor = useAppSelector(selectSensor)

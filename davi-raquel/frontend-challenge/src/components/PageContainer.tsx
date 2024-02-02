@@ -8,7 +8,7 @@ export const PageContainer = ({ ...props }: IPageContainer) => {
   return (
     <Box>
       <PageHeader />
-      <PageTitle text="Welcome to the dashboard by Davi" />
+      <PageTitle text="Welcome" />
       {props.children}
     </Box>
   )

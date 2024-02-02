@@ -1,6 +1,6 @@
 export interface RawData {
   datetime: string
-  max: string
+  max: number
 }
 
 export interface ApiResponseBySensor {
@@ -8,5 +8,5 @@ export interface ApiResponseBySensor {
   name: string
   title: string
   description: string
-  data: RawData[]
+  info: { name: string; data: RawData[] }[]
 }

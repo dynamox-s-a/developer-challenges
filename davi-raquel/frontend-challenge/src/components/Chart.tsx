@@ -8,6 +8,16 @@ interface IChart extends React.HTMLAttributes<HTMLElement> {
 }
 
 export const Chart = ({ chartTitle, chartData, ...props }: IChart) => {
+  Highcharts.Pointer.prototype.reset = function () {
+    return undefined
+  }
+  const baseString = chartTitle.toLowerCase()
+  const [units, decimals] = baseString.includes("acc")
+    ? ["m/s²", 3]
+    : baseString.includes("vel")
+      ? ["m/s", 3]
+      : ["ºC", 2]
+
   return (
     <HighchartsReact
       highcharts={Highcharts}
@@ -21,65 +31,39 @@ export const Chart = ({ chartTitle, chartData, ...props }: IChart) => {
         },
         series: [
           {
+            name: `${chartTitle}`,
             data: chartData,
           },
         ],
         xAxis: {
           crosshair: true,
-          labels: {
-            format: "{value} km",
-          },
           accessibility: {
-            description: "Kilometers",
-            rangeDescription: "0km to 6.5km",
+            description: "Data",
+            rangeDescription: "",
           },
+          labels: {
+            format: "{value:%Y-%m-%d %H:%M:%S}",
+          },
+          type: "datetime",
         },
         tooltip: {
           positioner: function () {
             return {
-              x: this.chart.chartWidth - this.label.width,
-              y: 10,
+              x: this.chart.chartWidth - this.label.width - 20,
+              y: 0,
             }
+          },
+          valueDecimals: decimals,
+          borderWidth: 0,
+          backgroundColor: "none",
+          pointFormat: `{point.y} ${units}`,
+          headerFormat: "",
+          shadow: false,
+          style: {
+            fontSize: "18px",
           },
         },
       }}
     />
   )
 }
-
-// {
-//   chart: {
-//       marginLeft: 40, // Keep all charts left aligned
-//       spacingTop: 20,
-//       spacingBottom: 20
-//   },
-//   title: {
-//       text: dataset.name,
-//       align: 'left',
-//       margin: 0,
-//       x: 30
-//   },
-//   credits: {
-//       enabled: false
-//   },
-//   legend: {
-//       enabled: false
-//   },
-//   xAxis: {
-//       crosshair: true,
-//       events: {
-//           setExtremes: syncExtremes
-//       },
-//       labels: {
-//           format: '{value} km'
-//       },
-//       accessibility: {
-//           description: 'Kilometers',
-//           rangeDescription: '0km to 6.5km'
-//       }
-//   },
-//   yAxis: {
-//       title: {
-//           text: null
-//       }
-//   }

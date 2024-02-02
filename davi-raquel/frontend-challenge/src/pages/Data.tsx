@@ -13,7 +13,6 @@ import { ToggleAxis } from "../components/ToggleAxis"
 export const Data = () => {
   const dispatch = useAppDispatch()
   const status = useAppSelector(selectStatus)
-  console.log(status)
   useEffect(() => {
     dispatch(getByIdAsync(1))
   }, [dispatch])
