@@ -28,7 +28,7 @@ export default function Register() {
     onSubmit: async (values, helpers) => {
       try {
         setLoading(true);
-        const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/user", {
+        const res = await fetch(process.env.NEXT_AUTH_URL + "/user", {
           method: "POST",
           headers: {
             Accept: "application/json",
