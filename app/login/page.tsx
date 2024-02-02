@@ -1,11 +1,20 @@
 "use client";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { redirect } from "next/navigation";
 import { useFormik } from "formik";
 import { default as NextLink } from "next/link";
 import * as Yup from "yup";
-import { Alert, Box, Button, Link, Stack, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Link,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 
 export default function Login() {
@@ -41,7 +50,13 @@ export default function Login() {
     },
   });
 
-  if (status === "loading" || loading) return "Loading.........";
+  if (status === "loading" || loading) {
+    return (
+      <Box className="main-loading">
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <>
@@ -69,7 +84,7 @@ export default function Login() {
             <Stack spacing={1} sx={{ mb: 3 }}>
               <Typography variant="h4">Login</Typography>
               <Typography color="text.secondary" variant="body2">
-                Don&apos;t have an acmachine? &nbsp;
+                Don&apos;t have an account? &nbsp;
                 <Link component={NextLink} href="/register" underline="hover" variant="subtitle2">
                   Register
                 </Link>
@@ -101,11 +116,11 @@ export default function Login() {
                   value={formik.values.password}
                 />
               </Stack>
-              {formik.errors.submit && (
+              {/* {formik.errors.submit && (
                 <Typography color="error" sx={{ mt: 3 }} variant="body2">
                   {formik.errors.submit}
                 </Typography>
-              )}
+              )} */}
               <Button fullWidth size="large" sx={{ mt: 3 }} type="submit" variant="contained">
                 Continue
               </Button>

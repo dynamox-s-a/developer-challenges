@@ -3,7 +3,7 @@ import Head from "next/head";
 import NextLink from "next/link";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Box, Button, Link, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Link, Stack, TextField, Typography } from "@mui/material";
 import { signIn, useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useState } from "react";
@@ -73,7 +73,13 @@ export default function Register() {
     },
   });
 
-  if (status === "loading" || loading) return "Loading.........";
+  if (status === "loading" || loading) {
+    return (
+      <Box className="main-loading">
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <>
@@ -101,7 +107,7 @@ export default function Register() {
             <Stack spacing={1} sx={{ mb: 3 }}>
               <Typography variant="h4">Register</Typography>
               <Typography color="text.secondary" variant="body2">
-                Already have an acmachine? &nbsp;
+                Already have an account? &nbsp;
                 <Link component={NextLink} href="/login" underline="hover" variant="subtitle2">
                   Login
                 </Link>
