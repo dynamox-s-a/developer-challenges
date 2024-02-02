@@ -21,9 +21,11 @@ export const SensorInfo = () => {
         alt={`picture of ${sensor}`}
         src={sensorPic}
       />
-      <Box>
-        <Typography component="h4">Title {sensor.title}</Typography>
-        <Typography>Description {sensor.description}</Typography>
+      <Box sx={{ color: "white" }}>
+        <Typography component="h4">Title: {sensor.title}</Typography>
+        <Typography sx={{ maxWidth: { xs: "90vw", md: "40vw" } }}>
+          Description: {sensor.description}
+        </Typography>
       </Box>
     </Box>
   )

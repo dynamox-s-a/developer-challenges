@@ -12,10 +12,22 @@ export const SensorSelector = () => {
   const sensor = useAppSelector(selectSensor)
   const dispatch = useAppDispatch()
   return (
-    <Box sx={{ minWidth: 120, maxWidth: 240 }}>
-      <Typography component="h3">Change Sensor:</Typography>
+    <Box
+      sx={{
+        minWidth: 120,
+        maxWidth: 240,
+        display: "flex",
+        color: "white",
+        paddingY: "1em",
+      }}
+    >
+      <Typography component="h3" sx={{ margin: "0.75em", textWrap: "nowrap" }}>
+        Sensor:
+      </Typography>
       <FormControl fullWidth>
-        <InputLabel id="sensor-select-label">Sensor</InputLabel>
+        <InputLabel sx={{ color: "white" }} id="sensor-select-label">
+          Sensor
+        </InputLabel>
         <Select
           labelId="sensor-select-label"
           id="sensor-select"
@@ -23,10 +35,11 @@ export const SensorSelector = () => {
           label="Age"
           onChange={event => dispatch(getByIdAsync(Number(event.target.value)))}
           displayEmpty
+          sx={{ minWidth: "150px", color: "white" }}
         >
-          <MenuItem value="1">Sensor 1</MenuItem>
-          <MenuItem value="2">Sensor 2</MenuItem>
-          <MenuItem value="3">Sensor 3</MenuItem>
+          <MenuItem value="1">Sensor AF</MenuItem>
+          <MenuItem value="2">Sensor HF</MenuItem>
+          <MenuItem value="3">Sensor TCA</MenuItem>
         </Select>
       </FormControl>
     </Box>

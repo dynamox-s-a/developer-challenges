@@ -4,28 +4,51 @@ import ToggleButton from "@mui/material/ToggleButton"
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import { useAppDispatch, useAppSelector } from "../app/hooks"
 import { changeAxis, selectAxis } from "../features/axis/axisSlice"
+import { StyledToggleButton } from "./StyledToggleButton"
 
 export const ToggleAxis = () => {
   const axis = useAppSelector(selectAxis)
   const dispatch = useAppDispatch()
+  const toggleButtonStyles = { color: "black", background: "white" }
+
   return (
-    <Box>
-      <Typography>Select axis:</Typography>
+    <Box
+      sx={{
+        color: "white",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        paddingY: "1em",
+      }}
+    >
+      <Typography>Axis:</Typography>
       <ToggleButtonGroup
         value={axis}
         exclusive
         onChange={(event, value) => dispatch(changeAxis(value))}
         aria-label="text alignment"
       >
-        <ToggleButton value="x" aria-label="x axis">
+        <StyledToggleButton
+          sx={toggleButtonStyles}
+          value="x"
+          aria-label="x axis"
+        >
           X
-        </ToggleButton>
-        <ToggleButton value="y" aria-label="y axis">
+        </StyledToggleButton>
+        <StyledToggleButton
+          sx={toggleButtonStyles}
+          value="y"
+          aria-label="y axis"
+        >
           Y
-        </ToggleButton>
-        <ToggleButton value="z" aria-label="z axis">
+        </StyledToggleButton>
+        <StyledToggleButton
+          sx={toggleButtonStyles}
+          value="z"
+          aria-label="z axis"
+        >
           Z
-        </ToggleButton>
+        </StyledToggleButton>
       </ToggleButtonGroup>
     </Box>
   )

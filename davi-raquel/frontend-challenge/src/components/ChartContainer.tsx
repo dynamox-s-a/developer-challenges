@@ -8,10 +8,6 @@ export const ChartContainer = () => {
   const axis = useAppSelector(selectAxis)
   const sensorData = useAppSelector(selectSensor).info
 
-  const formatDateString = (rawDate: string) => {
-    return ""
-  }
-
   const filterByMetric = (metric: string) => {
     const metricResult = sensorData.filter(item => {
       if (metric === "temp" && item.name.toLowerCase().includes(metric)) {
