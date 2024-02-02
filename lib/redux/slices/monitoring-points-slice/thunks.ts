@@ -9,7 +9,7 @@ interface NewMonitoringPoint {
 export const getMonitoringPoints = createAppAsyncThunk(
   "monitoringPoints/getMonitoringPoints",
   async () => {
-    const response = await fetch("/monitoring-point");
+    const response = await fetch("/api/monitoring-point");
     const result = await response.json();
 
     // The value we return becomes the `fulfilled` action payload
@@ -20,7 +20,7 @@ export const getMonitoringPoints = createAppAsyncThunk(
 export const createMonitoringPoint = createAppAsyncThunk(
   "monitoringPoints/createMonitoringPoint",
   async (monitoringPoint: NewMonitoringPoint) => {
-    const response = await fetch("/monitoring-point", {
+    const response = await fetch("/api/monitoring-point", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(monitoringPoint),

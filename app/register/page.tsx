@@ -28,7 +28,7 @@ export default function Register() {
     onSubmit: async (values, helpers) => {
       try {
         setLoading(true);
-        const res = await fetch("/user", {
+        const res = await fetch("/api/user", {
           method: "POST",
           headers: {
             Accept: "application/json",

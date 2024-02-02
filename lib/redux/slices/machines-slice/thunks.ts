@@ -16,7 +16,7 @@ interface DeleteMachine {
 }
 
 export const getMachines = createAppAsyncThunk("machines/getMachines", async () => {
-  const response = await fetch("/machine");
+  const response = await fetch("/api/machine");
   const result = await response.json();
 
   // The value we return becomes the `fulfilled` action payload
@@ -26,7 +26,7 @@ export const getMachines = createAppAsyncThunk("machines/getMachines", async () 
 export const createMachine = createAppAsyncThunk(
   "machines/createMachine",
   async (machine: NewMachine) => {
-    const response = await fetch("/machine", {
+    const response = await fetch("/api/machine", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(machine),
@@ -40,7 +40,7 @@ export const createMachine = createAppAsyncThunk(
 export const updateMachine = createAppAsyncThunk(
   "machines/updateMachine",
   async ({ id, name, type }: UpdateMachine) => {
-    const response = await fetch(`/machine/${id}`, {
+    const response = await fetch(`/api/machine/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -57,7 +57,7 @@ export const updateMachine = createAppAsyncThunk(
 export const deleteMachine = createAppAsyncThunk(
   "machines/deleteMachine",
   async ({ id }: DeleteMachine) => {
-    const response = await fetch(`/machine/${id}`, {
+    const response = await fetch(`/api/machine/${id}`, {
       method: "DELETE",
     });
     const result = await response.json();
