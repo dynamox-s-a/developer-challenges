@@ -3,14 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { postSchema } from "./schema";
 import bcrypt from "bcrypt";
 
-export async function GET(req: NextRequest) {
-  const user = await prisma.user.findUnique({
-    where: { id: 1 },
-  });
-
-  return NextResponse.json(user);
-}
-
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const validation = postSchema.safeParse(body);
@@ -27,10 +19,7 @@ export async function POST(req: NextRequest) {
   });
 
   if (user) {
-    return NextResponse.json(
-      { message: "User with this e-mail already exists" },
-      { status: 400 }
-    );
+    return NextResponse.json({ message: "User with this e-mail already exists" }, { status: 400 });
   }
 
   const hashedPassword = await bcrypt.hash(body.password, 10);

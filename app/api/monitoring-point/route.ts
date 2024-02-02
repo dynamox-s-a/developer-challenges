@@ -1,14 +1,22 @@
 import { prisma } from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { schema } from "./schema";
-import getUserId from "../utils/get-user-id";
+import getUserId from "app/api/utils/getUserId";
 
 export async function GET(req: NextRequest) {
-  const userId = await getUserId(req);
+  // const userId = await getUserId(req);
+  const userId = 11;
   const monitoringPoints = await prisma.monitoringPoint.findMany({
-    where: { userId },
+    where: {
+      machine: {
+        userId,
+      },
+    },
+    include: {
+      machine: true,
+      sensor: true,
+    },
   });
-
   return NextResponse.json(monitoringPoints);
 }
 
@@ -48,13 +56,15 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const userId = await getUserId(req);
   const createdMonitoringPoint = await prisma.monitoringPoint.create({
     data: {
-      userId,
       machineId: validatedBody.machineId,
       name: validatedBody.name,
-      sensor: validatedBody.sensor,
+      sensorId: validatedBody.sensorId,
+    },
+    include: {
+      machine: true,
+      sensor: true,
     },
   });
 

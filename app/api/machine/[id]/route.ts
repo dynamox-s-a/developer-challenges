@@ -1,7 +1,7 @@
 import { prisma } from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { schema } from "../schema";
-import getUserId from "../../utils/get-user-id";
+import getUserId from "app/api/utils/getUserId";
 
 interface Props {
   params: {
@@ -20,7 +20,7 @@ export async function PUT(req: NextRequest, { params: { id } }: Props) {
   }
 
   const machine = await prisma.machine.findUnique({
-    where: { id: parseInt(id) },
+    where: { id: Number(id) },
   });
 
   if (!machine) {
@@ -29,7 +29,7 @@ export async function PUT(req: NextRequest, { params: { id } }: Props) {
 
   const validatedBody = validation.data;
   const updatedMachine = await prisma.machine.update({
-    where: { id: parseInt(id) },
+    where: { id: Number(id) },
     data: {
       name: validatedBody.name,
       type: validatedBody.type,
@@ -41,7 +41,7 @@ export async function PUT(req: NextRequest, { params: { id } }: Props) {
 
 export async function DELETE(req: NextRequest, { params: { id } }: Props) {
   const machine = await prisma.machine.findUnique({
-    where: { id: parseInt(id) },
+    where: { id: Number(id) },
   });
 
   if (!machine) {
@@ -59,9 +59,20 @@ export async function DELETE(req: NextRequest, { params: { id } }: Props) {
     );
   }
 
-  await prisma.machine.delete({
-    where: { id: parseInt(id) },
+  const monitorinPoints = await prisma.monitoringPoint.findMany({
+    where: { machineId: Number(machine.id) },
   });
 
-  return NextResponse.json({ message: `Machine ${id} has been deleted` });
+  const monitoringPointIds = monitorinPoints.map(async (monitorinPoint) => {
+    await prisma.monitoringPoint.delete({
+      where: { id: Number(monitorinPoint.id) },
+    });
+    return monitorinPoint.id;
+  });
+
+  await prisma.machine.delete({
+    where: { id: Number(id) },
+  });
+
+  return NextResponse.json({ machineId: id, monitoringPointIds });
 }
