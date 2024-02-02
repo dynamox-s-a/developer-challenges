@@ -9,7 +9,14 @@ interface IPageContainer extends React.HTMLAttributes<HTMLDivElement> {}
 export const PageContainer = ({ ...props }: IPageContainer) => {
   const theme = useTheme()
   return (
-    <Box>
+    <Box
+      sx={{
+        bgcolor: {
+          xs: theme.palette.primary.main,
+          md: "transparent",
+        },
+      }}
+    >
       <Box
         component="img"
         sx={{
@@ -18,14 +25,14 @@ export const PageContainer = ({ ...props }: IPageContainer) => {
           objectFit: "none",
           height: "100vh",
           width: "100vw",
-          content: {
-            xs: "none", //img src from xs up to md
-            md: `url(${bgImage})`, //img src from md and up
+          display: {
+            xs: "none",
+            md: "block",
           },
           bgcolor: theme.palette.primary.main,
         }}
         alt={`Dynapredict`}
-        // src={bgImage}
+        src={bgImage}
       />
       <PageHeader />
       <PageTitle />

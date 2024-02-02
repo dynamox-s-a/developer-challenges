@@ -29,7 +29,11 @@ export const ChartContainer = () => {
   }
 
   return (
-    <Box sx={{ border: 1 }}>
+    <Box
+      sx={{
+        padding: "1em",
+      }}
+    >
       <Chart
         chartTitle={`Acceleration ${axis}`}
         axis={axis}

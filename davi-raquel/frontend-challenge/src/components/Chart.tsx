@@ -22,7 +22,17 @@ export const Chart = ({ chartTitle, chartData, ...props }: IChart) => {
     <HighchartsReact
       highcharts={Highcharts}
       options={{
+        credits: {
+          enabled: false,
+        },
+        legend: {
+          enabled: false,
+        },
         chart: {
+          scrollablePlotArea: {
+            minWidth: 700,
+            scrollPositionX: 1,
+          },
           type: "spline",
         },
         title: {
@@ -57,7 +67,6 @@ export const Chart = ({ chartTitle, chartData, ...props }: IChart) => {
           borderWidth: 0,
           backgroundColor: "none",
           pointFormat: `{point.y} ${units}`,
-          headerFormat: "",
           shadow: false,
           style: {
             fontSize: "18px",

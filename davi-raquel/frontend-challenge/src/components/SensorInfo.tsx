@@ -20,13 +20,9 @@ export const SensorInfo = () => {
           objectFit: "cover",
           maxHeight: { xs: 100, md: 150 },
           maxWidth: { xs: 100, md: 150 },
-          content: {
-            xs: "none", //img src from xs up to md
-            md: `url(${imgUrl})`, //img src from md and up
-          },
+          content: `url(${imgUrl})`,
         }}
         alt={`picture of ${sensor}`}
-        // src={sensorPic}
       />
       <Box sx={{ color: "white" }}>
         <Typography component="h4">Title: {sensor.title}</Typography>
