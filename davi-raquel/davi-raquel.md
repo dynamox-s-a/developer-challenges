@@ -1,6 +1,6 @@
 # Dynamox Front-end Developer Challenge
 
-[< back to README](./README.md)
+[< back to README](../README.md)
 
 Dynamox front-end development team presents you with the following challenge:
 
@@ -8,11 +8,25 @@ Dynamox front-end development team presents you with the following challenge:
 
 ---
 
-Keep in mind the challenge aims to reproduce an environment where you could demonstrate your skills.
+## Instructions
 
-In order to help guiding your development process we will provide some requirements. It is not mandatory to fulfill all requirements to submit your implementation. The more requirements you implement, the more resources we will have to assess your skills and knowledge.
+[link to the running app in Vercel](../README.md)
 
-Use your best judgement to prioritize tasks to meet the time you have available. Feel free to make any assumptions you consider necessary to complete the task.
+### Run dev environment
+
+Open terminal, navigate to project folder:
+
+```
+cd frontend-challenge
+```
+
+start the app
+
+```
+npm run dev
+```
+
+---
 
 ## Functional Requirements and User Stories
 

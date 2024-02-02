@@ -33,7 +33,7 @@ export const Chart = ({ chartTitle, chartData, ...props }: IChart) => {
             minWidth: 700,
             scrollPositionX: 1,
           },
-          type: "spline",
+          type: "line",
         },
         title: {
           text: chartTitle,

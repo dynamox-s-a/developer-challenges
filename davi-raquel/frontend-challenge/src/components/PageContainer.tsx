@@ -11,6 +11,7 @@ export const PageContainer = ({ ...props }: IPageContainer) => {
   return (
     <Box
       sx={{
+        minHeight: "100vh",
         bgcolor: {
           xs: theme.palette.primary.main,
           md: "transparent",
