@@ -6,7 +6,8 @@ export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const { method } = req;
 
-  if (pathname === "/api/user" && method === "POST") return NextResponse.next();
+  if (pathname === "/api/user") return NextResponse.next();
+  if (pathname.startsWith("/api/auth")) return NextResponse.next();
 
   if (pathname.startsWith("/api") && !token) {
     return NextResponse.json({ message: "Unauthorized access" }, { status: 401 });
