@@ -9,10 +9,7 @@ export default async function middleware(req: NextRequest) {
   if (pathname === "/api/user" && method === "POST") return NextResponse.next();
 
   if (pathname.startsWith("/api") && !token) {
-    return NextResponse.json(
-      { message: "Unauthorized access" },
-      { status: 401 }
-    );
+    return NextResponse.json({ message: "Unauthorized access" }, { status: 401 });
   }
 
   if (!token) return NextResponse.redirect(new URL("/login", req.url));
@@ -21,7 +18,7 @@ export default async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/apii/:path*", "/dashboard"],
+  matcher: ["/api/:path*", "/dashboard"],
 };
 
 // * zero or more
