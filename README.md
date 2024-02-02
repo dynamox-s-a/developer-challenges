@@ -32,7 +32,7 @@ All routes are protected, including API routes, except routes for the user to lo
 
 The responsiveness didn't work properly in the production environment and I didn't have time to fix the problem.
 
-### TODO
+### TO DO
 
 To make the system to prevent the user from setting up "TcAg" and "TcAs" sensors for machines of the type "Pump".
 
