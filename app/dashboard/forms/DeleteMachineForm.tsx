@@ -2,20 +2,19 @@
 import { deleteMachine, selectMachines, useDispatch, useSelector } from "@/lib/redux";
 import {
   Box,
-  Button,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
   Stack,
-  TextField,
   Typography,
 } from "@mui/material";
 import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
 import styles from "./styles.module.css";
+import { LoadingButton } from "@mui/lab";
 
 export default function DeleteMachineForm() {
   const [machineId, setMachineId] = useState<number | "">("");
@@ -86,15 +85,16 @@ export default function DeleteMachineForm() {
             )}
           </Box>
         </Stack>
-        <Button
+        <LoadingButton
           size="large"
           sx={{ mt: 3 }}
           type="submit"
           variant="contained"
           onClick={handleFormValidation}
+          loading={status === "loading"}
         >
           Delete
-        </Button>
+        </LoadingButton>
       </form>
     </Stack>
   );

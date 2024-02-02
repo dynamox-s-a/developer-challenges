@@ -1,8 +1,7 @@
 "use client";
-import { createMachine, useDispatch } from "@/lib/redux";
+import { createMachine, selectMachines, useDispatch, useSelector } from "@/lib/redux";
 import {
   Box,
-  Button,
   FormControl,
   InputLabel,
   MenuItem,
@@ -16,11 +15,13 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
 import styles from "./styles.module.css";
+import { LoadingButton } from "@mui/lab";
 
 export default function MachineForm() {
   const [type, setType] = useState("");
   const [typeError, setTypeError] = useState(false);
   const dispatch = useDispatch();
+  const { status, data: machines } = useSelector(selectMachines);
 
   const handleTypeChange = (event: SelectChangeEvent<string>) => {
     formik.setFieldValue("type", event.target.value);
@@ -88,15 +89,16 @@ export default function MachineForm() {
             )}
           </Box>
         </Stack>
-        <Button
+        <LoadingButton
           size="large"
           sx={{ mt: 3 }}
           type="submit"
           variant="contained"
           onClick={handleFormValidation}
+          loading={status === "loading"}
         >
           Add
-        </Button>
+        </LoadingButton>
       </form>
     </Stack>
   );

@@ -1,14 +1,9 @@
 "use client";
-import {
-  createMachine,
-  selectMachines,
-  updateMachine,
-  useDispatch,
-  useSelector,
-} from "@/lib/redux";
+import { selectMachines, updateMachine, useDispatch, useSelector } from "@/lib/redux";
 import {
   Box,
   Button,
+  CircularProgress,
   FormControl,
   InputLabel,
   MenuItem,
@@ -22,6 +17,7 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
 import styles from "./styles.module.css";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 export default function UpdateMachineForm() {
   const [type, setType] = useState("");
@@ -141,15 +137,16 @@ export default function UpdateMachineForm() {
             )}
           </Box>
         </Stack>
-        <Button
+        <LoadingButton
           size="large"
           sx={{ mt: 3 }}
           type="submit"
           variant="contained"
           onClick={handleFormValidation}
+          loading={status === "loading"}
         >
           Edit
-        </Button>
+        </LoadingButton>
       </form>
     </Stack>
   );

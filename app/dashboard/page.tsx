@@ -35,8 +35,8 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    dispatch(getMachines());
     dispatch(getMonitoringPoints());
+    dispatch(getMachines());
   }, [dispatch]);
 
   return (

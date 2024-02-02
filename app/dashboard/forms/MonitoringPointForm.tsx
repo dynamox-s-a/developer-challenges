@@ -1,5 +1,11 @@
 "use client";
-import { createMonitoringPoint, selectMachines, useDispatch, useSelector } from "@/lib/redux";
+import {
+  createMonitoringPoint,
+  selectMachines,
+  selectMonitoringPoints,
+  useDispatch,
+  useSelector,
+} from "@/lib/redux";
 import {
   Box,
   Button,
@@ -16,6 +22,7 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
 import styles from "./styles.module.css";
+import { LoadingButton } from "@mui/lab";
 
 const sensorModelsId = {
   tcag: 1,
@@ -24,7 +31,8 @@ const sensorModelsId = {
 };
 
 export default function MonitoringPointForm() {
-  const { status, data: machines } = useSelector(selectMachines);
+  const { data: machines } = useSelector(selectMachines);
+  const { status } = useSelector(selectMonitoringPoints);
   const [sensorId, setSensorId] = useState<number | "">("");
   const [machineId, setMachineId] = useState<number | "">("");
   const [sensorError, setSensorError] = useState(false);
@@ -139,15 +147,16 @@ export default function MonitoringPointForm() {
             )}
           </Box>
         </Stack>
-        <Button
+        <LoadingButton
           size="large"
           sx={{ mt: 3 }}
           type="submit"
           variant="contained"
           onClick={handleFormValidation}
+          loading={status === "loading"}
         >
           Add
-        </Button>
+        </LoadingButton>
       </form>
     </Stack>
   );
