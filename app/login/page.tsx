@@ -48,7 +48,6 @@ export default function Login() {
       <Head>
         <title>Login</title>
       </Head>
-      <button onClick={() => signOut()}>LOGOUT</button>
       <Box
         sx={{
           backgroundColor: "background.paper",
