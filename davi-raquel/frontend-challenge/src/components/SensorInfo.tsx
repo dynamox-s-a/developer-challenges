@@ -1,12 +1,14 @@
 import Typography from "@mui/material/Typography"
 import Box from "@mui/material/Box"
 
-import sensorPic from "../assets/img/sensor-af.png"
-interface ISensorInfo extends React.HTMLAttributes<HTMLSelectElement> {
-  sensor: string
-}
+import { useAppSelector } from "../app/hooks"
+import { selectSensor } from "../features/sensors/sensorSlice"
 
-export const SensorInfo = ({ sensor }: ISensorInfo) => {
+import sensorPic from "../assets/img/sensor-af.png"
+
+export const SensorInfo = () => {
+  const sensor = useAppSelector(selectSensor)
+
   return (
     <Box sx={{ display: "flex" }}>
       <Box
@@ -20,8 +22,8 @@ export const SensorInfo = ({ sensor }: ISensorInfo) => {
         src={sensorPic}
       />
       <Box>
-        <Typography component="h4">Title {sensor}</Typography>
-        <Typography>Description {sensor}</Typography>
+        <Typography component="h4">Title {sensor.title}</Typography>
+        <Typography>Description {sensor.description}</Typography>
       </Box>
     </Box>
   )

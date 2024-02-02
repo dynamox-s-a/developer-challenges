@@ -2,20 +2,19 @@ import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import ToggleButton from "@mui/material/ToggleButton"
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
+import { useAppDispatch, useAppSelector } from "../app/hooks"
+import { changeAxis, selectAxis } from "../features/axis/axisSlice"
 
-interface IToggleAxis extends React.HTMLAttributes<HTMLSelectElement> {
-  axis: string
-  handleChange: (event: React.MouseEvent<HTMLElement>, newAxis: string) => void
-}
-
-export const ToggleAxis = ({ axis, handleChange }: IToggleAxis) => {
+export const ToggleAxis = () => {
+  const axis = useAppSelector(selectAxis)
+  const dispatch = useAppDispatch()
   return (
     <Box>
       <Typography>Select axis:</Typography>
       <ToggleButtonGroup
         value={axis}
         exclusive
-        onChange={handleChange}
+        onChange={(event, value) => dispatch(changeAxis(value))}
         aria-label="text alignment"
       >
         <ToggleButton value="x" aria-label="x axis">
