@@ -42,6 +42,10 @@ Implement validation of the form's Select fields through Formik.
 
 Adjust production environment responsiveness.
 
+Implement unit testing with Jest.
+
+Implement e2e tests with Cypress.
+
 ### Thank you
 
 The challenge was an incredible experience and a lot of learning.
