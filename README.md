@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Full-Stack Developer Chalange - Dynamox
 
-## Getting Started
+Access the [Deploy](https://fullstack-developer-challenge-dynamox-d87r.vercel.app/).
 
-First, run the development server:
+### Run Locally
+
+To run locally, first, install de dependencies:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm  install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+After:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm  run  dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Notes
 
-## Learn More
+Considering that all information stored in the database is fictitious and not confidential, I chose to keep the .env file containing the database and authentication key settings in the project repository.
 
-To learn more about Next.js, take a look at the following resources:
+You can log in with the user suggested on the login page or create a new user to access the application.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+I considered that a monitoring point can only exist linked to a machine, therefore, to be able to create a monitoring point, it is first necessary to create a machine. Furthermore, if a machine that has monitoring points is deleted, its respective monitoring points will also be deleted.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+The three sensors were inserted directly into the database, each one having a respective ID (1, 2 and 3) and being able to connect to different monitoring points.
 
-## Deploy on Vercel
+All routes are protected, including API routes, except routes for the user to login/register.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Unfortunately the responsiveness didn't work properly in the production environment and I didn't have time to fix the problem.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The challenge was an incredible experience and a lot of learning.
+
+I thank the company Dynamox for the opportunity.
