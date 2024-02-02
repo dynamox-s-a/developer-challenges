@@ -1,16 +1,18 @@
-## Full-Stack Developer Chalange - Dynamox
+## Full-Stack Developer Challenge - Dynamox
 
 Access the [Deploy](https://fullstack-developer-challenge-dynamox-d87r.vercel.app/).
 
 ### Run Locally
 
-To run locally, first, install de dependencies:
+To run locally, first, clone the repo to your local machine.
+
+In the project folder, install the dependencies:
 
 ```bash
 npm  install
 ```
 
-After:
+After, run the next dev environment:
 
 ```bash
 npm  run  dev
@@ -28,8 +30,20 @@ The three sensors were inserted directly into the database, each one having a re
 
 All routes are protected, including API routes, except routes for the user to login/register.
 
-Unfortunately the responsiveness didn't work properly in the production environment and I didn't have time to fix the problem.
+The responsiveness didn't work properly in the production environment and I didn't have time to fix the problem.
+
+### TODO
+
+To make the system to prevent the user from setting up "TcAg" and "TcAs" sensors for machines of the type "Pump".
+
+To make the table of monitoring points update automatically as soon as a machine is deleted. To do this, is needed to find out how to access the slice of monitoring points in Redux from the slice of machines.
+
+Implement validation of the form's Select fields through Formik.
+
+Adjust production environment responsiveness.
+
+### Thank you
 
 The challenge was an incredible experience and a lot of learning.
 
-I thank the company Dynamox for the opportunity.
+I thank the company Dynamox for the opportunity!
