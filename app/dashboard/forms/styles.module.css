@@ -1,0 +1,7 @@
+.validationError fieldset {
+  border-color: #d32f2f;
+}
+
+.validationError label {
+  color: #d32f2f;
+}

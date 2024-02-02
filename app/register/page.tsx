@@ -22,10 +22,7 @@ export default function Register() {
       submit: null,
     },
     validationSchema: Yup.object({
-      email: Yup.string()
-        .email("Must be a valid email")
-        .max(255)
-        .required("Email is required"),
+      email: Yup.string().email("Must be a valid email").max(255).required("Email is required"),
       password: Yup.string().min(5).max(255).required("Password is required"),
     }),
     onSubmit: async (values, helpers) => {
@@ -104,13 +101,8 @@ export default function Register() {
             <Stack spacing={1} sx={{ mb: 3 }}>
               <Typography variant="h4">Register</Typography>
               <Typography color="text.secondary" variant="body2">
-                Already have an account? &nbsp;
-                <Link
-                  component={NextLink}
-                  href="/login"
-                  underline="hover"
-                  variant="subtitle2"
-                >
+                Already have an acmachine? &nbsp;
+                <Link component={NextLink} href="/login" underline="hover" variant="subtitle2">
                   Login
                 </Link>
               </Typography>
@@ -156,13 +148,7 @@ export default function Register() {
                   {formik.errors.submit}
                 </Typography>
               )}
-              <Button
-                fullWidth
-                size="large"
-                sx={{ mt: 3 }}
-                type="submit"
-                variant="contained"
-              >
+              <Button fullWidth size="large" sx={{ mt: 3 }} type="submit" variant="contained">
                 Continue
               </Button>
             </form>

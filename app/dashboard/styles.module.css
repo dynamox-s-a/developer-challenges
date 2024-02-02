@@ -1,0 +1,42 @@
+.mpTable {
+  max-width: 810px;
+  width: 100%;
+}
+
+.machinesTable {
+  width: 405px;
+}
+
+.buttons {
+  display: flex;
+  gap: 20px;
+}
+
+@media (max-width: 1330px) {
+  .tables {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .machinesTable {
+    margin-left: 0 !important;
+    margin-top: 64px !important;
+    max-width: 810px;
+    width: 100%;
+  }
+
+  .buttons {
+    justify-content: center;
+    margin-top: 40px !important;
+  }
+
+  .form {
+    align-items: center;
+  }
+}
+
+@media (max-width: 500px) {
+  .buttons {
+    flex-direction: column;
+  }
+}

@@ -5,15 +5,7 @@ import { redirect } from "next/navigation";
 import { useFormik } from "formik";
 import { default as NextLink } from "next/link";
 import * as Yup from "yup";
-import {
-  Alert,
-  Box,
-  Button,
-  Link,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Alert, Box, Button, Link, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 
 export default function Login() {
@@ -24,15 +16,12 @@ export default function Login() {
 
   const formik = useFormik({
     initialValues: {
-      email: "teste@teste.com",
+      email: "gustavo@teste.com",
       password: "12345",
       submit: null,
     },
     validationSchema: Yup.object({
-      email: Yup.string()
-        .email("Must be a valid email")
-        .max(255)
-        .required("Email is required"),
+      email: Yup.string().email("Must be a valid email").max(255).required("Email is required"),
       password: Yup.string().max(255).required("Password is required"),
     }),
     onSubmit: async (values, helpers) => {
@@ -81,13 +70,8 @@ export default function Login() {
             <Stack spacing={1} sx={{ mb: 3 }}>
               <Typography variant="h4">Login</Typography>
               <Typography color="text.secondary" variant="body2">
-                Don&apos;t have an account? &nbsp;
-                <Link
-                  component={NextLink}
-                  href="/register"
-                  underline="hover"
-                  variant="subtitle2"
-                >
+                Don&apos;t have an acmachine? &nbsp;
+                <Link component={NextLink} href="/register" underline="hover" variant="subtitle2">
                   Register
                 </Link>
               </Typography>
@@ -123,19 +107,13 @@ export default function Login() {
                   {formik.errors.submit}
                 </Typography>
               )}
-              <Button
-                fullWidth
-                size="large"
-                sx={{ mt: 3 }}
-                type="submit"
-                variant="contained"
-              >
+              <Button fullWidth size="large" sx={{ mt: 3 }} type="submit" variant="contained">
                 Continue
               </Button>
               <Alert severity="info" sx={{ mt: 3 }}>
                 <div>
-                  You can use <b>teste@teste.com</b> and password <b>12345</b>{" "}
-                  to log in if you don&apos;t want to register a new user.
+                  You can use <b>gustavo@teste.com</b> and password <b>12345</b> to log in if you
+                  don&apos;t want to register a new user.
                 </div>
               </Alert>
             </form>

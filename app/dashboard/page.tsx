@@ -1,123 +1,50 @@
 "use client";
-import { useCallback, useMemo, useState } from "react";
+import { getMachines, getMonitoringPoints, useDispatch } from "@/lib/redux";
+import { useEffect, useState } from "react";
 import Head from "next/head";
-import {
-  Box,
-  Button,
-  Container,
-  Stack,
-  SvgIcon,
-  Typography,
-} from "@mui/material";
-import { CustomersTable } from "./customers-table";
-import { applyPagination } from "./apply-pagination";
-import { signOut } from "next-auth/react";
-
-const data = [
-  {
-    id: 18,
-    name: "MP 1",
-    machineId: 11,
-    sensorId: 1,
-    machine: { id: 11, name: "Machine 1", type: "fan", userId: 11 },
-    sensor: { id: 1, model: "TcAg" },
-  },
-  {
-    id: 19,
-    name: "MP 2",
-    machineId: 11,
-    sensorId: 2,
-    machine: { id: 11, name: "Machine 1", type: "fan", userId: 11 },
-    sensor: { id: 2, model: "TcAs" },
-  },
-  {
-    id: 18,
-    name: "MP 1",
-    machineId: 11,
-    sensorId: 1,
-    machine: { id: 11, name: "Machine 1", type: "fan", userId: 11 },
-    sensor: { id: 1, model: "TcAg" },
-  },
-  {
-    id: 19,
-    name: "MP 2",
-    machineId: 11,
-    sensorId: 2,
-    machine: { id: 11, name: "Machine 1", type: "fan", userId: 11 },
-    sensor: { id: 2, model: "TcAs" },
-  },
-  {
-    id: 20,
-    name: "MP 3",
-    machineId: 12,
-    sensorId: 3,
-    machine: { id: 12, name: "Machine 2", type: "pump", userId: 11 },
-    sensor: { id: 3, model: "HF+" },
-  },
-  {
-    id: 18,
-    name: "MP 1",
-    machineId: 11,
-    sensorId: 1,
-    machine: { id: 11, name: "Machine 1", type: "fan", userId: 11 },
-    sensor: { id: 1, model: "TcAg" },
-  },
-  {
-    id: 19,
-    name: "MP 2",
-    machineId: 11,
-    sensorId: 2,
-    machine: { id: 11, name: "Machine 1", type: "fan", userId: 11 },
-    sensor: { id: 2, model: "TcAs" },
-  },
-  {
-    id: 18,
-    name: "MP 1",
-    machineId: 11,
-    sensorId: 1,
-    machine: { id: 11, name: "Machine 1", type: "fan", userId: 11 },
-    sensor: { id: 1, model: "TcAg" },
-  },
-  {
-    id: 19,
-    name: "MP 2",
-    machineId: 11,
-    sensorId: 2,
-    machine: { id: 11, name: "Machine 1", type: "fan", userId: 11 },
-    sensor: { id: 2, model: "TcAs" },
-  },
-  {
-    id: 20,
-    name: "MP 3",
-    machineId: 12,
-    sensorId: 3,
-    machine: { id: 12, name: "Machine 2", type: "pump", userId: 11 },
-    sensor: { id: 3, model: "HF+" },
-  },
-];
-
-const useCustomers = (page, rowsPerPage) => {
-  return useMemo(() => {
-    return applyPagination(data, page, rowsPerPage);
-  }, [page, rowsPerPage]);
-};
+import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import Header from "app/components/Header";
+import MonitoringPointTable from "./tables/MonitoringPointTable";
+import MonitoringPointForm from "./forms/MonitoringPointForm";
+import MachineTable from "./tables/MachineTable";
+import MachineForm from "./forms/MachineForm";
+import UpdateMachineForm from "./forms/UpdateMachineForm";
+import DeleteMachineForm from "./forms/DeleteMachineForm";
+import styles from "./styles.module.css";
 
 export default function Dashboard() {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const customers = useCustomers(page, rowsPerPage);
-  console.log(customers);
+  const [showForm, setShowForm] = useState<
+    "add-monitoring-point" | "add-machine" | "update-machine" | "delete-machine" | null
+  >(null);
+  const dispatch = useDispatch();
 
-  const handlePageChange = useCallback((event, value) => {
-    setPage(value);
-  }, []);
+  const handleAddMonitoringPoint = () => {
+    setShowForm((state) => (state === "add-monitoring-point" ? null : "add-monitoring-point"));
+  };
+
+  const handleAddMachine = () => {
+    setShowForm((state) => (state === "add-machine" ? null : "add-machine"));
+  };
+
+  const handleUpdateMachine = () => {
+    setShowForm((state) => (state === "update-machine" ? null : "update-machine"));
+  };
+
+  const handleDeleteMachine = () => {
+    setShowForm((state) => (state === "delete-machine" ? null : "delete-machine"));
+  };
+
+  useEffect(() => {
+    dispatch(getMachines());
+    dispatch(getMonitoringPoints());
+  }, [dispatch]);
 
   return (
     <>
       <Head>
         <title>Dashboard</title>
       </Head>
-      <button onClick={() => signOut()}>LOGOUT</button>
+      <Header />
       <Box
         component="main"
         sx={{
@@ -126,29 +53,37 @@ export default function Dashboard() {
         }}
       >
         <Container maxWidth="xl">
-          <Stack spacing={3}>
-            <Stack direction="row" justifyContent="space-between" spacing={4}>
-              <Stack spacing={1}>
-                <Typography variant="h4">Dashboard</Typography>
+          <Stack className={styles.tablesWrapper} spacing={3}>
+            <Stack className={styles.tables} direction={"row"} spacing={8}>
+              <Stack className={styles.mpTable}>
+                <Typography variant="h4">Monitoring Points</Typography>
+                <MonitoringPointTable />
               </Stack>
-              <div>
-                <Button
-                  // startIcon={
-                  //   <SvgIcon fontSize="small">{ <PlusIcon /> */}</SvgIcon>
-                  // }
-                  variant="contained"
-                >
-                  Add
-                </Button>
-              </div>
+              <Stack className={styles.machinesTable}>
+                <Typography variant="h4">Machines</Typography>
+                <MachineTable />
+              </Stack>
             </Stack>
-            <CustomersTable
-              count={data.length}
-              items={customers}
-              onPageChange={handlePageChange}
-              page={page}
-              rowsPerPage={rowsPerPage}
-            />
+            <Box className={styles.buttons}>
+              <Button variant="text" onClick={handleAddMonitoringPoint}>
+                Add Monitoring Point
+              </Button>
+              <Button variant="text" onClick={handleAddMachine}>
+                Add Machine
+              </Button>
+              <Button variant="text" onClick={handleUpdateMachine}>
+                Edit Machine
+              </Button>
+              <Button variant="text" onClick={handleDeleteMachine}>
+                Delete Machine
+              </Button>
+            </Box>
+            <Stack className={styles.form}>
+              {showForm === "add-monitoring-point" ? <MonitoringPointForm /> : null}
+              {showForm === "add-machine" ? <MachineForm /> : null}
+              {showForm === "update-machine" ? <UpdateMachineForm /> : null}
+              {showForm === "delete-machine" ? <DeleteMachineForm /> : null}
+            </Stack>
           </Stack>
         </Container>
       </Box>
