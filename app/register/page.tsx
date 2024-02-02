@@ -28,7 +28,7 @@ export default function Register() {
     onSubmit: async (values, helpers) => {
       try {
         setLoading(true);
-        const res = await fetch(process.env.NEXT_AUTH_URL + "/user", {
+        const res = await fetch("/user", {
           method: "POST",
           headers: {
             Accept: "application/json",
