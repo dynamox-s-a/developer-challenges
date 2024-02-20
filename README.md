@@ -22,6 +22,10 @@ With limited experience, assists in coding, testing, and stabilizing systems und
 
 With a certain level of proven experience, contributes to software development, solves moderate problems, and starts handling ambiguous situations with minimal guidance. Communicates with the broader team and engages in code reviews and documentation. This role also includes mentorship of junior engineers and a commitment to continuous learning. This is an individual contributor role.
 
+### Senior-level Software Developer
+
+With vast experience, enhances software development, leading complex system development and ambiguous situation handling. Tackles intricate problems and mentors junior and mid-level engineers. Champions coding standards, project strategy, and technology adoption. Communicates across teams, influencing technical and non-technical stakeholders. This individual contributor role blends technical expertise with leadership, focusing on innovation, mentorship, and strategic contributions to the development process.
+
 ## Challenges
 
 - [ ] [01 - Dynamox Full-Stack Developer Challenge](./full-stack-challenge.md)
