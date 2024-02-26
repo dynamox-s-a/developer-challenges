@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "github": {
+    "enabled": true
+  },
+  "buildCommand": "npx nx build frontend --prod && npx nx serve backend --prod",
+  "installCommand": "npm install",
+  "framework": null,
+  "builds": [
+    {
+      "src": "apps/backend/src/main.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "apps/frontend/dist/*",
+      "use": "@now/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "apps/backend/src/main.ts",
+      "methods": ["GET", "POST", "PUT", "PATCH", "DELETE"]
+    }
+  ]
+}
