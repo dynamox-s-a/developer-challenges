@@ -1,8 +1,9 @@
 import { join } from 'path';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { SensorsModule } from './sensors/sensors.module';
 import { SessionsModule } from './sessions/sessions.module';
 
 const rootPath =
@@ -21,6 +22,7 @@ const rootPath =
     }),
     UsersModule,
     SessionsModule,
+    SensorsModule,
   ],
   controllers: [],
   providers: [],

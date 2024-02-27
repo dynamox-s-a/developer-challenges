@@ -31,8 +31,9 @@ const path_1 = __webpack_require__(6);
 const common_1 = __webpack_require__(1);
 const config_1 = __webpack_require__(7);
 const users_module_1 = __webpack_require__(8);
-const serve_static_1 = __webpack_require__(27);
-const sessions_module_1 = __webpack_require__(28);
+const serve_static_1 = __webpack_require__(29);
+const sessions_module_1 = __webpack_require__(30);
+const sensors_module_1 = __webpack_require__(34);
 const rootPath = process.env.NODE_ENV === 'development'
     ? (0, path_1.join)(__dirname, '../../../apps/frontend/dist/')
     : (0, path_1.join)(__dirname, '../../../frontend/dist/');
@@ -51,6 +52,7 @@ exports.AppModule = AppModule = tslib_1.__decorate([
             }),
             users_module_1.UsersModule,
             sessions_module_1.SessionsModule,
+            sensors_module_1.SensorsModule,
         ],
         controllers: [],
         providers: [],
@@ -86,9 +88,9 @@ exports.UsersModule = void 0;
 const tslib_1 = __webpack_require__(5);
 const common_1 = __webpack_require__(1);
 const users_service_1 = __webpack_require__(9);
-const passport_1 = __webpack_require__(22);
-const jwt_strategy_1 = __webpack_require__(23);
-const users_controller_1 = __webpack_require__(25);
+const passport_1 = __webpack_require__(24);
+const jwt_strategy_1 = __webpack_require__(25);
+const users_controller_1 = __webpack_require__(27);
 const PrismaService_1 = __webpack_require__(16);
 let UsersModule = class UsersModule {
 };
@@ -236,6 +238,7 @@ module.exports = require("@prisma/client");
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.PrismaError = void 0;
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const library_1 = __webpack_require__(15);
 const common_1 = __webpack_require__(1);
 class PrismaError {
@@ -247,6 +250,9 @@ class PrismaError {
             return { data: error.message, statusCode: common_1.HttpStatus.BAD_REQUEST };
         }
         else if (error instanceof library_1.PrismaClientKnownRequestError) {
+            if (error.code === 'P2025') {
+                return { data: 'Content not found', statusCode: common_1.HttpStatus.NOT_FOUND };
+            }
             return { data: error.message, statusCode: common_1.HttpStatus.BAD_REQUEST };
         }
         else if (error instanceof library_1.PrismaClientUnknownRequestError) {
@@ -298,6 +304,8 @@ const tslib_1 = __webpack_require__(5);
 tslib_1.__exportStar(__webpack_require__(18), exports);
 tslib_1.__exportStar(__webpack_require__(20), exports);
 tslib_1.__exportStar(__webpack_require__(21), exports);
+tslib_1.__exportStar(__webpack_require__(22), exports);
+tslib_1.__exportStar(__webpack_require__(23), exports);
 
 
 /***/ }),
@@ -361,9 +369,20 @@ exports.createSessionDto = zod_1.z.object({
 
 /***/ }),
 /* 22 */
-/***/ ((module) => {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-module.exports = require("@nestjs/passport");
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createSensorDto = void 0;
+const zod_1 = __webpack_require__(19);
+exports.createSensorDto = zod_1.z.object({
+    model: zod_1.z.union([
+        zod_1.z.literal('TcAg'),
+        zod_1.z.literal('TcAs'),
+        zod_1.z.literal('HF+'),
+    ]),
+});
+
 
 /***/ }),
 /* 23 */
@@ -371,11 +390,34 @@ module.exports = require("@nestjs/passport");
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.updateSensorDto = void 0;
+const zod_1 = __webpack_require__(19);
+exports.updateSensorDto = zod_1.z.object({
+    model: zod_1.z.union([
+        zod_1.z.literal('TcAg'),
+        zod_1.z.literal('TcAs'),
+        zod_1.z.literal('HF+'),
+    ]),
+});
+
+
+/***/ }),
+/* 24 */
+/***/ ((module) => {
+
+module.exports = require("@nestjs/passport");
+
+/***/ }),
+/* 25 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.JwtStrategy = void 0;
 const tslib_1 = __webpack_require__(5);
 const common_1 = __webpack_require__(1);
-const passport_jwt_1 = __webpack_require__(24);
-const passport_1 = __webpack_require__(22);
+const passport_jwt_1 = __webpack_require__(26);
+const passport_1 = __webpack_require__(24);
 let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy) {
     constructor() {
         super({
@@ -403,13 +445,13 @@ exports.JwtStrategy = JwtStrategy = tslib_1.__decorate([
 
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ ((module) => {
 
 module.exports = require("passport-jwt");
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -419,8 +461,8 @@ exports.UsersController = void 0;
 const tslib_1 = __webpack_require__(5);
 const common_1 = __webpack_require__(1);
 const express_1 = __webpack_require__(2);
-const passport_1 = __webpack_require__(22);
-const own_guard_1 = __webpack_require__(26);
+const passport_1 = __webpack_require__(24);
+const own_guard_1 = __webpack_require__(28);
 const users_service_1 = __webpack_require__(9);
 const dto_1 = __webpack_require__(17);
 const dto_2 = __webpack_require__(17);
@@ -463,14 +505,14 @@ exports.UsersController = UsersController = tslib_1.__decorate([
 
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.OwnGuard = void 0;
 const tslib_1 = __webpack_require__(5);
-const passport_1 = __webpack_require__(22);
+const passport_1 = __webpack_require__(24);
 const common_1 = __webpack_require__(1);
 let OwnGuard = class OwnGuard extends (0, passport_1.AuthGuard)("jwt") {
     constructor() {
@@ -491,13 +533,13 @@ exports.OwnGuard = OwnGuard = tslib_1.__decorate([
 
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ ((module) => {
 
 module.exports = require("@nestjs/serve-static");
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -505,10 +547,10 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.SessionsModule = void 0;
 const tslib_1 = __webpack_require__(5);
 const common_1 = __webpack_require__(1);
-const jwt_1 = __webpack_require__(29);
-const sessions_service_1 = __webpack_require__(30);
+const jwt_1 = __webpack_require__(31);
+const sessions_service_1 = __webpack_require__(32);
 const PrismaService_1 = __webpack_require__(16);
-const sessions_controller_1 = __webpack_require__(31);
+const sessions_controller_1 = __webpack_require__(33);
 let SessionsModule = class SessionsModule {
 };
 exports.SessionsModule = SessionsModule;
@@ -521,13 +563,13 @@ exports.SessionsModule = SessionsModule = tslib_1.__decorate([
 
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ ((module) => {
 
 module.exports = require("@nestjs/jwt");
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -537,7 +579,7 @@ exports.SessionsService = void 0;
 const tslib_1 = __webpack_require__(5);
 const common_1 = __webpack_require__(1);
 const bcryptjs_1 = __webpack_require__(10);
-const jwt_1 = __webpack_require__(29);
+const jwt_1 = __webpack_require__(31);
 const prisma_1 = __webpack_require__(11);
 const PrismaService_1 = __webpack_require__(16);
 const dto_1 = __webpack_require__(17);
@@ -600,7 +642,7 @@ exports.SessionsService = SessionsService = tslib_1.__decorate([
 
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -610,7 +652,7 @@ exports.SessionsController = void 0;
 const tslib_1 = __webpack_require__(5);
 const common_1 = __webpack_require__(1);
 const express_1 = __webpack_require__(2);
-const sessions_service_1 = __webpack_require__(30);
+const sessions_service_1 = __webpack_require__(32);
 const dto_1 = __webpack_require__(17);
 let SessionsController = class SessionsController {
     constructor(sessionsService) {
@@ -634,6 +676,278 @@ exports.SessionsController = SessionsController = tslib_1.__decorate([
     (0, common_1.Controller)('sessions'),
     tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof sessions_service_1.SessionsService !== "undefined" && sessions_service_1.SessionsService) === "function" ? _a : Object])
 ], SessionsController);
+
+
+/***/ }),
+/* 34 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.SensorsModule = void 0;
+const tslib_1 = __webpack_require__(5);
+const common_1 = __webpack_require__(1);
+const sensors_service_1 = __webpack_require__(35);
+const jwt_strategy_1 = __webpack_require__(25);
+const sensors_controller_1 = __webpack_require__(36);
+const PrismaService_1 = __webpack_require__(16);
+let SensorsModule = class SensorsModule {
+};
+exports.SensorsModule = SensorsModule;
+exports.SensorsModule = SensorsModule = tslib_1.__decorate([
+    (0, common_1.Module)({
+        controllers: [sensors_controller_1.SensorsController],
+        providers: [sensors_service_1.SensorsService, PrismaService_1.PrismaService, jwt_strategy_1.JwtStrategy],
+    })
+], SensorsModule);
+
+
+/***/ }),
+/* 35 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.SensorsService = void 0;
+const tslib_1 = __webpack_require__(5);
+const dto_1 = __webpack_require__(17);
+const prisma_1 = __webpack_require__(11);
+const common_1 = __webpack_require__(1);
+const PrismaService_1 = __webpack_require__(16);
+let SensorsService = class SensorsService {
+    constructor(prisma) {
+        this.prisma = prisma;
+    }
+    async create(body) {
+        const validation = dto_1.createSensorDto.safeParse(body);
+        if (!validation.success) {
+            console.log(validation.error.flatten().formErrors);
+            if (validation.error.flatten().fieldErrors.model) {
+                return {
+                    statusCode: 400,
+                    data: 'Invalid model, expected: "TcAg", "TcAs" or "HF+", we got: ' + body.model
+                };
+            }
+            else {
+                return {
+                    statusCode: 400,
+                    data: 'Invalid model, expected: "TcAg", "TcAs" or "HF+"'
+                };
+            }
+        }
+        const data = validation.data;
+        try {
+            const sensor = await this.prisma.sensor.create({
+                data
+            });
+            return {
+                statusCode: common_1.HttpStatus.CREATED,
+                data: sensor
+            };
+        }
+        catch (error) {
+            return prisma_1.PrismaError.handle(error);
+        }
+    }
+    async findAll() {
+        try {
+            const sensors = await this.prisma.sensor.findMany();
+            return {
+                statusCode: common_1.HttpStatus.OK,
+                data: sensors
+            };
+        }
+        catch (error) {
+            return prisma_1.PrismaError.handle(error);
+        }
+    }
+    async findOne(id) {
+        try {
+            const sensor = await this.prisma.sensor.findUnique({
+                where: { id }
+            });
+            if (!sensor) {
+                return {
+                    statusCode: common_1.HttpStatus.NOT_FOUND,
+                    data: 'Sensor not found'
+                };
+            }
+            return {
+                statusCode: common_1.HttpStatus.OK,
+                data: sensor
+            };
+        }
+        catch (error) {
+            return prisma_1.PrismaError.handle(error);
+        }
+    }
+    async update(id, body) {
+        const validation = dto_1.updateSensorDto.safeParse(body);
+        if (!validation.success) {
+            console.log(validation.error.flatten().formErrors);
+            if (validation.error.flatten().fieldErrors.model) {
+                return {
+                    statusCode: 400,
+                    data: 'Invalid model, expected: "TcAg", "TcAs" or "HF+", we got: ' + body.model
+                };
+            }
+            else {
+                return {
+                    statusCode: 400,
+                    data: 'Invalid model, expected: "TcAg", "TcAs" or "HF+"'
+                };
+            }
+        }
+        const data = validation.data;
+        try {
+            const sensor = await this.prisma.sensor.update({
+                where: { id },
+                data
+            });
+            return {
+                statusCode: common_1.HttpStatus.OK,
+                data: sensor
+            };
+        }
+        catch (error) {
+            return prisma_1.PrismaError.handle(error);
+        }
+    }
+    async remove(id) {
+        try {
+            await this.prisma.sensor.delete({
+                where: { id }
+            });
+            return {
+                statusCode: common_1.HttpStatus.NO_CONTENT,
+                data: 'Sensor deleted'
+            };
+        }
+        catch (error) {
+            return prisma_1.PrismaError.handle(error);
+        }
+    }
+};
+exports.SensorsService = SensorsService;
+exports.SensorsService = SensorsService = tslib_1.__decorate([
+    (0, common_1.Injectable)(),
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof PrismaService_1.PrismaService !== "undefined" && PrismaService_1.PrismaService) === "function" ? _a : Object])
+], SensorsService);
+
+
+/***/ }),
+/* 36 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+var _a, _b, _c, _d, _e, _f, _g, _h;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.SensorsController = void 0;
+const tslib_1 = __webpack_require__(5);
+const common_1 = __webpack_require__(1);
+const express_1 = __webpack_require__(2);
+const passport_1 = __webpack_require__(24);
+const sensors_service_1 = __webpack_require__(35);
+const authenticated_guard_1 = __webpack_require__(37);
+const dto_1 = __webpack_require__(17);
+let SensorsController = class SensorsController {
+    constructor(sensorsService) {
+        this.sensorsService = sensorsService;
+    }
+    async create(body, res) {
+        const { statusCode, data } = await this.sensorsService.create(body);
+        return res.status(statusCode).json(data);
+    }
+    async findAll(res) {
+        const { statusCode, data } = await this.sensorsService.findAll();
+        return res.status(statusCode).json(data);
+    }
+    async findOne(id, res) {
+        const { statusCode, data } = await this.sensorsService.findOne(+id);
+        return res.status(statusCode).json(data);
+    }
+    async update(id, body, res) {
+        const { statusCode, data } = await this.sensorsService.update(+id, body);
+        return res.status(statusCode).json(data);
+    }
+    async remove(id, res) {
+        const { statusCode, data } = await this.sensorsService.remove(+id);
+        return res.status(statusCode).json(data);
+    }
+};
+exports.SensorsController = SensorsController;
+tslib_1.__decorate([
+    (0, common_1.Post)(),
+    tslib_1.__param(0, (0, common_1.Body)()),
+    tslib_1.__param(1, (0, common_1.Res)()),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [typeof (_b = typeof dto_1.CreateSensorDto !== "undefined" && dto_1.CreateSensorDto) === "function" ? _b : Object, typeof (_c = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _c : Object]),
+    tslib_1.__metadata("design:returntype", Promise)
+], SensorsController.prototype, "create", null);
+tslib_1.__decorate([
+    (0, common_1.Get)(),
+    tslib_1.__param(0, (0, common_1.Res)()),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [typeof (_d = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _d : Object]),
+    tslib_1.__metadata("design:returntype", Promise)
+], SensorsController.prototype, "findAll", null);
+tslib_1.__decorate([
+    (0, common_1.Get)(':id'),
+    tslib_1.__param(0, (0, common_1.Param)('id')),
+    tslib_1.__param(1, (0, common_1.Res)()),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [String, typeof (_e = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _e : Object]),
+    tslib_1.__metadata("design:returntype", Promise)
+], SensorsController.prototype, "findOne", null);
+tslib_1.__decorate([
+    (0, common_1.Patch)(':id'),
+    tslib_1.__param(0, (0, common_1.Param)('id')),
+    tslib_1.__param(1, (0, common_1.Body)()),
+    tslib_1.__param(2, (0, common_1.Res)()),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [String, typeof (_f = typeof dto_1.UpdateSensorDto !== "undefined" && dto_1.UpdateSensorDto) === "function" ? _f : Object, typeof (_g = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _g : Object]),
+    tslib_1.__metadata("design:returntype", Promise)
+], SensorsController.prototype, "update", null);
+tslib_1.__decorate([
+    (0, common_1.Delete)(':id'),
+    tslib_1.__param(0, (0, common_1.Param)('id')),
+    tslib_1.__param(1, (0, common_1.Res)()),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [String, typeof (_h = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _h : Object]),
+    tslib_1.__metadata("design:returntype", Promise)
+], SensorsController.prototype, "remove", null);
+exports.SensorsController = SensorsController = tslib_1.__decorate([
+    (0, common_1.Controller)('sensors'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), authenticated_guard_1.AuthenticatedGuard),
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof sensors_service_1.SensorsService !== "undefined" && sensors_service_1.SensorsService) === "function" ? _a : Object])
+], SensorsController);
+
+
+/***/ }),
+/* 37 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AuthenticatedGuard = void 0;
+const tslib_1 = __webpack_require__(5);
+const passport_1 = __webpack_require__(24);
+const common_1 = __webpack_require__(1);
+let AuthenticatedGuard = class AuthenticatedGuard extends (0, passport_1.AuthGuard)("jwt") {
+    constructor() {
+        super();
+    }
+    async canActivate(context) {
+        const request = context.switchToHttp().getRequest();
+        return request.isAuthenticated();
+    }
+};
+exports.AuthenticatedGuard = AuthenticatedGuard;
+exports.AuthenticatedGuard = AuthenticatedGuard = tslib_1.__decorate([
+    (0, common_1.Injectable)(),
+    tslib_1.__metadata("design:paramtypes", [])
+], AuthenticatedGuard);
 
 
 /***/ })
