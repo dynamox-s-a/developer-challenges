@@ -18,7 +18,6 @@ export class SensorsService {
     const validation = createSensorDto.safeParse(body);
 
     if (!validation.success) {
-      console.log(validation.error.flatten().formErrors);
       if (validation.error.flatten().fieldErrors.model) {
         return {
           statusCode: 400,
@@ -95,7 +94,6 @@ export class SensorsService {
     const validation = updateSensorDto.safeParse(body);
 
     if (!validation.success) {
-      console.log(validation.error.flatten().formErrors);
       if (validation.error.flatten().fieldErrors.model) {
         return {
           statusCode: 400,
