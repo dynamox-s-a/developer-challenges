@@ -1,13 +1,14 @@
-import { Module } from '@nestjs/common';
-
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { Module } from '@nestjs/common';
+import { ConfigModule } from "@nestjs/config";
+import { UsersModule } from './users/users.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { SessionsModule } from './sessions/sessions.module';
 
-const rootPath = process.env.NODE_ENV === 'development'
-  ? join(__dirname, '../../../apps/frontend/dist/')
-  : join(__dirname, '../../../frontend/dist/');
+const rootPath =
+  process.env.NODE_ENV === 'development'
+    ? join(__dirname, '../../../apps/frontend/dist/')
+    : join(__dirname, '../../../frontend/dist/');
 
 @Module({
   imports: [
@@ -15,8 +16,13 @@ const rootPath = process.env.NODE_ENV === 'development'
       rootPath: rootPath,
       exclude: ['api/*'],
     }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    UsersModule,
+    SessionsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

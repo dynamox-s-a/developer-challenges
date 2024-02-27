@@ -11,6 +11,8 @@
     }
   ],
   "compilerOptions": {
-    "esModuleInterop": true
-  }
+    "esModuleInterop": true,
+    "strict": true,
+  },
+  "emitDecoratorMetadata": true,
 }

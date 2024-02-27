@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@dynamox-challenge/dto": ["dto/src/index.ts"]
+      "@dynamox-challenge/dto": ["dto/src/index.ts"],
+      "@dynamox-challenge/prisma": ["prisma/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,0 +1,27 @@
+{
+  "name": "prisma",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "prisma",
+  "projectType": "library",
+  "targets": {
+    "prisma": {
+      "command": "prisma",
+      "options": {
+        "cwd": "prisma"
+      }
+    },
+    "migrate": {
+      "command": "prisma migrate dev",
+      "options": {
+        "cwd": "prisma"
+      }
+    },
+    "generate-types": {
+      "command": "prisma generate",
+      "options": {
+        "cwd": "prisma"
+      }
+    }
+  },
+  "tags": []
+}
