@@ -1,6 +1,7 @@
 import EventEmitter from 'events';
 import httpMock from 'node-mocks-http';
 import { JwtService } from '@nestjs/jwt';
+import { HttpStatus } from '@nestjs/common';
 import { SessionsService } from './sessions.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateSessionDto } from '@dynamox-challenge/dto';
@@ -34,9 +35,11 @@ describe('SessionsController', () => {
     await controller.create(body, res);
 
     const response = res._getJSONData();
+    const statusCode = res._getStatusCode();
 
     expect(response).toHaveProperty('accessToken');
     expect(response).toHaveProperty('user');
+    expect(statusCode).toBe(HttpStatus.CREATED);
   });
 
   it('should not create a session and return a 400 status code', async () => {
@@ -52,7 +55,7 @@ describe('SessionsController', () => {
     const statusCode = res._getStatusCode();
     const response = res._getJSONData();
 
-    expect(statusCode).toBe(400);
+    expect(statusCode).toBe(HttpStatus.BAD_REQUEST);
     expect(response).toBe('Invalid credentials');
   });
 
@@ -69,7 +72,7 @@ describe('SessionsController', () => {
     const statusCode = res._getStatusCode();
     const response = res._getJSONData();
 
-    expect(statusCode).toBe(401);
+    expect(statusCode).toBe(HttpStatus.UNAUTHORIZED);
     expect(response).toBe('Invalid credentials');
   });
 

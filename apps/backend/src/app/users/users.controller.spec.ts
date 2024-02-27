@@ -1,5 +1,6 @@
 import EventEmitter from 'events';
 import httpMock from 'node-mocks-http';
+import { HttpStatus } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtStrategy } from '../guard/jwt.strategy';
 import { UsersController } from './users.controller';
@@ -84,7 +85,7 @@ describe('UsersController', () => {
     const statusCode = res._getStatusCode();
 
     expect(response).toEqual(fakeUsers[1]);
-    expect(statusCode).toBe(201);
+    expect(statusCode).toBe(HttpStatus.CREATED);
 
     expect(prisma.user.create).toHaveBeenCalled();
   });
@@ -113,7 +114,7 @@ describe('UsersController', () => {
         validation: 'email',
       },
     ]);
-    expect(statusCode).toBe(400);
+    expect(statusCode).toBe(HttpStatus.BAD_REQUEST);
   });
 
   it('should not create a user and return a 400 status code for an invalid password', async () => {
@@ -146,7 +147,7 @@ describe('UsersController', () => {
         validation: 'regex',
       }
     ]);
-    expect(statusCode).toBe(400);
+    expect(statusCode).toBe(HttpStatus.BAD_REQUEST);
   });
 
   it('should update a user', async () => {
@@ -166,7 +167,7 @@ describe('UsersController', () => {
       name: 'Leonardo Jacomussi',
       email: fakeUsers[0].email,
     });
-    expect(statusCode).toBe(200);
+    expect(statusCode).toBe(HttpStatus.OK);
     expect(prisma.user.update).toHaveBeenCalled();
   });
 
@@ -192,7 +193,7 @@ describe('UsersController', () => {
         validation: 'email',
       },
     ]);
-    expect(statusCode).toBe(400);
+    expect(statusCode).toBe(HttpStatus.BAD_REQUEST);
     expect(prisma.user.update).toHaveBeenCalledTimes(0);
   });
 
@@ -209,7 +210,7 @@ describe('UsersController', () => {
     const statusCode = res._getStatusCode();
 
     expect(response).toEqual('User not found');
-    expect(statusCode).toBe(404);
+    expect(statusCode).toBe(HttpStatus.NOT_FOUND);
     expect(prisma.user.update).toHaveBeenCalledTimes(0);
   });
 });
