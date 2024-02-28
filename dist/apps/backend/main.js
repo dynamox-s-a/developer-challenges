@@ -42,7 +42,7 @@ const monitoring_points_module_1 = __webpack_require__(45);
 //     : join(__dirname, '../../../frontend/dist/');
 const rootPath = process.env.NODE_ENV === 'development'
     ? (0, path_1.join)(__dirname, '../../../dist/apps/frontend/')
-    : (0, path_1.join)(__dirname, '../frontend/');
+    : (0, path_1.join)(__dirname, '../dist/frontend/');
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
