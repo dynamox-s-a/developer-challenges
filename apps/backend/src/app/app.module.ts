@@ -8,10 +8,12 @@ import { SessionsModule } from './sessions/sessions.module';
 import { MachinesModule } from './machines/machines.module';
 import { MonitoringPointsModule } from './monitoring-points/monitoring-points.module';
 
-const rootPath =
-  process.env.NODE_ENV === 'development'
-    ? join(__dirname, '../../../apps/frontend/dist/')
-    : join(__dirname, '../../../frontend/dist/');
+// const rootPath =
+//   process.env.NODE_ENV === 'development'
+//     ? join(__dirname, '../../../apps/frontend/dist/')
+//     : join(__dirname, '../../../frontend/dist/');
+
+const rootPath = join(__dirname, '../../../dist/apps/frontend/');
 
 @Module({
   imports: [
