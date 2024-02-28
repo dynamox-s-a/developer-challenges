@@ -22,7 +22,7 @@ describe('SessionsService', () => {
   it('should create a session', async () => {
     const body: CreateSessionDto = {
       email: 'leonardo@email.com',
-	    password: 'hard@*rock!',
+	    password: 'Hard@*rock3!',
     };
 
     const response = await service.create(body);

@@ -27,7 +27,7 @@ describe('SessionsController', () => {
   it('should return a token', async () => {
     const body: CreateSessionDto = {
       email: 'leonardo@email.com',
-	    password: 'hard@*rock!',
+	    password: 'Hard@*rock3!',
     };
 
     const res = httpMock.createResponse({ eventEmitter: EventEmitter });
