@@ -1,0 +1,6 @@
+{
+  "name": "@dynamox-challenge/prisma",
+  "version": "0.0.1",
+  "main": "./index.js",
+  "type": "commonjs"
+}
