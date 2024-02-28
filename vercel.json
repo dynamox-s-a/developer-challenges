@@ -3,7 +3,7 @@
   "github": {
     "enabled": true
   },
-  "buildCommand": "npx prisma db push --schema=prisma/prisma/schema.prisma && npx prisma generate --schema=prisma/prisma/schema.prisma && npx nx build frontend --prod && npx nx serve backend --prod",
+  "buildCommand": "npx nx build frontend --prod && npx nx serve backend --prod",
   "installCommand": "npm install",
   "framework": null,
   "builds": [
