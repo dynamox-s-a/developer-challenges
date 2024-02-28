@@ -21,7 +21,7 @@ const rootPath =
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: __dirname,
+      rootPath: rootPath,
       exclude: ['api/*'],
     }),
     ConfigModule.forRoot({
