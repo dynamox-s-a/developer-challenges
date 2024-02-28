@@ -36,9 +36,13 @@ const sensors_module_1 = __webpack_require__(34);
 const sessions_module_1 = __webpack_require__(38);
 const machines_module_1 = __webpack_require__(42);
 const monitoring_points_module_1 = __webpack_require__(45);
+// const rootPath =
+//   process.env.NODE_ENV === 'development'
+//     ? join(__dirname, '../../../apps/frontend/dist/')
+//     : join(__dirname, '../../../frontend/dist/');
 const rootPath = process.env.NODE_ENV === 'development'
-    ? (0, path_1.join)(__dirname, '../../../apps/frontend/dist/')
-    : (0, path_1.join)(__dirname, '../../../frontend/dist/');
+    ? (0, path_1.join)(__dirname, '../../../dist/apps/frontend/')
+    : (0, path_1.join)(process.cwd(), '');
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
