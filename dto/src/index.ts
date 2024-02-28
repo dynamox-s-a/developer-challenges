@@ -5,3 +5,5 @@ export * from './sensors/create-sensor.dto';
 export * from './sensors/update-sensor.dto';
 export * from './machines/create-machine.dto';
 export * from './machines/update-machine.dto';
+export * from './monitoring-points/create-monitoring-point.dto';
+export * from './monitoring-points/update-monitoring-point.dto';

@@ -3,48 +3,7 @@ import { JwtStrategy } from '../guard/jwt.strategy';
 import { MachinesService } from './machines.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../database/PrismaService';
-
-const fakeMachines = [
-  {
-    id: 1,
-    name: 'Machine 1',
-    type: 'Pump',
-    userId: 1,
-  },
-  {
-    id: 2,
-    name: 'Machine 2',
-    type: 'Pump',
-    userId: 1,
-  },
-  {
-    id: 3,
-    name: 'Machine 3',
-    type: 'Fan',
-    userId: 1,
-  },
-];
-
-const prismaMock = {
-  machine: {
-    create: jest.fn().mockReturnValue(fakeMachines[1]),
-    findUnique: jest.fn().mockImplementation(args => {
-      if (args.where.id >= fakeMachines.length) {
-        return null;
-      }
-      return fakeMachines[0];
-    }),
-    findFirst: jest.fn().mockImplementation(args => {
-      if (args.where.id >= fakeMachines.length) {
-        return null;
-      }
-      return fakeMachines[0];
-    }),
-    findMany: jest.fn().mockResolvedValue(fakeMachines),
-    update: jest.fn().mockResolvedValue(fakeMachines[0]),
-    delete: jest.fn(),
-  },
-};
+import { mockedMachines, mockedMachinesPrisma } from '../../mocks/index.mock';
 
 describe('MachinesService', () => {
   const userId = 1;
@@ -56,7 +15,7 @@ describe('MachinesService', () => {
       providers: [
         JwtStrategy,
         MachinesService,
-        { provide: PrismaService, useValue: prismaMock },
+        { provide: PrismaService, useValue: mockedMachinesPrisma },
       ],
     }).compile();
 
@@ -108,9 +67,9 @@ describe('MachinesService', () => {
     expect(machine).toEqual({
       statusCode: HttpStatus.OK,
       data: {
-        id: fakeMachines[0].id,
-        name: fakeMachines[0].name,
-        type: fakeMachines[0].type
+        id: mockedMachines[0].id,
+        name: mockedMachines[0].name,
+        type: mockedMachines[0].type
       },
     });
     expect(prisma.machine.findFirst).toHaveBeenCalledWith({
@@ -137,7 +96,7 @@ describe('MachinesService', () => {
     const machines = await service.findAll(userId);
     expect(machines).toEqual({
       statusCode: HttpStatus.OK,
-      data: fakeMachines.map(machine => ({
+      data: mockedMachines.map(machine => ({
         id: machine.id,
         name: machine.name,
         type: machine.type
@@ -155,9 +114,9 @@ describe('MachinesService', () => {
     expect(machine).toEqual({
       statusCode: HttpStatus.OK,
       data: {
-        id: fakeMachines[0].id,
-        name: fakeMachines[0].name,
-        type: fakeMachines[0].type
+        id: mockedMachines[0].id,
+        name: mockedMachines[0].name,
+        type: mockedMachines[0].type
       },
     });
     expect(prisma.machine.update).toHaveBeenCalledWith({

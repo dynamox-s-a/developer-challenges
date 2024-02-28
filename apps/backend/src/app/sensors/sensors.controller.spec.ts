@@ -7,36 +7,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { SensorsController } from './sensors.controller';
 import { PrismaService } from '../database/PrismaService';
 import { CreateSensorDto, UpdateSensorDto } from '@dynamox-challenge/dto';
-
-const fakeSensors = [
-  {
-    id: 1,
-    model: 'TcAg',
-  },
-  {
-    id: 2,
-    model: 'TcAs',
-  },
-  {
-    id: 3,
-    model: 'HF+',
-  },
-];
-
-const prismaMock = {
-  sensor: {
-    create: jest.fn().mockReturnValue(fakeSensors[1]),
-    findUnique: jest.fn().mockImplementation(args => {
-      if (args.where.id >= fakeSensors.length) {
-        return null;
-      }
-      return fakeSensors[0];
-    }),
-    findMany: jest.fn().mockResolvedValue(fakeSensors),
-    update: jest.fn().mockResolvedValue(fakeSensors[0]),
-    delete: jest.fn(),
-  },
-};
+import { mockedSensors, mockedSensorsPrisma } from '../../mocks/index.mock';
 
 describe('SensorsController', () => {
   let controller: SensorsController;
@@ -49,7 +20,7 @@ describe('SensorsController', () => {
       providers: [
         JwtStrategy,
         SensorsService,
-        { provide: PrismaService, useValue: prismaMock },
+        { provide: PrismaService, useValue: mockedSensorsPrisma },
       ],
     }).compile();
 
@@ -80,7 +51,7 @@ describe('SensorsController', () => {
     const statusCode = res._getStatusCode();
     const response = res._getJSONData();
 
-    expect(response).toEqual(fakeSensors[1]);
+    expect(response).toEqual(mockedSensors[1]);
     expect(statusCode).toBe(HttpStatus.CREATED);
   });
 
@@ -107,7 +78,7 @@ describe('SensorsController', () => {
     const statusCode = res._getStatusCode();
     const response = res._getJSONData();
 
-    expect(response).toEqual(fakeSensors);
+    expect(response).toEqual(mockedSensors);
     expect(statusCode).toBe(HttpStatus.OK);
   });
 
@@ -119,7 +90,7 @@ describe('SensorsController', () => {
     const statusCode = res._getStatusCode();
     const response = res._getJSONData();
 
-    expect(response).toEqual(fakeSensors[0]);
+    expect(response).toEqual(mockedSensors[0]);
     expect(statusCode).toBe(HttpStatus.OK);
   });
 
@@ -146,7 +117,7 @@ describe('SensorsController', () => {
     const statusCode = res._getStatusCode();
     const response = res._getJSONData();
 
-    expect(response).toEqual(fakeSensors[0]);
+    expect(response).toEqual(mockedSensors[0]);
     expect(statusCode).toBe(HttpStatus.OK);
   });
 

@@ -3,36 +3,7 @@ import { SensorsService } from './sensors.service';
 import { JwtStrategy } from '../guard/jwt.strategy';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../database/PrismaService';
-
-const fakeSensors = [
-  {
-    id: 1,
-    model: 'TcAg',
-  },
-  {
-    id: 2,
-    model: 'TcAs',
-  },
-  {
-    id: 3,
-    model: 'HF+',
-  },
-];
-
-const prismaMock = {
-  sensor: {
-    create: jest.fn().mockReturnValue(fakeSensors[1]),
-    findUnique: jest.fn().mockImplementation(args => {
-      if (args.where.id >= fakeSensors.length) {
-        return null;
-      }
-      return fakeSensors[0];
-    }),
-    findMany: jest.fn().mockResolvedValue(fakeSensors),
-    update: jest.fn().mockResolvedValue(fakeSensors[0]),
-    delete: jest.fn(),
-  },
-};
+import { mockedSensors, mockedSensorsPrisma } from '../../mocks/index.mock';
 
 describe('SensorsService', () => {
   let service: SensorsService;
@@ -43,7 +14,7 @@ describe('SensorsService', () => {
       providers: [
         JwtStrategy,
         SensorsService,
-        { provide: PrismaService, useValue: prismaMock },
+        { provide: PrismaService, useValue: mockedSensorsPrisma },
       ],
     }).compile();
 
@@ -65,7 +36,7 @@ describe('SensorsService', () => {
     const sensor = await service.create({ model: 'TcAs' });
     expect(sensor).toEqual({
       statusCode: HttpStatus.CREATED,
-      data: fakeSensors[1],
+      data: mockedSensors[1],
     });
     expect(prisma.sensor.create).toHaveBeenCalledTimes(1);
   });
@@ -83,7 +54,7 @@ describe('SensorsService', () => {
     const sensors = await service.findAll();
     expect(sensors).toEqual({
       statusCode: HttpStatus.OK,
-      data: fakeSensors,
+      data: mockedSensors,
     });
     expect(prisma.sensor.findMany).toHaveBeenCalledTimes(1);
   });
@@ -92,7 +63,7 @@ describe('SensorsService', () => {
     const sensor = await service.findOne(1);
     expect(sensor).toEqual({
       statusCode: HttpStatus.OK,
-      data: fakeSensors[0],
+      data: mockedSensors[0],
     });
     expect(prisma.sensor.findUnique).toHaveBeenCalledTimes(1);
   });
@@ -110,7 +81,7 @@ describe('SensorsService', () => {
     const sensor = await service.update(1, { model: 'TcAs' });
     expect(sensor).toEqual({
       statusCode: HttpStatus.OK,
-      data: fakeSensors[0],
+      data: mockedSensors[0],
     });
     expect(prisma.sensor.update).toHaveBeenCalledTimes(1);
   });

@@ -16,5 +16,5 @@
   ],
   "include": [
     "src/**/*.ts"
-, "../../dto/src/users/create-user.dto.ts", "../../dto/src/users/update-user.dto.ts", "../../prisma/prisma/PrismaService.ts"  ]
+, "../../dto/src/users/create-user.dto.ts", "../../dto/src/users/update-user.dto.ts", "../../prisma/prisma/PrismaService.ts", "../../dto/src/monitoring-points/create-monitoring-point.dto.ts", "../../dto/src/monitoring-points/update-monitoring-point.dto.ts"  ]
 }

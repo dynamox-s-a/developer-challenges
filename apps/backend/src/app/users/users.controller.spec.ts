@@ -7,38 +7,7 @@ import { UsersController } from './users.controller';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../database/PrismaService';
 import { CreateUserDto, UpdateUserDto } from '@dynamox-challenge/dto';
-
-const fakeUsers = [
-  {
-    id: 1,
-    name: 'Leonardo Jacomussi',
-    email: 'leonardo@email.com',
-    password: '#UmaSenhaSegura123',
-  },
-  {
-    id: 2,
-    name: 'John Doe',
-    email: 'john@email.com',
-    password: '@AnotherSecurePassword123',
-  }
-];
-
-const prismaMock = {
-  user: {
-    create: jest.fn().mockReturnValue(fakeUsers[1]),
-    findUnique: jest.fn().mockImplementation((args) => {
-      if (args.where.email) {
-        return null;
-      }
-      if (args.where.id) {
-        return fakeUsers.filter((user) => user.id === args.where.id)[0];
-      }
-    }),
-    findMany: jest.fn().mockResolvedValue(fakeUsers),
-    update: jest.fn().mockResolvedValue(fakeUsers[0]),
-    delete: jest.fn(),
-  },
-};
+import { mockedUsers, mockedUsersPrisma } from '../../mocks/index.mock';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -51,7 +20,7 @@ describe('UsersController', () => {
       providers: [
         UsersService,
         JwtStrategy,
-        { provide: PrismaService, useValue: prismaMock },
+        { provide: PrismaService, useValue: mockedUsersPrisma },
       ],
     }).compile();
 
@@ -84,7 +53,7 @@ describe('UsersController', () => {
     const response = res._getJSONData();
     const statusCode = res._getStatusCode();
 
-    expect(response).toEqual(fakeUsers[1]);
+    expect(response).toEqual(mockedUsers[1]);
     expect(statusCode).toBe(HttpStatus.CREATED);
 
     expect(prisma.user.create).toHaveBeenCalled();
@@ -119,7 +88,7 @@ describe('UsersController', () => {
 
   it('should not create a user and return a 400 status code for an invalid password', async () => {
     const body: CreateUserDto = {
-      ...fakeUsers[1],
+      ...mockedUsers[1],
       password: 'short',
     };
 
@@ -165,7 +134,7 @@ describe('UsersController', () => {
     expect(response).toEqual({
       id: 1,
       name: 'Leonardo Jacomussi',
-      email: fakeUsers[0].email,
+      email: mockedUsers[0].email,
     });
     expect(statusCode).toBe(HttpStatus.OK);
     expect(prisma.user.update).toHaveBeenCalled();

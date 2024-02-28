@@ -31,10 +31,11 @@ const path_1 = __webpack_require__(6);
 const common_1 = __webpack_require__(1);
 const config_1 = __webpack_require__(7);
 const users_module_1 = __webpack_require__(8);
-const serve_static_1 = __webpack_require__(31);
-const sensors_module_1 = __webpack_require__(32);
-const sessions_module_1 = __webpack_require__(36);
-const machines_module_1 = __webpack_require__(40);
+const serve_static_1 = __webpack_require__(33);
+const sensors_module_1 = __webpack_require__(34);
+const sessions_module_1 = __webpack_require__(38);
+const machines_module_1 = __webpack_require__(42);
+const monitoring_points_module_1 = __webpack_require__(45);
 const rootPath = process.env.NODE_ENV === 'development'
     ? (0, path_1.join)(__dirname, '../../../apps/frontend/dist/')
     : (0, path_1.join)(__dirname, '../../../frontend/dist/');
@@ -55,6 +56,7 @@ exports.AppModule = AppModule = tslib_1.__decorate([
             sessions_module_1.SessionsModule,
             sensors_module_1.SensorsModule,
             machines_module_1.MachinesModule,
+            monitoring_points_module_1.MonitoringPointsModule,
         ],
         controllers: [],
         providers: [],
@@ -90,9 +92,9 @@ exports.UsersModule = void 0;
 const tslib_1 = __webpack_require__(5);
 const common_1 = __webpack_require__(1);
 const users_service_1 = __webpack_require__(9);
-const passport_1 = __webpack_require__(26);
-const jwt_strategy_1 = __webpack_require__(27);
-const users_controller_1 = __webpack_require__(29);
+const passport_1 = __webpack_require__(28);
+const jwt_strategy_1 = __webpack_require__(29);
+const users_controller_1 = __webpack_require__(31);
 const PrismaService_1 = __webpack_require__(16);
 let UsersModule = class UsersModule {
 };
@@ -310,6 +312,8 @@ tslib_1.__exportStar(__webpack_require__(22), exports);
 tslib_1.__exportStar(__webpack_require__(23), exports);
 tslib_1.__exportStar(__webpack_require__(24), exports);
 tslib_1.__exportStar(__webpack_require__(25), exports);
+tslib_1.__exportStar(__webpack_require__(26), exports);
+tslib_1.__exportStar(__webpack_require__(27), exports);
 
 
 /***/ }),
@@ -435,9 +439,18 @@ exports.updateMachineDto = create_machine_dto_1.createMachineDto.partial();
 
 /***/ }),
 /* 26 */
-/***/ ((module) => {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-module.exports = require("@nestjs/passport");
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createMonitoringPointDto = void 0;
+const zod_1 = __webpack_require__(19);
+exports.createMonitoringPointDto = zod_1.z.object({
+    name: zod_1.z.string(),
+    machineId: zod_1.z.number(),
+    sensorId: zod_1.z.number(),
+});
+
 
 /***/ }),
 /* 27 */
@@ -445,11 +458,28 @@ module.exports = require("@nestjs/passport");
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.updateMonitoringPointDto = void 0;
+const create_monitoring_point_dto_1 = __webpack_require__(26);
+exports.updateMonitoringPointDto = create_monitoring_point_dto_1.createMonitoringPointDto.partial();
+
+
+/***/ }),
+/* 28 */
+/***/ ((module) => {
+
+module.exports = require("@nestjs/passport");
+
+/***/ }),
+/* 29 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.JwtStrategy = void 0;
 const tslib_1 = __webpack_require__(5);
 const common_1 = __webpack_require__(1);
-const passport_jwt_1 = __webpack_require__(28);
-const passport_1 = __webpack_require__(26);
+const passport_jwt_1 = __webpack_require__(30);
+const passport_1 = __webpack_require__(28);
 let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy) {
     constructor() {
         super({
@@ -477,13 +507,13 @@ exports.JwtStrategy = JwtStrategy = tslib_1.__decorate([
 
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ ((module) => {
 
 module.exports = require("passport-jwt");
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -493,8 +523,8 @@ exports.UsersController = void 0;
 const tslib_1 = __webpack_require__(5);
 const common_1 = __webpack_require__(1);
 const express_1 = __webpack_require__(2);
-const passport_1 = __webpack_require__(26);
-const own_guard_1 = __webpack_require__(30);
+const passport_1 = __webpack_require__(28);
+const own_guard_1 = __webpack_require__(32);
 const users_service_1 = __webpack_require__(9);
 const dto_1 = __webpack_require__(17);
 const dto_2 = __webpack_require__(17);
@@ -537,14 +567,14 @@ exports.UsersController = UsersController = tslib_1.__decorate([
 
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.OwnGuard = void 0;
 const tslib_1 = __webpack_require__(5);
-const passport_1 = __webpack_require__(26);
+const passport_1 = __webpack_require__(28);
 const common_1 = __webpack_require__(1);
 let OwnGuard = class OwnGuard extends (0, passport_1.AuthGuard)("jwt") {
     constructor() {
@@ -565,13 +595,13 @@ exports.OwnGuard = OwnGuard = tslib_1.__decorate([
 
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ ((module) => {
 
 module.exports = require("@nestjs/serve-static");
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -579,9 +609,9 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.SensorsModule = void 0;
 const tslib_1 = __webpack_require__(5);
 const common_1 = __webpack_require__(1);
-const sensors_service_1 = __webpack_require__(33);
-const jwt_strategy_1 = __webpack_require__(27);
-const sensors_controller_1 = __webpack_require__(34);
+const sensors_service_1 = __webpack_require__(35);
+const jwt_strategy_1 = __webpack_require__(29);
+const sensors_controller_1 = __webpack_require__(36);
 const PrismaService_1 = __webpack_require__(16);
 let SensorsModule = class SensorsModule {
 };
@@ -595,7 +625,7 @@ exports.SensorsModule = SensorsModule = tslib_1.__decorate([
 
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -614,7 +644,6 @@ let SensorsService = class SensorsService {
     async create(body) {
         const validation = dto_1.createSensorDto.safeParse(body);
         if (!validation.success) {
-            console.log(validation.error.flatten().formErrors);
             if (validation.error.flatten().fieldErrors.model) {
                 return {
                     statusCode: 400,
@@ -677,7 +706,6 @@ let SensorsService = class SensorsService {
     async update(id, body) {
         const validation = dto_1.updateSensorDto.safeParse(body);
         if (!validation.success) {
-            console.log(validation.error.flatten().formErrors);
             if (validation.error.flatten().fieldErrors.model) {
                 return {
                     statusCode: 400,
@@ -729,7 +757,7 @@ exports.SensorsService = SensorsService = tslib_1.__decorate([
 
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -739,9 +767,9 @@ exports.SensorsController = void 0;
 const tslib_1 = __webpack_require__(5);
 const common_1 = __webpack_require__(1);
 const express_1 = __webpack_require__(2);
-const passport_1 = __webpack_require__(26);
-const sensors_service_1 = __webpack_require__(33);
-const authenticated_guard_1 = __webpack_require__(35);
+const passport_1 = __webpack_require__(28);
+const sensors_service_1 = __webpack_require__(35);
+const authenticated_guard_1 = __webpack_require__(37);
 const dto_1 = __webpack_require__(17);
 let SensorsController = class SensorsController {
     constructor(sensorsService) {
@@ -817,14 +845,14 @@ exports.SensorsController = SensorsController = tslib_1.__decorate([
 
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AuthenticatedGuard = void 0;
 const tslib_1 = __webpack_require__(5);
-const passport_1 = __webpack_require__(26);
+const passport_1 = __webpack_require__(28);
 const common_1 = __webpack_require__(1);
 let AuthenticatedGuard = class AuthenticatedGuard extends (0, passport_1.AuthGuard)("jwt") {
     constructor() {
@@ -843,7 +871,7 @@ exports.AuthenticatedGuard = AuthenticatedGuard = tslib_1.__decorate([
 
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -851,10 +879,10 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.SessionsModule = void 0;
 const tslib_1 = __webpack_require__(5);
 const common_1 = __webpack_require__(1);
-const jwt_1 = __webpack_require__(37);
-const sessions_service_1 = __webpack_require__(38);
+const jwt_1 = __webpack_require__(39);
+const sessions_service_1 = __webpack_require__(40);
 const PrismaService_1 = __webpack_require__(16);
-const sessions_controller_1 = __webpack_require__(39);
+const sessions_controller_1 = __webpack_require__(41);
 let SessionsModule = class SessionsModule {
 };
 exports.SessionsModule = SessionsModule;
@@ -867,13 +895,13 @@ exports.SessionsModule = SessionsModule = tslib_1.__decorate([
 
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ ((module) => {
 
 module.exports = require("@nestjs/jwt");
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -883,7 +911,7 @@ exports.SessionsService = void 0;
 const tslib_1 = __webpack_require__(5);
 const common_1 = __webpack_require__(1);
 const bcryptjs_1 = __webpack_require__(10);
-const jwt_1 = __webpack_require__(37);
+const jwt_1 = __webpack_require__(39);
 const prisma_1 = __webpack_require__(11);
 const PrismaService_1 = __webpack_require__(16);
 const dto_1 = __webpack_require__(17);
@@ -946,7 +974,7 @@ exports.SessionsService = SessionsService = tslib_1.__decorate([
 
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -956,7 +984,7 @@ exports.SessionsController = void 0;
 const tslib_1 = __webpack_require__(5);
 const common_1 = __webpack_require__(1);
 const express_1 = __webpack_require__(2);
-const sessions_service_1 = __webpack_require__(38);
+const sessions_service_1 = __webpack_require__(40);
 const dto_1 = __webpack_require__(17);
 let SessionsController = class SessionsController {
     constructor(sessionsService) {
@@ -983,7 +1011,7 @@ exports.SessionsController = SessionsController = tslib_1.__decorate([
 
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -991,10 +1019,10 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.MachinesModule = void 0;
 const tslib_1 = __webpack_require__(5);
 const common_1 = __webpack_require__(1);
-const jwt_strategy_1 = __webpack_require__(27);
-const machines_service_1 = __webpack_require__(41);
+const jwt_strategy_1 = __webpack_require__(29);
+const machines_service_1 = __webpack_require__(43);
 const PrismaService_1 = __webpack_require__(16);
-const machines_controller_1 = __webpack_require__(42);
+const machines_controller_1 = __webpack_require__(44);
 let MachinesModule = class MachinesModule {
 };
 exports.MachinesModule = MachinesModule;
@@ -1007,7 +1035,7 @@ exports.MachinesModule = MachinesModule = tslib_1.__decorate([
 
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -1028,7 +1056,7 @@ let MachinesService = class MachinesService {
         if (!validation.success) {
             return {
                 statusCode: common_1.HttpStatus.BAD_REQUEST,
-                data: validation.error.issues.map(issue => `Invalide value for attribute '${issue.path[0]}' - Message: ${issue.message}`).join('\n')
+                data: validation.error.issues.map(issue => `Invalid value for attribute '${issue.path[0]}' - Message: ${issue.message}`).join('\n')
             };
         }
         const data = validation.data;
@@ -1118,7 +1146,7 @@ let MachinesService = class MachinesService {
         if (!validation.success) {
             return {
                 statusCode: common_1.HttpStatus.BAD_REQUEST,
-                data: validation.error.issues.map(issue => `Invalide value for attribute '${issue.path[0]}' - Message: ${issue.message}`).join('\n')
+                data: validation.error.issues.map(issue => `Invalid value for attribute '${issue.path[0]}' - Message: ${issue.message}`).join('\n')
             };
         }
         const data = validation.data;
@@ -1171,7 +1199,7 @@ exports.MachinesService = MachinesService = tslib_1.__decorate([
 
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -1181,9 +1209,9 @@ exports.MachinesController = void 0;
 const tslib_1 = __webpack_require__(5);
 const common_1 = __webpack_require__(1);
 const express_1 = __webpack_require__(2);
-const passport_1 = __webpack_require__(26);
-const machines_service_1 = __webpack_require__(41);
-const authenticated_guard_1 = __webpack_require__(35);
+const passport_1 = __webpack_require__(28);
+const machines_service_1 = __webpack_require__(43);
+const authenticated_guard_1 = __webpack_require__(37);
 const dto_1 = __webpack_require__(17);
 let MachinesController = class MachinesController {
     constructor(machinesService) {
@@ -1266,6 +1294,295 @@ exports.MachinesController = MachinesController = tslib_1.__decorate([
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), authenticated_guard_1.AuthenticatedGuard),
     tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof machines_service_1.MachinesService !== "undefined" && machines_service_1.MachinesService) === "function" ? _a : Object])
 ], MachinesController);
+
+
+/***/ }),
+/* 45 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.MonitoringPointsModule = void 0;
+const tslib_1 = __webpack_require__(5);
+const common_1 = __webpack_require__(1);
+const jwt_strategy_1 = __webpack_require__(29);
+const PrismaService_1 = __webpack_require__(16);
+const monitoring_points_service_1 = __webpack_require__(46);
+const monitoring_points_controller_1 = __webpack_require__(47);
+let MonitoringPointsModule = class MonitoringPointsModule {
+};
+exports.MonitoringPointsModule = MonitoringPointsModule;
+exports.MonitoringPointsModule = MonitoringPointsModule = tslib_1.__decorate([
+    (0, common_1.Module)({
+        controllers: [monitoring_points_controller_1.MonitoringPointsController],
+        providers: [monitoring_points_service_1.MonitoringPointsService, PrismaService_1.PrismaService, jwt_strategy_1.JwtStrategy],
+    })
+], MonitoringPointsModule);
+
+
+/***/ }),
+/* 46 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.MonitoringPointsService = void 0;
+const tslib_1 = __webpack_require__(5);
+const common_1 = __webpack_require__(1);
+const prisma_1 = __webpack_require__(11);
+const PrismaService_1 = __webpack_require__(16);
+const dto_1 = __webpack_require__(17);
+let MonitoringPointsService = class MonitoringPointsService {
+    constructor(prisma) {
+        this.prisma = prisma;
+    }
+    async create(body) {
+        const validation = dto_1.createMonitoringPointDto.safeParse(body);
+        if (!validation.success) {
+            return {
+                statusCode: common_1.HttpStatus.BAD_REQUEST,
+                data: validation
+                    .error
+                    .issues
+                    .map(issue => `Invalid value for attribute '${issue.path[0]}' - Message: ${issue.message}`).join('\n')
+            };
+        }
+        const data = validation.data;
+        try {
+            const checkIfSensorExists = await this.prisma.sensor.findUnique({
+                where: {
+                    id: data.sensorId,
+                },
+            });
+            if (!checkIfSensorExists) {
+                return {
+                    statusCode: common_1.HttpStatus.NOT_FOUND,
+                    data: 'Sensor not found',
+                };
+            }
+            const checkIfMachineExists = await this.prisma.machine.findUnique({
+                where: {
+                    id: data.machineId,
+                },
+            });
+            if (!checkIfMachineExists) {
+                return {
+                    statusCode: common_1.HttpStatus.NOT_FOUND,
+                    data: 'Machine not found',
+                };
+            }
+            const checkIfSensorHaveBeenAssignedToMonitoringPoint = await this.prisma.monitoringPoint.findFirst({
+                where: {
+                    sensorId: data.sensorId,
+                },
+            });
+            if (checkIfSensorHaveBeenAssignedToMonitoringPoint) {
+                return {
+                    statusCode: common_1.HttpStatus.CONFLICT,
+                    data: 'Sensor already assigned to a monitoring point',
+                };
+            }
+            const checkIfMonitoringPointExists = await this.prisma.monitoringPoint.findFirst({
+                where: {
+                    machineId: data.machineId,
+                    sensorId: data.sensorId,
+                },
+            });
+            if (checkIfMonitoringPointExists) {
+                return {
+                    statusCode: common_1.HttpStatus.CONFLICT,
+                    data: 'Monitoring Point already exists',
+                };
+            }
+            const monitoringPoint = await this.prisma.monitoringPoint.create({
+                data: {
+                    ...data,
+                },
+            });
+            return {
+                statusCode: common_1.HttpStatus.CREATED,
+                data: monitoringPoint,
+            };
+        }
+        catch (error) {
+            return prisma_1.PrismaError.handle(error);
+        }
+    }
+    async findAll() {
+        try {
+            const monitoringPoints = await this.prisma.monitoringPoint.findMany();
+            return {
+                statusCode: common_1.HttpStatus.OK,
+                data: monitoringPoints,
+            };
+        }
+        catch (error) {
+            return prisma_1.PrismaError.handle(error);
+        }
+    }
+    async findOne(id) {
+        try {
+            const monitoringPoint = await this.prisma.monitoringPoint.findUnique({
+                where: {
+                    id,
+                },
+            });
+            if (!monitoringPoint) {
+                return {
+                    statusCode: common_1.HttpStatus.NOT_FOUND,
+                    data: 'Monitoring Point not found',
+                };
+            }
+            return {
+                statusCode: common_1.HttpStatus.OK,
+                data: monitoringPoint,
+            };
+        }
+        catch (error) {
+            return prisma_1.PrismaError.handle(error);
+        }
+    }
+    async update(id, body) {
+        const validation = dto_1.updateMonitoringPointDto.safeParse(body);
+        if (!validation.success) {
+            return {
+                statusCode: common_1.HttpStatus.BAD_REQUEST,
+                data: validation
+                    .error
+                    .issues
+                    .map(issue => `Invalid value for attribute '${issue.path[0]}' - Message: ${issue.message}`).join('\n')
+            };
+        }
+        const data = validation.data;
+        try {
+            const monitoringPoint = await this.prisma.monitoringPoint.update({
+                where: {
+                    id,
+                },
+                data: {
+                    ...data,
+                },
+            });
+            return {
+                statusCode: common_1.HttpStatus.OK,
+                data: monitoringPoint,
+            };
+        }
+        catch (error) {
+            return prisma_1.PrismaError.handle(error);
+        }
+    }
+    async remove(id) {
+        try {
+            await this.prisma.monitoringPoint.delete({
+                where: {
+                    id,
+                },
+            });
+            return {
+                statusCode: common_1.HttpStatus.NO_CONTENT,
+                data: 'Monitoring Point removed',
+            };
+        }
+        catch (error) {
+            return prisma_1.PrismaError.handle(error);
+        }
+    }
+};
+exports.MonitoringPointsService = MonitoringPointsService;
+exports.MonitoringPointsService = MonitoringPointsService = tslib_1.__decorate([
+    (0, common_1.Injectable)(),
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof PrismaService_1.PrismaService !== "undefined" && PrismaService_1.PrismaService) === "function" ? _a : Object])
+], MonitoringPointsService);
+
+
+/***/ }),
+/* 47 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+var _a, _b, _c, _d, _e, _f, _g, _h;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.MonitoringPointsController = void 0;
+const tslib_1 = __webpack_require__(5);
+const common_1 = __webpack_require__(1);
+const express_1 = __webpack_require__(2);
+const passport_1 = __webpack_require__(28);
+const authenticated_guard_1 = __webpack_require__(37);
+const monitoring_points_service_1 = __webpack_require__(46);
+const dto_1 = __webpack_require__(17);
+let MonitoringPointsController = class MonitoringPointsController {
+    constructor(monitoringPointsService) {
+        this.monitoringPointsService = monitoringPointsService;
+    }
+    async create(body, res) {
+        const { statusCode, data } = await this.monitoringPointsService.create(body);
+        return res.status(statusCode).json(data);
+    }
+    async findAll(res) {
+        const { statusCode, data } = await this.monitoringPointsService.findAll();
+        return res.status(statusCode).json(data);
+    }
+    async findOne(id, res) {
+        const { statusCode, data } = await this.monitoringPointsService.findOne(+id);
+        return res.status(statusCode).json(data);
+    }
+    async update(id, body, res) {
+        const { statusCode, data } = await this.monitoringPointsService.update(+id, body);
+        return res.status(statusCode).json(data);
+    }
+    async remove(id, res) {
+        const { statusCode, data } = await this.monitoringPointsService.remove(+id);
+        return res.status(statusCode).json(data);
+    }
+};
+exports.MonitoringPointsController = MonitoringPointsController;
+tslib_1.__decorate([
+    (0, common_1.Post)(),
+    tslib_1.__param(0, (0, common_1.Body)()),
+    tslib_1.__param(1, (0, common_1.Res)()),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [typeof (_b = typeof dto_1.CreateMonitoringPointDto !== "undefined" && dto_1.CreateMonitoringPointDto) === "function" ? _b : Object, typeof (_c = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _c : Object]),
+    tslib_1.__metadata("design:returntype", Promise)
+], MonitoringPointsController.prototype, "create", null);
+tslib_1.__decorate([
+    (0, common_1.Get)(),
+    tslib_1.__param(0, (0, common_1.Res)()),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [typeof (_d = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _d : Object]),
+    tslib_1.__metadata("design:returntype", Promise)
+], MonitoringPointsController.prototype, "findAll", null);
+tslib_1.__decorate([
+    (0, common_1.Get)(':id'),
+    tslib_1.__param(0, (0, common_1.Param)('id')),
+    tslib_1.__param(1, (0, common_1.Res)()),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [String, typeof (_e = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _e : Object]),
+    tslib_1.__metadata("design:returntype", Promise)
+], MonitoringPointsController.prototype, "findOne", null);
+tslib_1.__decorate([
+    (0, common_1.Patch)(':id'),
+    tslib_1.__param(0, (0, common_1.Param)('id')),
+    tslib_1.__param(1, (0, common_1.Body)()),
+    tslib_1.__param(2, (0, common_1.Res)()),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [String, typeof (_f = typeof dto_1.UpdateMonitoringPointDto !== "undefined" && dto_1.UpdateMonitoringPointDto) === "function" ? _f : Object, typeof (_g = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _g : Object]),
+    tslib_1.__metadata("design:returntype", Promise)
+], MonitoringPointsController.prototype, "update", null);
+tslib_1.__decorate([
+    (0, common_1.Delete)(':id'),
+    tslib_1.__param(0, (0, common_1.Param)('id')),
+    tslib_1.__param(1, (0, common_1.Res)()),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [String, typeof (_h = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _h : Object]),
+    tslib_1.__metadata("design:returntype", Promise)
+], MonitoringPointsController.prototype, "remove", null);
+exports.MonitoringPointsController = MonitoringPointsController = tslib_1.__decorate([
+    (0, common_1.Controller)('monitoring-points'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), authenticated_guard_1.AuthenticatedGuard),
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof monitoring_points_service_1.MonitoringPointsService !== "undefined" && monitoring_points_service_1.MonitoringPointsService) === "function" ? _a : Object])
+], MonitoringPointsController);
 
 
 /***/ })

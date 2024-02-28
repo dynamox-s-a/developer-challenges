@@ -6,6 +6,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { SensorsModule } from './sensors/sensors.module';
 import { SessionsModule } from './sessions/sessions.module';
 import { MachinesModule } from './machines/machines.module';
+import { MonitoringPointsModule } from './monitoring-points/monitoring-points.module';
 
 const rootPath =
   process.env.NODE_ENV === 'development'
@@ -25,6 +26,7 @@ const rootPath =
     SessionsModule,
     SensorsModule,
     MachinesModule,
+    MonitoringPointsModule,
   ],
   controllers: [],
   providers: [],

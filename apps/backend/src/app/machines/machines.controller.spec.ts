@@ -8,54 +8,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../database/PrismaService';
 import { MachinesController } from './machines.controller';
 import { CreateMachineDto, UpdateMachineDto } from '@dynamox-challenge/dto';
+import { mockedMachines, mockedMachinesPrisma } from '../../mocks/index.mock';
 
 interface AuthRequest extends Request {
   user: {
     userId: number;
   }
 }
-
-const fakeMachines = [
-  {
-    id: 1,
-    name: 'Machine 1',
-    type: 'Pump',
-    userId: 1,
-  },
-  {
-    id: 2,
-    name: 'Machine 2',
-    type: 'Pump',
-    userId: 1,
-  },
-  {
-    id: 3,
-    name: 'Machine 3',
-    type: 'Fan',
-    userId: 1,
-  },
-];
-
-const prismaMock = {
-  machine: {
-    create: jest.fn().mockReturnValue(fakeMachines[1]),
-    findUnique: jest.fn().mockImplementation(args => {
-      if (args.where.id >= fakeMachines.length) {
-        return null;
-      }
-      return fakeMachines[0];
-    }),
-    findFirst: jest.fn().mockImplementation(args => {
-      if (args.where.id >= fakeMachines.length) {
-        return null;
-      }
-      return fakeMachines[0];
-    }),
-    findMany: jest.fn().mockResolvedValue(fakeMachines),
-    update: jest.fn().mockResolvedValue(fakeMachines[0]),
-    delete: jest.fn(),
-  },
-};
 
 describe('MachinesController', () => {
   const userId = 1;
@@ -69,7 +28,7 @@ describe('MachinesController', () => {
       providers: [
         JwtStrategy,
         MachinesService,
-        { provide: PrismaService, useValue: prismaMock },
+        { provide: PrismaService, useValue: mockedMachinesPrisma },
       ],
     }).compile();
 
@@ -118,9 +77,9 @@ describe('MachinesController', () => {
 
     expect(statusCode).toBe(HttpStatus.CREATED);
     expect(response).toEqual({
-      id: fakeMachines[1].id,
-      name: fakeMachines[1].name,
-      type: fakeMachines[1].type,
+      id: mockedMachines[1].id,
+      name: mockedMachines[1].name,
+      type: mockedMachines[1].type,
     });
   });
 
@@ -168,7 +127,7 @@ describe('MachinesController', () => {
     const statusCode = res._getStatusCode();
 
     expect(statusCode).toBe(HttpStatus.OK);
-    expect(response).toEqual(fakeMachines.map(machine => ({
+    expect(response).toEqual(mockedMachines.map(machine => ({
       id: machine.id,
       name: machine.name,
       type: machine.type,
@@ -194,9 +153,9 @@ describe('MachinesController', () => {
 
     expect(statusCode).toBe(HttpStatus.OK);
     expect(response).toEqual({
-      id: fakeMachines[0].id,
-      name: fakeMachines[0].name,
-      type: fakeMachines[0].type,
+      id: mockedMachines[0].id,
+      name: mockedMachines[0].name,
+      type: mockedMachines[0].type,
     });
     expect(prisma.machine.findFirst).toHaveBeenCalledTimes(1);
   });
@@ -244,9 +203,9 @@ describe('MachinesController', () => {
 
     expect(statusCode).toBe(HttpStatus.OK);
     expect(response).toEqual({
-      id: fakeMachines[0].id,
-      name: fakeMachines[0].name,
-      type: fakeMachines[0].type,
+      id: mockedMachines[0].id,
+      name: mockedMachines[0].name,
+      type: mockedMachines[0].type,
     });
     expect(prisma.machine.update).toHaveBeenCalledTimes(1);
   });
