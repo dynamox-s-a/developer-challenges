@@ -54,16 +54,7 @@ describe('UsersService', () => {
 
     expect(response).toEqual({
       statusCode: 400,
-      data: [
-        {
-          code: 'invalid_string',
-          message: 'The email is not valid',
-          path: [
-            'email',
-          ],
-          validation: 'email',
-        },
-      ],
+      data: "Invalid value for attribute 'email' - Message: The email is not valid",
     });
 
     expect(prisma.user.create).toHaveBeenCalledTimes(0);
@@ -77,23 +68,7 @@ describe('UsersService', () => {
 
     expect(response).toEqual({
       statusCode: 400,
-      data: [
-        {
-          code: 'too_small',
-          exact: false,
-          inclusive: true,
-          message: 'The password has to be at least 8 characters long',
-          minimum: 8,
-          path:  ['password'],
-          type: 'string',
-        },
-        {
-          code: 'invalid_string',
-          message: 'The password must contain at least 1 lowercase letter, 1 uppercase letter and 1 number',
-            path: ['password'],
-          validation: 'regex',
-        }
-      ],
+      data: "Invalid value for attribute 'password' - Message: The password has to be at least 8 characters long\nInvalid value for attribute 'password' - Message: The password must contain at least 1 lowercase letter, 1 uppercase letter and 1 number",
     });
   });
 
@@ -122,16 +97,7 @@ describe('UsersService', () => {
 
     expect(response).toEqual({
       statusCode: 400,
-      data: [
-        {
-          code: 'invalid_string',
-          message: 'The email is not valid',
-          path: [
-            'email',
-          ],
-          validation: 'email',
-        },
-      ],
+      data: "Invalid value for attribute 'email' - Message: The email is not valid",
     });
 
     expect(prisma.user.update).toHaveBeenCalledTimes(0);
@@ -145,6 +111,33 @@ describe('UsersService', () => {
     expect(response).toEqual({
       statusCode: 404,
       data: 'User not found',
+    });
+
+    expect(prisma.user.update).toHaveBeenCalledTimes(0);
+  });
+
+  it('should not update a user and return a 400 status code for an invalid password', async () => {
+    const response = await service.update(1, {
+      ...mockedUsers[1],
+      password: 'short',
+    });
+
+    expect(response).toEqual({
+      statusCode: 400,
+      data: "Invalid value for attribute 'password' - Message: The password has to be at least 8 characters long\nInvalid value for attribute 'password' - Message: The password must contain at least 1 lowercase letter, 1 uppercase letter and 1 number",
+    });
+  });
+
+  it('should not update a user and return a 400 status code for an invalid old password', async () => {
+    const response = await service.update(1, {
+      ...mockedUsers[1],
+      password: '@AnotherSecurePassword123',
+      oldPassword: 'wrongPassword',
+    });
+
+    expect(response).toEqual({
+      statusCode: 400,
+      data: 'Old password does not match',
     });
 
     expect(prisma.user.update).toHaveBeenCalledTimes(0);

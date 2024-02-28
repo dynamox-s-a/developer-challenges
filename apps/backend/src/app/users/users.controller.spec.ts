@@ -73,16 +73,7 @@ describe('UsersController', () => {
     const response = res._getJSONData();
     const statusCode = res._getStatusCode();
 
-    expect(response).toEqual([
-      {
-        code: 'invalid_string',
-        message: 'The email is not valid',
-        path: [
-          'email',
-        ],
-        validation: 'email',
-      },
-    ]);
+    expect(response).toEqual("Invalid value for attribute 'email' - Message: The email is not valid");
     expect(statusCode).toBe(HttpStatus.BAD_REQUEST);
   });
 
@@ -99,23 +90,9 @@ describe('UsersController', () => {
     const response = res._getJSONData();
     const statusCode = res._getStatusCode();
 
-    expect(response).toEqual([
-      {
-        code: 'too_small',
-        exact: false,
-        inclusive: true,
-        message: 'The password has to be at least 8 characters long',
-        minimum: 8,
-        path:  ['password'],
-        type: 'string',
-      },
-      {
-        code: 'invalid_string',
-        message: 'The password must contain at least 1 lowercase letter, 1 uppercase letter and 1 number',
-          path: ['password'],
-        validation: 'regex',
-      }
-    ]);
+    expect(response).toEqual(
+      "Invalid value for attribute 'password' - Message: The password has to be at least 8 characters long\nInvalid value for attribute 'password' - Message: The password must contain at least 1 lowercase letter, 1 uppercase letter and 1 number"
+    );
     expect(statusCode).toBe(HttpStatus.BAD_REQUEST);
   });
 
@@ -152,16 +129,9 @@ describe('UsersController', () => {
     const response = res._getJSONData();
     const statusCode = res._getStatusCode();
 
-    expect(response).toEqual([
-      {
-        code: 'invalid_string',
-        message: 'The email is not valid',
-        path: [
-          'email',
-        ],
-        validation: 'email',
-      },
-    ]);
+    expect(response).toEqual(
+      "Invalid value for attribute 'email' - Message: The email is not valid"
+    );
     expect(statusCode).toBe(HttpStatus.BAD_REQUEST);
     expect(prisma.user.update).toHaveBeenCalledTimes(0);
   });
@@ -180,6 +150,46 @@ describe('UsersController', () => {
 
     expect(response).toEqual('User not found');
     expect(statusCode).toBe(HttpStatus.NOT_FOUND);
+    expect(prisma.user.update).toHaveBeenCalledTimes(0);
+  });
+
+  it('should not update a user and return a 400 status code for an invalid password', async () => {
+    const body: UpdateUserDto = {
+      ...mockedUsers[1],
+      password: 'short',
+    };
+
+    const res = httpMock.createResponse({ eventEmitter: EventEmitter });
+
+    await controller.update(String(1), body, res);
+
+    const response = res._getJSONData();
+    const statusCode = res._getStatusCode();
+
+    expect(response).toEqual(
+      "Invalid value for attribute 'password' - Message: The password has to be at least 8 characters long\nInvalid value for attribute 'password' - Message: The password must contain at least 1 lowercase letter, 1 uppercase letter and 1 number"
+    );
+    expect(statusCode).toBe(HttpStatus.BAD_REQUEST);
+    expect(prisma.user.update).toHaveBeenCalledTimes(0);
+  });
+
+  it('should not update a user and return a 400 status code for an invalid old password', async () => {
+    const body: UpdateUserDto = {
+      ...mockedUsers[1],
+      oldPassword: 'invalid-old-password',
+    };
+
+    const res = httpMock.createResponse({ eventEmitter: EventEmitter });
+
+    await controller.update(String(1), body, res);
+
+    const response = res._getJSONData();
+    const statusCode = res._getStatusCode();
+
+    expect(response).toEqual(
+      "Old password does not match"
+    );
+    expect(statusCode).toBe(HttpStatus.BAD_REQUEST);
     expect(prisma.user.update).toHaveBeenCalledTimes(0);
   });
 });
