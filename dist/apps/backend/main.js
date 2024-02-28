@@ -42,7 +42,7 @@ const monitoring_points_module_1 = __webpack_require__(45);
 //     : join(__dirname, '../../../frontend/dist/');
 const rootPath = process.env.NODE_ENV === 'development'
     ? (0, path_1.join)(__dirname, '../../../dist/apps/frontend/')
-    : (0, path_1.join)(__dirname, 'dist/apps/frontend/');
+    : (0, path_1.join)(__dirname, '..', 'frontend/');
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -50,7 +50,7 @@ exports.AppModule = AppModule = tslib_1.__decorate([
     (0, common_1.Module)({
         imports: [
             serve_static_1.ServeStaticModule.forRoot({
-                rootPath: __dirname,
+                rootPath: rootPath,
                 exclude: ['api/*'],
             }),
             config_1.ConfigModule.forRoot({

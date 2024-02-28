@@ -16,12 +16,12 @@ import { MonitoringPointsModule } from './monitoring-points/monitoring-points.mo
 const rootPath =
   process.env.NODE_ENV === 'development'
     ? join(__dirname, '../../../dist/apps/frontend/')
-    : join(__dirname, 'dist/apps/frontend/');
+    : join(__dirname, '..', 'frontend/');
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: __dirname,
+      rootPath: rootPath,
       exclude: ['api/*'],
     }),
     ConfigModule.forRoot({
