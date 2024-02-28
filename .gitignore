@@ -41,3 +41,7 @@ Thumbs.db
 .nx/cache
 .vercel
 .env*
+
+# Next.js
+.next
+out

@@ -54,6 +54,15 @@
         "targetName": "e2e",
         "componentTestingTargetName": "component-test"
       }
+    },
+    {
+      "plugin": "@nx/next/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "devTargetName": "dev",
+        "startTargetName": "start",
+        "serveStaticTargetName": "serve-static"
+      }
     }
   ],
   "generators": {
@@ -69,6 +78,12 @@
       },
       "library": {
         "style": "css",
+        "linter": "eslint"
+      }
+    },
+    "@nx/next": {
+      "application": {
+        "style": "none",
         "linter": "eslint"
       }
     }
