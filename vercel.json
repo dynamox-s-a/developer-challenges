@@ -8,18 +8,18 @@
   "framework": null,
   "builds": [
     {
-      "src": "dist/apps/backend/main.js",
+      "src": "apps/backend/src/main.ts",
       "use": "@vercel/node"
     },
     {
-      "src": "dist/apps/frontend/*",
+      "src": "apps/frontend/dist/*",
       "use": "@now/static"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/apps/backend/main.js",
+      "dest": "apps/backend/src/main.ts",
       "methods": ["GET", "POST", "PUT", "PATCH", "DELETE"]
     }
   ]
