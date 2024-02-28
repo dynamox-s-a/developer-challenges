@@ -2,7 +2,9 @@
   "name": "@dynamox-challenge/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "postinstall": "prisma generate"
+  },
   "private": true,
   "dependencies": {
     "@nestjs/common": "^10.0.2",
