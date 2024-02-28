@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "postinstall": "prisma generate"
+    "postinstall": "npx prisma db push --schema=prisma/prisma/schema.prisma && npx prisma generate --schema=prisma/prisma/schema.prisma"
   },
   "private": true,
   "dependencies": {
