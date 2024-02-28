@@ -1456,6 +1456,51 @@ let MonitoringPointsService = class MonitoringPointsService {
         }
         const data = validation.data;
         try {
+            const checkIfSensorExists = await this.prisma.sensor.findUnique({
+                where: {
+                    id: data.sensorId,
+                },
+            });
+            if (!checkIfSensorExists) {
+                return {
+                    statusCode: common_1.HttpStatus.NOT_FOUND,
+                    data: 'Sensor not found',
+                };
+            }
+            const checkIfMachineExists = await this.prisma.machine.findUnique({
+                where: {
+                    id: data.machineId,
+                },
+            });
+            if (!checkIfMachineExists) {
+                return {
+                    statusCode: common_1.HttpStatus.NOT_FOUND,
+                    data: 'Machine not found',
+                };
+            }
+            const checkIfSensorHaveBeenAssignedToMonitoringPoint = await this.prisma.monitoringPoint.findFirst({
+                where: {
+                    sensorId: data.sensorId,
+                },
+            });
+            if (checkIfSensorHaveBeenAssignedToMonitoringPoint) {
+                return {
+                    statusCode: common_1.HttpStatus.CONFLICT,
+                    data: 'Sensor already assigned to a monitoring point',
+                };
+            }
+            const checkIfMonitoringPointExists = await this.prisma.monitoringPoint.findFirst({
+                where: {
+                    machineId: data.machineId,
+                    sensorId: data.sensorId,
+                },
+            });
+            if (checkIfMonitoringPointExists) {
+                return {
+                    statusCode: common_1.HttpStatus.CONFLICT,
+                    data: 'Monitoring Point already exists',
+                };
+            }
             const monitoringPoint = await this.prisma.monitoringPoint.update({
                 where: {
                     id,
