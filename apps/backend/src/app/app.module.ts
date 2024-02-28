@@ -16,7 +16,7 @@ import { MonitoringPointsModule } from './monitoring-points/monitoring-points.mo
 const rootPath =
   process.env.NODE_ENV === 'development'
     ? join(__dirname, '../../../dist/apps/frontend/')
-    : join(process.cwd(), '');
+    : join(process.cwd(), 'dist/apps/frontend/');
 
 @Module({
   imports: [
