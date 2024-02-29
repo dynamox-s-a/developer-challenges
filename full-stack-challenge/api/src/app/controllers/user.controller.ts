@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -44,6 +45,7 @@ export default class UserController {
   static schema = Joi.object({
     name: Joi.string().required(),
     email: Joi.string().email().required(),
+    password: Joi.string().required(),
   });
 
   constructor(private readonly userService: UserService) {}
@@ -99,16 +101,17 @@ export default class UserController {
 
   @Post()
   @HttpCode(201)
-  @ApiConsumes('multipart/form-data')
+  @ApiConsumes('application/json')
   @ApiBody({
-    type: 'multipart/form-data',
+    type: 'application/json',
     schema: {
       type: 'object',
       properties: {
         name: { type: 'string' },
         email: { type: 'string' },
+        password: { type: 'string' },
       },
-      required: ['name', 'email'],
+      required: ['name', 'email', 'password'],
     },
   })
   @ApiResponse({
@@ -122,6 +125,14 @@ export default class UserController {
   async insert(
     @Body(new ValidationPipe(UserController.schema)) body
   ): Promise<User> {
+    const newPassword = this.userService.encryptPassword(body.password);
+    if (!newPassword) {
+      throw new BadRequestException(
+        'Não foi possível criar a senha',
+        'new_password_error'
+      );
+    }
+    body.password = newPassword;
     return this.userService.insert(body);
   }
 
