@@ -14,13 +14,17 @@ import bodyParser from 'body-parser';
 import mongooseDelete from 'mongoose-delete';
 import mongooseLeanVirtuals from 'mongoose-lean-virtuals';
 import AuthController from './controllers/auth.controller';
+import MachineController from './controllers/machine.controller';
 import UserController from './controllers/user.controller';
 import JwtGuard from './core/auth-guard/jwt.guard';
 import AdminJwtStrategy from './core/auth-strategies/admin-jwt.strategy';
 import BasicStrategy from './core/auth-strategies/basic.strategy';
+import Machine, { MachineSchema } from './models/machine.model';
 import User, { UserSchema } from './models/user.model';
+import MachineRepository from './repositories/machine.repository';
 import UserRepository from './repositories/user.repository';
 import AuthService from './services/auth.service';
+import MachineService from './services/machine.service';
 import UserService from './services/user.service';
 
 @Module({
@@ -51,9 +55,12 @@ import UserService from './services/user.service';
         return connection;
       },
     }),
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature([
+      { name: User.name, schema: UserSchema },
+      { name: Machine.name, schema: MachineSchema },
+    ]),
   ],
-  controllers: [AuthController, UserController],
+  controllers: [AuthController, UserController, MachineController],
   providers: [
     { provide: APP_GUARD, useClass: JwtGuard },
     AuthService,
@@ -61,6 +68,8 @@ import UserService from './services/user.service';
     BasicStrategy,
     UserRepository,
     UserService,
+    MachineService,
+    MachineRepository,
   ],
 })
 export class AppModule implements NestModule {
