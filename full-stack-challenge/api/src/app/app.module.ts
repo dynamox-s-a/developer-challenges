@@ -16,6 +16,7 @@ import mongooseLeanVirtuals from 'mongoose-lean-virtuals';
 import AuthController from './controllers/auth.controller';
 import UserController from './controllers/user.controller';
 import JwtGuard from './core/auth-guard/jwt.guard';
+import AdminJwtStrategy from './core/auth-strategies/admin-jwt.strategy';
 import BasicStrategy from './core/auth-strategies/basic.strategy';
 import User, { UserSchema } from './models/user.model';
 import UserRepository from './repositories/user.repository';
@@ -56,6 +57,7 @@ import UserService from './services/user.service';
   providers: [
     { provide: APP_GUARD, useClass: JwtGuard },
     AuthService,
+    AdminJwtStrategy,
     BasicStrategy,
     UserRepository,
     UserService,
