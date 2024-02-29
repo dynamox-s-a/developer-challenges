@@ -1,6 +1,5 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import '@sentry/tracing';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
@@ -31,7 +30,7 @@ async function bootstrap() {
   const options = new DocumentBuilder()
     .setTitle('Dynamox test api')
     .setDescription(
-      'Restfull API to manage the product evaluation and course creation'
+      'Restfull API to manage the machine and monitoring points creation'
     )
     .setVersion('1.0')
     .addServer(`${process.env.HOST}/v1`)
