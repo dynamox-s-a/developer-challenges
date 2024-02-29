@@ -30,6 +30,7 @@ export default class MachineRepository extends BaseRepository<Machine> {
         $project: {
           deleted: 0,
           type: 0,
+          status: 0,
           createdAt: 0,
           updatedAt: 0,
         },

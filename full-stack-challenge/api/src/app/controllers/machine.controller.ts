@@ -10,6 +10,7 @@ import {
   Post,
   Put,
   Query,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -30,7 +31,7 @@ import { Page } from '../core/decorators/page.decorator';
 import { ParseObjectIdPipe } from '../core/pipes/parse-object-id.pipe';
 import { ValidationPipe } from '../core/pipes/validation.pipe';
 import PageResult from '../core/types/page-result.type';
-import Machine, { MachineTypes } from '../models/machine.model';
+import Machine, { MachineStatus, MachineTypes } from '../models/machine.model';
 import MachineService from '../services/machine.service';
 
 @ApiExtraModels(Machine)
@@ -43,6 +44,9 @@ export default class MachineController {
     name: Joi.string().required(),
     type: Joi.string()
       .valid(...Object.values(MachineTypes))
+      .required(),
+    status: Joi.string()
+      .valid(...Object.keys(MachineStatus))
       .required(),
   });
 
@@ -62,11 +66,19 @@ export default class MachineController {
     description: 'param to filter by type',
     required: false,
   })
+  @ApiQuery({
+    name: 'status',
+    type: 'string',
+    enum: Object.keys(MachineStatus),
+    description: 'param to filter by status',
+    required: false,
+  })
   @ApiPageableParams(Machine)
   async list(
     @Page() page,
     @Query('criteria') criteria: string,
-    @Query('type') type: MachineTypes
+    @Query('type') type: MachineTypes,
+    @Query('status') status: MachineStatus
   ): Promise<PageResult<Machine>> {
     const where: any = {};
     if (criteria) {
@@ -74,6 +86,9 @@ export default class MachineController {
     }
     if (type) {
       where.type = type;
+    }
+    if (status) {
+      where.status = status;
     }
     return this.machineService.pageable({ ...page, where });
   }
@@ -113,8 +128,9 @@ export default class MachineController {
       properties: {
         name: { type: 'string' },
         type: { type: 'string', enum: Object.values(MachineTypes) },
+        status: { type: 'string', enum: Object.keys(MachineStatus) },
       },
-      required: ['name', 'type'],
+      required: ['name', 'type', 'status'],
     },
   })
   @ApiResponse({
@@ -155,8 +171,12 @@ export default class MachineController {
           type: 'string',
           enum: Object.values(MachineTypes),
         },
+        status: {
+          type: 'string',
+          enum: Object.keys(MachineStatus),
+        },
       },
-      required: ['name', 'type'],
+      required: ['name', 'type', 'status'],
     },
   })
   @ApiResponse({
@@ -198,7 +218,16 @@ export default class MachineController {
   async delete(@Param('id', ParseObjectIdPipe) id: string): Promise<void> {
     const machine = await this.machineService.findById(id);
     if (!machine) {
-      throw new NotFoundException('Machine não encontrado', 'banner_not_found');
+      throw new NotFoundException(
+        'Máquina não encontrada',
+        'machine_not_found'
+      );
+    }
+    if (machine.status === MachineStatus.ACTIVE) {
+      throw new UnauthorizedException(
+        'Máquina em uso, exclusão bloqueada',
+        'machine_in_use'
+      );
     }
     await this.machineService.disableById(machine._id);
   }
