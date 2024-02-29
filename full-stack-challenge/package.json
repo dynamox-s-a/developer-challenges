@@ -16,6 +16,7 @@
     "@nestjs/swagger": "^7.3.0",
     "axios": "^1.6.0",
     "crypto-js": "^4.2.0",
+    "joi": "^17.12.2",
     "luxon": "^3.4.4",
     "mongoose": "^8.2.0",
     "mongoose-delete": "^1.0.2",
