@@ -2627,6 +2627,23 @@
   resolved "https://registry.yarnpkg.com/@swc/types/-/types-0.1.5.tgz#043b731d4f56a79b4897a3de1af35e75d56bc63a"
   integrity sha512-myfUej5naTBWnqOCc/MdVOLVjXUXtIA+NpDrDBKJtLLg2shUjBu3cZmB/85RyitKc55+lUUyl7oRfLOvkr2hsw==
 
+"@tanstack/query-core@5.24.1":
+  version "5.24.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.24.1.tgz#d40928dec22b47df97fb2648e8c499772e8d7eb2"
+  integrity sha512-DZ6Nx9p7BhjkG50ayJ+MKPgff+lMeol7QYXkvuU5jr2ryW/4ok5eanaS9W5eooA4xN0A/GPHdLGOZGzArgf5Cg==
+
+"@tanstack/react-query-next-experimental@^5.24.1":
+  version "5.24.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query-next-experimental/-/react-query-next-experimental-5.24.1.tgz#7d953aa4bf11ac096514fc49f67358597707b1c5"
+  integrity sha512-ha614ZRtCsWaZKfWMffRPNSCrOiXjeM4pawBOjQFo6N/3XaR1h3jHnYLjK4sA4IA9O6q0m1xYygLHu7prk62RA==
+
+"@tanstack/react-query@^5.24.1":
+  version "5.24.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.24.1.tgz#bcb913febe0d813cec1fda7783298d07aa998b20"
+  integrity sha512-4+09JEdO4d6+Gc8Y/g2M/MuxDK5IY0QV8+2wL2304wPKJgJ54cBbULd3nciJ5uvh/as8rrxx6s0mtIwpRuGd1g==
+  dependencies:
+    "@tanstack/query-core" "5.24.1"
+
 "@testing-library/dom@^9.0.0":
   version "9.3.4"
   resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-9.3.4.tgz#50696ec28376926fec0a1bf87d9dbac5e27f60ce"
@@ -2853,6 +2870,11 @@
   dependencies:
     expect "^29.0.0"
     pretty-format "^29.0.0"
+
+"@types/js-cookie@^3.0.6":
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/@types/js-cookie/-/js-cookie-3.0.6.tgz#a04ca19e877687bd449f5ad37d33b104b71fdf95"
+  integrity sha512-wkw9yd1kEXOPnvEeEV1Go1MmxtBJL0RR79aOTAApecWFVu7w0NNXNqhcWgvw2YgZDYadliXkl14pa3WXw5jlCQ==
 
 "@types/jsdom@^20.0.0":
   version "20.0.1"
@@ -3788,7 +3810,7 @@ axe-core@^4.6.2:
   resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.8.4.tgz#90db39a2b316f963f00196434d964e6e23648643"
   integrity sha512-CZLSKisu/bhJ2awW4kJndluz2HLZYIHh5Uy1+ZwDRkJi69811xgIXXfdU9HSLX0Th+ILrHj8qfL/5wzamsFtQg==
 
-axios@^1.6.0:
+axios@^1.6.0, axios@^1.6.7:
   version "1.6.7"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.7.tgz#7b48c2e27c96f9c68a2f8f31e2ab19f59b06b0a7"
   integrity sha512-/hDJGff6/c7u0hDkvkGxR/oy6CbCs8ziCsC7SqmhjfozqiJGc8Z11wrv9z9lYfY4K8l+H9TpjcMDX0xOZmx+RA==
@@ -4849,6 +4871,11 @@ data-urls@^3.0.2:
     abab "^2.0.6"
     whatwg-mimetype "^3.0.0"
     whatwg-url "^11.0.0"
+
+date-fns@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-3.3.1.tgz#7581daca0892d139736697717a168afbb908cfed"
+  integrity sha512-y8e109LYGgoQDveiEBD3DYXKba1jWf5BA8YU1FL5Tvm0BTdEfy54WLCwnuYWZNnzzvALy/QQ4Hov+Q9RVRv+Zw==
 
 dayjs@^1.10.4:
   version "1.11.10"
@@ -7480,6 +7507,11 @@ joi@^17.12.2:
     "@sideway/address" "^4.1.5"
     "@sideway/formula" "^3.0.1"
     "@sideway/pinpoint" "^2.0.0"
+
+js-cookie@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-3.0.5.tgz#0b7e2fd0c01552c58ba86e0841f94dc2557dcdbc"
+  integrity sha512-cEiJEAEoIbWfCZYKWhVwFuvPX1gETRYPw6LlaTKoxD3s2AkXzkCjnp6h0V77ozyqj0jakteJ4YqDJT830+lVGw==
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
