@@ -1,28 +1,29 @@
-import PropTypes from 'prop-types';
-import BellIcon from '@heroicons/react/24/solid/BellIcon';
-import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
-import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
-import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import {
-  Avatar,
-  Badge,
   Box,
-  IconButton,
   Stack,
+  Theme,
+  Avatar,
   SvgIcon,
   Tooltip,
-  useMediaQuery
+  IconButton,
+  useMediaQuery,
 } from '@mui/material';
+import { FC } from 'react';
 import { alpha } from '@mui/material/styles';
-import { usePopover } from 'src/hooks/use-popover';
-import { AccountPopover } from './account-popover';
+import AccountPopover from './AccountPopover';
+import { usePopover } from '../../hooks/usePopover';
+import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
+import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
 
-export const TopNav = (props) => {
-  const { onNavOpen } = props;
-  const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
+interface TopNavProps {
+  onNavOpen: () => void;
+}
+
+const TopNav: FC<TopNavProps> = ({ onNavOpen }) => {
+  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   const accountPopover = usePopover();
 
   return (
@@ -78,26 +79,6 @@ export const TopNav = (props) => {
             direction="row"
             spacing={2}
           >
-            <Tooltip title="Contacts">
-              <IconButton>
-                <SvgIcon fontSize="small">
-                  <UsersIcon />
-                </SvgIcon>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Notifications">
-              <IconButton>
-                <Badge
-                  badgeContent={4}
-                  color="success"
-                  variant="dot"
-                >
-                  <SvgIcon fontSize="small">
-                    <BellIcon />
-                  </SvgIcon>
-                </Badge>
-              </IconButton>
-            </Tooltip>
             <Avatar
               onClick={accountPopover.handleOpen}
               ref={accountPopover.anchorRef}
@@ -111,15 +92,15 @@ export const TopNav = (props) => {
           </Stack>
         </Stack>
       </Box>
-      <AccountPopover
-        anchorEl={accountPopover.anchorRef.current}
-        open={accountPopover.open}
-        onClose={accountPopover.handleClose}
-      />
+      {accountPopover.anchorRef.current && (
+        <AccountPopover
+          anchorEl={accountPopover.anchorRef.current}
+          open={accountPopover.open}
+          onClose={accountPopover.handleClose}
+        />
+      )}
     </>
   );
 };
 
-TopNav.propTypes = {
-  onNavOpen: PropTypes.func
-};
+export default TopNav;

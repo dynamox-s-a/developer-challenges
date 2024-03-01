@@ -1,34 +1,38 @@
-import { useRouter } from "next/router";
-import { signOut } from "next-auth/react";
-import { useSession } from "next-auth/react";
-import LoadingContent from "../components/LoadingContent";
+import Head from 'next/head';
+import { ReactNode } from 'react';
+import { Box, Container, Unstable_Grid2 as Grid } from '@mui/material';
+import { Layout as DashboardLayout } from '../layouts/dashboard/Layout';
 
-export function Index() {
-  const router = useRouter();
-  const { status } = useSession();
+const Page = () => (
+  <>
+    <Head>
+      <title>
+        Dashboard | Dynamox
+      </title>
+    </Head>
+    <Box
+      component="main"
+      sx={{
+        flexGrow: 1,
+        py: 8
+      }}
+    >
+      <Container maxWidth="xl">
+        <Grid
+          container
+          spacing={3}
+        >
 
-  if (status === "loading") {
-    return <LoadingContent />;
-  }
+        </Grid>
+      </Container>
+    </Box>
+  </>
+);
 
-  if (status !== "authenticated") {
-    router.push("/auth/login");
-  }
+Page.getLayout = (page: ReactNode) => (
+  <DashboardLayout>
+    {page}
+  </DashboardLayout>
+);
 
-  return (
-    <>
-      {status === "authenticated" && (
-        <div>
-          <h1>Private Route</h1>
-          <button
-            onClick={() => signOut()}
-          >
-            Logout
-          </button>
-        </div>
-      )}
-    </>
-  );
-}
-
-export default Index;
+export default Page;

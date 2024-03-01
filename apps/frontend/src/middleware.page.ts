@@ -27,7 +27,7 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/', req.url));
   }
 
-  if (!token) {
+  if (pathname === '/' && !token) {
     return NextResponse.redirect(new URL('/auth/login', req.url));
   }
 

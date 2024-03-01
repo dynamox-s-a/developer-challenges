@@ -1,21 +1,36 @@
+import {
+  Box,
+  Popover,
+  Divider,
+  MenuItem,
+  MenuList,
+  Typography,
+} from '@mui/material';
+import { FC } from 'react';
 import { useCallback } from 'react';
+import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import PropTypes from 'prop-types';
-import { Box, Divider, MenuItem, MenuList, Popover, Typography } from '@mui/material';
-import { useAuth } from 'src/hooks/use-auth';
+import { useSession } from 'next-auth/react';
 
-export const AccountPopover = (props) => {
-  const { anchorEl, onClose, open } = props;
+interface AccountPopoverProps {
+  anchorEl: Element;
+  onClose?: () => void;
+  open: boolean;
+}
+
+const AccountPopover: FC<AccountPopoverProps> = ({
+  anchorEl, onClose, open
+}) => {
   const router = useRouter();
-  const auth = useAuth();
+  const { data: session } = useSession();
 
   const handleSignOut = useCallback(
     () => {
       onClose?.();
-      auth.signOut();
+      signOut();
       router.push('/auth/login');
     },
-    [onClose, auth, router]
+    [onClose, router]
   );
 
   return (
@@ -42,7 +57,7 @@ export const AccountPopover = (props) => {
           color="text.secondary"
           variant="body2"
         >
-          Anika Visser
+          {session?.user?.name}
         </Typography>
       </Box>
       <Divider />
@@ -64,8 +79,4 @@ export const AccountPopover = (props) => {
   );
 };
 
-AccountPopover.propTypes = {
-  anchorEl: PropTypes.any,
-  onClose: PropTypes.func,
-  open: PropTypes.bool.isRequired
-};
+export default AccountPopover;

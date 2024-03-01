@@ -1,41 +1,35 @@
-import NextLink from 'next/link';
-import { usePathname } from 'next/navigation';
-import PropTypes from 'prop-types';
-import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
-import ChevronUpDownIcon from '@heroicons/react/24/solid/ChevronUpDownIcon';
 import {
   Box,
-  Button,
-  Divider,
-  Drawer,
   Stack,
+  Theme,
+  Drawer,
+  Button,
   SvgIcon,
+  Divider,
   Typography,
-  useMediaQuery
+  useMediaQuery,
 } from '@mui/material';
-import { Logo } from 'src/components/logo';
-import { Scrollbar } from 'src/components/scrollbar';
+import { FC } from 'react';
 import { items } from './config';
-import { SideNavItem } from './side-nav-item';
+import NextLink from 'next/link';
+import { SideNavItem } from './SideNavItem';
+import { useSession } from 'next-auth/react';
+import { Logo } from '../../components/Logo';
+import { usePathname } from 'next/navigation';
+import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
 
-export const SideNav = (props) => {
-  const { open, onClose } = props;
+interface SideNavProps {
+  onClose: () => void;
+  open: boolean;
+}
+
+export const SideNav: FC<SideNavProps> = ({ open, onClose }) => {
   const pathname = usePathname();
-  const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
+  const { data: session } = useSession();
+  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
 
   const content = (
-    <Scrollbar
-      sx={{
-        height: '100%',
-        '& .simplebar-content': {
-          height: '100%'
-        },
-        '& .simplebar-scrollbar:before': {
-          background: 'neutral.400'
-        }
-      }}
-    >
-      <Box
+    <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
@@ -71,21 +65,15 @@ export const SideNav = (props) => {
                 color="inherit"
                 variant="subtitle1"
               >
-                Devias
+                Account
               </Typography>
               <Typography
                 color="neutral.400"
                 variant="body2"
               >
-                Production
+                {session?.user?.name || 'Not logged in'}
               </Typography>
             </div>
-            <SvgIcon
-              fontSize="small"
-              sx={{ color: 'neutral.500' }}
-            >
-              <ChevronUpDownIcon />
-            </SvgIcon>
           </Box>
         </Box>
         <Divider sx={{ borderColor: 'neutral.700' }} />
@@ -112,8 +100,8 @@ export const SideNav = (props) => {
               return (
                 <SideNavItem
                   active={active}
-                  disabled={item.disabled}
-                  external={item.external}
+                  // disabled={item.disabled}
+                  // external={item.external}
                   icon={item.icon}
                   key={item.title}
                   path={item.path}
@@ -142,22 +130,6 @@ export const SideNav = (props) => {
           >
             Check out our Pro solution template.
           </Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              mt: 2,
-              mx: 'auto',
-              width: '160px',
-              '& img': {
-                width: '100%'
-              }
-            }}
-          >
-            <img
-              alt="Go to pro"
-              src="/assets/devias-kit-pro.png"
-            />
-          </Box>
           <Button
             component="a"
             endIcon={(
@@ -166,16 +138,15 @@ export const SideNav = (props) => {
               </SvgIcon>
             )}
             fullWidth
-            href="https://material-kit-pro-react.devias.io/"
+            href="https://leonardojacomussi.com/"
             sx={{ mt: 2 }}
             target="_blank"
             variant="contained"
           >
-            Pro Live Preview
+            See portfolio
           </Button>
         </Box>
       </Box>
-    </Scrollbar>
   );
 
   if (lgUp) {
@@ -217,7 +188,4 @@ export const SideNav = (props) => {
   );
 };
 
-SideNav.propTypes = {
-  onClose: PropTypes.func,
-  open: PropTypes.bool
-};
+export default SideNav;
