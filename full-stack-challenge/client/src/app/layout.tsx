@@ -1,4 +1,3 @@
-import './global.css';
 import { AuthProvider } from './login/providers/auth-provider';
 import QueryClientProvider from './login/providers/query-client-provider';
 
