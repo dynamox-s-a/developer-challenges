@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import React from 'react';
 import { Match, Switch } from '../../core/components/switch';
 import { Copyright } from '../../page';
+import MachineCreationForm from './machine-creation-form';
 import MachinesHeader from './machines-header';
 import MachinesTable from './machines-table';
 
@@ -19,6 +20,9 @@ const MachinesContent: React.FC<MachineContentProps> = () => {
         <Switch>
           <Match when={tab === 'List'}>
             <MachinesTable />
+          </Match>
+          <Match when={tab === 'Manage'}>
+            <MachineCreationForm />
           </Match>
         </Switch>
       </Box>

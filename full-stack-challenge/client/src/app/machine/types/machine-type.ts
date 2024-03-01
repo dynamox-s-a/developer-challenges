@@ -1,12 +1,12 @@
 export interface MachineType {
-  _id: string;
+  _id?: string;
   name: string;
-  status: string;
-  createdAt: string;
+  status?: string;
+  createdAt?: string;
   type: string;
-  updatedAt: string;
-  deleted: boolean;
-  monitoringPoints: MonitoringPointType[];
+  updatedAt?: string;
+  deleted?: boolean;
+  monitoringPoints?: MonitoringPointType[];
 }
 
 export interface MonitoringPointType {
