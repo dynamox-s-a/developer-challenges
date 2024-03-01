@@ -13,8 +13,8 @@ import Head from 'next/head';
 import NextLink from 'next/link';
 import { useState } from 'react';
 import { useFormik } from 'formik';
+import { createSession } from '../../lib/api';
 import AuthLayout from '../../layouts/auth/Layout';
-import { createSession } from '../../services/api';
 import { signIn, useSession } from "next-auth/react";
 import useAppDispatch from '../../hooks/useAppDispatch';
 import redirectAuthPage from '../../routes/redirectAuthPage';
@@ -62,6 +62,7 @@ const Page = () => {
           'user' in responseAxios &&
           'accessToken' in responseAxios
           ) {
+            console.log('responseAxios: ', responseAxios);
             dispatch(loginStore({
             user: responseAxios.user,
             accessToken: responseAxios.accessToken

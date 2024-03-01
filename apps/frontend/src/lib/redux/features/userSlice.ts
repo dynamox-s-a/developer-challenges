@@ -1,5 +1,5 @@
+import { api } from '../../api';
 import { User } from "@prisma/client";
-import { api } from '../../../services/api';
 import { createListenerMiddleware, createSlice, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
 
 const getUserLocalStorage = () => {

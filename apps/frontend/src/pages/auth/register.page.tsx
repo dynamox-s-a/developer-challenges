@@ -3,7 +3,7 @@ import Head from 'next/head';
 import NextLink from 'next/link';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
-import { createUser } from '../../services/api';
+import { createUser } from '../../lib/api';
 import AuthLayout from '../../layouts/auth/Layout';
 import { useSession, signIn } from "next-auth/react";
 import { ReactNode, useState, useEffect } from 'react';

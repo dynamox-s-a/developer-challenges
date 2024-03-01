@@ -12,7 +12,7 @@ import {
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { useFormik } from 'formik';
-import { updateUser } from '../../services/api';
+import { updateUser } from '../../lib/api';
 import useAppDispatch from '../../hooks/useAppDispatch';
 import useAppSelector from '../../hooks/useAppSelector';
 import LoadingContent from '../../components/LoadingContent';

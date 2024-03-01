@@ -1,22 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from 'axios';
 import { User } from '@prisma/client';
+import { api, ApiError } from '../index';
 import {
   CreateSessionDto,
   CreateUserDto, createUserDto,
   UpdateUserDto, updateUserDto,
 } from '@dynamox-challenge/dto';
-
-interface ApiError {
-  message: string;
-  statusCode: number;
-}
-
-export const api = axios.create({
-  baseURL: process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3333'
-    : 'https://dynamox-challenge.onrender.com',
-});
 
 export const createUser = async (
   body: CreateUserDto

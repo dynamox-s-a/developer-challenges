@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import { User } from '@prisma/client';
-import { createSession } from '../../../services/api';
+import { createSession } from '../../../lib/api';
 import { NextApiRequest, NextApiResponse } from 'next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 

@@ -15,6 +15,7 @@
     "@mui/lab": "^5.0.0-alpha.166",
     "@mui/material": "^5.15.11",
     "@mui/system": "^5.15.11",
+    "@mui/x-data-grid": "^6.19.5",
     "@mui/x-date-pickers": "^6.19.5",
     "@nestjs/common": "^10.0.2",
     "@nestjs/config": "^3.2.0",
