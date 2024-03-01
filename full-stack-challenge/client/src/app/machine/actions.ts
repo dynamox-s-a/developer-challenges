@@ -24,3 +24,17 @@ export const createMachine = async ({ machine }: CreateMachineParams) => {
 
   return data;
 };
+
+type UpdateMachineParams = { machine: MachineType };
+export const updateMachine = async ({ machine }: UpdateMachineParams) => {
+  const { data } = await api.put(`${MACHINE_PATH}/${machine._id}`, machine);
+
+  return data;
+};
+
+type DeleteMachineParams = { _id: string };
+export const deleteMachine = async ({ _id }: DeleteMachineParams) => {
+  const { data } = await api.delete(`${MACHINE_PATH}/${_id}`);
+
+  return data;
+};

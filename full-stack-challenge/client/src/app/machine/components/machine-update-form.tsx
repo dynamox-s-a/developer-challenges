@@ -10,7 +10,9 @@ import Paper from '@mui/material/Paper';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 // import { useMutation } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import React from 'react';
+import { updateMachine } from '../actions';
 import { MachineStatus, MachineTypes } from './machine-creation-form';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -18,38 +20,38 @@ export interface MachineFormProps {}
 const MachineUpdateForm: React.FC<MachineFormProps> = (params) => {
   const [updateResult, setUpdateResult] = React.useState('');
   const [state, setState] = React.useState<{
-    id: string;
+    _id: string;
     name: string;
     type: MachineTypes | string;
     status: MachineStatus | string;
   }>({
-    id: '',
+    _id: '',
     name: '',
     type: '',
     status: '',
   });
 
-  // const { mutate, isPending } = useMutation({
-  //   mutationFn: updateMachine,
-  //   onSuccess: () => {
-  //     setUpdateResult('Máquina atualizada com sucesso.');
-  //     setTimeout(() => {
-  //       setUpdateResult('');
-  //       setState({
-  //         id: '',
-  //         name: '',
-  //         type: '',
-  //         status: '',
-  //       });
-  //     }, 5000);
-  //   },
-  //   onError: (error) => console.log(error),
-  // });
+  const { mutate, isPending } = useMutation({
+    mutationFn: updateMachine,
+    onSuccess: () => {
+      setUpdateResult('Máquina atualizada com sucesso.');
+      setTimeout(() => {
+        setUpdateResult('');
+        setState({
+          _id: '',
+          name: '',
+          type: '',
+          status: '',
+        });
+      }, 5000);
+    },
+    onError: (error) => console.log(error),
+  });
 
   const handleIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState({
       ...state,
-      id: event.target.value,
+      _id: event.target.value,
     });
   };
 
@@ -75,13 +77,12 @@ const MachineUpdateForm: React.FC<MachineFormProps> = (params) => {
   };
 
   const updateMachineTrigger = () => {
-    // mutate({ machine: state });
-    console.log({ state });
+    mutate({ machine: state });
     return;
   };
 
   const updateBlocked =
-    state.id === '' ||
+    state._id === '' ||
     (state.name === '' && state.type === '' && state.status === '');
 
   return (
@@ -130,7 +131,6 @@ const MachineUpdateForm: React.FC<MachineFormProps> = (params) => {
             <FormControlLabel
               control={
                 <TextField
-                  required
                   InputProps={{
                     disableUnderline: true,
                     sx: {
@@ -156,7 +156,6 @@ const MachineUpdateForm: React.FC<MachineFormProps> = (params) => {
                   id="demo-simple-select"
                   value={state.type}
                   label="Type"
-                  required
                   onChange={handleTypeChange}
                   sx={{ width: 100 }}
                 >
@@ -178,7 +177,6 @@ const MachineUpdateForm: React.FC<MachineFormProps> = (params) => {
                   id="demo-simple-select"
                   value={state.status}
                   label="Status"
-                  required
                   onChange={handleStatusChange}
                   sx={{ width: 100 }}
                 >

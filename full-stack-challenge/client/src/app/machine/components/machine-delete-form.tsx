@@ -6,8 +6,9 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormLabel from '@mui/material/FormLabel';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
-// import { useMutation } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import React from 'react';
+import { deleteMachine } from '../actions';
 import DeleteModal from './delete-modal';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -15,43 +16,44 @@ export interface MachineFormProps {}
 const MachineDeleteForm: React.FC<MachineFormProps> = (params) => {
   const [updateResult, setUpdateResult] = React.useState('');
   const [state, setState] = React.useState<{
-    id: string;
+    _id: string;
   }>({
-    id: '',
+    _id: '',
   });
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  // const { mutate, isPending } = useMutation({
-  //   mutationFn: deleteMachine,
-  //   onSuccess: () => {
-  //     setUpdateResult('Máquina excluída com sucesso.');
-  //     setTimeout(() => {
-  //       setUpdateResult('');
-  //       setState({
-  //         id: ''
-  //       });
-  //     }, 5000);
-  //   },
-  //   onError: (error) => console.log(error),
-  // });
+  const { mutate, isPending } = useMutation({
+    mutationFn: deleteMachine,
+    onSuccess: () => {
+      handleClose();
+      setUpdateResult('Máquina excluída com sucesso.');
+      setTimeout(() => {
+        setUpdateResult('');
+        setState({
+          _id: '',
+        });
+      }, 5000);
+    },
+    onError: (error) => console.log(error),
+  });
 
   const handleIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState({
       ...state,
-      id: event.target.value,
+      _id: event.target.value,
     });
   };
 
   const deleteMachineTrigger = () => {
-    // mutate({ machine: state });
-    console.log({ id: state.id });
+    mutate({ _id: state._id });
+    console.log({ id: state._id });
     return;
   };
 
-  const deleteBlocked = state.id === '';
+  const deleteBlocked = state._id === '';
 
   return (
     <Paper

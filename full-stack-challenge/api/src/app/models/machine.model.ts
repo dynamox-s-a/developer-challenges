@@ -43,11 +43,11 @@ const MonitoringPointSchema = SchemaFactory.createForClass(MonitoringPoint);
 @Schema({ id: false })
 export default class Machine extends BaseModel {
   @ApiProperty()
-  @Prop({ required: true })
+  @Prop({ required: false })
   name: string;
 
   @ApiProperty({ enum: Object.keys(MachineStatus) })
-  @Prop({ required: true, enum: Object.keys(MachineStatus) })
+  @Prop({ required: false, enum: Object.keys(MachineStatus) })
   status: string;
 
   @ApiProperty({
@@ -55,11 +55,11 @@ export default class Machine extends BaseModel {
     format: 'date-time',
     required: false,
   })
-  @Prop({ required: true })
+  @Prop({ required: false })
   createdAt: Date;
 
   @ApiProperty({ enum: Object.values(MachineTypes) })
-  @Prop({ required: true, enum: Object.values(MachineTypes) })
+  @Prop({ required: false, enum: Object.values(MachineTypes) })
   type: string;
 
   @ApiProperty({

@@ -44,13 +44,9 @@ import UserService from '../services/user.service';
 @UseGuards(AuthGuard('bearerAdmin'))
 export default class MachineController {
   static schema = Joi.object({
-    name: Joi.string().required(),
-    type: Joi.string()
-      .valid(...Object.values(MachineTypes))
-      .required(),
-    status: Joi.string()
-      .valid(...Object.keys(MachineStatus))
-      .required(),
+    name: Joi.string(),
+    type: Joi.string().valid(...Object.values(MachineTypes)),
+    status: Joi.string().valid(...Object.keys(MachineStatus)),
     monitoringPoints: Joi.array().items(
       Joi.object({
         name: Joi.string(),
@@ -220,7 +216,6 @@ export default class MachineController {
           enum: Object.keys(MachineStatus),
         },
       },
-      required: ['name', 'type', 'status'],
     },
   })
   @ApiResponse({

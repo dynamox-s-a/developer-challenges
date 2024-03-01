@@ -42,7 +42,11 @@ export default class MachineService extends BaseService<Machine> {
     try {
       session.startTransaction();
 
-      machine = await super.update(machine._id, <Machine>props, session);
+      machine = await super.update(
+        machine._id,
+        { ...machine, ...props } as Machine,
+        session
+      );
 
       await session.commitTransaction();
       return machine;
