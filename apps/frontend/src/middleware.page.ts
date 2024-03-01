@@ -19,13 +19,9 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.json({ message: 'Unauthorized access' }, { status: HttpStatusCode.Unauthorized });
   }
 
-  if (pathname === '/auth') {
-    return NextResponse.redirect(new URL('/auth/login', req.url));
-  }
-
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/api/:path*', '/auth'],
+  matcher: ['/api/:path*'],
 };
