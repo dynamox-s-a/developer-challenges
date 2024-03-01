@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  Inject,
   NotFoundException,
   Param,
   Patch,
@@ -26,6 +27,7 @@ import {
   getSchemaPath,
 } from '@nestjs/swagger';
 import Joi from 'joi';
+import { Types } from 'mongoose';
 import { ApiPageableParams } from '../core/decorators/api-pageable.decorator';
 import { Page } from '../core/decorators/page.decorator';
 import { ParseObjectIdPipe } from '../core/pipes/parse-object-id.pipe';
@@ -33,6 +35,7 @@ import { ValidationPipe } from '../core/pipes/validation.pipe';
 import PageResult from '../core/types/page-result.type';
 import Machine, { MachineStatus, MachineTypes } from '../models/machine.model';
 import MachineService from '../services/machine.service';
+import UserService from '../services/user.service';
 
 @ApiExtraModels(Machine)
 @ApiTags('Machines')
@@ -48,7 +51,17 @@ export default class MachineController {
     status: Joi.string()
       .valid(...Object.keys(MachineStatus))
       .required(),
+    monitoringPoints: Joi.array().items(
+      Joi.object({
+        name: Joi.string(),
+        userId: Joi.string(),
+        sensorId: Joi.string(),
+      })
+    ),
   });
+
+  @Inject(UserService)
+  private userService: UserService;
 
   constructor(private readonly machineService: MachineService) {}
 
@@ -78,7 +91,8 @@ export default class MachineController {
     @Page() page,
     @Query('criteria') criteria: string,
     @Query('type') type: MachineTypes,
-    @Query('status') status: MachineStatus
+    @Query('status') status: MachineStatus,
+    @Query('monitoringPoints') monitoringPoints: string[]
   ): Promise<PageResult<Machine>> {
     const where: any = {};
     if (criteria) {
@@ -90,7 +104,31 @@ export default class MachineController {
     if (status) {
       where.status = status;
     }
+    if (monitoringPoints.length > 0) {
+      where.monitoringPoints = { $in: monitoringPoints };
+    }
     return this.machineService.pageable({ ...page, where });
+  }
+
+  @Get('by-monitoring-points')
+  @ApiQuery({
+    name: 'userId',
+    type: 'string',
+    description: 'param to filter results by monitoring points user id',
+    required: true,
+  })
+  async getByMonitoringPoints(
+    @Query('userId') userId: string
+  ): Promise<Machine[]> {
+    const objectUserId = new Types.ObjectId(userId);
+    const user = this.userService.findById(objectUserId);
+
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado', 'user_not_found');
+    }
+    return this.machineService.getMachineByMonitoringPointsUserId({
+      userId: objectUserId,
+    });
   }
 
   @Get(':id')

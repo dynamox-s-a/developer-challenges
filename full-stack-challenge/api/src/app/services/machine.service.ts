@@ -59,4 +59,14 @@ export default class MachineService extends BaseService<Machine> {
   ): Promise<PageResult<Machine>> {
     return (<MachineRepository>this.repository).pageablePublic(queryOptions);
   }
+
+  async getMachineByMonitoringPointsUserId({
+    userId,
+  }: {
+    userId: Types.ObjectId;
+  }): Promise<Machine[]> {
+    return (<MachineRepository>this.repository).getByMonitoringPointsUserId({
+      userId,
+    });
+  }
 }

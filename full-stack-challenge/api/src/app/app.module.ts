@@ -15,16 +15,20 @@ import mongooseDelete from 'mongoose-delete';
 import mongooseLeanVirtuals from 'mongoose-lean-virtuals';
 import AuthController from './controllers/auth.controller';
 import MachineController from './controllers/machine.controller';
+import SensorController from './controllers/sensor.controller';
 import UserController from './controllers/user.controller';
 import JwtGuard from './core/auth-guard/jwt.guard';
 import AdminJwtStrategy from './core/auth-strategies/admin-jwt.strategy';
 import BasicStrategy from './core/auth-strategies/basic.strategy';
 import Machine, { MachineSchema } from './models/machine.model';
+import Sensor, { SensorSchema } from './models/sensor.model';
 import User, { UserSchema } from './models/user.model';
 import MachineRepository from './repositories/machine.repository';
+import SensorRepository from './repositories/sensor.repository';
 import UserRepository from './repositories/user.repository';
 import AuthService from './services/auth.service';
 import MachineService from './services/machine.service';
+import SensorService from './services/sensor.service';
 import UserService from './services/user.service';
 
 @Module({
@@ -58,9 +62,15 @@ import UserService from './services/user.service';
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Machine.name, schema: MachineSchema },
+      { name: Sensor.name, schema: SensorSchema },
     ]),
   ],
-  controllers: [AuthController, UserController, MachineController],
+  controllers: [
+    AuthController,
+    UserController,
+    MachineController,
+    SensorController,
+  ],
   providers: [
     { provide: APP_GUARD, useClass: JwtGuard },
     AuthService,
@@ -70,6 +80,8 @@ import UserService from './services/user.service';
     UserService,
     MachineService,
     MachineRepository,
+    SensorService,
+    SensorRepository,
   ],
 })
 export class AppModule implements NestModule {
