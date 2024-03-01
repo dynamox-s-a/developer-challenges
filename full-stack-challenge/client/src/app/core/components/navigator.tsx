@@ -11,9 +11,10 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import React from 'react';
+import { useAuthContext } from '../../login/providers/auth-provider';
 import { PageContentType } from '../../page';
 
-const categories = [
+const categoriesWithCredentials = [
   {
     id: 'Management',
     children: [
@@ -27,6 +28,18 @@ const categories = [
         icon: <SettingsInputComponentIcon />,
       },
       { id: 'Monitoring points' as PageContentType, icon: <TimerIcon /> },
+    ],
+  },
+];
+
+const categoriesWithoutCredentials = [
+  {
+    id: 'Management',
+    children: [
+      {
+        id: 'Authentication' as PageContentType,
+        icon: <PeopleIcon />,
+      },
     ],
   },
 ];
@@ -49,10 +62,15 @@ const itemCategory = {
 export default function Navigator(
   props: { onSelect: (id: PageContentType) => void } & DrawerProps
 ) {
+  const { isAuthenticated } = useAuthContext();
   const [activeItem, setactiveItem] = React.useState<
     PageContentType | undefined
   >(undefined);
   const { ...other } = props;
+
+  const categories = isAuthenticated
+    ? categoriesWithCredentials
+    : categoriesWithoutCredentials;
 
   return (
     <Drawer variant="permanent" {...other}>

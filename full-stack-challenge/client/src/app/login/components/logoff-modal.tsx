@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { useAuthContext } from '../../login/providers/auth-provider';
+import { useAuthContext } from '../providers/auth-provider';
 
 const style = {
   position: 'absolute',
@@ -17,7 +17,7 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({
+export default function LogoffModal({
   open,
   handleClose,
 }: {
@@ -35,7 +35,7 @@ export default function BasicModal({
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Are you sure?
+            Are you sure you want to log off?
           </Typography>
           <Stack direction="row" padding={2} spacing={2}>
             <Button onClick={() => signOut()} variant="outlined">

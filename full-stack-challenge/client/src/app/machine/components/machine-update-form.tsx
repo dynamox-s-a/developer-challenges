@@ -9,49 +9,49 @@ import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
-import { useMutation } from '@tanstack/react-query';
+// import { useMutation } from '@tanstack/react-query';
 import React from 'react';
-import { createMachine } from '../actions';
-
-export enum MachineTypes {
-  PUMP = 'Pump',
-  FAN = 'Fan',
-}
-
-export enum MachineStatus {
-  ACTIVE = 'Active',
-  INACTIVE = 'Inactive',
-}
+import { MachineStatus, MachineTypes } from './machine-creation-form';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface MachineFormProps {}
-const MachineCreationForm: React.FC<MachineFormProps> = (params) => {
-  const [creationResult, setCreationResult] = React.useState('');
+const MachineUpdateForm: React.FC<MachineFormProps> = (params) => {
+  const [updateResult, setUpdateResult] = React.useState('');
   const [state, setState] = React.useState<{
+    id: string;
     name: string;
     type: MachineTypes | string;
     status: MachineStatus | string;
   }>({
+    id: '',
     name: '',
     type: '',
     status: '',
   });
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: createMachine,
-    onSuccess: () => {
-      setCreationResult('Máquina criada com sucesso.');
-      setTimeout(() => {
-        setCreationResult('');
-        setState({
-          name: '',
-          type: '',
-          status: '',
-        });
-      }, 5000);
-    },
-    onError: (error) => console.log(error),
-  });
+  // const { mutate, isPending } = useMutation({
+  //   mutationFn: updateMachine,
+  //   onSuccess: () => {
+  //     setUpdateResult('Máquina atualizada com sucesso.');
+  //     setTimeout(() => {
+  //       setUpdateResult('');
+  //       setState({
+  //         id: '',
+  //         name: '',
+  //         type: '',
+  //         status: '',
+  //       });
+  //     }, 5000);
+  //   },
+  //   onError: (error) => console.log(error),
+  // });
+
+  const handleIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setState({
+      ...state,
+      id: event.target.value,
+    });
+  };
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState({
@@ -74,12 +74,15 @@ const MachineCreationForm: React.FC<MachineFormProps> = (params) => {
     });
   };
 
-  const createMachineTrigger = () => {
-    mutate({ machine: state });
+  const updateMachineTrigger = () => {
+    // mutate({ machine: state });
+    console.log({ state });
     return;
   };
 
-  const creationBlocked = state.name === '' || state.type === '';
+  const updateBlocked =
+    state.id === '' ||
+    (state.name === '' && state.type === '' && state.status === '');
 
   return (
     <Paper
@@ -97,32 +100,54 @@ const MachineCreationForm: React.FC<MachineFormProps> = (params) => {
         variant="standard"
         onSubmit={(e) => {
           e.preventDefault();
-          createMachineTrigger();
+          updateMachineTrigger();
         }}
         sx={{ gap: 6, flexDirection: 'row' }}
       >
-        <FormLabel component="legend">Create machine</FormLabel>
+        <FormLabel component="legend">Update machine</FormLabel>
         <FormGroup sx={{ gap: 2, flexDirection: 'column' }}>
-          <FormControlLabel
-            control={
-              <TextField
-                required
-                InputProps={{
-                  disableUnderline: true,
-                  sx: {
-                    fontSize: 'default',
-                    alignSelf: 'flex-start',
-                    justifySelf: 'flex-start',
-                  },
-                }}
-                variant="filled"
-                onChange={handleNameChange}
-              />
-            }
-            label="name"
-            labelPlacement="start"
-            sx={{ gap: 1 }}
-          />
+          <Stack direction={'row'} sx={{ gap: 3 }} width={380}>
+            <FormControlLabel
+              control={
+                <TextField
+                  required
+                  InputProps={{
+                    disableUnderline: true,
+                    sx: {
+                      fontSize: 'default',
+                      alignSelf: 'flex-start',
+                      justifySelf: 'flex-start',
+                    },
+                  }}
+                  variant="filled"
+                  onChange={handleIdChange}
+                />
+              }
+              label="id"
+              labelPlacement="start"
+              sx={{ gap: 1 }}
+            />
+            <FormControlLabel
+              control={
+                <TextField
+                  required
+                  InputProps={{
+                    disableUnderline: true,
+                    sx: {
+                      fontSize: 'default',
+                      alignSelf: 'flex-start',
+                      justifySelf: 'flex-start',
+                    },
+                  }}
+                  variant="filled"
+                  onChange={handleNameChange}
+                />
+              }
+              label="name"
+              labelPlacement="start"
+              sx={{ gap: 1 }}
+            />
+          </Stack>
           <Stack direction={'row'} width={350}>
             <FormControlLabel
               control={
@@ -174,17 +199,15 @@ const MachineCreationForm: React.FC<MachineFormProps> = (params) => {
         <Button
           type="submit"
           variant="contained"
-          disabled={creationBlocked}
+          disabled={updateBlocked}
           sx={{ mr: 1, width: 200, height: 80, alignSelf: 'center' }}
         >
-          Create
+          Update
         </Button>
       </FormControl>
-      <FormHelperText sx={{ textAlign: 'end' }}>
-        {creationResult}
-      </FormHelperText>
+      <FormHelperText sx={{ textAlign: 'end' }}>{updateResult}</FormHelperText>
     </Paper>
   );
 };
 
-export default MachineCreationForm;
+export default MachineUpdateForm;

@@ -11,7 +11,7 @@ import Paper from '@mui/material/Paper';
 // import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import React from 'react';
-import BasicModal from '../../core/components/basic-modal';
+import LogoffModal from './logoff-modal';
 
 export default function LoggedIn() {
   const [open, setOpen] = React.useState(false);
@@ -76,7 +76,7 @@ export default function LoggedIn() {
       <Button onClick={handleOpen} variant="contained" sx={{ mx: 10, my: 2 }}>
         Logout
       </Button>
-      <BasicModal open={open} handleClose={handleClose} />
+      <LogoffModal open={open} handleClose={handleClose} />
     </Paper>
   );
 }

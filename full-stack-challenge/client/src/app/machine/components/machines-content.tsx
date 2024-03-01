@@ -1,8 +1,11 @@
+import { Stack } from '@mui/material';
 import Box from '@mui/material/Box';
 import React from 'react';
 import { Match, Switch } from '../../core/components/switch';
 import { Copyright } from '../../page';
 import MachineCreationForm from './machine-creation-form';
+import MachineDeleteForm from './machine-delete-form';
+import MachineUpdateForm from './machine-update-form';
 import MachinesHeader from './machines-header';
 import MachinesTable from './machines-table';
 
@@ -22,7 +25,11 @@ const MachinesContent: React.FC<MachineContentProps> = () => {
             <MachinesTable />
           </Match>
           <Match when={tab === 'Manage'}>
-            <MachineCreationForm />
+            <Stack sx={{ gap: 2 }}>
+              <MachineCreationForm />
+              <MachineUpdateForm />
+              <MachineDeleteForm />
+            </Stack>
           </Match>
         </Switch>
       </Box>
