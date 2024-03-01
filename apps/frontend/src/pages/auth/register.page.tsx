@@ -8,6 +8,7 @@ import AuthLayout from '../../layouts/auth/Layout';
 import { useSession, signIn } from "next-auth/react";
 import { ReactNode, useState, useEffect } from 'react';
 import LoadingContent from '../../components/LoadingContent';
+import redirectAuthPage from '../../routes/redirectAuthPage';
 import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
 
 const Page = () => {
@@ -71,7 +72,7 @@ const Page = () => {
   }
 
   return (
-    <>
+    <AuthLayout subtitle='A melhor solução de manutenção preditiva'>
       <Head>
         <title>
           Register | Dynamox
@@ -180,14 +181,8 @@ const Page = () => {
           </Box>
         </Box>
       )}
-    </>
+    </AuthLayout>
   );
 };
 
-Page.getLayout = (page: ReactNode) => (
-  <AuthLayout subtitle='A melhor solução de manutenção preditiva'>
-    {page}
-  </AuthLayout>
-);
-
-export default Page;
+export default redirectAuthPage(Page);

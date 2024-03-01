@@ -23,17 +23,9 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/auth/login', req.url));
   }
 
-  if (pathname.startsWith('/auth') && token) {
-    return NextResponse.redirect(new URL('/', req.url));
-  }
-
-  if (pathname === '/' && !token) {
-    return NextResponse.redirect(new URL('/auth/login', req.url));
-  }
-
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/api/:path*', '/auth', '/'],
+  matcher: ['/api/:path*', '/auth'],
 };

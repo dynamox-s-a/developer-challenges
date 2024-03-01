@@ -11,23 +11,20 @@ import {
 import * as Yup from 'yup';
 import Head from 'next/head';
 import NextLink from 'next/link';
+import { useState } from 'react';
 import { useFormik } from 'formik';
-import { useRouter } from 'next/router';
 import AuthLayout from '../../layouts/auth/Layout';
 import { createSession } from '../../services/api';
 import { signIn, useSession } from "next-auth/react";
-import { ReactNode, useEffect, useState } from 'react';
-import useAppSelector from '../../hooks/useAppSelector';
 import useAppDispatch from '../../hooks/useAppDispatch';
+import redirectAuthPage from '../../routes/redirectAuthPage';
 import LoadingContent from '../../components/LoadingContent';
 import { login as loginStore } from '../../lib/redux/features/userSlice';
 
 const Page = () => {
-  const router = useRouter();
   const dispatch = useAppDispatch();
   const { status } = useSession();
   const [loading, setLoading] = useState(false);
-  const { user } = useAppSelector(state => state.user);
 
   const formik = useFormik({
     initialValues: {
@@ -80,18 +77,12 @@ const Page = () => {
     }
   });
 
-  useEffect(() => {
-    if (status === "authenticated" && user) {
-      router.push("/");
-    }
-  }, [status, user, router]);
-
   if (status === "loading" || loading) {
     return <LoadingContent />;
   }
 
   return (
-    <>
+    <AuthLayout subtitle='A melhor solução de manutenção preditiva'>
       <Head>
         <title>
           Login | Dynamox
@@ -200,14 +191,8 @@ const Page = () => {
           </div>
         </Box>
       </Box>
-    </>
+    </AuthLayout>
   );
 };
 
-Page.getLayout = (page: ReactNode) => (
-  <AuthLayout subtitle='A melhor solução de manutenção preditiva'>
-    {page}
-  </AuthLayout>
-);
-
-export default Page;
+export default redirectAuthPage(Page);

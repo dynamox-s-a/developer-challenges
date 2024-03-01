@@ -6,13 +6,13 @@ import {
   Unstable_Grid2 as Grid
 } from '@mui/material';
 import Head from 'next/head';
-import { ReactNode } from 'react';
+import privateRoute from '../routes/privateRoute';
 import { AccountProfile } from '../sessions/account/AccountProfile';
 import { Layout as DashboardLayout } from '../layouts/dashboard/Layout';
 import { AccountProfileDetails } from '../sessions/account/AccountProfileDetails';
 
 const Page = () => (
-  <>
+  <DashboardLayout>
     <Head>
       <title>
         Account | Dynamox
@@ -56,13 +56,7 @@ const Page = () => (
         </Stack>
       </Container>
     </Box>
-  </>
-);
-
-Page.getLayout = (page: ReactNode) => (
-  <DashboardLayout>
-    {page}
   </DashboardLayout>
 );
 
-export default Page;
+export default privateRoute(Page);
