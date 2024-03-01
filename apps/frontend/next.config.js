@@ -13,6 +13,7 @@ const nextConfig = {
     svgr: false,
   },
   distDir: '../../dist/apps/frontend/.next',
+  pageExtensions: ['page.tsx', 'page.ts', 'page.jsx', 'page.js'],
 };
 
 const plugins = [
