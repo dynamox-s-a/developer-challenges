@@ -19,7 +19,7 @@ interface HeaderProps {
   onDrawerToggle?: () => void;
 }
 
-export default function Header(props: HeaderProps) {
+export default function AuthHeader(props: HeaderProps) {
   return (
     <React.Fragment>
       {/* <AppBar color="primary" position="sticky" elevation={0}>

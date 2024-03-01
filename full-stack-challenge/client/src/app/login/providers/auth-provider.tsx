@@ -47,7 +47,7 @@ export const AuthProvider: AuthProviderType = ({ children }) => {
 
   const extractTokenFromCookie = () => {
     const accessToken = cookies['adminAccessToken'];
-    console.log({ accessToken, cookies });
+
     if (accessToken) {
       return accessToken;
     }

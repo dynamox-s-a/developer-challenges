@@ -86,6 +86,12 @@ export default class MachineController {
     description: 'param to filter by status',
     required: false,
   })
+  @ApiQuery({
+    name: 'monitoringPoints',
+    type: 'string',
+    description: 'param to filter by monitoring points',
+    required: false,
+  })
   @ApiPageableParams(Machine)
   async list(
     @Page() page,
@@ -104,7 +110,7 @@ export default class MachineController {
     if (status) {
       where.status = status;
     }
-    if (monitoringPoints.length > 0) {
+    if (monitoringPoints?.length > 0) {
       where.monitoringPoints = { $in: monitoringPoints };
     }
     return this.machineService.pageable({ ...page, where });

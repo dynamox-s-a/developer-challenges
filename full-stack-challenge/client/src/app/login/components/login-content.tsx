@@ -1,9 +1,9 @@
 import Box from '@mui/material/Box';
 import React from 'react';
-import Header from '../../core/components/header';
 import Show from '../../core/components/show';
 import { Copyright } from '../../page';
 import { useAuthContext } from '../providers/auth-provider';
+import AuthHeader from './auth-header';
 import LoggedIn from './logged-in';
 import LoginForm from './login-form';
 
@@ -15,7 +15,7 @@ const LoginContent: React.FC<LoginContentProps> = () => {
 
   return (
     <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-      <Header />
+      <AuthHeader />
       <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
         <Show when={isAuthenticated}>
           <LoggedIn />

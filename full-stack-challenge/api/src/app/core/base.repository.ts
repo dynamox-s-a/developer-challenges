@@ -206,6 +206,13 @@ export default class BaseRepository<T extends BaseModel> {
       find
         .setOptions({
           ...options,
+          projection: {
+            _id: 1,
+            createdAt: 1,
+            name: 1,
+            status: 1,
+            type: 1,
+          },
           skip: (queryOptions.page - 1) * queryOptions.size,
           limit: queryOptions.size,
           session,
