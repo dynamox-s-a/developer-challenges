@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { useAuthContext } from '../../login/providers/auth-provider';
 
 const style = {
   position: 'absolute',
@@ -23,6 +24,7 @@ export default function BasicModal({
   open: boolean;
   handleClose: () => void;
 }) {
+  const { signOut } = useAuthContext();
   return (
     <div>
       <Modal
@@ -36,7 +38,7 @@ export default function BasicModal({
             Are you sure?
           </Typography>
           <Stack direction="row" padding={2} spacing={2}>
-            <Button onClick={() => null} variant="outlined">
+            <Button onClick={() => signOut()} variant="outlined">
               Yes
             </Button>
             <Button onClick={handleClose} variant="outlined">

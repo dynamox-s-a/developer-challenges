@@ -16,7 +16,7 @@ import * as React from 'react';
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
 interface HeaderProps {
-  onDrawerToggle: () => void;
+  onDrawerToggle?: () => void;
 }
 
 export default function Header(props: HeaderProps) {
@@ -76,7 +76,7 @@ export default function Header(props: HeaderProps) {
         sx={{ zIndex: 0 }}
       >
         <Toolbar>
-          <Grid container alignItems="center" spacing={1}>
+          <Grid container alignItems="center">
             <Grid item xs>
               <Typography color="inherit" variant="h5" component="h1">
                 Authentication

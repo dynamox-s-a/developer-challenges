@@ -11,9 +11,9 @@ import Paper from '@mui/material/Paper';
 // import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import React from 'react';
-import BasicModal from './basic-modal';
+import BasicModal from '../../core/components/basic-modal';
 
-export default function Content() {
+export default function LoggedIn() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);

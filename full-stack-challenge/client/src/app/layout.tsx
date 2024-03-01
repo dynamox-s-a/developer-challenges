@@ -1,4 +1,6 @@
 import './global.css';
+import { AuthProvider } from './login/providers/auth-provider';
+import QueryClientProvider from './login/providers/query-client-provider';
 
 export const metadata = {
   title: 'DynaPredict',
@@ -12,7 +14,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <QueryClientProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </QueryClientProvider>
+      </body>
     </html>
   );
 }

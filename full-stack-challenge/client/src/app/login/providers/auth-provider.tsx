@@ -3,10 +3,11 @@ import { UseMutateFunction, useMutation } from '@tanstack/react-query';
 import { sleep } from 'client/src/app/core/helpers/sleep-function';
 import { ErrorType } from 'client/src/app/core/types/error-type';
 import { differenceInSeconds } from 'date-fns';
-import jsCookie from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 import React from 'react';
+import { useCookies } from 'react-cookie';
 import {
-  refreshToken as refreshTokenService,
+  // refreshToken as refreshTokenService,
   signIn as signInService,
   signOut as signOutService,
 } from '../actions';
@@ -42,6 +43,18 @@ type AuthProviderType = (props: {
 export const AuthProvider: AuthProviderType = ({ children }) => {
   const [isAuthenticating, setIsAuthenticating] = React.useState(true);
   const [user, setUser] = React.useState<UserType | null>(null);
+  const [cookies] = useCookies(['adminAccessToken']);
+
+  const extractTokenFromCookie = () => {
+    const accessToken = cookies['adminAccessToken'];
+    console.log({ accessToken, cookies });
+    if (accessToken) {
+      return accessToken;
+    }
+    return undefined;
+  };
+
+  console.log({ user });
 
   const { mutate: signIn, isPending: signing } = useMutation<
     any,
@@ -61,18 +74,20 @@ export const AuthProvider: AuthProviderType = ({ children }) => {
   });
   const updateAuth = async () => {
     let authToken = extractTokenFromCookie();
-    const refreshToken = extractRefreshTokenFromCookie();
+    // const refreshToken = extractRefreshTokenFromCookie();
     const validAccessToken = isAccessTokenValid(authToken);
 
-    if (!validAccessToken && !!refreshToken) {
-      await refreshTokenService();
+    // if (!validAccessToken && !!refreshToken) {
+    if (!validAccessToken) {
+      // await refreshTokenService();
       await sleep(50);
       authToken = extractTokenFromCookie();
     }
 
     if (authToken) {
-      const user = authToken?.user;
-      setUser(user);
+      const decodedUser = jwtDecode(authToken) as UserType;
+
+      setUser(decodedUser);
     }
 
     setIsAuthenticating(false);
@@ -98,30 +113,20 @@ export const AuthProvider: AuthProviderType = ({ children }) => {
   );
 };
 
-export const AUTH_KEY = 'authToken' + process.env.NEXT_PUBLIC_ENVIRONMENT;
+export const AUTH_KEY = 'credentials';
 
 export const REFRESH_TOKEN_KEY =
   'refreshToken' + process.env.NEXT_PUBLIC_ENVIRONMENT;
 
-export const extractTokenFromCookie = () => {
-  const authTokenString = jsCookie.get(AUTH_KEY);
-  if (authTokenString) {
-    const buffer = Buffer.from(authTokenString, 'base64').toString();
-    const accessToken = JSON.parse(buffer);
-    return accessToken?.message;
-  }
-  return undefined;
-};
-
-export const extractRefreshTokenFromCookie = () => {
-  const refreshTokenString = jsCookie.get(REFRESH_TOKEN_KEY);
-  if (refreshTokenString) {
-    const buffer = Buffer.from(refreshTokenString, 'base64').toString();
-    const refreshToken = JSON.parse(buffer);
-    return refreshToken?.message;
-  }
-  return undefined;
-};
+// export const extractRefreshTokenFromCookie = () => {
+//   const refreshTokenString = jsCookie.get(REFRESH_TOKEN_KEY);
+//   if (refreshTokenString) {
+//     const buffer = Buffer.from(refreshTokenString, 'base64').toString();
+//     const refreshToken = JSON.parse(buffer);
+//     return refreshToken?.message;
+//   }
+//   return undefined;
+// };
 
 export const isAccessTokenValid = (token: any) => {
   if (!token) {
