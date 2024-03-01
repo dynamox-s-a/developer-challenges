@@ -6,21 +6,22 @@ import {
   Typography,
   CardContent,
 } from '@mui/material';
-import { Sensor } from '@prisma/client';
-import { EditSensorModal } from './EditSensorModal';
+import { Machine } from '@prisma/client';
+import { EditMachineModal } from './EditMachineModal';
 import useAppDispatch from '../../hooks/useAppDispatch';
 import useAppSelector from '../../hooks/useAppSelector';
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { selectSensor } from '../../lib/redux/features/sensorsSlice';
+import { selectMachine } from '../../lib/redux/features/machinesSlice';
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "Sensor ID", width: 200 },
-  { field: "model", headerName: "Model", width: 200 },
+  { field: "type", headerName: "Type", width: 200 },
+  { field: "name", headerName: "Name", width: 200 },
 ];
 
-export const SensorsTable = () => {
+export const MachinesTable = () => {
   const dispatch = useAppDispatch();
-  const {status, data: sensors, sensorSelected} = useAppSelector(state => state.sensors);
+  const {status, data: machines, machineSelected} = useAppSelector(state => state.machines);
 
   return (
     <Card
@@ -42,7 +43,7 @@ export const SensorsTable = () => {
             gutterBottom
             variant="h5"
           >
-            Your Sensors
+            Your machines
           </Typography>
         </Box>
       </CardContent>
@@ -62,7 +63,7 @@ export const SensorsTable = () => {
           <Box>
             <DataGrid
               autoHeight
-              rows={sensors}
+              rows={machines}
               columns={columns}
               initialState={{
                 pagination: {
@@ -70,7 +71,7 @@ export const SensorsTable = () => {
                 },
               }}
               onRowClick={(row) => {
-                dispatch(selectSensor(row.row as Sensor));
+                dispatch(selectMachine(row.row as Machine));
               }}
               pageSizeOptions={[5, 10]}
             />
@@ -89,7 +90,7 @@ export const SensorsTable = () => {
           </Box>
         ) : null
       }
-      { sensorSelected && <EditSensorModal /> }
+      { machineSelected && <EditMachineModal /> }
     </Card>
   );
 };

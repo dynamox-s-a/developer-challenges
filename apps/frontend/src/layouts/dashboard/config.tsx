@@ -25,7 +25,7 @@ export const items = [
   },
   {
     title: 'Machines',
-    path: '/machienes',
+    path: '/machines',
     icon: (
       <SvgIcon fontSize="small">
         <Wrench />

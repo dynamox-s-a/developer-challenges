@@ -10,12 +10,16 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface SensorsSliceState {
   data: Sensor[];
+  openEditModal: boolean;
+  sensorSelected: Sensor | null;
   status: "ready" | "loading" | "error";
 }
 
 const initialState: SensorsSliceState = {
   data: [],
   status: "ready",
+  openEditModal: false,
+  sensorSelected: null,
 };
 
 const sensorsSlice = createSlice({
@@ -36,6 +40,10 @@ const sensorsSlice = createSlice({
         return sensor;
       });
     },
+    selectSensor: (state, action: PayloadAction<Sensor | null>) => {
+      state.sensorSelected = action.payload;
+      state.openEditModal = !state.openEditModal;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(getSensors.pending, (state) => {
@@ -95,5 +103,5 @@ const sensorsSlice = createSlice({
   },
 });
 
-export const { addSensor, removeSensor, updateSensor } = sensorsSlice.actions;
+export const { addSensor, removeSensor, updateSensor, selectSensor } = sensorsSlice.actions;
 export default sensorsSlice.reducer;
