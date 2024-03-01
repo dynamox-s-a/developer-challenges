@@ -10,6 +10,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import React from 'react';
 import { PageContentType } from '../../page';
 
 const categories = [
@@ -19,7 +20,6 @@ const categories = [
       {
         id: 'Authentication' as PageContentType,
         icon: <PeopleIcon />,
-        active: true,
       },
       { id: 'Machines' as PageContentType, icon: <SettingsIcon /> },
       {
@@ -49,6 +49,9 @@ const itemCategory = {
 export default function Navigator(
   props: { onSelect: (id: PageContentType) => void } & DrawerProps
 ) {
+  const [activeItem, setactiveItem] = React.useState<
+    PageContentType | undefined
+  >(undefined);
   const { ...other } = props;
 
   return (
@@ -59,22 +62,19 @@ export default function Navigator(
         >
           DynaPredict
         </ListItem>
-        {/* <ListItem sx={{ ...item, ...itemCategory }}>
-          <ListItemIcon>
-            <HomeIcon />
-          </ListItemIcon>
-          <ListItemText>Project Overview</ListItemText>
-        </ListItem> */}
         {categories.map(({ id, children }) => (
           <Box key={id} sx={{ bgcolor: '#3b1d2a' }}>
             <ListItem sx={{ py: 2, px: 3 }}>
               <ListItemText sx={{ color: '#fff' }}>{id}</ListItemText>
             </ListItem>
-            {children.map(({ id: childId, icon, active }) => (
+            {children.map(({ id: childId, icon }) => (
               <ListItem disablePadding key={childId}>
                 <ListItemButton
-                  onClick={() => props?.onSelect(childId)}
-                  selected={active}
+                  onClick={() => {
+                    setactiveItem(childId);
+                    props?.onSelect(childId);
+                  }}
+                  selected={activeItem === childId}
                   sx={item}
                 >
                   <ListItemIcon>{icon}</ListItemIcon>
