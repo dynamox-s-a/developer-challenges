@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
-import { api } from '../../../services/api';
+import { User } from '@prisma/client';
+import { createSession } from '../../../services/api';
 import { NextApiRequest, NextApiResponse } from 'next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
@@ -22,13 +23,10 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
           if (!credentials?.email || !credentials.password) return null;
 
           try {
-            const response = await api.post('/sessions', credentials);
-
-            const { user, accessToken } = response.data;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const { user, accessToken }: any = await createSession(credentials);
 
             if (!user || !accessToken) return null;
-
-            api.defaults.headers['Authorization'] = `Bearer ${accessToken}`;
 
             return user;
           } catch (error) {
@@ -53,6 +51,20 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
           secure: process.env.NODE_ENV === 'production',
         },
       },
-    }
+    },
+    callbacks: {
+      async jwt({ token, user }) {
+        if (user) {
+          token.user = user;
+        }
+        return token;
+      },
+      async session({ session, token }) {
+        if (token && token.user) {
+          session.user = token.user as User;
+        }
+        return session;
+      },
+    },
   })
 }

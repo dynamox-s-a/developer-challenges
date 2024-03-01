@@ -13,9 +13,9 @@ import { FC } from 'react';
 import { items } from './config';
 import NextLink from 'next/link';
 import { SideNavItem } from './SideNavItem';
-import { useSession } from 'next-auth/react';
 import { Logo } from '../../components/Logo';
 import { usePathname } from 'next/navigation';
+import useAppSelector from '../../hooks/useAppSelector';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
 
 interface SideNavProps {
@@ -25,7 +25,7 @@ interface SideNavProps {
 
 export const SideNav: FC<SideNavProps> = ({ open, onClose }) => {
   const pathname = usePathname();
-  const { data: session } = useSession();
+  const { user } = useAppSelector(state => state.user);
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
 
   const content = (
@@ -71,7 +71,7 @@ export const SideNav: FC<SideNavProps> = ({ open, onClose }) => {
                 color="neutral.400"
                 variant="body2"
               >
-                {session?.user?.name || 'Not logged in'}
+                {user?.name || 'Not logged in'}
               </Typography>
             </div>
           </Box>

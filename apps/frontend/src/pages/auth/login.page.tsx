@@ -13,15 +13,21 @@ import Head from 'next/head';
 import NextLink from 'next/link';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
-import { ReactNode, useEffect, useState } from 'react';
 import AuthLayout from '../../layouts/auth/Layout';
+import { createSession } from '../../services/api';
 import { signIn, useSession } from "next-auth/react";
+import { ReactNode, useEffect, useState } from 'react';
+import useAppSelector from '../../hooks/useAppSelector';
+import useAppDispatch from '../../hooks/useAppDispatch';
 import LoadingContent from '../../components/LoadingContent';
+import { login as loginStore } from '../../lib/redux/features/userSlice';
 
 const Page = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const { status } = useSession();
   const [loading, setLoading] = useState(false);
+  const { user } = useAppSelector(state => state.user);
 
   const formik = useFormik({
     initialValues: {
@@ -40,24 +46,33 @@ const Page = () => {
         .max(255)
         .required('Password is required')
     }),
-    onSubmit: async (values, helpers) => {
+    onSubmit: async (values) => {
       setLoading(true);
       try {
+        const responseAxios = await createSession({
+          email: values.email,
+          password: values.password
+        });
+
         const response = await signIn("credentials", {
           email: values.email,
           password: values.password,
           redirect: false,
         });
-        if (response?.ok) {
-          helpers.setStatus({ success: true });
-          helpers.setSubmitting(false);
+
+        if (
+          response?.ok &&
+          'user' in responseAxios &&
+          'accessToken' in responseAxios
+          ) {
+            dispatch(loginStore({
+            user: responseAxios.user,
+            accessToken: responseAxios.accessToken
+          }));
         }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         console.error(err);
-        helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err?.message });
-        helpers.setSubmitting(false);
       } finally {
         setLoading(false);
       }
@@ -66,11 +81,10 @@ const Page = () => {
   });
 
   useEffect(() => {
-    if (status === "authenticated") {
+    if (status === "authenticated" && user) {
       router.push("/");
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status]);
+  }, [status, user, router]);
 
   if (status === "loading" || loading) {
     return <LoadingContent />;

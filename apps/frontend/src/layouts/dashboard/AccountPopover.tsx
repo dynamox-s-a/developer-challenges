@@ -6,11 +6,12 @@ import {
   MenuList,
   Typography,
 } from '@mui/material';
-import { FC } from 'react';
-import { useCallback } from 'react';
+import { FC, useCallback } from 'react';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import useAppDispatch from '../../hooks/useAppDispatch';
+import useAppSelector from '../../hooks/useAppSelector';
+import { logout as logoutStore } from '../../lib/redux/features/userSlice';
 
 interface AccountPopoverProps {
   anchorEl: Element;
@@ -21,15 +22,18 @@ interface AccountPopoverProps {
 const AccountPopover: FC<AccountPopoverProps> = ({
   anchorEl, onClose, open
 }) => {
+  const dispatch = useAppDispatch();
   const router = useRouter();
-  const { data: session } = useSession();
+  const { user } = useAppSelector(state => state.user);
 
   const handleSignOut = useCallback(
     () => {
       onClose?.();
       signOut();
+      dispatch(logoutStore());
       router.push('/auth/login');
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [onClose, router]
   );
 
@@ -57,7 +61,7 @@ const AccountPopover: FC<AccountPopoverProps> = ({
           color="text.secondary"
           variant="body2"
         >
-          {session?.user?.name}
+          {user?.name}
         </Typography>
       </Box>
       <Divider />

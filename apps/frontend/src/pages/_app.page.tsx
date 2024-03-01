@@ -1,7 +1,9 @@
 // import 'simplebar-react/dist/simplebar.min.css';
 import Head from 'next/head';
 import { FC, ReactNode } from 'react';
+import { Provider } from "react-redux";
 import { createTheme } from '../styles';
+import { store } from '../lib/redux/store';
 import { CssBaseline } from '@mui/material';
 import { useSession } from "next-auth/react";
 import type { NextComponentType } from 'next';
@@ -57,10 +59,12 @@ const App: NextComponentType<AppContext, AppInitialProps, MyAppProps>= (props: M
       </Head>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <AuthProvider>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <WrapperContent />
-          </ThemeProvider>
+          <Provider store={store}>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <WrapperContent />
+            </ThemeProvider>
+          </Provider>
         </AuthProvider>
       </LocalizationProvider>
     </CacheProvider>
