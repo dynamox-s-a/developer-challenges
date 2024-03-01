@@ -23,8 +23,6 @@ const Page = () => {
   const { status } = useSession();
   const [loading, setLoading] = useState(false);
 
-  if (status === "authenticated") router.push("/");
-
   const formik = useFormik({
     initialValues: {
       email: 'dynamox@leonardojacomussi.com',
@@ -45,11 +43,16 @@ const Page = () => {
     onSubmit: async (values, helpers) => {
       setLoading(true);
       try {
-        await signIn("credentials", {
+        const response = await signIn("credentials", {
           email: values.email,
           password: values.password,
           redirect: false,
         });
+        if (response?.ok) {
+          helpers.setStatus({ success: true });
+          helpers.setSubmitting(false);
+          router.push("/");
+        }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         console.error(err);

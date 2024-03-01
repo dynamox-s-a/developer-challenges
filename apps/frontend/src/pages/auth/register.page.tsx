@@ -2,7 +2,6 @@ import * as Yup from 'yup';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import { useFormik } from 'formik';
-import { useRouter } from 'next/router';
 import { ReactNode, useState } from 'react';
 import { createUser } from '../../services/api';
 import AuthLayout from '../../layouts/auth/Layout';
@@ -11,11 +10,8 @@ import LoadingContent from '../../components/LoadingContent';
 import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
 
 const Page = () => {
-  const router = useRouter();
   const { status } = useSession();
   const [loading, setLoading] = useState(false);
-
-  if (status === "authenticated") router.push("/");
 
   const formik = useFormik({
     initialValues: {
