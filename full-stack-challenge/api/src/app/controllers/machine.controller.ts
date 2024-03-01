@@ -109,6 +109,15 @@ export default class MachineController {
     if (monitoringPoints?.length > 0) {
       where.monitoringPoints = { $in: monitoringPoints };
     }
+    page.queryOptions = {
+      $project: {
+        _id: 1,
+        createdAt: 1,
+        name: 1,
+        status: 1,
+        type: 1,
+      },
+    };
     return this.machineService.pageable({ ...page, where });
   }
 

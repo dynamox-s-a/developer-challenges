@@ -8,15 +8,15 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useQuery } from '@tanstack/react-query';
 import DateFormatter from '../../core/components/date-formatter';
-import getAllMachines from '../actions';
+import getAllSensors from '../actions';
 
-export default function MachinesTable() {
-  const getMachineList = {
-    queryFn: () => getAllMachines({ page: 1, size: 5 }),
-    queryKey: ['Machines'],
+export default function SensorsTable() {
+  const getSensorList = {
+    queryFn: () => getAllSensors({ page: 1, size: 5 }),
+    queryKey: ['Sensors'],
   };
 
-  const { data, isFetching } = useQuery(getMachineList);
+  const { data, isFetching } = useQuery(getSensorList);
 
   if (!data || isFetching)
     return (
@@ -33,11 +33,9 @@ export default function MachinesTable() {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Machine Id</TableCell>
+            <TableCell>Sensor Id</TableCell>
             <TableCell align="right">Name</TableCell>
             <TableCell align="right">Created At</TableCell>
-            <TableCell align="right">Status</TableCell>
-            <TableCell align="right">Type</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -49,12 +47,10 @@ export default function MachinesTable() {
               <TableCell component="th" scope="row">
                 {row._id}
               </TableCell>
-              <TableCell align="right">{row.name}</TableCell>
+              <TableCell align="right">{row.modelName}</TableCell>
               <TableCell align="right">
                 <DateFormatter>{row.createdAt}</DateFormatter>
               </TableCell>
-              <TableCell align="right">{row.status}</TableCell>
-              <TableCell align="right">{row.type}</TableCell>
             </TableRow>
           ))}
         </TableBody>

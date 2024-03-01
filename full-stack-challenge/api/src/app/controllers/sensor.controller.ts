@@ -36,6 +36,14 @@ export default class SensorController {
     if (criteria) {
       where.$or = [{ name: { $regex: criteria.trim(), $options: 'i' } }];
     }
+    page.queryOptions = {
+      $project: {
+        _id: 1,
+        createdAt: 1,
+        modelName: 1,
+        updatedAt: 1,
+      },
+    };
     return this.sensorService.pageable({ ...page, where });
   }
 
