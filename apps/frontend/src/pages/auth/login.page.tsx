@@ -51,7 +51,6 @@ const Page = () => {
         if (response?.ok) {
           helpers.setStatus({ success: true });
           helpers.setSubmitting(false);
-          router.push("/");
         }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
@@ -67,7 +66,10 @@ const Page = () => {
   });
 
   useEffect(() => {
-    console.log('status', status);
+    if (status === "authenticated") {
+      router.push("/");
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
   if (status === "loading" || loading) {

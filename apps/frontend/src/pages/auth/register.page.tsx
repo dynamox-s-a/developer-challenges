@@ -2,14 +2,16 @@ import * as Yup from 'yup';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import { useFormik } from 'formik';
-import { ReactNode, useState } from 'react';
+import { useRouter } from 'next/router';
 import { createUser } from '../../services/api';
 import AuthLayout from '../../layouts/auth/Layout';
 import { useSession, signIn } from "next-auth/react";
+import { ReactNode, useState, useEffect } from 'react';
 import LoadingContent from '../../components/LoadingContent';
 import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
 
 const Page = () => {
+  const router = useRouter();
   const { status } = useSession();
   const [loading, setLoading] = useState(false);
 
@@ -56,6 +58,13 @@ const Page = () => {
       }
     }
   });
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/");
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status]);
 
   if (status === "loading" || loading) {
     return <LoadingContent />;
