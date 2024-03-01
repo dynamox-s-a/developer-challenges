@@ -18,8 +18,6 @@ const LoginForm: React.FC<LoginFormProps> = (params) => {
     password: '',
   });
 
-  console.log({ state });
-
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState({
       ...state,

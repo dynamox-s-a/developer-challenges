@@ -54,8 +54,6 @@ export const AuthProvider: AuthProviderType = ({ children }) => {
     return undefined;
   };
 
-  console.log({ user });
-
   const { mutate: signIn, isPending: signing } = useMutation<
     any,
     ErrorType,

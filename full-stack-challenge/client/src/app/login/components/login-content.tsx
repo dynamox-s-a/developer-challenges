@@ -13,7 +13,6 @@ export interface LoginContentProps {
 const LoginContent: React.FC<LoginContentProps> = () => {
   const { signIn, isAuthenticated } = useAuthContext();
 
-  console.log({ isAuthenticated });
   return (
     <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
       <Header />

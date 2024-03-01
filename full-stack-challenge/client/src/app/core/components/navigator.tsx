@@ -10,19 +10,23 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import { PageContentType } from '../../page';
 
 const categories = [
   {
     id: 'Management',
     children: [
       {
-        id: 'Authentication',
+        id: 'Authentication' as PageContentType,
         icon: <PeopleIcon />,
         active: true,
       },
-      { id: 'Machines', icon: <SettingsIcon /> },
-      { id: 'Sensors', icon: <SettingsInputComponentIcon /> },
-      { id: 'Monitoring points', icon: <TimerIcon /> },
+      { id: 'Machines' as PageContentType, icon: <SettingsIcon /> },
+      {
+        id: 'Sensors' as PageContentType,
+        icon: <SettingsInputComponentIcon />,
+      },
+      { id: 'Monitoring points' as PageContentType, icon: <TimerIcon /> },
     ],
   },
 ];
@@ -42,7 +46,9 @@ const itemCategory = {
   px: 3,
 };
 
-export default function Navigator(props: DrawerProps) {
+export default function Navigator(
+  props: { onSelect: (id: PageContentType) => void } & DrawerProps
+) {
   const { ...other } = props;
 
   return (
@@ -66,7 +72,11 @@ export default function Navigator(props: DrawerProps) {
             </ListItem>
             {children.map(({ id: childId, icon, active }) => (
               <ListItem disablePadding key={childId}>
-                <ListItemButton selected={active} sx={item}>
+                <ListItemButton
+                  onClick={() => props?.onSelect(childId)}
+                  selected={active}
+                  sx={item}
+                >
                   <ListItemIcon>{icon}</ListItemIcon>
                   <ListItemText>{childId}</ListItemText>
                 </ListItemButton>

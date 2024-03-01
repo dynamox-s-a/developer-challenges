@@ -10,6 +10,7 @@ import theme from 'client/src/app/theme';
 import * as React from 'react';
 import { Match, Switch } from './core/components/switch';
 import LoginContent from './login/components/login-content';
+import MachinesContent from './machine/components/machines-content';
 
 export type PageContentType =
   | 'Authentication'
@@ -57,16 +58,21 @@ export default function Index() {
               variant="temporary"
               open={mobileOpen}
               onClose={handleDrawerToggle}
+              onSelect={(pageId) => setPageContent(pageId as PageContentType)}
             />
           )}
           <Navigator
             PaperProps={{ style: { width: drawerWidth } }}
             sx={{ display: { sm: 'block', xs: 'none' } }}
+            onSelect={(pageId) => setPageContent(pageId as PageContentType)}
           />
         </Box>
         <Switch key={pageContent}>
           <Match when={pageContent === 'Authentication'}>
             <LoginContent />
+          </Match>
+          <Match when={pageContent === 'Machines'}>
+            <MachinesContent />
           </Match>
         </Switch>
       </Box>
