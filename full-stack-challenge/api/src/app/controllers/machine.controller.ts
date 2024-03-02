@@ -121,15 +121,15 @@ export default class MachineController {
     return this.machineService.pageable({ ...page, where });
   }
 
-  @Get('by-monitoring-points')
-  @ApiQuery({
+  @Get('by-monitoring-points/:userId')
+  @ApiParam({
     name: 'userId',
     type: 'string',
     description: 'param to filter results by monitoring points user id',
     required: true,
   })
   async getByMonitoringPoints(
-    @Query('userId') userId: string
+    @Param('userId') userId: string
   ): Promise<Machine[]> {
     const objectUserId = new Types.ObjectId(userId);
     const user = this.userService.findById(objectUserId);

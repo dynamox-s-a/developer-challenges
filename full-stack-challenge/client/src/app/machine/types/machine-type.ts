@@ -11,7 +11,7 @@ export interface MachineType {
   type: MachineTypes;
   updatedAt?: string;
   deleted?: boolean;
-  monitoringPoints?: MonitoringPointType[];
+  monitoringPoints?: MonitoringPointType[] | IntermediateMonitoringType[];
 }
 
 export interface MonitoringPointType {
@@ -22,4 +22,18 @@ export interface MonitoringPointType {
   createdAt?: string;
   updatedAt?: string;
   deleted?: boolean;
+}
+
+export interface IntermediateMonitoringType {
+  modelName: string;
+  userId: string;
+  _id: string;
+  deleted: boolean;
+  sensors: Sensor[];
+}
+
+export interface Sensor {
+  _id: string;
+  modelName: string;
+  createdAt: string;
 }

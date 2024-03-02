@@ -1,5 +1,7 @@
+'use client';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import { Skeleton } from '@mui/material';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -20,212 +22,12 @@ import Typography from '@mui/material/Typography';
 import { alpha } from '@mui/material/styles';
 import { visuallyHidden } from '@mui/utils';
 import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import DateFormatter from '../../core/components/date-formatter';
-import {
-  MachineStatus,
-  MachineTypes,
-} from '../../machine/components/machine-creation-form';
+import { useAuthContext } from '../../login/providers/auth-provider';
+import { fetchPointsByUser } from '../../store/slices/monitoring-points-slice';
+import { AppDispatch } from '../../store/store';
 import { RemoteMonitoringPointType } from '../types/remote-monitoring-point-type';
-
-function createData(
-  _id: string,
-  name: string,
-  userId: string,
-  machineId: string,
-  machineName: string,
-  machineStatus: MachineStatus,
-  machineType: MachineTypes,
-  sensorId: string,
-  sensorModelName: string,
-  createdAt: string,
-  updatedAt: string
-): RemoteMonitoringPointType {
-  return {
-    _id,
-    name,
-    userId,
-    machineId,
-    machineName,
-    machineStatus,
-    machineType,
-    sensorId,
-    sensorModelName,
-    createdAt,
-    updatedAt,
-  };
-}
-
-const rows = [
-  createData(
-    '65e116ca8de116651ed293be',
-    'Ponto 1',
-    '65e0d081ff18f780a53dea47',
-    '65e0df7ebbdd64de59e38947',
-    'Maquina 1',
-    MachineStatus.ACTIVE,
-    MachineTypes.PUMP,
-    '65e10cd54e3ae2d28c65d59f',
-    'HF+',
-    '2024-02-29T19:48:14.839+00:0',
-    '2024-02-29T19:48:14.839+00:0'
-  ),
-  createData(
-    '65e126ca8de116651ed293be',
-    'Ponto 2',
-    '65e0d081ff18f780a53dea47',
-    '65e0df7ebbdd64de59e38947',
-    'Maquina 2',
-    MachineStatus.ACTIVE,
-    MachineTypes.FAN,
-    '65e10cd54e3ae2d28c65d59f',
-    'HF+',
-    '2024-02-29T19:48:14.839+00:0',
-    '2024-02-29T19:48:14.839+00:0'
-  ),
-  createData(
-    '65e136ca8de116651ed293be',
-    'Ponto 3',
-    '65e0d081ff18f780a53dea47',
-    '65e0df7ebbdd64de59e38947',
-    'Maquina 3',
-    MachineStatus.ACTIVE,
-    MachineTypes.PUMP,
-    '65e10cd54e3ae2d28c65d59f',
-    'HF+',
-    '2024-02-29T19:48:14.839+00:0',
-    '2024-02-29T19:48:14.839+00:0'
-  ),
-  createData(
-    '65e146ca8de116651ed293be',
-    'Ponto 4',
-    '65e0d081ff18f780a53dea47',
-    '65e0df7ebbdd64de59e38947',
-    'Maquina 4',
-    MachineStatus.ACTIVE,
-    MachineTypes.FAN,
-    '65e10cd54e3ae2d28c65d59f',
-    'HF+',
-    '2024-02-29T19:48:14.839+00:0',
-    '2024-02-29T19:48:14.839+00:0'
-  ),
-  createData(
-    '65e156ca8de116651ed293be',
-    'Ponto 5',
-    '65e0d081ff18f780a53dea47',
-    '65e0df7ebbdd64de59e38947',
-    'Maquina 5',
-    MachineStatus.ACTIVE,
-    MachineTypes.PUMP,
-    '65e10cd54e3ae2d28c65d59f',
-    'HF+',
-    '2024-02-29T19:48:14.839+00:0',
-    '2024-02-29T19:48:14.839+00:0'
-  ),
-  createData(
-    '65e166ca8de116651ed293be',
-    'Ponto 6',
-    '65e0d081ff18f780a53dea47',
-    '65e0df7ebbdd64de59e38947',
-    'Maquina 6',
-    MachineStatus.ACTIVE,
-    MachineTypes.FAN,
-    '65e10cd54e3ae2d28c65d59f',
-    'HF+',
-    '2024-02-29T19:48:14.839+00:0',
-    '2024-02-29T19:48:14.839+00:0'
-  ),
-  createData(
-    '65e176ca8de116651ed293be',
-    'Ponto 7',
-    '65e0d081ff18f780a53dea47',
-    '65e0df7ebbdd64de59e38947',
-    'Maquina 7',
-    MachineStatus.ACTIVE,
-    MachineTypes.FAN,
-    '65e10cd54e3ae2d28c65d59f',
-    'HF+',
-    '2024-02-29T19:48:14.839+00:0',
-    '2024-02-29T19:48:14.839+00:0'
-  ),
-  createData(
-    '65e186ca8de116651ed293be',
-    'Ponto 8',
-    '65e0d081ff18f780a53dea47',
-    '65e0df7ebbdd64de59e38947',
-    'Maquina 8',
-    MachineStatus.ACTIVE,
-    MachineTypes.FAN,
-    '65e10cd54e3ae2d28c65d59f',
-    'HF+',
-    '2024-02-29T19:48:14.839+00:0',
-    '2024-02-29T19:48:14.839+00:0'
-  ),
-  createData(
-    '65e196ca8de116651ed293be',
-    'Ponto 9',
-    '65e0d081ff18f780a53dea47',
-    '65e0df7ebbdd64de59e38947',
-    'Maquina 9',
-    MachineStatus.ACTIVE,
-    MachineTypes.FAN,
-    '65e10cd54e3ae2d28c65d59f',
-    'HF+',
-    '2024-02-29T19:48:14.839+00:0',
-    '2024-02-29T19:48:14.839+00:0'
-  ),
-  createData(
-    '65e1a6ca8de116651ed293be',
-    'Ponto 10',
-    '65e0d081ff18f780a53dea47',
-    '65e0df7ebbdd64de59e38947',
-    'Maquina 10',
-    MachineStatus.ACTIVE,
-    MachineTypes.FAN,
-    '65e10cd54e3ae2d28c65d59f',
-    'HF+',
-    '2024-02-29T19:48:14.839+00:0',
-    '2024-02-29T19:48:14.839+00:0'
-  ),
-  createData(
-    '65e1b6ca8de116651ed293be',
-    'Ponto 11',
-    '65e0d081ff18f780a53dea47',
-    '65e0df7ebbdd64de59e38947',
-    'Maquina 11',
-    MachineStatus.ACTIVE,
-    MachineTypes.FAN,
-    '65e10cd54e3ae2d28c65d59f',
-    'HF+',
-    '2024-02-29T19:48:14.839+00:0',
-    '2024-02-29T19:48:14.839+00:0'
-  ),
-  createData(
-    '65e1c6ca8de116651ed293be',
-    'Ponto 11',
-    '65e0d081ff18f780a53dea47',
-    '65e0df7ebbdd64de59e38947',
-    'Maquina 12',
-    MachineStatus.INACTIVE,
-    MachineTypes.FAN,
-    '65e10cd54e3ae2d28c65d59f',
-    'HF+',
-    '2024-02-29T19:48:14.839+00:0',
-    '2024-02-29T19:48:14.839+00:0'
-  ),
-  createData(
-    '65e1d6ca8de116651ed293be',
-    'Ponto 13',
-    '65e0d081ff18f780a53dea47',
-    '65e0df7ebbdd64de59e38947',
-    'Maquina 13',
-    MachineStatus.INACTIVE,
-    MachineTypes.FAN,
-    '65e10cd54e3ae2d28c65d59f',
-    'HF+',
-    '2024-02-29T19:48:14.839+00:0',
-    '2024-02-29T19:48:14.839+00:0'
-  ),
-];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -364,6 +166,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     rowCount,
     onRequestSort,
   } = props;
+
   const createSortHandler =
     (property: keyof RemoteMonitoringPointType) =>
     (event: React.MouseEvent<unknown>) => {
@@ -467,6 +270,30 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   );
 }
 export default function MonitoringPointsTable() {
+  const [data, setData] = React.useState<RemoteMonitoringPointType[]>([]);
+  const { user, isAuthenticating } = useAuthContext();
+  const { monitoringPoints, status } = useSelector(
+    (state: {
+      monitoringPoints: [RemoteMonitoringPointType[]];
+      status: any;
+    }) => {
+      return { monitoringPoints: state.monitoringPoints, status: state.status };
+    }
+  );
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  React.useEffect(() => {
+    const data = monitoringPoints[0];
+    setData(data);
+  }, [monitoringPoints]);
+
+  React.useEffect(() => {
+    if (!isAuthenticating && !!user) {
+      dispatch(fetchPointsByUser(user?.sub));
+    }
+  }, []);
+
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] =
     React.useState<keyof RemoteMonitoringPointType>('name');
@@ -486,7 +313,7 @@ export default function MonitoringPointsTable() {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n._id);
+      const newSelected = data.map((n) => n._id);
       setSelected(newSelected);
       return;
     }
@@ -531,16 +358,28 @@ export default function MonitoringPointsTable() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
   const visibleRows = React.useMemo(
     () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
+      stableSort(data, getComparator(order, orderBy)).slice(
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage
       ),
     [order, orderBy, page, rowsPerPage]
   );
+
+  if (!data || data.length < 1) {
+    return (
+      <Skeleton
+        animation="wave"
+        variant="rectangular"
+        sx={{ borderRadius: 1 }}
+        width={'99%'}
+        height={360}
+      />
+    );
+  }
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -558,7 +397,7 @@ export default function MonitoringPointsTable() {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={data.length}
             />
             <TableBody>
               {visibleRows.map((row, index) => {
@@ -572,7 +411,7 @@ export default function MonitoringPointsTable() {
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
-                    key={row._id}
+                    key={`${row}.${index}`}
                     selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
@@ -626,7 +465,7 @@ export default function MonitoringPointsTable() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={data.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

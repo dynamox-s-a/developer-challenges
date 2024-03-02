@@ -1,5 +1,6 @@
 import { AuthProvider } from './login/providers/auth-provider';
 import QueryClientProvider from './login/providers/query-client-provider';
+import { StoreProvider } from './store/store-provider';
 
 export const metadata = {
   title: 'DynaPredict',
@@ -15,7 +16,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <QueryClientProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <StoreProvider>{children}</StoreProvider>
+          </AuthProvider>
         </QueryClientProvider>
       </body>
     </html>

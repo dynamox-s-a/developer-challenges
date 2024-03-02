@@ -49,7 +49,7 @@ const MachineDeleteForm: React.FC<MachineFormProps> = (params) => {
 
   const deleteMachineTrigger = () => {
     mutate({ _id: state._id });
-    console.log({ id: state._id });
+
     return;
   };
 
