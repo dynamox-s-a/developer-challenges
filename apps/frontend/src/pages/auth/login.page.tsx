@@ -62,7 +62,6 @@ const Page = () => {
           'user' in responseAxios &&
           'accessToken' in responseAxios
           ) {
-            console.log('responseAxios: ', responseAxios);
             dispatch(loginStore({
             user: responseAxios.user,
             accessToken: responseAxios.accessToken
