@@ -42,7 +42,6 @@ export default function MonitoringPointsTable() {
   const dispatch = useDispatch<AppDispatch>();
 
   React.useEffect(() => {
-    console.log('state mudou: ', { monitoringPoints });
     const data = monitoringPoints.monitoringPoints;
     if (monitoringPoints.status === 'success') {
       setData(data);
