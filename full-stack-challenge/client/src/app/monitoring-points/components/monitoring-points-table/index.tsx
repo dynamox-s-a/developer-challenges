@@ -1,5 +1,5 @@
 'use client';
-import { Skeleton } from '@mui/material';
+import { Skeleton, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -42,6 +42,7 @@ export default function MonitoringPointsTable() {
   const dispatch = useDispatch<AppDispatch>();
 
   React.useEffect(() => {
+    console.log('state mudou: ', { monitoringPoints });
     const data = monitoringPoints.monitoringPoints;
     if (monitoringPoints.status === 'success') {
       setData(data);
@@ -129,7 +130,7 @@ export default function MonitoringPointsTable() {
     [order, orderBy, page, rowsPerPage]
   );
 
-  if (!data || data.length < 1) {
+  if ((!data || data.length < 1) && monitoringPoints.status !== 'success') {
     return (
       <Skeleton
         animation="wave"
@@ -138,6 +139,14 @@ export default function MonitoringPointsTable() {
         width={'99%'}
         height={360}
       />
+    );
+  }
+
+  if ((!data || data.length < 1) && monitoringPoints.status === 'success') {
+    return (
+      <Typography>
+        Monitoring points list empty. Click in manage to create points.
+      </Typography>
     );
   }
 
