@@ -72,7 +72,7 @@ const Page = () => {
   }
 
   return (
-    <AuthLayout subtitle='A melhor solução de manutenção preditiva'>
+    <AuthLayout subtitle='The best predictive maintenance solution'>
       <Head>
         <title>
           Register | Dynamox
