@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import React from 'react';
 import { Match, Switch } from '../../core/components/switch';
 import { Copyright } from '../../page';
+import MonitoringPointsCreationForm from './monitoring-points-creation-form';
 import MonitoringPointsHeader from './monitoring-points-header';
 import MonitoringPointsTable from './monitoring-points-table';
 
@@ -26,8 +27,7 @@ const MonitoringPointsContent: React.FC<MonitoringPointsContentProps> = () => {
           </Match>
           <Match when={tab === 'Manage'}>
             <Stack sx={{ gap: 2 }}>
-              {/* <MonitoringPointsCreateForm />
-              <MonitoringPointsUpdateForm /> */}
+              <MonitoringPointsCreationForm />
             </Stack>
           </Match>
         </Switch>

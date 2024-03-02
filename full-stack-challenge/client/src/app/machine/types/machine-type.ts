@@ -16,7 +16,7 @@ export interface MachineType {
 
 export interface MonitoringPointType {
   name: string;
-  userId: string;
+  userId?: string;
   sensorId: string;
   _id?: string;
   createdAt?: string;
