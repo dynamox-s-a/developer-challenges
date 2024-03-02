@@ -29,8 +29,8 @@ const MachineCreationForm: React.FC<MachineFormProps> = (params) => {
   const [creationResult, setCreationResult] = React.useState('');
   const [state, setState] = React.useState<{
     name: string;
-    type: MachineTypes | string;
-    status: MachineStatus | string;
+    type: MachineTypes | '';
+    status: MachineStatus | '';
   }>({
     name: '',
     type: '',
@@ -75,7 +75,13 @@ const MachineCreationForm: React.FC<MachineFormProps> = (params) => {
   };
 
   const createMachineTrigger = () => {
-    mutate({ machine: state });
+    mutate({
+      machine: {
+        ...state,
+        status: state.status as MachineStatus,
+        type: state.type as MachineTypes,
+      },
+    });
     return;
   };
 

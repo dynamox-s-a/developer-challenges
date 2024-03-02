@@ -11,6 +11,7 @@ import * as React from 'react';
 import { Match, Switch } from './core/components/switch';
 import LoginContent from './login/components/login-content';
 import MachinesContent from './machine/components/machines-content';
+import MonitoringPointsContent from './monitoring-points/components/monitoring-points-content';
 import SensorsContent from './sensor/components/sensors-content';
 
 export type PageContentType =
@@ -77,6 +78,9 @@ export default function Index() {
           </Match>
           <Match when={pageContent === 'Sensors'}>
             <SensorsContent />
+          </Match>
+          <Match when={pageContent === 'Monitoring points'}>
+            <MonitoringPointsContent />
           </Match>
         </Switch>
       </Box>

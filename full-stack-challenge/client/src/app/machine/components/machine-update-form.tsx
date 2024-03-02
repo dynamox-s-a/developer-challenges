@@ -77,7 +77,13 @@ const MachineUpdateForm: React.FC<MachineFormProps> = (params) => {
   };
 
   const updateMachineTrigger = () => {
-    mutate({ machine: state });
+    mutate({
+      machine: {
+        ...state,
+        status: state.status as MachineStatus,
+        type: state.type as MachineTypes,
+      },
+    });
     return;
   };
 
