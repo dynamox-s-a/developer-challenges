@@ -15,6 +15,7 @@ import createEmotionCache from '../utils/createEmotionCache';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { AppContext, AppInitialProps, AppLayoutProps } from "next/app";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import faviconImg from '../../public/dynamox-icon.png';
 
 const clientSideEmotionCache: EmotionCache = createEmotionCache();
 
@@ -56,6 +57,7 @@ const App: NextComponentType<AppContext, AppInitialProps, MyAppProps>= (props: M
           name="viewport"
           content="initial-scale=1, width=device-width"
         />
+        <link rel='icon' href={faviconImg.src} />
       </Head>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <AuthProvider>

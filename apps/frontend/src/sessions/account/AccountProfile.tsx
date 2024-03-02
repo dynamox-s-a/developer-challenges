@@ -9,6 +9,7 @@ import {
   CardContent,
 } from '@mui/material';
 import { useSession } from 'next-auth/react';
+import avatarImg from '../../../public/assets/avatars/avatar-anika-visser.png';
 
 export const AccountProfile = () => {
   const { data: session } = useSession();
@@ -31,7 +32,7 @@ export const AccountProfile = () => {
           }}
         >
           <Avatar
-            src="/assets/avatars/avatar-anika-visser.png"
+            src={avatarImg.src}
             sx={{
               height: 80,
               mb: 2,

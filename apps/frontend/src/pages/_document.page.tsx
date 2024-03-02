@@ -4,20 +4,6 @@ import { inter, roboto, plusJakartaSans } from '../styles/fonts';
 import createEmotionServer from '@emotion/server/create-instance';
 import Document, { Html, Main, NextScript, Head } from 'next/document';
 
-const Favicon = () => (
-  <>
-    <link
-      rel='apple-touch-icon'
-      sizes='180x180'
-      href='/apple-touch-icon.png'
-    />
-    <link
-      rel='icon'
-      href='/dynamox-icon.png'
-    />
-  </>
-);
-
 class MyDocument extends Document {
   render() {
     return (
@@ -26,7 +12,6 @@ class MyDocument extends Document {
         className={`${inter.className} ${roboto.className} ${plusJakartaSans.className}`}
       >
         <Head>
-          <Favicon />
         </Head>
         <body>
           <Main />

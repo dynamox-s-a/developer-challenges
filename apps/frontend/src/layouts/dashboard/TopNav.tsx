@@ -14,6 +14,7 @@ import AccountPopover from './AccountPopover';
 import { usePopover } from '../../hooks/usePopover';
 import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
 import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
+import avatarImg from '../../../public/assets/avatars/avatar-anika-visser.png';
 
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
@@ -87,7 +88,7 @@ const TopNav: FC<TopNavProps> = ({ onNavOpen }) => {
                 height: 40,
                 width: 40
               }}
-              src="/assets/avatars/avatar-anika-visser.png"
+              src={avatarImg.src}
             />
           </Stack>
         </Stack>

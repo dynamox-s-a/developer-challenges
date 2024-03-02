@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import sensorsReducer from "./features/sensorsSlice";
 import machinesReducer from "./features/machinesSlice";
+import monitoringPointsReducer from "./features/monitoringPointsSlice";
 import userReducer, { userMiddleware } from "./features/userSlice";
 
 export const store = configureStore({
@@ -8,6 +9,7 @@ export const store = configureStore({
     user: userReducer,
     sensors: sensorsReducer,
     machines: machinesReducer,
+    monitoringPoints: monitoringPointsReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(userMiddleware.middleware),
 });

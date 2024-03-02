@@ -122,13 +122,13 @@ export const SideNav: FC<SideNavProps> = ({ open, onClose }) => {
             color="neutral.100"
             variant="subtitle2"
           >
-            Need more features?
+            Do you need more information?
           </Typography>
           <Typography
             color="neutral.500"
             variant="body2"
           >
-            Check out our Pro solution template.
+            Get in touch with me.
           </Typography>
           <Button
             component="a"

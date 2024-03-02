@@ -14,3 +14,4 @@ export interface ApiError {
 export * from './features/users';
 export * from './features/sensors';
 export * from './features/machines';
+export * from './features/monitoringPoints';
