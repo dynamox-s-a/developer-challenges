@@ -27,8 +27,7 @@ const MonitoringPointsContent: React.FC<MonitoringPointsContentProps> = () => {
           <Match when={tab === 'Manage'}>
             <Stack sx={{ gap: 2 }}>
               {/* <MonitoringPointsCreateForm />
-              <MonitoringPointsUpdateForm />
-              <MonitoringPointsDeleteForm /> */}
+              <MonitoringPointsUpdateForm /> */}
             </Stack>
           </Match>
         </Switch>

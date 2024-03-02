@@ -199,6 +199,62 @@ export default class MachineController {
     return this.machineService.insert(body);
   }
 
+  @Put('delete-point/:id')
+  @HttpCode(200)
+  @ApiConsumes('application/json')
+  @ApiParam({
+    name: 'id',
+    schema: {
+      type: 'string',
+      format: 'objectID',
+    },
+  })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        monitoringPointId: {
+          type: 'string',
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 200,
+    schema: {
+      $ref: getSchemaPath(Machine),
+    },
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid body fields, Check the response for details.',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Machine not found.',
+  })
+  async deleteMonitoringPoint(
+    @Param('id', ParseObjectIdPipe) id: string,
+    @Body(new ValidationPipe(MachineController.schema))
+    body
+  ): Promise<Machine> {
+    const machine = await this.findById(id);
+    if (!machine) {
+      throw new NotFoundException(
+        'Máquina relacionada ao ponto não encontrada',
+        'machine_not_found'
+      );
+    }
+    const newPointsList = machine.monitoringPoints.filter(
+      // @ts-expect-error: Unreachable code error
+      (point) => point._id !== Types.ObjectId(body.monitoringPointId)
+    );
+    return this.machineService.update(id, {
+      ...machine,
+      monitoringPoints: newPointsList,
+    } as Machine);
+  }
+
   @Put(':id')
   @HttpCode(200)
   @ApiConsumes('application/json')

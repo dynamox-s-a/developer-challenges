@@ -272,20 +272,24 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 export default function MonitoringPointsTable() {
   const [data, setData] = React.useState<RemoteMonitoringPointType[]>([]);
   const { user, isAuthenticating } = useAuthContext();
-  const { monitoringPoints, status } = useSelector(
+  const { monitoringPoints } = useSelector(
     (state: {
-      monitoringPoints: [RemoteMonitoringPointType[]];
-      status: any;
+      monitoringPoints: {
+        monitoringPoints: RemoteMonitoringPointType[];
+        status: any;
+      };
     }) => {
-      return { monitoringPoints: state.monitoringPoints, status: state.status };
+      return state;
     }
   );
 
   const dispatch = useDispatch<AppDispatch>();
 
   React.useEffect(() => {
-    const data = monitoringPoints[0];
-    setData(data);
+    const data = monitoringPoints.monitoringPoints;
+    if (monitoringPoints.status === 'success') {
+      setData(data);
+    }
   }, [monitoringPoints]);
 
   React.useEffect(() => {

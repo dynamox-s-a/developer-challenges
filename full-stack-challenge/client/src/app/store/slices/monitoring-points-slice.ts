@@ -1,6 +1,4 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { api } from '../../core/libs/axios';
-import { MACHINE_PATH } from '../../machine/actions';
 import {
   MachineStatus,
   MachineTypes,
@@ -9,6 +7,10 @@ import {
   IntermediateMonitoringType,
   MachineType,
 } from '../../machine/types/machine-type';
+import {
+  deleteMonitoringPointAction,
+  getAllMonitoringPoints,
+} from '../../monitoring-points/actions';
 import { RemoteMonitoringPointType } from '../../monitoring-points/types/remote-monitoring-point-type';
 
 function createData(
@@ -211,8 +213,6 @@ export const rows = [
   ),
 ];
 
-const POINTS_PATH = 'by-monitoring-points';
-
 const initialState: {
   monitoringPoints: RemoteMonitoringPointType[];
   status: 'success' | 'pending' | 'error' | 'idle';
@@ -222,11 +222,22 @@ export const fetchPointsByUser = createAsyncThunk(
   'monitoring-points',
   async (userId: string, thunkAPI) => {
     try {
-      const response = await api.get(
-        `${MACHINE_PATH}/${POINTS_PATH}/${userId}`
-      );
+      const payload = await getAllMonitoringPoints(userId);
 
-      return response.data;
+      return payload;
+    } catch (error: any) {
+      console.log({ error });
+    }
+  }
+);
+
+export const deletePoint = createAsyncThunk(
+  'monitoring-points/delete',
+  async (params: { machineId: string; pointId: string }, thunkAPI) => {
+    try {
+      const payload = await deleteMonitoringPointAction(params);
+
+      return payload;
     } catch (error: any) {
       console.log({ error });
     }
@@ -327,7 +338,7 @@ const monitoringPointsSlice = createSlice({
         state.status = 'pending';
       })
       .addCase(fetchPointsByUser.fulfilled, (state, action) => {
-        const monitoringPoints = action.payload.map((machine: MachineType) =>
+        const result = action.payload.map((machine: MachineType) =>
           machine?.monitoringPoints?.map((point) => ({
             _id: point?._id,
             name: (point as IntermediateMonitoringType)?.modelName || '-',
@@ -343,16 +354,34 @@ const monitoringPointsSlice = createSlice({
             updatedAt: machine?.updatedAt || '-',
           }))
         );
-        state.monitoringPoints = monitoringPoints;
+
+        state.monitoringPoints = result[0];
         state.status = 'success';
       })
       .addCase(fetchPointsByUser.rejected, (state, action) => {
         state.status = 'error';
       });
+    builder.addCase(deletePoint.fulfilled, (state, action) => {
+      const result = action.payload.map((machine: MachineType) =>
+        machine?.monitoringPoints?.map((point) => ({
+          _id: point?._id,
+          name: (point as IntermediateMonitoringType)?.modelName || '-',
+          userId: point?.userId,
+          sensorId: (point as IntermediateMonitoringType)?.sensors?.[0]._id,
+          sensorModelName: (point as IntermediateMonitoringType)?.sensors?.[0]
+            .modelName,
+          machineId: machine?._id,
+          machineName: machine?.name,
+          machineStatus: machine?.status,
+          machineType: machine?.type,
+          createdAt: machine?.createdAt || '-',
+          updatedAt: machine?.updatedAt || '-',
+        }))
+      );
 
-    // builder.addCase(savePerson.fulfilled, (state, action) => {
-    //   state.monitoringPoints.persons.push(action.payload);
-    // });
+      state.monitoringPoints = result[0];
+      state.status = 'success';
+    });
   },
 });
 
