@@ -200,25 +200,27 @@ export default class MachineController {
     return this.machineService.insert(body);
   }
 
-  @Put('delete-points')
+  @Put('delete-points/:id')
   @HttpCode(200)
-  @ApiQuery({
-    name: 'machineIds',
+  @ApiConsumes('application/json')
+  @ApiParam({
+    name: 'id',
     schema: {
-      type: 'array',
-      items: { type: 'string' },
+      type: 'string',
+      format: 'objectID',
     },
-    description: 'param to filter update by machines',
-    required: true,
   })
-  @ApiQuery({
-    name: 'monitoringPointsIds',
+  @ApiBody({
     schema: {
-      type: 'array',
-      items: { type: 'string' },
+      type: 'object',
+      properties: {
+        machineIds: { type: 'string' },
+        monitoringPointsIds: {
+          type: 'string',
+        },
+      },
+      required: ['machineIds', 'monitoringPointsIds'],
     },
-    description: 'param to filter update by monitoringPoints',
-    required: true,
   })
   @ApiResponse({
     status: 200,
@@ -235,9 +237,18 @@ export default class MachineController {
     description: 'Machine not found.',
   })
   async deleteMonitoringPoint(
-    @Query('machineIds') machineIds: string[],
-    @Query('monitoringPointsIds') monitoringPointsIds: string[]
+    @Param('id', ParseObjectIdPipe) id: string,
+    @Body(
+      new ValidationPipe(
+        Joi.object({
+          machineIds: Joi.array().items(Joi.string()),
+          monitoringPointsIds: Joi.array().items(Joi.string()),
+        })
+      )
+    )
+    body
   ): Promise<Machine[]> {
+    let { machineIds, monitoringPointsIds } = body;
     if (machineIds.length < 1) {
       throw new BadRequestException(
         'Máquinas relacionadas a estes pontos não enviadas',

@@ -115,7 +115,7 @@ export default function MonitoringPointsTable() {
     const selectedPoints = data.filter((point) => selected.includes(point._id));
     const pointIds = selectedPoints.map((point) => point._id);
     const machineIds = selectedPoints.map((point) => point.machineId);
-    dispatch(deletePoint({ machineIds, pointIds }));
+    dispatch(deletePoint({ machineIds, pointIds, userId: user?.sub }));
   };
 
   // Avoid a layout jump when reaching the last page with empty rows.

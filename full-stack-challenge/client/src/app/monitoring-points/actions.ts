@@ -6,7 +6,7 @@ import {
 } from '../machine/types/machine-type';
 
 export const POINTS_PATH = 'by-monitoring-points';
-export const DELETE_POINT_PATH = 'delete-point';
+export const DELETE_POINT_PATH = 'delete-points';
 
 export async function getAllMonitoringPoints(userId: string) {
   const response = await api.get(`${MACHINE_PATH}/${POINTS_PATH}/${userId}`);
@@ -41,11 +41,15 @@ export const createMonitoringPoint = async ({
 export async function deleteMonitoringPointAction(params: {
   machineIds: string[];
   pointIds: string[];
+  userId?: string;
 }) {
-  const response = await api.put(`${MACHINE_PATH}/${DELETE_POINT_PATH}`, {
-    machineIds: params.machineIds,
-    monitoringPointsIds: params.pointIds,
-  });
+  const response = await api.put(
+    `${MACHINE_PATH}/${DELETE_POINT_PATH}/${params.userId}`,
+    {
+      machineIds: params.machineIds,
+      monitoringPointsIds: params.pointIds,
+    }
+  );
 
   return response.data;
 }

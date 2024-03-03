@@ -73,9 +73,13 @@ export default class MachineService extends BaseService<Machine> {
 
     const updatedMachines = machines?.map(async (machine) => {
       const monitoringPoints = machine.monitoringPoints;
+
+      const deleteIdList = pointIds.map((item) => new Types.ObjectId(item));
+
       const newPointsList = monitoringPoints?.filter(
-        (point) => !pointIds.includes(point._id)
+        (point) => !deleteIdList.some((pointId) => pointId.equals(point._id))
       );
+
       machine.monitoringPoints = newPointsList;
       await super.update(machine._id, machine);
     });
