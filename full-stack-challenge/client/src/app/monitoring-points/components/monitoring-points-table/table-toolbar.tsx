@@ -8,6 +8,7 @@ import { alpha } from '@mui/material/styles';
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
+  onDelete: () => void;
 }
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
@@ -48,7 +49,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
       )}
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton>
+          <IconButton onClick={props.onDelete}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>

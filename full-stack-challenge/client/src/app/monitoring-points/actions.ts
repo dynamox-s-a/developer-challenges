@@ -39,13 +39,13 @@ export const createMonitoringPoint = async ({
 };
 
 export async function deleteMonitoringPointAction(params: {
-  machineId: string;
-  pointId: string;
+  machineIds: string[];
+  pointIds: string[];
 }) {
-  const response = await api.put(
-    `${MACHINE_PATH}/${DELETE_POINT_PATH}/${params.machineId}`,
-    { monitoringPointId: params.pointId }
-  );
+  const response = await api.put(`${MACHINE_PATH}/${DELETE_POINT_PATH}`, {
+    machineIds: params.machineIds,
+    monitoringPointsIds: params.pointIds,
+  });
 
   return response.data;
 }

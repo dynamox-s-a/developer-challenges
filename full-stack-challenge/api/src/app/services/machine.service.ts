@@ -62,36 +62,25 @@ export default class MachineService extends BaseService<Machine> {
     Ids: Types.ObjectId[] | string[],
     pointIds: Types.ObjectId[] | string[]
   ): Promise<Machine[]> {
-    const machines: any = Ids.map(async (id) => await super.findById(id));
+    const machines: any = await this.list({ where: { _id: { $in: Ids } } });
 
-    if (machines.length < 1) {
+    if ((await machines.length) < 1) {
       throw new NotFoundException(
         'Nenhuma máquina encontrada',
         'machines_not_found'
       );
     }
 
-    const session = await this.connection.startSession();
-    try {
-      session.startTransaction();
+    const updatedMachines = machines?.map(async (machine) => {
+      const monitoringPoints = machine.monitoringPoints;
+      const newPointsList = monitoringPoints?.filter(
+        (point) => !pointIds.includes(point._id)
+      );
+      machine.monitoringPoints = newPointsList;
+      await super.update(machine._id, machine);
+    });
 
-      const updatedMachines = await machines.map(async (machine) => {
-        const monitoringPoints = machine.monitoringPoints;
-        const newPointsList = monitoringPoints.filter(
-          (point) => !pointIds.includes(point._id)
-        );
-        machine.monitoringPoints = newPointsList;
-        await super.update(machine._id, machine, session);
-      });
-
-      await session.commitTransaction();
-      return updatedMachines;
-    } catch (error) {
-      await session.abortTransaction();
-      throw error;
-    } finally {
-      session.endSession();
-    }
+    return updatedMachines;
   }
 
   async pageablePublic(

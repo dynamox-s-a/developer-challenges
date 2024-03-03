@@ -202,7 +202,6 @@ export default class MachineController {
 
   @Put('delete-points')
   @HttpCode(200)
-  // @ApiConsumes('application/json')
   @ApiQuery({
     name: 'machineIds',
     schema: {
@@ -250,6 +249,12 @@ export default class MachineController {
         'Pontos de monitoramento não enviados',
         'monitoring_points_not_sent'
       );
+    }
+    if (typeof machineIds === 'string') {
+      machineIds = [machineIds];
+    }
+    if (typeof monitoringPointsIds === 'string') {
+      monitoringPointsIds = [monitoringPointsIds];
     }
     const updatedMachines = await this.machineService.removeMonitoringPoints(
       machineIds,

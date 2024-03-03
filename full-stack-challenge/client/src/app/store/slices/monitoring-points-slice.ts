@@ -230,8 +230,8 @@ export const fetchPointsByUser = createAsyncThunk(
 );
 
 export const deletePoint = createAsyncThunk(
-  'monitoring-points/delete',
-  async (params: { machineId: string; pointId: string }, thunkAPI) => {
+  'delete-points',
+  async (params: { machineIds: string[]; pointIds: string[] }, thunkAPI) => {
     try {
       const payload = await deleteMonitoringPointAction(params);
 

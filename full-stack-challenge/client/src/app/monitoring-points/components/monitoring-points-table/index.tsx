@@ -13,7 +13,10 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { useAuthContext } from 'client/src/app/login/providers/auth-provider';
 import { RemoteMonitoringPointType } from 'client/src/app/monitoring-points/types/remote-monitoring-point-type';
-import { fetchPointsByUser } from 'client/src/app/store/slices/monitoring-points-slice';
+import {
+  deletePoint,
+  fetchPointsByUser,
+} from 'client/src/app/store/slices/monitoring-points-slice';
 import { AppDispatch, RootState } from 'client/src/app/store/store';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -108,6 +111,13 @@ export default function MonitoringPointsTable() {
 
   const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
+  const handleDeleteSelected = () => {
+    const selectedPoints = data.filter((point) => selected.includes(point._id));
+    const pointIds = selectedPoints.map((point) => point._id);
+    const machineIds = selectedPoints.map((point) => point.machineId);
+    dispatch(deletePoint({ machineIds, pointIds }));
+  };
+
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
@@ -144,7 +154,10 @@ export default function MonitoringPointsTable() {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          onDelete={handleDeleteSelected}
+        />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
