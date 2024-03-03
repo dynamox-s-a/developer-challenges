@@ -11,11 +11,10 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import DateFormatter from 'client/src/app/core/components/date-formatter';
 import { useAuthContext } from 'client/src/app/login/providers/auth-provider';
 import { RemoteMonitoringPointType } from 'client/src/app/monitoring-points/types/remote-monitoring-point-type';
 import { fetchPointsByUser } from 'client/src/app/store/slices/monitoring-points-slice';
-import { AppDispatch } from 'client/src/app/store/store';
+import { AppDispatch, RootState } from 'client/src/app/store/store';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import getComparator from './helpers/get-comparator';
@@ -28,16 +27,9 @@ export type Order = 'asc' | 'desc';
 export default function MonitoringPointsTable() {
   const [data, setData] = React.useState<RemoteMonitoringPointType[]>([]);
   const { user, isAuthenticating } = useAuthContext();
-  const { monitoringPoints } = useSelector(
-    (state: {
-      monitoringPoints: {
-        monitoringPoints: RemoteMonitoringPointType[];
-        status: any;
-      };
-    }) => {
-      return state;
-    }
-  );
+  const monitoringPoints = useSelector((state: RootState) => {
+    return state.monitoringPoints;
+  });
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -126,7 +118,7 @@ export default function MonitoringPointsTable() {
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage
       ),
-    [order, orderBy, page, rowsPerPage]
+    [order, orderBy, page, rowsPerPage, data]
   );
 
   if ((!data || data.length < 1) && monitoringPoints.status !== 'success') {
@@ -209,12 +201,6 @@ export default function MonitoringPointsTable() {
                     <TableCell align="center">{row.machineType}</TableCell>
                     <TableCell align="center">{row.sensorId}</TableCell>
                     <TableCell align="center">{row.sensorModelName}</TableCell>
-                    <TableCell align="center">
-                      <DateFormatter>{row.createdAt}</DateFormatter>
-                    </TableCell>
-                    <TableCell align="center">
-                      <DateFormatter>{row.updatedAt}</DateFormatter>
-                    </TableCell>
                   </TableRow>
                 );
               })}

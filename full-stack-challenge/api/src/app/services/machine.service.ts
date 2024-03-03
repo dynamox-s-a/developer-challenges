@@ -58,10 +58,70 @@ export default class MachineService extends BaseService<Machine> {
     }
   }
 
+  async removeMonitoringPoints(
+    Ids: Types.ObjectId[] | string[],
+    pointIds: Types.ObjectId[] | string[]
+  ): Promise<Machine[]> {
+    const machines: any = Ids.map(async (id) => await super.findById(id));
+
+    if (machines.length < 1) {
+      throw new NotFoundException(
+        'Nenhuma máquina encontrada',
+        'machines_not_found'
+      );
+    }
+
+    const session = await this.connection.startSession();
+    try {
+      session.startTransaction();
+
+      const updatedMachines = await machines.map(async (machine) => {
+        const monitoringPoints = machine.monitoringPoints;
+        const newPointsList = monitoringPoints.filter(
+          (point) => !pointIds.includes(point._id)
+        );
+        machine.monitoringPoints = newPointsList;
+        await super.update(machine._id, machine, session);
+      });
+
+      await session.commitTransaction();
+      return updatedMachines;
+    } catch (error) {
+      await session.abortTransaction();
+      throw error;
+    } finally {
+      session.endSession();
+    }
+  }
+
   async pageablePublic(
     queryOptions: PageQueryOptions<Machine>
   ): Promise<PageResult<Machine>> {
     return (<MachineRepository>this.repository).pageablePublic(queryOptions);
+  }
+
+  transformMonitoringPoints(machines) {
+    const result = [];
+
+    machines.forEach((machine) => {
+      machine.monitoringPoints.forEach((point) => {
+        result.push({
+          _id: point?._id,
+          name: machine?.name || '-',
+          userId: point?.userId,
+          sensorId: point?.sensors?.[0]._id,
+          sensorModelName: point?.sensors?.[0].modelName,
+          machineId: machine?._id,
+          machineName: machine?.name,
+          machineStatus: machine?.status,
+          machineType: machine?.type,
+          createdAt: machine?.createdAt || '-',
+          updatedAt: machine?.updatedAt || '-',
+        });
+      });
+    });
+
+    return result;
   }
 
   async getMachineByMonitoringPointsUserId({
@@ -69,8 +129,26 @@ export default class MachineService extends BaseService<Machine> {
   }: {
     userId: Types.ObjectId;
   }): Promise<Machine[]> {
-    return (<MachineRepository>this.repository).getByMonitoringPointsUserId({
+    const response = await (<MachineRepository>(
+      this.repository
+    )).getByMonitoringPointsUserId({
       userId,
     });
+
+    const machineWithFilteredPoints = response.map((machine) => {
+      const monitoringPoints = machine.monitoringPoints.filter((point) =>
+        point.userId.equals(userId)
+      );
+      return {
+        _id: machine?._id,
+        name: machine?.name,
+        status: machine?.status,
+        type: machine?.type,
+        monitoringPoints,
+      };
+    });
+    const result = this.transformMonitoringPoints(machineWithFilteredPoints);
+
+    return result;
   }
 }

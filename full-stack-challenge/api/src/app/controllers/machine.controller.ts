@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -199,25 +200,26 @@ export default class MachineController {
     return this.machineService.insert(body);
   }
 
-  @Put('delete-point/:id')
+  @Put('delete-points')
   @HttpCode(200)
-  @ApiConsumes('application/json')
-  @ApiParam({
-    name: 'id',
+  // @ApiConsumes('application/json')
+  @ApiQuery({
+    name: 'machineIds',
     schema: {
-      type: 'string',
-      format: 'objectID',
+      type: 'array',
+      items: { type: 'string' },
     },
+    description: 'param to filter update by machines',
+    required: true,
   })
-  @ApiBody({
+  @ApiQuery({
+    name: 'monitoringPointsIds',
     schema: {
-      type: 'object',
-      properties: {
-        monitoringPointId: {
-          type: 'string',
-        },
-      },
+      type: 'array',
+      items: { type: 'string' },
     },
+    description: 'param to filter update by monitoringPoints',
+    required: true,
   })
   @ApiResponse({
     status: 200,
@@ -234,25 +236,26 @@ export default class MachineController {
     description: 'Machine not found.',
   })
   async deleteMonitoringPoint(
-    @Param('id', ParseObjectIdPipe) id: string,
-    @Body(new ValidationPipe(MachineController.schema))
-    body
-  ): Promise<Machine> {
-    const machine = await this.findById(id);
-    if (!machine) {
-      throw new NotFoundException(
-        'Máquina relacionada ao ponto não encontrada',
-        'machine_not_found'
+    @Query('machineIds') machineIds: string[],
+    @Query('monitoringPointsIds') monitoringPointsIds: string[]
+  ): Promise<Machine[]> {
+    if (machineIds.length < 1) {
+      throw new BadRequestException(
+        'Máquinas relacionadas a estes pontos não enviadas',
+        'machines_not_sent'
       );
     }
-    const newPointsList = machine.monitoringPoints.filter(
-      // @ts-expect-error: Unreachable code error
-      (point) => point._id !== Types.ObjectId(body.monitoringPointId)
+    if (monitoringPointsIds.length < 1) {
+      throw new BadRequestException(
+        'Pontos de monitoramento não enviados',
+        'monitoring_points_not_sent'
+      );
+    }
+    const updatedMachines = await this.machineService.removeMonitoringPoints(
+      machineIds,
+      monitoringPointsIds
     );
-    return this.machineService.update(id, {
-      ...machine,
-      monitoringPoints: newPointsList,
-    } as Machine);
+    return updatedMachines;
   }
 
   @Put(':id')

@@ -62,16 +62,4 @@ export const headCells: readonly HeadCell[] = [
     disablePadding: false,
     label: 'Sensor Model Name',
   },
-  {
-    id: 'createdAt',
-    numeric: false,
-    disablePadding: false,
-    label: 'Created At',
-  },
-  {
-    id: 'updatedAt',
-    numeric: false,
-    disablePadding: false,
-    label: 'Updated At',
-  },
 ];

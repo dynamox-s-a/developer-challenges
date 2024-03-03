@@ -71,7 +71,7 @@ export default class MachineRepository extends BaseRepository<Machine> {
     userId = null,
   }: {
     userId?: Types.ObjectId;
-  }): Promise<Machine[]> {
+  }): Promise<any[]> {
     const result = await this.aggregate([
       {
         $match: {

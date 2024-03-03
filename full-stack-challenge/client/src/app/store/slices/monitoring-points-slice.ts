@@ -4,10 +4,6 @@ import {
   MachineTypes,
 } from '../../machine/components/machine-creation-form';
 import {
-  IntermediateMonitoringType,
-  MachineType,
-} from '../../machine/types/machine-type';
-import {
   deleteMonitoringPointAction,
   getAllMonitoringPoints,
 } from '../../monitoring-points/actions';
@@ -213,9 +209,11 @@ export const rows = [
   ),
 ];
 
+export type StateStatusType = 'success' | 'pending' | 'error' | 'idle';
+
 const initialState: {
   monitoringPoints: RemoteMonitoringPointType[];
-  status: 'success' | 'pending' | 'error' | 'idle';
+  status: StateStatusType;
 } = { monitoringPoints: [], status: 'idle' };
 
 export const fetchPointsByUser = createAsyncThunk(
@@ -338,48 +336,13 @@ const monitoringPointsSlice = createSlice({
         state.status = 'pending';
       })
       .addCase(fetchPointsByUser.fulfilled, (state, action) => {
-        const result = action.payload.map((machine: MachineType) =>
-          machine?.monitoringPoints?.map((point) => ({
-            _id: point?._id,
-            name: (point as IntermediateMonitoringType)?.modelName || '-',
-            userId: point?.userId,
-            sensorId: (point as IntermediateMonitoringType)?.sensors?.[0]._id,
-            sensorModelName: (point as IntermediateMonitoringType)?.sensors?.[0]
-              .modelName,
-            machineId: machine?._id,
-            machineName: machine?.name,
-            machineStatus: machine?.status,
-            machineType: machine?.type,
-            createdAt: machine?.createdAt || '-',
-            updatedAt: machine?.updatedAt || '-',
-          }))
-        );
-
-        state.monitoringPoints = result[0];
+        state.monitoringPoints = action.payload;
         state.status = 'success';
       })
       .addCase(fetchPointsByUser.rejected, (state, action) => {
         state.status = 'error';
       });
     builder.addCase(deletePoint.fulfilled, (state, action) => {
-      const result = action.payload.map((machine: MachineType) =>
-        machine?.monitoringPoints?.map((point) => ({
-          _id: point?._id,
-          name: (point as IntermediateMonitoringType)?.modelName || '-',
-          userId: point?.userId,
-          sensorId: (point as IntermediateMonitoringType)?.sensors?.[0]._id,
-          sensorModelName: (point as IntermediateMonitoringType)?.sensors?.[0]
-            .modelName,
-          machineId: machine?._id,
-          machineName: machine?.name,
-          machineStatus: machine?.status,
-          machineType: machine?.type,
-          createdAt: machine?.createdAt || '-',
-          updatedAt: machine?.updatedAt || '-',
-        }))
-      );
-
-      state.monitoringPoints = result[0];
       state.status = 'success';
     });
   },
