@@ -28,13 +28,13 @@ function noop(): void {
   // do nothing
 }
 
-export interface Customer {
+export interface Machine {
   id: string;
   name: string;
   type: string;
 }
 
-interface CustomersTableProps {
+interface MachineTableProps {
   count?: number;
   page?: number;
   rows?: Customer[];
@@ -42,13 +42,13 @@ interface CustomersTableProps {
   handleDeleteClick?: any;
 }
 
-export function CustomersTable({
+export function MachineTable({
   count = 0,
   rows = [],
   page = 0,
   rowsPerPage = 0,
   handleDeleteClick = null
-}: CustomersTableProps): React.JSX.Element {
+}: MachineTableProps): React.JSX.Element {
   const rowIds = React.useMemo(() => {
     return rows.map((customer) => customer.id);
   }, [rows, handleDeleteClick]);

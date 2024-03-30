@@ -16,21 +16,23 @@ import { machine_types } from '@/types';
 import RouterLink from 'next/link';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 
-import { CustomersTable } from '@/components/dashboard/customer/customers-table';
-import type { Customer } from '@/components/dashboard/customer/customers-table';
+import { MonitoringPointTable } from '@/components/dashboard/monitoring-point/monitoring-point-table';
+import type { MonitoringPoint } from '@/components/dashboard/monitoring-point/monitoring-point-table';
 
-let customers = [
-  {
-    id: '0',
-    name: 'Monitoring Point 01',
-    type: 'Pump',
-  },
+let monitoringPoints = [
   {
     id: '1',
-    name: 'Monitoring Point 02',
-    type: 'Fan',
+    name: 'Monitoring Point 01',
+    type: 'TcAg',
+    machine: 'Machine 01'
   },
-] satisfies Customer[];
+  {
+    id: '2',
+    name: 'Monitoring Point 02',
+    type: 'HF+',
+    machine: 'Machine 02'
+  }
+] satisfies MonitoringPoint[];
 
 
 export default function Page(): React.JSX.Element {
@@ -42,12 +44,12 @@ export default function Page(): React.JSX.Element {
   const rowsPerPage = 5;
   const router = useRouter();
 
-  const paginatedCustomers = applyPagination(customers, page, rowsPerPage);
+  const paginatedMonitoringpoints = applyPagination(monitoringPoints, page, rowsPerPage);
 
   const handleDeleteClick = React.useCallback((evt) => {
 
-    const objWithIdIndex = customers.findIndex((obj) => obj.id === evt.currentTarget.id);
-    customers.splice(objWithIdIndex, 1);
+    const objWithIdIndex = monitoringPoints.findIndex((obj) => obj.id === evt.currentTarget.id);
+    monitoringPoints.splice(objWithIdIndex, 1);
 
     console.log('onClick', evt.currentTarget.id);
 
@@ -67,23 +69,23 @@ export default function Page(): React.JSX.Element {
         </Grid>
       </Grid>
       
-      <Stack sx={{ 'display': id != undefined ? 'block' : 'none' }}>
+      <Stack>
         <Stack sx={{ 'margin-top': '25px', 'margin-bottom': '15px' }} direction="row" spacing={3}>
           <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
             <Typography variant="h5">Monitoring Points</Typography>
           </Stack>
           <div>
-            <Button startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />} variant="contained" component={RouterLink} href={paths.dashboard.edit_machine}>
+            <Button sx={{ 'display': id != undefined ? 'flex' : 'none' }} startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />} variant="contained" component={RouterLink} href={paths.dashboard.edit_monitoring_point}>
               Add
             </Button>
           </div>
         </Stack>
           
         <Grid>
-            <CustomersTable
-              count={paginatedCustomers.length}
+            <MonitoringPointTable
+              count={paginatedMonitoringpoints.length}
               page={page}
-              rows={paginatedCustomers}
+              rows={paginatedMonitoringpoints}
               rowsPerPage={rowsPerPage}
               handleDeleteClick={handleDeleteClick}
             />
@@ -93,6 +95,6 @@ export default function Page(): React.JSX.Element {
   );
 }
 
-function applyPagination(rows: Customer[], page: number, rowsPerPage: number): Customer[] {
+function applyPagination(rows: MonitoringPoint[], page: number, rowsPerPage: number): MonitoringPoint[] {
   return rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 }
