@@ -5,6 +5,9 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Checkbox from '@mui/material/Checkbox';
+import IconButton from "@mui/material/IconButton";
+import Button from '@mui/material/Button';
+import { Minus as PlusMinus } from '@phosphor-icons/react/dist/ssr/Minus';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
@@ -16,6 +19,9 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
 
+import { paths } from '@/paths';
+import RouterLink from 'next/link';
+
 import { useSelection } from '@/hooks/use-selection';
 
 function noop(): void {
@@ -24,12 +30,8 @@ function noop(): void {
 
 export interface Customer {
   id: string;
-  avatar: string;
   name: string;
-  email: string;
-  address: { city: string; state: string; country: string; street: string };
-  phone: string;
-  createdAt: Date;
+  type: string;
 }
 
 interface CustomersTableProps {
@@ -37,6 +39,7 @@ interface CustomersTableProps {
   page?: number;
   rows?: Customer[];
   rowsPerPage?: number;
+  handleDeleteClick?: any;
 }
 
 export function CustomersTable({
@@ -44,10 +47,11 @@ export function CustomersTable({
   rows = [],
   page = 0,
   rowsPerPage = 0,
+  handleDeleteClick = null
 }: CustomersTableProps): React.JSX.Element {
   const rowIds = React.useMemo(() => {
     return rows.map((customer) => customer.id);
-  }, [rows]);
+  }, [rows, handleDeleteClick]);
 
   const { selectAll, deselectAll, selectOne, deselectOne, selected } = useSelection(rowIds);
 
@@ -58,6 +62,12 @@ export function CustomersTable({
     <Card>
       <Box sx={{ overflowX: 'auto' }}>
         <Table sx={{ minWidth: '800px' }}>
+          <colgroup>
+              <col width="5%" />
+              <col width="80%" />
+              <col width="10%" />
+              <col width="5%" />
+          </colgroup>
           <TableHead>
             <TableRow>
               <TableCell padding="checkbox">
@@ -74,10 +84,8 @@ export function CustomersTable({
                 />
               </TableCell>
               <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Location</TableCell>
-              <TableCell>Phone</TableCell>
-              <TableCell>Signed Up</TableCell>
+              <TableCell>Type</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -98,18 +106,15 @@ export function CustomersTable({
                       }}
                     />
                   </TableCell>
-                  <TableCell>
-                    <Stack sx={{ alignItems: 'center' }} direction="row" spacing={2}>
-                      <Avatar src={row.avatar} />
+                  <TableCell component={RouterLink} href={{ pathname: paths.dashboard.edit_machine, query: { id: row.id } }}>
                       <Typography variant="subtitle2">{row.name}</Typography>
-                    </Stack>
                   </TableCell>
-                  <TableCell>{row.email}</TableCell>
-                  <TableCell>
-                    {row.address.city}, {row.address.state}, {row.address.country}
+                  <TableCell>{row.type}</TableCell>
+                  <TableCell sx={{'text-align': 'center'}}>
+                    <Button sx={{'border-radius': '25px', 'padding': '0', 'height': '25px', 'width': '25px', 'min-width': '25px'}} color="error" variant="contained" onClick={handleDeleteClick} id={row.id}>
+                      <PlusMinus />
+                    </Button >
                   </TableCell>
-                  <TableCell>{row.phone}</TableCell>
-                  <TableCell>{dayjs(row.createdAt).format('MMM D, YYYY')}</TableCell>
                 </TableRow>
               );
             })}

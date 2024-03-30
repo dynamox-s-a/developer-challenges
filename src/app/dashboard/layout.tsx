@@ -2,6 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import GlobalStyles from '@mui/material/GlobalStyles';
+import { config } from '@/config';
 
 import { AuthGuard } from '@/components/auth/auth-guard';
 import { MainNav } from '@/components/dashboard/layout/main-nav';
@@ -10,6 +11,8 @@ import { SideNav } from '@/components/dashboard/layout/side-nav';
 interface LayoutProps {
   children: React.ReactNode;
 }
+
+export const metadata = { title: `${config.site.name}` } satisfies Metadata;
 
 export default function Layout({ children }: LayoutProps): React.JSX.Element {
   return (
