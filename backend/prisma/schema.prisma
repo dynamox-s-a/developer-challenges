@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://app_user:123456@localhost:5432/dynapredict?schema=public"
+}
+
+model User {
+  id                 Int                 @id @default(autoincrement())
+  fullName           String              @db.VarChar(255)
+  email              String              @db.VarChar(255)
+  password           String              @db.VarChar(255)
+}
+
+model Machine {
+  id                 Int                 @id @default(autoincrement())
+  createdAt          DateTime            @default(now())
+  name               String              @db.VarChar(255)
+  machineType        Machine_Type        @relation(fields: [machineTypeId], references: [id])
+  machineTypeId      Int                 
+  monitoringPoints   Monitoring_Point[]  
+}
+
+model Machine_Type {
+  id                 Int                 @id @default(autoincrement())
+  name               String              @db.VarChar(255)
+  machine            Machine[]             
+}
+
+model Monitoring_Point {
+  id                 Int                 @id @default(autoincrement())
+  createdAt          DateTime            @default(now())
+  name               String              @db.VarChar(255)
+  sensor             Sensor              @relation(fields: [sensorId], references: [id])
+  sensorId           Int                 
+  machine            Machine             @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  machineId          Int                 @unique
+}
+
+model Sensor {
+  id                 Int                 @id @default(autoincrement())
+  name               String              @db.VarChar(255)
+  monitoringPoint    Monitoring_Point[]    
+}
+
