@@ -86,7 +86,7 @@ export function MonitoringPointTable({
                 />
               </TableCell>
               <TableCell>Name</TableCell>
-              <TableCell>Type</TableCell>
+              <TableCell>Sensor</TableCell>
               <TableCell>Machine</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>

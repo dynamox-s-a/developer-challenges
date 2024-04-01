@@ -1,6 +1,5 @@
 import { Controller, Get, Query, Post, Body, Put, Param, Delete } from '@nestjs/common';
 import { Machine as MachineModel } from '@prisma/client';
-import { MachineDto } from '../dto';
 import { MachineService } from '../service/machine.service';
 
 @Controller('machine')

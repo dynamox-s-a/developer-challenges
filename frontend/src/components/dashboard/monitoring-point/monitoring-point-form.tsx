@@ -32,17 +32,21 @@ export function MonitoringPointForm(params): React.JSX.Element {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget)
-        /*const response = await fetch('/api/submit', {
-          method: 'POST',
-          body: formData,
-        })
-     
-        // Handle response if necessary
-        const data = await response.json()
-        // ...
-        */
 
-        //router.back();
+        //Envia dados pela API
+        /*React.useEffect(() => {
+          if(params.id){
+            Put("/monitoring_point/"+params.id,formData).then((res) => {
+                router.back();
+            });
+          } else {
+            post("/monitoring_point",formData).then((res) => {
+                router.back();
+            });
+          }
+        });*/
+
+        router.back();
         console.log("SAVED!", params.id, formData)
       }}
     >
@@ -59,8 +63,8 @@ export function MonitoringPointForm(params): React.JSX.Element {
             </Grid>
             <Grid md={3} xs={12} item >
               <FormControl fullWidth required>
-                <InputLabel>Type</InputLabel>
-                <Select label="Type" name="type" variant="outlined">
+                <InputLabel>Sensor</InputLabel>
+                <Select label="Sensor" name="sensorId" variant="outlined">
                   {sensor_types.map((option) => (
                     <MenuItem key={option.id} value={option.id}>
                       {option.name}

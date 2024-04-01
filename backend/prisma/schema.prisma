@@ -13,14 +13,14 @@ datasource db {
 model User {
   id                 Int                 @id @default(autoincrement())
   fullName           String              @db.VarChar(255)
-  email              String              @db.VarChar(255)
+  email              String              @unique @db.VarChar(255)
   password           String              @db.VarChar(255)
 }
 
 model Machine {
   id                 Int                 @id @default(autoincrement())
   createdAt          DateTime            @default(now())
-  name               String              @db.VarChar(255)
+  name               String              @unique @db.VarChar(255)
   machineType        Machine_Type        @relation(fields: [machineTypeId], references: [id])
   machineTypeId      Int                 
   monitoringPoints   Monitoring_Point[]  
@@ -28,14 +28,14 @@ model Machine {
 
 model Machine_Type {
   id                 Int                 @id @default(autoincrement())
-  name               String              @db.VarChar(255)
+  name               String              @unique @db.VarChar(255)
   machine            Machine[]             
 }
 
 model Monitoring_Point {
   id                 Int                 @id @default(autoincrement())
   createdAt          DateTime            @default(now())
-  name               String              @db.VarChar(255)
+  name               String              @unique @db.VarChar(255)
   sensor             Sensor              @relation(fields: [sensorId], references: [id])
   sensorId           Int                 
   machine            Machine             @relation(fields: [machineId], references: [id], onDelete: Cascade)
@@ -44,7 +44,7 @@ model Monitoring_Point {
 
 model Sensor {
   id                 Int                 @id @default(autoincrement())
-  name               String              @db.VarChar(255)
+  name               String              @unique @db.VarChar(255)
   monitoringPoint    Monitoring_Point[]    
 }
 

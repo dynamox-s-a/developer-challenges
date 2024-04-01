@@ -36,6 +36,8 @@ let monitoringPoints = [
 
 
 export default function Page(): React.JSX.Element {
+  //const [monitoringPoints, setData] = React.useState([]) 
+
   const searchParams = useSearchParams()
   const id = searchParams.get(`id`);
 
@@ -53,11 +55,30 @@ export default function Page(): React.JSX.Element {
 
     console.log('onClick', evt.currentTarget.id);
 
+    //Remover item pela API
+    /*React.useEffect(() => {
+      Delete("/monitoring_point/"+evt.currentTarget.id).then((res) => {
+          
+          Get("/monitoring_point").then((res) => {
+            setData(res.data);
+          });
+
+        })
+    });*/
+
     router.refresh();
   }, []);
 
+  //Carregar lista pela API
+  /*React.useEffect(() => {
+    Get("/monitoring_point").then((res) => {
+      setData(res.data);
+    });
+  });
+  */
 
   return (
+    monitoringPoints.length > 0 &&
     <Stack spacing={3}>
       <div>
         <Typography variant="h4">{id ? 'Edit' : 'Add'} Machine {id}</Typography>

@@ -37,6 +37,8 @@ let monitoringPoints = [
 
 
 export default function Page(): React.JSX.Element {
+  //const [monitoringPoints, setData] = React.useState([]) 
+
   const page = 0;
   const rowsPerPage = 5;
   const router = useRouter();
@@ -50,10 +52,30 @@ export default function Page(): React.JSX.Element {
 
     console.log('onClick', evt.currentTarget.id);
 
+    //Remover item pela API
+    /*React.useEffect(() => {
+      Delete("/monitoring_point/"+evt.currentTarget.id).then((res) => {
+          
+          Get("/monitoring_point").then((res) => {
+            setData(res.data);
+          });
+
+        })
+    });*/
+
     router.refresh();
   }, []);
 
+  //Carregar lista pela API
+  /*React.useEffect(() => {
+    Get("/monitoring_point").then((res) => {
+      setData(res.data);
+    });
+  });
+  */
+
   return (
+    monitoringPoints.length > 0 &&
     <Stack spacing={3}>
       <Stack direction="row" spacing={3}>
         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>

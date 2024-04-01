@@ -1,31 +1,47 @@
 import { Controller, Get, Query, Post, Body, Put, Param, Delete } from '@nestjs/common';
-import { MonitoringPointDto } from '../dto';
+import { Monitoring_Point as Monitoring_PointModel } from '@prisma/client';
+import { MonitoringPointService } from '../service/monitoring_point.service';
 
 @Controller('monitoring_point')
 export class MonitoringPointController {
+  constructor(private readonly monitoringPointService: MonitoringPointService) {}
 
   @Post()
-  create(@Body() monitoringPointDto: MonitoringPointDto) {
-    return 'This action adds a new cat';
+  async create(@Body() reqData: { name: string; machineId: number; sensorId: number; }): Promise<Monitoring_PointModel> {
+    const { name, machineId, sensorId } = reqData;
+    return this.monitoringPointService.createMonitoringPoint({
+      name,
+      machineId,
+      sensorId
+    });
   }
 
   @Get()
-  findAll() {
-    return `This action returns all cats`;
+  async getList(): Promise<Monitoring_PointModel[]> {
+    return this.monitoringPointService.getMonitoringPointsList({
+      
+    });   
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return `This action returns a #${id} cat`;
+  async get(@Param('id') id: string): Promise<Monitoring_PointModel> {
+    return this.monitoringPointService.getMonitoringPoint({ id: Number(id) });
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() monitoringPointDto: MonitoringPointDto) {
-    return `This action updates a #${id} cat`;
+  async update(@Param('id') id: string, @Body() reqData: { name: string; sensorId: number; }): Promise<Monitoring_PointModel> {
+    const { name, sensorId } = reqData;
+    return this.monitoringPointService.updateMonitoringPoint({
+      where: { id: Number(id) },
+      data: {
+        name,
+        sensorId
+      }
+    });
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return `This action removes a #${id} cat`;
+  async remove(@Param('id') id: string): Promise<Monitoring_PointModel> {
+    return this.monitoringPointService.deleteMonitoringPoint({ id: Number(id) });
   }
 }

@@ -15,6 +15,7 @@ import { paths } from '@/paths';
 import { machine_types } from '@/types';
 import RouterLink from 'next/link';
 import { useRouter } from 'next/navigation';
+import { Get } from '@/lib/http-request';
 
 import { MachineTable } from '@/components/dashboard/machine/machine-table';
 import type { Machine } from '@/components/dashboard/machine/machine-table';
@@ -35,6 +36,8 @@ let machines = [
 
 
 export default function Page(): React.JSX.Element {
+  //const [machines, setData] = React.useState([]) 
+
   const page = 0;
   const rowsPerPage = 5;
   const router = useRouter();
@@ -48,10 +51,31 @@ export default function Page(): React.JSX.Element {
 
     console.log('onClick', evt.currentTarget.id);
 
+    //Remover item pela API
+    /*React.useEffect(() => {
+      Delete("/machine/"+evt.currentTarget.id).then((res) => {
+          
+          Get("/machine").then((res) => {
+            setData(res.data);
+          });
+
+        })
+    });*/
+
     router.refresh();
   }, []);
 
+  //Carregar lista pela API
+  /*React.useEffect(() => {
+    Get("/machine").then((res) => {
+      setData(res.data);
+    });
+  });
+  */
+
+
   return (
+    machines.length > 0 &&
     <Stack spacing={3}>
       <Stack direction="row" spacing={3}>
         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
@@ -71,6 +95,7 @@ export default function Page(): React.JSX.Element {
         handleDeleteClick={handleDeleteClick}
       />
     </Stack>
+    
   );
 }
 
