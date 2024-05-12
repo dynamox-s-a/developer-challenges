@@ -1,30 +1,57 @@
-# React + TypeScript + Vite
+# :checkered_flag: DynaPredict
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Preview
 
-Currently, two official plugins are available:
+Tela Home (/):
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![preview](https://i.postimg.cc/kq9r3zTM/Captura-de-Tela-2024-05-12-a-s-11-11-55.png)
 
-## Expanding the ESLint configuration
+Tela Data (/data):
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+![preview](https://i.postimg.cc/cHXwPzcS/Captura-de-Tela-2024-05-12-a-s-11-25-42.png)
 
-- Configure the top-level `parserOptions` property like this:
+# :open_book: Sobre o projeto
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+Projeto criado com o intuito de utilizar o consumo de uma api mockada, utilizando alguns recursos da biblioteca React para renderizar 3 gráficos.
+
+# :computer: Tecnologias utilizadas
+
+## Front End
+
+- React
+- Axios
+- Material UI
+- Higcharts
+
+# :runner: Como executar o projeto
+
+```bash
+# Clonar o repositório:
+git clone https://github.com/luisdandolini/teste-dynamox
+
+# Instalar as dependências
+npm install
+
+# Executar o projeto
+npm run dev
+
+
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+# ❕ Observação
+
+## Para uma melhor experiência, executar o backend do projeto, na qual se encontra no seguinte caminho e com suas devidas instruções de como rodar:
+
+```bash
+# Em outro terminal dentro da pasta do projeto:
+
+cd src
+
+cd services
+
+npx json-server --watch response.json --port 3000
+```
+
+# ! Deploy do Projeto
+
+https://teste-dynamox.vercel.app/data
