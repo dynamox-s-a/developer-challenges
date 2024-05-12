@@ -16,6 +16,10 @@ export const Title = styled.h2`
   margin-bottom: 2rem;
 
   font-size: 2.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.8rem;
+  }
 `;
 
 export const Text = styled.p`
@@ -24,6 +28,12 @@ export const Text = styled.p`
 
   width: 1200px;
   text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    width: initial;
+    padding: 0 1rem;
+  }
 `;
 
 export const Button = styled.button`
@@ -42,4 +52,14 @@ export const TypeSensors = styled.div`
   display: flex;
   align-items: center;
   gap: 4rem;
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+
+    .image-sensors {
+      width: 180px;
+    }
+  }
 `;

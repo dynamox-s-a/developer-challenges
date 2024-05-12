@@ -11,7 +11,11 @@ export function Solution() {
           <img src={LogoDinaPredict} alt="Logo DynaPredict" />
         </ContainerText>
 
-        <img src={IlustrationImage} alt="Imagem Ilustrativa do Sistema" />
+        <img
+          src={IlustrationImage}
+          alt="Imagem Ilustrativa do Sistema"
+          className="image-notebook"
+        />
       </Content>
     </Container>
   );

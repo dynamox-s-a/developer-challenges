@@ -14,6 +14,10 @@ export const Title = styled.h2`
   text-align: center;
   padding: 2.5rem 0rem 2rem 0rem;
   font-size: 1.875rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.8rem;
+  }
 `;
 
 export const ContainerForm = styled.form`
@@ -30,6 +34,10 @@ export const Input = styled.input`
   text-align: center;
   border-radius: 5px;
   border: none;
+
+  @media (max-width: 768px) {
+    width: 350px;
+  }
 `;
 
 export const Button = styled.button`

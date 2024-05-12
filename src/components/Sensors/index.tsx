@@ -20,9 +20,21 @@ export function Sensors() {
         <Button>VER MAIS</Button>
       </NavLink>
       <TypeSensors>
-        <img src={imageTCA} alt="Imagem Ilustrativa do Sensor TcA+" />
-        <img src={imageAS} alt="Imagem Ilustrativa do Sensor AS" />
-        <img src={imageHF} alt="Imagem Ilustrativa do Sensor HF" />
+        <img
+          src={imageTCA}
+          alt="Imagem Ilustrativa do Sensor TcA+"
+          className="image-sensors"
+        />
+        <img
+          src={imageAS}
+          alt="Imagem Ilustrativa do Sensor AS"
+          className="image-sensors"
+        />
+        <img
+          src={imageHF}
+          alt="Imagem Ilustrativa do Sensor HF"
+          className="image-sensors"
+        />
       </TypeSensors>
     </Container>
   );

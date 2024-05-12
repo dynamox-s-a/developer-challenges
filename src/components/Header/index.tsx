@@ -1,7 +1,21 @@
-import { HeaderContainer, ContainerLinks, Link, Item } from "./styles";
+import { useState } from "react";
+import {
+  HeaderContainer,
+  ContainerLinks,
+  Link,
+  Item,
+  HamburguerMenu,
+  MenuIcon,
+} from "./styles";
 import Logo from "../../assets/logo-dynamox.svg";
 
 export function Header() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
   const scrollToSection = (sectionId: any) => {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -12,8 +26,11 @@ export function Header() {
   return (
     <HeaderContainer>
       <img src={Logo} alt="Logo Dynamox" />
+      <HamburguerMenu onClick={toggleMenu}>
+        <MenuIcon isOpen={isOpen} />
+      </HamburguerMenu>
 
-      <ContainerLinks>
+      <ContainerLinks isOpen={isOpen}>
         <Link>
           <Item onClick={() => scrollToSection("dynapredict")}>
             DynaPredict
