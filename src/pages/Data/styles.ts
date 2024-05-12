@@ -9,6 +9,10 @@ export const Header = styled.header`
   border-bottom: 1px solid #dfe3e8;
   padding: 1rem 1.5rem 1rem 1.5rem;
   font-weight: 500;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 export const ContainerGraphic = styled.div`

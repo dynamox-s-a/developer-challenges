@@ -13,6 +13,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@hookform/error-message": "^2.0.1",
+    "@mui/icons-material": "^5.15.17",
     "@mui/material": "^5.15.16",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.6.8",

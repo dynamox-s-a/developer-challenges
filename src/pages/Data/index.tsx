@@ -1,10 +1,20 @@
+import { Tooltip } from "@mui/material";
 import DynamicChart from "../../components/DynamicChart";
 import { Container, Header, ContainerGraphic } from "./styles";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { NavLink } from "react-router-dom";
 
 export function Data() {
   return (
     <Container>
-      <Header>Análise de Dados</Header>
+      <Header>
+        Análise de Dados
+        <NavLink to="/">
+          <Tooltip title="Voltar" placement="top">
+            <ArrowBackIcon sx={{ fontSize: 24 }} />
+          </Tooltip>
+        </NavLink>
+      </Header>
       <ContainerGraphic>
         <DynamicChart
           urls={[
