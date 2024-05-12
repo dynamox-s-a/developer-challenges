@@ -54,4 +54,4 @@ npx json-server --watch response.json --port 3000
 
 # ! Deploy do Projeto
 
-https://teste-dynamox.vercel.app/data
+https://teste-dynamox.vercel.app
