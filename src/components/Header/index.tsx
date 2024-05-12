@@ -31,15 +31,15 @@ export function Header() {
       </HamburguerMenu>
 
       <ContainerLinks isOpen={isOpen}>
-        <Link>
+        <Link onClick={toggleMenu}>
           <Item onClick={() => scrollToSection("dynapredict")}>
             DynaPredict
           </Item>
         </Link>
-        <Link>
+        <Link onClick={toggleMenu}>
           <Item onClick={() => scrollToSection("sensores")}>Sensores</Item>
         </Link>
-        <Link>
+        <Link onClick={toggleMenu}>
           <Item onClick={() => scrollToSection("contato")}>Contato</Item>
         </Link>
       </ContainerLinks>
