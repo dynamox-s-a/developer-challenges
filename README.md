@@ -22,6 +22,7 @@ Projeto criado com o intuito de utilizar o consumo de uma api mockada, utilizand
 - Axios
 - Material UI
 - Higcharts
+- Redux
 
 # :runner: Como executar o projeto
 
