@@ -1,8 +1,20 @@
 import { Tooltip } from "@mui/material";
 import DynamicChart from "../../components/DynamicChart";
-import { Container, Header, ContainerGraphic } from "./styles";
+import {
+  Container,
+  Header,
+  ContainerGraphic,
+  ContainerButtons,
+  Button,
+  Divider,
+} from "./styles";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { NavLink } from "react-router-dom";
+import IconMaquina from "../../assets/maquina.svg";
+import Clock from "../../assets/clock.svg";
+import Gps from "../../assets/gps.svg";
+import Faixa from "../../assets/faixa_dinamica.svg";
+import Rpm from "../../assets/rpm.svg";
 
 export function Data() {
   return (
@@ -15,6 +27,36 @@ export function Data() {
           </Tooltip>
         </NavLink>
       </Header>
+
+      <ContainerButtons>
+        <Button>
+          <img src={IconMaquina} alt="" /> Máquina 1023
+        </Button>
+
+        <Divider></Divider>
+
+        <Button>
+          <img src={Gps} alt="" /> Ponto 20192
+        </Button>
+
+        <Divider></Divider>
+
+        <Button>
+          <img src={Rpm} alt="" /> 200
+        </Button>
+        <Divider></Divider>
+
+        <Button>
+          <img src={Faixa} alt="" /> 16g
+        </Button>
+
+        <Divider></Divider>
+
+        <Button>
+          <img src={Clock} alt="" /> 20 min
+        </Button>
+      </ContainerButtons>
+
       <ContainerGraphic>
         <DynamicChart
           chartId="accelerationChart"
