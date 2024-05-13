@@ -17,6 +17,7 @@ export function Data() {
       </Header>
       <ContainerGraphic>
         <DynamicChart
+          chartId="accelerationChart"
           urls={[
             "http://localhost:3000/0",
             "http://localhost:3000/1",
@@ -29,14 +30,16 @@ export function Data() {
         />
 
         <DynamicChart
+          chartId="temperatureChart"
           urls={["http://localhost:3000/3"]}
-          seriesNames={["Tempetura"]}
+          seriesNames={["Temperatura"]}
           title="Temperatura"
           titleAxisX="Temperatura (°C)"
           lineColors={["#89982E"]}
         />
 
         <DynamicChart
+          chartId="velocityChart"
           urls={[
             "http://localhost:3000/4",
             "http://localhost:3000/5",
