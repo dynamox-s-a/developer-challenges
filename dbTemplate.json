@@ -1,0 +1,67 @@
+{
+  "data": [
+    {
+      "name": "accelerationRms/x",
+      "data": [
+        {
+          "datetime": "2023-11-07T11:53:38.187Z",
+          "max": 0
+        }
+      ]
+    },
+    {
+      "name": "accelerationRms/y",
+      "data": [
+        {
+          "datetime": "2023-11-07T11:53:38.187Z",
+          "max": 0 
+        }
+      ]
+    },
+    {
+      "name": "accelerationRms/z",
+      "data": [
+        {
+          "datetime": "2023-11-07T11:53:38.187Z",
+          "max": 0
+        }
+      ]
+    },
+    {
+      "name": "velocityRms/x",
+      "data": [
+        {
+          "datetime": "2023-11-07T11:53:38.187Z",
+          "max": 0.2829807692307692
+        }
+      ]
+    },
+    {
+      "name": "velocityRms/y",
+      "data": [
+        {
+          "datetime": "2023-11-07T11:53:38.187Z",
+          "max": 0.18865384615384614
+        }
+      ]
+    },
+    {
+      "name": "velocityRms/z",
+      "data": [
+        {
+          "datetime": "2023-11-07T11:53:38.187Z",
+          "max": 0.18865384615384614
+        }
+      ]
+    },
+    {
+      "name": "temperature",
+      "data": [
+        {
+          "datetime": "2023-11-07T11:53:38.187Z",
+          "max": 23.849843749999998
+        }
+      ]
+    }
+  ]
+}
