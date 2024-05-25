@@ -30,13 +30,13 @@ export function HeaderNav({ type }: HeaderNavProsp){
           Solutions
           <KeyboardArrowDownIcon/>
         </NavLink>
-        <NavLink to="/data">
+        <NavLink to="/aplications">
           Aplications
         </NavLink>
-        <NavLink  to="/data">
+        <NavLink  to="/content">
           Content
         </NavLink>
-        <NavLink  to="/data">
+        <NavLink  to="/company">
           Company
         </NavLink>
       </Nav>

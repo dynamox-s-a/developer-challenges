@@ -8,6 +8,10 @@ export const StyledLink = styled(Link)`
   text-decoration: none;
   color: #4B4b4b;
 
+  &:hover {
+    opacity: 0.7;
+  }
+
   &.active {
     opacity: 0.4;
   }

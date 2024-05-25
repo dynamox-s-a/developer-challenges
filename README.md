@@ -49,6 +49,9 @@ script: dev:server
 
   # challenges:
   - Aprender a usar o Material UI do zero
+  - React Redux
+  - React Redux Saga
+  - Charts
 
   
 

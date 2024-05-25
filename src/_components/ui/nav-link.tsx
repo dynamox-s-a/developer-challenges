@@ -7,6 +7,6 @@ export function NavLink(props: NavLinkProps){
   const { pathname } = useLocation()
 
   return (
-    <StyledLink className={props.to === pathname ? 'active' : ''} {...props} />
+    <StyledLink className={props.to === pathname ? 'active' : '' } {...props} />
   )
 }
