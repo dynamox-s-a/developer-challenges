@@ -1,7 +1,17 @@
-# start json server:
-script: dev:server
+# Run JSON Server:
+script: "dev:server" / usage "npm run dev:server"
 
-# Learned:
+# Patterns:
+Exports and Imports - I always give preference to named exports
+Global State - Redux Tool kit
+Local states - useState / component states...
+HTTP Requests - Axios
+
+# reminder
+- Usar os cards do DT-Money (?)
+- Ver como será o Layout
+
+# What I have Learned to do this project:
   ## JSON-SERVER
   https://www.fabricadecodigo.com/json-server/
 
@@ -17,10 +27,10 @@ script: dev:server
   ## Emotion
   https://emotion.sh/docs/styled
 
+  ## Redux
+  https://redux-toolkit.js.org/introduction/getting-started
+  - used course Rocketseat Redux + Zustand for understanding de concepts about the Redux
 
-  # reminder
-  - Usar os cards do DT-Money (?)
-  - Ver como será o Layout
 
   # What I have done:
     24/05
@@ -45,6 +55,13 @@ script: dev:server
   - Add Router nav logics
   - AppLayout - Header
   - Create Modal / Nav itens 
+    26/06
+  - Finished the Machine Card
+  - Study Redux 
+  - Understanding about redux(Clearly I dont understand very much :D)
+  - Configure Redux
+  - Configure store
+  - Configure Axios
 
 
   # challenges:

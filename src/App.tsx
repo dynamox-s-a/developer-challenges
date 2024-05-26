@@ -1,3 +1,4 @@
+import { Provider as ReduxProvider } from 'react-redux';
 import { Global, ThemeProvider as EmotionThemeProvider } from '@emotion/react';
 import { ThemeProvider as MUIThemeProvider } from '@mui/material/styles';
 import { theme } from './theme';
@@ -5,19 +6,27 @@ import { globalStyles } from './styles/globalStyles';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './routes';
+// import { eduStore } from './edu/eduStore';
+import { store } from './store';
 
 export function App() {
   return (
     <>
-      <Global styles={globalStyles} />
-      <MUIThemeProvider theme={theme}>
-        <EmotionThemeProvider theme={theme}>
-          <HelmetProvider>
-            <Helmet titleTemplate='%s | Dynamox' />
-            <RouterProvider router={router} />
-          </HelmetProvider>
-        </EmotionThemeProvider>
-      </MUIThemeProvider>
+      <ReduxProvider store={store}>
+        {/* <ReduxProvider store={eduStore}> */}
+          <Global styles={globalStyles} />
+          <MUIThemeProvider theme={theme}>
+            <EmotionThemeProvider theme={theme}>
+              <HelmetProvider>
+                <Helmet titleTemplate='%s | Dynamox' />
+                {/* App: */}
+                <RouterProvider router={router} />
+
+              </HelmetProvider>
+            </EmotionThemeProvider>
+          </MUIThemeProvider>
+        {/* </ReduxProvider> */}
+      </ReduxProvider>
       
     </>
   )

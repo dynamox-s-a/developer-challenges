@@ -2,8 +2,21 @@ import { Helmet } from "react-helmet-async";
 import { Container, Typography } from "@mui/material";
 import { MachineCardsContainer } from "./data.styles";
 import { MachineCards } from "../../_components/machineCards/machine-cards";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { useEffect } from "react";
+import { loadMachineData } from "../../store/slices/machineData";
 
 export function Data(){
+  const dispatch = useAppDispatch()
+  const machineData = useAppSelector(store => { return store.machineData.data })
+  const isMachineDataLoading = useAppSelector(state => state.machineData.isLoading)
+
+  console.log(machineData)
+
+  useEffect(() => {
+    dispatch(loadMachineData())
+  },[])
+
   return(
     <>
       <Helmet title="Data" />
@@ -12,6 +25,13 @@ export function Data(){
         <MachineCardsContainer>
           <MachineCards />
         </MachineCardsContainer>
+
+        { isMachineDataLoading ? (
+          <div>isLoading</div>
+        ) : (
+          <div>Chart</div>
+        )}
+        
       </Container>
     </>
   )

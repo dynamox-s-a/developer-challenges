@@ -2,8 +2,6 @@ import { useState } from "react";
 import { CardContainer, CardDescription, CardHeader, CardInfo, CardHelper } from "./card.styles";
 import InfoIcon from '@mui/icons-material/Info';
 
-
-
 interface CardProps {
   data: {
     icon: string,
@@ -41,8 +39,10 @@ export function Card({ data }: CardProps ){
             <CardHelper>
               <InfoIcon />
               <span>{data.helper}</span>
-            </CardHelper> ) : null }  
-            
+            </CardHelper> 
+          ) : (
+            null
+          )}
         </CardHeader>
       </CardContainer>
     </>
