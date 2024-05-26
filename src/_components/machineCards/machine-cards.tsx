@@ -10,31 +10,32 @@ const machineData = {
   icon: machineImg,
   title: 'Máquina',
   description: '1023',
-  helper: 'this machine was improved by bla bla bla'
+  helper: 'Rotating machines convert energy using rotational motion.'
 }
 
 const locationData = {
   icon: pointLocation,
   title: 'Ponto',
   description: '20192',
-  helper: 'this pointLocation was improved by bla bla bla'
+  helper: 'Zone A3 (production line).'
 }
 
 const rpmData = {
   icon: rpmImg,
   description: '200',
-  helper: 'this rpm was improved by bla bla bla'
+  helper: 'It measures how many times an object rotates around its axis in one minute.'
 }
+
 const durationData = {
   icon: durationImg,
   description: '16g',
-  helper: 'this duration was improved by bla bla bla'
+  helper: 'industrial machines last from 10 to 30 years with proper care.'
 }
 
 const intervalData = {
   icon: intervalImg,
   description: '20 min',
-  helper: 'this interval was improved by bla bla bla'
+  helper: 'The intervals of a machine.'
 }
 
 export function MachineCards(){

@@ -53,18 +53,27 @@ export const CardInfo = styled.span<CardInfoProps>`
       color: ${props => props.theme.palette.grey[500]};
     }
   }
-
- 
-
 `
 
-export const InfoPortal = styled.div`
+export const CardHelper = styled.div`
   position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  
+  top: 56px;
+  right: 0;
   z-index: 1000;
-  background-color: white;
+  background-color: ${props => props.theme.palette.grey.A100};
   padding: 16px;
   border-radius: 8px;
   box-shadow: ${props => props.theme.shadows[3]};
+
+  span {
+    font-size: 0.75rem;
+    color: ${props => props.theme.palette.grey[700]}
+  }
+
 `
 
 // export const CardContent = styled.body``
