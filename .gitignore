@@ -23,3 +23,6 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+# Testing
+__snapshots__
