@@ -27,9 +27,24 @@ HTTP Requests - Axios
   ## Emotion
   https://emotion.sh/docs/styled
 
-  ## Redux
+  ## Redux-toolkit 
   https://redux-toolkit.js.org/introduction/getting-started
   - used course Rocketseat Redux + Zustand for understanding de concepts about the Redux
+
+  ## Redux Saga + Redux toolkit
+  Redux Toolkit with Redux Saga | Toolkit and Saga made Simple
+  https://www.youtube.com/watch?v=9MMSRn5NoFY&ab_channel=EdRoh
+
+  ## highcarts
+  https://www.youtube.com/watch?v=fYkAm0SZApA&ab_channel=JavidCode
+
+
+  # notused
+  ## Redux
+  https://www.youtube.com/watch?v=7YoMyQ-jsBk&ab_channel=%C3%89vertonToffanetto
+  
+  ## Redux
+  https://www.youtube.com/watch?v=npeq6lTXWQw&list=PL8p2I9GklV45pe55ZVEEhk8elLZLh932A&index=9&ab_channel=CodeStepByStep
 
 
   # What I have done:
@@ -62,15 +77,18 @@ HTTP Requests - Axios
   - Configure Redux
   - Configure store
   - Configure Axios
+  - Learn and implement React Thunk(Action Asyncrona)
+    26/06
+  - Learn React Redux
 
 
   # challenges:
-  - Aprender a usar o Material UI do zero
-  - React Redux
-  - React Redux Saga
+  - Aprender a como usar os estilos e design system do Material UI do zero
+  - Relembrar como React Redux funciona e aprender os fundamentos
+  - React Redux Saga do zero
   - Charts
 
-  
-
+# challenge link:
+https://github.com/dynamox-s-a/developer-challenges/blob/main/front-end-challenge.md
 
 

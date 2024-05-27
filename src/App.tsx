@@ -13,7 +13,6 @@ export function App() {
   return (
     <>
       <ReduxProvider store={store}>
-        {/* <ReduxProvider store={eduStore}> */}
           <Global styles={globalStyles} />
           <MUIThemeProvider theme={theme}>
             <EmotionThemeProvider theme={theme}>
@@ -25,7 +24,6 @@ export function App() {
               </HelmetProvider>
             </EmotionThemeProvider>
           </MUIThemeProvider>
-        {/* </ReduxProvider> */}
       </ReduxProvider>
       
     </>

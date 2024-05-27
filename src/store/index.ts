@@ -1,12 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { machineData } from "./slices/machineData";
+// import { measuresSlice } from "./slices/measuresSlice";
+import createSagaMiddleware from 'redux-saga'
+import measuresSlice from "./slices/measuresSlice";
+import measuresSaga from "./sagas/measuresSaga";
+
+const sagaMiddleware = createSagaMiddleware()
 
 export const store = configureStore({
   reducer: {
-    machineData: machineData.reducer
-  }
+    measures: measuresSlice
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),
 })
+sagaMiddleware.run(measuresSaga)
 
 // useAppSelector = useSelector+Typescript
 export type RootState = ReturnType<typeof store.getState>
