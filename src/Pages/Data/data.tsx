@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { Container, Typography } from "@mui/material";
 import { MachineCardsContainer } from "./data.styles";
 import { MachineCards } from "../../_components/machineCards/machine-cards";
-import { useAppDispatch } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../store";
 import { useEffect } from "react";
 import { getMeasuresFetch, setScope } from "../../store/slices/measuresSlice";
 import { TemperatureChart } from "../../_components/charts/temperature-chart";
@@ -11,6 +11,7 @@ import { VelocityChart } from "../../_components/charts/velocity-chart";
 
 export function Data() {
   const dispatch = useAppDispatch();
+  const isLoading = useAppSelector(store => store.measures.isLoading)
 
    useEffect(() => {
      // Function to check screen size
@@ -53,9 +54,15 @@ export function Data() {
           <MachineCards />
         </MachineCardsContainer>
       
-        <AcelerationChart />
-        <VelocityChart />
-        <TemperatureChart />
+        {isLoading ? (
+          <div>Carregando Charts...</div>
+        ) : (
+          <>
+            <AcelerationChart />
+            <VelocityChart />
+            <TemperatureChart />
+          </>
+        )}
 
       </Container>
     </>
