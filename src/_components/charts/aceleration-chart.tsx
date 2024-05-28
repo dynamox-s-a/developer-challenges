@@ -1,18 +1,17 @@
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import { Measure } from '../../@types/types';
+import { Measure, MeasureItem } from '../../@types/types';
 import { useAppSelector } from '../../store';
+import { AcelerationSelect } from './aceleration-select';
 
-interface DynamicDataChartProps {
-  scope: string
-}
-
-export function DynamicDataChart({ scope }: DynamicDataChartProps ){
+export function AcelerationChart(){
   const measures: Measure[] = useAppSelector(store => store.measures.data);
 
+  const scope: string = useAppSelector(store => store.measures.scope.aceleration);
+
   // Função para pegar os últimos 10 objetos de um array
-  function sliceData(data: string) {
-    // a cada mais ou menos 7 é um dia
+  function sliceData(data: MeasureItem[]) {
+    // a cada mais ou menos 7 itens do [] equivalem a um dia
     if(scope === 'lastDay') {
       return data.slice(-7);
     }
@@ -30,10 +29,11 @@ export function DynamicDataChart({ scope }: DynamicDataChartProps ){
 
     return data
   }
-
+  
   // Função para encontrar os dados da métrica e limitar aos últimos 10 objetos
   function findMetricData(measures: Measure[], metricName: string){
     const metric = measures.find(metric => metric.name.includes(metricName));
+    console.log(metric)
     return metric ? { ...metric, data: sliceData(metric.data) } : undefined;
   }
 
@@ -48,8 +48,6 @@ export function DynamicDataChart({ scope }: DynamicDataChartProps ){
     }));
 
   const accelerationData = createChartData(['accelerationRms/x', 'accelerationRms/y', 'accelerationRms/z']);
-  const velocityData = createChartData(['velocityRms/x', 'velocityRms/y', 'velocityRms/z']);
-  const temperatureData = createChartData(['temperature']);
 
   const chartOptions = {
     xAxis: { type: 'datetime' },
@@ -80,23 +78,10 @@ export function DynamicDataChart({ scope }: DynamicDataChartProps ){
     series: accelerationData,
   };
 
-  const velocityOptions = {
-    ...chartOptions,
-    title: { text: 'Velocidade RMS' },
-    series: velocityData,
-  };
-
-  const temperatureOptions = {
-    ...chartOptions,
-    title: { text: 'Temperatura' },
-    series: temperatureData,
-  };
-
   return (
     <>
-        <HighchartsReact highcharts={Highcharts} options={accelerationOptions} />
-        <HighchartsReact highcharts={Highcharts} options={velocityOptions} />
-        <HighchartsReact highcharts={Highcharts} options={temperatureOptions} />
+      <HighchartsReact highcharts={Highcharts} options={accelerationOptions} />
+      <AcelerationSelect />
     </>
   )
 }

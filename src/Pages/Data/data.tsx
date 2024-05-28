@@ -1,31 +1,33 @@
-
 import { Helmet } from "react-helmet-async";
 import { Container, Typography } from "@mui/material";
 import { MachineCardsContainer } from "./data.styles";
 import { MachineCards } from "../../_components/machineCards/machine-cards";
 import { useAppDispatch } from "../../store";
-import { useEffect, useState } from "react";
-import { getMeasuresFetch } from "../../store/slices/measuresSlice";
-import { DynamicDataChart } from "./dynamic-datachart";
+import { useEffect } from "react";
+import { getMeasuresFetch, setScope } from "../../store/slices/measuresSlice";
+import { TemperatureChart } from "../../_components/charts/temperature-chart";
+import { AcelerationChart } from "../../_components/charts/aceleration-chart";
+import { VelocityChart } from "../../_components/charts/velocity-chart";
 
 export function Data() {
   const dispatch = useAppDispatch();
 
-    // Validação tamanho da tela
-  const [isSmallScreen, setisSmallScreen] = useState(false)
-
-  const [scope, setScope] = useState('lastWeek')
-
-  const handleScopeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setScope(event.target.value);
-  };
- 
    useEffect(() => {
      // Function to check screen size
      function checkScreenSize() {
-       setisSmallScreen(window.innerWidth <= 768)
+       if(window.innerWidth <= 768) {
+        dispatch(setScope({
+          type: 'responsiveChange',
+          selectScope: 'lastDay'
+        }))
+       } else {
+        dispatch(setScope({
+          type: 'responsiveChange',
+          selectScope: 'lastMonth'
+        }))
+       }
      }
- 
+
      // Initial check
      checkScreenSize()
  
@@ -34,7 +36,7 @@ export function Data() {
  
      // Cleanup event listener on component unmount
      return () => window.removeEventListener('resize', checkScreenSize)
-   }, [])
+   }, [dispatch])
 
   useEffect(() => {
     dispatch(getMeasuresFetch());
@@ -51,30 +53,10 @@ export function Data() {
           <MachineCards />
         </MachineCardsContainer>
       
+        <AcelerationChart />
+        <VelocityChart />
+        <TemperatureChart />
 
-        {!isSmallScreen ? (
-          <>
-            <select name="scopeSelect" id="scopeSelect" onChange={handleScopeChange} value={scope}>
-              <option value="lastDay">ultimo dia</option>
-              <option value="lastWeek">ultima semana</option>
-              <option value="lastMonth">ultimo mês</option>
-              <option value="lastYear">ultimo ano</option>
-              <option value="">Tudo</option>
-            </select>
-            <DynamicDataChart scope={scope}/>
-          </>
-        ): (
-          <>
-            <select name="scopeSelect" id="scopeSelect" onChange={handleScopeChange} value={scope}>
-              <option value="lastDay">ultimo dia</option>
-              <option value="lastWeek">ultima semana</option>
-              <option value="lastMonth">ultimo mês</option>
-              <option value="lastYear">ultimo ano</option>
-              <option value="">Tudo</option>
-            </select>
-            <DynamicDataChart scope={scope}/>
-          </>
-        )}
       </Container>
     </>
   );

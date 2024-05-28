@@ -36,10 +36,14 @@ HTTP Requests - Axios
   https://www.youtube.com/watch?v=9MMSRn5NoFY&ab_channel=EdRoh
 
   ## highcarts
+  Javidcode
   https://www.youtube.com/watch?v=fYkAm0SZApA&ab_channel=JavidCode
   
   series
   https://www.highcharts.com/docs/chart-concepts/series
+  
+  JavaScript Charting & Highcharts in 5 Minutes
+  https://www.youtube.com/watch?v=qYaVsxL0qNA&ab_channel=AdrianKhoo
 
 
 
@@ -85,12 +89,19 @@ HTTP Requests - Axios
     26/06
   - Learn React Redux
   - implement React Redux
-    27 
+    27/05
   - Learn about React Saga
   - configure React Saga
   - Learn how to implement Highcharts
   - Manipulate JSON
   - create 3charts
+    28/05
+  - create select to manipulate period
+  - create chart components
+  - separate logic in small components
+  - create state(aceleration, velocity, temperature) in measuresSlice
+  - create responsive logics
+
 
 
 

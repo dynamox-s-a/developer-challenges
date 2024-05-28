@@ -1,7 +1,7 @@
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import { Measure } from '../../@types/types';
-import { useAppSelector } from '../../store';
+import { Measure } from '../../../@types/types';
+import { useAppSelector } from '../../../store';
 
 export function FullDataChart(){
   const measures: Measure[] = useAppSelector(store => store.measures.data);
