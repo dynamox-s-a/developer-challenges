@@ -23,33 +23,24 @@ export function TemperatureChart(){
     if(scope === 'lastMonth') {
       return data.slice(-217);
     }
+
     if(scope === 'lastYear') {
       return data.slice(-2555);
     }
 
     return data
   }
-
-  // Função para encontrar os dados da métrica e limitar aos últimos 10 objetos
+  
   function findMetricData(measures: Measure[], metricName: string){
     const metric = measures.find(metric => metric.name.includes(metricName));
-    console.log(metric)
     return metric ? { ...metric, data: sliceData(metric.data) } : undefined;
   }
 
   function formatMetricData(metricData: Measure | undefined){ 
-    return metricData ? metricData.data.map(entry => [new Date(entry.datetime).getTime(), entry.max]) : []
+    return metricData ? metricData.data.map(entry => [new Date(entry.datetime).getTime(), entry.max]) : [];
   }
 
-  const createChartData = (metricNames: string[]) => 
-    metricNames.map(metricName => ({
-      name: metricName,
-      data: formatMetricData(findMetricData(measures, metricName)),
-    }));
-
-  const temperatureData = createChartData(['temperature']);
-
-  const chartOptions = {
+  const temperatureOptions = {
     xAxis: { type: 'datetime' },
     yAxis: { title: { text: 'Magnitude' } },
     tooltip: { 
@@ -70,12 +61,14 @@ export function TemperatureChart(){
         enableMouseTracking: true
       }
     },
-  };
-
-  const temperatureOptions = {
-    ...chartOptions,
-    title: { text: 'Temperatura' },
-    series: temperatureData,
+    title: { text: 'Temperature' },
+    series: [
+      {
+        name: 'temperature',
+        color: '#e38623',
+        data: formatMetricData(findMetricData(measures, 'temperature')),
+      },
+    ]
   };
 
   return(

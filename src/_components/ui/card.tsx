@@ -4,21 +4,22 @@ import InfoIcon from '@mui/icons-material/Info';
 
 interface CardProps {
   data: {
-    icon: string,
-    title?: string,
-    description: string
-    helper?: string
+    type: string;
+    title?: string | undefined;
+    description: string;
+    helper?: string | undefined;
   }
+  icon: string;
 }
 
-export function Card({ data }: CardProps ){
+export function Card({ data, icon }: CardProps ){
   const [isInfoVisible, setInfoVisible] = useState(false)
 
   return (
     <>
       <CardContainer>
         <CardHeader>
-          <img src={data.icon} alt={data.title} />
+          <img src={icon} alt={data.title} />
 
           <CardDescription>
             {data.title && (

@@ -6,50 +6,34 @@ import { AcelerationSelect } from './aceleration-select';
 
 export function AcelerationChart(){
   const measures: Measure[] = useAppSelector(store => store.measures.data);
-
   const scope: string = useAppSelector(store => store.measures.scope.aceleration);
 
-  // Função para pegar os últimos 10 objetos de um array
   function sliceData(data: MeasureItem[]) {
-    // a cada mais ou menos 7 itens do [] equivalem a um dia
     if(scope === 'lastDay') {
       return data.slice(-7);
     }
-
     if(scope === 'lastWeek') {
       return data.slice(-42);
     }
-
     if(scope === 'lastMonth') {
       return data.slice(-217);
     }
     if(scope === 'lastYear') {
       return data.slice(-2555);
     }
-
-    return data
+    return data;
   }
   
-  // Função para encontrar os dados da métrica e limitar aos últimos 10 objetos
   function findMetricData(measures: Measure[], metricName: string){
     const metric = measures.find(metric => metric.name.includes(metricName));
-    console.log(metric)
     return metric ? { ...metric, data: sliceData(metric.data) } : undefined;
   }
 
   function formatMetricData(metricData: Measure | undefined){ 
-    return metricData ? metricData.data.map(entry => [new Date(entry.datetime).getTime(), entry.max]) : []
+    return metricData ? metricData.data.map(entry => [new Date(entry.datetime).getTime(), entry.max]) : [];
   }
 
-  const createChartData = (metricNames: string[]) => 
-    metricNames.map(metricName => ({
-      name: metricName,
-      data: formatMetricData(findMetricData(measures, metricName)),
-    }));
-
-  const accelerationData = createChartData(['accelerationRms/x', 'accelerationRms/y', 'accelerationRms/z']);
-
-  const chartOptions = {
+  const accelerationOptions = {
     xAxis: { type: 'datetime' },
     yAxis: { title: { text: 'Magnitude' } },
     tooltip: { 
@@ -70,12 +54,24 @@ export function AcelerationChart(){
         enableMouseTracking: true
       }
     },
-  };
-
-  const accelerationOptions = {
-    ...chartOptions,
     title: { text: 'Aceleração RMS' },
-    series: accelerationData,
+    series: [
+      {
+        name: 'accelerationRms/x',
+        color: '#f5c815',
+        data: formatMetricData(findMetricData(measures, 'accelerationRms/x')),
+      },
+      {
+        name: 'accelerationRms/y',
+        color: '#ef4242',
+        data: formatMetricData(findMetricData(measures, 'accelerationRms/y')),
+      },
+      {
+        name: 'accelerationRms/z',
+        color: '#0f75e2', // Cor azul
+        data: formatMetricData(findMetricData(measures, 'accelerationRms/z')),
+      }
+    ]
   };
 
   return (

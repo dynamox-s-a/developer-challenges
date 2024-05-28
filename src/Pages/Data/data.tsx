@@ -8,6 +8,7 @@ import { getMeasuresFetch, setScope } from "../../store/slices/measuresSlice";
 import { TemperatureChart } from "../../_components/charts/temperature-chart";
 import { AcelerationChart } from "../../_components/charts/aceleration-chart";
 import { VelocityChart } from "../../_components/charts/velocity-chart";
+import { getMachineDataFetch } from "../../store/slices/machineSlice";
 
 export function Data() {
   const dispatch = useAppDispatch();
@@ -41,6 +42,7 @@ export function Data() {
 
   useEffect(() => {
     dispatch(getMeasuresFetch());
+    dispatch(getMachineDataFetch())
   }, [dispatch]);
 
   return (
