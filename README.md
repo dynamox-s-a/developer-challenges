@@ -37,6 +37,10 @@ HTTP Requests - Axios
 
   ## highcarts
   https://www.youtube.com/watch?v=fYkAm0SZApA&ab_channel=JavidCode
+  
+  series
+  https://www.highcharts.com/docs/chart-concepts/series
+
 
 
   # notused
@@ -80,6 +84,14 @@ HTTP Requests - Axios
   - Learn and implement React Thunk(Action Asyncrona)
     26/06
   - Learn React Redux
+  - implement React Redux
+    27 
+  - Learn about React Saga
+  - configure React Saga
+  - Learn how to implement Highcharts
+  - Manipulate JSON
+  - create 3charts
+
 
 
   # challenges:
