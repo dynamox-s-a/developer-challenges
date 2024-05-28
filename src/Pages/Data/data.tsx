@@ -1,18 +1,19 @@
 import { Helmet } from "react-helmet-async";
-import { Container, Typography } from "@mui/material";
-import { MachineCardsContainer } from "./data.styles";
-import { MachineCards } from "../../_components/machineCards/machine-cards";
-import { useAppDispatch, useAppSelector } from "../../store";
+import { Container } from "@mui/material";
+
+import { useAppDispatch } from "../../store";
 import { useEffect } from "react";
 import { getMeasuresFetch, setScope } from "../../store/slices/measuresSlice";
-import { TemperatureChart } from "../../_components/charts/temperature-chart";
-import { AcelerationChart } from "../../_components/charts/aceleration-chart";
-import { VelocityChart } from "../../_components/charts/velocity-chart";
+
 import { getMachineDataFetch } from "../../store/slices/machineSlice";
+
+import { TitlePage } from "../../_components/ui/title-page";
+import { MachineInformationSection } from "../../_components/sections/machine-information";
+import { DataChartsSection } from "../../_components/sections/datacharts";
+import { Footer } from "../../_components/sections/footer";
 
 export function Data() {
   const dispatch = useAppDispatch();
-  const isLoading = useAppSelector(store => store.measures.isLoading)
 
    useEffect(() => {
      // Function to check screen size
@@ -49,23 +50,13 @@ export function Data() {
     <>
       <Helmet title="Data" />
       <Container sx={{ display: "flex", flexDirection: 'column', gap: '16px', padding: { xs: '24px', md: '80px' } }}>
-        <Typography sx={{ paddingBottom: { xs: '8px', md: '16px' }, fontWeight: '600', fontSize: { xs: '1.5rem', md: '2.5rem' } }}>
-          Análise de dados
-        </Typography>
-        <MachineCardsContainer>
-          <MachineCards />
-        </MachineCardsContainer>
-      
-        {isLoading ? (
-          <div>Carregando Charts...</div>
-        ) : (
-          <>
-            <AcelerationChart />
-            <VelocityChart />
-            <TemperatureChart />
-          </>
-        )}
+        <TitlePage>Data</TitlePage>
 
+        <MachineInformationSection />
+        <DataChartsSection />
+
+        <Footer/>
+        
       </Container>
     </>
   );

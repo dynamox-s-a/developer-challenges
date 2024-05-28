@@ -10,6 +10,7 @@ HTTP Requests - Axios
 # reminder
 - Usar os cards do DT-Money (?)
 - Ver como será o Layout
+- Finalizar 404 page error
 
 # What I have Learned to do this project:
   ## JSON-SERVER
@@ -57,50 +58,53 @@ HTTP Requests - Axios
 
   # What I have done:
     24/05
-  - Fork repo
-  - Create branch gabriel-albano
-  - Clone repository / Create project with Vite 
-  - Install JSON Server
-  - Configure script dev:server
-  - install Material UI
-  - configure font Inter (createTheme)
-  - Configure Theme
-  - Configue @types
-  - install React Helmet Async
-  - Fazer Header
-  - Criar Routes e Páginas de Rotas
-  - Hook useCurrentYear
-  - 404 Page: Não finalizada
-  - Link icon thumb
+          - Fork repo
+          - Create branch gabriel-albano
+          - Clone repository / Create project with Vite 
+          - Install JSON Server
+          - Configure script dev:server
+          - install Material UI
+          - configure font Inter (createTheme)
+          - Configure Theme
+          - Configue @types
+          - install React Helmet Async
+          - Fazer Header
+          - Criar Routes e Páginas de Rotas
+          - Hook useCurrentYear
+          - 404 Page: Não finalizada
+          - Link icon thumb
     25/06
-  - Complete Header
-  - Componente NavLink
-  - Add Router nav logics
-  - AppLayout - Header
-  - Create Modal / Nav itens 
+          - Complete Header
+          - Componente NavLink
+          - Add Router nav logics
+          - AppLayout - Header
+          - Create Modal / Nav itens 
+            26/06
+          - Finished the Machine Card
+          - Study Redux 
+          - Understanding about redux(Clearly I dont understand very much :D)
+          - Configure Redux
+          - Configure store
+          - Configure Axios
+          - Learn and implement React Thunk(Action Asyncrona)
     26/06
-  - Finished the Machine Card
-  - Study Redux 
-  - Understanding about redux(Clearly I dont understand very much :D)
-  - Configure Redux
-  - Configure store
-  - Configure Axios
-  - Learn and implement React Thunk(Action Asyncrona)
-    26/06
-  - Learn React Redux
-  - implement React Redux
-    27/05
-  - Learn about React Saga
-  - configure React Saga
-  - Learn how to implement Highcharts
-  - Manipulate JSON
-  - create 3charts
+          - Learn React Redux
+          - implement React Redux
+            27/05
+          - Learn about React Saga
+          - configure React Saga
+          - Learn how to implement Highcharts
+          - Manipulate JSON
+          - create 3charts
     28/05
-  - create select to manipulate period
-  - create chart components
-  - separate logic in small components
-  - create state(aceleration, velocity, temperature) in measuresSlice
-  - create responsive logics
+          - create select to manipulate period
+          - create chart components
+          - separate logic in small components
+          - create state(aceleration, velocity, temperature) in measuresSlice
+          - create responsive logics
+          - added Color in highCharts
+          - consume machineData in MachineCards
+          - Fix the consume of icon + machineCards data
 
 
 

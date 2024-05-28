@@ -2,7 +2,6 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { Measure, MeasureItem } from "../../@types/types";
 import { useAppSelector } from "../../store";
-import { TemperatureSelect } from "./temperature-select";
 
 export function TemperatureChart(){
   const measures: Measure[] = useAppSelector(store => store.measures.data);
@@ -61,7 +60,7 @@ export function TemperatureChart(){
         enableMouseTracking: true
       }
     },
-    title: { text: 'Temperature' },
+    title: { text: '' },
     series: [
       {
         name: 'temperature',
@@ -74,7 +73,6 @@ export function TemperatureChart(){
   return(
     <>
       <HighchartsReact highcharts={Highcharts} options={temperatureOptions} />
-      <TemperatureSelect />
     </>
   )
 }

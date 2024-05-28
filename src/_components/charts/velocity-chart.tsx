@@ -2,7 +2,6 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { Measure, MeasureItem } from '../../@types/types';
 import { useAppSelector } from '../../store';
-import { VelocitySelect } from './velocity-select';
 
 export function VelocityChart(){
   const measures: Measure[] = useAppSelector(store => store.measures.data);
@@ -74,14 +73,13 @@ export function VelocityChart(){
 
   const velocityOptions = {
     ...chartOptions,
-    title: { text: 'Velocidade RMS' },
+    title: { text: '' },
     series: velocityData,
   };
 
   return (
     <>
         <HighchartsReact highcharts={Highcharts} options={velocityOptions} />
-        <VelocitySelect />
     </>
   )
 }

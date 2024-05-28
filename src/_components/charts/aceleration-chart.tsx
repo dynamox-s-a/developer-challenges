@@ -2,7 +2,6 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { Measure, MeasureItem } from '../../@types/types';
 import { useAppSelector } from '../../store';
-import { AcelerationSelect } from './aceleration-select';
 
 export function AcelerationChart(){
   const measures: Measure[] = useAppSelector(store => store.measures.data);
@@ -54,7 +53,7 @@ export function AcelerationChart(){
         enableMouseTracking: true
       }
     },
-    title: { text: 'Aceleração RMS' },
+    title: { text: '' },
     series: [
       {
         name: 'accelerationRms/x',
@@ -77,7 +76,6 @@ export function AcelerationChart(){
   return (
     <>
       <HighchartsReact highcharts={Highcharts} options={accelerationOptions} />
-      <AcelerationSelect />
     </>
   )
 }
