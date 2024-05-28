@@ -1,0 +1,30 @@
+@import '../Variables.css';
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  border: var(--border);
+  border-radius: .25rem;
+  background-color: var(--dashboard-background-color);
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem 2rem;
+  padding: 0 0 0 3rem;
+  border-left: var(--border);
+}
+
+.card:first-child {
+  border-left: none;
+}
+
+.icon {
+  margin: .25rem;
+}
+
+.image {
+  width: 2.25rem;
+  height: 2.25rem;
+}

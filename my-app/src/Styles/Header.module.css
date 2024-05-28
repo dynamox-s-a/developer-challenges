@@ -1,0 +1,14 @@
+@import '../Variables.css';
+
+.container {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  border-bottom: var(--border);
+}
+
+.title {
+  margin: 1rem;
+  font-weight: 500;
+  font-size: 1.5rem;
+}

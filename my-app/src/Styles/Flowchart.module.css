@@ -1,0 +1,13 @@
+@import '../Variables.css';
+
+.container {
+  background-color: var(--page-background-color);
+  padding: 1.5rem;
+}
+
+.chatContainer {
+  margin: 1.5rem 0;
+  padding: 0 0 2rem 0;
+  background-color: white;
+  border: var(--border);
+}
