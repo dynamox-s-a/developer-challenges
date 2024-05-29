@@ -1,5 +1,8 @@
 import { AppBar, Box, Card, Container, Divider, Typography, Grid } from '@mui/material';
 import { createLazyFileRoute } from '@tanstack/react-router';
+import AccelerationChart from '../components/AccelerationChart';
+import TemperatureChart from '../components/TemperatureChart';
+import VelocityRmsChart from '../components/VelocityRmsChart';
 
 export const Route = createLazyFileRoute('/data')({
   component: Data,
@@ -18,7 +21,7 @@ function Data() {
       </AppBar>
       <Container
         maxWidth={false}
-        sx={{ maxWidth: 1980, display: 'flex', flexDirection: 'column', gap: 2 }}
+        sx={{ maxWidth: 1980, display: 'flex', flexDirection: 'column', gap: 2, pb: 6 }}
         component={'main'}
         role="main"
       >
@@ -77,6 +80,7 @@ function Data() {
           component={'section'}
           sx={{
             p: 2,
+            pb: 6,
             display: 'flex',
             flexDirection: 'column',
             gap: 2,
@@ -90,45 +94,91 @@ function Data() {
               boxShadow: 0,
               border: 1,
               borderColor: '#DFE3E8',
-              px: 2,
-              py: 1,
+              px: 0,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               borderRadius: '4px',
+              flexDirection: 'column',
             }}
           >
-            <Typography sx={{ fontSize: 14, fontWeight: 500 }}>Aceleração RMS</Typography>
+            <Typography
+              sx={{
+                fontSize: 14,
+                fontWeight: 500,
+                borderBottom: 1,
+                borderColor: '#DFE3E8',
+                width: 1,
+                p: 2,
+                textAlign: 'left',
+              }}
+            >
+              Aceleração RMS
+            </Typography>
+            <div className="highcard-container">
+              <AccelerationChart />
+            </div>
           </Box>
           <Box
             sx={{
               boxShadow: 0,
               border: 1,
               borderColor: '#DFE3E8',
-              px: 2,
-              py: 1,
+              p: 0,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               borderRadius: '4px',
+              flexDirection: 'column',
             }}
           >
-            <Typography sx={{ fontSize: 14, fontWeight: 500 }}>Temperatura</Typography>
+            <Typography
+              sx={{
+                fontSize: 14,
+                fontWeight: 500,
+                borderBottom: 1,
+                borderColor: '#DFE3E8',
+                width: 1,
+                p: 2,
+                textAlign: 'left',
+              }}
+              component={'h2'}
+            >
+              Temperatura
+            </Typography>
+            <div className="highcard-container">
+              <TemperatureChart />
+            </div>
           </Box>
           <Box
             sx={{
               boxShadow: 0,
               border: 1,
               borderColor: '#DFE3E8',
-              px: 2,
-              py: 1,
+              p: 0,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               borderRadius: '4px',
+              flexDirection: 'column',
             }}
           >
-            <Typography sx={{ fontSize: 14, fontWeight: 500 }}>Velocidade RMS</Typography>
+            <Typography
+              sx={{
+                fontSize: 14,
+                fontWeight: 500,
+                borderBottom: 1,
+                borderColor: '#DFE3E8',
+                width: 1,
+                p: 2,
+                textAlign: 'left',
+              }}
+            >
+              Velocidade RMS
+            </Typography>
+            <div className="highcard-container">
+              <VelocityRmsChart />
+            </div>
           </Box>
         </Card>
       </Container>
