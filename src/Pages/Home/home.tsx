@@ -12,7 +12,7 @@ export function Home(){
         <Container sx={{  position: 'relative', display: "flex", flexDirection: 'column', gap: '16px', paddingTop: { xs: '24px', md: '72px' } }}>
           <TitlePage>HomeScreen</TitlePage>
 
-          <Box sx={{ display: "flex", flexDirection: "column", gap: '80px'}} >
+          <Box sx={{ display: "flex", flexDirection: "column", gap: '32px'}} >
             <HeroVideoSection/>
             <DynapredictSection />
           </Box>
