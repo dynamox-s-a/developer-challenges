@@ -18,7 +18,7 @@ export function App() {
             <EmotionThemeProvider theme={theme}>
               <HelmetProvider>
                 <Helmet titleTemplate='%s | Dynamox' />
-                {/* App: */}
+                {/* AppRouter: */}
                 <RouterProvider router={router} />
 
               </HelmetProvider>

@@ -2,8 +2,8 @@ import { Helmet } from "react-helmet-async";
 import { Footer } from "../../_components/sections/footer";
 import { TitlePage } from "../../_components/ui/title-page";
 import { Box, Container } from "@mui/material";
-import { DynapredictSection } from "./dynapredict-section";
-import { HeroVideoSection } from "./herovideo-section";
+import { HeroVideoSection } from "../../_components/sections/herovideo";
+import { DynapredictSection } from "../../_components/sections/dynapredict";
 
 export function Home(){
   return (

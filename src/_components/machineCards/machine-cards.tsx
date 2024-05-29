@@ -1,5 +1,3 @@
-import { Card } from "../ui/card";
-
 import machineImg from '../../assets/figmaIconsSvg/machine.svg'
 import pointLocation from '../../assets/figmaIconsSvg/pointLocation.svg'
 import rpmImg from '../../assets/figmaIconsSvg/rpm.svg'
@@ -7,6 +5,7 @@ import durationImg from '../../assets/figmaIconsSvg/duracao.svg'
 import intervalImg from '../../assets/figmaIconsSvg/intervaloAmostras.svg'
 import { useAppSelector } from "../../store";
 import { Skeleton, Stack } from "@mui/material";
+import { Card } from '../cards/card'
 
 export function MachineCards(){
   const machineResponse = useAppSelector(store => store.machinesData.data);

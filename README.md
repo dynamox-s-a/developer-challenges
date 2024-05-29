@@ -13,11 +13,6 @@ Global State - Redux Tool kit
 Local states - useState / component states...
 HTTP Requests - Axios
 
-# reminder
-- Usar os cards do DT-Money (?)
-- Ver como será o Layout
-- Finalizar 404 page error
-
 # What I have Learned to do this project:
   ## JSON-SERVER
   https://www.fabricadecodigo.com/json-server/
@@ -118,18 +113,12 @@ HTTP Requests - Axios
           - Fix the consume of icon + machineCards data
     29/05
           - create tests
-          - home screen
-          - video use home screen
+          - building home page
+          - video use home page
           - newreposity: upload json-server on vercel
           - newreposity: upload another project repository to integrate to json-server
           - newreposity: change de HTTP calls to vercel-server
           - create a skeleton components to isLoading state
-          
-
-
-
-
-
 
   # challenges:
   - Aprender a como usar os estilos e design system do Material UI do zero
