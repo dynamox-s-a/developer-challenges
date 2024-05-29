@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "../ui/nav-link";
 import { MenuIconStyled, Nav } from "./header-nav.styles";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Modal } from "../ui/modal";
 
 interface HeaderNavProsp {
@@ -25,10 +24,6 @@ export function HeaderNav({ type }: HeaderNavProsp){
       <Nav>
         <NavLink to={'/'}>
           Home
-        </NavLink>
-        <NavLink to="/solutions">
-          Solutions
-          <KeyboardArrowDownIcon/>
         </NavLink>
         <NavLink to="/aplications">
           Aplications

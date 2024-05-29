@@ -1,4 +1,36 @@
 {
+  "machine": [
+    {
+      "type": "machine",
+      "title": "Máquina",
+      "description": "1023",
+      "helper": "Rotating machines convert energy using rotational motion."
+    },
+    {
+      "type": "location",
+      "title": "Ponto",
+      "description": "20192",
+      "helper": "Zone A3 (production line)."
+    },
+    {
+      "type": "rpm",
+      "title": "RPM",
+      "description": "200",
+      "helper": "It measures how many times an object rotates around its axis in one minute."
+    },
+    {
+      "type": "duration",
+      "title": "Duration",
+      "description": "16g",
+      "helper": "Industrial machines last from 10 to 30 years with proper care."
+    },
+    {
+      "type": "interval",
+      "title": "Interval",
+      "description": "20 min",
+      "helper": "The intervals of a machine."
+    }
+  ],
   "data": [
     {
       "name": "accelerationRms/x",

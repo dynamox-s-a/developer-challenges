@@ -6,9 +6,11 @@ import rpmImg from '../../assets/figmaIconsSvg/rpm.svg'
 import durationImg from '../../assets/figmaIconsSvg/duracao.svg'
 import intervalImg from '../../assets/figmaIconsSvg/intervaloAmostras.svg'
 import { useAppSelector } from "../../store";
+import { Skeleton, Stack } from "@mui/material";
 
 export function MachineCards(){
   const machineResponse = useAppSelector(store => store.machinesData.data);
+  const isMachineIsLoading = useAppSelector(store => store.machinesData.isLoading)
 
   const machineData = machineResponse.find(item => item.type === 'machine');
   const locationData = machineResponse.find(item => item.type === 'location');
@@ -18,11 +20,37 @@ export function MachineCards(){
 
   return (
     <>
-      {machineData && <Card data={machineData} icon={machineImg} />}
-      {locationData && <Card data={locationData} icon={pointLocation} />}
-      {rpmData && <Card data={rpmData} icon={rpmImg} />}
-      {durationData && <Card data={durationData} icon={durationImg} />}
-      {intervalData && <Card data={intervalData} icon={intervalImg} />}
+      {isMachineIsLoading ? (
+        <>
+          <Stack spacing={0.5}>
+            <Skeleton variant="rounded" height={50} />
+          </Stack>
+          <Stack spacing={0.5}>
+            <Skeleton variant="rounded" height={50} />
+          </Stack>
+          <Stack spacing={0.5}>
+            <Skeleton variant="rounded" height={50} />
+          </Stack>
+          <Stack spacing={0.5}>
+            <Skeleton variant="rounded" height={50} />
+          </Stack>
+          <Stack spacing={0.5}>
+            <Skeleton variant="rounded" height={50} />
+          </Stack>
+        </>
+      ) : (
+        <>
+          {machineData && <Card data={machineData} icon={machineImg} />}
+          {locationData && <Card data={locationData} icon={pointLocation} />}
+          {rpmData && <Card data={rpmData} icon={rpmImg} />}
+          {durationData && <Card data={durationData} icon={durationImg} />}
+          {intervalData && <Card data={intervalData} icon={intervalImg} />}
+        </>
+      )}
+
+      
+
+      
     </>
   )
 }

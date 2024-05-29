@@ -1,5 +1,8 @@
 # Run JSON Server:
-script: "dev:server" / usage "npm run dev:server"
+> npm run dev:server
+
+# Run Vitest Teste:
+> npm run test
 
 # Patterns:
 Exports and Imports - I always give preference to named exports
@@ -46,6 +49,9 @@ HTTP Requests - Axios
   JavaScript Charting & Highcharts in 5 Minutes
   https://www.youtube.com/watch?v=qYaVsxL0qNA&ab_channel=AdrianKhoo
 
+  # Cypress
+  https://www.youtube.com/watch?v=6BkcHAEWeTU&ab_channel=CosdenSolutions
+
 
 
   # notused
@@ -54,6 +60,8 @@ HTTP Requests - Axios
   
   ## Redux
   https://www.youtube.com/watch?v=npeq6lTXWQw&list=PL8p2I9GklV45pe55ZVEEhk8elLZLh932A&index=9&ab_channel=CodeStepByStep
+
+
 
 
   # What I have done:
@@ -105,6 +113,17 @@ HTTP Requests - Axios
           - added Color in highCharts
           - consume machineData in MachineCards
           - Fix the consume of icon + machineCards data
+    29/05
+          - create tests
+          - home screen
+          - video use home screen
+          - newreposity: upload json-server on vercel
+          - newreposity: upload another project repository to integrate to json-server
+          - newreposity: change de HTTP calls to vercel-server
+          - create a skeleton components to isLoading state
+          
+
+
 
 
 

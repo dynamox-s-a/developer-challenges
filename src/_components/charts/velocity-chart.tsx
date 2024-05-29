@@ -5,6 +5,7 @@ import { useAppSelector } from '../../store';
 
 export function VelocityChart(){
   const measures: Measure[] = useAppSelector(store => store.measures.data);
+  console.log('measures', measures)
 
   const scope: string = useAppSelector(store => store.measures.scope.velocity);
 

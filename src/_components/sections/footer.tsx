@@ -7,7 +7,7 @@ export function Footer(){
   return (
     <footer>
       <Container>
-        <Typography sx={{ paddingTop: '32px'}} variant="subtitle1" color={'primary.light'} >
+        <Typography sx={{ padding: '64px 0px 32px 0px' }} variant="subtitle1" color={'primary.light'} >
           &copy; {currentYear} Dynamox. All rights reserverd.
         </Typography>
       </Container>

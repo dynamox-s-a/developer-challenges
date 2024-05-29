@@ -1,13 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface MachineJsonData {
+// export interface MachineJsonData {
+//   title: string;
+//   description: string;
+//   helper: string;
+// }
+
+// export interface MachineItem extends MachineJsonData {
+//   type: 'machine' | 'location' | 'rpm' | 'duration' | 'interval';
+// }
+
+export interface MachineItem {
   title: string;
   description: string;
   helper: string;
-}
-
-export interface MachineItem extends MachineJsonData {
-  type: 'machine' | 'location' | 'rpm' | 'duration' | 'interval';
+  type: string;
 }
 
 interface MachinesSliceState {
@@ -20,7 +27,7 @@ const initialState: MachinesSliceState = {
   isLoading: false
 }
 
-const machineSlice = createSlice({
+export const machineSlice = createSlice({
   name: 'machineSlice',
   initialState,
   reducers: {

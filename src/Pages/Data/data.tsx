@@ -49,7 +49,7 @@ export function Data() {
   return (
     <>
       <Helmet title="Data" />
-      <Container sx={{ display: "flex", flexDirection: 'column', gap: '16px', padding: { xs: '24px', md: '80px' } }}>
+      <Container sx={{ display: "flex", flexDirection: 'column', gap: '16px', paddingTop: { xs: '24px', md: '72px' } }}>
         <TitlePage>Data</TitlePage>
 
         <MachineInformationSection />
