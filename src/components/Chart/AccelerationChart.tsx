@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
-import { fetchAccelerationRequest } from '../redux/slices/accelerationSlice';
-import { RootState } from '../redux/store';
-import { PointData } from '../types';
+import { fetchAccelerationRequest } from '../../redux/slices/accelerationSlice';
+import { RootState } from '../../redux/store';
+import { PointData } from '../../types';
 
 function AccelerationChart() {
   const dispatch = useDispatch();
@@ -34,20 +34,28 @@ function AccelerationChart() {
     },
     series: [
       {
-        name: 'X Axis',
+        name: 'Axial',
+        color: '#2386CB',
+        lineColor: '#2386CB',
         data: xData.map((point: PointData) => [new Date(point.datetime).getTime(), point.max]),
       },
       {
-        name: 'Y Axis',
+        name: 'Horizontal',
+        color: '#CC337D',
+        lineColor: '#CC337D',
         data: yData.map((point: PointData) => [new Date(point.datetime).getTime(), point.max]),
       },
       {
-        name: 'Z Axis',
+        name: 'Radial',
+        color: '#B48A00',
+        lineColor: '#B48A00',
         data: zData.map((point: PointData) => [new Date(point.datetime).getTime(), point.max]),
       },
     ],
   };
 
-  return <div>{options && <HighchartsReact highcharts={Highcharts} options={options} />}</div>;
+  return (
+    <div className="highcard-container">{options && <HighchartsReact highcharts={Highcharts} options={options} />}</div>
+  );
 }
 export default AccelerationChart;
