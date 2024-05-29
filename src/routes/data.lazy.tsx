@@ -12,7 +12,7 @@ import RPM from '../assets/rpm.svg';
 import Maquina from '../assets/maquina.svg';
 import GPS from '../assets/GPS_24px.svg';
 import FaixaDinamica from '../assets/faixa_dinamica.svg';
-import Duracao from '../assets/Icon - header - duracao.svg';
+import Duracao from '../assets/icon - header - numero de voltas.svg';
 
 export const Route = createLazyFileRoute('/data')({
   component: Data,
