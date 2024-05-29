@@ -4,6 +4,9 @@
 # Run Vitest Teste:
 > npm run test
 
+# Vercel cloud proviver
+> https://dynamox-datachart.vercel.app/
+
 # Patterns:
 Exports and Imports - I always give preference to named exports
 Global State - Redux Tool kit
