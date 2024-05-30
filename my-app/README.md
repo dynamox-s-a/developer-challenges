@@ -1,8 +1,8 @@
-Machine Graph
+DynaPredict
 
 Descrição do Projeto
 
-O projeto Machine Graph foi desenvolvido com o objetivo de monitorar e analisar dados de vibração de máquinas em tempo real, sendo particularmente útil para as indústrias de manutenção. Através da análise de grandezas físicas como velocidade e aceleração, o sistema busca identificar sinais que possam prevenir falhas nas máquinas em operação.
+O projeto DynaPredict foi desenvolvido com o objetivo de monitorar e analisar dados de vibração de máquinas em tempo real, sendo particularmente útil para as indústrias de manutenção. Através da análise de grandezas físicas como velocidade e aceleração, o sistema busca identificar sinais que possam prevenir falhas nas máquinas em operação.
 
 Requisitos
 
@@ -38,5 +38,5 @@ Esses gráficos são atualizados automaticamente toda vez que a página é acess
 
 Conclusão
 
-O Machine Graph é uma ferramenta robusta para a análise de dados de vibração, facilitando a manutenção preventiva e a detecção precoce de falhas em máquinas industriais. Com uma interface intuitiva e dados em tempo real, o sistema oferece um suporte valioso para a gestão eficiente da manutenção industrial.
+O DynaPredict é uma ferramenta robusta para a análise de dados de vibração, facilitando a manutenção preventiva e a detecção precoce de falhas em máquinas industriais. Com uma interface intuitiva e dados em tempo real, o sistema oferece um suporte valioso para a gestão eficiente da manutenção industrial.
 	
