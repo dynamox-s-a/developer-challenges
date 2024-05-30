@@ -8,10 +8,10 @@
 > https://dynamox-datachart.vercel.app/
 
 # Patterns:
-Exports and Imports - I always give preference to named exports
-Global State - Redux Tool kit + Redux-saga
-Local states - useState / component states...
-HTTP Requests - Axios
+- Exports and Imports: I always give preference to named exports
+- Global State: Redux Tool kit + Redux-saga
+- Local states: useState / component states...
+- HTTP Requests: Axios
 
 # What I Learned to do for This Project:
   ## JSON-SERVER
@@ -128,11 +128,11 @@ HTTP Requests - Axios
           - fix some issues about the layout
           -
 
-  # challenges:
+  # Personal challenges:
   - Aprender a como usar os estilos e design system do Material UI do zero
-  - Relembrar como React Redux funciona e reaprender os fundamentos
+  - Relembrar como React Redux funciona e reaprender seus fundamentos
   - React Redux Saga do zero
-  - Me entender com tantas informações sendo controladas pelo redux / redux-saga
+  - Entender como tantas informações sendo controladas pelo redux / redux-saga
   - Aprender a como usar a biblioteca highcharts
   - Procurar na internet/youtube/chatGPT como extrair as informações "series" aceita pelo charts e como utiliza-la 
   - aprender a como fatiar um objeto para segmentar um período no gráfico
