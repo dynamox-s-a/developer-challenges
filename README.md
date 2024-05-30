@@ -1,25 +1,27 @@
 # Run JSON Server:
 > npm run dev:server
 
-# Run Vitest Teste:
+# Run Vitest for tests:
 > npm run test
 
-# Vercel cloud proviver
+# Application also available in Vercel cloud provider
 > https://dynamox-datachart.vercel.app/
 
 # Patterns:
 Exports and Imports - I always give preference to named exports
-Global State - Redux Tool kit
+Global State - Redux Tool kit + Redux-saga
 Local states - useState / component states...
 HTTP Requests - Axios
 
-# What I have Learned to do this project:
+# What I Learned to do for This Project:
   ## JSON-SERVER
   https://www.fabricadecodigo.com/json-server/
 
   ## Material UI
+
   ### Learn MUI (Material UI) in under 10 min!
   https://www.youtube.com/watch?v=FB-sKY63AWo&ab_channel=FrontStart
+
   ### Material UI Tutorial #1 - Intro & Setup
   https://www.youtube.com/watch?v=0KEpWHtG10M&list=PL4cUxeGkcC9gjxLvV4VEkZ6H6H4yWuS58&ab_channel=NetNinja
   
@@ -50,6 +52,11 @@ HTTP Requests - Axios
   # Cypress
   https://www.youtube.com/watch?v=6BkcHAEWeTU&ab_channel=CosdenSolutions
 
+  # JSON-server in vercel
+  https://www.youtube.com/watch?v=A--aYRbzKdU&ab_channel=BiGOD
+
+  # use Xcode and simulator to fix mobile issues
+  https://www.youtube.com/watch?v=MKzAFsL2vVk&ab_channel=CSSWeekly
 
 
   # notused
@@ -59,11 +66,8 @@ HTTP Requests - Axios
   ## Redux
   https://www.youtube.com/watch?v=npeq6lTXWQw&list=PL8p2I9GklV45pe55ZVEEhk8elLZLh932A&index=9&ab_channel=CodeStepByStep
 
-
-
-
   # What I have done:
-    24/05
+      24/05
           - Fork repo
           - Create branch gabriel-albano
           - Clone repository / Create project with Vite 
@@ -79,7 +83,7 @@ HTTP Requests - Axios
           - Hook useCurrentYear
           - 404 Page: Não finalizada
           - Link icon thumb
-    25/06
+      25/06
           - Complete Header
           - Componente NavLink
           - Add Router nav logics
@@ -88,21 +92,21 @@ HTTP Requests - Axios
             26/06
           - Finished the Machine Card
           - Study Redux 
-          - Understanding about redux(Clearly I dont understand very much :D)
+          - Understanding about redux
           - Configure Redux
           - Configure store
           - Configure Axios
-          - Learn and implement React Thunk(Action Asyncrona)
-    26/06
+          - Learn and implement React Thunk(Action Asyncrona) - deprecated/not used 
+      26/06
           - Learn React Redux
           - implement React Redux
-            27/05
+      27/05
           - Learn about React Saga
           - configure React Saga
           - Learn how to implement Highcharts
           - Manipulate JSON
           - create 3charts
-    28/05
+      28/05
           - create select to manipulate period
           - create chart components
           - separate logic in small components
@@ -111,7 +115,7 @@ HTTP Requests - Axios
           - added Color in highCharts
           - consume machineData in MachineCards
           - Fix the consume of icon + machineCards data
-    29/05
+      29/05
           - create tests
           - building home page
           - video use home page
@@ -119,12 +123,22 @@ HTTP Requests - Axios
           - newreposity: upload another project repository to integrate to json-server
           - newreposity: change de HTTP calls to vercel-server
           - create a skeleton components to isLoading state
+      30/05
+          - review the project
+          - fix some issues about the layout
+          -
 
   # challenges:
   - Aprender a como usar os estilos e design system do Material UI do zero
-  - Relembrar como React Redux funciona e aprender os fundamentos
+  - Relembrar como React Redux funciona e reaprender os fundamentos
   - React Redux Saga do zero
-  - Charts
+  - Me entender com tantas informações sendo controladas pelo redux / redux-saga
+  - Aprender a como usar a biblioteca highcharts
+  - Procurar na internet/youtube/chatGPT como extrair as informações "series" aceita pelo charts e como utiliza-la 
+  - aprender a como fatiar um objeto para segmentar um período no gráfico
+  - aprender pelo menos os fundamentos de tests com vitest
+  - Como utilizar um servidor estático na vercel para hospedar minha aplicação para demonstração
+
 
 # challenge link:
 https://github.com/dynamox-s-a/developer-challenges/blob/main/front-end-challenge.md

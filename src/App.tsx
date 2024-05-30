@@ -25,7 +25,6 @@ export function App() {
             </EmotionThemeProvider>
           </MUIThemeProvider>
       </ReduxProvider>
-      
     </>
   )
 }

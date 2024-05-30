@@ -6,6 +6,7 @@ import intervalImg from '../../assets/figmaIconsSvg/intervaloAmostras.svg'
 import { useAppSelector } from "../../store";
 import { Skeleton, Stack } from "@mui/material";
 import { Card } from '../cards/card'
+import { MachineCardsContainer } from './machine-cards.style'
 
 export function MachineCards(){
   const machineResponse = useAppSelector(store => store.machinesData.data);
@@ -18,7 +19,7 @@ export function MachineCards(){
   const intervalData = machineResponse.find(item => item.type === 'interval');
 
   return (
-    <>
+    <MachineCardsContainer>
       {isMachineIsLoading ? (
         <>
           <Stack spacing={0.5}>
@@ -46,10 +47,6 @@ export function MachineCards(){
           {intervalData && <Card data={intervalData} icon={intervalImg} />}
         </>
       )}
-
-      
-
-      
-    </>
+    </MachineCardsContainer>
   )
 }
