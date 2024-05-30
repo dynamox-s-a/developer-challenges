@@ -1,7 +1,9 @@
 # Run the application:
 
-## install the dependencies
+## download project:
 > git clone in your machine folder
+
+## install the dependencies
 > npm install 
 
 ## Run app
