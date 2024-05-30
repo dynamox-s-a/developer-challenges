@@ -1,10 +1,19 @@
-# Run JSON Server:
+# Run the application:
+
+## install the dependencies
+> git clone in your machine folder
+> npm install 
+
+## Run app
+> npm run dev
+
+## Run JSON Server:
 > npm run dev:server
 
-# Run Vitest for tests:
+## Run Vitest for tests:
 > npm run test
 
-# Application also available in Vercel cloud provider
+## Application also available in Vercel cloud provider
 > https://dynamox-datachart.vercel.app/
 
 # Patterns:
@@ -142,5 +151,9 @@
 
 # challenge link:
 https://github.com/dynamox-s-a/developer-challenges/blob/main/front-end-challenge.md
+
+# Conclusion
+
+Aprendi e fui muito desafiado com este teste. O projeto colocou-me cara a cara com ferramentas de controle de estado global, como o Redux Toolkit e o React Saga, que não são fáceis para mim. Tentei utilizar os meus conhecimentos para demonstrar o que já aprendi durante os meus estudos e projetos passados. A minha dificuldade com lógica JavaScript é real e tenho que melhorar a cada dia; este desafio mostrou-me isso, já que precisei recorrer a diversas ferramentas de ensino, como cursos/youtube, e até mesmo inteligência artificial, para me dar suporte neste projeto. Pretendo continuar a buscar a melhoria das minhas habilidades como desenvolvedor, e este teste ajudou-me nisso.
 
 
