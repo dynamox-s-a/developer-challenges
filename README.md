@@ -15,6 +15,9 @@
 ## Run Vitest for tests:
 > npm run test
 
+## About the project :
+> You can find the route '/data' at the top of the application on the right-hand side. In the mobile version, the route '/data' is the second item in the hamburger menu. The Header, Home and the menu. The homepage, header, and menu are there to set the project's environment and showcase a bit more of my skills. I tried my best to make it responsive."
+
 ## Application also available in Vercel cloud provider
 > https://dynamox-datachart.vercel.app/
 
