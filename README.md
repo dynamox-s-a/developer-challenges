@@ -13,7 +13,7 @@
 - Local states: useState / component states...
 - HTTP Requests: Axios
 
-# What I Learned to do for This Project:
+# What I learned to build this project:
   ## JSON-SERVER
   https://www.fabricadecodigo.com/json-server/
 
