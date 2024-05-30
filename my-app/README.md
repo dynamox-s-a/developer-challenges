@@ -1,46 +1,42 @@
-# Getting Started with Create React App
+Machine Graph
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Descrição do Projeto
 
-## Available Scripts
+O projeto Machine Graph foi desenvolvido com o objetivo de monitorar e analisar dados de vibração de máquinas em tempo real, sendo particularmente útil para as indústrias de manutenção. Através da análise de grandezas físicas como velocidade e aceleração, o sistema busca identificar sinais que possam prevenir falhas nas máquinas em operação.
 
-In the project directory, you can run:
+Requisitos
 
-### `npm start`
+Para garantir o funcionamento adequado do sistema, siga os seguintes passos:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. Instalação de Dependências: Precisamos baixar as dependências do projeto. Dependendo de qual gerenciador de pacotes você usa, siga um dos comandos abaixo:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Para quem usa npm, execute: npm install
+- Para quem usa yarn, execute: yarn install
 
-### `npm test`
+   
+2. Execução do Backend: Após a instalação das dependências, execute o backend do projeto com o comando em seguida. Isso proporcionará uma experiência mais completa ao usuário.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Comando: npm run backend
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Explicação das Funcionalidades
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Ao acessar a tela `/data`, você encontrará:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Dashboard Superior: Situado na parte superior da página, este dashboard exibe informações detalhadas da máquina selecionada, como:
+  - Nome da máquina
+  - RPM (rotações por minuto)
+  - Tempo de ativação
+  - Outras informações gerais relevantes
 
-### `npm run eject`
+- Gráficos de Análise: Logo abaixo do dashboard, são apresentados três gráficos interativos:
+    - Aceleração RMS: Mostra a variação da aceleração RMS (g) ao longo dos dias.
+    - Temperatura: Exibe a variação da temperatura (ºC), da máquina ao longo dos dias.
+    - Velocidade RMS: Demonstra a variação da velocidade RMS (g) ao longo dos dias.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Esses gráficos são atualizados automaticamente toda vez que a página é acessada ou recarregada, fornecendo dados atualizados para análise contínua.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Conclusão
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+O Machine Graph é uma ferramenta robusta para a análise de dados de vibração, facilitando a manutenção preventiva e a detecção precoce de falhas em máquinas industriais. Com uma interface intuitiva e dados em tempo real, o sistema oferece um suporte valioso para a gestão eficiente da manutenção industrial.
+	

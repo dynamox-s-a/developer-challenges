@@ -30,7 +30,7 @@ const Flowchart = () => {
       ) : (
         <div className={styles.chatContainer}>
           <Chart title='Aceleração RMS' data={[data[0], data[1], data[2]]} yAxisTitle="Aceleração RMS (g)" />
-          <Chart title='Temperatura' data={[data[6]]} yAxisTitle="Temperatura (g)" />
+          <Chart title='Temperatura' data={[data[6]]} yAxisTitle="Temperatura (ºC)" />
           <Chart title='Velocidade RMS' data={[data[3], data[4], data[5]]} yAxisTitle="Aceleração (g)" />
         </div>
       )}
