@@ -1,7 +1,10 @@
 # Run the application:
 
 ## download project:
-> git clone in your machine folder
+> clone repository
+
+## make sure you are on the project branch:
+> git checkout gabriel-albano
 
 ## install the dependencies
 > npm install 
