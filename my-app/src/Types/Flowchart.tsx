@@ -1,10 +1,11 @@
 
-interface IDataPoint {
+export interface IDataPoint {
   datetime: string;
   max: number;
 }
 
-interface IFlowchart {
+export interface IFlowchart {
+  [x: string]: any;
   name: string;
   data: IDataPoint[];
 }

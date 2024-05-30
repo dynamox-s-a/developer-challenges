@@ -6,6 +6,7 @@
   border: var(--border);
   border-radius: .25rem;
   background-color: var(--dashboard-background-color);
+  padding: .5rem;
 }
 
 .card {
@@ -16,15 +17,11 @@
   border-left: var(--border);
 }
 
+
 .card:first-child {
   border-left: none;
 }
 
 .icon {
-  margin: .25rem;
-}
-
-.image {
-  width: 2.25rem;
-  height: 2.25rem;
+  margin-right: .35rem;
 }

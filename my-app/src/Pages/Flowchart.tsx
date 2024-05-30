@@ -5,21 +5,27 @@ import styles from "../Styles/Flowchart.module.css";
 import { useEffect } from "react";
 import { fetchGetFlowchart } from "../Services/Slices/getFlowchart";
 import Loading from "../Components/Loading";
+import { fetchGetMachine } from "../Services/Slices/getMachine";
+import { IMachine, IMachineState } from "../Types/Machine";
 
 const Flowchart = () => {
   const dispatch = useDispatch<any>();
-  const { data, error, loading } = useSelector(
+  const { data, loading } = useSelector(
     (state: any) => state.getFlowchart
+  );
+  const machineData: IMachineState = useSelector(
+    (state: any) => state.getMachine
   );
 
   useEffect(() => {
     dispatch(fetchGetFlowchart())
+    dispatch(fetchGetMachine())
   }, [])
 
   return (
     <div className={styles.container}>
-      <Dashboard />
-      {!loading ? (
+      <Dashboard data={machineData.data} />
+      {loading ? (
         <Loading size={64} type='spin' />
       ) : (
         <div className={styles.chatContainer}>

@@ -1,4 +1,13 @@
 {
+  "machines": [
+    {
+      "machine": "Máquina 575983",
+      "point": "Ponto 20192",
+      "rpm": "200",
+      "diff": "16g",
+      "time": "20 min"
+    }
+  ],
   "flowchart": [
     {
       "name": "accelerationRms/x",
