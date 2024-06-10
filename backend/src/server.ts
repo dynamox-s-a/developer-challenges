@@ -1,19 +1,25 @@
-import express from 'express'
+import express from 'express';
 
 import { Router, Request, Response } from 'express';
 
-const app = express()
+import { configDotenv } from 'dotenv';
 
-const route = Router()
+configDotenv();
 
-app.use(express.json())
+const app = express();
+
+const route = Router();
+
+app.use(express.json());
 
 route.get('/', (req: Request, res: Response) => {
-  res.json({ message: 'UEBA!' })
-})
+  res.json({ message: 'UEBA!' });
+});
 
-app.use(route)
+app.use(route);
 
-const PORT = 3001
+const PORT = process.env.BACKEND_PORT || 3001;
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+export default app;
