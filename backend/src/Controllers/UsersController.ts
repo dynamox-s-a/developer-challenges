@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ICreateUserParams } from '../Interfaces/IUser';
 import { HttpStatusCode } from './Interfaces';
-import UsersServices from '../Services/UsersServices';
+import UsersServices from '../Services/UsersService';
 
 export default class UsersController {
   private req: Request;

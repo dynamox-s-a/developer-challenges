@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import mongoose, { Schema, isObjectIdOrHexString } from 'mongoose';
 import { IUser } from './Interfaces';
 import { ICreateUserParams } from '../Interfaces/IUser';
 import AbstractODM from './AbstractODM';
@@ -32,6 +32,25 @@ class UserODM extends AbstractODM<IUser> {
       });
     }
     return null;
+  }
+
+  public async findById(id: string): Promise<IUser | null> {
+
+    if (!isObjectIdOrHexString(id)) {
+      throw new Error("Invalid user ID format")
+    }
+
+    const _id = new mongoose.Types.ObjectId(id);
+    const user = await this.model.findOne({ _id });
+
+    if (user) {
+      const { _id, name, email, password } = user;
+
+      return new Promise((resolve) => {
+        resolve({ id: _id.toHexString(), name, email, password });
+      });
+    }
+    throw new Error("User ID not found");
   }
 }
 

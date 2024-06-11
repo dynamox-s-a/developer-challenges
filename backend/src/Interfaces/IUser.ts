@@ -10,3 +10,4 @@ export interface ICreateUserParams {
   email: string;
   password: string;
 }
+

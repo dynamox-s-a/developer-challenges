@@ -3,7 +3,7 @@ import { ICreateUserParams } from '../Interfaces/IUser';
 import UserODM from '../Models/UserODM';
 import User from '../Domain/User/User';
 
-export default class UsersServices {
+export default class UsersService {
   private createUserDomain(user: IUser | null): User | null {
     if (user) {
       return new User(user.id, user.name, user.email, undefined);
