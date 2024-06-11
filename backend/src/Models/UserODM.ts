@@ -1,6 +1,5 @@
 import mongoose, { Schema, isObjectIdOrHexString } from 'mongoose';
-import { IUser } from './Interfaces';
-import { ICreateUserParams } from '../Interfaces/IUser';
+import IUser, { ICreateUserParams } from '../Interfaces/IUser';
 import AbstractODM from './AbstractODM';
 
 class UserODM extends AbstractODM<IUser> {

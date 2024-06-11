@@ -1,5 +1,4 @@
-import { IUser } from '../Models/Interfaces';
-import { ICreateUserParams } from '../Interfaces/IUser';
+import IUser, { ICreateUserParams } from '../Interfaces/IUser';
 import UserODM from '../Models/UserODM';
 import User from '../Domain/User/User';
 
