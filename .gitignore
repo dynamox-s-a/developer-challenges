@@ -27,3 +27,6 @@ dist-ssr
 */node_modules
 */public
 */dist
+
+*/coverage
+.env
