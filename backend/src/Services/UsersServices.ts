@@ -13,7 +13,22 @@ export default class UsersServices {
 
   public async create(user: ICreateUserParams) {
     const userODM = new UserODM();
+    const oldUser = await userODM.findByEmail(user.email);
+    if (oldUser) {
+      throw new Error("User already exist.")
+    }
+
     const newUser = await userODM.create(user);
     return this.createUserDomain(newUser);
+  }
+
+  public async login({ email, password }: { email: string; password: string }) {
+    const userODM = new UserODM();
+    const user = await userODM.findByEmail(email);
+    if (user?.password == password) {
+      return new User(user.id, user.name, user.email, undefined);
+    }
+
+    return null;
   }
 }

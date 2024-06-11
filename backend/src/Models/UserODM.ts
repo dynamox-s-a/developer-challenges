@@ -20,6 +20,19 @@ class UserODM extends AbstractODM<IUser> {
       resolve({ id: _id.toHexString(), name, email, password: '' });
     });
   }
+
+  public async findByEmail(email: string): Promise<IUser | null> {
+    const user = await this.model.findOne({ email });
+
+    if (user) {
+      const { _id, name, password } = user;
+
+      return new Promise((resolve) => {
+        resolve({ id: _id.toHexString(), name, email, password });
+      });
+    }
+    return null;
+  }
 }
 
 export default UserODM;

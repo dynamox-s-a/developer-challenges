@@ -30,4 +30,21 @@ export default class UsersController {
       this.next(error);
     }
   }
+
+  public async login() {
+    try {
+      const user = await this.service.login({
+        email: this.req.body.email,
+        password: this.req.body.password,
+      });
+      if (!user) {
+        return this.res
+          .status(HttpStatusCode.BAD_REQUEST)
+          .json('User not found');
+      }
+      return this.res.status(HttpStatusCode.OK).json(user);
+    } catch (error) {
+      this.next(error);
+    }
+  }
 }
