@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import mongoose, { Schema, isObjectIdOrHexString } from 'mongoose';
 import IMachine, { ICreateMachineParams } from '../Interfaces/IMachine';
 import AbstractODM from './AbstractODM';
 
@@ -25,5 +25,23 @@ export default class MachineODM extends AbstractODM<IMachine> {
       type: m.type,
       userId: m.userId,
     }));
+  }
+
+  public async findById(id: string): Promise<IMachine | null> {
+    if (!isObjectIdOrHexString(id)) {
+      throw new Error('Invalid machine ID format');
+    }
+
+    const _id = new mongoose.Types.ObjectId(id);
+    const machine = await this.model.findOne({ _id });
+
+    if (machine) {
+      const { _id, name, type, userId } = machine;
+
+      return new Promise((resolve) => {
+        resolve({ id: _id.toHexString(), name, type, userId });
+      });
+    }
+    throw new Error('Machine ID not found');
   }
 }

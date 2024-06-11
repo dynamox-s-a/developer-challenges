@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ICreateMachineParams } from '../Interfaces/IMachine';
 import { HttpStatusCode } from './Interfaces';
-import MachinesService from '../Services/MachineService';
+import MachinesService from '../Services/MachinesService';
 
 export default class MachinesController {
   private req: Request;
