@@ -1,16 +1,13 @@
 import express from 'express';
-const createMachine = () => {};
-const deleteMachineByID = () => {};
-const findAllMachines = () => {};
-const findByMachineID = () => {};
-const postValidation = () => {};
+import MachinesController from '../Controllers/MachinesController';
 
 const machinesRouter = express.Router();
 
 machinesRouter
-  .get('/', findAllMachines)
-  .get('/:id', findByMachineID)
-  .post('/', postValidation, createMachine)
-  .delete('/:id', deleteMachineByID);
+  .get('/:id',  (req, res, next) =>
+    new MachinesController(req, res, next).listAll() )
+  .post('/', (req, res, next) =>
+    new MachinesController(req, res, next).create()
+  );
 
 export default machinesRouter;
