@@ -5,7 +5,12 @@ import './Login.css';
 
 export default function Login() {
   const n = useNavigate();
-  const [{ email, password }, setEP] = useState({ email: '', password: '' });
+  const [data, setEP] = useState({ email: '', password: '', showPass: false });
+  const { email, password, showPass } = data;
+  const toggleShowPass = () => setEP({ ...data, showPass: !showPass });
+  const setEmail = (value: string) => setEP({ ...data, email: value });
+  const setPassword = (value: string) => setEP({ ...data, password: value });
+
   return (
     <div id="login">
       <h2>Login</h2>
@@ -14,25 +19,33 @@ export default function Login() {
           <span>Email: </span>
           <input
             type="email"
-            onChange={({ target: { value } }) => {
-              setEP({ email: value, password });
-            }}
+            onChange={({ target: { value } }) => setEmail(value)}
           />
         </div>
         <div>
-          <span>Password: </span>
+          <span>
+            Password:{' '}
+            <button type="button" onClick={() => toggleShowPass()}>{`${
+              showPass ? '🔓' : '🔒'
+            }`}</button>
+          </span>
           <input
-            type="password"
-            onChange={({ target: { value } }) => {
-              setEP({ email, password: value });
-            }}
+            value={password}
+            type={showPass ? 'text' : 'password'}
+            onChange={({ target: { value } }) => setPassword(value)}
           />
         </div>
         <div id="controls">
           <button type="button" onClick={() => n('sign-in')}>
             Sign in
           </button>
-          <button type="button" onClick={(e) => bLogin(e, email, password)}>
+          <button
+            type="button"
+            onClick={(e) => {
+              setPassword('');
+              bLogin(e, email, password);
+            }}
+          >
             Login
           </button>
         </div>
@@ -41,16 +54,26 @@ export default function Login() {
   );
 }
 
+function logInFail(error: string) {
+  console.log(error);
+  alert('Login Failed. Try again later.');
+}
+
 function bLogin(
   e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   email: string,
   password: string
 ) {
   e.preventDefault();
-  login(email, password);
+  login(email, password, console.log, logInFail);
 }
 
-function login(email: string, password: string) {
+function login(
+  email: string,
+  password: string,
+  okFunc = console.log,
+  errFunc = console.log
+) {
   const data = JSON.stringify({
     email,
     password,
@@ -69,9 +92,9 @@ function login(email: string, password: string) {
   axios
     .request(config)
     .then((response) => {
-      console.log(JSON.stringify(response.data));
+      okFunc(JSON.stringify(response.data));
     })
     .catch((error) => {
-      console.log(error);
+      errFunc(error);
     });
 }

@@ -6,13 +6,29 @@ import './Login.css';
 
 export default function SignIn() {
   const n = useNavigate();
-  const [{ name, email, password, pass }, setEP] = useState({
+  const [data, setEP] = useState({
     name: '',
     email: '',
     password: '',
     pass: '',
+    showPass: false,
   });
-  const [showPass, setShowPass] = useState(false);
+
+  const { name, email, password, pass, showPass } = data;
+  const toggleShowPass = () => setEP({ ...data, showPass: !showPass });
+  const setName = (value: string) => setEP({ ...data, name: value });
+  const setEmail = (value: string) => setEP({ ...data, email: value });
+  const setPass = (value: string) => setEP({ ...data, pass: value });
+  const setPassword = (value: string) => setEP({ ...data, password: value });
+  const classForName = name.length && name.length < 3 ? 'text-danger' : '';
+  const classForEmail =
+    email.length && !validator.isEmail(email) ? 'text-danger' : '';
+  const disableSign =
+    name.length < 3 ||
+    !validator.isEmail(email) ||
+    password.length < 8 ||
+    pass != password;
+
   return (
     <div id="login">
       <h2>Register New User</h2>
@@ -21,39 +37,28 @@ export default function SignIn() {
           <span>Name: </span>
           <input
             type="text"
-            className={name.length && name.length < 3 ? 'text-danger' : ''}
-            onChange={({ target: { value } }) => {
-              setEP({ name: value, email, password, pass });
-            }}
+            className={classForName}
+            onChange={({ target: { value } }) => setName(value)}
           />
         </div>
         <div>
           <span>Email: </span>
           <input
             type="email"
-            className={
-              email.length && !validator.isEmail(email) ? 'text-danger' : ''
-            }
-            onChange={({ target: { value } }) => {
-              setEP({ name, email: value, password, pass });
-            }}
+            className={classForEmail}
+            onChange={({ target: { value } }) => setEmail(value)}
           />
         </div>
         <div>
           <span>
             Password:{' '}
-            <button
-              type="button"
-              onClick={() => {
-                setShowPass(!showPass);
-              }}
-            >{`${showPass ? '🔓' : '🔒'}`}</button>
+            <button type="button" onClick={() => toggleShowPass()}>{`${
+              showPass ? '🔓' : '🔒'
+            }`}</button>
           </span>
           <input
             type={showPass ? 'text' : 'password'}
-            onChange={({ target: { value } }) => {
-              setEP({ name, email, password: value, pass });
-            }}
+            onChange={({ target: { value } }) => setPassword(value)}
           />
         </div>
 
@@ -62,9 +67,7 @@ export default function SignIn() {
           <input
             type={showPass ? 'text' : 'password'}
             className={pass.length && pass != password ? 'text-danger' : ''}
-            onChange={({ target: { value } }) => {
-              setEP({ name, email, password, pass: value });
-            }}
+            onChange={({ target: { value } }) => setPass(value)}
           />
         </div>
         <div id="controls">
@@ -73,12 +76,7 @@ export default function SignIn() {
           </button>
           <button
             type="button"
-            disabled={
-              name.length < 3 ||
-              !validator.isEmail(email) ||
-              password.length < 8 ||
-              pass != password
-            }
+            disabled={disableSign}
             onClick={(e) => bSignIn(e, name, email, password)}
           >
             Sign in
@@ -89,6 +87,11 @@ export default function SignIn() {
   );
 }
 
+function signInFail(error: string) {
+  console.log(error);
+  alert('Sign in Failed. Try again later.');
+}
+
 function bSignIn(
   e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   name: string,
@@ -96,10 +99,16 @@ function bSignIn(
   password: string
 ) {
   e.preventDefault();
-  signin(name, email, password);
+  signin(name, email, password, console.log, signInFail);
 }
 
-function signin(name: string, email: string, password: string) {
+function signin(
+  name: string,
+  email: string,
+  password: string,
+  okFunc = console.log,
+  errFunc = console.log
+) {
   const data = JSON.stringify({
     name,
     email,
@@ -119,9 +128,9 @@ function signin(name: string, email: string, password: string) {
   axios
     .request(config)
     .then((response) => {
-      console.log(JSON.stringify(response.data));
+      okFunc(JSON.stringify(response.data));
     })
     .catch((error) => {
-      console.log(error);
+      errFunc(error);
     });
 }
