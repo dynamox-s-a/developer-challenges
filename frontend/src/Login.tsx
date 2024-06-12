@@ -1,15 +1,30 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import useAuth, { UserType } from './useAuth';
 import './Login.css';
 
 export default function Login() {
+  const auth = useAuth();
   const n = useNavigate();
+  const { state } = useLocation();
   const [data, setEP] = useState({ email: '', password: '', showPass: false });
   const { email, password, showPass } = data;
   const toggleShowPass = () => setEP({ ...data, showPass: !showPass });
   const setEmail = (value: string) => setEP({ ...data, email: value });
   const setPassword = (value: string) => setEP({ ...data, password: value });
+
+  const loginFail = (error: string) => {
+    console.log('Login failed: ', error);
+    setPassword('');
+    alert('Login Failed. Try again later.');
+  };
+
+  const loginSuccess = (loginData: string) => {
+    console.log('Login success: ', loginData);
+    const user = JSON.parse(loginData);
+    auth!.login(user).then(() => n(state?.path || '/machines'));
+  };
 
   return (
     <div id="login">
@@ -36,14 +51,14 @@ export default function Login() {
           />
         </div>
         <div id="controls">
-          <button type="button" onClick={() => n('sign-in')}>
+          <button type="button" onClick={() => n('/sign-in')}>
             Sign in
           </button>
           <button
             type="button"
             onClick={(e) => {
-              setPassword('');
-              bLogin(e, email, password);
+              e.preventDefault();
+              login(email, password, loginSuccess, loginFail);
             }}
           >
             Login
@@ -52,20 +67,6 @@ export default function Login() {
       </form>
     </div>
   );
-}
-
-function logInFail(error: string) {
-  console.log(error);
-  alert('Login Failed. Try again later.');
-}
-
-function bLogin(
-  e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  email: string,
-  password: string
-) {
-  e.preventDefault();
-  login(email, password, console.log, logInFail);
 }
 
 function login(

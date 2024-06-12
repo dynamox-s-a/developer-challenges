@@ -29,6 +29,16 @@ export default function SignIn() {
     password.length < 8 ||
     pass != password;
 
+  const signInFail = (error: string) => {
+    console.log("Sign in failed: ", error);
+    alert('Sign in Failed. Try again later.');
+  };
+
+  const signInSuccess = (loginData: string) => {
+    console.log("Sign in success: ", loginData);
+    n('/machines');
+  };
+
   return (
     <div id="login">
       <h2>Register New User</h2>
@@ -77,7 +87,10 @@ export default function SignIn() {
           <button
             type="button"
             disabled={disableSign}
-            onClick={(e) => bSignIn(e, name, email, password)}
+            onClick={(e) => {
+              e.preventDefault();
+              signin(name, email, password, signInSuccess, signInFail);
+            }}
           >
             Sign in
           </button>
@@ -85,21 +98,6 @@ export default function SignIn() {
       </form>
     </div>
   );
-}
-
-function signInFail(error: string) {
-  console.log(error);
-  alert('Sign in Failed. Try again later.');
-}
-
-function bSignIn(
-  e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  name: string,
-  email: string,
-  password: string
-) {
-  e.preventDefault();
-  signin(name, email, password, console.log, signInFail);
 }
 
 function signin(
