@@ -3,6 +3,7 @@ import Sensors from './Sensors';
 import SignIn from './SignIn';
 import useAuth from './useAuth';
 import Login from './Login';
+import Machines from './Machines';
 
 export default function App() {
   return (
@@ -14,7 +15,7 @@ export default function App() {
         path="machines"
         element={
           <RequireAuth>
-            <Sensors />
+            <Machines />
           </RequireAuth>
         }
       />
