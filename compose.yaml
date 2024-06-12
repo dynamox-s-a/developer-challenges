@@ -24,11 +24,12 @@ services:
     ports:
       - 3001:3001
     environment:
+      - BE_PORT=3001
       - DB_USER=user
       - DB_PASS=12345678
-      - DB_HOST=db
       - DB_NAME=data_base_1
-      - DB_PORT=27017
+      - DB_URI=mongodb://db:27017
+
     depends_on:
       db:
         condition: service_healthy
