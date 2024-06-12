@@ -27,4 +27,14 @@ export default class SensorsService {
     const sensorODM = new SensorODM();
     return await sensorODM.listAll(machineId);
   }
+
+  public async update(sensor: ISensor) {
+    const sensorODM = new SensorODM();
+    return await sensorODM.update(sensor);
+  }
+
+  public async delete(id: string) {
+    const sensorODM = new SensorODM();
+    return await sensorODM.delete(id);
+  }
 }

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { ICreateSensorParams } from '../Interfaces/ISensor';
+import ISensor, { ICreateSensorParams } from '../Interfaces/ISensor';
 import { HttpStatusCode } from './Interfaces';
 import SensorsService from '../Services/SensorsService';
 
@@ -41,22 +41,25 @@ export default class SensorController {
   }
 
   public async update() {
-    // TODO: UDPATE
     try {
-      return this.res
-        .status(HttpStatusCode.OK)
-        .json({ message: 'to be implemented' });
+      const sensor: ISensor = {
+        id: this.req.params.id,
+        name: this.req.body.name,
+        type: this.req.body.type,
+        machineId: this.req.body.machineId,
+      };
+
+      const updatedSensor = await this.service.update(sensor);
+      return this.res.status(HttpStatusCode.OK).json(updatedSensor);
     } catch (error) {
       this.next(error);
     }
   }
 
   public async delete() {
-    // TODO: DELETE
     try {
-      return this.res
-        .status(HttpStatusCode.OK)
-        .json({ message: 'to be implemented' });
+      const deleted = await this.service.delete(this.req.params.id);
+      return this.res.status(HttpStatusCode.OK).json({ message: deleted });
     } catch (error) {
       this.next(error);
     }

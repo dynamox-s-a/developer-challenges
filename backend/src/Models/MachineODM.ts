@@ -73,7 +73,6 @@ export default class MachineODM extends AbstractODM<IMachine> {
 
     const deleted = await this.model.findByIdAndDelete(id);
 
-    console.log('deleted ODM', deleted);
     if (!deleted?.name) {
       throw new Error('Machine ID not found');
     }
