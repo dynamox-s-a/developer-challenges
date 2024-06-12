@@ -32,4 +32,14 @@ export default class MachinesService {
     const machineODM = new MachineODM();
     return await machineODM.listAll(userId);
   }
+
+  public async update(machine: IMachine) {
+    const machineODM = new MachineODM();
+    return await machineODM.update(machine);
+  }
+
+  public async delete(id: string) {
+    const machineODM = new MachineODM();
+    return await machineODM.delete(id);
+  }
 }

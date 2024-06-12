@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { ICreateMachineParams } from '../Interfaces/IMachine';
+import IMachine, { ICreateMachineParams } from '../Interfaces/IMachine';
 import { HttpStatusCode } from './Interfaces';
 import MachinesService from '../Services/MachinesService';
 
@@ -41,22 +41,25 @@ export default class MachinesController {
   }
 
   public async update() {
-    // TODO: UPDATE
     try {
-      return this.res
-        .status(HttpStatusCode.OK)
-        .json({ message: 'to be implemented' });
+      const machine: IMachine = {
+        id: this.req.params.id,
+        name: this.req.body.name,
+        type: this.req.body.type,
+        userId: this.req.body.userId,
+      };
+
+      const updatedMachine = await this.service.update(machine);
+      return this.res.status(HttpStatusCode.OK).json(updatedMachine);
     } catch (error) {
       this.next(error);
     }
   }
 
   public async delete() {
-    // TODO: DELETE
     try {
-      return this.res
-        .status(HttpStatusCode.OK)
-        .json({ message: 'to be implemented' });
+      const deleted = await this.service.delete(this.req.params.id);
+      return this.res.status(HttpStatusCode.OK).json({ message: deleted });
     } catch (error) {
       this.next(error);
     }

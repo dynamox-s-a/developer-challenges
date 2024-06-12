@@ -29,7 +29,7 @@ export default class MachineODM extends AbstractODM<IMachine> {
 
   public async findById(id: string): Promise<IMachine | null> {
     if (!isObjectIdOrHexString(id)) {
-      throw new Error('Invalid machine ID format');
+      throw new Error('Invalid machine ID');
     }
 
     const _id = new mongoose.Types.ObjectId(id);
@@ -43,5 +43,40 @@ export default class MachineODM extends AbstractODM<IMachine> {
       });
     }
     throw new Error('Machine ID not found');
+  }
+
+  public async update(machine: IMachine): Promise<IMachine | null> {
+    if (!isObjectIdOrHexString(machine.id)) {
+      throw new Error('Invalid machine ID');
+    }
+
+    const updatedMachine = await this.model.findByIdAndUpdate(
+      { _id: machine.id },
+      { name: machine.name, type: machine.type },
+      { new: true }
+    );
+    if (updatedMachine) {
+      const { _id, name, type, userId } = updatedMachine;
+
+      return new Promise((resolve) => {
+        resolve({ id: _id.toHexString(), name, type, userId });
+      });
+    }
+    throw new Error('Machine ID not found');
+  }
+
+  public async delete(id: string): Promise<string | null> {
+    // TODO: DELETE ASSOCIATED SENSORS
+    if (!isObjectIdOrHexString(id)) {
+      throw new Error('Invalid machine ID');
+    }
+
+    const deleted = await this.model.findByIdAndDelete(id);
+
+    console.log('deleted ODM', deleted);
+    if (!deleted?.name) {
+      throw new Error('Machine ID not found');
+    }
+    return `deleted: ${deleted?.name} of type: ${deleted.type}`;
   }
 }
