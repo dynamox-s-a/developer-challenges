@@ -33,8 +33,30 @@ export default class MachinesController {
 
   public async listAll() {
     try {
-      const machines = await this.service.listAll(this.req.params.id)
-      return this.res.status(HttpStatusCode.OK).json(machines)
+      const machines = await this.service.listAll(this.req.params.id);
+      return this.res.status(HttpStatusCode.OK).json(machines);
+    } catch (error) {
+      this.next(error);
+    }
+  }
+
+  public async update() {
+    // TODO: UPDATE
+    try {
+      return this.res
+        .status(HttpStatusCode.OK)
+        .json({ message: 'to be implemented' });
+    } catch (error) {
+      this.next(error);
+    }
+  }
+
+  public async delete() {
+    // TODO: DELETE
+    try {
+      return this.res
+        .status(HttpStatusCode.OK)
+        .json({ message: 'to be implemented' });
     } catch (error) {
       this.next(error);
     }

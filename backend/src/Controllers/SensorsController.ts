@@ -39,4 +39,26 @@ export default class SensorController {
       this.next(error);
     }
   }
+
+  public async update() {
+    // TODO: UDPATE
+    try {
+      return this.res
+        .status(HttpStatusCode.OK)
+        .json({ message: 'to be implemented' });
+    } catch (error) {
+      this.next(error);
+    }
+  }
+
+  public async delete() {
+    // TODO: DELETE
+    try {
+      return this.res
+        .status(HttpStatusCode.OK)
+        .json({ message: 'to be implemented' });
+    } catch (error) {
+      this.next(error);
+    }
+  }
 }
