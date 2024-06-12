@@ -66,7 +66,6 @@ export default class MachineODM extends AbstractODM<IMachine> {
   }
 
   public async delete(id: string): Promise<string | null> {
-    // TODO: DELETE ASSOCIATED SENSORS
     if (!isObjectIdOrHexString(id)) {
       throw new Error('Invalid machine ID');
     }

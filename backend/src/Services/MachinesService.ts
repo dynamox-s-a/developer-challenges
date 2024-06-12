@@ -1,6 +1,7 @@
 import Machine from '../Domain/Machine/Machine';
 import IMachine, { ICreateMachineParams } from '../Interfaces/IMachine';
 import MachineODM from '../Models/MachineODM';
+import SensorODM from '../Models/SensorODM';
 import UserODM from '../Models/UserODM';
 
 export default class MachinesService {
@@ -39,6 +40,12 @@ export default class MachinesService {
   }
 
   public async delete(id: string) {
+    const sensorODM = new SensorODM();
+    const sensors = await sensorODM.listAll(id);
+    sensors?.forEach((sensor) => {
+      sensorODM.delete(sensor.id);
+    });
+
     const machineODM = new MachineODM();
     return await machineODM.delete(id);
   }
