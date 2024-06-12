@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import useAuth, { UserType } from './useAuth';
+import useAuth from './useAuth';
 import './Login.css';
 
 export default function Login() {
