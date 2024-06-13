@@ -1,10 +1,22 @@
+import { Navigate } from 'react-router-dom';
 import './MachineCard.css';
 
-export default function MachineCard(props: { key: number; machine: MachineCardType }) {
+export default function MachineCard(props: {
+  key: number;
+  machine: MachineType;
+}) {
   const { key, machine } = props;
   const { name, type } = machine;
+
   return (
-    <div id="machine-card" key={key}>
+    <div
+      id="machine-card"
+      key={key}
+      onClick={() => {
+        console.log('go to sensor');
+        return <Navigate to={`/sensors?id=${machine.id}&type=${machine.type}`} />;
+      }}
+    >
       <div>
         <h3>Machine Name:</h3>
         <p>{name}</p>
@@ -18,9 +30,9 @@ export default function MachineCard(props: { key: number; machine: MachineCardTy
   );
 }
 
-export type MachineCardType = {
+export type MachineType = {
   id: string;
-  user_id: string;
+  userId: string;
   name: string;
   type: string;
 };
