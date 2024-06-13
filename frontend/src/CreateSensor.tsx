@@ -2,7 +2,6 @@ import axios from "axios"
 import { useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { MACHINE_TYPES, SENSOR_MAP, SENSOR_TYPES } from "./constants"
-import "./Machines.css"
 
 export default function CreateSensor() {
   const [search] = useSearchParams()

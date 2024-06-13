@@ -1,10 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import useAuth from "./useAuth";
-import './Machines.css';
 import { MACHINE_TYPES } from "./constants";
-
-
 
 export default function CreateMachine() {
   const auth = useAuth();

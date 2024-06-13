@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAuth from './useAuth';
-import './Login.css';
+import { Button } from '@mui/material';
 
 export default function Login() {
   const auth = useAuth();
@@ -24,6 +24,12 @@ export default function Login() {
     console.log('Login success: ', loginData);
     const user = JSON.parse(loginData);
     auth!.login(user).then(() => n(state?.path || '/machines'));
+  };
+
+  const handleSign = () => n('/sign-in');
+
+  const handleLogin = () => {
+    login(email, password, loginSuccess, loginFail);
   };
 
   return (
@@ -51,18 +57,8 @@ export default function Login() {
           />
         </div>
         <div id="controls">
-          <button type="button" onClick={() => n('/sign-in')}>
-            Sign in
-          </button>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              login(email, password, loginSuccess, loginFail);
-            }}
-          >
-            Login
-          </button>
+          <Button onClick={handleSign} variant="contained" children="Sign in" />
+          <Button onClick={handleLogin} variant="contained" children="Login" />
         </div>
       </form>
     </div>

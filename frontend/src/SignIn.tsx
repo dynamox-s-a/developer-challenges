@@ -2,7 +2,7 @@ import axios from 'axios';
 import validator from 'validator';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Login.css';
+import { Button } from '@mui/material';
 
 export default function SignIn() {
   const n = useNavigate();
@@ -30,12 +30,12 @@ export default function SignIn() {
     pass !== password;
 
   const signInFail = (error: string) => {
-    console.log("Sign in failed: ", error);
+    console.log('Sign in failed: ', error);
     alert('Sign in Failed. Try again later.');
   };
 
   const signInSuccess = (loginData: string) => {
-    console.log("Sign in success: ", loginData);
+    console.log('Sign in success: ', loginData);
     n('/machines');
   };
 

@@ -1,7 +1,6 @@
 import UserCard from './UserCard';
 import CreateMachine from './CreateMachine';
 import ListMachines from './ListMachines';
-import './Machines.css';
 
 export default function Machines() {
   return (
