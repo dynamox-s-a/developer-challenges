@@ -1,9 +1,9 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import Sensors from './Sensors';
 import SignIn from './SignIn';
-import useAuth from './useAuth';
 import Login from './Login';
 import Machines from './Machines';
+import useAuth from './useAuth';
 
 export default function App() {
   return (
