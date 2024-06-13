@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
-import './MachineCard.css';
 import { useState } from 'react';
+import './MachineCard.css';
 
 export default function MachineCard(props: { machine: MachineType }) {
   const { machine } = props;

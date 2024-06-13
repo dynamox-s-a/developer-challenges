@@ -1,8 +1,8 @@
 #machine-card {
-  border: 1px solid greenyellow;
+  border: 1px solid grey;
   padding: 0 2rem;
 }
 
 #machine-card:hover {
-  border: 1px solid red;
+  border: 1px solid blanchedalmond;
 }
