@@ -99,7 +99,7 @@ export default function Login() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <Link href="/sign-in" variant="body2">
                 Forgot password?
               </Link>
             </Grid>
@@ -111,6 +111,7 @@ export default function Login() {
           </Grid>
         </Box>
       </Box>
+      <Copyright sx={{ mt: 8, mb: 4 }} />
     </Container>
   );
 }
@@ -144,4 +145,22 @@ function login(
     .catch((error) => {
       errFunc(error);
     });
+}
+
+function Copyright(props: any) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {'Copyright © '}
+      <Link color="inherit" href="https://gabrielrodriguesleite.github.io/">
+        gabrielrodriguesleite.com
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
 }
