@@ -27,7 +27,7 @@ export default function SignIn() {
     name.length < 3 ||
     !validator.isEmail(email) ||
     password.length < 8 ||
-    pass != password;
+    pass !== password;
 
   const signInFail = (error: string) => {
     console.log("Sign in failed: ", error);
