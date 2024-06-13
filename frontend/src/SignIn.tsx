@@ -2,32 +2,26 @@ import axios from 'axios';
 import validator from 'validator';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@mui/material';
+import {
+  Link,
+  Avatar,
+  Box,
+  Button,
+  Checkbox,
+  Container,
+  FormControlLabel,
+  Grid,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { LockOutlined } from '@mui/icons-material';
+import MyCopyright from './components/MyCopyright';
 
 export default function SignIn() {
   const n = useNavigate();
-  const [data, setEP] = useState({
-    name: '',
-    email: '',
-    password: '',
-    pass: '',
-    showPass: false,
-  });
-
-  const { name, email, password, pass, showPass } = data;
-  const toggleShowPass = () => setEP({ ...data, showPass: !showPass });
-  const setName = (value: string) => setEP({ ...data, name: value });
-  const setEmail = (value: string) => setEP({ ...data, email: value });
-  const setPass = (value: string) => setEP({ ...data, pass: value });
-  const setPassword = (value: string) => setEP({ ...data, password: value });
-  const classForName = name.length && name.length < 3 ? 'text-danger' : '';
-  const classForEmail =
-    email.length && !validator.isEmail(email) ? 'text-danger' : '';
-  const disableSign =
-    name.length < 3 ||
-    !validator.isEmail(email) ||
-    password.length < 8 ||
-    pass !== password;
+  const [showPass, setShow] = useState(false);
+  const [invalidEmail, setInvEmail] = useState(false);
+  const [invalidPass, setInvPass] = useState(false);
 
   const signInFail = (error: string) => {
     console.log('Sign in failed: ', error);
@@ -39,71 +33,146 @@ export default function SignIn() {
     n('/machines');
   };
 
-  return (
-    <div id="login">
-      <h2>Register New User</h2>
-      <form onSubmit={(e) => e.preventDefault()}>
-        <div>
-          <span>Name: </span>
-          <input
-            type="text"
-            className={classForName}
-            onChange={({ target: { value } }) => setName(value)}
-          />
-        </div>
-        <div>
-          <span>Email: </span>
-          <input
-            type="email"
-            className={classForEmail}
-            onChange={({ target: { value } }) => setEmail(value)}
-          />
-        </div>
-        <div>
-          <span>
-            Password:{' '}
-            <button type="button" onClick={() => toggleShowPass()}>{`${
-              showPass ? '🔓' : '🔒'
-            }`}</button>
-          </span>
-          <input
-            type={showPass ? 'text' : 'password'}
-            onChange={({ target: { value } }) => setPassword(value)}
-          />
-        </div>
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const d = new FormData(e.currentTarget);
 
-        <div>
-          <span>Confirm password: </span>
-          <input
-            type={showPass ? 'text' : 'password'}
-            className={pass.length && pass != password ? 'text-danger' : ''}
-            onChange={({ target: { value } }) => setPass(value)}
-          />
-        </div>
-        <div id="controls">
-          <button type="button" onClick={() => n('../')}>
-            {'< Back'}
-          </button>
-          <button
-            type="button"
-            disabled={disableSign}
-            onClick={(e) => {
-              e.preventDefault();
-              signin(name, email, password, signInSuccess, signInFail);
-            }}
+    setInvEmail(!validator.isEmail(`${d.get('email')}`));
+    setInvPass(
+      `${d.get('password')}`.length < 8 ||
+        `${d.get('password')}` != `${d.get('pass')}`
+    );
+
+    const signData: SignInParams = {
+      name: `${d.get('firstName')} ${d.get('lastName')}`,
+      email: `${d.get('email')}`,
+      password: `${d.get('password')}`,
+    };
+
+    if (
+      signData.name.length > 2 &&
+      signData.password.length > 7 &&
+      !invalidEmail &&
+      !invalidPass
+    ) {
+      console.log('sign up:', signData);
+      signin(signData, signInSuccess, signInFail);
+    }
+  };
+
+  const handleShowPass = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setShow(e.target.checked);
+  };
+
+  return (
+    <Container component={'main'} maxWidth="xs">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <LockOutlined />
+        </Avatar>
+
+        <Typography component="h1" variant="h5">
+          Sign up
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="given-name"
+                name="firstName"
+                required
+                fullWidth
+                id="firstName"
+                label="First Name"
+                autoFocus
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                id="lastName"
+                label="Last Name"
+                name="lastName"
+                autoComplete="family-name"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                error={invalidEmail}
+                onChange={() => setInvEmail(false)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type={!showPass ? 'password' : 'text'}
+                id="password"
+                error={invalidPass}
+                onChange={() => setInvPass(false)}
+                helperText={invalidPass && 'Must be at least 8 characters'}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="pass"
+                label="Confirm password"
+                type={!showPass ? 'password' : 'text'}
+                id="pass"
+                error={invalidPass}
+                onChange={() => setInvPass(false)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={<Checkbox color="primary" onChange={handleShowPass} />}
+                label="Show Password"
+              />
+            </Grid>
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
           >
-            Sign in
-          </button>
-        </div>
-      </form>
-    </div>
+            Sign Up
+          </Button>
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              <Link href="/login" variant="body2">
+                Already have an account? Sign in
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+      <MyCopyright />
+    </Container>
   );
 }
 
+type SignInParams = { name: string; email: string; password: string };
 function signin(
-  name: string,
-  email: string,
-  password: string,
+  { name, email, password }: SignInParams,
   okFunc = console.log,
   errFunc = console.log
 ) {

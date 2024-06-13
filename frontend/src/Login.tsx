@@ -15,6 +15,7 @@ import {
   Typography,
 } from '@mui/material';
 import { LockOutlined } from '@mui/icons-material';
+import MyCopyright from './components/MyCopyright';
 
 export default function Login() {
   const auth = useAuth();
@@ -111,7 +112,7 @@ export default function Login() {
           </Grid>
         </Box>
       </Box>
-      <Copyright sx={{ mt: 8, mb: 4 }} />
+      <MyCopyright sx={{ mt: 8, mb: 4 }} />
     </Container>
   );
 }
@@ -145,22 +146,4 @@ function login(
     .catch((error) => {
       errFunc(error);
     });
-}
-
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {'Copyright © '}
-      <Link color="inherit" href="https://gabrielrodriguesleite.github.io/">
-        gabrielrodriguesleite.com
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
 }
