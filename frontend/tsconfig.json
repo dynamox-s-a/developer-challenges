@@ -14,7 +14,12 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals"],
+    // ↓ for mui 5 - https://mui.com/material-ui/guides/typescript/
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true
+    // ↑ end mui 5
   },
   "references": [{ "path": "./tsconfig.node.json" }]
 }

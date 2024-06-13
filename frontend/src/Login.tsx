@@ -2,7 +2,19 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAuth from './useAuth';
-import { Button } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Button,
+  Checkbox,
+  Container,
+  FormControlLabel,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { LockOutlined } from '@mui/icons-material';
 
 export default function Login() {
   const auth = useAuth();
@@ -10,7 +22,6 @@ export default function Login() {
   const { state } = useLocation();
   const [data, setEP] = useState({ email: '', password: '', showPass: false });
   const { email, password, showPass } = data;
-  const toggleShowPass = () => setEP({ ...data, showPass: !showPass });
   const setEmail = (value: string) => setEP({ ...data, email: value });
   const setPassword = (value: string) => setEP({ ...data, password: value });
 
@@ -26,42 +37,81 @@ export default function Login() {
     auth!.login(user).then(() => n(state?.path || '/machines'));
   };
 
-  const handleSign = () => n('/sign-in');
-
-  const handleLogin = () => {
+  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
+    e.preventDefault();
     login(email, password, loginSuccess, loginFail);
   };
 
+  const handleShowPass = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEP({ ...data, showPass: e.target.checked });
+  };
+
   return (
-    <div id="login">
-      <h2>Login</h2>
-      <form onSubmit={(e) => e.preventDefault()}>
-        <div>
-          <span>Email: </span>
-          <input
-            type="email"
+    <Container>
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <LockOutlined />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
             onChange={({ target: { value } }) => setEmail(value)}
           />
-        </div>
-        <div>
-          <span>
-            Password:{' '}
-            <button type="button" onClick={() => toggleShowPass()}>{`${
-              showPass ? '🔓' : '🔒'
-            }`}</button>
-          </span>
-          <input
-            value={password}
-            type={showPass ? 'text' : 'password'}
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type={!showPass ? 'password' : 'text'}
+            id="password"
+            autoComplete="current-password"
             onChange={({ target: { value } }) => setPassword(value)}
           />
-        </div>
-        <div id="controls">
-          <Button onClick={handleSign} variant="contained" children="Sign in" />
-          <Button onClick={handleLogin} variant="contained" children="Login" />
-        </div>
-      </form>
-    </div>
+          <FormControlLabel
+            control={<Checkbox color="primary" onChange={handleShowPass} />}
+            label="Show Password"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign In
+          </Button>
+          <Grid container>
+            <Grid item xs>
+              <Link href="#" variant="body2">
+                Forgot password?
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link href="/sign-in" variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+    </Container>
   );
 }
 
