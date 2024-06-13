@@ -1,4 +1,4 @@
-import UserCard from './UserCard';
+import UserCard from './components/UserCard';
 import CreateMachine from './CreateMachine';
 import ListMachines from './ListMachines';
 

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import ListSensors from "./ListSensors"
 import CreateSensor from "./CreateSensor"
-import UserCard from "./UserCard"
+import UserCard from "./components/UserCard"
 
 export default function Sensors() {
   const navigate = useNavigate()
