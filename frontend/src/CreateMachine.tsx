@@ -1,7 +1,8 @@
-import axios from "axios";
-import { useState } from "react";
-import useAuth from "./useAuth";
-import { MACHINE_TYPES } from "./constants";
+import axios from 'axios';
+import { useState } from 'react';
+import useAuth from './useAuth';
+import { MACHINE_TYPES } from './constants';
+import { useGetMachinesQuery } from './features/monitor/monitorSlice';
 
 export default function CreateMachine() {
   const auth = useAuth();
@@ -11,6 +12,8 @@ export default function CreateMachine() {
     type: MACHINE_TYPES[0],
   });
 
+  const { refetch } = useGetMachinesQuery(auth!.user.id);
+
   const { name, type } = data;
   const setName = (value: string) => setdata({ ...data, name: value });
   const setType = (value: string) => setdata({ ...data, type: value });
@@ -18,6 +21,7 @@ export default function CreateMachine() {
   const okFunc = (data: string) => {
     alert('New machine created!');
     console.log(data);
+    refetch();
   };
 
   const errFunc = (data: string) => {
