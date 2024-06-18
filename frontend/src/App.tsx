@@ -4,6 +4,7 @@ import SignIn from './SignIn';
 import Login from './Login';
 import Machines from './Machines';
 import useAuth from './useAuth';
+import AddMachine from './AddMachine';
 
 export default function App() {
   return (
@@ -24,6 +25,14 @@ export default function App() {
         element={
           <RequireAuth>
             <Sensors />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="add-machine"
+        element={
+          <RequireAuth>
+            <AddMachine />
           </RequireAuth>
         }
       />
