@@ -5,6 +5,7 @@ import Login from './Login';
 import Machines from './Machines';
 import useAuth from './useAuth';
 import AddMachine from './AddMachine';
+import EditMachine from './EditMachine';
 
 export default function App() {
   return (
@@ -33,6 +34,14 @@ export default function App() {
         element={
           <RequireAuth>
             <AddMachine />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="edit-machine"
+        element={
+          <RequireAuth>
+            <EditMachine />
           </RequireAuth>
         }
       />

@@ -11,7 +11,6 @@ import {
 } from '@mui/material';
 import { useGetMachinesQuery } from './features/monitor/monitorSlice';
 import { MachineType } from './MachineCard';
-import CreateMachine from './CreateMachine';
 import UserCard from './components/UserCard';
 import useAuth from './useAuth';
 
@@ -88,7 +87,7 @@ export default function Machines() {
             variant="outlined"
             startIcon={<Create />}
             disabled={sel == null}
-            // TODO onClick={}
+            onClick={() => n(`/edit-machine/id=${sel}`)}
           >
             Edit
           </Button>
@@ -119,6 +118,7 @@ export default function Machines() {
                     `${sel}`,
                     () => {
                       setShowConfirmDelete(false);
+                      setSel(null);
                       refetch();
                     },
                     (error) => {
@@ -127,6 +127,7 @@ export default function Machines() {
                         `Error trying to delete a machine. Please try again later...`
                       );
                       console.log(error);
+                      setSel(null);
                       refetch();
                     }
                   );
