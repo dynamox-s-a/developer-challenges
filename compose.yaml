@@ -42,3 +42,5 @@ services:
     depends_on:
       backend:
         condition: service_healthy
+    environment:
+      - VITE_API_URL=http://localhost:3001

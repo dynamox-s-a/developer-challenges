@@ -1,5 +1,14 @@
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, Button, Container, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContentText,
+  DialogTitle,
+  Typography,
+} from '@mui/material';
 import { useGetMachinesQuery } from './features/monitor/monitorSlice';
 import { MachineType } from './MachineCard';
 import CreateMachine from './CreateMachine';
@@ -11,6 +20,7 @@ import Create from '@mui/icons-material/Create';
 import Add from '@mui/icons-material/Add';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { deleteMachineById } from './utils/requests';
 
 type GridColDef = { field: string; headerName: string; width: number };
 
@@ -22,8 +32,9 @@ const columns: GridColDef[] = [
 export default function Machines() {
   const n = useNavigate();
   const authContext = useAuth();
-  const { data } = useGetMachinesQuery(authContext!.user.id);
+  const { data, refetch } = useGetMachinesQuery(authContext!.user.id);
   const [sel, setSel] = useState<string | null>(null);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
   const rows: MachineType[] = data || [];
 
@@ -48,7 +59,7 @@ export default function Machines() {
             width: '100%',
           }}
           onCellClick={(e) => {
-            console.log(e);
+            setSel(`${e.id}`);
           }}
           rows={rows}
           columns={columns}
@@ -77,6 +88,7 @@ export default function Machines() {
             variant="outlined"
             startIcon={<Create />}
             disabled={sel == null}
+            // TODO onClick={}
           >
             Edit
           </Button>
@@ -84,9 +96,47 @@ export default function Machines() {
             variant="outlined"
             startIcon={<DeleteIcon />}
             disabled={sel == null}
+            onClick={() => setShowConfirmDelete(true)}
           >
             Delete
           </Button>
+          <Dialog
+            sx={{ textAlign: 'center' }}
+            open={showConfirmDelete}
+            onClose={() => setShowConfirmDelete(false)}
+          >
+            <DialogTitle>Confirm Deletion</DialogTitle>
+            <DialogContentText>
+              Are you sure you want to delete this machine?
+            </DialogContentText>
+            <DialogActions>
+              <Button onClick={() => setShowConfirmDelete(false)}>
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  deleteMachineById(
+                    `${sel}`,
+                    () => {
+                      setShowConfirmDelete(false);
+                      refetch();
+                    },
+                    (error) => {
+                      setShowConfirmDelete(false);
+                      alert(
+                        `Error trying to delete a machine. Please try again later...`
+                      );
+                      console.log(error);
+                      refetch();
+                    }
+                  );
+                }}
+                autoFocus
+              >
+                Confirm
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Box>
       </Box>
       <UserCard />
