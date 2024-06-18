@@ -34,7 +34,7 @@ export function Paginator(props: { data: MachineType[]; max: number }) {
   const { data, max } = props;
   const pagesQtd = Math.ceil(data.length / max);
   const arrPages = Array.from({ length: pagesQtd }, (_, index) => index + 1);
-  
+
   const [search, setSearchParams] = useSearchParams();
   const page = search.get('page');
   const currentPage = +(page || 1);
@@ -47,7 +47,9 @@ export function Paginator(props: { data: MachineType[]; max: number }) {
             (_, i) =>
               i + 1 <= currentPage * max && i + 1 > max * (currentPage - 1)
           )
-          .map((a, k) => MachineCard({ key: k, machine: a }))}
+          .map((a, k) => (
+            <MachineCard key={k} machine={a} />
+          ))}
       </div>
       {data.length == 0 && (
         <div>
