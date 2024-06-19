@@ -78,3 +78,7 @@ The choice of remaining tools is at your discretion.
 1. [ ] Add e2e tests with Cypress (use it to test a full user flow).
 1. [ ] If you were provided with a baseline code, identify any areas of bad code or suboptimal implementations and refactor them.
 1. [ ] Deploy your application to a cloud provider and provide a link for the running app.
+
+## Test
+
+A postman collection file exists at the root of the project `api.postman_collection.json`. It can be imported into the postman app to test the api.
