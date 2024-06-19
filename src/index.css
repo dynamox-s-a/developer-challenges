@@ -1,0 +1,10 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  color: black;
+}
+
+body {
+  background-color: rgb(229, 229, 229);
+}
