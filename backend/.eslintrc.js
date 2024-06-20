@@ -29,6 +29,8 @@ module.exports = {
     },
   ],
   'no-useless-constructor': 'off',
+  'printWidth': 120,
+
   
   },
 };

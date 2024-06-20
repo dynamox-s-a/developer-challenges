@@ -10,7 +10,7 @@ datasource db {
 model User {
   id        String   @id
   email     String   @unique
-  name      String?
+  userName  String?
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime

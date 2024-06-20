@@ -1,26 +1,43 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-user.dto';
-import { UpdateAuthDto } from './dto/update-user.dto';
+import * as bcrypt from 'bcrypt'
+import { Injectable } from '@nestjs/common'
+import { Prisma } from '@prisma/client'
+
+import { CreateUserDto } from './dto/create-user.dto'
+import { UpdateUserDto } from './dto/update-user.dto'
+import { PrismaService } from '../prisma/prisma.service'
+import { User } from './entities/user.entity'
 
 @Injectable()
-export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
-  }
+export class UserService {
+	constructor(private readonly prisma: PrismaService) { }
 
-  findAll() {
-    return `This action returns all auth`;
-  }
+	async create(createUserDto: CreateUserDto): Promise<User> {
+		const data: Prisma.UserCreateInput = {
+			...createUserDto,
+			password: await bcrypt.hash(createUserDto.password, 10),
+		}
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
+		const createdUser = await this.prisma.user.create({ data })
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
+		return {
+			...createdUser,
+			password: undefined,
+		}
+	}
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
-  }
+	findAll() {
+		return `This action returns all users`
+	}
+
+	findOne(id: number) {
+		return `This action returns a #${id} user`
+	}
+
+	update(id: number, updateUserDto: UpdateUserDto) {
+		return `This action updates a #${id} user`
+	}
+
+	remove(id: number) {
+		return `This action removes a #${id} user`
+	}
 }
