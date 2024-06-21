@@ -25,7 +25,7 @@ export class UserService {
 		}
 	}
 
-	findById(id: string) {
+	findById(id: number) {
 		return this.prisma.user.findUnique({
 			where: { id },
 		})
