@@ -19,5 +19,5 @@ export class CreateUserDto extends User {
 	password: string
 
 	@IsString()
-	userName: string
+	name: string
 }
