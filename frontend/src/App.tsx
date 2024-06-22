@@ -38,7 +38,7 @@ export default function App() {
         }
       />
       <Route
-        path="edit-machine"
+        path="edit-machine/:id"
         element={
           <RequireAuth>
             <EditMachine />

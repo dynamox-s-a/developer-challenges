@@ -87,7 +87,7 @@ export default function Machines() {
             variant="outlined"
             startIcon={<Create />}
             disabled={sel == null}
-            onClick={() => n(`/edit-machine/id=${sel}`)}
+            onClick={() => n(`/edit-machine/${sel}`)}
           >
             Edit
           </Button>
