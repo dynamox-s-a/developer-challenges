@@ -4,8 +4,8 @@ import SignIn from './SignIn';
 import Login from './Login';
 import Machines from './Machines';
 import useAuth from './useAuth';
-import AddMachine from './AddMachine';
 import EditMachine from './EditMachine';
+import CreateMachine from './CreateMachine';
 
 export default function App() {
   return (
@@ -30,10 +30,10 @@ export default function App() {
         }
       />
       <Route
-        path="add-machine"
+        path="create-machine"
         element={
           <RequireAuth>
-            <AddMachine />
+            <CreateMachine />
           </RequireAuth>
         }
       />
@@ -45,6 +45,7 @@ export default function App() {
           </RequireAuth>
         }
       />
+      <Route path="/*" element={<Navigate to={'/'} />} />
     </Routes>
   );
 }

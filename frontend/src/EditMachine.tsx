@@ -1,4 +1,4 @@
-import { EngineeringOutlined, EditOutlined } from '@mui/icons-material';
+import { EngineeringOutlined } from '@mui/icons-material';
 import {
   Avatar,
   Box,
@@ -27,7 +27,7 @@ export default function EditMachine() {
 
   const authContext = useAuth();
   const { data, refetch } = useGetMachinesQuery(authContext!.user.id);
-  const [updateMachine, response] = useUpdateMachineByIdMutation();
+  const [updateMachine] = useUpdateMachineByIdMutation();
 
   const machine = data?.find((i) => i.id === machineId);
 
@@ -119,24 +119,5 @@ export default function EditMachine() {
         <UserCard />
       </Box>
     </Container>
-  );
-}
-
-function MyEditableField(props: any) {
-  const { text, edit } = props;
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '2rem',
-      }}
-    >
-      <Typography>{text}</Typography>
-      <Button variant="outlined" onClick={edit}>
-        <EditOutlined />
-      </Button>
-    </Box>
   );
 }

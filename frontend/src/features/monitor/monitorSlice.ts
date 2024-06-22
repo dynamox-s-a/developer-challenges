@@ -14,10 +14,20 @@ export const machinesApiSlice = createApi({
     getMachineById: build.query<MachinesApiResponse, string>({
       query: (machineId: string) => `${machineId}`,
     }),
-    updateMachineById: build.mutation<MachinesApiResponse, Partial<MachineType>>({
+    updateMachineById: build.mutation<
+      MachinesApiResponse,
+      Partial<MachineType>
+    >({
       query: (machine: MachineType) => ({
         url: `machines/${machine.id}`,
         method: 'PATCH',
+        body: machine,
+      }),
+    }),
+    createMachine: build.mutation<MachinesApiResponse, Partial<MachineType>>({
+      query: (machine: MachineType) => ({
+        url: `machines`,
+        method: 'POST',
         body: machine,
       }),
     }),
@@ -27,5 +37,6 @@ export const machinesApiSlice = createApi({
 export const {
   useGetMachinesQuery,
   useGetMachineByIdQuery,
-  useUpdateMachineByIdMutation
+  useUpdateMachineByIdMutation,
+  useCreateMachineMutation,
 } = machinesApiSlice;

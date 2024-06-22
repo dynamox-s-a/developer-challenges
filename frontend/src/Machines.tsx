@@ -79,7 +79,7 @@ export default function Machines() {
           <Button
             variant="outlined"
             startIcon={<Add />}
-            onClick={() => n('/add-machine')}
+            onClick={() => n('/create-machine')}
           >
             Add
           </Button>
