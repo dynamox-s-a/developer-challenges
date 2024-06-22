@@ -11,6 +11,14 @@ export const machinesApiSlice = createApi({
   tagTypes: ['Machines'],
   refetchOnMountOrArgChange: true,
   endpoints: (build) => ({
+    // ===== MACHINES =====
+    createMachine: build.mutation<MachinesApiResponse, Partial<MachineType>>({
+      query: (machine: MachineType) => ({
+        url: `machines`,
+        method: 'POST',
+        body: machine,
+      }),
+    }),
     getMachines: build.query<MachinesApiResponse, string>({
       query: (userId: string | number) => `machines/${userId}`,
     }),
@@ -24,20 +32,21 @@ export const machinesApiSlice = createApi({
         body: machine,
       }),
     }),
-    createMachine: build.mutation<MachinesApiResponse, Partial<MachineType>>({
-      query: (machine: MachineType) => ({
-        url: `machines`,
+    // ===== SENSORS =====
+    createSensor: build.mutation<MachinesApiResponse, Partial<SensorType>>({
+      query: (sensor: SensorType) => ({
+        url: `sensors`,
         method: 'POST',
-        body: machine,
+        body: sensor,
       }),
     }),
     getSensorsByMachineId: build.query<SensorsApiResponse, string>({
       query: (machineId: string) => `sensors/${machineId}`,
     }),
-    createSensor: build.mutation<MachinesApiResponse, Partial<SensorType>>({
+    updateSensorById: build.mutation<SensorsApiResponse, Partial<SensorType>>({
       query: (sensor: SensorType) => ({
-        url: `sensors`,
-        method: 'POST',
+        url: `sensors/${sensor.id}`,
+        method: 'PATCH',
         body: sensor,
       }),
     }),
@@ -52,11 +61,12 @@ export const machinesApiSlice = createApi({
 
 export const {
   // MACHINES
+  useCreateMachineMutation,
   useGetMachinesQuery,
   useUpdateMachineByIdMutation,
-  useCreateMachineMutation,
   // SENSORS
-  useGetSensorsByMachineIdQuery,
   useCreateSensorMutation,
+  useGetSensorsByMachineIdQuery,
+  useUpdateSensorByIdMutation,
   useDeleteSensorMutation,
 } = machinesApiSlice;

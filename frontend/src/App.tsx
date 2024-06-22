@@ -9,6 +9,7 @@ import CreateMachine from './CreateMachine';
 import MachineSensors from './MachineSensors';
 import CreateSensor from './CreateSensor';
 import './index.css';
+import EditSensor from './EditSensor';
 
 export default function App() {
   return (
@@ -61,6 +62,14 @@ export default function App() {
         element={
           <RequireAuth>
             <CreateSensor />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="edit-sensor/:machine/:sensor"
+        element={
+          <RequireAuth>
+            <EditSensor />
           </RequireAuth>
         }
       />

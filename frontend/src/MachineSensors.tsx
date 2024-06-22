@@ -128,7 +128,7 @@ export default function MachineSensors() {
             variant="outlined"
             startIcon={<Create />}
             disabled={!sel}
-            // onClick={() => n(`/edit-machine/${sel}`)}
+            onClick={() => n(`/edit-sensor/${machineId}/${sel}`)}
           >
             Edit
           </Button>
