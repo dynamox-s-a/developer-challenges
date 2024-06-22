@@ -1,0 +1,26 @@
+{
+  "users": [
+    {
+      "id": "d3dc",
+      "name": "Gabriel",
+      "email": "email@email.com",
+      "password": "12345678"
+    }
+  ],
+  "machines": [
+    {
+      "id": "0ded",
+      "name": "machine01",
+      "type": "Pump",
+      "user_id": "d3dc"
+    }
+  ],
+  "sensors": [
+    {
+      "id": "daa2",
+      "name": "monitoring point name 001",
+      "model": "HF+",
+      "machine_id": "0ded"
+    }
+  ]
+}

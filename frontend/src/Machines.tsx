@@ -1,4 +1,8 @@
+import { useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
+import { useNavigate } from 'react-router-dom';
+import { Add, Create } from '@mui/icons-material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Box,
   Button,
@@ -9,16 +13,12 @@ import {
   DialogTitle,
   Typography,
 } from '@mui/material';
-import { useGetMachinesQuery } from './features/monitor/monitorSlice';
+import {
+  useDeleteMachineMutation,
+  useGetMachinesQuery,
+} from './features/monitor/monitorSlice';
 import UserCard from './components/UserCard';
 import useAuth from './useAuth';
-
-import DeleteIcon from '@mui/icons-material/Delete';
-import Create from '@mui/icons-material/Create';
-import Add from '@mui/icons-material/Add';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { deleteMachineById } from './utils/requests';
 
 type GridColDef = { field: string; headerName: string; width: number };
 
@@ -28,13 +28,29 @@ const columns: GridColDef[] = [
 ];
 
 export default function Machines() {
-  const n = useNavigate();
   const authContext = useAuth();
-  const { data, refetch } = useGetMachinesQuery(authContext!.user.id);
+  const n = useNavigate();
+  const [deleteMachine] = useDeleteMachineMutation();
   const [sel, setSel] = useState<string | null>(null);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
+  const { data, refetch } = useGetMachinesQuery(authContext!.user.id);
   const rows: MachineType[] = data || [];
+
+  const handleDelete = () => {
+    setShowConfirmDelete(false);
+    setSel(null);
+    deleteMachine(`${sel}`)
+      .unwrap()
+      .then(() => {
+        refetch();
+      })
+      .catch((error) => {
+        alert(`Error trying to delete a machine. Please try again later...`);
+        console.log(error);
+        refetch();
+      });
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -111,28 +127,7 @@ export default function Machines() {
               <Button onClick={() => setShowConfirmDelete(false)}>
                 Cancel
               </Button>
-              <Button
-                onClick={() => {
-                  deleteMachineById(
-                    `${sel}`,
-                    () => {
-                      setShowConfirmDelete(false);
-                      setSel(null);
-                      refetch();
-                    },
-                    (error) => {
-                      setShowConfirmDelete(false);
-                      alert(
-                        `Error trying to delete a machine. Please try again later...`
-                      );
-                      console.log(error);
-                      setSel(null);
-                      refetch();
-                    }
-                  );
-                }}
-                autoFocus
-              >
+              <Button onClick={handleDelete} autoFocus>
                 Confirm
               </Button>
             </DialogActions>

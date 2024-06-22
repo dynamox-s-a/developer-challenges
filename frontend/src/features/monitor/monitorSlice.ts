@@ -1,14 +1,25 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { MachineType } from '../../Machines';
 import { SensorType } from '../../Sensors';
+import { UserType } from '../../useAuth';
 
 export type MachinesApiResponse = MachineType[];
 export type SensorsApiResponse = SensorType[];
+export type LoginApiResponse = {
+  id: string;
+  email: string;
+  name: string;
+};
+
+export type LoginType = {
+  password: string;
+  email: string;
+};
 
 export const machinesApiSlice = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3001/' }),
-  reducerPath: 'machinesApi',
-  tagTypes: ['Machines'],
+  reducerPath: 'Api',
+  tagTypes: ['Machines', 'Sensors', 'Login'],
   refetchOnMountOrArgChange: true,
   endpoints: (build) => ({
     // ===== MACHINES =====
@@ -32,8 +43,14 @@ export const machinesApiSlice = createApi({
         body: machine,
       }),
     }),
+    deleteMachine: build.mutation<MachinesApiResponse, string>({
+      query: (machineId: string) => ({
+        url: `machines/${machineId}`,
+        method: 'DELETE',
+      }),
+    }),
     // ===== SENSORS =====
-    createSensor: build.mutation<MachinesApiResponse, Partial<SensorType>>({
+    createSensor: build.mutation<SensorsApiResponse, Partial<SensorType>>({
       query: (sensor: SensorType) => ({
         url: `sensors`,
         method: 'POST',
@@ -50,10 +67,18 @@ export const machinesApiSlice = createApi({
         body: sensor,
       }),
     }),
-    deleteSensor: build.mutation<MachinesApiResponse, string>({
+    deleteSensor: build.mutation<SensorsApiResponse, string>({
       query: (sensorId: string) => ({
         url: `sensors/${sensorId}`,
         method: 'DELETE',
+      }),
+    }),
+    // ===== Login =====
+    login: build.mutation<LoginApiResponse, LoginType>({
+      query: (user: LoginType) => ({
+        url: `login`,
+        method: 'POST',
+        body: JSON.stringify(user),
       }),
     }),
   }),
@@ -64,9 +89,12 @@ export const {
   useCreateMachineMutation,
   useGetMachinesQuery,
   useUpdateMachineByIdMutation,
+  useDeleteMachineMutation,
   // SENSORS
   useCreateSensorMutation,
   useGetSensorsByMachineIdQuery,
   useUpdateSensorByIdMutation,
   useDeleteSensorMutation,
+  // LOGIN & SIGNUP
+  useLoginMutation,
 } = machinesApiSlice;

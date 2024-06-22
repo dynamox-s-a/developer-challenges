@@ -17,7 +17,6 @@ import {
   useUpdateSensorByIdMutation,
 } from './features/monitor/monitorSlice';
 import useAuth from './useAuth';
-import { error } from 'console';
 
 export default function EditSensor() {
   const n = useNavigate();
