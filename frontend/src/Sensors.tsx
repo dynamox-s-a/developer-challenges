@@ -1,10 +1,9 @@
-import { useNavigate } from "react-router-dom"
-import ListSensors from "./ListSensors"
-import CreateSensor from "./CreateSensor"
-import UserCard from "./components/UserCard"
+import { useNavigate } from 'react-router-dom';
+import CreateSensor from './CreateSensor';
+import UserCard from './components/UserCard';
 
 export default function Sensors() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -14,8 +13,14 @@ export default function Sensors() {
       </button>
       <p></p>
       <CreateSensor />
-      <ListSensors />
       <UserCard />
     </div>
-  )
+  );
 }
+
+export type SensorType = {
+  id: string;
+  name: string;
+  type: string;
+  machineId: string;
+};

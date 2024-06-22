@@ -10,7 +10,6 @@ import {
   Typography,
 } from '@mui/material';
 import { useGetMachinesQuery } from './features/monitor/monitorSlice';
-import { MachineType } from './MachineCard';
 import UserCard from './components/UserCard';
 import useAuth from './useAuth';
 
@@ -139,8 +138,25 @@ export default function Machines() {
             </DialogActions>
           </Dialog>
         </Box>
+        <Box width={'100%'}>
+          <Button
+            fullWidth
+            variant="outlined"
+            onClick={() => n(`/machine-sensors/${sel}`)}
+            disabled={!sel}
+          >
+            Sensors
+          </Button>
+        </Box>
       </Box>
       <UserCard />
     </Container>
   );
 }
+
+export type MachineType = {
+  id: string;
+  userId: string;
+  name: string;
+  type: string;
+};

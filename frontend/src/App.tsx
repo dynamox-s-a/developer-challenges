@@ -6,6 +6,9 @@ import Machines from './Machines';
 import useAuth from './useAuth';
 import EditMachine from './EditMachine';
 import CreateMachine from './CreateMachine';
+import MachineSensors from './MachineSensors';
+import CreateSensor from './CreateSensor';
+import './index.css';
 
 export default function App() {
   return (
@@ -22,14 +25,6 @@ export default function App() {
         }
       />
       <Route
-        path="sensors"
-        element={
-          <RequireAuth>
-            <Sensors />
-          </RequireAuth>
-        }
-      />
-      <Route
         path="create-machine"
         element={
           <RequireAuth>
@@ -42,6 +37,30 @@ export default function App() {
         element={
           <RequireAuth>
             <EditMachine />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="machine-sensors/:id"
+        element={
+          <RequireAuth>
+            <MachineSensors />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="sensors"
+        element={
+          <RequireAuth>
+            <Sensors />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="create-sensor/:id"
+        element={
+          <RequireAuth>
+            <CreateSensor />
           </RequireAuth>
         }
       />
