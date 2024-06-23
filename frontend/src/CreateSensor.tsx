@@ -17,6 +17,7 @@ import {
   useGetSensorsByMachineIdQuery,
 } from './features/monitor/monitorSlice';
 import useAuth from './useAuth';
+import MyCopyright from './components/MyCopyright';
 
 export default function CreateSensor() {
   const location = useLocation();
@@ -48,7 +49,7 @@ export default function CreateSensor() {
     })
       .unwrap()
       .then(() => {
-        n(`/machine-sensors/${machineId}`);
+        n(`/sensors/${machineId}`);
         refetchSensors();
       })
       .catch((error: Error) => {
@@ -62,78 +63,90 @@ export default function CreateSensor() {
 
   return (
     <Container
-      component={'main'}
-      maxWidth="xl"
-      sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}
+      component="main"
+      maxWidth="xs"
+      sx={{
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
     >
       <Box
         sx={{
-          margin: '1rem 0',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
           flexGrow: 1,
+          paddingTop: '2rem',
         }}
       >
         <Box sx={{ display: 'flex', width: '100%' }}>
-          <Button
-            variant="outlined"
-            onClick={() => n(`/machine-sensors/${machineId}`)}
-          >
+          <Button variant="outlined" onClick={() => n(`/sensors/${machineId}`)}>
             Back
           </Button>
         </Box>
 
-        <Typography component="h1" variant="h5">
-          Create Sensor
-        </Typography>
-
-        <Typography>
-          Machine: {machine?.name} | {machine?.type}
-        </Typography>
-
         <Box
-          component="form"
-          onSubmit={handleSubmit}
           sx={{
+            width: '100%',
             display: 'flex',
             flexDirection: 'column',
-            gap: '1rem',
-            padding: '1rem 0',
-            alignSelf: 'stretch',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexGrow: 1,
           }}
         >
-          <FormControl fullWidth>
-            <TextField
-              name="name"
-              label="New sensor name"
-              required
-              fullWidth
-              autoFocus
-            />
-          </FormControl>
+          <Typography component="h1" variant="h5">
+            Create Sensor
+          </Typography>
 
-          <FormControl fullWidth>
-            <InputLabel id="sslId">Type</InputLabel>
-            <Select
-              name="type"
-              labelId="sslId"
-              label="Type"
-              defaultValue={sensorOptions[0]}
-              required
-            >
-              {sensorOptions.map((i: string | number, k: number) => (
-                <MenuItem key={k} value={i}>
-                  {i}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <Typography>
+            Machine: {machine?.name} | {machine?.type}
+          </Typography>
 
-          <Button type="submit" variant="outlined">
-            Save
-          </Button>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1rem',
+              padding: '2rem 0',
+              alignSelf: 'stretch',
+            }}
+          >
+            <FormControl fullWidth>
+              <TextField
+                name="name"
+                label="New sensor name"
+                required
+                fullWidth
+                autoFocus
+              />
+            </FormControl>
+
+            <FormControl fullWidth>
+              <InputLabel id="sslId">Type</InputLabel>
+              <Select
+                name="type"
+                labelId="sslId"
+                label="Type"
+                defaultValue={sensorOptions[0]}
+                required
+              >
+                {sensorOptions.map((i: string | number, k: number) => (
+                  <MenuItem key={k} value={i}>
+                    {i}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <Button type="submit" variant="outlined" sx={{ m: '2rem 0' }}>
+              Save
+            </Button>
+          </Box>
         </Box>
+        <MyCopyright />
       </Box>
     </Container>
   );

@@ -68,13 +68,21 @@ export default function SignIn() {
   };
 
   return (
-    <Container component={'main'} maxWidth="xs">
+    <Container
+      maxWidth="xs"
+      sx={{
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       <Box
         sx={{
-          marginTop: 8,
           display: 'flex',
-          flexDirection: 'column',
+          flexGrow: 1,
           alignItems: 'center',
+          flexDirection: 'column',
+          justifyContent: 'center',
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>

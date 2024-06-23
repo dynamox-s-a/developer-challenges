@@ -51,13 +51,22 @@ export default function Login() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container
+      component="main"
+      maxWidth="xs"
+      sx={{
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       <Box
         sx={{
-          marginTop: 8,
           display: 'flex',
-          flexDirection: 'column',
+          flexGrow: 1,
           alignItems: 'center',
+          flexDirection: 'column',
+          justifyContent: 'center',
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -95,7 +104,7 @@ export default function Login() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: '2rem', mb: '2rem' }}
           >
             Sign In
           </Button>

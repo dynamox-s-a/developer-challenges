@@ -17,6 +17,7 @@ import {
   useUpdateSensorByIdMutation,
 } from './features/monitor/monitorSlice';
 import useAuth from './useAuth';
+import MyCopyright from './components/MyCopyright';
 
 export default function EditSensor() {
   const n = useNavigate();
@@ -48,7 +49,7 @@ export default function EditSensor() {
     })
       .unwrap()
       .then(() => {
-        refetchSensors().then(() => n(`/machine-sensors/${machineId}`));
+        refetchSensors().then(() => n(`/sensors/${machineId}`));
       })
       .catch((error: Error) => {
         alert('Error: try update later');
@@ -60,74 +61,100 @@ export default function EditSensor() {
     SENSOR_MAP[MACHINE_TYPES.indexOf(`${machine?.type}`)] || [];
 
   return (
-    <Container component={'main'} maxWidth="xl">
+    <Container
+      component="main"
+      maxWidth="xs"
+      sx={{
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       <Box
         sx={{
-          marginTop: '1rem',
           display: 'flex',
-          flexDirection: 'column',
+          flexGrow: 1,
           alignItems: 'center',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          paddingTop: '2rem',
         }}
       >
         <Box sx={{ display: 'flex', width: '100%' }}>
           <Button
             variant="outlined"
-            onClick={() => n(`/machine-sensors/${machineId}`)}
+            onClick={() => n(`/sensors/${machineId}`)}
           >
             Back
           </Button>
         </Box>
 
-        <Typography component="h1" variant="h5">
-          Edit Sensor
-        </Typography>
-
-        <Typography>
-          Machine: {machine?.name} | Type: {machine?.type}
-        </Typography>
-
         <Box
-          component="form"
-          onSubmit={handleSubmit}
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            gap: '1rem',
-            padding: '1rem 0',
-            alignSelf: 'stretch',
+            alignItems: 'center',
+            width: '100%',
+            gap: '2rem',
           }}
         >
-          <FormControl fullWidth>
-            <TextField
-              name="name"
-              label="New sensor name"
+          <Typography component="h1" variant="h5">
+            Edit Sensor
+          </Typography>
+
+          <Typography>
+            Machine: {machine?.name} | Type: {machine?.type}
+          </Typography>
+
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1rem',
+              padding: '1rem 0',
+              alignSelf: 'stretch',
+            }}
+          >
+            <FormControl fullWidth>
+              <TextField
+                name="name"
+                label="New sensor name"
+                fullWidth
+                autoFocus
+                defaultValue={`${sensor?.name}`}
+              />
+            </FormControl>
+
+            <FormControl fullWidth>
+              <InputLabel id="sslId">Type</InputLabel>
+              <Select
+                name="type"
+                labelId="sslId"
+                label="Type"
+                defaultValue={sensor?.type}
+                required
+              >
+                {sensorOptions.map((i: string | number, k: number) => (
+                  <MenuItem key={k} value={i}>
+                    {i}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <Button
+              type="submit"
+              variant="outlined"
+              sx={{ m: '2rem 0' }}
               fullWidth
-              autoFocus
-              defaultValue={`${sensor?.name}`}
-            />
-          </FormControl>
-
-          <FormControl fullWidth>
-            <InputLabel id="sslId">Type</InputLabel>
-            <Select
-              name="type"
-              labelId="sslId"
-              label="Type"
-              defaultValue={sensor?.type}
-              required
             >
-              {sensorOptions.map((i: string | number, k: number) => (
-                <MenuItem key={k} value={i}>
-                  {i}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <Button type="submit" variant="outlined">
-            Save
-          </Button>
+              Save
+            </Button>
+          </Box>
         </Box>
+        <MyCopyright />
       </Box>
     </Container>
   );

@@ -1,15 +1,14 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import Sensors from './Sensors';
 import SignIn from './SignIn';
 import Login from './Login';
 import Machines from './Machines';
 import useAuth from './useAuth';
 import EditMachine from './EditMachine';
 import CreateMachine from './CreateMachine';
-import MachineSensors from './MachineSensors';
+import Sensors from './Sensors';
 import CreateSensor from './CreateSensor';
-import './index.css';
 import EditSensor from './EditSensor';
+import './index.css';
 
 export default function App() {
   return (
@@ -34,7 +33,7 @@ export default function App() {
         }
       />
       <Route
-        path="edit-machine/:id"
+        path="edit-machine/:machine"
         element={
           <RequireAuth>
             <EditMachine />
@@ -42,15 +41,7 @@ export default function App() {
         }
       />
       <Route
-        path="machine-sensors/:id"
-        element={
-          <RequireAuth>
-            <MachineSensors />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="sensors"
+        path="sensors/:machine"
         element={
           <RequireAuth>
             <Sensors />
@@ -58,7 +49,7 @@ export default function App() {
         }
       />
       <Route
-        path="create-sensor/:id"
+        path="create-sensor/:machine"
         element={
           <RequireAuth>
             <CreateSensor />

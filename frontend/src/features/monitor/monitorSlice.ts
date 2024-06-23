@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { MachineType } from '../../Machines';
 import { SensorType } from '../../Sensors';
-import { UserType } from '../../useAuth';
 
 export type MachinesApiResponse = MachineType[];
 export type SensorsApiResponse = SensorType[];

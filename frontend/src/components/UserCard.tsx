@@ -18,7 +18,7 @@ export default function UserCard() {
       sx={{
         position: 'fixed',
         right: '1rem',
-        bottom: '1rem',
+        bottom: '2rem',
       }}
     >
       <Card sx={{ minWidth: 275 }}>
@@ -29,7 +29,7 @@ export default function UserCard() {
           <Typography variant="h5" component="div">
             {name}
           </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+          <Typography sx={{ mb: '1.5rem' }} color="text.secondary">
             {email}
           </Typography>
         </CardContent>
