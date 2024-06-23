@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAuth from './useAuth';
@@ -15,22 +14,18 @@ import {
   Typography,
 } from '@mui/material';
 import { LockOutlined } from '@mui/icons-material';
+import { LoginType, useLoginMutation } from './features/monitor/monitorSlice';
 import MyCopyright from './components/MyCopyright';
-import { useLoginMutation } from './features/monitor/monitorSlice';
 
 export default function Login() {
   const auth = useAuth();
   const n = useNavigate();
   const { state } = useLocation();
-  const [data, setEP] = useState({ email: '', password: '', showPass: false });
-  const { email, password, showPass } = data;
-  const setEmail = (value: string) => setEP({ ...data, email: value });
-  const setPassword = (value: string) => setEP({ ...data, password: value });
+  const [showPass, setShowPass] = useState(false);
   const [loginFunc] = useLoginMutation();
 
   const loginFail = (error: string) => {
     console.log('Login failed: ', error);
-    setPassword('');
     alert('Login Failed. Try again later.');
   };
 
@@ -42,16 +37,17 @@ export default function Login() {
 
   const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // login(email, password, loginSuccess, loginFail);
-    console.log({ email, password });
-    loginFunc({ email, password })
-      .unwrap()
-      .then((v) => loginSuccess(JSON.stringify(v)))
-      .catch(loginFail);
+    const d = new FormData(e.currentTarget);
+    const user = { email: d.get('email'), password: d.get('password') };
+    if (user.email && user.password)
+      loginFunc(user as unknown as LoginType)
+        .unwrap()
+        .then((v) => loginSuccess(JSON.stringify(v)))
+        .catch(loginFail);
   };
 
   const handleShowPass = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEP({ ...data, showPass: e.target.checked });
+    setShowPass(e.target.checked);
   };
 
   return (
@@ -80,7 +76,6 @@ export default function Login() {
             name="email"
             autoComplete="email"
             autoFocus
-            onChange={({ target: { value } }) => setEmail(value)}
           />
           <TextField
             margin="normal"
@@ -91,7 +86,6 @@ export default function Login() {
             type={!showPass ? 'password' : 'text'}
             id="password"
             autoComplete="current-password"
-            onChange={({ target: { value } }) => setPassword(value)}
           />
           <FormControlLabel
             control={<Checkbox color="primary" onChange={handleShowPass} />}
@@ -122,35 +116,4 @@ export default function Login() {
       <MyCopyright sx={{ mt: 8, mb: 4 }} />
     </Container>
   );
-}
-
-function login(
-  email: string,
-  password: string,
-  okFunc = console.log,
-  errFunc = console.log
-) {
-  const data = JSON.stringify({
-    email,
-    password,
-  });
-
-  const config = {
-    method: 'post',
-    maxBodyLength: Infinity,
-    url: 'http://localhost:3001/login',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: data,
-  };
-
-  axios
-    .request(config)
-    .then((response) => {
-      okFunc(JSON.stringify(response.data));
-    })
-    .catch((error) => {
-      errFunc(error);
-    });
 }

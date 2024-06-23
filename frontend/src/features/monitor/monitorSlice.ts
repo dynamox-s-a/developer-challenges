@@ -16,7 +16,7 @@ export type LoginType = {
   email: string;
 };
 
-export type SignUpType = {
+export type SignInType = {
   name: string;
   password: string;
   email: string;
@@ -88,8 +88,8 @@ export const machinesApiSlice = createApi({
         headers: { 'Content-Type': 'application/json' }, // required
       }),
     }),
-    signUp: build.mutation<LoginApiResponse, SignUpType>({
-      query: (user: SignUpType) => ({
+    signIn: build.mutation<LoginApiResponse, SignInType>({
+      query: (user: SignInType) => ({
         url: `users`,
         method: `POST`,
         body: JSON.stringify(user),
@@ -112,5 +112,5 @@ export const {
   useDeleteSensorMutation,
   // LOGIN & SIGNUP
   useLoginMutation,
-  useSignUpMutation,
+  useSignInMutation,
 } = machinesApiSlice;

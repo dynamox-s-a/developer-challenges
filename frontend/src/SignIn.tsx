@@ -1,7 +1,6 @@
-import axios from 'axios';
-import validator from 'validator';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LockOutlined } from '@mui/icons-material';
 import {
   Link,
   Avatar,
@@ -14,7 +13,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { LockOutlined } from '@mui/icons-material';
+import { SignInType, useSignInMutation } from './features/monitor/monitorSlice';
+import validator from 'validator';
 import MyCopyright from './components/MyCopyright';
 
 export default function SignIn() {
@@ -22,6 +22,7 @@ export default function SignIn() {
   const [showPass, setShow] = useState(false);
   const [invalidEmail, setInvEmail] = useState(false);
   const [invalidPass, setInvPass] = useState(false);
+  const [signIn] = useSignInMutation();
 
   const signInFail = (error: string) => {
     console.log('Sign in failed: ', error);
@@ -43,7 +44,7 @@ export default function SignIn() {
         `${d.get('password')}` != `${d.get('pass')}`
     );
 
-    const signData: SignInParams = {
+    const signData: SignInType = {
       name: `${d.get('firstName')} ${d.get('lastName')}`,
       email: `${d.get('email')}`,
       password: `${d.get('password')}`,
@@ -55,8 +56,10 @@ export default function SignIn() {
       !invalidEmail &&
       !invalidPass
     ) {
-      console.log('sign up:', signData);
-      signin(signData, signInSuccess, signInFail);
+      signIn(signData)
+        .unwrap()
+        .then((v) => signInSuccess(JSON.stringify(v)))
+        .catch(signInFail);
     }
   };
 
@@ -168,36 +171,4 @@ export default function SignIn() {
       <MyCopyright />
     </Container>
   );
-}
-
-type SignInParams = { name: string; email: string; password: string };
-function signin(
-  { name, email, password }: SignInParams,
-  okFunc = console.log,
-  errFunc = console.log
-) {
-  const data = JSON.stringify({
-    name,
-    email,
-    password,
-  });
-
-  const config = {
-    method: 'post',
-    maxBodyLength: Infinity,
-    url: 'http://localhost:3001/users',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: data,
-  };
-
-  axios
-    .request(config)
-    .then((response) => {
-      okFunc(JSON.stringify(response.data));
-    })
-    .catch((error) => {
-      errFunc(error);
-    });
 }
