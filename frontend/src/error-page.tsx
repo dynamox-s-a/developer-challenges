@@ -1,4 +1,5 @@
-import { Container, Typography } from '@mui/material';
+import { Avatar, Container, Typography } from '@mui/material';
+import { GppMaybeOutlined } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
 export default function ErrorPage() {
@@ -18,6 +19,11 @@ export default function ErrorPage() {
       <Typography component="h1" variant="h5">
         Oops!
       </Typography>
+
+      <Avatar sx={{ m: 1, bgcolor: 'secondary.dark' }}>
+        <GppMaybeOutlined />
+      </Avatar>
+
       <p>Sorry, an unexpected error has occurred.</p>
       <Link to={'/'}>return to app</Link>
     </Container>

@@ -1,15 +1,15 @@
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import SignIn from './SignIn';
+import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
 import Login from './Login';
-import Machines from './Machines';
+import SignIn from './SignIn';
 import useAuth from './useAuth';
-import EditMachine from './EditMachine';
-import CreateMachine from './CreateMachine';
 import Sensors from './Sensors';
-import CreateSensor from './CreateSensor';
-import EditSensor from './EditSensor';
-import './index.css';
+import Machines from './Machines';
 import ErrorPage from './error-page';
+import EditSensor from './EditSensor';
+import EditMachine from './EditMachine';
+import CreateSensor from './CreateSensor';
+import CreateMachine from './CreateMachine';
+import './index.css';
 
 export default function App() {
   return (
@@ -17,65 +17,25 @@ export default function App() {
       <Route index element={<Login />} />
       <Route path="login" element={<Login />} />
       <Route path="sign-in" element={<SignIn />} />
-      <Route
-        path="machines"
-        element={
-          <RequireAuth>
-            <Machines />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="create-machine"
-        element={
-          <RequireAuth>
-            <CreateMachine />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="edit-machine/:machine"
-        element={
-          <RequireAuth>
-            <EditMachine />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="sensors/:machine"
-        element={
-          <RequireAuth>
-            <Sensors />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="create-sensor/:machine"
-        element={
-          <RequireAuth>
-            <CreateSensor />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="edit-sensor/:machine/:sensor"
-        element={
-          <RequireAuth>
-            <EditSensor />
-          </RequireAuth>
-        }
-      />
-      <Route path="/*" element={<ErrorPage />} />
+      <Route element={<RequireAuth />}>
+        <Route path="machines" element={<Machines />} />
+        <Route path="create-machine" element={<CreateMachine />} />
+        <Route path="edit-machine/:machine" element={<EditMachine />} />
+        <Route path="sensors/:machine" element={<Sensors />} />
+        <Route path="create-sensor/:machine" element={<CreateSensor />} />
+        <Route path="edit-sensor/:machine/:sensor" element={<EditSensor />} />
+      </Route>
+      <Route path="*" element={<ErrorPage />} />
     </Routes>
   );
 }
 
-function RequireAuth({ children }: { children: React.ReactNode }) {
+function RequireAuth() {
   const auth = useAuth();
   const location = useLocation();
 
   return auth?.authed === true ? (
-    children
+    <Outlet />
   ) : (
     <Navigate to="/login" replace state={{ path: location.pathname }} />
   );
