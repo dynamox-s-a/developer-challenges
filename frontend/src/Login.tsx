@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import { LockOutlined } from '@mui/icons-material';
 import MyCopyright from './components/MyCopyright';
+import { useLoginMutation } from './features/monitor/monitorSlice';
 
 export default function Login() {
   const auth = useAuth();
@@ -25,6 +26,7 @@ export default function Login() {
   const { email, password, showPass } = data;
   const setEmail = (value: string) => setEP({ ...data, email: value });
   const setPassword = (value: string) => setEP({ ...data, password: value });
+  const [loginFunc] = useLoginMutation();
 
   const loginFail = (error: string) => {
     console.log('Login failed: ', error);
@@ -40,7 +42,12 @@ export default function Login() {
 
   const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    login(email, password, loginSuccess, loginFail);
+    // login(email, password, loginSuccess, loginFail);
+    console.log({ email, password });
+    loginFunc({ email, password })
+      .unwrap()
+      .then((v) => loginSuccess(JSON.stringify(v)))
+      .catch(loginFail);
   };
 
   const handleShowPass = (e: React.ChangeEvent<HTMLInputElement>) => {
