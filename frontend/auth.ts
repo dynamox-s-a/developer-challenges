@@ -1,36 +1,42 @@
 import NextAuth from "next-auth"
-import Credentials from "next-auth/providers/credentials"
+import authConfig from "./auth.config";
  
-export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [
-    Credentials({
-      credentials: {
-        email: {},
-        password: {},
-      },
-      authorize: async (credentials) => {
-        let user = null
-        
-        const payLoad = {
-          email: credentials.email,
-          password: credentials.password,
-        }
+export const { 
+  handlers: {GET, POST}, 
+  signIn, 
+  signOut, 
+  auth, 
+} = NextAuth({
+  pages: {
+    signIn: "/auth/login",
+    error: "/auth/login",
+  },
+  callbacks: {
+    async signIn({user}) {
+      console.log("signIn", user);
+      if (!user) {
+        return false;
+      }
+      return true;
+    },
 
-        user = await fetch("http://localhost:3001/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payLoad),
-        }).then((res) => res.json())
-        
-        console.log(user)
+    async session({session, token, user}) {
+      console.log("session", session);
+      if (token.sub && session.user) {
+        session.user.id = token.sub;
+      }
+      session.user.name = user.name
 
-        if (!user) {
-          throw new Error("Credenciais inválidas ou usuário não encontrado")
-        }
-        return user
-      },
-    }),
-  ],
+
+      return session;
+    },
+    async jwt({ token, user }) {
+      console.log("jwt", token);
+      token.name = user.name;
+      token.email = user.email;
+      return token;
+    }
+  },
+  session: {strategy: "jwt"},
+  ...authConfig
 })
