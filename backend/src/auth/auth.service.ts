@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
@@ -24,6 +25,11 @@ export class AuthService {
 
         return {
             acessToken: this.jwtService.sign(payload),
+            user: {
+                id: user.id,
+                email: user.email,
+                name: user.name,
+            }
         };
     }
     private async validateUser(email: string, password: string) {
@@ -44,4 +50,5 @@ export class AuthService {
             'Email ou senha inválidos'
         )
     }
+    
 }
