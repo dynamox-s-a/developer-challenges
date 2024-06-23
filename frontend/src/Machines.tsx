@@ -37,6 +37,7 @@ export default function Machines() {
 
   const { data, refetch } = useGetMachinesQuery(authContext!.user.id);
   const rows: MachineType[] = data || [];
+  const showRows = rows.length > 0;
 
   const handleDelete = () => {
     setShowConfirmDelete(false);
@@ -85,19 +86,26 @@ export default function Machines() {
           <Typography component="h1" variant="h5">
             Machines
           </Typography>
-          <DataGrid
-            sx={{ width: '100%' }}
-            onCellClick={(e) => {
-              setSel(`${e.id}`);
-            }}
-            rows={rows}
-            columns={columns}
-            pageSizeOptions={[5]}
-            paginationMode="client"
-            initialState={{
-              pagination: { paginationModel: { page: 0, pageSize: 5 } },
-            }}
-          />
+
+          {!showRows && (
+            <Box sx={{ margin: 'auto' }}>0 Machines. Try to add some...</Box>
+          )}
+          {showRows && (
+            <DataGrid
+              sx={{ width: '100%' }}
+              onCellClick={(e) => {
+                setSel(`${e.id}`);
+              }}
+              rows={rows}
+              columns={columns}
+              pageSizeOptions={[5]}
+              paginationMode="client"
+              initialState={{
+                pagination: { paginationModel: { page: 0, pageSize: 5 } },
+              }}
+            />
+          )}
+
           <Box
             sx={{
               display: 'flex',

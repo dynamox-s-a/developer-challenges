@@ -1,19 +1,25 @@
-import { useRouteError } from 'react-router-dom';
+import { Container, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 export default function ErrorPage() {
-  const error = useRouteError();
-  console.error(error);
-
   return (
-    <div id="error-page">
-      <h1>Oops!</h1>
+    <Container
+      component="main"
+      maxWidth="xs"
+      sx={{
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '1rem',
+      }}
+    >
+      <Typography component="h1" variant="h5">
+        Oops!
+      </Typography>
       <p>Sorry, an unexpected error has occurred.</p>
-      <p>
-        <i>
-          {(error as Error)?.message ||
-            (error as { statusText?: string })?.statusText}
-        </i>
-      </p>
-    </div>
+      <Link to={'/'}>return to app</Link>
+    </Container>
   );
 }
