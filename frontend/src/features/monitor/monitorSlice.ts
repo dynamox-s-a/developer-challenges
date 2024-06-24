@@ -27,6 +27,10 @@ export const machinesApiSlice = createApi({
   tagTypes: ['Machines', 'Sensors', 'Login'],
   refetchOnMountOrArgChange: true,
   endpoints: (build) => ({
+    // ===== MONITOR POINTS =====
+    getAllMonitorPoints: build.query<SensorsApiResponse, string>({
+      query: (userId: string) => `monitor/${userId}`,
+    }),
     // ===== MACHINES =====
     createMachine: build.mutation<MachinesApiResponse, Partial<MachineType>>({
       query: (machine: MachineType) => ({
@@ -99,6 +103,8 @@ export const machinesApiSlice = createApi({
 });
 
 export const {
+  // MONITOR POINTS
+  useGetAllMonitorPointsQuery,
   // MACHINES
   useCreateMachineMutation,
   useGetMachinesQuery,

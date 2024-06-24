@@ -3,6 +3,7 @@ import Login from './Login';
 import SignIn from './SignIn';
 import useAuth from './useAuth';
 import Sensors from './Sensors';
+import Monitor from './Monitor';
 import Machines from './Machines';
 import ErrorPage from './error-page';
 import EditSensor from './EditSensor';
@@ -18,6 +19,7 @@ export default function App() {
       <Route path="login" element={<Login />} />
       <Route path="sign-in" element={<SignIn />} />
       <Route element={<RequireAuth />}>
+        <Route path="monitor" element={<Monitor />} />
         <Route path="machines" element={<Machines />} />
         <Route path="create-machine" element={<CreateMachine />} />
         <Route path="edit-machine/:machine" element={<EditMachine />} />

@@ -156,7 +156,10 @@ export default function Machines() {
               </DialogActions>
             </Dialog>
           </Box>
-          <Box width={'100%'}>
+          <Box
+            width={'100%'}
+            sx={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}
+          >
             <Button
               fullWidth
               variant="outlined"
@@ -164,6 +167,9 @@ export default function Machines() {
               disabled={!sel}
             >
               Sensors
+            </Button>
+            <Button fullWidth variant="outlined" onClick={() => n(`/monitor`)}>
+              Monitoring Points
             </Button>
           </Box>
         </Box>
