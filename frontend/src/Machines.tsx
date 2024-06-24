@@ -6,7 +6,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Box,
   Button,
-  Container,
   Dialog,
   DialogActions,
   DialogContentText,
@@ -17,9 +16,7 @@ import {
   useDeleteMachineMutation,
   useGetMachinesQuery,
 } from './features/monitor/monitorSlice';
-import UserCard from './components/UserCard';
 import useAuth from './useAuth';
-import MyCopyright from './components/MyCopyright';
 
 type GridColDef = { field: string; headerName: string; width: number };
 
@@ -55,128 +52,103 @@ export default function Machines() {
   };
 
   return (
-    <Container
-      component="main"
-      maxWidth="xs"
+    <Box
       sx={{
-        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
+        alignItems: 'center',
+        width: '100%',
+        gap: '2rem',
       }}
     >
+      <Typography component="h1" variant="h5">
+        Machines
+      </Typography>
+
+      {!showRows && (
+        <Box sx={{ margin: 'auto' }}>0 Machines. Try to add some...</Box>
+      )}
+      {showRows && (
+        <DataGrid
+          sx={{ width: '100%' }}
+          onCellClick={(e) => {
+            setSel(`${e.id}`);
+          }}
+          rows={rows}
+          columns={columns}
+          pageSizeOptions={[5]}
+          paginationMode="client"
+          initialState={{
+            pagination: { paginationModel: { page: 0, pageSize: 5 } },
+          }}
+        />
+      )}
+
       <Box
         sx={{
           display: 'flex',
-          flexGrow: 1,
-          alignItems: 'center',
-          flexDirection: 'column',
           justifyContent: 'space-between',
-          paddingTop: '2rem',
+          alignItems: 'center',
+          width: '100%',
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            width: '100%',
-            gap: '2rem',
-          }}
+        <Button
+          variant="outlined"
+          startIcon={<Add />}
+          onClick={() => n('/create-machine')}
         >
-          <Typography component="h1" variant="h5">
-            Machines
-          </Typography>
-
-          {!showRows && (
-            <Box sx={{ margin: 'auto' }}>0 Machines. Try to add some...</Box>
-          )}
-          {showRows && (
-            <DataGrid
-              sx={{ width: '100%' }}
-              onCellClick={(e) => {
-                setSel(`${e.id}`);
-              }}
-              rows={rows}
-              columns={columns}
-              pageSizeOptions={[5]}
-              paginationMode="client"
-              initialState={{
-                pagination: { paginationModel: { page: 0, pageSize: 5 } },
-              }}
-            />
-          )}
-
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              width: '100%',
-            }}
-          >
-            <Button
-              variant="outlined"
-              startIcon={<Add />}
-              onClick={() => n('/create-machine')}
-            >
-              Add
+          Add
+        </Button>
+        <Button
+          variant="outlined"
+          startIcon={<Create />}
+          disabled={sel == null}
+          onClick={() => n(`/edit-machine/${sel}`)}
+        >
+          Edit
+        </Button>
+        <Button
+          variant="outlined"
+          startIcon={<DeleteIcon />}
+          disabled={sel == null}
+          onClick={() => setShowConfirmDelete(true)}
+        >
+          Delete
+        </Button>
+        <Dialog
+          sx={{ textAlign: 'center' }}
+          open={showConfirmDelete}
+          onClose={() => setShowConfirmDelete(false)}
+        >
+          <DialogTitle>Confirm Deletion</DialogTitle>
+          <DialogContentText>
+            Are you sure you want to delete this machine?
+          </DialogContentText>
+          <DialogActions>
+            <Button onClick={() => setShowConfirmDelete(false)}>Cancel</Button>
+            <Button onClick={handleDelete} autoFocus>
+              Confirm
             </Button>
-            <Button
-              variant="outlined"
-              startIcon={<Create />}
-              disabled={sel == null}
-              onClick={() => n(`/edit-machine/${sel}`)}
-            >
-              Edit
-            </Button>
-            <Button
-              variant="outlined"
-              startIcon={<DeleteIcon />}
-              disabled={sel == null}
-              onClick={() => setShowConfirmDelete(true)}
-            >
-              Delete
-            </Button>
-            <Dialog
-              sx={{ textAlign: 'center' }}
-              open={showConfirmDelete}
-              onClose={() => setShowConfirmDelete(false)}
-            >
-              <DialogTitle>Confirm Deletion</DialogTitle>
-              <DialogContentText>
-                Are you sure you want to delete this machine?
-              </DialogContentText>
-              <DialogActions>
-                <Button onClick={() => setShowConfirmDelete(false)}>
-                  Cancel
-                </Button>
-                <Button onClick={handleDelete} autoFocus>
-                  Confirm
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </Box>
-          <Box
-            width={'100%'}
-            sx={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}
-          >
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => n(`/sensors/${sel}`)}
-              disabled={!sel}
-            >
-              Sensors
-            </Button>
-            <Button fullWidth variant="outlined" onClick={() => n(`/monitor`)}>
-              Monitoring Points
-            </Button>
-          </Box>
-        </Box>
-        <UserCard />
-        <MyCopyright />
+          </DialogActions>
+        </Dialog>
       </Box>
-    </Container>
+      <Box
+        width={'100%'}
+        sx={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}
+      >
+        <Button
+          fullWidth
+          variant="outlined"
+          onClick={() => n(`/sensors/${sel}`)}
+          disabled={!sel}
+        >
+          Sensors
+        </Button>
+        <Button fullWidth variant="outlined" onClick={() => n(`/monitor`)}>
+          Monitoring Points
+        </Button>
+      </Box>
+    </Box>
   );
 }
 

@@ -3,7 +3,6 @@ import { MACHINE_TYPES, SENSOR_MAP } from './constants';
 import {
   Box,
   Button,
-  Container,
   FormControl,
   InputLabel,
   MenuItem,
@@ -17,7 +16,6 @@ import {
   useGetSensorsByMachineIdQuery,
 } from './features/monitor/monitorSlice';
 import useAuth from './useAuth';
-import MyCopyright from './components/MyCopyright';
 
 export default function CreateSensor() {
   const location = useLocation();
@@ -62,93 +60,67 @@ export default function CreateSensor() {
     SENSOR_MAP[MACHINE_TYPES.indexOf(`${machine?.type}`)] || [];
 
   return (
-    <Container
-      component="main"
-      maxWidth="xs"
+    <Box
       sx={{
-        height: '100vh',
+        width: '100%',
         display: 'flex',
         flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexGrow: 1,
       }}
     >
+      <Typography component="h1" variant="h5">
+        Create Sensor
+      </Typography>
+
+      <Typography>
+        Machine: {machine?.name} | {machine?.type}
+      </Typography>
+
       <Box
+        component="form"
+        onSubmit={handleSubmit}
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          flexGrow: 1,
-          paddingTop: '2rem',
+          gap: '1rem',
+          padding: '2rem 0',
+          alignSelf: 'stretch',
         }}
       >
-        <Box sx={{ display: 'flex', width: '100%' }}>
-          <Button variant="outlined" onClick={() => n(`/sensors/${machineId}`)}>
-            Back
-          </Button>
-        </Box>
+        <FormControl fullWidth>
+          <TextField
+            name="name"
+            label="New sensor name"
+            required
+            fullWidth
+            autoFocus
+          />
+        </FormControl>
 
-        <Box
-          sx={{
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexGrow: 1,
-          }}
-        >
-          <Typography component="h1" variant="h5">
-            Create Sensor
-          </Typography>
-
-          <Typography>
-            Machine: {machine?.name} | {machine?.type}
-          </Typography>
-
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '1rem',
-              padding: '2rem 0',
-              alignSelf: 'stretch',
-            }}
+        <FormControl fullWidth>
+          <InputLabel id="sslId">Type</InputLabel>
+          <Select
+            name="type"
+            labelId="sslId"
+            label="Type"
+            defaultValue={sensorOptions[0]}
+            required
           >
-            <FormControl fullWidth>
-              <TextField
-                name="name"
-                label="New sensor name"
-                required
-                fullWidth
-                autoFocus
-              />
-            </FormControl>
+            {sensorOptions.map((i: string | number, k: number) => (
+              <MenuItem key={k} value={i}>
+                {i}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-            <FormControl fullWidth>
-              <InputLabel id="sslId">Type</InputLabel>
-              <Select
-                name="type"
-                labelId="sslId"
-                label="Type"
-                defaultValue={sensorOptions[0]}
-                required
-              >
-                {sensorOptions.map((i: string | number, k: number) => (
-                  <MenuItem key={k} value={i}>
-                    {i}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <Button type="submit" variant="outlined" sx={{ m: '2rem 0' }}>
-              Save
-            </Button>
-          </Box>
-        </Box>
-        <MyCopyright />
+        <Button type="submit" variant="outlined" sx={{ m: '2rem 0' }}>
+          Save
+        </Button>
       </Box>
-    </Container>
+    </Box>
   );
 }
 

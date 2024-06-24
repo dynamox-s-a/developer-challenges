@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
 import Login from './Login';
 import SignIn from './SignIn';
@@ -10,6 +11,9 @@ import EditSensor from './EditSensor';
 import EditMachine from './EditMachine';
 import CreateSensor from './CreateSensor';
 import CreateMachine from './CreateMachine';
+import UserCard from './components/UserCard';
+import MyCopyright from './components/MyCopyright';
+import { Container, Box } from '@mui/material';
 import './index.css';
 
 export default function App() {
@@ -37,8 +41,36 @@ function RequireAuth() {
   const location = useLocation();
 
   return auth?.authed === true ? (
-    <Outlet />
+    <Layout />
   ) : (
     <Navigate to="/login" replace state={{ path: location.pathname }} />
+  );
+}
+
+function Layout() {
+  return (
+    <Container
+      component="main"
+      sx={{
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          flexGrow: 1,
+          alignItems: 'center',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          paddingTop: '2rem',
+        }}
+      >
+        <Outlet />
+        <UserCard />
+        <MyCopyright />
+      </Box>
+    </Container>
   );
 }

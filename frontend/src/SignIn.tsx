@@ -69,7 +69,6 @@ export default function SignIn() {
 
   return (
     <Container
-      maxWidth="xs"
       sx={{
         height: '100vh',
         display: 'flex',

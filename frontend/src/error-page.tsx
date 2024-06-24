@@ -6,7 +6,6 @@ export default function ErrorPage() {
   return (
     <Container
       component="main"
-      maxWidth="xs"
       sx={{
         height: '100vh',
         display: 'flex',

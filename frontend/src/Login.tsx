@@ -53,7 +53,6 @@ export default function Login() {
   return (
     <Container
       component="main"
-      maxWidth="xs"
       sx={{
         height: '100vh',
         display: 'flex',

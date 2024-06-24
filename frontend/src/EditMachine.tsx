@@ -3,7 +3,6 @@ import {
   Avatar,
   Box,
   Button,
-  Container,
   FormControl,
   InputLabel,
   MenuItem,
@@ -17,7 +16,6 @@ import {
   useUpdateMachineByIdMutation,
 } from './features/monitor/monitorSlice';
 import { MACHINE_TYPES } from './constants';
-import UserCard from './components/UserCard';
 import useAuth from './useAuth';
 
 export default function EditMachine() {
@@ -51,73 +49,65 @@ export default function EditMachine() {
   };
 
   return (
-    <Container component={'main'} maxWidth="xl">
+    <Box
+      sx={{
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexGrow: 1,
+      }}
+    >
+      <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+        <EngineeringOutlined />
+      </Avatar>
+
+      <Typography component="h1" variant="h5">
+        Edit Machine
+      </Typography>
+
       <Box
+        component="form"
+        onSubmit={handleSubmit}
         sx={{
-          marginTop: 8,
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
+          gap: '1rem',
+          padding: '1rem 0',
+          alignSelf: 'stretch',
         }}
       >
-        <Box sx={{ display: 'flex', width: '100%' }}>
-          <Button variant="outlined" onClick={() => n('/machines')}>
-            Back
-          </Button>
-        </Box>
+        <FormControl fullWidth>
+          <TextField
+            name="name"
+            label="New machine name"
+            fullWidth
+            autoFocus
+            defaultValue={`${machine?.name}`}
+          />
+        </FormControl>
 
-        <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-          <EngineeringOutlined />
-        </Avatar>
+        <FormControl fullWidth>
+          <InputLabel id="sslId">Type</InputLabel>
+          <Select
+            name="type"
+            labelId="sslId"
+            defaultValue={machine?.type}
+            label="Type"
+          >
+            {MACHINE_TYPES.map((i: string | number, k: number) => (
+              <MenuItem key={k} value={i}>
+                {i}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-        <Typography component="h1" variant="h5">
-          Edit Machine
-        </Typography>
-
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1rem',
-            padding: '1rem 0',
-            alignSelf: 'stretch',
-          }}
-        >
-          <FormControl fullWidth>
-            <TextField
-              name="name"
-              label="New machine name"
-              fullWidth
-              autoFocus
-              defaultValue={`${machine?.name}`}
-            />
-          </FormControl>
-
-          <FormControl fullWidth>
-            <InputLabel id="sslId">Type</InputLabel>
-            <Select
-              name="type"
-              labelId="sslId"
-              defaultValue={machine?.type}
-              label="Type"
-            >
-              {MACHINE_TYPES.map((i: string | number, k: number) => (
-                <MenuItem key={k} value={i}>
-                  {i}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <Button type="submit" variant="outlined">
-            Save
-          </Button>
-        </Box>
-
-        <UserCard />
+        <Button type="submit" variant="outlined">
+          Save
+        </Button>
       </Box>
-    </Container>
+    </Box>
   );
 }

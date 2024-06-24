@@ -1,4 +1,4 @@
-import { Container, Box, Button, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -6,7 +6,6 @@ import {
   useGetMachinesQuery,
 } from './features/monitor/monitorSlice';
 import useAuth from './useAuth';
-import MyCopyright from './components/MyCopyright';
 
 export default function Monitor() {
   const n = useNavigate();
@@ -28,67 +27,42 @@ export default function Monitor() {
   const showRows = rows.length > 0;
 
   return (
-    <Container
-      component="main"
-      maxWidth="xs"
+    <Box
       sx={{
-        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
+        alignItems: 'center',
+        width: '100%',
+        gap: '2rem',
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexGrow: 1,
-          alignItems: 'center',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          paddingTop: '2rem',
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            width: '100%',
-            gap: '2rem',
-          }}
-        >
-          <Box sx={{ display: 'flex', width: '100%' }}>
-            <Button variant="outlined" onClick={() => n('/machines')}>
-              Back
-            </Button>
-          </Box>
-
-          <Typography component="h1" variant="h5">
-            Monitoring Points
-          </Typography>
-
-          {!showRows && (
-            <p>0 points to show. Try do add some machines and sensors.</p>
-          )}
-
-          {showRows && (
-            <DataGrid
-              sx={{ width: '100%' }}
-              onCellClick={(e) => {
-                // setSel(`${e.id}`);
-              }}
-              rows={rows}
-              columns={columns}
-              pageSizeOptions={[5]}
-              paginationMode="client"
-              initialState={{
-                pagination: { paginationModel: { page: 0, pageSize: 5 } },
-              }}
-            />
-          )}
-        </Box>
-        <MyCopyright />
+      <Box sx={{ display: 'flex', width: '100%' }}>
+        <Button variant="outlined" onClick={() => n('/machines')}>
+          Back
+        </Button>
       </Box>
-    </Container>
+
+      <Typography component="h1" variant="h5">
+        Monitoring Points
+      </Typography>
+
+      {!showRows && (
+        <p>0 points to show. Try do add some machines and sensors.</p>
+      )}
+
+      {showRows && (
+        <DataGrid
+          sx={{ width: '100%' }}
+          rows={rows}
+          columns={columns}
+          pageSizeOptions={[5]}
+          paginationMode="client"
+          initialState={{
+            pagination: { paginationModel: { page: 0, pageSize: 5 } },
+          }}
+        />
+      )}
+    </Box>
   );
 }
 
@@ -101,8 +75,8 @@ type Row = {
 };
 
 const columns: GridColDef[] = [
-  { field: 'machine', headerName: 'Machine Name', width: 150 },
+  { field: 'machine', headerName: 'Machine Name', width: 300 },
   { field: 'type', headerName: 'Machine Type', width: 150 },
-  { field: 'sensor', headerName: 'Monitoring Point Name', width: 150 },
+  { field: 'sensor', headerName: 'Monitoring Point Name', width: 300 },
   { field: 'model', headerName: 'Sensor Model', width: 150 },
 ];
