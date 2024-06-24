@@ -17,15 +17,15 @@ export default class SensorController {
   }
 
   public async create() {
-    const machine: ICreateSensorParams = {
+    const sensor: ICreateSensorParams = {
       name: this.req.body.name,
       type: this.req.body.type,
       machineId: this.req.body.machineId,
     };
 
     try {
-      const newMachine = await this.service.create(machine);
-      return this.res.status(HttpStatusCode.CREATED).json(newMachine);
+      const newSensor = await this.service.create(sensor);
+      return this.res.status(HttpStatusCode.CREATED).json(newSensor);
     } catch (error) {
       this.next(error);
     }
@@ -33,8 +33,8 @@ export default class SensorController {
 
   public async listAll() {
     try {
-      const machines = await this.service.listAll(this.req.params.id);
-      return this.res.status(HttpStatusCode.OK).json(machines);
+      const sensors = await this.service.listAll(this.req.params.id);
+      return this.res.status(HttpStatusCode.OK).json(sensors);
     } catch (error) {
       this.next(error);
     }
