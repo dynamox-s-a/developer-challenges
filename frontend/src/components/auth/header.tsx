@@ -1,8 +1,6 @@
+import Image from "next/image";
+
 import { Poppins } from "next/font/google";
-
-
-
-import { cn } from '@/lib/utils'
 
 const font = Poppins({
     subsets: ["latin"],
@@ -18,9 +16,7 @@ export const Header = ({ label }: HeaderProps) => {
         <div className="w-full flex flex-col gap-y-4 items-center justify-center">
             <div className="flex items-center gap-2">
               
-                <h1 className={cn("text-3xl font-semibold text-black drop-shadow-md", font.className)}>
-                    DYNAMOX
-                    </h1>
+                <Image src="/dynamox_horizontal_logo.webp" alt="Logo" width={200} height={200} />
             </div>
             <div>
                 <p className="text-normal text-gray-400">

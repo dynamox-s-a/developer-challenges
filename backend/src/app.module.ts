@@ -10,7 +10,14 @@ import { SensorModule } from './sensor/sensor.module';
 import { MonitorsModule } from './monitors/monitors.module';
 
 @Module({
-	imports: [PrismaModule, UserModule, AuthModule, MachineModule, SensorModule, MonitorsModule],
+	imports: [
+		PrismaModule, 
+		UserModule, 
+		AuthModule, 
+		MachineModule, 
+		SensorModule, 
+		MonitorsModule
+	],
 	controllers: [AppController],
 	providers: [AppService, {
 		provide: 'APP_GUARD',

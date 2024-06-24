@@ -4,6 +4,7 @@ import { MachineController } from './machine.controller';
 
 @Module({
   providers: [MachineService],
-  controllers: [MachineController]
+  controllers: [MachineController],
+  exports: [MachineService]
 })
 export class MachineModule {}

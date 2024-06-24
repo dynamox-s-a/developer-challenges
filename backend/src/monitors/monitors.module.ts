@@ -4,6 +4,7 @@ import { MonitorsService } from './monitors.service';
 
 @Module({
   controllers: [MonitorsController],
-  providers: [MonitorsService]
+  providers: [MonitorsService],
+  exports: [MonitorsService],
 })
 export class MonitorsModule {}
