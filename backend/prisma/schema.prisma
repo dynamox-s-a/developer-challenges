@@ -28,7 +28,7 @@ model Machine {
 model Sensor {
   sensor_id        Int      @id @default(autoincrement())
   machine_id       Int
-  monitoring_point String
+  monitoring_point String?
   sensor_type      String
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
