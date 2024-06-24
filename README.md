@@ -10,6 +10,7 @@ You will need docker and docker-compose.
 
 |-|-|
 |-|-|
+|frontend|`localhost:3000`|
 |backend|`localhost:3001`|
 |database|`localhost:27017`|
 
@@ -42,8 +43,8 @@ Go to `/frontend` folder then run `npm install` & `npm start`
 2 - Machine Management
 
 1. [x] As a user, I want to create a new machine with an arbitrary name and with a type selected from a list ["Pump", "Fan"] so that I can manage it later.
-1. [ ] As a user, I want to change the attributes (name and type) of a machine after creating it so that I can keep the machine information updated.
-1. [ ] As a user, I want to delete a machine when it is no longer in use so that it doesn't clutter the system.
+1. [x] As a user, I want to change the attributes (name and type) of a machine after creating it so that I can keep the machine information updated.
+1. [x] As a user, I want to delete a machine when it is no longer in use so that it doesn't clutter the system.
 
 3 - Monitoring Points and Sensors Management
 
@@ -51,19 +52,19 @@ Go to `/frontend` folder then run `npm install` & `npm start`
 1. [x] As a user, I want to associate a sensor to an existing monitoring point so that I can monitor the machine's performance. The sensor should have a unique ID, and the sensor model name should be one of ["TcAg", "TcAs", "HF+"].
 1. [x] As a user, I want the system to prevent me from setting up "TcAg" and "TcAs" sensors for machines of the type "Pump".
 1. [ ] As a user, I want to see all my monitoring points in a paginated list so that I can manage them. The list should display up to 5 monitoring points per page and should include the following information: "Machine Name", "Machine Type", "Monitoring Point Name", and "Sensor Model".
-1. [ ] As a user, I want to sort the monitoring points list by any of its columns in ascending or descending order, so that I can easily find the information I'm looking for.
+1. [x] As a user, I want to sort the monitoring points list by any of its columns in ascending or descending order, so that I can easily find the information I'm looking for.
 
 4 - Technical requirements
 
 1. [x] Use TypeScript.
 1. [x] Use React.
-1. [ ] Use Redux for managing global states.
-1. [ ] Use Redux Thunks or Redux Saga for managing asynchronous side effects.
+1. [x] Use Redux for managing global states.
+1. [x] Use Redux Thunks or Redux Saga for managing asynchronous side effects.
 1. [x] Use Next.js or Vite.
-1. [ ] Use Material UI 5 for styling the application.
+1. [x] Use Material UI 5 for styling the application.
 1. [x] Create reusable components.
 1. [ ] The code is well-organized and documented.
-1. [ ] The application layout is responsive.
+1. [x] The application layout is responsive.
 The choice of remaining tools is at your discretion.
 
 6 - Bonus
