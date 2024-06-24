@@ -28,22 +28,22 @@ export const CardWrapper = ({
     return (
         <Card className="w-[400px] shadow-md">
             <CardHeader>
-                {/* <Header label={headerLabel} /> */}
+                <Header label={headerLabel} />
             </CardHeader>
             <CardContent>
                 {children}
             </CardContent>
             {showSocial && (
                 <CardFooter>
-                   {/*  <Social /> */}
+                    <Social />
                 </CardFooter>
             )}
-            {/* <CardFooter>
+            <CardFooter>
                 <BackButton 
                 label={backButtonLabel}
                 href={backButtonHref}
                 />
-            </CardFooter> */}
+            </CardFooter> 
         </Card>
     )
 }

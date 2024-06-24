@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { LoginSchema } from "@/schemas";
-import { signIn } from "../../../auth";
 
 import {
     Form,
@@ -22,8 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import Link from "next/link";
-import { login } from "@/actions/login";
+import { login } from "../../actions/login";
 
 export const LoginForm = () => {
     const [error, setError] = useState<string | undefined>("");
@@ -57,6 +55,7 @@ export const LoginForm = () => {
             headerLabel="Bem vindo de volta!"
             backButtonLabel="Ainda não tem uma conta?"
             backButtonHref="/auth/register"
+            showSocial={false}
             
         >
             <Form {...form}>

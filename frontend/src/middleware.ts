@@ -10,11 +10,11 @@ import {
 const { auth } = NextAuth(authConfig);
 
 export default auth(async (req, res) => {
-  console.log("auth", req.auth); 
+ 
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
 
-  console.log("isLoggedIn", isLoggedIn);
+
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
