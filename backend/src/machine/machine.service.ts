@@ -44,6 +44,8 @@ export class MachineService {
         const data: Prisma.MachineUpdateInput = {
             ...updateMachineDto,
         }
+        console.log("id", id)
+        console.log("data", data)
 
         return this.prisma.machine.update({
             where: { machine_id: id },

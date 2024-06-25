@@ -1,10 +1,10 @@
-import { PlusCircle } from "lucide-react";
+import { CogIcon } from "lucide-react";
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import MachineAddForm from "./machine-add-form";
+import MachineEditForm from "./machine-edit-form";
 
-export function ButtonAddMachine() {
+export function ButtonEditMachine({machine_id}: {machine_id: number}) {
     const [open, setOpen] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
 
@@ -18,20 +18,17 @@ export function ButtonAddMachine() {
         <>
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
-                    <Button size="sm" className="h-7 gap-1">
-                        <PlusCircle className="h-3.5 w-3.5" />
-                        <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                            Adicione uma máquina
-                        </span>
+                    <Button size="sm" variant={'link'} >
+                        <CogIcon className="h-5 w-5" />
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-[80vw] lg:max-w-[425px] rounded-md">
-                    <MachineAddForm onSubmitSuccess={handleFormSubmit} />
+                    <MachineEditForm machine_id={machine_id} onSubmitSuccess={handleFormSubmit} />
                 </DialogContent>
             </Dialog>
             {showSuccess && (
                 <div className="fixed bottom-4 right-4 bg-green-500 text-white p-4 rounded-md">
-                    Máquina cadastrada com sucesso!
+                    Máquina editada com sucesso!
                 </div>
             )}
         </>

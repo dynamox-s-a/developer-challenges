@@ -12,10 +12,18 @@ export default function Dashboard() {
 
   const [clientMachineData, setClientMachineData] = useState<MachineData[]>([]);
 
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false); 
 
   const machines = machineAndSensorStore((state: MachineAndSensorType) => state.machines);
   const setMachines = machineAndSensorStore((state: MachineAndSensorType) => state.setMachines);
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      
+      setLoading(false);
+    }, 2000);
+  }, [machines]);
 
   console.log("machines", machines);
 
@@ -40,7 +48,7 @@ export default function Dashboard() {
                 key={index}
                 machine_type={machine.machine_type}
                 machine_name={machine.machine_name}
-                createdAt={machine.createdAt} sensors={undefined} map={undefined} machine_id={0} user_id={0} updatedAt={''} />
+                createdAt={machine.createdAt} sensors={undefined} map={undefined} machine_id={machine.machine_id} user_id={0} updatedAt={''} />
             ))}
           </div>
         </div>

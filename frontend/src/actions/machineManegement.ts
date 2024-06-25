@@ -55,13 +55,13 @@ export const updateMachine = async ({machine_id, machine_name, machine_type}: Ma
     }
 };
 
-export const deleteMachine = async (user_id: string, token: string) => {
+export const deleteMachine = async (machine_id: MachineData, token: string) => {
     const url =
         process.env.NEXT_PUBLIC_API_BASE_URL +
-        `/machine/user/${user_id}`
+        `/machine/${machine_id}`
     try {
         const response = await fetch(url, {
-            method: 'GET',
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 key: 'D-lRnkhY#',
@@ -72,7 +72,7 @@ export const deleteMachine = async (user_id: string, token: string) => {
 
         return data
     } catch (error) {
-        console.error('Error fetching reel data:', error)
+        console.error('Error deleting machine:', error)
         throw error
     }
 }

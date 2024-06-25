@@ -39,7 +39,9 @@ export class MachineController {
 
     @Patch(':id')
     update(@Param('id') id: string, @Body() updateMachineDto: UpdateMachineDto) {
-        return this.machineService.update(+id, updateMachineDto)
+        const response = this.machineService.update(+id, updateMachineDto)
+        console.log(response)
+        return response
     }
 
     @Delete(':id')
