@@ -6,7 +6,7 @@ import icon from "/public/logo-dynamox.png"
 
 export default function LoginPage() {
   return (
-    <div className="flex w-full lg:min-h-[600px]  lg:h-screen xl:min-h-[800px]">
+    <div className="flex w-full lg:h-screen ">
 
       <div className="absolute top-4 left-4 z-20">
         <Image src={icon} alt="Logo" width={100} height={100} />
