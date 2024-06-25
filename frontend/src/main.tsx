@@ -18,8 +18,9 @@ if (container) {
       <AuthProvider>
         <BrowserRouter>
           <Provider store={store}>
-            <CssBaseline />
-            <App />
+            <CssBaseline>
+              <App />
+            </CssBaseline>
           </Provider>
         </BrowserRouter>
       </AuthProvider>

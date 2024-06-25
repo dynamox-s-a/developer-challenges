@@ -1,5 +1,11 @@
-import { ReactNode } from 'react';
-import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
+import {
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import Login from './Login';
 import SignIn from './SignIn';
 import useAuth from './useAuth';
@@ -11,9 +17,11 @@ import EditSensor from './EditSensor';
 import EditMachine from './EditMachine';
 import CreateSensor from './CreateSensor';
 import CreateMachine from './CreateMachine';
-import UserCard from './components/UserCard';
+import CustomizedMenus from './Menu';
 import MyCopyright from './components/MyCopyright';
-import { Container, Box } from '@mui/material';
+import UserCard from './components/UserCard';
+import { ArrowBackIos, Menu } from '@mui/icons-material';
+import { Container, Box, Button } from '@mui/material';
 import './index.css';
 
 export default function App() {
@@ -52,11 +60,15 @@ function Layout() {
     <Container
       component="main"
       sx={{
+        margin: '0 auto',
+        padding: 0,
+        width: '100vw',
         height: '100vh',
         display: 'flex',
         flexDirection: 'column',
       }}
     >
+      <Header />
       <Box
         sx={{
           display: 'flex',
@@ -64,13 +76,36 @@ function Layout() {
           alignItems: 'center',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          paddingTop: '2rem',
+          p: '1rem',
         }}
       >
         <Outlet />
         <UserCard />
-        <MyCopyright />
       </Box>
+      <MyCopyright />
     </Container>
+  );
+}
+
+function Header() {
+  const n = useNavigate();
+
+  return (
+    <Box
+      sx={{
+        color: 'primary.light',
+        bgcolor: 'primary.main',
+        width: '100%',
+        margin: 0,
+        padding: '0.5rem',
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
+      <Button variant="outlined" onClick={() => n(-1)}>
+        <ArrowBackIos sx={{ color: '#fff' }} />
+      </Button>
+      <CustomizedMenus />
+    </Box>
   );
 }

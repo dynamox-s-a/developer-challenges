@@ -36,12 +36,6 @@ export default function Monitor() {
         gap: '2rem',
       }}
     >
-      <Box sx={{ display: 'flex', width: '100%' }}>
-        <Button variant="outlined" onClick={() => n('/machines')}>
-          Back
-        </Button>
-      </Box>
-
       <Typography component="h1" variant="h5">
         Monitoring Points
       </Typography>
