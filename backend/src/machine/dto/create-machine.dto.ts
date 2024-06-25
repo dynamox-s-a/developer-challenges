@@ -1,5 +1,6 @@
 import {
     IsNumber,
+    IsOptional,
     IsString,
 } from 'class-validator'
 
@@ -9,10 +10,10 @@ export class CreateMachineDto extends Machine {
     @IsNumber()
     user_id: number
 
-    @IsString()
+    @IsOptional()
     machine_name: string
 
-    @IsString()
+    @IsOptional()
     machine_type: string
 
 }

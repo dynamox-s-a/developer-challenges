@@ -19,8 +19,8 @@ model User {
 model Machine {
   machine_id   Int      @id @default(autoincrement())
   user_id      Int
-  machine_type String
-  machine_name String
+  machine_type String?
+  machine_name String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }

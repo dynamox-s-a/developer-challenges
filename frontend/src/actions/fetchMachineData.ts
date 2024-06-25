@@ -17,7 +17,7 @@ export const machineData = async (user_id: string, token: string) => {
 
 		return data
 	} catch (error) {
-		console.error('Error fetching reel data:', error)
+		console.error('Error fetching machine data:', error)
 		throw error
 	}
 }
