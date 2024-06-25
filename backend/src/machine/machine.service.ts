@@ -23,14 +23,16 @@ export class MachineService {
 
     findByMachineId(id: number) {
         return this.prisma.machine.findUnique({
-            where: { machine_id: id},
+            where: { machine_id: id },
         })
     }
 
     findByUserId(id: number) {
-        return this.prisma.machine.findMany({
+        const machineData = this.prisma.machine.findMany({
             where: { user_id: id },
         })
+
+        return machineData
     }
 
 
