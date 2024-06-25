@@ -1,0 +1,3 @@
+node_modules
+*.bkp
+db.json

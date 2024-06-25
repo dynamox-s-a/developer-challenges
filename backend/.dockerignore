@@ -1,0 +1,4 @@
+node_modules
+dist
+coverage
+.env_example
