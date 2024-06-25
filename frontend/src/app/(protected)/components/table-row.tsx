@@ -1,24 +1,44 @@
-import {TableRow, TableCell } from '@/components/ui/table'
-import { Badge } from '@/components/ui/badge'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuLabel, DropdownMenuItem } from '@/components/ui/dropdown-menu'
-import { Button } from '@/components/ui/button'
+import { format } from 'date-fns';
 import { MoreHorizontal } from 'lucide-react';
 
-export default function Row() {
+import { TableRow, TableCell } from '@/components/ui/table'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuLabel, DropdownMenuItem } from '@/components/ui/dropdown-menu'
+import { Button } from '@/components/ui/button'
+import { RowProps } from '@/models/rowProps'
+
+export default function Row({ machineData, sensorData }: RowProps) {
     return (
         <TableRow>
             <TableCell className="font-medium">
-                Laser Lemonade Machine
+                {machineData.machine_name}
             </TableCell>
             <TableCell>
-                <Badge variant="outline">Draft</Badge>
+                {machineData.machine_type}
             </TableCell>
-            <TableCell>$499.99</TableCell>
-            <TableCell className="hidden md:table-cell">
-                25
+            <TableCell>
+                {sensorData.length > 0 ? (
+                    sensorData.map((sensor, index) => (
+                        <div key={index}>
+                            <p>{sensor.sensor_type}</p>
+                        </div>
+                    ))
+                ) : (
+                    <p>--</p>
+                )}
             </TableCell>
             <TableCell className="hidden md:table-cell">
-                2023-07-12 10:42 AM
+                {sensorData.length > 0 && sensorData.some(sensor => sensor.monitoring_point) ? (
+                    sensorData.map((sensor, index) => (
+                        <div key={index}>
+                            <p>{sensor.monitoring_point || "--"}</p>
+                        </div>
+                    ))
+                ) : (
+                    <p>--</p>
+                )}
+            </TableCell>
+            <TableCell className="hidden md:table-cell">
+            {format(new Date(machineData.createdAt), 'dd/MM/yyyy \'às\' HH:mm')}
             </TableCell>
             <TableCell>
                 <DropdownMenu>
@@ -29,17 +49,16 @@ export default function Row() {
                             variant="ghost"
                         >
                             <MoreHorizontal className="h-4 w-4" />
-                            <span className="sr-only">Toggle menu</span>
+                            <span className="sr-only">Menu</span>
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
-                        <DropdownMenuItem>Delete</DropdownMenuItem>
+                        <DropdownMenuLabel>Ações</DropdownMenuLabel>
+                        <DropdownMenuItem>Editar</DropdownMenuItem>
+                        <DropdownMenuItem>Excluir</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </TableCell>
         </TableRow>
     );
 }
-

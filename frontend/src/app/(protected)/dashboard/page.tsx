@@ -8,12 +8,13 @@ import { SensorData } from "@/models/sensorModel";
 import { SessionDataType } from '@/models/userModel';
 import { machineAndSensorStore, MachineAndSensorType } from "@/contexts/stores/machineAndStore.zustand";
 import { getSessionData } from '@/actions/getSessionData';
-import { ClipLoader } from 'react-spinners'; // Example of a loader from 'react-spinners'
+
 import { DashboardTable } from '../components/dashboard-table';
+import { SkeletonTable } from '../components/skeleton-table';
 
 export default function Dashboard() {
   const [session, setSession] = useState<SessionDataType | null>(null);
-  const [clientMachineData, setClientMachineData] = useState<MachineData[]>([]);
+  const [clientMachineData, setClientMachineData] = useState<MachineData | null>(null);
   const [clientSensorData, setClientSensorData] = useState<SensorData[]>([]);
   const [loading, setLoading] = useState(true); // Loading state
 
@@ -29,20 +30,19 @@ export default function Dashboard() {
   
       if (sessionData) {
         const machines = await machineData(sessionData.user.id, sessionData.accessToken);
-        setClientMachineData(machines);
-        setMachines(machines);
+        const machinesWithSensors = await Promise.all(machines.map(async (machine: { machine_id: number; }) => {
+          const sensors = await sensorData(machine.machine_id, sessionData.accessToken);
+          return { ...machine, sensors }; // Associa os sensores diretamente ao objeto da máquina
+        }));
   
-        if (machines.length > 0) {
-          const sensorsPromises = machines.map((machine: { machine_id: number; }) =>
-            sensorData(machine.machine_id, sessionData.accessToken)
-          );
-          const sensorsResults = await Promise.all(sensorsPromises);
-          const allSensors = sensorsResults.flat();
-          setClientSensorData(allSensors);
-          setSensors(allSensors);
-        }
+        setClientMachineData(machinesWithSensors);
+        setMachines(machinesWithSensors); // Atualiza o estado com a nova estrutura
+  
+        const allSensors = machinesWithSensors.flatMap(machine => machine.sensors);
+        setClientSensorData(allSensors);
+        setSensors(allSensors);
       }
-
+  
       setLoading(false); // Set loading to false after data is fetched
     };
   
@@ -60,12 +60,12 @@ export default function Dashboard() {
         <h1 className="text-lg font-semibold md:text-2xl">Dashboard</h1>
       </div>
       {loading ? (
-        <div className="flex flex-1 items-center justify-center">
-          <ClipLoader size={100} color={"#6A2747"} loading={loading} />
+        <div className="flex flex-1 items-start justify-start">
+          <SkeletonTable />
         </div>
       ) : hasMachineData ? (
-        
-        <DashboardTable />
+       
+       <DashboardTable machineData={clientMachineData} sensorData={clientSensorData} />
         
       ) : (
         <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
