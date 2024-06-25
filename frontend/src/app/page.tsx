@@ -12,7 +12,7 @@ export default function Home() {
       </div>
      
       <div className="flex flex-col gap-4 justify-center items-center w-full h-screen z-20">
-        <h1 className="text-5xl font-bold text-[#6A2747]">BEM VINDO A DYNAMOX!</h1>
+        <h1 className="lg:text-5xl text-3xl font-bold text-[#6A2747]">BEM VINDO A DYNAMOX!</h1>
         <Link href="/auth/login">
           <Button variant="secondary" className="bg-[#6A2747] text-white hover:bg-rose-800" size="lg">
             Acesse sua conta
