@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation'; 
 import { Home, CogIcon, SmartphoneNfc, Shield } from 'lucide-react';
 
+
 export function SideNav() {
 
     const IsActive = (path: string) => {
@@ -26,6 +27,7 @@ export function SideNav() {
                     <Shield className="h-4 w-4" /> Pontos de monitoramento
                 </Link>
             </nav>
+            
         </div>
     );
 }

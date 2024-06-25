@@ -19,8 +19,6 @@ export default function Dashboard() {
   const [clientSensorData, setClientSensorData] = useState<SensorData[]>([]);
   const [loading, setLoading] = useState(true); // Loading state
 
-  const machines = machineAndSensorStore((state: MachineAndSensorType) => state.machines);
-  const sensors = machineAndSensorStore((state: MachineAndSensorType) => state.sensors);
   const setMachines = machineAndSensorStore((state: MachineAndSensorType) => state.setMachines);
   const setSensors = machineAndSensorStore((state: MachineAndSensorType) => state.setSensors);
 
@@ -33,25 +31,24 @@ export default function Dashboard() {
         const machines = await machineData(sessionData.user.id, sessionData.accessToken);
         const machinesWithSensors = await Promise.all(machines.map(async (machine: { machine_id: number; }) => {
           const sensors = await sensorData(machine.machine_id, sessionData.accessToken);
-          return { ...machine, sensors }; // Associa os sensores diretamente ao objeto da máquina
+          return { ...machine, sensors }; 
         }));
   
         setClientMachineData(machinesWithSensors as MachineDataArray);
-        setMachines(machinesWithSensors); // Atualiza o estado com a nova estrutura
+        setMachines(machines); 
   
         const allSensors = machinesWithSensors.flatMap(machine => machine.sensors);
         setClientSensorData(allSensors);
         setSensors(allSensors);
       }
   
-      setLoading(false); // Set loading to false after data is fetched
+      setLoading(false); 
     };
   
     fetchData();
   }, [setMachines, setSensors]);
 
-  console.log("machines", machines);
-  console.log("sensors", sensors);
+
 
   const hasMachineData = clientMachineData !== null;
 

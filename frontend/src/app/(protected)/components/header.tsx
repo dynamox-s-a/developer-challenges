@@ -1,3 +1,4 @@
+'use client'
 import { Menu } from "lucide-react";
 
 import {
@@ -8,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { MobileNav } from "./mobile-nav";
 import ProfileMenu from "./profile-menu";
+import ButtonLogout from './button-logout';
 
 export default function Header() {
 
@@ -26,14 +28,10 @@ export default function Header() {
                 </SheetContent>
             </Sheet>
             <div className="w-full flex-1">
-                {/*   <form>
-    <div className="relative">
-    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-    <Input type="search" placeholder="Search products..." className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3" />
-    </div>
-  </form> */}
+
             </div>
             <ProfileMenu />
+            <ButtonLogout />
         </header>
     )
 }
