@@ -11,6 +11,7 @@ import { getSessionData } from '@/actions/getSessionData';
 
 import { DashboardTable } from '../components/dashboard-table';
 import { SkeletonTable } from '../components/skeleton-table';
+import { MachineDataArray } from '@/lib/filter-function';
 
 export default function Dashboard() {
   const [session, setSession] = useState<SessionDataType | null>(null);
@@ -35,7 +36,7 @@ export default function Dashboard() {
           return { ...machine, sensors }; // Associa os sensores diretamente ao objeto da máquina
         }));
   
-        setClientMachineData(machinesWithSensors);
+        setClientMachineData(machinesWithSensors as MachineDataArray);
         setMachines(machinesWithSensors); // Atualiza o estado com a nova estrutura
   
         const allSensors = machinesWithSensors.flatMap(machine => machine.sensors);
