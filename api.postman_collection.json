@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "36383c18-ddb9-48fe-b1d7-757d6d74b588",
-		"name": "API",
+		"name": "Dynamox teste de conhecimento",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "22989296"
 	},
@@ -37,13 +37,161 @@
 			"response": []
 		},
 		{
+			"name": "Monitor",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BACKEND}}/monitor/66797edca25a20855e2f4386",
+					"host": [
+						"{{BACKEND}}"
+					],
+					"path": [
+						"monitor",
+						"66797edca25a20855e2f4386"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BACKEND}}/monitor/66797edca25a20855e2f4386",
+							"host": [
+								"{{BACKEND}}"
+							],
+							"path": [
+								"monitor",
+								"66797edca25a20855e2f4386"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "118"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"76-2+pQHG/e2NbdqImDTftByMMgE4A\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 24 Jun 2024 14:19:20 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": \"66798028a25a20855e2f4394\",\n        \"name\": \"Monitoring point name\",\n        \"type\": \"HF+\",\n        \"machineId\": \"66797fe6a25a20855e2f4391\"\n    }\n]"
+				},
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BACKEND}}/monitor/66797edca25a20855e2f4386",
+							"host": [
+								"{{BACKEND}}"
+							],
+							"path": [
+								"monitor",
+								"66797edca25a20855e2f4386"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "354"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"162-RWmGbXPMnjgplvIYgmu6UeC1YkI\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 24 Jun 2024 14:26:07 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": \"66798028a25a20855e2f4394\",\n        \"name\": \"Monitoring point name\",\n        \"type\": \"HF+\",\n        \"machineId\": \"66797fe6a25a20855e2f4391\"\n    },\n    {\n        \"id\": \"667981eba25a20855e2f43ad\",\n        \"name\": \"Monitoring point name\",\n        \"type\": \"TcAg\",\n        \"machineId\": \"66798166a25a20855e2f439e\"\n    },\n    {\n        \"id\": \"667981f8a25a20855e2f43b0\",\n        \"name\": \"Monitoring point name\",\n        \"type\": \"TcAs\",\n        \"machineId\": \"66798166a25a20855e2f439e\"\n    }\n]"
+				}
+			]
+		},
+		{
 			"name": "Create User",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"Gabriel\",\n    \"email\": \"email@email.com\",\n    \"password\": \"12345678\"\n}",
+					"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@email.com\",\n    \"password\": \"12345678\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -60,16 +208,148 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@email.com\",\n    \"password\": \"12345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BACKEND}}/users",
+							"host": [
+								"{{BACKEND}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "76"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"4c-WcdcczPpc/Jky0dx6fSNzIwVGXg\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 24 Jun 2024 14:12:44 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"66797edca25a20855e2f4386\",\n    \"name\": \"John Doe\",\n    \"email\": \"john@email.com\"\n}"
+				},
+				{
+					"name": "Fail - user already exist",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@email.com\",\n    \"password\": \"12345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BACKEND}}/users",
+							"host": [
+								"{{BACKEND}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "33"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"21-QtZDOnomXddCsRZSyem+berBhCs\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 24 Jun 2024 14:13:01 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"User already exist.\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Login",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"email@email.com\",\n    \"password\": \"12345678\"\n}",
+					"raw": "{\n    \"email\": \"john@email.com\",\n    \"password\": \"12345678\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -86,7 +366,200 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"john@email.com\",\n    \"password\": \"12345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BACKEND}}/login",
+							"host": [
+								"{{BACKEND}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "76"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"4c-WcdcczPpc/Jky0dx6fSNzIwVGXg\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 24 Jun 2024 14:13:54 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"66797edca25a20855e2f4386\",\n    \"name\": \"John Doe\",\n    \"email\": \"john@email.com\"\n}"
+				},
+				{
+					"name": "Fail - User not found",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"fails@email.com\",\n    \"password\": \"12345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BACKEND}}/login",
+							"host": [
+								"{{BACKEND}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "16"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"10-6tywfCuytUW27UTZGAkxankrqC4\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 24 Jun 2024 14:14:16 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "\"User not found\""
+				},
+				{
+					"name": "Fail - Wrong Password",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"john@email.com\",\n    \"password\": \"asdfasdf\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BACKEND}}/login",
+							"host": [
+								"{{BACKEND}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "16"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"10-6tywfCuytUW27UTZGAkxankrqC4\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 24 Jun 2024 14:14:56 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "\"User not found\""
+				}
+			]
 		},
 		{
 			"name": "Create Machine",
@@ -95,7 +568,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"machine02\",\n    \"type\": \"Fan\",\n    \"userId\": \"6668f1b495284578f18943c7\"\n}",
+					"raw": "{\n    \"name\": \"My new machine\",\n    \"type\": \"Pump\",\n    \"userId\": \"66797edca25a20855e2f4386\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -112,7 +585,72 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"My new machine\",\n    \"type\": \"Pump\",\n    \"userId\": \"66797edca25a20855e2f4386\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BACKEND}}/machines",
+							"host": [
+								"{{BACKEND}}"
+							],
+							"path": [
+								"machines"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "107"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"6b-4JGTBgCPg7IHMVYJlDjEqQC+/JI\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 24 Jun 2024 14:17:10 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"66797fe6a25a20855e2f4391\",\n    \"name\": \"My new machine\",\n    \"type\": \"Pump\",\n    \"userId\": \"66797edca25a20855e2f4386\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Create Sensor",
@@ -121,7 +659,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "    {\n        \"name\": \"monitoring point name 002\",\n        \"type\": \"HF+ de outro tipo\",\n        \"machineId\": \"6669efacf05000ff1d8d562f\"\n    }",
+					"raw": "    {\n        \"name\": \"Monitoring point name\",\n        \"type\": \"HF+\",\n        \"machineId\": \"66797fe6a25a20855e2f4391\"\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -138,7 +676,72 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"name\": \"Monitoring point name\",\n        \"type\": \"HF+\",\n        \"machineId\": \"66797fe6a25a20855e2f4391\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BACKEND}}/sensors",
+							"host": [
+								"{{BACKEND}}"
+							],
+							"path": [
+								"sensors"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "116"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"74-Vz8daojSKgjaD4n8xyHzIo+3zbo\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 24 Jun 2024 14:18:16 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"66798028a25a20855e2f4394\",\n    \"name\": \"Monitoring point name\",\n    \"type\": \"HF+\",\n    \"machineId\": \"66797fe6a25a20855e2f4391\"\n}"
+				}
+			]
 		},
 		{
 			"name": "machines by user id",
@@ -146,17 +749,130 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BACKEND}}/machines/666a47c5546bd4dc8ce3e55e",
+					"raw": "{{BACKEND}}/machines/66797edca25a20855e2f4386",
 					"host": [
 						"{{BACKEND}}"
 					],
 					"path": [
 						"machines",
-						"666a47c5546bd4dc8ce3e55e"
+						"66797edca25a20855e2f4386"
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BACKEND}}/machines/66797edca25a20855e2f4386",
+							"host": [
+								"{{BACKEND}}"
+							],
+							"path": [
+								"machines",
+								"66797edca25a20855e2f4386"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "109"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"6d-BxOQWInP5nyyCzPOzg+dNEI5dT4\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 24 Jun 2024 14:21:26 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": \"66797fe6a25a20855e2f4391\",\n        \"name\": \"My new machine\",\n        \"type\": \"Pump\",\n        \"userId\": \"66797edca25a20855e2f4386\"\n    }\n]"
+				},
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BACKEND}}/machines/66797edca25a20855e2f4386",
+							"host": [
+								"{{BACKEND}}"
+							],
+							"path": [
+								"machines",
+								"66797edca25a20855e2f4386"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "443"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1bb-8OPTyBpDvtYbp5NTssz4WmOyIRc\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 24 Jun 2024 14:23:55 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": \"66797fe6a25a20855e2f4391\",\n        \"name\": \"My new machine\",\n        \"type\": \"Pump\",\n        \"userId\": \"66797edca25a20855e2f4386\"\n    },\n    {\n        \"id\": \"66798166a25a20855e2f439e\",\n        \"name\": \"My new machine 002\",\n        \"type\": \"Fan\",\n        \"userId\": \"66797edca25a20855e2f4386\"\n    },\n    {\n        \"id\": \"6679816ba25a20855e2f43a1\",\n        \"name\": \"My new machine 003\",\n        \"type\": \"Fan\",\n        \"userId\": \"66797edca25a20855e2f4386\"\n    },\n    {\n        \"id\": \"66798172a25a20855e2f43a4\",\n        \"name\": \"My new machine 004\",\n        \"type\": \"Pump\",\n        \"userId\": \"66797edca25a20855e2f4386\"\n    }\n]"
+				}
+			]
 		},
 		{
 			"name": "sensors by machine id",
@@ -164,17 +880,74 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BACKEND}}/sensors/6668f1c795284578f18943ca",
+					"raw": "{{BACKEND}}/sensors/66797fe6a25a20855e2f4391",
 					"host": [
 						"{{BACKEND}}"
 					],
 					"path": [
 						"sensors",
-						"6668f1c795284578f18943ca"
+						"66797fe6a25a20855e2f4391"
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BACKEND}}/sensors/66797fe6a25a20855e2f4391",
+							"host": [
+								"{{BACKEND}}"
+							],
+							"path": [
+								"sensors",
+								"66797fe6a25a20855e2f4391"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "118"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"76-2+pQHG/e2NbdqImDTftByMMgE4A\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 24 Jun 2024 14:21:49 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": \"66798028a25a20855e2f4394\",\n        \"name\": \"Monitoring point name\",\n        \"type\": \"HF+\",\n        \"machineId\": \"66797fe6a25a20855e2f4391\"\n    }\n]"
+				}
+			]
 		},
 		{
 			"name": "machine by id",
@@ -182,13 +955,13 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{BACKEND}}/machines/6668f1c795284578f18943ca",
+					"raw": "{{BACKEND}}/machines/66797be652f99e31cb1ad994",
 					"host": [
 						"{{BACKEND}}"
 					],
 					"path": [
 						"machines",
-						"6668f1c795284578f18943ca"
+						"66797be652f99e31cb1ad994"
 					]
 				}
 			},
@@ -200,13 +973,13 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{BACKEND}}/sensors/6668f1de95284578f18943d0",
+					"raw": "{{BACKEND}}/sensors/66797d13c1c193d98d08c34b",
 					"host": [
 						"{{BACKEND}}"
 					],
 					"path": [
 						"sensors",
-						"6668f1de95284578f18943d0"
+						"66797d13c1c193d98d08c34b"
 					]
 				}
 			},
@@ -219,7 +992,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"Um Ventilador\",\n    \"type\": \"Vento forte\"\n}",
+					"raw": "{\n    \"name\": \"My new machine name\",\n    \"type\": \"Fan\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -227,13 +1000,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{BACKEND}}/machines/6668b16465ce4c7dc1a6284d",
+					"raw": "{{BACKEND}}/machines/6676c56846e719242f3c5955",
 					"host": [
 						"{{BACKEND}}"
 					],
 					"path": [
 						"machines",
-						"6668b16465ce4c7dc1a6284d"
+						"6676c56846e719242f3c5955"
 					]
 				}
 			},
