@@ -21,6 +21,7 @@ export default function MonitorPage() {
   const monitorsGlobal = machineAndSensorStore((state: MachineAndSensorType) => state.monitors);
   const machineArrayGlobal = machineAndSensorStore((state: MachineAndSensorType) => state.machineArray);
   const setMachineArrayGlobal = machineAndSensorStore((state: MachineAndSensorType) => state.setMachineArray);
+  const sensorsGlobal = machineAndSensorStore((state: MachineAndSensorType) => state.sensors);
 
 
 
@@ -81,7 +82,7 @@ export default function MonitorPage() {
     };
   
     fetchData();
-  }, [monitorsGlobal]);
+  }, [monitorsGlobal, sensorsGlobal]);
   
   console.log("machineArrayGlobal", machineArrayGlobal);
 

@@ -52,6 +52,7 @@ export function MonitorsTable({ validatedMachines }: MonitorsTableProps) {
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead>Máquina </TableHead>
+                                        <TableHead>Tipo de Máquina </TableHead>
                                         <TableHead>Ponto de Monitoramento 1</TableHead>
                                         <TableHead>Sensor 1</TableHead>
                                         <TableHead className="hidden md:table-cell">

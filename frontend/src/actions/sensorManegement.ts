@@ -1,7 +1,7 @@
 'use server'
 import { SensorData } from '@/models/sensorModel'
 
-export const createSensor = async (token: string, { machine_id, monitoring_point_id, sensor_type }: SensorData) => {
+export const createSensor = async (token: string, machine_id: number, monitoring_point_id: number, sensor_type: string) => {
     const url =
         process.env.NEXT_PUBLIC_API_BASE_URL +
         `/sensor`
@@ -16,6 +16,7 @@ export const createSensor = async (token: string, { machine_id, monitoring_point
             body: JSON.stringify({ machine_id, monitoring_point_id, sensor_type })
         })
         const data = await response.json()
+        console.log("data", data)
 
         return data
     } catch (error) {

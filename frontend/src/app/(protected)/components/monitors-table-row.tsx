@@ -1,13 +1,13 @@
-import { format } from 'date-fns';
-import { MoreHorizontal } from 'lucide-react';
 import { TableRow, TableCell } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
 import { MachineData } from '@/models/machineModel';
+import ButtonMoreOptions from './button-action-monitor-table';
+import { ButtonAddSensor } from './button-add-sensor';
 
 type MonitorsData = {
     monitoring_point_name: string;
     sensors: {
         sensor_type: string;
+        sensor_id: number;
     }[];
 };
 
@@ -20,23 +20,53 @@ type MonitorsTableRowProps = {
 export default function MonitorsTableRow({ validatedMachine }: MonitorsTableRowProps) {
     const machine = validatedMachine;
     console.log("Machine row", machine);
+    console.log("Machine row", machine.monitors[0]?.sensors[0]?.sensor_type);
 
     return (
+
         <TableRow>
             <TableCell className="font-medium">
                 {machine.machine_name}
             </TableCell>
-            <TableCell>
-                {machine.monitors[0]?.monitoring_point_name || '--'}
+            <TableCell className="font-medium">
+                {machine.machine_type}
             </TableCell>
-            <TableCell>
-                {machine.monitors[0]?.sensors[0]?.sensor_type || '--'}
+            <TableCell className='flex justify-start items-center'>
+                {machine.monitors[0]?.monitoring_point_name || '--'}
+                <ButtonMoreOptions elementId={machine.monitors[0]?.monitoring_point_id} elementType={'monitor'}/>
+            </TableCell>
+            <TableCell >
+                <div className='flex justify-start items-center'>
+
+                    {machine.monitors[0]?.sensors[0]?.sensor_type ? (
+                        <>
+                            {machine.monitors[0]?.sensors[0]?.sensor_type}
+                            <ButtonMoreOptions elementId={machine.monitors[0]?.sensors[0]?.sensor_id} elementType={'sensor'} />
+                        </>
+                    ) : (
+                        // @ts-ignore
+                        <ButtonAddSensor monitor_id={machine.monitors[0]?.monitoring_point_id} machine_id={machine.machine_id} machine_type={machine.machine_type} />
+                    )}
+                </div>
             </TableCell>
             <TableCell className="hidden md:table-cell">
-                {machine.monitors[1]?.monitoring_point_name || '--'}
+                <div className='flex justify-start items-center'>
+                    {machine.monitors[1]?.monitoring_point_name || '--'}
+                    <ButtonMoreOptions elementId={machine.monitors[1]?.monitoring_point_id} elementType={'monitor'}/>
+                </div>
             </TableCell>
-            <TableCell>
-                {machine.monitors[1]?.sensors[1]?.sensor_type || '--'}
+            <TableCell className="hidden md:table-cell">
+                <div className='flex justify-start items-center'>
+                    {machine.monitors[1]?.sensors[0]?.sensor_type ? (
+                        <>
+                            {machine.monitors[1]?.sensors[0]?.sensor_type}
+                            <ButtonMoreOptions elementId={machine.monitors[1]?.sensors[1]?.sensor_id} elementType={'sensor'} />
+                        </>
+                    ) : (
+                        // @ts-ignore
+                        <ButtonAddSensor monitor_id={machine.monitors[1]?.monitoring_point_id} machine_id={machine.machine_id} machine_type={machine.machine_type} />
+                    )}
+                </div>
             </TableCell>
         </TableRow>
     );

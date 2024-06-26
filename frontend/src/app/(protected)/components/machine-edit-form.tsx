@@ -33,11 +33,11 @@ export default function MachineEditForm({ machine_id, onSubmitSuccess }: { machi
                 machine_id: machine_id,
                 machine_name: machineName,
                 machine_type: machineType,
-                sensors: [],
                 map: [],
                 user_id: 0,
                 createdAt: '',
-                updatedAt: ''
+                updatedAt: '',
+                monitors: []
             };
             console.log(machineData);
             const response = await updateMachine(machineData, token); 
