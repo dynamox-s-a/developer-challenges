@@ -1,7 +1,6 @@
 import {
     IsNumber,
     IsOptional,
-    IsString,
 } from 'class-validator'
 
 import { Machine } from '../entity/machine.entity'

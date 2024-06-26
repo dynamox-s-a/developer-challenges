@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard'
 import { MachineModule } from './machine/machine.module';
 import { SensorModule } from './sensor/sensor.module';
+import { MonitorsModule } from './monitors/monitors.module';
 
 @Module({
 	imports: [
@@ -14,7 +15,8 @@ import { SensorModule } from './sensor/sensor.module';
 		UserModule, 
 		AuthModule, 
 		MachineModule, 
-		SensorModule
+		SensorModule, 
+		MonitorsModule
 	],
 	controllers: [AppController],
 	providers: [AppService, {

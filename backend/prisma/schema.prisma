@@ -26,10 +26,18 @@ model Machine {
 }
 
 model Sensor {
-  sensor_id        Int      @id @default(autoincrement())
-  machine_id       Int
-  monitoring_point String?
-  sensor_type      String
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  sensor_id           Int      @id @default(autoincrement())
+  machine_id          Int
+  monitoring_point_id Int
+  sensor_type         String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model MonitoringPoint {
+  monitoring_point_id   Int      @id @default(autoincrement())
+  machine_id            Int
+  monitoring_point_name String
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
 }

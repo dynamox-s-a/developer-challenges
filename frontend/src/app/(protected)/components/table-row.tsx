@@ -40,6 +40,7 @@ export default function Row({ machineData, sensorData }: RowProps) {
             <TableCell className="hidden md:table-cell">
             {format(new Date(machineData.createdAt), 'dd/MM/yyyy \'às\' HH:mm')}
             </TableCell>
+            {/* // Future implementation */}
             {/* <TableCell>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
