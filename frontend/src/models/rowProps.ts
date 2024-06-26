@@ -4,6 +4,6 @@ import { MonitorsData } from '@/models/monitorsModel';
 
 export interface RowProps {
     machineData: MachineData;
-    sensorData: SensorData[];
-    monitorData: MonitorsData[];
+    sensorData: SensorData;
+    monitorsData: MonitorsData;
 }

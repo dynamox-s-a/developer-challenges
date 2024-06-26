@@ -1,10 +1,10 @@
 'use server'
-import { MachineData } from '@/models/machineModel'
+import { SensorData } from '@/models/sensorModel'
 
-export const createMachine = async (token: string, { user_id, machine_name, machine_type }: MachineData) => {
+export const createSensor = async (token: string, { machine_id, monitoring_point_id, sensor_type }: SensorData) => {
     const url =
         process.env.NEXT_PUBLIC_API_BASE_URL +
-        `/machine`
+        `/sensor`
     try {
         const response = await fetch(url, {
             method: 'POST',
@@ -13,27 +13,31 @@ export const createMachine = async (token: string, { user_id, machine_name, mach
                 key: 'D-lRnkhY#',
                 Authorization: `Bearer ${token}`
             },
-            body: JSON.stringify({ user_id, machine_name, machine_type })
+            body: JSON.stringify({ machine_id, monitoring_point_id, sensor_type })
         })
         const data = await response.json()
 
         return data
     } catch (error) {
-        console.error('Error creating machine:', error)
+        console.error('Error creating sensor:', error)
         throw error
     }
 }
 
-export const updateMachine = async ({machine_id, machine_name, machine_type}: MachineData, token: string) => {
-    const url = process.env.NEXT_PUBLIC_API_BASE_URL + `/machine/${machine_id}`;
-    const body: Partial<MachineData> = {};
+export const updateSensor = async ({monitoring_point_id, sensor_type, machine_id, sensor_id}: SensorData, token: string) => {
+    const url = process.env.NEXT_PUBLIC_API_BASE_URL + `/sensor/${sensor_id}`;
+    const body: Partial<SensorData> = {};
 
-    if (machine_name) {
-        body.machine_name = machine_name;
+    if (monitoring_point_id) {
+        body.monitoring_point_id = monitoring_point_id;
     }
 
-    if (machine_type) {
-        body.machine_type = machine_type;
+    if (machine_id) {
+        body.machine_id = machine_id;
+    }
+
+    if (sensor_type) {
+        body.sensor_type = sensor_type;
     }
 
     try {
@@ -50,15 +54,15 @@ export const updateMachine = async ({machine_id, machine_name, machine_type}: Ma
 
         return data;
     } catch (error) {
-        console.error('Error updating machine data:', error);
+        console.error('Error updating sensor data:', error);
         throw error;
     }
 };
 
-export const deleteMachine = async (machine_id: number, token: string) => {
+export const deleteSensor = async (sensor_id: number, token: string) => {
     const url =
         process.env.NEXT_PUBLIC_API_BASE_URL +
-        `/machine/${machine_id}`
+        `/sensor/${sensor_id}`
     try {
         const response = await fetch(url, {
             method: 'DELETE',
@@ -72,7 +76,7 @@ export const deleteMachine = async (machine_id: number, token: string) => {
 
         return data
     } catch (error) {
-        console.error('Error deleting machine:', error)
+        console.error('Error deleting sensor:', error)
         throw error
     }
 }

@@ -1,10 +1,10 @@
 'use server'
-import { MachineData } from '@/models/machineModel'
+import { MonitorsData } from '@/models/monitorsModel'
 
-export const createMachine = async (token: string, { user_id, machine_name, machine_type }: MachineData) => {
+export const createMonitor = async (token: string, { machine_id, monitoring_point_name }: MonitorsData) => {
     const url =
         process.env.NEXT_PUBLIC_API_BASE_URL +
-        `/machine`
+        `/monitors`
     try {
         const response = await fetch(url, {
             method: 'POST',
@@ -13,27 +13,27 @@ export const createMachine = async (token: string, { user_id, machine_name, mach
                 key: 'D-lRnkhY#',
                 Authorization: `Bearer ${token}`
             },
-            body: JSON.stringify({ user_id, machine_name, machine_type })
+            body: JSON.stringify({ machine_id, monitoring_point_name })
         })
         const data = await response.json()
 
         return data
     } catch (error) {
-        console.error('Error creating machine:', error)
+        console.error('Error creating monitor:', error)
         throw error
     }
 }
 
-export const updateMachine = async ({machine_id, machine_name, machine_type}: MachineData, token: string) => {
-    const url = process.env.NEXT_PUBLIC_API_BASE_URL + `/machine/${machine_id}`;
-    const body: Partial<MachineData> = {};
+export const updateMonitor = async ({monitoring_point_id, monitoring_point_name, machine_id}: MonitorsData, token: string) => {
+    const url = process.env.NEXT_PUBLIC_API_BASE_URL + `/monitors/${monitoring_point_id}`;
+    const body: Partial<MonitorsData> = {};
 
-    if (machine_name) {
-        body.machine_name = machine_name;
+    if (monitoring_point_name) {
+        body.monitoring_point_name = monitoring_point_name;
     }
 
-    if (machine_type) {
-        body.machine_type = machine_type;
+    if (machine_id) {
+        body.machine_id = machine_id;
     }
 
     try {
@@ -50,15 +50,15 @@ export const updateMachine = async ({machine_id, machine_name, machine_type}: Ma
 
         return data;
     } catch (error) {
-        console.error('Error updating machine data:', error);
+        console.error('Error updating monitor data:', error);
         throw error;
     }
 };
 
-export const deleteMachine = async (machine_id: number, token: string) => {
+export const deleteMonitor = async (monitoring_point_id: number, token: string) => {
     const url =
         process.env.NEXT_PUBLIC_API_BASE_URL +
-        `/machine/${machine_id}`
+        `/monitors/${monitoring_point_id}`
     try {
         const response = await fetch(url, {
             method: 'DELETE',
@@ -72,7 +72,7 @@ export const deleteMachine = async (machine_id: number, token: string) => {
 
         return data
     } catch (error) {
-        console.error('Error deleting machine:', error)
+        console.error('Error deleting monitor:', error)
         throw error
     }
 }
