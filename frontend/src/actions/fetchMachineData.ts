@@ -1,6 +1,6 @@
 'use server'
 
-export const machineData = async (user_id: string, token: string) => {
+export const machineDataFetch = async (user_id: string, token: string) => {
 	const url =
 		process.env.NEXT_PUBLIC_API_BASE_URL +
 		`/machine/user/${user_id}`

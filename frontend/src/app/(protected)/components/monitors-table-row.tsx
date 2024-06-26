@@ -34,7 +34,7 @@ export default function MonitorsTableRow({ validatedMachine }: MonitorsTableRowP
             <TableCell className='flex justify-start items-center'>
                 {machine.monitors[0]?.monitoring_point_name || '--'}
             </TableCell>
-            <TableCell >
+            <TableCell className='hidden md:table-cell'>
                 <div className='flex justify-start items-center'>
 
                     {machine.monitors[0]?.sensors[0]?.sensor_type ? (

@@ -1,4 +1,4 @@
-// reducers/sensorDataReducer.ts
+/* // reducers/sensorDataReducer.ts
 import { STORE_SENSOR_DATA, UPDATE_SENSOR_DATA, DELETE_SENSOR_DATA } from '../../models/machineAndSensorTypes';
 
 const initialState = [];
@@ -14,4 +14,4 @@ export default function sensorDataReducer(state = initialState, action) {
     default:
       return state;
   }
-}
+} */

@@ -24,7 +24,9 @@ export const {
     
 
       if (account && user) {
+        //@ts-ignore
         token.accessToken = user.acessToken;
+        //@ts-ignore
         token.userData = user.userData;
       }
 

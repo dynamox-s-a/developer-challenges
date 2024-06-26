@@ -30,8 +30,8 @@ export default function Header() {
             <div className="w-full flex-1">
 
             </div>
-            <ProfileMenu />
-            <ButtonLogout />
+{/*             <ProfileMenu />
+ */}            <ButtonLogout />
         </header>
     )
 }

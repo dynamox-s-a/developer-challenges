@@ -1,4 +1,4 @@
-// reducers/machineDataReducer.ts
+/* // reducers/machineDataReducer.ts
 import { STORE_MACHINE_DATA, UPDATE_MACHINE_DATA, DELETE_MACHINE_DATA } from '../../models/machineAndSensorTypes';
 
 const initialState = [];
@@ -14,4 +14,4 @@ export default function machineDataReducer(state = initialState, action) {
     default:
       return state;
   }
-}
+} */

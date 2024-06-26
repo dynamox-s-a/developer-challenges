@@ -15,8 +15,9 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import ButtonFilterTable from "./button-filter-table";
-import { MachineDataArray } from '@/lib/filter-function';
+import { MachineDataArray, sortMachineData } from '@/lib/filter-function';
 import MonitorsTableRow from './monitors-table-row';
+import { ButtonAddMonitor } from './button-add-monitor';
 
 
 type MonitorsTableProps = {
@@ -28,17 +29,18 @@ export function MonitorsTable({ validatedMachines }: MonitorsTableProps) {
     const [sortedData, setSortedData] = useState<MachineDataArray>([]);
 
     const rowData = validatedMachines as MachineDataArray;
-    /* useEffect(() => {
+    useEffect(() => {
         const data = sortMachineData(validatedMachines, currentFilter);
         setSortedData(data);
-    }, [currentFilter, validatedMachines]); */
+    }, [currentFilter, validatedMachines]);
 
     return (
         <div className="flex min-h-screen w-full flex-col ">
             <div className="flex flex-col sm:gap-0 ">
-                <main className="grid flex-1 items-start gap-4 sm:py-0 md:gap-8 lg:-mt-12 z-0">
+                <main className="grid flex-1 items-start gap-4 sm:py-0 md:gap-8 lg:-mt-12 z-20">
                     <div className="flex items-center justify-end gap-2 ">
                         <ButtonFilterTable onFilterChange={setCurrentFilter} />
+                        <ButtonAddMonitor />
                     </div>
                     <Card x-chunk="dashboard-06-chunk-0">
                         <CardHeader>
@@ -54,7 +56,7 @@ export function MonitorsTable({ validatedMachines }: MonitorsTableProps) {
                                         <TableHead>Máquina </TableHead>
                                         <TableHead>Tipo de Máquina </TableHead>
                                         <TableHead>Ponto de Monitoramento 1</TableHead>
-                                        <TableHead>Sensor 1</TableHead>
+                                        <TableHead className='hidden md:table-cell'>Sensor 1</TableHead>
                                         <TableHead className="hidden md:table-cell">
                                             Ponto de monitoramento 2
                                         </TableHead>
@@ -67,9 +69,10 @@ export function MonitorsTable({ validatedMachines }: MonitorsTableProps) {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {rowData?.map((machine, index) => (
+                                    {sortedData?.map((machine, index) => (
                                         <MonitorsTableRow
                                             key={machine.machine_id}
+                                            // @ts-ignore
                                             validatedMachine={machine}
                                         />
                                     ))}

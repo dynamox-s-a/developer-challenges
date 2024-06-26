@@ -22,39 +22,27 @@ export type MachineDataArray = MachineData[];
 
 export function sortMachineData(machineData: MachineDataArray, currentFilter: string) {
     let data = [...machineData];
+    console.log("Data", data);
     switch (currentFilter) {
         case 'Nomes das Máquinas (A-Z)':
             data.sort((a, b) => a.machine_name.localeCompare(b.machine_name));
             break;
         case 'Tipo de sensor':
             data.sort((a, b) => {
-                const sensorTypeA = a.sensors.sensor_type || "";
-                const sensorTypeB = b.sensors.sensor_type || "";
-                if (sensorTypeA === sensorTypeB) {
-                    return a.machine_name.localeCompare(b.machine_name); // Secondary sort by machine name
-                }
-                return sensorTypeA.localeCompare(sensorTypeB);
+                const firstSensorA = a.monitors[0]?.sensors[0]?.sensor_type ?? '';
+                const firstSensorB = b.monitors[0]?.sensors[0]?.sensor_type ?? '';
+                return firstSensorA.localeCompare(firstSensorB);
             });
             break;
         case 'Tipo de máquina':
-            data.sort((a, b) => {
-                const machineTypeA = a.machine_type || "";
-                const machineTypeB = b.machine_type || "";
-                if (machineTypeA === machineTypeB) {
-                    return a.machine_name.localeCompare(b.machine_name); // Secondary sort by machine name
-                }
-                return machineTypeA.localeCompare(machineTypeB);
-            });
+            data.sort((a, b) => a.machine_type.localeCompare(b.machine_type));
             break;
         case 'Ponto de monitoramento':
             data.sort((a, b) => {
-                const monitoringPointA = a.sensors.monitoring_point || "";
-                const monitoringPointB = b.sensors.monitoring_point || "";
-                return monitoringPointA.localeCompare(monitoringPointB);
+                const monitoringPointNameA = a.monitors[0]?.monitoring_point_name ?? '';
+                const monitoringPointNameB = b.monitors[0]?.monitoring_point_name ?? '';
+                return monitoringPointNameA.localeCompare(monitoringPointNameB);
             });
-            break;
-        case 'Mais recentes':
-            data.sort((a, b) => Number(new Date(b.createdAt)) - Number(new Date(a.createdAt)));
             break;
         default:
             break;

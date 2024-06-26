@@ -24,9 +24,6 @@ export function MobileNav() {
             <Link href="#" className="flex items-center gap-2 text-lg font-semibold mb-4">
                 <Image src={icon} alt="Logo" width={150} height={150} />
             </Link>
-            <Link href="/dashboard" className={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 ${IsActive('/dashboard') ? 'text-foreground hover:text-foreground' : 'text-muted-foreground hover:text-foreground'}`}>
-                <Home className="h-5 w-5" /> Dashboard
-            </Link>
             <Link href="/machines" className={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 ${IsActive('/machines') ? 'text-foreground hover:text-foreground' : 'text-muted-foreground hover:text-foreground'}`}>
                 <CogIcon className="h-5 w-5" /> Máquinas
             </Link>

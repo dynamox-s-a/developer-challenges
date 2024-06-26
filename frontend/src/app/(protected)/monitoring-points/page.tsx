@@ -8,7 +8,7 @@ import { ButtonAddMonitor } from '../components/button-add-monitor';
 import { MonitorsTable } from '../components/monitors-table';
 import { SessionDataType } from '@/models/userModel';
 import { getSessionData } from '@/actions/getSessionData';
-import { machineData } from '@/actions/fetchMachineData';
+import { machineDataFetch } from '@/actions/fetchMachineData';
 import { monitorsData } from '@/actions/fetchMonitorData';
 import { sensorData } from '@/actions/fetchSensorData';
 import { MachineDataArray } from '@/lib/filter-function';
@@ -34,7 +34,7 @@ export default function MonitorPage() {
         
         if (sessionData) {
           try {
-            const machines = await machineData(sessionData.user.id, sessionData.accessToken);
+            const machines = await machineDataFetch(sessionData.user.id, sessionData.accessToken);
             setMachineGlobal(machines);
             const machinesWithMonitors = (await Promise.all(
               machines.map(async (machine: { machine_id: number; }) => {
@@ -93,7 +93,7 @@ export default function MonitorPage() {
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div className="flex items-center justify-between lg:justify-start gap-4 z-10">
         <h1 className="text-lg font-semibold md:text-2xl">Pontos de monitoramento</h1>
-        <ButtonAddMonitor />
+        
       </div>
       {loading ? (
         <div className="flex flex-1 items-start justify-start">

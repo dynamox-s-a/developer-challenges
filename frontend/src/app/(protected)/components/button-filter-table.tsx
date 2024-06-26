@@ -10,7 +10,7 @@ export default function ButtonFilterTable({ onFilterChange }: { onFilterChange: 
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="h-7 gap-1">
+                <Button variant="outline" size="sm" className="h-7 gap-1 ">
                     <ListFilter className="h-3.5 w-3.5" />
                     <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                         Ordenação
@@ -20,14 +20,15 @@ export default function ButtonFilterTable({ onFilterChange }: { onFilterChange: 
             <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Ordene por</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuCheckboxItem onClick={() => handleFilterChange('Mais recentes')}>
-                    Mais recentes
-                </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem onClick={() => handleFilterChange('Tipo de máquina')}>
                     Tipo de máquina
                 </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem onClick={() => handleFilterChange('Tipo de sensor')}>Tipo de sensor</DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem onClick={() => handleFilterChange('Ponto de monitoramento')}>Ponto de monitoramento</DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem onClick={() => handleFilterChange('Tipo de sensor')}>
+                    Tipo de sensor
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem onClick={() => handleFilterChange('Ponto de monitoramento')}>
+                    Ponto de monitoramento
+                </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem onClick={() => handleFilterChange('Nomes das Máquinas (A-Z)')}>
                     Nomes das Máquinas (A-Z)
                 </DropdownMenuCheckboxItem>

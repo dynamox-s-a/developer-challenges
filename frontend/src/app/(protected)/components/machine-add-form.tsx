@@ -31,7 +31,7 @@ export default function MachineAddForm({ onSubmitSuccess }: { onSubmitSuccess: (
         try {
             const user_id = session?.user.id as number;
             const machineData: MachineData = {
-                sensors: [],
+                monitors: [],
                 map: '',
                 machine_id: 0,
                 createdAt: '',

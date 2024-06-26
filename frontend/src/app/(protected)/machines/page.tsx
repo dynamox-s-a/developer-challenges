@@ -7,10 +7,14 @@ import { machineAndSensorStore, MachineAndSensorType } from "@/contexts/stores/m
 import { SkeletonTable } from '../components/skeleton-table';
 import MachineCard from '../components/machine-card';
 import { ButtonAddMachine } from '../components/button-add-machine';
+import { getSessionData } from '@/actions/getSessionData';
+import { SessionDataType } from '@/models/userModel';
+import { machineDataFetch } from '@/actions/fetchMachineData';
 
 export default function MachinePage() {
 
   const [clientMachineData, setClientMachineData] = useState<MachineData[]>([]);
+  const [session, setSession] = useState<SessionDataType | null>(null);
 
   const [loading, setLoading] = useState(false); 
 
@@ -18,21 +22,26 @@ export default function MachinePage() {
   const setMachines = machineAndSensorStore((state: MachineAndSensorType) => state.setMachines);
 
   useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
-      
-      setLoading(false);
-    }, 2000);
+    const fetchData = async () => {
+      const sessionData = await getSessionData();
+      setSession(sessionData as SessionDataType);
+  
+      if (sessionData) {
+        const machines = await machineDataFetch(sessionData.user.id, sessionData.accessToken);
+        setMachines(machines); 
+      }
+      setLoading(false); 
+    };
+  
+    fetchData();
   }, [machines]);
-
-  console.log("machines", machines);
 
 
   const hasMachineData = clientMachineData !== null;
 
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-      <div className="flex items-center justify-between lg:justify-start gap-4">
+      <div className="flex w-full items-center justify-between pr-6 ">
         <h1 className="text-lg font-semibold md:text-2xl">Máquinas</h1>
         <ButtonAddMachine />
       </div>
@@ -48,7 +57,7 @@ export default function MachinePage() {
                 key={index}
                 machine_type={machine.machine_type}
                 machine_name={machine.machine_name}
-                createdAt={machine.createdAt} sensors={undefined} map={undefined} machine_id={machine.machine_id} user_id={0} updatedAt={''} />
+                createdAt={machine.createdAt} map={undefined} machine_id={machine.machine_id} user_id={0} updatedAt={''} monitors={[]} />
             ))}
           </div>
         </div>

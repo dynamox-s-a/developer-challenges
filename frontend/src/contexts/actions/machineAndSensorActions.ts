@@ -1,4 +1,4 @@
-
+/* 
 import { STORE_MACHINE_DATA, UPDATE_MACHINE_DATA, DELETE_MACHINE_DATA, STORE_SENSOR_DATA, UPDATE_SENSOR_DATA, DELETE_SENSOR_DATA } from '../../models/machineAndSensorTypes';
 
 export const storeMachineData = (data) => ({
@@ -27,4 +27,4 @@ export const updateSensorData = (data) => ({
 
 export const deleteSensorData = () => ({
   type: DELETE_SENSOR_DATA,
-});
+}); */
