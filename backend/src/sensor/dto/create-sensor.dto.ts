@@ -11,6 +11,9 @@ export class CreateSensorDto extends Sensor {
     @IsNumber()
     machine_id: number
 
+    @IsNumber()
+    monitoring_point_id: number
+
     @IsOptional()
     monitoring_point?: string
 
