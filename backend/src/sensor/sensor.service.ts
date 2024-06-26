@@ -28,9 +28,9 @@ export class SensorService {
         })
     }
 
-    findByMachineId(id: number) {
+    findByMonitoringPointId(id: number) {
         return this.prisma.sensor.findMany({
-            where: { machine_id: id },
+            where: { monitoring_point_id: id },
         })
     }
 

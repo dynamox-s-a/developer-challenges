@@ -15,26 +15,29 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import ButtonFilterTable from "./button-filter-table";
-import Row from "./table-row";
-import { RowProps } from "@/models/rowProps";
-import { MachineData } from "@/models/machineModel";
-import { Key } from "react";
-import { MachineDataArray, sortMachineData } from '@/lib/filter-function';
+import { MachineDataArray } from '@/lib/filter-function';
+import MonitorsTableRow from './monitors-table-row';
 
-export function MonitorsTable({ machineData, sensorData }: RowProps) {
+
+type MonitorsTableProps = {
+    validatedMachines: MachineDataArray;
+};
+
+export function MonitorsTable({ validatedMachines }: MonitorsTableProps) {
     const [currentFilter, setCurrentFilter] = useState('Mais recentes');
-    const [sortedData, setSortedData] = useState<MachineData[]>([]);
+    const [sortedData, setSortedData] = useState<MachineDataArray>([]);
 
-    useEffect(() => {
-       const data = sortMachineData(machineData as MachineDataArray, currentFilter);
+    const rowData = validatedMachines as MachineDataArray;
+    /* useEffect(() => {
+        const data = sortMachineData(validatedMachines, currentFilter);
         setSortedData(data);
-    }, [currentFilter, machineData]); 
+    }, [currentFilter, validatedMachines]); */
 
     return (
-        <div className="flex min-h-screen w-full flex-col">
-            <div className="flex flex-col sm:gap-0 lg:-mt-14">
-                <main className="grid flex-1 items-start gap-4 sm:py-0 md:gap-8">
-                    <div className="flex items-center justify-end gap-2">
+        <div className="flex min-h-screen w-full flex-col ">
+            <div className="flex flex-col sm:gap-0 ">
+                <main className="grid flex-1 items-start gap-4 sm:py-0 md:gap-8 lg:-mt-12 z-0">
+                    <div className="flex items-center justify-end gap-2 ">
                         <ButtonFilterTable onFilterChange={setCurrentFilter} />
                     </div>
                     <Card x-chunk="dashboard-06-chunk-0">
@@ -63,11 +66,10 @@ export function MonitorsTable({ machineData, sensorData }: RowProps) {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {sortedData.map((machine: MachineData, index: Key | null | undefined) => (
-                                        <Row
-                                            key={index}
-                                            machineData={machine}
-                                            sensorData={sensorData.filter(sensor => sensor.machine_id === machine.machine_id)}
+                                    {rowData?.map((machine, index) => (
+                                        <MonitorsTableRow
+                                            key={machine.machine_id}
+                                            validatedMachine={machine}
                                         />
                                     ))}
                                 </TableBody>

@@ -3,6 +3,7 @@ import { create } from 'zustand'
 import { MachineData } from "@/models/machineModel";
 import { SensorData } from "@/models/sensorModel";
 import { MonitorsData } from "@/models/monitorsModel";
+import { MachineDataArray } from '@/lib/filter-function';
 
 export interface MachineAndSensorType {
   machines: MachineData[];
@@ -20,6 +21,8 @@ export interface MachineAndSensorType {
   addMonitor: (monitor: MonitorsData) => void;
   updateMonitor: (monitor_id: number, update: Partial<MonitorsData>) => void;
   removeMonitor: (monitor_id: number) => void;
+  setMachineArray: (machineArray: MachineDataArray) => void;
+  machineArray: MachineDataArray; 
 }
 
 export const machineAndSensorStore = create<MachineAndSensorType>((set) => ({
@@ -49,5 +52,7 @@ export const machineAndSensorStore = create<MachineAndSensorType>((set) => ({
   })),
   removeMonitor: (monitoring_point_id: number) => set((state) => ({
     monitors: state.monitors.filter((m) => m.monitoring_point_id !== monitoring_point_id),
-  })), 
+  })),
+  machineArray : [],
+  setMachineArray: (machineArray: MachineDataArray) => set({ machineArray }),
 }));

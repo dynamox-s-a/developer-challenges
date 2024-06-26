@@ -1,9 +1,9 @@
 'use server'
 
-export const sensorData = async (machine_id: number, token: string) => {
+export const sensorData = async (monitoring_point_id: number, token: string) => {
 	const url =
 		process.env.NEXT_PUBLIC_API_BASE_URL +
-		`/sensor/machine/${machine_id}`
+		`/sensor/monitor/${monitoring_point_id}`
 	try {
 		const response = await fetch(url, {
 			method: 'GET',
@@ -14,6 +14,7 @@ export const sensorData = async (machine_id: number, token: string) => {
 			},
 		})
 		const data = await response.json()
+		console.log('Sensor data:', data)
 
 		return data
 	} catch (error) {

@@ -30,9 +30,9 @@ export class SensorController {
         return this.sensorService.findBySensorId(+id)
     }
 
-    @Get('machine/:id')
+    @Get('monitor/:id')
     findByMachineId(@Param('id') id: string) {
-        return this.sensorService.findByMachineId(+id)
+        return this.sensorService.findByMonitoringPointId(+id)
     }
 
     @Patch(':id')

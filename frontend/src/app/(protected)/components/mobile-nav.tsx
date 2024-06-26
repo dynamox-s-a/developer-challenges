@@ -33,9 +33,6 @@ export function MobileNav() {
             <Link href="/monitoring-points" className={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 ${IsActive('/monitoring-points') ? 'text-foreground hover:text-foreground' : 'text-muted-foreground hover:text-foreground'}`}>
                 <Shield className="h-5 w-5" /> Pontos de monitoramento
             </Link>
-            <Link href="/sensors" className={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 ${IsActive('/sensors') ? 'text-foreground hover:text-foreground' : 'text-muted-foreground hover:text-foreground'}`}>
-                <SmartphoneNfc className="h-5 w-5" /> Sensores
-            </Link>
         </nav>
     )
 }

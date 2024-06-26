@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import MachineAddForm from "./machine-add-form";
+import MonitorAddForm from "./monitor-add-form";
 
 export function ButtonAddMonitor() {
     const [open, setOpen] = useState(false);
@@ -26,7 +27,7 @@ export function ButtonAddMonitor() {
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-[80vw] lg:max-w-[425px] rounded-md">
-                    <MachineAddForm onSubmitSuccess={handleFormSubmit} />
+                    <MonitorAddForm onSubmitSuccess={handleFormSubmit} />
                 </DialogContent>
             </Dialog>
             {showSuccess && (

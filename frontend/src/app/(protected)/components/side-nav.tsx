@@ -23,9 +23,6 @@ export function SideNav() {
                 <Link href="/monitoring-points" className={`flex items-center gap-3 rounded-lg px-3 py-2 ${IsActive('/monitoring-points') ? 'bg-muted text-primary' : 'text-muted-foreground'} transition-all hover:text-primary`}>
                     <Shield className="h-4 w-4" /> Pontos de monitoramento
                 </Link>
-                <Link href="/sensors" className={`flex items-center gap-3 rounded-lg px-3 py-2 ${IsActive('/sensors') ? 'bg-muted text-primary' : 'text-muted-foreground'} transition-all hover:text-primary`}>
-                    <SmartphoneNfc className="h-4 w-4" /> Sensores
-                </Link>
             </nav>
             
         </div>
