@@ -1,7 +1,7 @@
 'use server'
 import { MonitorsData } from '@/models/monitorsModel'
 
-export const createMonitor = async (token: string, { machine_id, monitoring_point_name }: MonitorsData) => {
+export const createMonitor = async (token: string, machine_id: number, monitoring_point_name: string) => {
     const url =
         process.env.NEXT_PUBLIC_API_BASE_URL +
         `/monitors`

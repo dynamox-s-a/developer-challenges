@@ -39,7 +39,7 @@ export default function MonitorAddForm({ onSubmitSuccess }: { onSubmitSuccess: (
                 throw new Error('Machine ID is not selected.');
             }
 
-            const response = await createMonitor(token, { machine_id: machineId, monitoring_point_name: monitorsName });
+            const response = await createMonitor(token, machineId, monitorsName);
             if (response) {
                 addMonitor(response);
             }
