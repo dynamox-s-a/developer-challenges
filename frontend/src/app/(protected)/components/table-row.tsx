@@ -40,7 +40,7 @@ export default function Row({ machineData, sensorData }: RowProps) {
             <TableCell className="hidden md:table-cell">
             {format(new Date(machineData.createdAt), 'dd/MM/yyyy \'às\' HH:mm')}
             </TableCell>
-            <TableCell>
+            {/* <TableCell>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button
@@ -58,7 +58,7 @@ export default function Row({ machineData, sensorData }: RowProps) {
                         <DropdownMenuItem>Excluir</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
-            </TableCell>
+            </TableCell> */}
         </TableRow>
     );
 }

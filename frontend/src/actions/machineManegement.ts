@@ -55,7 +55,7 @@ export const updateMachine = async ({machine_id, machine_name, machine_type}: Ma
     }
 };
 
-export const deleteMachine = async (machine_id: MachineData, token: string) => {
+export const deleteMachine = async (machine_id: number, token: string) => {
     const url =
         process.env.NEXT_PUBLIC_API_BASE_URL +
         `/machine/${machine_id}`

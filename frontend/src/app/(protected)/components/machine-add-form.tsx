@@ -33,7 +33,7 @@ export default function MachineAddForm({ onSubmitSuccess }: { onSubmitSuccess: (
             const machineData: MachineData = {
                 sensors: [],
                 map: '',
-                machine_id: '',
+                machine_id: 0,
                 createdAt: '',
                 updatedAt: '',
                 user_id,
