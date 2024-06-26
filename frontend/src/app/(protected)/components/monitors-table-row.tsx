@@ -33,7 +33,6 @@ export default function MonitorsTableRow({ validatedMachine }: MonitorsTableRowP
             </TableCell>
             <TableCell className='flex justify-start items-center'>
                 {machine.monitors[0]?.monitoring_point_name || '--'}
-                <ButtonMoreOptions elementId={machine.monitors[0]?.monitoring_point_id} elementType={'monitor'}/>
             </TableCell>
             <TableCell >
                 <div className='flex justify-start items-center'>
@@ -41,7 +40,6 @@ export default function MonitorsTableRow({ validatedMachine }: MonitorsTableRowP
                     {machine.monitors[0]?.sensors[0]?.sensor_type ? (
                         <>
                             {machine.monitors[0]?.sensors[0]?.sensor_type}
-                            <ButtonMoreOptions elementId={machine.monitors[0]?.sensors[0]?.sensor_id} elementType={'sensor'} />
                         </>
                     ) : (
                         // @ts-ignore
@@ -52,7 +50,6 @@ export default function MonitorsTableRow({ validatedMachine }: MonitorsTableRowP
             <TableCell className="hidden md:table-cell">
                 <div className='flex justify-start items-center'>
                     {machine.monitors[1]?.monitoring_point_name || '--'}
-                    <ButtonMoreOptions elementId={machine.monitors[1]?.monitoring_point_id} elementType={'monitor'}/>
                 </div>
             </TableCell>
             <TableCell className="hidden md:table-cell">
@@ -60,7 +57,6 @@ export default function MonitorsTableRow({ validatedMachine }: MonitorsTableRowP
                     {machine.monitors[1]?.sensors[0]?.sensor_type ? (
                         <>
                             {machine.monitors[1]?.sensors[0]?.sensor_type}
-                            <ButtonMoreOptions elementId={machine.monitors[1]?.sensors[1]?.sensor_id} elementType={'sensor'} />
                         </>
                     ) : (
                         // @ts-ignore

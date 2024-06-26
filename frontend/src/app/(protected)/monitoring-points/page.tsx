@@ -19,6 +19,7 @@ export default function MonitorPage() {
   const [loading, setLoading] = useState(true);
 
   const monitorsGlobal = machineAndSensorStore((state: MachineAndSensorType) => state.monitors);
+  const setMachineGlobal = machineAndSensorStore((state: MachineAndSensorType) => state.setMachines);
   const machineArrayGlobal = machineAndSensorStore((state: MachineAndSensorType) => state.machineArray);
   const setMachineArrayGlobal = machineAndSensorStore((state: MachineAndSensorType) => state.setMachineArray);
   const sensorsGlobal = machineAndSensorStore((state: MachineAndSensorType) => state.sensors);
@@ -30,11 +31,11 @@ export default function MonitorPage() {
       try {
         const sessionData = await getSessionData();
         setSession(sessionData as SessionDataType);
-        console.log("sessionData", sessionData);
-  
+        
         if (sessionData) {
           try {
             const machines = await machineData(sessionData.user.id, sessionData.accessToken);
+            setMachineGlobal(machines);
             const machinesWithMonitors = (await Promise.all(
               machines.map(async (machine: { machine_id: number; }) => {
                 try {
@@ -48,7 +49,7 @@ export default function MonitorPage() {
                 return null;
               })
             )).filter(machine => machine !== null);
-            console.log("machinesWithMonitors", machinesWithMonitors);
+
   
             const machinesWithSensors = await Promise.all(machinesWithMonitors.map(async (machine) => {
               const monitorsWithSensors = await Promise.all(machine.monitors.map(async (monitor: { monitoring_point_id: number; }) => {
@@ -57,7 +58,7 @@ export default function MonitorPage() {
                   return { ...monitor, sensors };
                 } catch (error) {
                   console.error("Error fetching sensors data", error);
-                  return { ...monitor, sensors: [] }; // Assuming a fallback structure
+                  return { ...monitor, sensors: [] }; 
                 }
               }));
   
@@ -65,7 +66,7 @@ export default function MonitorPage() {
             }));
   
             const validMachines = machinesWithSensors.filter(machine => machine.monitors.length > 0);
-            console.log("validMachines", validMachines);
+
   
             setClientValidMachines(validMachines as MachineDataArray);
             setMachineArrayGlobal(validMachines);

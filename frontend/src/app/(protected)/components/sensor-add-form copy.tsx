@@ -18,6 +18,8 @@ export default function SensorAddForm({ monitor_id, machine_id, machine_type, on
     const [sensorName, setSensorName] = useState('');
     const token = session?.accessToken as string;
 
+    console.log("Machine ID", machine_id);
+    console.log("MAchine type", machine_type);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -66,7 +68,9 @@ export default function SensorAddForm({ monitor_id, machine_id, machine_type, on
                         <SelectContent>
                             <SelectGroup>
                                 <SelectLabel>Escolha um tipo de sensor</SelectLabel>
-                                {machine_type === "Pump" ? (
+                                {
+                                // @ts-ignore
+                                machine_id.machine_type === "Pump" ? (
 
                                     <SelectItem value={"HF+"}>
                                         HF+
