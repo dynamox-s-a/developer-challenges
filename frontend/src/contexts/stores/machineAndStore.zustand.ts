@@ -2,10 +2,12 @@ import { create } from 'zustand'
 
 import { MachineData } from "@/models/machineModel";
 import { SensorData } from "@/models/sensorModel";
+import { MonitorsData } from "@/models/monitorsModel";
 
 export interface MachineAndSensorType {
   machines: MachineData[];
   sensors: SensorData[];
+  monitors: MonitorsData[];
   setMachines: (machines: MachineData[]) => void;
   addMachine: (machine: MachineData) => void;
   updateMachine: (machine_id: number, update: Partial<MachineData>) => void;
@@ -14,6 +16,10 @@ export interface MachineAndSensorType {
   addSensor: (sensor: SensorData) => void;
   updateSensor: (sensor_id: number, update: Partial<SensorData>) => void;
   removeSensor: (sensor_id: number) => void;
+  setMonitors: (monitors: MonitorsData[]) => void;
+  addMonitor: (monitor: MonitorsData) => void;
+  updateMonitor: (monitor_id: number, update: Partial<MonitorsData>) => void;
+  removeMonitor: (monitor_id: number) => void;
 }
 
 export const machineAndSensorStore = create<MachineAndSensorType>((set) => ({
@@ -35,4 +41,13 @@ export const machineAndSensorStore = create<MachineAndSensorType>((set) => ({
   removeSensor: (sensor_id: number) => set((state) => ({
     sensors: state.sensors.filter((s) => s.sensor_id !== sensor_id),
   })),
+  monitors: [],
+  setMonitors: (monitors: MonitorsData[]) => set({ monitors }),
+  addMonitor: (monitor: MonitorsData) => set((state) => ({ monitors: [...state.monitors, monitor] })),
+  updateMonitor: (monitoring_point_id: number, update: Partial<MonitorsData>) => set((state) => ({
+    monitors: state.monitors.map((m) => m.monitoring_point_id === monitoring_point_id ? { ...m, ...update } : m),
+  })),
+  removeMonitor: (monitoring_point_id: number) => set((state) => ({
+    monitors: state.monitors.filter((m) => m.monitoring_point_id !== monitoring_point_id),
+  })), 
 }));

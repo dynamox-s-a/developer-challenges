@@ -27,10 +27,10 @@ export default function Row({ machineData, sensorData }: RowProps) {
                 )}
             </TableCell>
             <TableCell className="hidden md:table-cell">
-                {sensorData.length > 0 && sensorData.some(sensor => sensor.monitoring_point) ? (
+                {sensorData.length > 0 && sensorData.some(sensor => sensor.monitoring_point_id) ? (
                     sensorData.map((sensor, index) => (
                         <div key={index}>
-                            <p>{sensor.monitoring_point || "--"}</p>
+                            <p>{sensor.monitoring_point_id || "--"}</p>
                         </div>
                     ))
                 ) : (

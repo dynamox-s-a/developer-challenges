@@ -8,7 +8,7 @@ import { SkeletonTable } from '../components/skeleton-table';
 import MachineCard from '../components/machine-card';
 import { ButtonAddMachine } from '../components/button-add-machine';
 
-export default function Dashboard() {
+export default function MachinePage() {
 
   const [clientMachineData, setClientMachineData] = useState<MachineData[]>([]);
 

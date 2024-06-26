@@ -1,55 +1,49 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { MachineData } from "@/models/machineModel";
+import { MonitorsData } from "@/models/monitorsModel";
 import { machineAndSensorStore, MachineAndSensorType } from "@/contexts/stores/machineAndStore.zustand";
 
 import { SkeletonTable } from '../components/skeleton-table';
-import MachineCard from '../components/machine-card';
-import { ButtonAddMachine } from '../components/button-add-machine';
+import { ButtonAddMonitor } from '../components/button-add-monitor';
+import { MonitorsTable } from '../components/monitors-table';
 
-export default function Dashboard() {
+export default function MonitorPage() {
 
-  const [clientMachineData, setClientMachineData] = useState<MachineData[]>([]);
+  const [clientMonitorData, setClientMonitorData] = useState<MonitorsData[]>([]);
 
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
 
-  const machines = machineAndSensorStore((state: MachineAndSensorType) => state.machines);
-  const setMachines = machineAndSensorStore((state: MachineAndSensorType) => state.setMachines);
+  const monitorsGlobalState = machineAndSensorStore((state) => state.monitors);
+  const addMonitorToGLobalState = machineAndSensorStore((state) => state.addMonitor);
 
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
-      
+
       setLoading(false);
     }, 2000);
-  }, [machines]);
-
-  console.log("machines", machines);
+  }, [monitorsGlobalState]);
 
 
-  const hasMachineData = clientMachineData !== null;
+
+
+  const hasMonitorData = clientMonitorData !== null;
 
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div className="flex items-center justify-between lg:justify-start gap-4">
         <h1 className="text-lg font-semibold md:text-2xl">Pontos de monitoramento</h1>
-        <ButtonAddMachine />
+        <ButtonAddMonitor />
       </div>
       {loading ? (
         <div className="flex flex-1 items-start justify-start">
           <SkeletonTable />
         </div>
-      ) : hasMachineData ? (
+      ) : hasMonitorData ? (
         <div>
           <div className='flex gap-4 w-full flex-wrap'>
-            {machines.map((machine, index) => (
-              <MachineCard
-                key={index}
-                machine_type={machine.machine_type}
-                machine_name={machine.machine_name}
-                createdAt={machine.createdAt} sensors={undefined} map={undefined} machine_id={machine.machine_id} user_id={0} updatedAt={''} />
-            ))}
+            <MonitorsTable machineData={clientMonitorData} sensorData={clientMonitorData} />
           </div>
         </div>
 
