@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { SeriesData } from '../types/charts'
 
@@ -18,7 +18,21 @@ const initialState: ChartsState = {
 export const chartsSlice = createSlice({
     name: 'charts',
     initialState,
-    reducers: {},
+    reducers: {
+        getChartsFetch: (state) => {
+            state.isLoading = true
+        },
+        getChartsSuccess: (state, action: PayloadAction<SeriesData[]>) => {
+            state.data = action.payload
+            state.error = null
+            state.isLoading = false
+        },
+        getChartsFailure: (state, action: PayloadAction<string>) => {
+            state.error = action.payload
+            state.isLoading = false
+        }
+    },
 })
 
+export const { getChartsFetch, getChartsSuccess, getChartsFailure } = chartsSlice.actions
 export default chartsSlice.reducer
