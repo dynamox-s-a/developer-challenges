@@ -38,7 +38,12 @@ export function buildChartOptions(
                 text: yAxisTitle
             },
         },
-        series: formattedSeries
+        chart: {
+            style: {
+                cursor: 'crosshair'
+            }
+        },
+        series: formattedSeries,
     }
     return options
 }

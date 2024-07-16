@@ -7,6 +7,14 @@ import { useAppDispatch, useAppSelector } from '../../hooks.ts'
 import { buildChartOptions } from '../../utils/charts.tsx'
 
 
+Highcharts.setOptions({
+    lang: {
+        months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+        shortMonths: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+        weekdays: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado']
+    }
+})
+
 export function Data() {
 
     const dispatch = useAppDispatch()
