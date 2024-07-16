@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import * as Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
+import highchartsAccessibility from 'highcharts/modules/accessibility'
 
 import { useAppDispatch, useAppSelector } from '../../hooks.ts'
 import { buildChartOptions } from '../../utils/charts.tsx'
@@ -15,6 +16,8 @@ export function Data() {
         dispatch({ type: 'charts/getChartsFetch' })
     }, [dispatch])
 
+    highchartsAccessibility(Highcharts)
+    
     const charts = [
         {
             title: 'Aceleração RMS',
