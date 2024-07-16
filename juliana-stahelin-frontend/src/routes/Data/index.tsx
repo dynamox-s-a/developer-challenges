@@ -1,28 +1,19 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import * as Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 
-import { getCharts } from '../../service/charts.ts'
-import { SeriesData } from '../../types/charts.ts'
+import { useAppDispatch, useAppSelector } from '../../hooks.ts'
 import { buildChartOptions } from '../../utils/charts.tsx'
 
 
 export function Data() {
-    const [data, setData] = useState<SeriesData[] | null>(null)
-    const [error, setError] = useState<string | null>(null)
+
+    const dispatch = useAppDispatch()
+    const { data, isLoading, error } = useAppSelector(state => state.charts)
 
     useEffect(() => {
-        async function fetchData() {
-            try {
-                const res = await getCharts()
-                setData(res)
-            } catch (e) {
-                setError('Ocorreu um erro ao buscar os gráficos.')
-            }
-        }
-
-        fetchData()
-    }, [])
+        dispatch({ type: 'charts/getChartsFetch' })
+    }, [dispatch])
 
     const charts = [
         {
@@ -52,18 +43,22 @@ export function Data() {
                 <span>20 min</span>
             </div>
             <div>
-                {error
-                    ? <p>{error}</p>
-                    : charts.map((item, index) => {
-                        return (
-                            <div key={item.title + index}>
-                                <div>
-                                    <h2>{item.title}</h2>
-                                </div>
-                                <HighchartsReact highcharts={Highcharts} options={item.options} />
+                {charts.map((item, index) => {
+                    return (
+                        <div key={item.title + index}>
+                            <div>
+                                <h2>{item.title}</h2>
                             </div>
-                        )
-                    })}
+                            {
+                                isLoading
+                                    ? <p>Loading...</p>
+                                    : error
+                                        ? <p>{error}</p>
+                                        : <HighchartsReact highcharts={Highcharts} options={item.options} />
+                            }
+                        </div>
+                    )
+                })}
             </div>
         </main>
     )
