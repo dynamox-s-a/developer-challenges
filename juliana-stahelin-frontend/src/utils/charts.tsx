@@ -1,4 +1,4 @@
-import { SeriesName, VibrationAxis, SingleSeries, SeriesData } from '../types/charts'
+import { DataPoint, SeriesData, SeriesName, SingleSeries, VibrationAxis } from '../types/charts'
 
 
 export function getSeriesData(data: SeriesData[], chartType: string): SeriesData[] {
@@ -41,4 +41,25 @@ export function buildChartOptions(
         series: formattedSeries
     }
     return options
+}
+
+function isDataPoint(data: any): data is DataPoint {
+    return (
+        typeof data.datetime == 'string' &&
+        typeof data.max == 'number'
+    )
+}
+
+function isSeriesData(data: any): data is SeriesData {
+    return (
+        typeof data.name == 'string' &&
+        Array.isArray(data.data) && data.data.every(isDataPoint)
+    )
+}
+
+export function isSeriesDataArray(data: any): data is SeriesData[] {
+    return (
+        Array.isArray(data) &&
+        data.every(isSeriesData)
+    )
 }
