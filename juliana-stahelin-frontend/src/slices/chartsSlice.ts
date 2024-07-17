@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { SeriesData } from '@/types/charts'
+import { SeriesData } from '../types/charts'
 
 
 export interface ChartsState {

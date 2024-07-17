@@ -1,5 +1,5 @@
 import * as Highcharts from 'highcharts'
-import { DataPoint, SeriesData, SeriesName, SingleSeries, VibrationAxis } from '@/types/charts'
+import { DataPoint, SeriesData, SeriesName, SingleSeries, VibrationAxis } from '../types/charts'
 
 
 export function getSeriesData(data: SeriesData[], chartType: string): SeriesData[] {

@@ -4,10 +4,10 @@ import {
 } from 'react-router-dom'
 import { Box } from '@mui/material'
 
-import { Data } from '@/routes/Data'
-import { Home } from '@/routes/Home'
-import { Navbar } from '@/components/Navbar'
-import { Footer } from '@/components/Footer'
+import { Data } from './routes/Data'
+import { Home } from './routes/Home'
+import { Navbar } from './components/Navbar'
+import { Footer } from './components/Footer'
 
 import './App.css'
 

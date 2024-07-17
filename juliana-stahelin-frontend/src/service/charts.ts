@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-import type { SeriesData } from '@/types/charts'
-import { isSeriesDataArray } from '@/utils/charts'
+import type { SeriesData } from '../types/charts'
+import { isSeriesDataArray } from '../utils/charts'
 
 
 const chartsApi = axios.create({

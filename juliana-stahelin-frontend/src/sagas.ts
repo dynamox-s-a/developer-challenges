@@ -1,8 +1,8 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
 
-import { getChartsFailure, getChartsSuccess } from '@/slices/chartsSlice'
-import { getCharts } from '@/service/charts'
-import { SeriesData } from '@/types/charts'
+import { getChartsFailure, getChartsSuccess } from './slices/chartsSlice'
+import { getCharts } from './service/charts'
+import { SeriesData } from './types/charts'
 
 
 function* fetchChartsData() {
