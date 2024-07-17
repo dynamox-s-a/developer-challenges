@@ -19,6 +19,6 @@ function* fetchChartsData() {
     }
 }
 
-export function* watchFetchGraphData() {
+export function* watchFetchChartsData() {
     yield takeEvery('charts/getChartsFetch', fetchChartsData)
 }
