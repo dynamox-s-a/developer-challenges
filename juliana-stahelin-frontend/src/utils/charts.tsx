@@ -2,11 +2,11 @@ import { DataPoint, SeriesData, SeriesName, SingleSeries, VibrationAxis } from '
 
 
 export function getSeriesData(data: SeriesData[], chartType: string): SeriesData[] {
-    if(!data || !data.length) return []
+    if (!data || !data.length) return []
     return data.filter(series => series.name.includes(chartType))
 }
 
-const getSeriesName = (name: SeriesName) => {
+const getSeriesInfo = (name: SeriesName) => {
     const lastChars = name.substring(name.length - 2)
     const isAxis = lastChars[0] === '/'
 
@@ -22,9 +22,10 @@ export function buildChartOptions(
 
     const seriesData = getSeriesData(data, chartType)
     const formattedSeries = seriesData.map(series => ({
-        name: getSeriesName(series.name as SeriesName),
+        name: getSeriesInfo(series.name as SeriesName).title,
         data: series.data.map(point => [new Date(point.datetime).getTime(), point.max]),
-        type: 'line' as const
+        type: 'line' as const,
+        color: getSeriesInfo(series.name as SeriesName).color
     }))
     const options: Highcharts.Options = {
         title: {
@@ -42,6 +43,30 @@ export function buildChartOptions(
             style: {
                 cursor: 'crosshair'
             }
+        },
+        responsive: {
+            rules: [
+                {
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                            enabled: false
+                        },
+                        yAxis: {
+                            labels: {
+                                align: 'right',
+                                x: 0,
+                                y: 0
+                            },
+                            title: {
+                                text: '',
+                            }
+                        }
+                    }
+                }
+            ]
         },
         series: formattedSeries,
     }

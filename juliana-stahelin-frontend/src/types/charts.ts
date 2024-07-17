@@ -9,15 +9,27 @@ export interface SeriesData {
 }
 
 export const SingleSeries = {
-    temperature: 'Temperatura'
+    temperature: {
+        title: 'Temperatura',
+        color: '#89982E'
+}
 } as const
 
 export type SingleSeries = keyof typeof SingleSeries
 
 export const VibrationAxis = {
-    '/x': 'Horizontal',
-    '/y': 'Axial',
-    '/z': 'Radial',
+    '/x': {
+        title: 'Horizontal',
+        color: '#CC337D'
+    },
+    '/y': {
+        title: 'Axial',
+        color: '#2386CB'
+    },
+    '/z': {
+        title: 'Radial',
+        color: '#B48A00'
+    },
 } as const
 
 export type SeriesName = `${string}${'/x' | '/y' | '/z'}` | SingleSeries
