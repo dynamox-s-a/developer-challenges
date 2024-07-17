@@ -1,5 +1,14 @@
 {
   "files": [],
+  "compilerOptions": {
+    "composite": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@public/*": ["public/"],
+    }
+  },
+  "include": ["src"],
   "references": [
     {
       "path": "./tsconfig.app.json"
@@ -7,5 +16,5 @@
     {
       "path": "./tsconfig.node.json"
     }
-  ]
+  ],
 }

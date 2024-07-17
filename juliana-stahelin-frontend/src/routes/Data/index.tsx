@@ -4,9 +4,9 @@ import HighchartsReact from 'highcharts-react-official'
 import highchartsAccessibility from 'highcharts/modules/accessibility'
 import { Box, Skeleton, Typography } from '@mui/material'
 
-import { Duration, Location, Machine, Rounds, RPM } from '../../components/icons/index.tsx'
-import { useAppDispatch, useAppSelector } from '../../hooks.ts'
-import { buildChartOptions } from '../../utils/charts.tsx'
+import { Duration, Location, Machine, Rounds, RPM } from '@/components/icons/index.tsx'
+import { useAppDispatch, useAppSelector } from '@/hooks.ts'
+import { buildChartOptions } from '@/utils/charts.tsx'
 
 
 Highcharts.setOptions({

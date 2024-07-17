@@ -1,5 +1,6 @@
-import logoDynaPredict from '../../public/assets/logo-dynapredict.png'
 import { Box, Link } from '@mui/material'
+
+import logoDynaPredict from '@public/assets/logo-dynapredict.png'
 
 
 const backgroundColor = '#263252'

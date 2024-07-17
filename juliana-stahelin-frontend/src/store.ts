@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
-import chartsReducer from './slices/chartsSlice'
 import createSagaMiddleware from 'redux-saga'
 
-import { watchFetchGraphData } from './sagas'
+import chartsReducer from '@/slices/chartsSlice'
+import { watchFetchGraphData } from '@/sagas'
 
 const sagaMiddleware = createSagaMiddleware()
 
