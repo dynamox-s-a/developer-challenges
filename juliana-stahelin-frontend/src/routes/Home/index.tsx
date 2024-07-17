@@ -1,6 +1,6 @@
 import { Box, Button, Grid, Typography } from '@mui/material'
 
-import desktopAndMobile from '@public/assets/desktop-and-mobile.png'
+import desktopAndMobile from '/assets/desktop-and-mobile.png'
 
 const fontColor = '#263252'
 const hoverButtonColor = '#38426a'

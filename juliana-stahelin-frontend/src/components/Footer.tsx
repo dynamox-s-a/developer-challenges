@@ -1,6 +1,6 @@
 import { Box, Link, Typography } from '@mui/material'
 
-import logoDynamox from '@public/assets/logo-dynamox.png'
+import logoDynamox from '/assets/logo-dynamox.png'
 
 
 const fontColor = '#fff'

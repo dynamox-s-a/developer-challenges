@@ -1,6 +1,6 @@
 import { Box, Link } from '@mui/material'
 
-import logoDynaPredict from '@public/assets/logo-dynapredict.png'
+import logoDynaPredict from '/assets/logo-dynapredict.png'
 
 
 const backgroundColor = '#263252'
@@ -24,6 +24,7 @@ export function Navbar() {
                         alt='DynaPredict - página inicial'
                     />
                 </Link>
+                
         </Box>
     )
 }
