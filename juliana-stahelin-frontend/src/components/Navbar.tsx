@@ -14,7 +14,7 @@ export function Navbar() {
             padding={{ xs: '12px', sm: '24px' }}
             sx={{ backgroundColor: backgroundColor }}
         >
-             <Link href='https://dynamox.net/' underline='none' target='_blank'>
+             <Link href='/' underline='none'>
                     <Box
                         component='img'
                         src={logoDynaPredict}
