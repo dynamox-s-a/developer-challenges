@@ -5,6 +5,7 @@ import {
 import { Box } from '@mui/material'
 
 import { Data } from '@/routes/Data'
+import { Home } from '@/routes/Home'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 
@@ -14,7 +15,7 @@ import './App.css'
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <></>,
+    element: <Home />,
   },
   {
     path: '/data',
@@ -34,6 +35,8 @@ function App() {
       <Box
         component='main'
         flexGrow={1}
+        display='flex'
+        flexDirection='column'
       >
         <RouterProvider router={router} />
       </Box>
