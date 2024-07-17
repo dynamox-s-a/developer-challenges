@@ -1,30 +1,55 @@
-# React + TypeScript + Vite
+# Front-end challenge - by Juliana Stahelin
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## The project
+Project built as a front-end challenge for Dynamox.
 
-Currently, two official plugins are available:
+User can click on "Acessar o sistema" in the homepage and access a page displaying machine details and 3 time-series charts. The charts are built with data fetched from a mocked REST API on every page access. All routes are responsive.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Live deploy
+Front-end live deploy of application is in this link: <a href="https://developer-challenges.vercel.app/" target="_blank">https://developer-challenges.vercel.app/</a>
 
-## Expanding the ESLint configuration
+REST API (built using Json-server) live deploy is in this link: <a href="https://challenge-json-server-api.vercel.app/">https://challenge-json-server-api.vercel.app/</a>
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## How to run this project
+To run this application locally, follow these steps:
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+1. Open a terminal and clone the repository:
 ```
+git clone https://github.com/julianastahelin/developer-challenges.git
+```
+2. Enter the project folder:
+```
+cd developer-challenges/juliana-stahelin-frontend 
+```
+3. Switch to the branch I added the features on:
+```
+git checkout juliana-stahelin
+```
+4. Open the project in a code editor (I'm using VSCode):
+```
+code .
+```
+6. Set the environment variable for the API. Create a `.env.local` file and add this variable (shown here because it is a mocked API only):
+```
+VITE_CHARTS_API_URL='https://challenge-json-server-api.vercel.app/'
+```
+5. Install the dependencies:
+```
+npm install
+```
+6. Run the project on the terminal:
+```
+npm run dev
+```
+7. Access `http://localhost:5174/` on your browser. <i>Voilà!</i>
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+## Built with
+- React
+- TypeScript
+- Vite.js
+- Redux
+- Redux Saga
+- Material UI 5
+- Highcharts
+- Json-server (to mock API)
