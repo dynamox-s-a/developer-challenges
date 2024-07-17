@@ -5,7 +5,7 @@ import { isSeriesDataArray } from '../utils/charts'
 
 
 const chartsApi = axios.create({
-    baseURL: 'http://localhost:3000',
+    baseURL: import.meta.env.VITE_CHARTS_API_URL,
     headers: {
         'Content-Type': 'application/json',
     }
