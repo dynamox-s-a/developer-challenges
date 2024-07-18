@@ -1,0 +1,9 @@
+services:
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=pass123
+      - POSTGRES_DB=dynamox
+    ports:
+      - 5432:5432
