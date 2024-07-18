@@ -1,10 +1,32 @@
-import { call, put, all, takeLatest, AllEffect, CallEffect, PutEffect } from 'redux-saga/effects';
+import {
+  call,
+  put,
+  all,
+  takeLatest,
+  AllEffect,
+  CallEffect,
+  PutEffect,
+} from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
 import { fetchEndpoint } from '../services/api';
-import { CombinedData, Data, FetchDataFailureAction, FetchDataSuccessAction } from '../interfaces/types';
-import { FETCH_DATA_REQUEST, fetchDataFailure, fetchDataSuccess } from './actions';
+import {
+  CombinedData,
+  Data,
+  FetchDataFailureAction,
+  FetchDataSuccessAction,
+} from '../interfaces/types';
+import {
+  FETCH_DATA_REQUEST,
+  fetchDataFailure,
+  fetchDataSuccess,
+} from './actions';
 
-function* fetchData(): Generator<AllEffect<CallEffect<AxiosResponse<Data>>> | PutEffect<FetchDataSuccessAction | FetchDataFailureAction>, void, AxiosResponse<Data>[]> {
+function* fetchData(): Generator<
+  | AllEffect<CallEffect<AxiosResponse<Data>>>
+  | PutEffect<FetchDataSuccessAction | FetchDataFailureAction>,
+  void,
+  AxiosResponse<Data>[]
+> {
   try {
     const responses: AxiosResponse<Data>[] = yield all([
       call(fetchEndpoint, 0),

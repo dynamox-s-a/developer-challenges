@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 export interface ChartContainerProps {
-    title: string;
-    children: ReactNode;
-  }
+  title: string;
+  children: ReactNode;
+}

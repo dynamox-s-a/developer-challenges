@@ -1,6 +1,6 @@
-import { Box, Typography, Stack, Divider } from "@mui/material";
-import { dataItems } from "./dataItems";
-import { Container } from "./styles";
+import { Box, Typography, Stack, Divider } from '@mui/material';
+import { dataItems } from './dataItems';
+import { Container } from './styles';
 
 const Filters = () => (
   <Container>

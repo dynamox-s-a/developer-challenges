@@ -1,7 +1,7 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import Home from "./pages/Home";
-import BtnShowData from "./components/Button/Button";
+import Home from './pages/Home';
+import BtnShowData from './components/Button/Button';
 
 const App = () => (
   <Router>

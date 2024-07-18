@@ -1,16 +1,16 @@
-import Highcharts, { SeriesLineOptions } from "highcharts";
-import { formatDateLabel } from "./formatDateLabel";
-import { formatTooltip } from "./formatTooltip";
-import { syncCrosshair } from "./syncCrosshair";
+import Highcharts, { SeriesLineOptions } from 'highcharts';
+import { formatDateLabel } from './formatDateLabel';
+import { formatTooltip } from './formatTooltip';
+import { syncCrosshair } from './syncCrosshair';
 
 export const commonChartOptions = (
   titleText: string,
   yAxisText: string,
-  series: SeriesLineOptions[]
+  series: SeriesLineOptions[],
 ): Highcharts.Options => ({
   title: { text: titleText },
   xAxis: {
-    type: "datetime",
+    type: 'datetime',
     crosshair: true,
     labels: {
       formatter: function () {

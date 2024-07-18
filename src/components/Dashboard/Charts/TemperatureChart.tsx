@@ -1,9 +1,9 @@
-import Highcharts, { SeriesLineOptions } from "highcharts";
-import HighchartsReact from "highcharts-react-official";
-import { useSelector } from "react-redux";
-import { formatChartData } from "../../../utils/formatChartData";
-import { RootState } from "../../../interfaces/types";
-import { commonChartOptions } from "../../../utils/commonChartOptions";
+import Highcharts, { SeriesLineOptions } from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
+import { useSelector } from 'react-redux';
+import { formatChartData } from '../../../utils/formatChartData';
+import { RootState } from '../../../interfaces/types';
+import { commonChartOptions } from '../../../utils/commonChartOptions';
 
 const TemperatureChart: React.FC = () => {
   const { data, loading } = useSelector((state: RootState) => ({
@@ -18,14 +18,14 @@ const TemperatureChart: React.FC = () => {
   const series: SeriesLineOptions[] = temperatureData
     ? [
         {
-          name: "Temperatura",
-          type: "line",
+          name: 'Temperatura',
+          type: 'line',
           data: formatChartData(temperatureData.data),
         },
       ]
     : [];
 
-  const options = commonChartOptions("", "Temperatura (°C)", series);
+  const options = commonChartOptions('', 'Temperatura (°C)', series);
 
   return <HighchartsReact highcharts={Highcharts} options={options} />;
 };
