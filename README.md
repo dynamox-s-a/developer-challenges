@@ -57,7 +57,10 @@ $ git checkout caroline-freitas
 $ npm install
 
 # Startando projeto frontend:
-### http://localhost:4000/
+acesse local: http://localhost:4000/data
+acesse online: https://caroline-freitas.netlify.app/data
+ou clique no botão para ser redirecionado
+
 $ npm run dev
 
 # Executando os testes unitários:
@@ -65,5 +68,5 @@ $ npm test
 
 # Executando o Backend mock (json-server):
 ### http://localhost:5000/
-$ npm json-server
+$ npm run json-server
 ```
