@@ -13,15 +13,6 @@ dist
 dist-ssr
 *.local
 
-# Configuration files
-tsconfig.json
-tsconfig.*.json
-package.json
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
-*.iml
-*.mjs
 
 # Editor directories and files
 .vscode/*
