@@ -1,48 +1,69 @@
-# Dynamox Developer Challenges
+# Developer Challenge: Análise de Dados
 
-## About Dynamox
+## Descrição do Projeto
 
-[Dynamox](https://dynamox.net/) is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications. 
+<p>Este projeto é um dashboard com gráficos de análise de dados.</p>
 
-With our proficiency in signal processing for vibration and acoustics, we deliver advanced and precise monitoring systems. We are committed to optimizing operational efficiency and facilitating proactive maintenance through our innovative technology and integrated solutions.
+## Decisões Técnicas e Arquitetuais
 
-## Positions
+### Arquitetura
 
-We are actively seeking a versatile Full Stack Developer with a strong emphasis on front-end development to join our team. Your primary responsibility will be enhancing our Corporate Channels—our Website, Blog, Support Portal, Salesforce integration, and our asset condition monitoring platform, [DynaPredict](https://dynamox.net/en/dynapredict). You will become an essential part of one of our dedicated development teams, where your front-end expertise will drive our projects to new heights.
+<p>A organização modular do projeto facilita a manutenção e escalabilidade. Cada funcionalidade ou componente é isolado em seu próprio módulo/diretório, permitindo um desenvolvimento mais organizado e uma melhor gestão de dependências, isso permite que diferentes partes do projeto sejam desenvolvidas e testadas de forma independente.<p/>
 
-However, while your main focus will be on front-end tasks, we also expect you to navigate backend development as and when necessary. You won't be alone in this; you will have the full support of our team to guide you through. This opportunity to learn and grow across different aspects of development will foster a dynamic and engaging work environment.
+**Test**
+<p>Os testes são organizados para garantir a funcionalidade de cada módulo e a integridade do sistema como um todo.</p>
 
-We value flexibility and collaboration, hence we provide opportunities for you to lend your skills to other teams when required. Join us on this exciting journey as we revolutionize our digital platforms. Currently we are particularly interested in individuals who can identify with one of the following role descriptions:
+**Outros**
+<ul>
+   <li>README.md: Documentação do projeto.</li>
+</ul>
 
-### Junior Software Developer
+## Frameworks ou bibliotecas
 
-With limited experience, assists in coding, testing, and stabilizing systems under supervision. Communicates with immediate team members and solves straightforward problems with guidance. Should display a willingness to learn and grow professionally. This is an individual contributor role.
+- ReactJs e TypeScript: Usados para criar a interface do usuário interativa e tipada.
+- NodeJs: Ambiente de execução JavaScript do lado do servidor.
+- Vite: Ferramenta de build rápida e leve para desenvolvimento frontend.
+- Material-UI (MUI): Biblioteca de componentes React para um design consistente e acessível.
+- Axios: Cliente HTTP baseado em Promises para fazer requisições.
+- Highcharts: Biblioteca para criação de gráficos interativos.
+- Highcharts-React-Official: Envolvimento oficial de Highcharts para uso com React.
+- JSON Server: Ferramenta para criar uma API RESTful completa com fake data, ideal para prototipagem e testes.
+- React-Redux: Biblioteca oficial de bindings para usar Redux com React.
+- React-Router-Dom: Biblioteca para roteamento de aplicações React.
+- Redux: Biblioteca de gerenciamento de estado previsível para JavaScript.
+- Redux-Saga: Biblioteca para gerenciar efeitos colaterais em aplicativos Redux.
+- Testing Library: Conjunto de utilitários para testar componentes React.
+- Cypress: Framework de testes end-to-end para testar aplicações web.
+- ESLint: Ferramenta de linting para identificar e corrigir problemas de código JavaScript.
+- TypeScript: Superset de JavaScript que adiciona tipagem estática opcional ao código.
+- Vitest: Ferramenta de testes unitários para projetos Vite.
+- npm: Gerenciador de pacotes para JavaScript.
 
-### Mid-level Software Developer
 
-With a certain level of proven experience, contributes to software development, solves moderate problems, and starts handling ambiguous situations with minimal guidance. Communicates with the broader team and engages in code reviews and documentation. This role also includes mentorship of junior engineers and a commitment to continuous learning. This is an individual contributor role.
+## Instruções de Compilação e Execução
 
-### Senior-level Software Developer
+**Pré requisitos**
 
-With vast experience, enhances software development, leading complex system development and ambiguous situation handling. Tackles intricate problems and mentors junior and mid-level engineers. Champions coding standards, project strategy, and technology adoption. Communicates across teams, influencing technical and non-technical stakeholders. This individual contributor role blends technical expertise with leadership, focusing on innovation, mentorship, and strategic contributions to the development process.
+- Node.Js: Certifique-se de ter o Node.Js instalado em sua máquina. Este projeto foi desenvolvido e testado com a versão 20.15.0
 
-## Challenges
+**Instalação**
 
-- [ ] [01 - Dynamox Full-Stack Developer Challenge](./full-stack-challenge.md)
-- [ ] [02 - Dynamox Front-end Developer Challenge](./front-end-challenge.md)
+```sh
+# Clone o Repositório:
+$ git clone <URL_DO_REPOSITÓRIO>
+$ git checkout caroline-freitas
 
-## Ready to Begin the Challenges?
+# Instale as Dependências:
+$ npm install
 
-1. [ ] Fork this repository to your own Github account.
-1. [ ] Create a new branch using your first name and last name. For example: `caroline-oliveira`.
-1. [ ] After completing the challenge, create a pull request to this repository (https://github.com/dynamox-s-a/js-ts-full-stack-test), aimed at the main branch.
-1. [ ] We will receive a notification about your pull request, review your solution, and get in touch with you.
+# Startando projeto frontend:
+### http://localhost:4000/
+$ npm run dev
 
-## Frequently Asked Questions
+# Executando os testes unitários:
+$ npm test
 
-1. Is it necessary to fork the project?
-  **Yes, this allows us to see how much time you spent on the challenge.**
-
-</br>
-
-**Good luck! We look forward to reviewing your submission.** 🚀
+# Executando o Backend mock (json-server):
+### http://localhost:5000/
+$ npm json-server
+```
