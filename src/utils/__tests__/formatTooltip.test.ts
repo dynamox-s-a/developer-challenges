@@ -11,7 +11,10 @@ describe('formatTooltip', () => {
     } as Highcharts.TooltipFormatterContextObject;
 
     const formattedTooltip = formatTooltip.call(context);
-    const expectedDate = Highcharts.dateFormat('%e. %b %H:%M', context.x);
+    const expectedDate = Highcharts.dateFormat(
+      '%e. %b %H:%M',
+      context.x as number,
+    );
     const expectedOutput = `<b>Sample Series</b><br/>${expectedDate}: 123`;
 
     expect(formattedTooltip).toBe(expectedOutput);

@@ -22,7 +22,7 @@ vi.mock('../../../redux/actions', () => ({
 }));
 
 vi.mock('../../../utils/formatChartData', () => ({
-  formatChartData: vi.fn((data) =>
+  formatChartData: vi.fn((data: { datetime: string; max: number }[]) =>
     data.map((point) => [new Date(point.datetime).getTime(), point.max * 100]),
   ),
 }));
