@@ -1,8 +1,42 @@
 # Developer Challenge: Análise de Dados
 
+local: http://localhost:4000/data
+online: https://caroline-freitas.netlify.app
+
 ## Descrição do Projeto
 
 <p>Este projeto é um dashboard com gráficos de análise de dados.</p>
+
+## Instruções de Compilação e Execução
+
+**Pré requisitos**
+
+- Node.Js: Certifique-se de ter o Node.Js instalado em sua máquina. Este projeto foi desenvolvido e testado com a versão 20.15.0
+
+**Instalação**
+
+```sh
+# Clone o Repositório:
+$ git clone <URL_DO_REPOSITÓRIO>
+$ git checkout caroline-freitas
+
+# Instale as Dependências:
+$ npm install
+
+# Startando projeto frontend:
+acesse local: http://localhost:4000/data
+acesse online: https://caroline-freitas.netlify.app
+ou clique no botão para ser redirecionado
+
+$ npm run dev
+
+# Executando os testes unitários:
+$ npm test
+
+# Executando o Backend mock (json-server):
+### http://localhost:5000/
+$ npm run json-server
+```
 
 ## Decisões Técnicas e Arquitetuais
 
@@ -40,33 +74,3 @@
 - npm: Gerenciador de pacotes para JavaScript.
 
 
-## Instruções de Compilação e Execução
-
-**Pré requisitos**
-
-- Node.Js: Certifique-se de ter o Node.Js instalado em sua máquina. Este projeto foi desenvolvido e testado com a versão 20.15.0
-
-**Instalação**
-
-```sh
-# Clone o Repositório:
-$ git clone <URL_DO_REPOSITÓRIO>
-$ git checkout caroline-freitas
-
-# Instale as Dependências:
-$ npm install
-
-# Startando projeto frontend:
-acesse local: http://localhost:4000/data
-acesse online: https://caroline-freitas.netlify.app/data
-ou clique no botão para ser redirecionado
-
-$ npm run dev
-
-# Executando os testes unitários:
-$ npm test
-
-# Executando o Backend mock (json-server):
-### http://localhost:5000/
-$ npm run json-server
-```
