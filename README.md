@@ -1,7 +1,6 @@
 # Developer Challenge: Análise de Dados
 
 local: http://localhost:4000/data
-online: https://caroline-freitas.netlify.app
 
 ## Descrição do Projeto
 
@@ -25,7 +24,6 @@ $ npm install
 
 # Startando projeto frontend:
 acesse local: http://localhost:4000/data
-acesse online: https://caroline-freitas.netlify.app
 ou clique no botão para ser redirecionado
 
 $ npm run dev
