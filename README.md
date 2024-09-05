@@ -1,48 +1,160 @@
-# Dynamox Developer Challenges
+Aqui está o `README.md` com a formatação correta fora do bloco de código, para que você possa utilizá-lo diretamente:
 
-## About Dynamox
+---
 
-[Dynamox](https://dynamox.net/) is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications. 
+# **Dynamax Full-Stack Developer Challenge**
 
-With our proficiency in signal processing for vibration and acoustics, we deliver advanced and precise monitoring systems. We are committed to optimizing operational efficiency and facilitating proactive maintenance through our innovative technology and integrated solutions.
+## **Douglas Pereira - Full Stack Developer**
 
-## Positions
+Aplicação desenvolvida para o **Desafio Full Stack da Dynamox**, com foco em autenticação, gerenciamento de máquinas, monitoramento de ativos e sensores. Este projeto foi construído para demonstrar minhas habilidades como desenvolvedor Full Stack, utilizando tecnologias modernas e boas práticas de desenvolvimento.
 
-We are actively seeking a versatile Full Stack Developer with a strong emphasis on front-end development to join our team. Your primary responsibility will be enhancing our Corporate Channels—our Website, Blog, Support Portal, Salesforce integration, and our asset condition monitoring platform, [DynaPredict](https://dynamox.net/en/dynapredict). You will become an essential part of one of our dedicated development teams, where your front-end expertise will drive our projects to new heights.
+---
 
-However, while your main focus will be on front-end tasks, we also expect you to navigate backend development as and when necessary. You won't be alone in this; you will have the full support of our team to guide you through. This opportunity to learn and grow across different aspects of development will foster a dynamic and engaging work environment.
+## **Estrutura Geral do Projeto**
 
-We value flexibility and collaboration, hence we provide opportunities for you to lend your skills to other teams when required. Join us on this exciting journey as we revolutionize our digital platforms. Currently we are particularly interested in individuals who can identify with one of the following role descriptions:
+### **1. Autenticação e Controle de Acesso**
 
-### Junior Software Developer
+A autenticação do usuário é realizada por **JSON Web Token (JWT)**, garantindo acesso seguro às áreas restritas.
 
-With limited experience, assists in coding, testing, and stabilizing systems under supervision. Communicates with immediate team members and solves straightforward problems with guidance. Should display a willingness to learn and grow professionally. This is an individual contributor role.
+- **Página de Login** (`/login`):  
+  Aqui, o usuário insere seu e-mail e senha. Após a autenticação bem-sucedida, o usuário é redirecionado para a página de **Gerenciamento de Máquinas**.
+  
+- **Página de Registro** (`/register`):  
+  Permite que novos usuários se registrem informando nome, sobrenome, e-mail e senha. Após o registro, o usuário é redirecionado para o login.
 
-### Mid-level Software Developer
+### **2. Dashboard Principal - Gerenciamento de Máquinas**
 
-With a certain level of proven experience, contributes to software development, solves moderate problems, and starts handling ambiguous situations with minimal guidance. Communicates with the broader team and engages in code reviews and documentation. This role also includes mentorship of junior engineers and a commitment to continuous learning. This is an individual contributor role.
+- **Página Inicial** (`/machines`):  
+  Esta página exibe todas as máquinas cadastradas no sistema com informações como **Nome**, **Tipo** (Bomba, Ventilador), e **Status** (Ativa, Inativa). Também inclui:
+  - **Botão para Adicionar Máquina**: Direciona o usuário para o formulário de cadastro.
+  - **Ver Detalhes**: Leva o usuário à página de monitoramentos da máquina.
 
-### Senior-level Software Developer
+- **Adicionar Máquina** (`/machines/new`):  
+  Formulário que permite inserir uma nova máquina com **Nome**, **Tipo** e **Status**. A máquina é listada automaticamente após o cadastro.
 
-With vast experience, enhances software development, leading complex system development and ambiguous situation handling. Tackles intricate problems and mentors junior and mid-level engineers. Champions coding standards, project strategy, and technology adoption. Communicates across teams, influencing technical and non-technical stakeholders. This individual contributor role blends technical expertise with leadership, focusing on innovation, mentorship, and strategic contributions to the development process.
+- **Editar Máquina** (`/machines/edit/:id`):  
+  Permite a edição das informações da máquina, com a possibilidade de atualizar **nome**, **tipo** e **status**.
 
-## Challenges
+### **3. Gerenciamento de Monitoramentos**
 
-- [ ] [01 - Dynamox Full-Stack Developer Challenge](./full-stack-challenge.md)
-- [ ] [02 - Dynamox Front-end Developer Challenge](./front-end-challenge.md)
+- **Página de Detalhes da Máquina** (`/machines/:id`):  
+  Exibe todos os monitoramentos relacionados à máquina selecionada. Cada monitoramento contém informações como **Nome do Monitoramento** e **Status**.
 
-## Ready to Begin the Challenges?
+  - **Adicionar Monitoramento** (`/machines/:machineId/add-monitoring`): Permite adicionar um novo monitoramento a uma máquina específica.
+  
+  - **Editar Monitoramento** (`/machines/:id/monitorings/:monitoringId/edit`): Atualiza as informações de um monitoramento específico.
+  
+  - **Ver Detalhes do Monitoramento** (`/machines/:id/monitorings/:monitoringId`): Exibe os sensores associados ao monitoramento selecionado.
 
-1. [ ] Fork this repository to your own Github account.
-1. [ ] Create a new branch using your first name and last name. For example: `caroline-oliveira`.
-1. [ ] After completing the challenge, create a pull request to this repository (https://github.com/dynamox-s-a/js-ts-full-stack-test), aimed at the main branch.
-1. [ ] We will receive a notification about your pull request, review your solution, and get in touch with you.
+### **4. Gerenciamento de Sensores**
 
-## Frequently Asked Questions
+- **Adicionar Sensor** (`/machines/:id/monitorings/:monitoringId/add-sensor`):  
+  Permite adicionar um sensor a um monitoramento. Inclui campos para **Nome**, **Modelo**, e **Status** do sensor.
 
-1. Is it necessary to fork the project?
-  **Yes, this allows us to see how much time you spent on the challenge.**
+- **Editar Sensor** (`/machines/:id/monitorings/:monitoringId/sensors/:sensorId/edit`):  
+  Permite editar as informações de um sensor, com atualização de **nome** e **status**.
 
-</br>
+### **5. Visualização e Organização de Dados**
 
-**Good luck! We look forward to reviewing your submission.** 🚀
+- **Paginação e Ordenação**:  
+  A aplicação suporta a visualização de máquinas e monitoramentos com paginação, exibindo 5 itens por página, e possibilitando ordenar as colunas por **Nome**, **Tipo**, **Status**, e **Data de Modificação**.
+  
+- **Navegação Facilitada**:  
+  Todas as páginas contam com breadcrumbs para facilitar a navegação entre diferentes seções da aplicação.
+
+### **6. Controle de Sessão**
+
+- **Rotas Privadas**: Apenas usuários autenticados com um token JWT podem acessar áreas restritas. Se o token expirar ou for inválido, o usuário é redirecionado para o login.
+- **Redirecionamento Automático**: Usuários autenticados são redirecionados para o painel de controle, enquanto usuários não autenticados são levados à página de login.
+
+---
+
+## **Tecnologias Utilizadas**
+
+### **Front-End**
+- **React.js**: Framework para construção de interfaces de usuário.
+- **TypeScript**: Garantindo tipagem estática para maior segurança no código.
+- **Material UI**: Biblioteca de componentes estilizados e responsivos.
+- **React Router**: Gerenciamento de rotas e navegação.
+- **Redux**: Gerenciamento de estado global.
+
+### **Back-End**
+- **Node.js**: Ambiente JavaScript no servidor.
+- **Express.js**: Framework para criação de APIs RESTful.
+- **MongoDB**: Banco de dados NoSQL utilizado para armazenamento.
+- **Mongoose**: ODM (Object Data Modeling) para MongoDB.
+- **JWT (JSON Web Token)**: Controle de sessão e autenticação segura.
+
+### **Outros**
+- **NX Workspace**: Monorepo para gerenciar front-end e back-end de forma escalável.
+- **Axios**: Cliente HTTP para fazer requisições assíncronas.
+- **Cypress**: Testes end-to-end simulando interações de usuário.
+- **Heroku**: Plataforma de nuvem onde a aplicação foi implantada.
+
+---
+
+## **Futuras Implementações**
+
+### **1. Monitoramento em Tempo Real**
+- Implementação de uma funcionalidade que permita monitoramento de dados em tempo real usando **WebSockets**. Isso permitirá que o usuário visualize em tempo real o status dos sensores e das máquinas, com atualizações automáticas.
+
+### **2. Dashboard Analítico**
+- Criação de uma página de **dashboard analítico** para fornecer insights visuais sobre o desempenho e o status dos ativos monitorados ao longo do tempo. Isso incluiria gráficos e relatórios.
+
+### **3. Alertas e Notificações**
+- Desenvolvimento de um sistema de alertas que notificará o usuário em caso de falhas ou comportamentos anormais nos ativos monitorados. As notificações podem ser enviadas por e-mail ou via SMS.
+
+### **4. Integração com APIs de IoT**
+- Conectar a aplicação com APIs de dispositivos IoT para capturar dados diretamente dos sensores em campo, permitindo uma maior integração e automação do monitoramento dos ativos.
+
+### **5. Gestão de Equipes e Permissões**
+- Adicionar uma funcionalidade para gestão de equipes, onde diferentes níveis de acesso e permissões possam ser atribuídos aos usuários, permitindo que gestores tenham controle sobre suas equipes e o monitoramento das máquinas.
+
+---
+
+## **Deploy e Instruções para Uso**
+
+### **1. Configuração Local**
+- Clone o repositório:  
+  `git clone https://github.com/douglas-pereira/dynamax`
+  
+- Instale as dependências:  
+  `npm install`
+  
+- Configure o arquivo `.env` com suas variáveis de ambiente:
+  ```bash
+  MONGO_URI=<Sua URI MongoDB>
+  JWT_SECRET=<Seu segredo JWT>
+  REACT_APP_API_URL=<Sua URL local>
+  PORT=5000
+  ```
+
+- Execute a aplicação:  
+  `npx nx serve dynamax`.
+
+### **2. Deploy no Heroku**
+A aplicação foi implantada no Heroku e está acessível através do seguinte link:  
+[**Dynamax Full Stack App**](https://dynamax-13e4b3075752.herokuapp.com/).
+
+---
+
+## **Testes e Qualidade**
+
+### **Testes E2E com Cypress**
+A aplicação foi testada utilizando o **Cypress** para garantir a integridade do fluxo de usuário, desde o login até o gerenciamento de sensores. Para executar os testes:
+```bash
+npx cypress open
+```
+
+### **Testes Unitários**
+Pretendemos adicionar testes unitários usando **Jest** para garantir a robustez das funções críticas tanto no front-end quanto no back-end.
+
+---
+
+## **Conclusão**
+
+O projeto Dynamax foi desenvolvido para proporcionar um gerenciamento eficiente de ativos monitorados. A aplicação é fácil de usar, com interfaces simples e intuitivas, e está preparada para futuras expansões. Cada funcionalidade foi cuidadosamente implementada, garantindo um sistema escalável e seguro.
+
+Agradeço pela oportunidade de participar deste desafio e estou aberto para discutir melhorias e soluções técnicas.
+
+---

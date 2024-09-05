@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist",
+    "typeRoots": ["./node_modules/@types", "./types"],
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+  },
+  "include": ["src/**/*", "backup/config/**/*"],  // Inclui todos os arquivos na pasta src e config
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}
+
+// {
+//   "extends": "../../tsconfig.base.json",
+//   "files": [],
+//   "include": [],
+//   "references": [
+//     {
+//       "path": "./tsconfig.app.json"
+//     },
+//     {
+//       "path": "./tsconfig.spec.json"
+//     }
+//   ],
+//   "compilerOptions": {
+//     "esModuleInterop": true
+//   }
+// }
