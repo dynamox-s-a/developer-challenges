@@ -8,6 +8,7 @@ import userRoutes from "./modules/user/userRoutes";
 import machineRoutes from "./modules/machines/machineRoutes";
 import sensorRoutes from "./modules/sensors/sensorRoutes";
 import AuthMiddleware from "./middlewares/authMiddleware";
+import userController from "./modules/user/userController";
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.get("/health", (req: Request, res: Response) => {
 });
 
 app.use("/login", loginRoutes);
+app.post('/register', userController.createUser)
 app.use("/user", AuthMiddleware.tokenHandler, userRoutes);
 app.use("/machine", AuthMiddleware.tokenHandler, machineRoutes);
 app.use("/sensor", AuthMiddleware.tokenHandler, sensorRoutes);

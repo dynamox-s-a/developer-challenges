@@ -52,6 +52,14 @@ $ npm install
 $ npm run dev
 ```
 
+### Uso primário
+
+Para ter acesso ao exemplo criar o usuário via postman ou insomnia
+no localhost:3000/register com o payload:
+```
+{"email": {seu email}, "password": {sua senha, min 8 caracteres}, "profile":"user", "name": {seu nome} }
+```
+
 ### Backlog
 
 Com mais tempo e conhecimento poderia inserir, com auxílio de ferramentas de UX como Figma, 
