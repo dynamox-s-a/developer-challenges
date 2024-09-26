@@ -11,7 +11,7 @@ router
 
 router
   .route("/:id")
-  .patch(catchAsync(sensorController.editSensor))
+  .put(catchAsync(sensorController.editSensor))
   .delete(catchAsync(sensorController.deleteSensor))
   .get(catchAsync(sensorController.getSensor));
 

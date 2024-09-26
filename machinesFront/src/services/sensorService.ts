@@ -7,6 +7,7 @@ export async function createSensor(sensorInfo: ISensor) {
 }
 
 export async function upDateSensor(sensorInfo: ISensor) {
+  console.log("aqui");
   return await http.put(`/sensor/${sensorInfo._id}`, sensorInfo);
 }
 
@@ -14,6 +15,7 @@ export async function getAllSensors(filter: filterType) {
   const { data } = await http.get(
     `/sensor?orderBy=${filter.sort.orderBy}&order=${filter.sort.order}&page=${filter.sort.page}&limit=${filter.sort.limit}${filter.sort.value && `&value=${filter.sort.value}`}`,
   );
+  console.log(data);
   return data;
 }
 
