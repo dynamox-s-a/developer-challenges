@@ -2,9 +2,9 @@ import { ListItem } from "../../components/ListItem";
 import { useEffect, useState } from "react";
 import { Container, ListContainer, ListHeaderContainer } from "./styles.ts";
 import { CustomButton } from "../../components/Button/CustomButton.tsx";
-import {ISensor} from "./ISensor.ts";
-import {SensorForm} from "./SensorForm";
-import {deleteSensor, getAllSensors} from "../../services/sensorService.ts";
+import { ISensor } from "./ISensor.ts";
+import { SensorForm } from "./SensorForm";
+import { deleteSensor, getAllSensors } from "../../services/sensorService.ts";
 
 export function Sensor() {
   const [sensors, setSensors] = useState<ISensor[]>([]);
@@ -29,6 +29,8 @@ export function Sensor() {
       sort: {
         orderBy: "name",
         order: "desc",
+        page: 1,
+        value: "",
       },
     });
     setSensors(resultData);

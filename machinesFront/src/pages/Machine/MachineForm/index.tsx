@@ -8,8 +8,8 @@ import {
   upDateMachine,
 } from "../../../services/machineService.ts";
 import { IMachine } from "../IMachine.ts";
-import {getAllSensors} from "../../../services/sensorService.ts";
-import {ISensor} from "../../Sensor/ISensor.ts";
+import { getAllSensors } from "../../../services/sensorService.ts";
+import { ISensor } from "../../Sensor/ISensor.ts";
 
 type machineForm = {
   onBack: () => void;
@@ -20,7 +20,7 @@ export function MachineForm({ onBack, editMachine }: machineForm) {
   const [newMachine, setNewMachine] = useState<IMachine>({
     name: "",
     type: "",
-    monitoringPoint: [{},{}],
+    monitoringPoint: [{}, {}],
   });
 
   const [sensors, setSensors] = useState<ISensor[]>([
@@ -28,7 +28,7 @@ export function MachineForm({ onBack, editMachine }: machineForm) {
       _id: "",
       name: "",
       model: "",
-    }
+    },
   ]);
 
   function setEdit() {
@@ -58,9 +58,12 @@ export function MachineForm({ onBack, editMachine }: machineForm) {
     }
   }
 
-  function handleSelect(event: React.ChangeEvent<HTMLSelectElement>, index:number) {
+  function handleSelect(
+    event: React.ChangeEvent<HTMLSelectElement>,
+    index: number,
+  ) {
     const selectedSensor = sensors.find(
-        (sensor) => sensor._id === event.target.value
+      (sensor) => sensor._id === event.target.value,
     );
 
     if (selectedSensor) {
@@ -82,6 +85,9 @@ export function MachineForm({ onBack, editMachine }: machineForm) {
         sort: {
           orderBy: "name",
           order: "desc",
+          page: 1,
+          limit: 5,
+          value: "",
         },
       });
       setSensors(resultData);
@@ -110,14 +116,16 @@ export function MachineForm({ onBack, editMachine }: machineForm) {
         />
         <h3>Sensores</h3>
         <SelectContainer>
-          {newMachine.monitoringPoint.map((select:ISensor|undefined, index) => (
-            <CustomSelect
-              key={index}
-              options={sensors}
-              onChange={(event)=>handleSelect(event, index)}
-              value={select?._id || ''}
-            />
-          ))}
+          {newMachine.monitoringPoint.map(
+            (select: ISensor | undefined, index) => (
+              <CustomSelect
+                key={index}
+                options={sensors}
+                onChange={(event) => handleSelect(event, index)}
+                value={select?._id || ""}
+              />
+            ),
+          )}
         </SelectContainer>
 
         <CustomButton title="Salvar" />
