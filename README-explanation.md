@@ -6,6 +6,10 @@ As seguintes ferramentas foram usadas na construção do projeto:
 - Node.js
 - Express
 - MongoDB
+- VITE
+- Styled-Components
+- Axios
+- JWT
 
 ### Rodando o BackEnd
 Para inciar o BackEnd:
@@ -32,15 +36,6 @@ seguir passos => https://www.mongodb.com/pt-br/docs/manual/tutorial/install-mong
 ```
 
 ## Frontend
-
-Ferramentas utlilizadas:
-```
-Styled-Components;
-moment;
-Context;
-VITE;
-```
-
 Inicializando:
 ```
 Entrar nba pasta machinesFront;
