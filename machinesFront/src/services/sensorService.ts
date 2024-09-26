@@ -1,24 +1,22 @@
-
-import {http} from "./http.ts";
-import {filterType} from "../utils/filterType.ts";
-import {ISensor} from "../pages/Sensor/ISensor.ts";
+import { http } from "./http.ts";
+import { filterType } from "../utils/filterType.ts";
+import { ISensor } from "../pages/Sensor/ISensor.ts";
 
 export async function createSensor(sensorInfo: ISensor) {
-    return await http.post(`/sensor`, sensorInfo);
+  return await http.post(`/sensor`, sensorInfo);
 }
 
 export async function upDateSensor(sensorInfo: ISensor) {
-    return await http.put(`/sensor/${sensorInfo._id}`, sensorInfo);
+  return await http.put(`/sensor/${sensorInfo._id}`, sensorInfo);
 }
 
 export async function getAllSensors(filter: filterType) {
-    const { data } = await http.get(
-        `/sensor?orderBy=${filter.sort.orderBy}&order=${filter.sort.order}`,
-    );
-    return data;
+  const { data } = await http.get(
+    `/sensor?orderBy=${filter.sort.orderBy}&order=${filter.sort.order}&page=${filter.sort.page}&limit=${filter.sort.limit}${filter.sort.value && `&value=${filter.sort.value}`}`,
+  );
+  return data;
 }
 
 export async function deleteSensor(id: string) {
-    await http.delete(`/sensor/${id}`);
+  await http.delete(`/sensor/${id}`);
 }
-

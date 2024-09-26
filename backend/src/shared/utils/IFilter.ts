@@ -2,6 +2,10 @@ export type IFilter = {
   orderBy: string;
   order?: string;
   select?: Array<string>;
+  page?: number,
+  limit?: number | undefined,
+  populate?: any,
+  value?: object,
 };
 
 export interface PaginatedDTO {
