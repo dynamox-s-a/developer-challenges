@@ -21,7 +21,6 @@ export function Login() {
 
     try {
       const valid = checkValidForm();
-      console.log("valid", valid);
       if (valid) {
         const { data } = await loginService(loginInfo);
         localStorage.setItem("jwt", data);

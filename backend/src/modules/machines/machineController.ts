@@ -11,7 +11,6 @@ class MachineController {
 
   getAllMachines = async (req: Request, res: Response): Promise<any> => {
     const getInfo = req.query;
-    console.log(getInfo);
     const allMachines = await MachineService.getAllMachines(getInfo);
 
     return res.status(200).json(allMachines);

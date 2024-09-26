@@ -12,6 +12,7 @@ export function Header() {
         <NavBarList>
           <li onClick={() => navigate("/")}>Home</li>
           <li onClick={() => navigate("/machine")}>Maquinas</li>
+          <li onClick={() => navigate("/sensor")}>Sensores</li>
           <li onClick={logOut}>Log Out</li>
         </NavBarList>
       </NavBar>

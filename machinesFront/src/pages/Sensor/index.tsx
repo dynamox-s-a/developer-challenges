@@ -1,67 +1,63 @@
 import { ListItem } from "../../components/ListItem";
 import { useEffect, useState } from "react";
-import { IMachine } from "./IMachine.ts";
 import { Container, ListContainer, ListHeaderContainer } from "./styles.ts";
-import { MachineForm } from "./MachineForm";
-import {
-  deleteMachine,
-  getAllMachines,
-} from "../../services/machineService.ts";
 import { CustomButton } from "../../components/Button/CustomButton.tsx";
+import {ISensor} from "./ISensor.ts";
+import {SensorForm} from "./SensorForm";
+import {deleteSensor, getAllSensors} from "../../services/sensorService.ts";
 
-export function Machine() {
-  const [machines, setMachines] = useState<IMachine[]>([]);
+export function Sensor() {
+  const [sensors, setSensors] = useState<ISensor[]>([]);
 
   const [novo, setNovo] = useState(false);
-  const [editMachine, setEditMachine] = useState<IMachine>();
+  const [editSensor, setEditSensor] = useState<ISensor>();
   async function handleDelete(id: string) {
     try {
-      await deleteMachine(id).then(() => getMachines());
+      await deleteSensor(id).then(() => getSensor());
     } catch (e) {
       console.error("Erro ao deletar maquina");
     }
   }
 
   function handleNew() {
-    setEditMachine(undefined);
+    setEditSensor(undefined);
     setNovo((prevState) => !prevState);
   }
 
-  async function getMachines() {
-    const { resultData } = await getAllMachines({
+  async function getSensor() {
+    const { resultData } = await getAllSensors({
       sort: {
         orderBy: "name",
         order: "desc",
       },
     });
-    setMachines(resultData);
+    setSensors(resultData);
   }
 
-  async function handleEdit(machine: IMachine) {
-    setEditMachine((_prevState) => machine);
-
+  async function handleEdit(sensor: ISensor) {
+    setEditSensor((_prevState) => sensor);
     setNovo(true);
   }
 
   useEffect(() => {
-    getMachines();
+    getSensor();
   }, [novo]);
 
   return (
     <Container>
       {novo ? (
-        <MachineForm onBack={handleNew} editMachine={editMachine} />
+        <SensorForm onBack={handleNew} editSensor={editSensor} />
       ) : (
         <ListContainer>
           <CustomButton title="+ Nova" onClick={handleNew} />
-          <h2>Machinas</h2>
+          <h2>Sensores</h2>
           <ListHeaderContainer>
             <p>Nome</p>
-            <p>Tipo</p>
+            <p>Modelo</p>
             <p></p>
             <p></p>
           </ListHeaderContainer>
-          {machines.map((item: IMachine, index) => (
+          {sensors.map((item: ISensor, index) => (
             <ListItem
               key={index}
               item={item}

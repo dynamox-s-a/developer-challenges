@@ -60,3 +60,6 @@ frontend com design mais interativo e atrativo.
 
 Inserir mais alguns "guards" de rotas para o front e uma definição mais clara para qual seriam as responsabilidades dos usuários da plataforma.
 com um "set" perfis definido integrar este nas proteções de rotas do backend dando acesso restrito também à essas rotas trazendo mais segurança ao usuário final.
+
+Acrecentando no formulário de machinas as guardas necessárias para que não apareça opções que não são compativeis com o tipo "Pump" como pedido. um simples check da listagem
+dos sensores para que nem apareçam como opção para a seleção.

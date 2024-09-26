@@ -5,27 +5,22 @@ import { FormContainer, SelectContainer } from "./styles.ts";
 import { CustomSelect } from "../../../components/Select/Select.tsx";
 import {
   createMachine,
-  getAllSensors,
   upDateMachine,
 } from "../../../services/machineService.ts";
 import { IMachine } from "../IMachine.ts";
-
-export type ISensor = {
-  _id: string;
-  name: string;
-  model: string;
-};
+import {getAllSensors} from "../../../services/sensorService.ts";
+import {ISensor} from "../../Sensor/ISensor.ts";
 
 type machineForm = {
   onBack: () => void;
-  editMachine: IMachine;
+  editMachine: IMachine | undefined;
 };
 
 export function MachineForm({ onBack, editMachine }: machineForm) {
   const [newMachine, setNewMachine] = useState<IMachine>({
     name: "",
     type: "",
-    monitoringPoint: [{}, {}],
+    monitoringPoint: [{},{}],
   });
 
   const [sensors, setSensors] = useState<ISensor[]>([
@@ -33,13 +28,11 @@ export function MachineForm({ onBack, editMachine }: machineForm) {
       _id: "",
       name: "",
       model: "",
-    },
+    }
   ]);
 
-  const [selectedValue, setSelectedValue] = useState<ISensor>();
-
   function setEdit() {
-    setNewMachine(editMachine);
+    setNewMachine(editMachine!);
   }
 
   function handleFormInput(identifier: string, value: string) {
@@ -47,7 +40,6 @@ export function MachineForm({ onBack, editMachine }: machineForm) {
       return {
         ...prevState,
         [identifier]: value,
-        monitoringPoint: sensors,
       };
     });
   }
@@ -66,35 +58,34 @@ export function MachineForm({ onBack, editMachine }: machineForm) {
     }
   }
 
-  function handleAddSensor() {
-    if (newMachine.monitoringPoint.length <= 2) {
-    }
-    setNewMachine((prevState) => {
-      return {
-        ...prevState,
-        monitoringPoint: [...prevState, selectedValue],
-      };
-    });
-  }
-
-  function handleSelect(event: React.ChangeEvent<HTMLSelectElement>) {
-    console.log(sensors.find((sensor) => sensor._id === event.target.value));
-    setSelectedValue(
-      sensors.find((sensor) => sensor._id === event.target.value),
+  function handleSelect(event: React.ChangeEvent<HTMLSelectElement>, index:number) {
+    const selectedSensor = sensors.find(
+        (sensor) => sensor._id === event.target.value
     );
-  }
 
-  async function getSensor() {
-    const { resultData } = await getAllSensors({
-      sort: {
-        orderBy: "name",
-        order: "desc",
-      },
-    });
-    setSensors(resultData);
+    if (selectedSensor) {
+      setNewMachine((prevState) => {
+        const updatedMonitoringPoint = [...prevState.monitoringPoint];
+        updatedMonitoringPoint[index] = selectedSensor; // Update the sensor at the specific index
+
+        return {
+          ...prevState,
+          monitoringPoint: updatedMonitoringPoint,
+        };
+      });
+    }
   }
 
   useEffect(() => {
+    async function getSensor() {
+      const { resultData } = await getAllSensors({
+        sort: {
+          orderBy: "name",
+          order: "desc",
+        },
+      });
+      setSensors(resultData);
+    }
     getSensor();
     if (editMachine) {
       setEdit();
@@ -119,12 +110,12 @@ export function MachineForm({ onBack, editMachine }: machineForm) {
         />
         <h3>Sensores</h3>
         <SelectContainer>
-          {newMachine.monitoringPoint.map((select, index) => (
+          {newMachine.monitoringPoint.map((select:ISensor|undefined, index) => (
             <CustomSelect
               key={index}
               options={sensors}
-              onChange={handleSelect}
-              value={select._id}
+              onChange={(event)=>handleSelect(event, index)}
+              value={select?._id || ''}
             />
           ))}
         </SelectContainer>

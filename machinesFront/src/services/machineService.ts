@@ -1,11 +1,8 @@
 import { http } from "./http.ts";
 import { filterType } from "../utils/filterType.ts";
+import {IMachine} from "../pages/Machine/IMachine.ts";
 
-type IMachine = {
-  _id?: string;
-  name: string;
-  type: string;
-};
+
 export async function createMachine(machineInfo: IMachine) {
   return await http.post(`/machine`, machineInfo);
 }
@@ -25,9 +22,9 @@ export async function deleteMachine(id: string) {
   await http.delete(`/machine/${id}`);
 }
 
-export async function getAllSensors(filter: filterType) {
-  const { data } = await http.get(
-    `/sensor?orderBy=${filter.sort.orderBy}&order=${filter.sort.order}`,
-  );
-  return data;
-}
+// export async function getAllSensors(filter: filterType) {
+//   const { data } = await http.get(
+//     `/sensor?orderBy=${filter.sort.orderBy}&order=${filter.sort.order}`,
+//   );
+//   return data;
+// }
