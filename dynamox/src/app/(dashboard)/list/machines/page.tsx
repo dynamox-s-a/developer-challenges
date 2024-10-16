@@ -7,47 +7,45 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import ButtonStack from "@/src/components/ButtonStack";
 import PaginationButton from "@/src/components/Pagination";
+import Table from "@/src/components/Table";
+import { machinesData } from "@/src/lib/data";
+import { TableCell, TableRow } from "@mui/material";
 
-// type Machine = {
-//   id: number;
-//   name: string;
-//   type: string;
-//   sensors: string[];
-//   monitoringPoints: string[];
-// };
+type Machine = {
+  id: number;
+  name: string;
+  type: string;
+  sensors: string[];
+  monitoringPoints: string[];
+};
 
-// const columns = [
-//   {
-//     header: "Info",
-//     accessor: "info",
-//   },
-//   {
-//     header: "Machine ID",
-//     accessor: "machineId",
-//     className: "hidden md:table-cell",
-//   },
-//   {
-//     header: "Type",
-//     accessor: "type",
-//     className: "hidden md:table-cell",
-//   },
-//   {
-//     header: "Sensors",
-//     accessor: "sensors",
-//     className: "hidden md:table-cell",
-//   },
-//   {
-//     header: "Monitoring Points",
-//     accessor: "monitoringPoints",
-//     className: "hidden md:table-cell",
-//   },
-//   {
-//     header: "Actions",
-//     accessor: "action",
-//   },
-// ];
+const columns = [
+  { header: "Name", accessor: "name" },
+  { header: "ID", accessor: "id" },
+  { header: "Type", accessor: "type" },
+  { header: "Sensors", accessor: "sensors" },
+  { header: "Monitoring Points", accessor: "monitoringPoints" },
+];
 
 const MachineListPage = () => {
+  const renderRow = (item: Machine) => {
+    console.log(item);
+
+    return (
+      <TableRow key={item.id}>
+        <TableCell>
+          <div className="flex flex-col">
+            <h3 className="font-semibold">{item.name}</h3>
+          </div>
+        </TableCell>
+        <TableCell>{item.id}</TableCell>
+        <TableCell>{item.type}</TableCell>
+        <TableCell>{item.sensors.join(", ")}</TableCell>
+        <TableCell>{item.monitoringPoints.join(", ")}</TableCell>
+      </TableRow>
+    );
+  };
+
   return (
     <Paper
       square={false}
@@ -95,7 +93,7 @@ const MachineListPage = () => {
             </Grid>
           </Grid>
         </Box>
-
+        <Table columns={columns} renderRow={renderRow} data={machinesData} />
         <PaginationButton />
       </div>
     </Paper>
