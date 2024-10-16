@@ -1,3 +1,5 @@
+import { AccountCircle } from "@mui/icons-material";
+
 const Navbar = async () => {
   return (
     <div className="flex items-center justify-between p-4">
@@ -6,6 +8,7 @@ const Navbar = async () => {
           <span className="text-xs leading-3 font-medium">John Doe</span>
           <span className="text-[10px] text-gray-500 text-right">admin</span>
         </div>
+        <AccountCircle style={{ fontSize: "36px" }} />
       </div>
     </div>
   );
