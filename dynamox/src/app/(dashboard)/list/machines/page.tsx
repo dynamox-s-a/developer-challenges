@@ -6,6 +6,7 @@ import Grid from "@mui/material/Grid2";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import ButtonStack from "@/src/components/ButtonStack";
+import PaginationButton from "@/src/components/Pagination";
 
 // type Machine = {
 //   id: number;
@@ -95,10 +96,7 @@ const MachineListPage = () => {
           </Grid>
         </Box>
 
-        <div>{/* LIST */}</div>
-        <div></div>
-        {/* PAGINATION */}
-        <div></div>
+        <PaginationButton />
       </div>
     </Paper>
   );
