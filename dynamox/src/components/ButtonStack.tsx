@@ -1,20 +1,19 @@
-import { Add, Tune as Filter, Sort } from "@mui/icons-material";
+import { Tune as Filter, Sort } from "@mui/icons-material";
 import { Button, Stack } from "@mui/material";
+import FormModal from "./FormModal";
 
 const ButtonStack = () => {
   return (
     <Stack direction="row" spacing={2}>
-      <Button variant="contained">
+      <Button variant="contained" sx={{ minWidth: 0, padding: 1 }}>
         <Filter />
       </Button>
 
-      <Button variant="contained">
+      <Button variant="contained" sx={{ minWidth: 0, padding: 1 }}>
         <Sort />
       </Button>
 
-      <Button variant="contained">
-        <Add />
-      </Button>
+      <FormModal table="machine" type="create" />
     </Stack>
   );
 };

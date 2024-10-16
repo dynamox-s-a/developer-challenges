@@ -25,11 +25,7 @@ const Table = ({ columns, renderRow, data }: TableProps) => {
             ))}
           </TableRow>
         </TableHead>
-        <TableBody>
-          {data.map(
-            (item) => renderRow(item) // Directly call renderRow without wrapping in TableRow
-          )}
-        </TableBody>
+        <TableBody>{data.map((item) => renderRow(item))}</TableBody>
       </MuiTable>
     </TableContainer>
   );

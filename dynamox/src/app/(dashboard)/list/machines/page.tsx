@@ -9,7 +9,8 @@ import ButtonStack from "@/src/components/ButtonStack";
 import PaginationButton from "@/src/components/Pagination";
 import Table from "@/src/components/Table";
 import { machinesData } from "@/src/lib/data";
-import { TableCell, TableRow } from "@mui/material";
+import { Stack, TableCell, TableRow } from "@mui/material";
+import FormModal from "@/src/components/FormModal";
 
 type Machine = {
   id: number;
@@ -25,23 +26,26 @@ const columns = [
   { header: "Type", accessor: "type" },
   { header: "Sensors", accessor: "sensors" },
   { header: "Monitoring Points", accessor: "monitoringPoints" },
+  { header: "Actions", accessor: "action" },
 ];
 
 const MachineListPage = () => {
   const renderRow = (item: Machine) => {
-    console.log(item);
-
     return (
       <TableRow key={item.id}>
         <TableCell>
-          <div className="flex flex-col">
-            <h3 className="font-semibold">{item.name}</h3>
-          </div>
+          <h3 className="font-semibold">{item.name}</h3>
         </TableCell>
         <TableCell>{item.id}</TableCell>
         <TableCell>{item.type}</TableCell>
         <TableCell>{item.sensors.join(", ")}</TableCell>
         <TableCell>{item.monitoringPoints.join(", ")}</TableCell>
+        <TableCell sx={{ width: "100px" }}>
+          <Stack direction="row" spacing={1}>
+            <FormModal table="machine" type="update" data={item} id={item.id} />
+            <FormModal table="machine" type="delete" data={item} id={item.id} />
+          </Stack>
+        </TableCell>
       </TableRow>
     );
   };
@@ -66,7 +70,6 @@ const MachineListPage = () => {
             sx={{
               display: "flex",
               alignItems: "center",
-              // justifyContent: "between",
             }}
           >
             <Grid
@@ -84,7 +87,7 @@ const MachineListPage = () => {
                 display: "flex",
                 flexDirection: { xs: "column", md: "row" },
                 alignItems: "center",
-                gap: 4,
+                gap: 2,
                 width: { xs: "100%", md: "auto" },
               }}
             >
@@ -93,8 +96,12 @@ const MachineListPage = () => {
             </Grid>
           </Grid>
         </Box>
-        <Table columns={columns} renderRow={renderRow} data={machinesData} />
-        <PaginationButton />
+        <div className="mt-10">
+          <Table columns={columns} renderRow={renderRow} data={machinesData} />
+        </div>
+        <div className="mt-5">
+          <PaginationButton />
+        </div>
       </div>
     </Paper>
   );
