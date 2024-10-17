@@ -1,10 +1,10 @@
 "use client";
 
+import { MachineTypeOptions } from "@/src/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
-  TextField,
   Button,
   MenuItem,
   FormControl,
@@ -13,16 +13,10 @@ import {
   Typography,
   Box,
 } from "@mui/material";
+import ValidatedTextField from "../InputFiels";
+import { MachineFormValidation } from "@/src/lib/validation";
 
-const schema = z.object({
-  name: z
-    .string()
-    .min(3, { message: "Username must be at least 3 characters long!" })
-    .max(20, { message: "Username must be at most 20 characters long!" }),
-  type: z.enum(["Fan", "Pump"], { message: "Type is required!" }),
-});
-
-type Inputs = z.infer<typeof schema>;
+type Inputs = z.infer<typeof MachineFormValidation>;
 
 const MachineForm = ({
   type,
@@ -36,7 +30,7 @@ const MachineForm = ({
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(MachineFormValidation),
   });
 
   const onSubmit = handleSubmit((data) => {
@@ -53,12 +47,12 @@ const MachineForm = ({
       sx={{ mt: 3 }}
     >
       <Box display="flex" flexWrap="wrap" gap={2}>
-        <TextField
+        <ValidatedTextField
           label="Name"
+          name="name"
+          register={register}
+          error={errors.name}
           defaultValue={data?.name}
-          {...register("name")}
-          error={!!errors.name}
-          helperText={errors.name?.message}
           fullWidth
         />
 
@@ -70,8 +64,11 @@ const MachineForm = ({
             error={!!errors.type}
             label="Type"
           >
-            <MenuItem value="pump">Pump</MenuItem>
-            <MenuItem value="fan">Fan</MenuItem>
+            {MachineTypeOptions.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
           </Select>
           {errors.type?.message && (
             <Typography variant="body2" color="error">

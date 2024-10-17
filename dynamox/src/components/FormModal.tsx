@@ -47,20 +47,29 @@ const FormModal = ({
 
   const Form = () => {
     return type === "delete" && id ? (
-      <form>
-        <span>
+      <Box
+        component="form"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          mt: 2,
+        }}
+      >
+        <Typography variant="body1" align="center">
           All data will be lost. Are you sure you want to delete this {table}?
-        </span>
+        </Typography>
         <Button
           variant="contained"
           color="error"
+          sx={{ mt: 2 }}
           onClick={() => {
             /* handle delete */
           }}
         >
           Delete
         </Button>
-      </form>
+      </Box>
     ) : type === "create" || type === "update" ? (
       forms[table](type, data)
     ) : (
