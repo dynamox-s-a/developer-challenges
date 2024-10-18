@@ -7,6 +7,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { useState } from "react";
 import MachineForm from "./forms/MachineForm";
+import MonitoringPointForm from "./forms/MonitoringPointForm";
 
 const FormModal = ({
   table,
@@ -43,6 +44,9 @@ const FormModal = ({
     [key: string]: (type: "create" | "update", data?: any) => JSX.Element;
   } = {
     machine: (type, data) => <MachineForm type={type} data={data} />,
+    monitoringPoint: (type, data) => (
+      <MonitoringPointForm type={type} data={data} />
+    ),
   };
 
   const Form = () => {

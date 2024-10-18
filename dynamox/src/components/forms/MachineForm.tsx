@@ -13,8 +13,10 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-import ValidatedTextField from "../InputFiels";
+import ValidatedTextField from "../ValidatedTextField";
 import { MachineFormValidation } from "@/src/lib/validation";
+import { useFormState } from "react-dom";
+import { createMachine, updateMachine } from "@/src/lib/actions";
 
 type Inputs = z.infer<typeof MachineFormValidation>;
 
@@ -33,8 +35,17 @@ const MachineForm = ({
     resolver: zodResolver(MachineFormValidation),
   });
 
+  const [state, formAction] = useFormState(
+    type === "create" ? createMachine : updateMachine,
+    {
+      success: false,
+      error: false,
+    }
+  );
+
   const onSubmit = handleSubmit((data) => {
     console.log(data);
+    formAction(data);
   });
 
   return (

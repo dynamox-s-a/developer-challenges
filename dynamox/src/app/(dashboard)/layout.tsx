@@ -16,7 +16,12 @@ export default function DashboardLayout({
           href="/"
           className="flex items-center justify-center lg:justify-start gap-2"
         >
-          <Image src="/logo-dynamox.png" alt="logo" width={100} height={100} />
+          <Image
+            src="/logo-dynamox-white.png"
+            alt="logo"
+            width={100}
+            height={100}
+          />
         </Link>
         <Menu />
       </div>
