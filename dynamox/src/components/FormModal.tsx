@@ -17,7 +17,7 @@ const FormModal = ({
   table:
     | "machine"
     | "sensor"
-    | "monitoringPoint"
+    | "monitoring-point"
     | "sensorModel"
     | "machineType";
   type: "create" | "update" | "delete";

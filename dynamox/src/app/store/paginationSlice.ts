@@ -1,16 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface PaginationState {
-  page: number;
-}
-
-const initialState: PaginationState = {
-  page: 1,
-};
-
 const paginationSlice = createSlice({
   name: "pagination",
-  initialState,
+  initialState: {
+    page: 1, // Default value is 1
+  },
   reducers: {
     setPage: (state, action: PayloadAction<number>) => {
       state.page = action.payload;

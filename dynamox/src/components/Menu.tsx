@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Home, Logout, AccountCircle } from "@mui/icons-material";
 import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing";
+import DvrIcon from "@mui/icons-material/Dvr";
 
 const menuItems = [
   {
@@ -16,6 +17,12 @@ const menuItems = [
         icon: <PrecisionManufacturingIcon />,
         label: "Machines",
         href: "/list/machines",
+        visible: ["admin"],
+      },
+      {
+        icon: <DvrIcon />,
+        label: "Monitoring Points",
+        href: "/list/monitoring-points",
         visible: ["admin"],
       },
     ],

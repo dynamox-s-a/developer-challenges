@@ -1,60 +1,55 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// schema.prisma
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "postgresql" 
   url      = env("DATABASE_URL")
 }
 
 model Admin {
-  id       String @id
-  username String @unique
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  password String
+  createdAt    DateTime @default(now())
+
+  @@map("admins")
 }
 
 model Machine {
-  id                Int               @id @default(autoincrement())
-  name              String
-  type              MachineType
-  sensors           Sensor[]
-  monitoringPoints  MonitoringPoint[]
+  id   Int    @id @default(autoincrement())
+  name String
+  type MachineType
 
-  @@unique([name, type]) // 
+  monitoringPoints MonitoringPoint[]
 }
 
 model MonitoringPoint {
-  id        Int     @id @default(autoincrement())
+  id        Int    @id @default(autoincrement())
   name      String
-  sensorId  String
-  sensor    Sensor  @relation(fields: [sensorId], references: [id])
   machineId Int
   machine   Machine @relation(fields: [machineId], references: [id])
+
+  sensors Sensor[]
 }
 
 model Sensor {
-  id                String             @id @default(uuid())
-  name              String
-  model             SensorModel
-  machineId         Int
-  machine           Machine            @relation(fields: [machineId], references: [id])
-  monitoringPoints  MonitoringPoint[]
-
-  @@map("sensors") // 
-}
-
-enum SensorModel {
-  TcAg
-  TcAs
-  HF_PLUS @map("HF+")
+  id                 Int    @id @default(autoincrement())
+  SensorId     String @unique
+  model              SensorModel
+  monitoringPointId  Int
+  monitoringPoint    MonitoringPoint @relation(fields: [monitoringPointId], references: [id])
 }
 
 enum MachineType {
   Pump
   Fan
+}
+
+enum SensorModel {
+  TcAg
+  TcAs
+  HF_plus
 }

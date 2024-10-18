@@ -8,47 +8,55 @@ import PaginationButton from "@/src/components/Pagination";
 import Table from "@/src/components/Table";
 import { Stack, TableCell, TableRow } from "@mui/material";
 import FormModal from "@/src/components/FormModal";
-import { Machine, MonitoringPoint, Sensor } from "@prisma/client";
+import { MonitoringPoint, Machine, Sensor } from "@prisma/client";
 import prisma from "@/src/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/src/constants";
 
-type MachineList = Machine & { monitoringPoints: MonitoringPoint[] } & {
+type MonitoringPointList = MonitoringPoint & { machine: Machine } & {
   sensors: Sensor[];
 };
 
-const MachineListPage = async ({
+const MonitoringPointListPage = async ({
   searchParams,
 }: {
   searchParams: { [key: string]: string } | undefined;
 }) => {
   const columns = [
-    { header: "Name", accessor: "name" },
-    { header: "ID", accessor: "id" },
-    { header: "Type", accessor: "type" },
-    { header: "Monitoring Points", accessor: "monitoringpoints" },
+    { header: "Machine Name", accessor: "machine" },
+    { header: "Machine Type", accessor: "machineType" },
+    { header: "Monitoring Point Name", accessor: "name" },
+
+    { header: "Sensor ID", accessor: "sensors" },
+    { header: "Sensor Models", accessor: "sensorModels" },
     { header: "Actions", accessor: "action" },
   ];
 
-  const renderRow = (item: MachineList) => {
+  const renderRow = (item: MonitoringPointList) => {
     return (
       <TableRow key={item.id}>
+        <TableCell>{item.machine.name}</TableCell>
+        <TableCell>{item.machine.type}</TableCell>
+        <TableCell>{item.name}</TableCell>
         <TableCell>
-          <h3 className="font-semibold">{item.name}</h3>
+          {item.sensors.map((sensor) => sensor.SensorId).join(", ")}
         </TableCell>
-        <TableCell>{item.id}</TableCell>
-        <TableCell>{item.type}</TableCell>
         <TableCell>
-          <ul>
-            {item.monitoringPoints.map((point) => (
-              <li key={point.id}>{point.name}</li>
-            ))}
-          </ul>
+          {item.sensors.map((sensor) => sensor.model).join(", ")}
         </TableCell>
-
         <TableCell sx={{ width: "100px" }}>
           <Stack direction="row" spacing={1}>
-            <FormModal table="machine" type="update" data={item} id={item.id} />
-            <FormModal table="machine" type="delete" data={item} id={item.id} />
+            <FormModal
+              table="monitoring-point"
+              type="update"
+              data={item}
+              id={item.id}
+            />
+            <FormModal
+              table="monitoring-point"
+              type="delete"
+              data={item}
+              id={item.id}
+            />
           </Stack>
         </TableCell>
       </TableRow>
@@ -56,16 +64,15 @@ const MachineListPage = async ({
   };
 
   const page = searchParams?.page;
-
   const p = page ? parseInt(page) : 1;
 
   const [data, count] = await prisma.$transaction([
-    prisma.machine.findMany({
-      include: { monitoringPoints: true },
+    prisma.monitoringPoint.findMany({
+      include: { machine: true, sensors: true },
       take: ITEMS_PER_PAGE,
       skip: (p - 1) * ITEMS_PER_PAGE,
     }),
-    prisma.machine.count(),
+    prisma.monitoringPoint.count(),
   ]);
 
   return (
@@ -96,7 +103,7 @@ const MachineListPage = async ({
                 display: { xs: "none", md: "block" },
               }}
             >
-              <h1 className="text-lg font-semibold">All Machines</h1>
+              <h1 className="text-lg font-semibold">All Monitoring Points</h1>
             </Grid>
 
             <Grid
@@ -125,4 +132,4 @@ const MachineListPage = async ({
   );
 };
 
-export default MachineListPage;
+export default MonitoringPointListPage;

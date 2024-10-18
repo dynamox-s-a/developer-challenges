@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 
 interface TableProps {
-  columns: { header: string; accessor: string; className?: string }[];
+  columns: { header: string; accessor: string }[];
   renderRow: (item: any) => React.ReactNode;
   data: any[];
 }
@@ -21,7 +21,9 @@ const Table = ({ columns, renderRow, data }: TableProps) => {
         <TableHead>
           <TableRow>
             {columns.map((col) => (
-              <TableCell key={col.accessor}>{col.header}</TableCell>
+              <TableCell key={col.accessor}>
+                <h3 className="font-semibold">{col.header}</h3>
+              </TableCell>
             ))}
           </TableRow>
         </TableHead>
