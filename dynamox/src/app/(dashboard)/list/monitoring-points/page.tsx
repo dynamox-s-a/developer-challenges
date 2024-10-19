@@ -7,14 +7,12 @@ import ButtonStack from "@/src/components/ButtonStack";
 import PaginationButton from "@/src/components/Pagination";
 import Table from "@/src/components/Table";
 import { Stack, TableCell, TableRow } from "@mui/material";
-import FormModal from "@/src/components/FormModal";
-import { MonitoringPoint, Machine, Sensor } from "@prisma/client";
+import { MonitoringPoint, Machine } from "@prisma/client";
 import prisma from "@/src/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/src/constants";
+import FormContainer from "@/src/components/FormContainer";
 
-type MonitoringPointList = MonitoringPoint & { machine: Machine } & {
-  sensors: Sensor[];
-};
+type MonitoringPointList = MonitoringPoint & { machine: Machine };
 
 const MonitoringPointListPage = async ({
   searchParams,
@@ -22,90 +20,60 @@ const MonitoringPointListPage = async ({
   searchParams: { [key: string]: string } | undefined;
 }) => {
   const columns = [
+    { header: "Monitoring Point Name", accessor: "name" },
     { header: "Machine Name", accessor: "machine" },
     { header: "Machine Type", accessor: "machineType" },
-    { header: "Monitoring Point Name", accessor: "name" },
-
-    { header: "Sensor ID", accessor: "sensors" },
-    { header: "Sensor Models", accessor: "sensorModels" },
     { header: "Actions", accessor: "action" },
   ];
 
-  const renderRow = (item: MonitoringPointList) => {
-    return (
-      <TableRow key={item.id}>
-        <TableCell>{item.machine.name}</TableCell>
-        <TableCell>{item.machine.type}</TableCell>
-        <TableCell>{item.name}</TableCell>
-        <TableCell>
-          {item.sensors.map((sensor) => sensor.SensorId).join(", ")}
-        </TableCell>
-        <TableCell>
-          {item.sensors.map((sensor) => sensor.model).join(", ")}
-        </TableCell>
-        <TableCell sx={{ width: "100px" }}>
-          <Stack direction="row" spacing={1}>
-            <FormModal
-              table="monitoring-point"
-              type="update"
-              data={item}
-              id={item.id}
-            />
-            <FormModal
-              table="monitoring-point"
-              type="delete"
-              data={item}
-              id={item.id}
-            />
-          </Stack>
-        </TableCell>
-      </TableRow>
-    );
-  };
+  const renderRow = (item: MonitoringPointList) => (
+    <TableRow key={item.id}>
+      <TableCell>{item.name}</TableCell>
+      <TableCell>{item.machine.name}</TableCell>
+      <TableCell>{item.machine.type}</TableCell>
 
-  const page = searchParams?.page;
-  const p = page ? parseInt(page) : 1;
+      <TableCell sx={{ width: "100px" }}>
+        <Stack direction="row" spacing={1}>
+          <FormContainer
+            table="monitoringPoint"
+            type="update"
+            data={item}
+            id={item.id}
+          />
+          <FormContainer
+            table="monitoringPoint"
+            type="delete"
+            data={item}
+            id={item.id}
+          />
+        </Stack>
+      </TableCell>
+    </TableRow>
+  );
+
+  const page = searchParams?.page ? parseInt(searchParams.page) : 1;
 
   const [data, count] = await prisma.$transaction([
     prisma.monitoringPoint.findMany({
       include: { machine: true, sensors: true },
       take: ITEMS_PER_PAGE,
-      skip: (p - 1) * ITEMS_PER_PAGE,
+      skip: (page - 1) * ITEMS_PER_PAGE,
     }),
     prisma.monitoringPoint.count(),
   ]);
 
   return (
-    <Paper
-      square={false}
-      elevation={1}
-      sx={{
-        p: 4,
-        flex: 1,
-        m: 4,
-        mt: 0,
-      }}
-    >
-      {/* TOP */}
+    <Paper square={false} elevation={1} sx={{ p: 4, flex: 1, m: 4, mt: 0 }}>
       <div>
         <Box sx={{ flexGrow: 1 }}>
           <Grid
             container
             spacing={2}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-            }}
+            sx={{ display: "flex", alignItems: "center" }}
           >
-            <Grid
-              size="auto"
-              sx={{
-                display: { xs: "none", md: "block" },
-              }}
-            >
+            <Grid size="auto" sx={{ display: { xs: "none", md: "block" } }}>
               <h1 className="text-lg font-semibold">All Monitoring Points</h1>
             </Grid>
-
             <Grid
               size="auto"
               sx={{
@@ -118,6 +86,7 @@ const MonitoringPointListPage = async ({
             >
               <TableSearch />
               <ButtonStack />
+              <FormContainer table="monitoringPoint" type="create" />
             </Grid>
           </Grid>
         </Box>

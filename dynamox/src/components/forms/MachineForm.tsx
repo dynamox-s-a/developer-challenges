@@ -31,6 +31,7 @@ const MachineForm = ({
   type: "create" | "update";
   data?: any;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  relatedData?: any;
 }) => {
   const {
     register,
@@ -66,7 +67,7 @@ const MachineForm = ({
       setOpen(false);
       router.refresh();
     }
-  }, [state.success]);
+  }, [state.success, setOpen, router, type]);
 
   return (
     <Box

@@ -1,6 +1,5 @@
 import { Tune as Filter, Sort } from "@mui/icons-material";
 import { Button, Stack } from "@mui/material";
-import FormModal from "./FormModal";
 
 const ButtonStack = () => {
   return (
@@ -12,8 +11,6 @@ const ButtonStack = () => {
       <Button variant="contained" sx={{ minWidth: 0, padding: 1 }}>
         <Sort />
       </Button>
-
-      <FormModal table="machine" type="create" />
     </Stack>
   );
 };

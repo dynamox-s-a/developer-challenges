@@ -1,43 +1,38 @@
-// schema.prisma
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql" 
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Admin {
-  id           Int      @id @default(autoincrement())
-  email        String   @unique
-  password String
-  createdAt    DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
 
   @@map("admins")
 }
 
 model Machine {
-  id   Int    @id @default(autoincrement())
-  name String
-  type MachineType
-
-  monitoringPoints MonitoringPoint[]
+  id                Int               @id @default(autoincrement())
+  name              String
+  type              MachineType
+  monitoringPoints  MonitoringPoint[] // A machine has multiple monitoring points
 }
 
 model MonitoringPoint {
-  id        Int    @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   name      String
   machineId Int
   machine   Machine @relation(fields: [machineId], references: [id])
-
-  sensors Sensor[]
+  sensors   Sensor[] // A monitoring point can have multiple sensors
 }
 
 model Sensor {
-  id                 Int    @id @default(autoincrement())
-  SensorId     String @unique
+  id                 Int          @id @default(autoincrement())
   model              SensorModel
   monitoringPointId  Int
   monitoringPoint    MonitoringPoint @relation(fields: [monitoringPointId], references: [id])

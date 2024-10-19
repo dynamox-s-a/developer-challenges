@@ -12,8 +12,15 @@ export const MachineFormValidation = z.object({
 export type MachineFormValidationSchema = z.infer<typeof MachineFormValidation>;
 
 export const MonitoringPointFormValidation = z.object({
+  id: z.coerce.number().optional(),
   name: z.string().min(1, "Name is required"),
-  model: z.enum(["TcAg", "TcAs", "HF+"], {
-    message: "Sensor Model Type is required!",
-  }),
+  machines: z.coerce
+    .number()
+    .refine((val) => val !== null && val !== undefined, {
+      message: "Machine selection is required",
+    }),
 });
+
+export type MonitoringPointFormValidationSchema = z.infer<
+  typeof MonitoringPointFormValidation
+>;

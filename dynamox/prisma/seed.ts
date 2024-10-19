@@ -1,77 +1,61 @@
-import { PrismaClient, MachineType, SensorModel } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
-const MACHINE_COUNT = 20;
 
-const getRandomMachineType = (): MachineType =>
-  Math.random() < 0.5 ? MachineType.Pump : MachineType.Fan;
+async function main() {
+  const machines = [
+    { name: "Pump 1", type: "Pump" },
+    { name: "Fan 1", type: "Fan" },
+    { name: "Fan 2", type: "Fan" },
+  ];
 
-const getRandomSensorModel = (machineType: MachineType): SensorModel => {
-  const validModels =
-    machineType === MachineType.Pump
-      ? [SensorModel.HF_plus]
-      : [SensorModel.TcAg, SensorModel.TcAs, SensorModel.HF_plus];
+  const sensors = ["TcAg", "TcAs", "HF_plus"];
 
-  return validModels[Math.floor(Math.random() * validModels.length)];
-};
-
-async function seedUser() {
-  const admin = await prisma.admin.create({
-    data: {
-      email: "admin@example.com",
-      password: "admin123456",
-    },
-  });
-  console.log(`Admin created: ${admin.email}`);
-}
-
-async function createMachinesWithMonitoringPoints() {
-  for (let i = 1; i <= MACHINE_COUNT; i++) {
-    const machineType = getRandomMachineType();
+  for (const machineData of machines) {
+    // Create a machine
     const machine = await prisma.machine.create({
       data: {
-        name: `Machine ${i}`,
-        type: machineType,
+        name: machineData.name,
+        type: machineData.type as any,
       },
     });
 
-    console.log(`Created machine: ${machine.name} (${machine.type})`);
+    // Add at least 2 monitoring points for each machine
+    const monitoringPoints = await Promise.all(
+      Array.from({ length: 2 }).map((_, i) =>
+        prisma.monitoringPoint.create({
+          data: {
+            name: `Monitoring Point ${i + 1} for ${machine.name}`,
+            machineId: machine.id,
+          },
+        })
+      )
+    );
 
-    const monitoringPointCount = Math.random() < 0.5 ? 2 : 3;
-    for (let j = 1; j <= monitoringPointCount; j++) {
-      const monitoringPoint = await prisma.monitoringPoint.create({
-        data: {
-          name: `Monitoring Point ${j} for ${machine.name}`,
-          machineId: machine.id,
-        },
-      });
+    // For each monitoring point, add a sensor
+    for (const point of monitoringPoints) {
+      const validSensors = machineData.type === "Pump" ? ["HF_plus"] : sensors; // Only "HF_plus" allowed for Pumps
 
-      console.log(`  -> Created monitoring point: ${monitoringPoint.name}`);
+      const sensorModel =
+        validSensors[Math.floor(Math.random() * validSensors.length)];
 
-      const sensorModel = getRandomSensorModel(machine.type);
       await prisma.sensor.create({
         data: {
-          SensorId: `SENSOR-${i}-${j}-${Date.now()}`,
-          model: sensorModel,
-          monitoringPointId: monitoringPoint.id,
+          model: sensorModel as any,
+          monitoringPointId: point.id,
         },
       });
-
-      console.log(`    -> Added sensor model: ${sensorModel}`);
     }
   }
 }
 
-async function main() {
-  console.log("Seeding database...");
-  await seedUser();
-  await createMachinesWithMonitoringPoints();
-  console.log("Seeding completed successfully!");
-  await prisma.$disconnect();
-}
-
-main().catch(async (e) => {
-  console.error("Error seeding database:", e);
-  await prisma.$disconnect();
-  process.exit(1);
-});
+main()
+  .then(async () => {
+    console.log("Seeding completed.");
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });

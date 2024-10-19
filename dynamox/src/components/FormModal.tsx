@@ -9,22 +9,20 @@ import { Dispatch, SetStateAction, useState } from "react";
 import MachineForm from "./forms/MachineForm";
 import MonitoringPointForm from "./forms/MonitoringPointForm";
 
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import { deleteMachine } from "../lib/actions";
+
+import { SyntheticEvent } from "react";
+import { FormContainerProps } from "./FormContainer";
+
 const FormModal = ({
   table,
   type,
   data,
   id,
-}: {
-  table:
-    | "machine"
-    | "sensor"
-    | "monitoring-point"
-    | "sensorModel"
-    | "machineType";
-  type: "create" | "update" | "delete";
-  data?: any;
-  id?: number;
-}) => {
+  relatedData,
+}: FormContainerProps & { relatedData: any }) => {
   const getIcon = () => {
     switch (type) {
       case "create":
@@ -44,18 +42,44 @@ const FormModal = ({
     [key: string]: (
       setOpen: Dispatch<SetStateAction<boolean>>,
       type: "create" | "update",
-      data?: any
+      data?: any,
+      relatedData?: any
     ) => JSX.Element;
   } = {
     machine: (setOpen, type, data) => (
       <MachineForm type={type} data={data} setOpen={setOpen} />
     ),
-    monitoringPoint: (setOpen, type, data) => (
-      <MonitoringPointForm type={type} data={data} setOpen={setOpen} />
+    monitoringPoint: (setOpen, type, data, relatedData) => (
+      <MonitoringPointForm
+        type={type}
+        data={data}
+        setOpen={setOpen}
+        relatedData={relatedData}
+      />
     ),
   };
 
   const Form = () => {
+    const router = useRouter();
+    const handleDelete = async (event: SyntheticEvent) => {
+      event.preventDefault();
+
+      const formData = new FormData(event.target as HTMLFormElement);
+
+      const result = await deleteMachine(
+        { success: false, error: false },
+        formData
+      );
+
+      if (result.success) {
+        toast.success(`${table} successfully deleted`);
+        setOpen(false);
+        router.refresh();
+      } else {
+        toast.error(`Failed to delete ${table}`);
+      }
+    };
+
     return type === "delete" && id ? (
       <Box
         component="form"
@@ -65,23 +89,18 @@ const FormModal = ({
           alignItems: "center",
           mt: 2,
         }}
+        onSubmit={handleDelete}
       >
+        <input type="number" name="id" value={id} hidden readOnly />
         <Typography variant="body1" align="center">
           All data will be lost. Are you sure you want to delete this {table}?
         </Typography>
-        <Button
-          variant="contained"
-          color="error"
-          sx={{ mt: 2 }}
-          onClick={() => {
-            /* handle delete */
-          }}
-        >
+        <Button variant="contained" color="error" sx={{ mt: 2 }} type="submit">
           Delete
         </Button>
       </Box>
     ) : type === "create" || type === "update" ? (
-      forms[table](setOpen, type, data)
+      forms[table](setOpen, type, data, relatedData)
     ) : (
       "Form not found!"
     );

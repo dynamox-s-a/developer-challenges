@@ -35,7 +35,6 @@ CREATE TABLE "MonitoringPoint" (
 -- CreateTable
 CREATE TABLE "Sensor" (
     "id" SERIAL NOT NULL,
-    "SensorId" TEXT NOT NULL,
     "model" "SensorModel" NOT NULL,
     "monitoringPointId" INTEGER NOT NULL,
 
@@ -44,9 +43,6 @@ CREATE TABLE "Sensor" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "admins_email_key" ON "admins"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Sensor_SensorId_key" ON "Sensor"("SensorId");
 
 -- AddForeignKey
 ALTER TABLE "MonitoringPoint" ADD CONSTRAINT "MonitoringPoint_machineId_fkey" FOREIGN KEY ("machineId") REFERENCES "Machine"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

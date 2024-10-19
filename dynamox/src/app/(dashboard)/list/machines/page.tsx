@@ -7,10 +7,10 @@ import ButtonStack from "@/src/components/ButtonStack";
 import PaginationButton from "@/src/components/Pagination";
 import Table from "@/src/components/Table";
 import { Stack, TableCell, TableRow } from "@mui/material";
-import FormModal from "@/src/components/FormModal";
 import { Machine, MonitoringPoint, Sensor } from "@prisma/client";
 import prisma from "@/src/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/src/constants";
+import FormContainer from "@/src/components/FormContainer";
 
 type MachineList = Machine & { monitoringPoints: MonitoringPoint[] } & {
   sensors: Sensor[];
@@ -23,9 +23,9 @@ const MachineListPage = async ({
 }) => {
   const columns = [
     { header: "Name", accessor: "name" },
-    { header: "ID", accessor: "id" },
+
     { header: "Type", accessor: "type" },
-    { header: "Monitoring Points", accessor: "monitoringpoints" },
+
     { header: "Actions", accessor: "action" },
   ];
 
@@ -35,20 +35,23 @@ const MachineListPage = async ({
         <TableCell>
           <h3 className="font-semibold">{item.name}</h3>
         </TableCell>
-        <TableCell>{item.id}</TableCell>
+
         <TableCell>{item.type}</TableCell>
-        <TableCell>
-          <ul>
-            {item.monitoringPoints.map((point) => (
-              <li key={point.id}>{point.name}</li>
-            ))}
-          </ul>
-        </TableCell>
 
         <TableCell sx={{ width: "100px" }}>
           <Stack direction="row" spacing={1}>
-            <FormModal table="machine" type="update" data={item} id={item.id} />
-            <FormModal table="machine" type="delete" data={item} id={item.id} />
+            <FormContainer
+              table="machine"
+              type="update"
+              data={item}
+              id={item.id}
+            />
+            <FormContainer
+              table="machine"
+              type="delete"
+              data={item}
+              id={item.id}
+            />
           </Stack>
         </TableCell>
       </TableRow>
@@ -105,18 +108,33 @@ const MachineListPage = async ({
                 display: "flex",
                 flexDirection: { xs: "column", md: "row" },
                 alignItems: "center",
+                justifyContent: "right",
                 gap: 2,
                 width: { xs: "100%", md: "auto" },
               }}
             >
               <TableSearch />
               <ButtonStack />
+              <FormContainer table="machine" type="create" />
             </Grid>
           </Grid>
         </Box>
-        <div className="mt-10">
+
+        <Grid
+          sx={{
+            display: "flex",
+            justifyItems: "center",
+            alignItems: "center",
+            gap: 2,
+            maxWidth: "960px",
+            width: "100%",
+            margin: "0 auto",
+            mt: 5,
+          }}
+        >
           <Table columns={columns} renderRow={renderRow} data={data} />
-        </div>
+        </Grid>
+
         <div className="mt-5">
           <PaginationButton count={count} />
         </div>

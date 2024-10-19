@@ -9,6 +9,7 @@ type ValidatedTextFieldProps = {
   error?: FieldError;
   defaultValue?: string;
   fullWidth?: boolean;
+  hidden?: boolean;
 };
 
 const ValidatedTextField: React.FC<ValidatedTextFieldProps> = ({
@@ -18,6 +19,7 @@ const ValidatedTextField: React.FC<ValidatedTextFieldProps> = ({
   error,
   defaultValue = "",
   fullWidth = false,
+  hidden = false,
 }) => {
   return (
     <>
@@ -28,6 +30,7 @@ const ValidatedTextField: React.FC<ValidatedTextFieldProps> = ({
         error={!!error}
         helperText={error?.message?.toString()}
         fullWidth={fullWidth}
+        style={{ display: hidden ? "none" : "block" }}
       />
     </>
   );
