@@ -4,6 +4,8 @@ import "./globals.css";
 
 import { StoreProvider } from "./store/StoreProvider";
 import { ClerkProvider } from "@clerk/nextjs";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +23,10 @@ export default function RootLayout({
     <StoreProvider>
       <ClerkProvider>
         <html lang="en">
-          <body className={inter.className}>{children}</body>
+          <body className={inter.className}>
+            {children}
+            <ToastContainer position="top-right" autoClose={5000} />
+          </body>
         </html>
       </ClerkProvider>
     </StoreProvider>

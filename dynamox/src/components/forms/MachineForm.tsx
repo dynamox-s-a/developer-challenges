@@ -17,15 +17,20 @@ import ValidatedTextField from "../ValidatedTextField";
 import { MachineFormValidation } from "@/src/lib/validation";
 import { useFormState } from "react-dom";
 import { createMachine, updateMachine } from "@/src/lib/actions";
+import { Dispatch, SetStateAction, useEffect } from "react";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 type Inputs = z.infer<typeof MachineFormValidation>;
 
 const MachineForm = ({
   type,
   data,
+  setOpen,
 }: {
   type: "create" | "update";
   data?: any;
+  setOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const {
     register,
@@ -43,10 +48,25 @@ const MachineForm = ({
     }
   );
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
-    formAction(data);
+  const onSubmit = handleSubmit((formData) => {
+    const updatedData = {
+      ...formData,
+      id: data?.id,
+    };
+    formAction(updatedData);
   });
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state.success) {
+      toast.success(
+        `Machine has been ${type === "create" ? "created" : "updated"}!`
+      );
+      setOpen(false);
+      router.refresh();
+    }
+  }, [state.success]);
 
   return (
     <Box

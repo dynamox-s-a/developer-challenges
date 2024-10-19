@@ -1,13 +1,15 @@
 "use server";
+// import { revalidatePath } from "next/cache";
 import prisma from "./prisma";
-import { MachineFormValidation } from "./validation";
+import { MachineFormValidationSchema } from "./validation";
 
 type CurrentState = { success: boolean; error: boolean };
 
 export const createMachine = async (
   currentState: CurrentState,
-  data: MachineFormValidation
+  data: MachineFormValidationSchema
 ) => {
+  console.log(data);
   try {
     await prisma.machine.create({
       data: {
@@ -26,8 +28,9 @@ export const createMachine = async (
 
 export const updateMachine = async (
   currentState: CurrentState,
-  data: MachineFormValidation
+  data: MachineFormValidationSchema
 ) => {
+  console.log(data);
   try {
     await prisma.machine.update({
       where: {

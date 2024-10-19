@@ -5,7 +5,7 @@ import { Box, Button, Modal, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import MachineForm from "./forms/MachineForm";
 import MonitoringPointForm from "./forms/MonitoringPointForm";
 
@@ -41,11 +41,17 @@ const FormModal = ({
   const handleClose = () => setOpen(false);
 
   const forms: {
-    [key: string]: (type: "create" | "update", data?: any) => JSX.Element;
+    [key: string]: (
+      setOpen: Dispatch<SetStateAction<boolean>>,
+      type: "create" | "update",
+      data?: any
+    ) => JSX.Element;
   } = {
-    machine: (type, data) => <MachineForm type={type} data={data} />,
-    monitoringPoint: (type, data) => (
-      <MonitoringPointForm type={type} data={data} />
+    machine: (setOpen, type, data) => (
+      <MachineForm type={type} data={data} setOpen={setOpen} />
+    ),
+    monitoringPoint: (setOpen, type, data) => (
+      <MonitoringPointForm type={type} data={data} setOpen={setOpen} />
     ),
   };
 
@@ -75,7 +81,7 @@ const FormModal = ({
         </Button>
       </Box>
     ) : type === "create" || type === "update" ? (
-      forms[table](type, data)
+      forms[table](setOpen, type, data)
     ) : (
       "Form not found!"
     );
