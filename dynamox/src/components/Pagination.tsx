@@ -5,8 +5,8 @@ import * as React from "react";
 import Pagination from "@mui/material/Pagination";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { setPage } from "@/src/app/store/paginationSlice";
-import { RootState } from "@/src/app/store/store";
+import { setPage } from "@/src/app/redux/store/paginationSlice";
+import { RootState } from "@/src/app/redux/store/store";
 
 const PaginationButton = ({ count }: { count: number }) => {
   const dispatch = useDispatch();

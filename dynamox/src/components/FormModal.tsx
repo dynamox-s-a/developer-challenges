@@ -15,6 +15,7 @@ import { deleteMachine } from "../lib/actions";
 
 import { SyntheticEvent } from "react";
 import { FormContainerProps } from "./FormContainer";
+import SensorModelForm from "./forms/SensorModelForm";
 
 const FormModal = ({
   table,
@@ -51,6 +52,14 @@ const FormModal = ({
     ),
     monitoringPoint: (setOpen, type, data, relatedData) => (
       <MonitoringPointForm
+        type={type}
+        data={data}
+        setOpen={setOpen}
+        relatedData={relatedData}
+      />
+    ),
+    allMonitoringPoints: (setOpen, type, data, relatedData) => (
+      <SensorModelForm
         type={type}
         data={data}
         setOpen={setOpen}

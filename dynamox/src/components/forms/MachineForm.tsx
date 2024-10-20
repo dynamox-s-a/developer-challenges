@@ -15,9 +15,8 @@ import {
 } from "@mui/material";
 import ValidatedTextField from "../ValidatedTextField";
 import { MachineFormValidation } from "@/src/lib/validation";
-import { useFormState } from "react-dom";
 import { createMachine, updateMachine } from "@/src/lib/actions";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
@@ -41,33 +40,29 @@ const MachineForm = ({
     resolver: zodResolver(MachineFormValidation),
   });
 
-  const [state, formAction] = useFormState(
-    type === "create" ? createMachine : updateMachine,
-    {
-      success: false,
-      error: false,
-    }
-  );
-
-  const onSubmit = handleSubmit((formData) => {
+  const onSubmit = handleSubmit(async (formData) => {
     const updatedData = {
       ...formData,
       id: data?.id,
     };
-    formAction(updatedData);
-  });
 
-  const router = useRouter();
+    const result = await (type === "create" ? createMachine : updateMachine)(
+      { success: false, error: false },
+      updatedData
+    );
 
-  useEffect(() => {
-    if (state.success) {
+    if (result.success) {
       toast.success(
         `Machine has been ${type === "create" ? "created" : "updated"}!`
       );
       setOpen(false);
       router.refresh();
+    } else if (result.error) {
+      toast.error(result?.error || "Something went wrong!");
     }
-  }, [state.success, setOpen, router, type]);
+  });
+
+  const router = useRouter();
 
   return (
     <Box

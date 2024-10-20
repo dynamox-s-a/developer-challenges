@@ -24,3 +24,14 @@ export const MonitoringPointFormValidation = z.object({
 export type MonitoringPointFormValidationSchema = z.infer<
   typeof MonitoringPointFormValidation
 >;
+
+export const SensorModelFormValidation = z.object({
+  id: z.coerce.number().optional(),
+  monitoringPointId: z.coerce.number().optional(),
+
+  model: z.enum(["TcAg", "TcAs", "HF_plus"]),
+});
+
+export type SensorModelFormValidationSchema = z.infer<
+  typeof SensorModelFormValidation
+>;

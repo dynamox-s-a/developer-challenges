@@ -65,3 +65,50 @@
   }
 }
 
+.machine-list-paper {
+  padding: 16px;
+  flex: 1;
+  margin: 16px;
+  margin-top: 0;
+}
+
+.grid-outer {
+  display: flex;
+  align-items: center;
+}
+
+.grid-title {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .grid-title {
+    display: block;
+  }
+}
+
+.grid-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: right;
+  gap: 8px;
+}
+
+@media (min-width: 768px) {
+  .grid-controls {
+    flex-direction: row;
+    width: auto;
+  }
+}
+
+.table-container {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  gap: 8px;
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 20px;
+}

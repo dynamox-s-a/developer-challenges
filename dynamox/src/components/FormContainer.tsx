@@ -6,6 +6,7 @@ export type FormContainerProps = {
     | "machine"
     | "sensor"
     | "monitoringPoint"
+    | "allMonitoringPoints"
     | "sensorModel"
     | "machineType";
   type: "create" | "update" | "delete";
@@ -19,10 +20,27 @@ const FormContainer = async ({ table, type, data, id }: FormContainerProps) => {
   if (type !== "delete") {
     switch (table) {
       case "monitoringPoint":
-        const monitorintPointMachines = await prisma.machine.findMany({
+        const monitoringPointMachines = await prisma.machine.findMany({
           select: { id: true, name: true },
         });
-        relatedData = { machines: monitorintPointMachines };
+
+        relatedData = {
+          machines: monitoringPointMachines,
+        };
+        break;
+      case "allMonitoringPoints":
+        const monitoringPointSensors = await prisma.sensor.findMany({
+          select: { id: true, model: true },
+        });
+
+        const monitoringPoints = await prisma.monitoringPoint.findMany({
+          select: { id: true, name: true },
+        });
+
+        relatedData = {
+          sensors: monitoringPointSensors,
+          monitoringPoints: monitoringPoints,
+        };
         break;
     }
   }

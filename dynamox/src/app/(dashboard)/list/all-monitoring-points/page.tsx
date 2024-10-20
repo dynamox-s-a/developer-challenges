@@ -4,39 +4,36 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import PaginationButton from "@/src/components/Pagination";
 import Table from "@/src/components/Table";
-import { Stack, TableCell, TableRow } from "@mui/material";
-import { Machine, MonitoringPoint, Sensor } from "@prisma/client";
+import { TableCell, TableRow } from "@mui/material";
+import { MonitoringPoint, Machine, Sensor } from "@prisma/client";
 import prisma from "@/src/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/src/constants";
 import FormContainer from "@/src/components/FormContainer";
 
-type MachineList = Machine & {
-  monitoringPoints: MonitoringPoint[];
+type AllMonitoringPointList = MonitoringPoint & {
+  machine: Machine;
   sensors: Sensor[];
 };
 
 const columns = [
-  { header: "Name", accessor: "name" },
-  { header: "Type", accessor: "type" },
-  { header: "Actions", accessor: "action" },
+  { header: "Machine Name", accessor: "machineName" },
+  { header: "Machine Type", accessor: "machineType" },
+  { header: "Monitoring Point Name", accessor: "monitoringPointName" },
+  { header: "Sensor Model", accessor: "sensorModel" },
 ];
 
-const renderRow = (item: MachineList) => (
+const renderRow = (item: AllMonitoringPointList) => (
   <TableRow key={item.id}>
+    <TableCell>{item.machine.name}</TableCell>
+    <TableCell>{item.machine.type}</TableCell>
+    <TableCell>{item.name}</TableCell>
     <TableCell>
-      <h3 className="font-semibold">{item.name}</h3>
-    </TableCell>
-    <TableCell>{item.type}</TableCell>
-    <TableCell sx={{ width: "100px" }}>
-      <Stack direction="row" spacing={1}>
-        <FormContainer table="machine" type="update" data={item} id={item.id} />
-        <FormContainer table="machine" type="delete" data={item} id={item.id} />
-      </Stack>
+      {item.sensors.map((sensor) => sensor.model).join(", ")}
     </TableCell>
   </TableRow>
 );
 
-const MachineListPage = async ({
+const MonitoringPointListWithSensorsPage = async ({
   searchParams,
 }: {
   searchParams?: { [key: string]: string };
@@ -44,12 +41,12 @@ const MachineListPage = async ({
   const page = searchParams?.page ? parseInt(searchParams.page) : 1;
 
   const [data, count] = await prisma.$transaction([
-    prisma.machine.findMany({
-      include: { monitoringPoints: true },
+    prisma.monitoringPoint.findMany({
+      include: { machine: true, sensors: true },
       take: ITEMS_PER_PAGE,
       skip: (page - 1) * ITEMS_PER_PAGE,
     }),
-    prisma.machine.count(),
+    prisma.monitoringPoint.count(),
   ]);
 
   return (
@@ -57,10 +54,12 @@ const MachineListPage = async ({
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2} className="grid-outer">
           <Grid size="auto" className="grid-title">
-            <h1 className="text-lg font-semibold">All Machines</h1>
+            <h1 className="text-lg font-semibold">
+              All Monitoring Points Page
+            </h1>
           </Grid>
           <Grid size="auto" className="grid-controls">
-            <FormContainer table="machine" type="create" />
+            <FormContainer table="allMonitoringPoints" type="create" />
           </Grid>
         </Grid>
       </Box>
@@ -74,4 +73,4 @@ const MachineListPage = async ({
   );
 };
 
-export default MachineListPage;
+export default MonitoringPointListWithSensorsPage;
