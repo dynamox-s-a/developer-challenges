@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Home } from "@mui/icons-material";
+// import { Home } from "@mui/icons-material";
 import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing";
 import DvrIcon from "@mui/icons-material/Dvr";
 import TableChartIcon from "@mui/icons-material/TableChart";
@@ -11,12 +11,12 @@ const menuItems = [
   {
     title: "MENU",
     items: [
-      {
-        icon: <Home />,
-        label: "Home",
-        href: "/",
-        visible: ["admin"],
-      },
+      // {
+      //   icon: <Home />,
+      //   label: "Home",
+      //   href: "/",
+      //   visible: ["admin"],
+      // },
       {
         icon: <PrecisionManufacturingIcon />,
         label: "Machines",
