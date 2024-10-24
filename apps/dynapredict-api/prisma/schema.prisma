@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  machines Machine[]
+}
+
+model Machine {
+  id              Int               @id @default(autoincrement())
+  name            String
+  type            MachineType
+  createdAt       DateTime          @default(now())
+  userId Int
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  monitoringPoints MonitoringPoint[]
+}
+
+model MonitoringPoint {
+  id         Int      @id @default(autoincrement())
+  name       String
+  machineId  Int
+  machine    Machine  @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  sensors    Sensor[]
+}
+
+model Sensor {
+  id                Int             @id @default(autoincrement())
+  monitoringPointId Int
+  monitoringPoint   MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
+  model             SensorModel
+}
+
+enum MachineType {
+  Pump
+  Fan
+}
+
+enum SensorModel {
+  TcAg
+  TcAs
+  HFPlus
+}
