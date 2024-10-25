@@ -9,6 +9,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { MachineType } from '@prisma/client';
 import { AuthUser, User } from '../auth/user.decorator';
 import { CreateMachineDto } from './dto/create-machine.dto';
 import { UpdateMachineDto } from './dto/update-machine.dto';
@@ -29,6 +30,11 @@ export class MachinesController {
   @Get()
   async findAll(@User() user: AuthUser) {
     return await this.machinesService.findAll(user.id);
+  }
+
+  @Get('types')
+  getTypes(): { types: string[] } {
+    return { types: Object.values(MachineType) };
   }
 
   @Get(':id')
