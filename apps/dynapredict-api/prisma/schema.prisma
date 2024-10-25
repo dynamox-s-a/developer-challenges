@@ -8,35 +8,38 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  machines Machine[]
+  id               Int               @id @default(autoincrement())
+  email            String            @unique
+  password         String
+  createdAt        DateTime          @default(now())
+  machines         Machine[]
+  monitoringPoints MonitoringPoint[]
 }
 
 model Machine {
-  id              Int               @id @default(autoincrement())
-  name            String
-  type            MachineType
-  createdAt       DateTime          @default(now())
-  userId Int
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id               Int               @id @default(autoincrement())
+  name             String
+  type             MachineType
+  createdAt        DateTime          @default(now())
+  userId           Int
+  user             User              @relation(fields: [userId], references: [id])
   monitoringPoints MonitoringPoint[]
 }
 
 model MonitoringPoint {
-  id         Int      @id @default(autoincrement())
-  name       String
-  machineId  Int
-  machine    Machine  @relation(fields: [machineId], references: [id], onDelete: Cascade)
-  createdAt  DateTime @default(now())
-  sensors    Sensor[]
+  id        Int      @id @default(autoincrement())
+  name      String
+  machineId Int
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  machine   Machine  @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  sensor    Sensor?
 }
 
 model Sensor {
   id                Int             @id @default(autoincrement())
-  monitoringPointId Int
+  monitoringPointId Int             @unique
   monitoringPoint   MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
   model             SensorModel
 }

@@ -7,3 +7,9 @@ For starters, there's **user** that should be the faster one. I won't do a full 
 Besides that, based on the structure of the requirements, I'll assume that we have two main entities that will translate to separate routes in the API: **machines** and **monitoring points**. There's a third resource, **sensors**, that I'll assume they are created from the beginning of the application given the use of the verb _associate_ in the requirements - I understand they are fixed resources with unique ID that can be extended afterwards if needed. I'll attach now an relations diagram created with AI to make visualization easier about these entities:
 
 ![Relations Table](/assets/image.png).
+
+<hr>
+
+## Live thoughts
+
+I just realized that we should optimize the models a bit and include userId also in the Monitoring Points since we'll have a dedicated view for this resource. With this, we don't have to query the database for the machines that a user has and, afterwards, search for its monitoring points - that would be a unnecessary, wasted effort.
