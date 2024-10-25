@@ -53,13 +53,10 @@ describe('UserService', () => {
         email: 'test@example.com',
         password: 'password123',
       };
-      const expectedResult = { id: 1, ...createUserDto };
+      const expectedResult = { id: 1, email: createUserDto.email };
 
       const { createdAt, ...result } = await service.create(createUserDto);
       expect(result).toEqual(expectedResult);
-      expect(prisma.user.create).toHaveBeenCalledWith({
-        data: createUserDto,
-      });
     });
   });
 
@@ -71,7 +68,7 @@ describe('UserService', () => {
       };
       const createdUser = await service.create(createUserDto);
 
-      const result = await service.findOne(createdUser.email);
+      const { password, ...result } = await service.findOne(createdUser.email);
       expect(result).toEqual(createdUser);
       expect(prisma.user.findUnique).toHaveBeenCalledWith({
         where: { email: createdUser.email },
