@@ -4,7 +4,7 @@ import { User } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { UserService } from '../user/user.service';
 
-export type ValidatedUser = Omit<User, 'password'>;
+export type ValidatedUser = Omit<User, 'password' | 'createdAt'>;
 
 @Injectable()
 export class AuthService {
@@ -20,7 +20,7 @@ export class AuthService {
     const user = await this.userService.findOne(email);
     const match = await bcrypt.compare(pwd, user.password);
     if (user && match) {
-      const { password, ...result } = user;
+      const { password, createdAt, ...result } = user;
       return result;
     }
     return null;
