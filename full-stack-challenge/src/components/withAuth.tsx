@@ -1,14 +1,18 @@
+"use client";
+
 import { useSelector } from "react-redux";
 import { RootState } from "@/features/store";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, ComponentType } from "react";
 
-const withAuth = (WrappedComponent: React.ComponentType) => {
-  const ProtectedComponent = () => {
+export const withAuth = <P extends object>(
+  WrappedComponent: ComponentType<P>
+) => {
+  const AuthWrapper = (props: P) => {
+    const router = useRouter();
     const isAuthenticated = useSelector(
       (state: RootState) => state.auth.isAuthenticated
     );
-    const router = useRouter();
 
     useEffect(() => {
       if (!isAuthenticated) {
@@ -20,10 +24,10 @@ const withAuth = (WrappedComponent: React.ComponentType) => {
       return null;
     }
 
-    return <WrappedComponent />;
+    return <WrappedComponent {...props} />;
   };
 
-  return ProtectedComponent;
+  return AuthWrapper;
 };
 
 export default withAuth;

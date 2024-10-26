@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import {
   Button,
@@ -19,13 +21,20 @@ interface Machine {
 
 const MachineList = () => {
   const [machines, setMachines] = useState<Machine[]>([]);
-  const [newMachine, setNewMachine] = useState({ name: "", type: "Pump" });
+  const [newMachine, setNewMachine] = useState<Machine>({
+    id: "",
+    name: "",
+    type: "Pump",
+  });
 
   const handleAddMachine = () => {
     if (newMachine.name) {
-      const newMachineData = { ...newMachine, id: Date.now().toString() };
+      const newMachineData: Machine = {
+        ...newMachine,
+        id: Date.now().toString(),
+      };
       setMachines([...machines, newMachineData]);
-      setNewMachine({ name: "", type: "Pump" });
+      setNewMachine({ id: "", name: "", type: "Pump" });
     }
   };
 

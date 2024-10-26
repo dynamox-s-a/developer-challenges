@@ -1,4 +1,6 @@
-import withAuth from "@/components/withAuth";
+"use client";
+
+import withAuth from "../components/withAuth";
 import MachineList from "@/components/machines/MachineList";
 
 const HomePage = () => {
