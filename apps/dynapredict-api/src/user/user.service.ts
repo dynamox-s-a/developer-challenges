@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { PrismaService } from '../db/prisma.service';
@@ -29,7 +25,7 @@ export class UserService {
       return createdUser;
     } catch (error) {
       if (error.code === 'P2002') {
-        return null;
+        throw new ConflictException('User with this email already exists');
       }
       throw error;
     }

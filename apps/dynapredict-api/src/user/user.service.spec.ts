@@ -35,6 +35,10 @@ class MockPrismaService {
         id: this.idCounter++,
       };
 
+      if (this.users.some((user) => user.email === data.email)) {
+        throw new Error();
+      }
+
       this.users.push(newUser);
 
       return newUser;
@@ -86,14 +90,14 @@ describe('UserService', () => {
       expect(createdUser.id).toBeDefined();
     });
 
-    it('should return null if user with email already exists', async () => {
+    it('should throw error if user with email already exists', async () => {
       const userData = {
         email: 'existing@example.com',
         password: 'password123',
       };
       await service.create(userData);
 
-      expect(await service.create(userData)).toBeNull();
+      await expect(service.create(userData)).rejects.toThrow();
     });
   });
 

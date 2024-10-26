@@ -28,12 +28,12 @@ class MockMachinesService {
     );
   }
 
-  findOne(machineId: number, userId: number): Promise<Machine | undefined> {
-    return Promise.resolve(
-      this.machines.find(
-        (machine) => machine.id === machineId && machine.userId === userId
-      )
+  findOne(machineId: number, userId: number): Promise<Machine> {
+    const machine = this.machines.find(
+      (machine) => machine.id === machineId && machine.userId === userId
     );
+    if (!machine) throw new Error();
+    return Promise.resolve(machine);
   }
 
   update(
@@ -45,29 +45,30 @@ class MockMachinesService {
       (machine) => machine.id === machineId && machine.userId === userId
     );
 
-    if (index !== -1) {
-      this.machines = this.machines.map((machine, idx) => {
-        if (idx === index) {
-          return {
-            ...machine,
-            ...machineData,
-          };
-        }
-        return machine;
-      });
-      return Promise.resolve(this.machines[index]);
+    if (index === -1) {
+      throw new Error();
     }
 
-    return Promise.resolve(null);
+    this.machines = this.machines.map((machine, idx) => {
+      if (idx === index) {
+        return {
+          ...machine,
+          ...machineData,
+        };
+      }
+      return machine;
+    });
+
+    return Promise.resolve(this.machines[index]);
   }
 
-  remove(machineId: number, userId: number): Promise<Machine | null> {
+  remove(machineId: number, userId: number): Promise<Machine> {
     const machine = this.machines.find(
       (machine) => machine.id === machineId && machine.userId === userId
     );
 
     if (!machine) {
-      return null;
+      throw new Error();
     }
 
     this.machines = this.machines.filter((machine) => machine.id !== machineId);
@@ -88,7 +89,6 @@ describe('MachinesController', () => {
   };
 
   let controller: MachinesController;
-  let service: MockMachinesService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

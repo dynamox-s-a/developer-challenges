@@ -16,7 +16,7 @@ class MockUserService {
     password: _,
     email,
   }: CreateUserDto): Promise<Omit<User, 'password'>> {
-    if (this.checkExists(email)) return Promise.resolve(null);
+    if (this.checkExists(email)) throw new Error();
     const user = {
       email,
       id: this.counter++,

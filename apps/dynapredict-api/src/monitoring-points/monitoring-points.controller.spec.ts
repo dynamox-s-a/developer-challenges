@@ -39,7 +39,7 @@ class MockMPService {
     const isValidMachine = this.checkMachine(machineId, userId);
 
     if (!isValidMachine) {
-      return null;
+      throw new Error();
     }
 
     const monitoringPoint = {
@@ -65,16 +65,17 @@ class MockMPService {
     monitoringPointId: number,
     userId: number
   ): Promise<MonitoringPoint | undefined> {
-    const monitoringPoint =
-      this.monitoringPoints.find(
-        (mp) => mp.id === monitoringPointId && mp.userId === userId
-      ) ?? null;
+    const monitoringPoint = this.monitoringPoints.find(
+      (mp) => mp.id === monitoringPointId && mp.userId === userId
+    );
 
-    if (monitoringPoint) {
-      this.monitoringPoints = this.monitoringPoints.filter(
-        (mp) => mp.id !== monitoringPointId
-      );
+    if (!monitoringPoint) {
+      throw new Error();
     }
+
+    this.monitoringPoints = this.monitoringPoints.filter(
+      (mp) => mp.id !== monitoringPointId
+    );
 
     return Promise.resolve(monitoringPoint);
   }
@@ -110,30 +111,27 @@ describe('MonitoringPointsController', () => {
         machineId: 3,
         name: 'Temperature Sensor',
       };
-      const result: MonitoringPoint = {
+      const result = await controller.create(dto, fakeUser);
+
+      expect(result).toMatchObject({
         id: 1,
         machineId: 3,
         name: 'Temperature Sensor',
         userId: fakeUser.id,
-        createdAt: new Date(),
-      };
-
-      await expect(controller.create(dto, fakeUser)).resolves.toEqual(result);
-      await expect(controller.findAll(fakeUser)).resolves.toEqual([result]);
+      });
+      expect(result.createdAt).toBeInstanceOf(Date);
     });
 
-    it('should throw NotFoundException if the machine is invalid', async () => {
+    it('should throw if the machine is invalid', async () => {
       const dto: CreateMonitoringPointDto = {
         machineId: 999,
         name: 'Pressure Sensor',
       };
 
-      await expect(controller.create(dto, fakeUser)).rejects.toThrow(
-        NotFoundException
-      );
+      await expect(controller.create(dto, fakeUser)).rejects.toThrow();
     });
 
-    it('should throw NotFoundException if the user does not own the machine', async () => {
+    it('should throw if the user does not own the machine', async () => {
       const dto: CreateMonitoringPointDto = {
         machineId: 3,
         name: 'Pressure Sensor',
@@ -141,9 +139,7 @@ describe('MonitoringPointsController', () => {
 
       const anotherUser = { ...fakeUser, id: 1021 };
 
-      await expect(controller.create(dto, anotherUser)).rejects.toThrow(
-        NotFoundException
-      );
+      await expect(controller.create(dto, anotherUser)).rejects.toThrow();
     });
   });
 
@@ -208,12 +204,12 @@ describe('MonitoringPointsController', () => {
       await expect(controller.findAll(fakeUser)).resolves.toEqual([]);
     });
 
-    it('should throw NotFoundException if the monitoring point does not exist', async () => {
+    it('should throw if the monitoring point does not exist', async () => {
       const monitoringPointId = 999;
 
       await expect(
         controller.remove(monitoringPointId, fakeUser)
-      ).rejects.toThrow(NotFoundException);
+      ).rejects.toThrow();
     });
   });
 });

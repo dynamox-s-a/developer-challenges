@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { MonitoringPoint } from '@prisma/client';
 import { PrismaService } from '../db/prisma.service';
 import { CreateMonitoringPointDto } from './dto/create-monitoring-point.dto';
@@ -30,7 +30,7 @@ export class MonitoringPointsService {
       });
     } catch (error) {
       if (error?.code === 'P2025') {
-        return null;
+        throw new NotFoundException();
       }
       throw error;
     }
@@ -61,7 +61,7 @@ export class MonitoringPointsService {
       });
     } catch (error) {
       if (error?.code === 'P2025') {
-        return null;
+        throw new NotFoundException();
       }
       throw error;
     }

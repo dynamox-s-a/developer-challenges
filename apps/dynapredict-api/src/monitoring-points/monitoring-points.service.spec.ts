@@ -61,6 +61,14 @@ class MockPrismaService {
         },
       } = data;
 
+      if (
+        !machines.some(
+          (machine) => machine.id === machineId && machine.userId === userId
+        )
+      ) {
+        throw new Error();
+      }
+
       const monitoringPoint = {
         id: this.idCounter++,
         name,
@@ -76,16 +84,6 @@ class MockPrismaService {
   };
 }
 
-class MockMachinesService {
-  async findOne(machineId: number, userId: number): Promise<Machine | null> {
-    return (
-      machines.find(
-        (machine) => machine.id === machineId && machine.userId === userId
-      ) ?? null
-    );
-  }
-}
-
 describe('MonitoringPointsService', () => {
   let service: MonitoringPointsService;
 
@@ -96,10 +94,6 @@ describe('MonitoringPointsService', () => {
         {
           provide: PrismaService,
           useClass: MockPrismaService,
-        },
-        {
-          provide: MachinesService,
-          useClass: MockMachinesService,
         },
       ],
     }).compile();
@@ -136,9 +130,7 @@ describe('MonitoringPointsService', () => {
         machineId: machines[1].id,
       };
 
-      const result = await service.create(fakePoint, fakeUser.id);
-
-      expect(result).toEqual(null);
+      await expect(service.create(fakePoint, fakeUser.id)).rejects.toThrow();
     });
 
     it('should NOT create a monitoring point when do not have an existing machine', async () => {
@@ -147,9 +139,7 @@ describe('MonitoringPointsService', () => {
         machineId: 20,
       };
 
-      const result = await service.create(fakePoint, fakeUser.id);
-
-      expect(result).toEqual(null);
+      await expect(service.create(fakePoint, fakeUser.id)).rejects.toThrow();
     });
 
     it('should NOT create a monitoring point with a non-existent userId', async () => {
@@ -158,9 +148,7 @@ describe('MonitoringPointsService', () => {
         machineId: machines[0].id,
       };
 
-      const result = await service.create(fakePoint, 999);
-
-      expect(result).toEqual(null);
+      await expect(service.create(fakePoint, 999)).rejects.toThrow();
     });
   });
 });

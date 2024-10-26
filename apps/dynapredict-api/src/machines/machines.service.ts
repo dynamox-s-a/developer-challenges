@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../db/prisma.service';
 import { CreateMachineDto } from './dto/create-machine.dto';
 import { UpdateMachineDto } from './dto/update-machine.dto';
@@ -29,14 +29,19 @@ export class MachinesService {
   }
 
   async findOne(machineId: number, userId: number) {
-    const machine = await this.prisma.machine.findUnique({
-      where: {
-        id: machineId,
-        userId,
-      },
-    });
-
-    return machine;
+    try {
+      const machine = await this.prisma.machine.findUniqueOrThrow({
+        where: {
+          id: machineId,
+          userId,
+        },
+      });
+      return machine;
+    } catch (error) {
+      if (error.code === 'P2025') {
+        throw new NotFoundException();
+      }
+    }
   }
 
   async update(
@@ -54,7 +59,7 @@ export class MachinesService {
       });
     } catch (error) {
       if (error.code === 'P2025') {
-        return null;
+        throw new NotFoundException();
       }
       throw error;
     }
@@ -70,7 +75,7 @@ export class MachinesService {
       });
     } catch (error) {
       if (error.code === 'P2025') {
-        return null;
+        throw new NotFoundException();
       }
       throw error;
     }

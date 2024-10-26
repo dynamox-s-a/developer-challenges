@@ -42,11 +42,7 @@ export class MachinesController {
     @Param('id', ParseIntPipe) machineId: number,
     @User() user: AuthUser
   ) {
-    const machine = await this.machinesService.findOne(machineId, user.id);
-    if (!machine) {
-      throw new NotFoundException();
-    }
-    return machine;
+    return await this.machinesService.findOne(machineId, user.id);
   }
 
   @Patch(':id')
@@ -55,15 +51,11 @@ export class MachinesController {
     @User() user: AuthUser,
     @Body() updateMachineDto: UpdateMachineDto
   ) {
-    const machine = await this.machinesService.update(
+    return await this.machinesService.update(
       machineId,
       user.id,
       updateMachineDto
     );
-    if (!machine) {
-      throw new NotFoundException();
-    }
-    return machine;
   }
 
   @Delete(':id')
@@ -71,10 +63,6 @@ export class MachinesController {
     @Param('id', ParseIntPipe) machineId: number,
     @User() user: AuthUser
   ) {
-    const machine = await this.machinesService.remove(machineId, user.id);
-    if (!machine) {
-      throw new NotFoundException();
-    }
-    return machine;
+    return await this.machinesService.remove(machineId, user.id);
   }
 }
