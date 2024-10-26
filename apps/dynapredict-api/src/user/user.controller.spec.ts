@@ -8,7 +8,7 @@ class MockUserService {
   private users: Omit<User, 'password'>[] = [];
   private counter = 1;
 
-  checkExists(email) {
+  checkExists(email: string) {
     return this.users.some((user) => user.email === email);
   }
 
