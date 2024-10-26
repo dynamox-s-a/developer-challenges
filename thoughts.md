@@ -13,3 +13,5 @@ Besides that, based on the structure of the requirements, I'll assume that we ha
 ## Live thoughts
 
 I just realized that we should optimize the models a bit and include userId also in the Monitoring Points since we'll have a dedicated view for this resource. With this, we don't have to query the database for the machines that a user has and, afterwards, search for its monitoring points - that would be a unnecessary, wasted effort.
+
+Another reminder for myself: when updating the machine type, I need to perform checks if the sensor associated is allowed.
