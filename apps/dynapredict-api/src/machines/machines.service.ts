@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../db/prisma.service';
 import { CreateMachineDto } from './dto/create-machine.dto';
 import { UpdateMachineDto } from './dto/update-machine.dto';
@@ -44,29 +44,35 @@ export class MachinesService {
     userId: number,
     updateMachineDto: UpdateMachineDto
   ) {
-    const exists = (await this.findOne(machineId, userId)) ?? false;
-    if (!exists) {
-      return;
+    try {
+      return await this.prisma.machine.update({
+        data: updateMachineDto,
+        where: {
+          id: machineId,
+          userId,
+        },
+      });
+    } catch (error) {
+      if (error.code === 'P2025') {
+        return null;
+      }
+      throw error;
     }
-    return await this.prisma.machine.update({
-      data: updateMachineDto,
-      where: {
-        id: machineId,
-        userId,
-      },
-    });
   }
 
   async remove(machineId: number, userId: number) {
-    const exists = (await this.findOne(machineId, userId)) ?? false;
-    if (!exists) {
-      return;
+    try {
+      return await this.prisma.machine.delete({
+        where: {
+          id: machineId,
+          userId,
+        },
+      });
+    } catch (error) {
+      if (error.code === 'P2025') {
+        return null;
+      }
+      throw error;
     }
-    return await this.prisma.machine.delete({
-      where: {
-        id: machineId,
-        userId,
-      },
-    });
   }
 }

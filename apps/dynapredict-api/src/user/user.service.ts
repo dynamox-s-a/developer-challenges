@@ -12,37 +12,27 @@ import { CreateUserDto } from './dto/create-user.dto';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async checkForRegisteredUser(email: string) {
-    const user = await this.findOne(email);
-    if (user) {
-      return true;
-    }
-    return false;
-  }
-
   async create(createUserDto: CreateUserDto) {
-    const alreadyExists = await this.checkForRegisteredUser(
-      createUserDto.email
-    );
-    if (alreadyExists) {
-      return null;
-    }
     const { password, ...user } = createUserDto;
     const hashedPwd = await bcrypt.hash(password, 10).catch((err) => {
       console.log(err);
-      throw new InternalServerErrorException(
-        'Failure while hashing users password'
-      );
+      throw new Error(err);
     });
 
-    const { password: _, ...createdUser } = await this.prisma.user.create({
-      data: {
-        ...user,
-        password: hashedPwd,
-      },
-    });
-
-    return createdUser;
+    try {
+      const { password: _, ...createdUser } = await this.prisma.user.create({
+        data: {
+          ...user,
+          password: hashedPwd,
+        },
+      });
+      return createdUser;
+    } catch (error) {
+      if (error.code === 'P2002') {
+        return null;
+      }
+      throw error;
+    }
   }
 
   async findOne(email: string): Promise<User | null> {
