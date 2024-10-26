@@ -23,12 +23,16 @@ class MockMachinesService {
   }
 
   findAll(userId: number): Promise<Machine[]> {
-    return Promise.resolve(this.machines.filter((e) => e.userId === userId));
+    return Promise.resolve(
+      this.machines.filter((machine) => machine.userId === userId)
+    );
   }
 
   findOne(machineId: number, userId: number): Promise<Machine | undefined> {
     return Promise.resolve(
-      this.machines.find((e) => e.id === machineId && e.userId === userId)
+      this.machines.find(
+        (machine) => machine.id === machineId && machine.userId === userId
+      )
     );
   }
 
@@ -36,9 +40,9 @@ class MockMachinesService {
     machineId: number | string,
     userId: number,
     machineData: UpdateMachineDto
-  ): Promise<Machine | undefined> {
+  ): Promise<Machine | null> {
     const index = this.machines.findIndex(
-      (e) => e.id === Number(machineId) && e.userId === userId
+      (machine) => machine.id === machineId && machine.userId === userId
     );
 
     if (index !== -1) {
@@ -54,17 +58,19 @@ class MockMachinesService {
       return Promise.resolve(this.machines[index]);
     }
 
-    return Promise.resolve(undefined);
+    return Promise.resolve(null);
   }
 
-  remove(machineId: number, userId: number): Promise<Machine | undefined> {
+  remove(machineId: number, userId: number): Promise<Machine | null> {
     const machine = this.machines.find(
-      (e) => e.id === machineId && e.userId === userId
+      (machine) => machine.id === machineId && machine.userId === userId
     );
 
-    if (machine) {
-      this.machines = this.machines.filter((e) => e.id !== machineId);
+    if (!machine) {
+      return null;
     }
+
+    this.machines = this.machines.filter((machine) => machine.id !== machineId);
 
     return Promise.resolve(machine);
   }
@@ -73,7 +79,7 @@ class MockMachinesService {
 describe('MachinesController', () => {
   const fakeUser = {
     email: 'test@test.com',
-    id: 5, // Ensure this matches the AuthUser interface
+    id: 5,
   };
 
   const anotherUser = {
@@ -96,9 +102,6 @@ describe('MachinesController', () => {
     }).compile();
 
     controller = module.get<MachinesController>(MachinesController);
-    service = module.get<MachinesService>(
-      MachinesService
-    ) as unknown as MockMachinesService;
   });
 
   it('should be defined', () => {
@@ -160,9 +163,9 @@ describe('MachinesController', () => {
 
       const createdMachine = await controller.create(createDto, fakeUser);
 
-      await expect(async () => {
-        await controller.findOne(createdMachine.id, anotherUser);
-      }).rejects.toThrow();
+      await expect(
+        controller.findOne(createdMachine.id, anotherUser)
+      ).rejects.toThrow();
     });
   });
 
@@ -201,9 +204,9 @@ describe('MachinesController', () => {
         name: 'Machine H Updated',
       };
 
-      await expect(async () => {
-        await controller.update(createdMachine.id, anotherUser, updateDto);
-      }).rejects.toThrow();
+      await expect(
+        controller.update(createdMachine.id, anotherUser, updateDto)
+      ).rejects.toThrow();
     });
   });
 
@@ -225,7 +228,9 @@ describe('MachinesController', () => {
       expect(deletedMachine.id).toBe(createdMachine.id);
 
       const machines = await controller.findAll(fakeUser);
-      expect(machines.find((m) => m.id === createdMachine.id)).toBeUndefined();
+      expect(
+        machines.find((machine) => machine.id === createdMachine.id)
+      ).toBeUndefined();
     });
 
     it("should not delete the machine if it doesn't belong to the user", async () => {
@@ -236,12 +241,14 @@ describe('MachinesController', () => {
 
       const createdMachine = await controller.create(createDto, fakeUser);
 
-      await expect(async () => {
-        await controller.remove(createdMachine.id, anotherUser);
-      }).rejects.toThrow();
+      await expect(
+        controller.remove(createdMachine.id, anotherUser)
+      ).rejects.toThrow();
 
       const machines = await controller.findAll(fakeUser);
-      expect(machines.find((m) => m.id === createdMachine.id)).toBeDefined();
+      expect(
+        machines.find((machine) => machine.id === createdMachine.id)
+      ).toBeDefined();
     });
   });
 });
