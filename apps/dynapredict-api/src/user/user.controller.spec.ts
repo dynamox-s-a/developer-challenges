@@ -8,12 +8,17 @@ class MockUserService {
   private users: Omit<User, 'password'>[] = [];
   private counter = 1;
 
+  checkExists(email) {
+    return this.users.some((user) => user.email === email);
+  }
+
   create({
     password: _,
-    ...userData
+    email,
   }: CreateUserDto): Promise<Omit<User, 'password'>> {
+    if (this.checkExists(email)) return Promise.resolve(null);
     const user = {
-      ...userData,
+      email,
       id: this.counter++,
       createdAt: new Date(),
     };
@@ -61,6 +66,16 @@ describe('UserController', () => {
       expect(user).toHaveProperty('id');
       expect(user.email).toBe(createDto.email);
       expect(user).not.toHaveProperty('password');
+    });
+    it('should throw if using existing user', async () => {
+      const createDto: CreateUserDto = {
+        email: 'test@example.com',
+        password: 'password123',
+      };
+
+      await controller.create(createDto);
+
+      await expect(controller.create(createDto)).rejects.toThrow();
     });
   });
 });

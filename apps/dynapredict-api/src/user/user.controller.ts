@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, ConflictException, Controller, Post } from '@nestjs/common';
 import { Public } from '../app/app.controller';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
@@ -10,6 +10,10 @@ export class UserController {
   @Public()
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-    return await this.userService.create(createUserDto);
+    const user = await this.userService.create(createUserDto);
+    if (!user) {
+      throw new ConflictException('User with this email already exists');
+    }
+    return user;
   }
 }

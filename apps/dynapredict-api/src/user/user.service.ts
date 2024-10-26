@@ -25,7 +25,7 @@ export class UserService {
       createUserDto.email
     );
     if (alreadyExists) {
-      throw new ConflictException();
+      return null;
     }
     const { password, ...user } = createUserDto;
     const hashedPwd = await bcrypt.hash(password, 10).catch((err) => {

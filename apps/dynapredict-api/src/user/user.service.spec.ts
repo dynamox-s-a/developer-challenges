@@ -86,14 +86,14 @@ describe('UserService', () => {
       expect(createdUser.id).toBeDefined();
     });
 
-    it('should throw an error if user with email already exists', async () => {
+    it('should return null if user with email already exists', async () => {
       const userData = {
         email: 'existing@example.com',
         password: 'password123',
       };
       await service.create(userData);
 
-      await expect(service.create(userData)).rejects.toThrow();
+      expect(await service.create(userData)).toBeNull();
     });
   });
 
