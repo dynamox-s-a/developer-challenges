@@ -1,3 +1,5 @@
+"use client";
+
 import { useAppDispatch } from "../../features/store";
 import { login } from "../../features/authSlice";
 import { Button, TextField, Container, Typography } from "@mui/material";

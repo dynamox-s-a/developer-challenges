@@ -1,4 +1,3 @@
-// src/components/machines/MachineList.tsx
 import { useState } from "react";
 import {
   Button,
