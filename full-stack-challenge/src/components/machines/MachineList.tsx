@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-
+import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
 import { logout } from "../../features/authSlice";
 import { useRouter } from "next/navigation";
@@ -103,30 +103,37 @@ const MachineList = () => {
     }
   };
 
-  const handleAddSensor = (monitoringPointId: string) => {
+  const handleAddSensor = () => {
     if (selectedMachine) {
-      const updatedMachine = {
-        ...selectedMachine,
-        monitoringPoints: selectedMachine.monitoringPoints.map((mp) =>
-          mp.id === monitoringPointId
-            ? {
-                ...mp,
-                sensors: [
-                  ...mp.sensors,
-                  { ...newSensor, id: Date.now().toString() },
-                ],
-              }
-            : mp
-        ),
-      };
+      const lastMonitoringPoint =
+        selectedMachine.monitoringPoints[
+          selectedMachine.monitoringPoints.length - 1
+        ];
 
-      setMachines(
-        machines.map((machine) =>
-          machine.id === selectedMachine.id ? updatedMachine : machine
-        )
-      );
-      setNewSensor({ id: "", name: "", type: "" });
-      setSelectedMachine(updatedMachine);
+      if (lastMonitoringPoint) {
+        const updatedMachine = {
+          ...selectedMachine,
+          monitoringPoints: selectedMachine.monitoringPoints.map((mp) =>
+            mp.id === lastMonitoringPoint.id
+              ? {
+                  ...mp,
+                  sensors: [...mp.sensors, { ...newSensor, id: uuidv4() }],
+                }
+              : mp
+          ),
+        };
+
+        setMachines(
+          machines.map((machine) =>
+            machine.id === selectedMachine.id ? updatedMachine : machine
+          )
+        );
+
+        setSelectedMachine(updatedMachine);
+        setNewSensor({ id: "", name: "", type: "" });
+      } else {
+        alert("Adicione um ponto de monitoramento primeiro.");
+      }
     }
   };
 
@@ -244,7 +251,17 @@ const MachineList = () => {
           />
           <Button
             variant="contained"
-            onClick={() => handleAddSensor(newMonitoringPoint.id)}
+            onClick={() => {
+              if (selectedMachine) {
+                const lastMonitoringPoint =
+                  selectedMachine.monitoringPoints[
+                    selectedMachine.monitoringPoints.length - 1
+                  ];
+                if (lastMonitoringPoint) {
+                  handleAddSensor(lastMonitoringPoint.id);
+                }
+              }
+            }}
           >
             Adicionar Sensor
           </Button>

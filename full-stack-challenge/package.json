@@ -20,7 +20,8 @@
     "react": "19.0.0-rc-69d4b800-20241021",
     "react-dom": "19.0.0-rc-69d4b800-20241021",
     "react-redux": "^9.1.2",
-    "redux-thunk": "^3.1.0"
+    "redux-thunk": "^3.1.0",
+    "uuid": "^11.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
