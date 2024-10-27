@@ -8,8 +8,9 @@ export class MonitoringPointsService {
   constructor(private prisma: PrismaService) {}
 
   async create(
-    { machineId, name }: CreateMonitoringPointDto,
-    userId: number
+    machineId: number,
+    userId: number,
+    { name }: CreateMonitoringPointDto
   ): Promise<MonitoringPoint | null> {
     try {
       return await this.prisma.monitoringPoint.create({
@@ -37,26 +38,31 @@ export class MonitoringPointsService {
   }
 
   async findAll(userId: number) {
-    return await this.prisma.monitoringPoint.findMany({
-      where: {
-        userId,
-      },
-      include: {
-        machine: true,
-        sensor: true,
-      },
-    });
+    return await this.prisma.user
+      .findUnique({
+        where: {
+          id: userId,
+        },
+      })
+      .monitoringPoints({
+        include: {
+          machine: true,
+          sensor: true,
+        },
+      });
   }
 
   async remove(
-    monitoringPointId: number,
-    userId: number
+    machineId: number,
+    userId: number,
+    monitoringPointId: number
   ): Promise<MonitoringPoint | null> {
     try {
       return await this.prisma.monitoringPoint.delete({
         where: {
-          id: monitoringPointId,
+          machineId,
           userId,
+          id: monitoringPointId,
         },
       });
     } catch (error) {

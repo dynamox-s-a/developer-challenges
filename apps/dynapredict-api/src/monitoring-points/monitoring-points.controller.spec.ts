@@ -32,8 +32,9 @@ class MockMPService {
   }
 
   async create(
-    { machineId, name }: CreateMonitoringPointDto,
-    userId: number
+    machineId: number,
+    userId: number,
+    { name }: CreateMonitoringPointDto
   ): Promise<MonitoringPoint | null> {
     const isValidMachine = this.checkMachine(machineId, userId);
 
@@ -54,18 +55,16 @@ class MockMPService {
     return Promise.resolve(monitoringPoint);
   }
 
-  findAll(userId: number): Promise<MonitoringPoint[]> {
-    return Promise.resolve(
-      this.monitoringPoints.filter((mp) => mp.userId === userId)
-    );
-  }
-
   remove(
+    machineId: number,
     monitoringPointId: number,
     userId: number
   ): Promise<MonitoringPoint | undefined> {
     const monitoringPoint = this.monitoringPoints.find(
-      (mp) => mp.id === monitoringPointId && mp.userId === userId
+      (mp) =>
+        mp.id === monitoringPointId &&
+        mp.userId === userId &&
+        mp.machineId === machineId
     );
 
     if (!monitoringPoint) {
@@ -107,10 +106,9 @@ describe('MonitoringPointsController', () => {
   describe('create', () => {
     it('should create a monitoring point successfully', async () => {
       const dto: CreateMonitoringPointDto = {
-        machineId: 3,
         name: 'Temperature Sensor',
       };
-      const result = await controller.create(dto, fakeUser);
+      const result = await controller.create(3, fakeUser, dto);
 
       expect(result).toMatchObject({
         id: 1,
@@ -123,92 +121,59 @@ describe('MonitoringPointsController', () => {
 
     it('should throw if the machine is invalid', async () => {
       const dto: CreateMonitoringPointDto = {
-        machineId: 999,
         name: 'Pressure Sensor',
       };
 
-      await expect(controller.create(dto, fakeUser)).rejects.toThrow();
+      await expect(controller.create(999, fakeUser, dto)).rejects.toThrow();
     });
 
     it('should throw if the user does not own the machine', async () => {
       const dto: CreateMonitoringPointDto = {
-        machineId: 3,
         name: 'Pressure Sensor',
       };
 
       const anotherUser = { ...fakeUser, id: 1021 };
 
-      await expect(controller.create(dto, anotherUser)).rejects.toThrow();
-    });
-  });
-
-  describe('findAll', () => {
-    it('should return all monitoring points for a user', async () => {
-      const dto: CreateMonitoringPointDto = {
-        machineId: 3,
-        name: 'Temperature Sensor',
-      };
-
-      await controller.create(dto, fakeUser);
-      await controller.create(dto, fakeUser);
-
-      await expect(controller.findAll(fakeUser)).resolves.toEqual([
-        {
-          id: 1,
-          machineId: 3,
-          name: 'Temperature Sensor',
-          userId: fakeUser.id,
-          createdAt: expect.any(Date),
-        },
-        {
-          id: 2,
-          machineId: 3,
-          name: 'Temperature Sensor',
-          userId: fakeUser.id,
-          createdAt: expect.any(Date),
-        },
-      ]);
-    });
-
-    it('should return an empty array if the user has no monitoring points', async () => {
-      await expect(controller.findAll(fakeUser)).resolves.toEqual([]);
+      await expect(controller.create(3, anotherUser, dto)).rejects.toThrow();
     });
   });
 
   describe('remove', () => {
     it('should remove a monitoring point successfully', async () => {
-      const monitoringPointId = 1;
       const removedMonitoringPoint: MonitoringPoint = {
-        id: monitoringPointId,
+        id: 1,
         machineId: 3,
         name: 'Temperature Sensor',
         userId: fakeUser.id,
         createdAt: new Date(),
       };
 
-      await controller.create(
-        {
-          machineId: removedMonitoringPoint.machineId,
-          name: 'Temperature Sensor',
-        },
-        fakeUser
-      );
+      await controller.create(removedMonitoringPoint.machineId, fakeUser, {
+        name: 'Temperature Sensor',
+      });
 
-      await expect(controller.findAll(fakeUser)).resolves.toEqual([
-        removedMonitoringPoint,
-      ]);
       await expect(
-        controller.remove(monitoringPointId, fakeUser)
+        controller.remove(
+          removedMonitoringPoint.machineId,
+          removedMonitoringPoint.id,
+          fakeUser
+        )
       ).resolves.toEqual(removedMonitoringPoint);
-      await expect(controller.findAll(fakeUser)).resolves.toEqual([]);
     });
 
     it('should throw if the monitoring point does not exist', async () => {
-      const monitoringPointId = 999;
+      await expect(controller.remove(3, 999, fakeUser)).rejects.toThrow();
+    });
 
-      await expect(
-        controller.remove(monitoringPointId, fakeUser)
-      ).rejects.toThrow();
+    it('should throw if the monitoring point belongs to a machine the user does not own', async () => {
+      // Create a monitoring point first
+      await controller.create(3, fakeUser, {
+        name: 'Temperature Sensor',
+      });
+
+      // Try to remove it with a different user
+      const anotherUser = { ...fakeUser, id: 2 };
+      await expect(controller.remove(3, 1, anotherUser)).rejects.toThrow();
     });
   });
 });

@@ -108,15 +108,18 @@ describe('MonitoringPointsService', () => {
     it('should create a monitoring point when we have a machine that belongs to the user', async () => {
       const fakePoint: CreateMonitoringPointDto = {
         name: 'Test Point',
-        machineId: machines[0].id,
       };
 
-      const result = await service.create(fakePoint, fakeUser.id);
+      const result = await service.create(
+        machines[0].id,
+        fakeUser.id,
+        fakePoint
+      );
 
       expect(result).toEqual(
         expect.objectContaining({
           name: fakePoint.name,
-          machineId: fakePoint.machineId,
+          machineId: machines[0].id,
           userId: fakeUser.id,
           id: expect.any(Number),
         })
@@ -126,28 +129,31 @@ describe('MonitoringPointsService', () => {
     it('should NOT create a monitoring point when we have a machine that DOES NOT belong to the user', async () => {
       const fakePoint: CreateMonitoringPointDto = {
         name: 'Test Point',
-        machineId: machines[1].id,
       };
 
-      await expect(service.create(fakePoint, fakeUser.id)).rejects.toThrow();
+      await expect(
+        service.create(machines[1].id, fakeUser.id, fakePoint)
+      ).rejects.toThrow();
     });
 
     it('should NOT create a monitoring point when do not have an existing machine', async () => {
       const fakePoint: CreateMonitoringPointDto = {
         name: 'Test Point',
-        machineId: 20,
       };
 
-      await expect(service.create(fakePoint, fakeUser.id)).rejects.toThrow();
+      await expect(
+        service.create(20, fakeUser.id, fakePoint)
+      ).rejects.toThrow();
     });
 
     it('should NOT create a monitoring point with a non-existent userId', async () => {
       const fakePoint: CreateMonitoringPointDto = {
         name: 'Test Point',
-        machineId: machines[0].id,
       };
 
-      await expect(service.create(fakePoint, 999)).rejects.toThrow();
+      await expect(
+        service.create(machines[0].id, 999, fakePoint)
+      ).rejects.toThrow();
     });
   });
 });

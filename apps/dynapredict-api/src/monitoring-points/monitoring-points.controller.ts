@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
   Param,
   ParseIntPipe,
   Post,
@@ -11,7 +10,7 @@ import { AuthUser, User } from '../auth/user.decorator';
 import { CreateMonitoringPointDto } from './dto/create-monitoring-point.dto';
 import { MonitoringPointsService } from './monitoring-points.service';
 
-@Controller('monitoring-points')
+@Controller('machines/:machineId/monitoring-points')
 export class MonitoringPointsController {
   constructor(
     private readonly monitoringPointsService: MonitoringPointsService
@@ -19,28 +18,27 @@ export class MonitoringPointsController {
 
   @Post()
   async create(
-    @Body() createMonitoringPointDto: CreateMonitoringPointDto,
-    @User() user: AuthUser
+    @Param('machineId', ParseIntPipe) machineId: number,
+    @User() user: AuthUser,
+    @Body() createMonitoringPointDto: CreateMonitoringPointDto
   ) {
     return await this.monitoringPointsService.create(
-      createMonitoringPointDto,
-      user.id
+      machineId,
+      user.id,
+      createMonitoringPointDto
     );
-  }
-
-  @Get()
-  async findAll(@User() user: AuthUser) {
-    return await this.monitoringPointsService.findAll(user.id);
   }
 
   @Delete(':id')
   async remove(
+    @Param('machineId', ParseIntPipe) machineId: number,
     @Param('id', ParseIntPipe) monitoringPointId: number,
     @User() user: AuthUser
   ) {
     return await this.monitoringPointsService.remove(
-      monitoringPointId,
-      user.id
+      machineId,
+      user.id,
+      monitoringPointId
     );
   }
 }
