@@ -1,0 +1,9 @@
+{
+  "name": "dynamox-fe",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "dynamox-fe/src",
+  "projectType": "application",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project dynamox-fe --web",
+  "targets": {}
+}

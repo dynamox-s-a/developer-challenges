@@ -1,0 +1,26 @@
+{
+  "name": "dynamox-auth",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "dynamox-auth/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "dynamox-auth:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "dynamox-auth:build:development"
+        },
+        "production": {
+          "buildTarget": "dynamox-auth:build:production"
+        }
+      }
+    }
+  }
+}

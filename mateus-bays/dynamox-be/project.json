@@ -1,0 +1,26 @@
+{
+  "name": "dynamox-be",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "dynamox-be/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "dynamox-be:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "dynamox-be:build:development"
+        },
+        "production": {
+          "buildTarget": "dynamox-be:build:production"
+        }
+      }
+    }
+  }
+}

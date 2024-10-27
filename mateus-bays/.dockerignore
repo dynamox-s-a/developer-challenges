@@ -1,0 +1,15 @@
+# Ignorar arquivos e diretórios que não são necessários na imagem
+node_modules
+npm-debug.log
+Dockerfile
+docker-compose.yml
+*.log
+*.md
+
+# Ignorar diretórios de build (se existir)
+dist
+build
+
+# Ignorar arquivos de sistema
+.DS_Store
+Thumbs.db
