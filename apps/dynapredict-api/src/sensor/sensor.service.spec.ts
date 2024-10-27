@@ -1,128 +1,22 @@
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Machine, MonitoringPoint, Sensor, SensorModel } from '@prisma/client';
+import { MachineType, Sensor, SensorModel } from '@prisma/client';
 import { PrismaService } from '../db/prisma.service';
 import { CreateSensorDto } from './dto/create-sensor.dto';
-import { SensorService } from './sensor.service';
-
-type PrismaFindParameter = {
-  where: {
-    id: number;
-    userId: number;
-  };
-  include: {
-    machine: boolean;
-  };
-};
-
-type PrismaUpsertParameter = {
-  where: {
-    monitoringPointId: number;
-  };
-  create: {
-    model: SensorModel;
-    monitoringPointId: number;
-  };
-  update: {
-    model: SensorModel;
-  };
-};
-
-type MonitoringPointWithMachine = {
-  monitoringPoint: MonitoringPoint;
-  machine: Machine;
-};
-
-const fakeMonitoringPoints: MonitoringPointWithMachine[] = [
-  {
-    monitoringPoint: {
-      createdAt: new Date(),
-      id: 1,
-      machineId: 5,
-      name: 'Test',
-      userId: 1,
-    },
-    machine: {
-      type: 'Fan',
-      createdAt: new Date(),
-      id: 5,
-      name: 'Fan Machine',
-      userId: 1,
-    },
-  },
-  {
-    monitoringPoint: {
-      createdAt: new Date(),
-      id: 2,
-      machineId: 3,
-      name: 'Test',
-      userId: 2,
-    },
-    machine: {
-      type: 'Pump',
-      createdAt: new Date(),
-      id: 3,
-      name: 'Pump Machine',
-      userId: 2,
-    },
-  },
-  {
-    monitoringPoint: {
-      createdAt: new Date(),
-      id: 4,
-      machineId: 10,
-      name: 'Test',
-      userId: 20,
-    },
-    machine: {
-      type: 'Pump',
-      createdAt: new Date(),
-      id: 10,
-      name: 'Pump Machine',
-      userId: 20,
-    },
-  },
-];
+import { ALLOWED_SENSORS, SensorService } from './sensor.service';
 
 class MockPrismaService {
-  private sensors: Sensor[] = [];
-  private idCounter = 1;
-
   monitoringPoint = {
-    findUniqueOrThrow: async (opts: PrismaFindParameter) => {
-      const { where: data } = opts;
-      const { id, userId } = data;
-
-      const monitoringPoint = fakeMonitoringPoints.find(
-        (mp) => mp.monitoringPoint.id === id && mp.machine.userId === userId
-      );
-
-      if (!monitoringPoint) {
-        throw new Error();
-      }
-
-      return monitoringPoint;
-    },
+    findUniqueOrThrow: jest.fn(),
   };
-
   sensor = {
-    upsert: async (opts: PrismaUpsertParameter) => {
-      const { where, create } = opts;
-
-      const newSensor = {
-        model: create.model,
-        id: this.idCounter++,
-        monitoringPointId: where.monitoringPointId,
-      };
-
-      this.sensors.push(newSensor);
-
-      return newSensor;
-    },
+    upsert: jest.fn(),
   };
 }
 
 describe('SensorService', () => {
   let service: SensorService;
+  let prisma: MockPrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -136,70 +30,87 @@ describe('SensorService', () => {
     }).compile();
 
     service = module.get<SensorService>(SensorService);
+    prisma = module.get<MockPrismaService>(PrismaService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+  describe('create sensor', () => {
+    const createSensorDto: CreateSensorDto = { model: SensorModel.HFPlus };
+    const monitoringPointId = 1;
+    const userId = 1;
+    const machineType: MachineType = MachineType.Pump;
 
-  describe('create', () => {
-    it('should create a sensor successfully', async () => {
-      const validCreateSensorDto: CreateSensorDto = {
-        model: SensorModel.HFPlus,
+    it('should successfully create a sensor', async () => {
+      const mockMonitoringPoint = {
+        machine: { type: machineType },
       };
 
-      // Target with machine of type fan - no constraints
-      const target = fakeMonitoringPoints[0];
+      const mockSensor: Sensor = {
+        id: 1,
+        model: createSensorDto.model,
+        monitoringPointId,
+      };
+
+      prisma.monitoringPoint.findUniqueOrThrow.mockResolvedValue(
+        mockMonitoringPoint
+      );
+
+      prisma.sensor.upsert.mockResolvedValue(mockSensor);
 
       const result = await service.create(
-        validCreateSensorDto,
-        target.monitoringPoint.id,
-        target.monitoringPoint.userId
+        createSensorDto,
+        monitoringPointId,
+        userId
       );
-      expect(result).toHaveProperty('id');
-      expect(result.model).toBe(validCreateSensorDto.model);
-      expect(result.monitoringPointId).toBe(target.monitoringPoint.id);
+
+      expect(prisma.monitoringPoint.findUniqueOrThrow).toHaveBeenCalledWith({
+        where: { id: monitoringPointId, userId },
+        include: { machine: true },
+      });
+
+      expect(prisma.sensor.upsert).toHaveBeenCalledWith({
+        where: { monitoringPointId },
+        update: { model: createSensorDto.model },
+        create: {
+          model: createSensorDto.model,
+          monitoringPoint: { connect: { id: monitoringPointId } },
+        },
+      });
+
+      expect(result).toEqual(mockSensor);
     });
 
-    it('should throw if monitoring point does not exist', async () => {
-      const validCreateSensorDto: CreateSensorDto = {
-        model: SensorModel.HFPlus,
+    it('should throw BadRequestException for invalid sensor model and machine type', async () => {
+      const invalidModel: SensorModel = 'TcAg';
+      const mockMonitoringPoint = {
+        machine: { type: machineType },
       };
-      const nonExistentMonitoringPointId = 999;
+
+      const invalidDto = { model: invalidModel };
+
+      prisma.monitoringPoint.findUniqueOrThrow.mockResolvedValue(
+        mockMonitoringPoint
+      );
+
       await expect(
-        service.create(validCreateSensorDto, nonExistentMonitoringPointId, 1)
-      ).rejects.toThrow();
+        service.create(invalidDto, monitoringPointId, userId)
+      ).rejects.toThrow(
+        new BadRequestException(
+          `This model: ${invalidModel} is incompatible with this monitoring point's machine: ${machineType}`
+        )
+      );
+
+      expect(prisma.sensor.upsert).not.toHaveBeenCalled();
     });
 
-    it('should throw if sensor model is not allowed for machine type', async () => {
-      const invalidCreateSensorDto = {
-        model: 'TcAg',
-      } as CreateSensorDto;
-
-      // target of type pump, only accepts HFPlus sensor type;
-      const target = fakeMonitoringPoints[1];
+    it('should throw NotFoundException when Prisma throws P2025 error', async () => {
+      const prismaError = { code: 'P2025' };
+      prisma.monitoringPoint.findUniqueOrThrow.mockRejectedValue(prismaError);
 
       await expect(
-        service.create(
-          invalidCreateSensorDto,
-          target.monitoringPoint.id,
-          target.machine.userId
-        )
-      ).rejects.toThrow();
-    });
+        service.create(createSensorDto, monitoringPointId, userId)
+      ).rejects.toThrow(NotFoundException);
 
-    it('should throw if monitoring point does not belong to the user', async () => {
-      const validCreateSensorDto: CreateSensorDto = {
-        model: SensorModel.HFPlus,
-      };
-      const target = fakeMonitoringPoints[1];
-      await expect(
-        service.create(
-          validCreateSensorDto,
-          target.monitoringPoint.id,
-          target.machine.userId + 1
-        )
-      ).rejects.toThrow();
+      expect(prisma.sensor.upsert).not.toHaveBeenCalled();
     });
   });
 });
