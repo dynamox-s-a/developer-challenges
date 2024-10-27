@@ -45,12 +45,12 @@ model Sensor {
 }
 
 enum MachineType {
-  Pump
   Fan
+  Pump
 }
 
 enum SensorModel {
+  HFPlus
   TcAg
   TcAs
-  HFPlus
 }
