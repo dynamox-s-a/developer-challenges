@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Machine, MonitoringPoint } from '@prisma/client';
 import { PrismaService } from '../db/prisma.service';
-import { MachinesService } from '../machines/machines.service';
 import { CreateMonitoringPointDto } from './dto/create-monitoring-point.dto';
 import { MonitoringPointsService } from './monitoring-points.service';
 

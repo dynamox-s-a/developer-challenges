@@ -12,10 +12,7 @@ class MockUserService {
     return this.users.some((user) => user.email === email);
   }
 
-  create({
-    password: _,
-    email,
-  }: CreateUserDto): Promise<Omit<User, 'password'>> {
+  create({ email }: CreateUserDto): Promise<Omit<User, 'password'>> {
     if (this.checkExists(email)) throw new Error();
     const user = {
       email,
@@ -31,7 +28,6 @@ class MockUserService {
 
 describe('UserController', () => {
   let controller: UserController;
-  let service: MockUserService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -45,9 +41,6 @@ describe('UserController', () => {
     }).compile();
 
     controller = module.get<UserController>(UserController);
-    service = module.get<UserService>(
-      UserService
-    ) as unknown as MockUserService;
   });
 
   it('should be defined', () => {

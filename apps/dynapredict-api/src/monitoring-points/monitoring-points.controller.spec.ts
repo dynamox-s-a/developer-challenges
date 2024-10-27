@@ -1,4 +1,3 @@
-import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Machine, MonitoringPoint } from '@prisma/client';
 import { CreateMonitoringPointDto } from './dto/create-monitoring-point.dto';

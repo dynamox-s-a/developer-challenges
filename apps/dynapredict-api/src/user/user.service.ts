@@ -16,13 +16,13 @@ export class UserService {
     });
 
     try {
-      const { password: _, ...createdUser } = await this.prisma.user.create({
+      const { id, email, createdAt } = await this.prisma.user.create({
         data: {
           ...user,
           password: hashedPwd,
         },
       });
-      return createdUser;
+      return { id, email, createdAt };
     } catch (error) {
       if (error.code === 'P2002') {
         throw new ConflictException('User with this email already exists');
