@@ -3,14 +3,42 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { MachineType, MonitoringPoint, Sensor } from '@prisma/client';
 import { PrismaService } from '../db/prisma.service';
 import { ALLOWED_SENSORS } from '../sensor/sensor.service';
 import { CreateMachineDto } from './dto/create-machine.dto';
 import { UpdateMachineDto } from './dto/update-machine.dto';
 
+type MonitoringPointWithSensor = {
+  sensor?: Sensor;
+} & MonitoringPoint;
+
 @Injectable()
 export class MachinesService {
   constructor(private prisma: PrismaService) {}
+
+  private checkSensorsCompatibility(
+    monitoringPoints: MonitoringPointWithSensor[],
+    futureMachineType: MachineType
+  ) {
+    monitoringPoints.forEach((mp) => {
+      const sensor = mp.sensor?.model ?? null;
+
+      if (!sensor) {
+        return;
+      }
+
+      const isChangeAllowed = ALLOWED_SENSORS[futureMachineType].some(
+        (s) => s === sensor
+      );
+
+      if (!isChangeAllowed) {
+        throw new ConflictException(
+          'This machine currently has sensors associated with that do not support new type. Please delete them first before updating.'
+        );
+      }
+    });
+  }
 
   async create(createMachineDto: CreateMachineDto, userId: number) {
     return await this.prisma.machine.create({
@@ -69,30 +97,14 @@ export class MachinesService {
         },
       });
 
-      const { monitoringPoints } = machine;
       const isMachineTypeChanging =
         Boolean(updateMachineDto.type) &&
         updateMachineDto.type !== machine.type;
 
       if (isMachineTypeChanging) {
+        const { monitoringPoints } = machine;
         const futureType = updateMachineDto.type;
-        monitoringPoints.forEach((mp) => {
-          const sensor = mp.sensor?.model ?? null;
-
-          if (!sensor) {
-            return;
-          }
-
-          const isChangeAllowed = ALLOWED_SENSORS[futureType].some(
-            (s) => s === sensor
-          );
-
-          if (!isChangeAllowed) {
-            throw new ConflictException(
-              'This machine currently has sensors associated with that do not support new type. Please delete them first before updating.'
-            );
-          }
-        });
+        this.checkSensorsCompatibility(monitoringPoints, futureType);
       }
 
       return await this.prisma.machine.update({
