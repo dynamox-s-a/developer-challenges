@@ -34,3 +34,10 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Suposições
+
+1. Um sensor pode ser associado a um único ponto de monitoramento.
+2. Os usuários podem nomear seus pontos de monitoramento com nomes arbitrários, desde que não sejam deixados em branco.
+3. Para a associação de sensores, apenas um sensor pode ser associado a um ponto de monitoramento de cada vez.
+4. A lista de pontos de monitoramento pode ser ordenada por qualquer coluna, independentemente de quantos pontos de monitoramento existem.

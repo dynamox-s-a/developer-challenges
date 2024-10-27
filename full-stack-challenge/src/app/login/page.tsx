@@ -13,7 +13,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    if (email === "user@example.com" && password === "password") {
+    if (email === "123" && password === "123") {
       dispatch(login());
       router.push("/");
     } else {

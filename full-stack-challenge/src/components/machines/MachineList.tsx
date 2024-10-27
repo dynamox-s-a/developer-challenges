@@ -6,13 +6,17 @@ import {
   TextField,
   MenuItem,
   Select,
-  List,
-  ListItem,
   IconButton,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableSortLabel,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -70,6 +74,12 @@ const MachineList = () => {
   const [selectedMachine, setSelectedMachine] = useState<Machine | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
 
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 5;
+
+  const [order, setOrder] = useState<"asc" | "desc">("asc");
+  const [orderBy, setOrderBy] = useState<string>("");
+
   const handleAddMachine = () => {
     const newMachineData: Machine = {
       ...newMachine,
@@ -111,6 +121,16 @@ const MachineList = () => {
         ];
 
       if (lastMonitoringPoint) {
+        if (
+          (newSensor.type === "TcAg" || newSensor.type === "TcAs") &&
+          selectedMachine.type === "Pump"
+        ) {
+          alert(
+            "Sensores 'TcAg' e 'TcAs' não são permitidos para máquinas do tipo 'Pump'."
+          );
+          return;
+        }
+
         const updatedMachine = {
           ...selectedMachine,
           monitoringPoints: selectedMachine.monitoringPoints.map((mp) =>
@@ -142,6 +162,30 @@ const MachineList = () => {
     router.push("/login");
   };
 
+  const handleRequestSort = (property: string) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const sortedMachines = [...machines].sort((a, b) => {
+    const aValue = orderBy === "machineName" ? a.name : a.type;
+    const bValue = orderBy === "machineName" ? b.name : b.type;
+
+    if (aValue < bValue) {
+      return order === "asc" ? -1 : 1;
+    }
+    if (aValue > bValue) {
+      return order === "asc" ? 1 : -1;
+    }
+    return 0;
+  });
+
+  const paginatedMachines = sortedMachines.slice(
+    currentPage * itemsPerPage,
+    currentPage * itemsPerPage + itemsPerPage
+  );
+
   return (
     <div>
       <h2>Gerenciar Máquinas</h2>
@@ -170,23 +214,51 @@ const MachineList = () => {
         </Button>
       </div>
 
-      <List>
-        {machines.map((machine) => (
-          <ListItem
-            key={machine.id}
-            style={{ display: "flex", flexDirection: "column" }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                width: "100%",
-              }}
-            >
-              <span>
-                {machine.name} - {machine.type}
-              </span>
-              <div>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>
+              <TableSortLabel
+                active={orderBy === "machineName"}
+                direction={orderBy === "machineName" ? order : "asc"}
+                onClick={() => handleRequestSort("machineName")}
+              >
+                Nome da Máquina
+              </TableSortLabel>
+            </TableCell>
+            <TableCell>
+              <TableSortLabel
+                active={orderBy === "machineType"}
+                direction={orderBy === "machineType" ? order : "asc"}
+                onClick={() => handleRequestSort("machineType")}
+              >
+                Tipo da Máquina
+              </TableSortLabel>
+            </TableCell>
+            <TableCell>Pontos de Monitoramento</TableCell>
+            <TableCell>Ações</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {paginatedMachines.map((machine) => (
+            <TableRow key={machine.id}>
+              <TableCell>{machine.name}</TableCell>
+              <TableCell>{machine.type}</TableCell>
+              <TableCell>
+                {machine.monitoringPoints.map((point) => (
+                  <div key={point.id} style={{ marginLeft: "20px" }}>
+                    <strong>{point.name}</strong>
+                    <ul>
+                      {point.sensors.map((sensor) => (
+                        <li key={sensor.id}>
+                          {sensor.name} - {sensor.type}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </TableCell>
+              <TableCell>
                 <IconButton onClick={() => handleDeleteMachine(machine.id)}>
                   <DeleteIcon />
                 </IconButton>
@@ -198,24 +270,11 @@ const MachineList = () => {
                 >
                   <EditIcon />
                 </IconButton>
-              </div>
-            </div>
-
-            {machine.monitoringPoints.map((point) => (
-              <div key={point.id} style={{ marginLeft: "20px" }}>
-                <strong>{point.name}</strong>
-                <ul>
-                  {point.sensors.map((sensor) => (
-                    <li key={sensor.id}>
-                      {sensor.name} - {sensor.type}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </ListItem>
-        ))}
-      </List>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
 
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogTitle>Adicionar Ponto de Monitoramento</DialogTitle>
@@ -242,27 +301,17 @@ const MachineList = () => {
               setNewSensor({ ...newSensor, name: e.target.value })
             }
           />
-          <TextField
-            label="Tipo do Sensor"
+          <Select
             value={newSensor.type}
             onChange={(e) =>
               setNewSensor({ ...newSensor, type: e.target.value })
             }
-          />
-          <Button
-            variant="contained"
-            onClick={() => {
-              if (selectedMachine) {
-                const lastMonitoringPoint =
-                  selectedMachine.monitoringPoints[
-                    selectedMachine.monitoringPoints.length - 1
-                  ];
-                if (lastMonitoringPoint) {
-                  handleAddSensor(lastMonitoringPoint.id);
-                }
-              }
-            }}
           >
+            <MenuItem value="TcAg">TcAg</MenuItem>
+            <MenuItem value="TcAs">TcAs</MenuItem>
+            <MenuItem value="HF+">HF+</MenuItem>
+          </Select>
+          <Button variant="contained" onClick={handleAddSensor}>
             Adicionar Sensor
           </Button>
         </DialogContent>
@@ -270,8 +319,21 @@ const MachineList = () => {
           <Button onClick={() => setOpenDialog(false)}>Fechar</Button>
         </DialogActions>
       </Dialog>
+
+      <Button variant="contained" onClick={handleLogout}>
+        Logout
+      </Button>
       <div>
-        <button onClick={handleLogout}>Logout</button>
+        {currentPage > 0 && (
+          <Button onClick={() => setCurrentPage(currentPage - 1)}>
+            Anterior
+          </Button>
+        )}
+        {currentPage < Math.ceil(sortedMachines.length / itemsPerPage) - 1 && (
+          <Button onClick={() => setCurrentPage(currentPage + 1)}>
+            Próximo
+          </Button>
+        )}
       </div>
     </div>
   );
