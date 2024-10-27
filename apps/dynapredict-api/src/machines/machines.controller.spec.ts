@@ -6,89 +6,16 @@ import { MachinesController } from './machines.controller';
 import { MachinesService } from './machines.service';
 
 class MockMachinesService {
-  private machines: Machine[] = [];
-  private counter = 1;
-
-  create(machineData: CreateMachineDto, userId: number): Promise<Machine> {
-    const machine = {
-      ...machineData,
-      userId: userId,
-      createdAt: new Date(),
-      id: this.counter++,
-    };
-
-    this.machines.push(machine);
-
-    return Promise.resolve(machine);
-  }
-
-  findAll(userId: number): Promise<Machine[]> {
-    return Promise.resolve(
-      this.machines.filter((machine) => machine.userId === userId)
-    );
-  }
-
-  findOne(machineId: number, userId: number): Promise<Machine> {
-    const machine = this.machines.find(
-      (machine) => machine.id === machineId && machine.userId === userId
-    );
-    if (!machine) throw new Error();
-    return Promise.resolve(machine);
-  }
-
-  update(
-    machineId: number | string,
-    userId: number,
-    machineData: UpdateMachineDto
-  ): Promise<Machine | null> {
-    const index = this.machines.findIndex(
-      (machine) => machine.id === machineId && machine.userId === userId
-    );
-
-    if (index === -1) {
-      throw new Error();
-    }
-
-    this.machines = this.machines.map((machine, idx) => {
-      if (idx === index) {
-        return {
-          ...machine,
-          ...machineData,
-        };
-      }
-      return machine;
-    });
-
-    return Promise.resolve(this.machines[index]);
-  }
-
-  remove(machineId: number, userId: number): Promise<Machine> {
-    const machine = this.machines.find(
-      (machine) => machine.id === machineId && machine.userId === userId
-    );
-
-    if (!machine) {
-      throw new Error();
-    }
-
-    this.machines = this.machines.filter((machine) => machine.id !== machineId);
-
-    return Promise.resolve(machine);
-  }
+  create = jest.fn();
+  findAll = jest.fn();
+  findOne = jest.fn();
+  update = jest.fn();
+  remove = jest.fn();
 }
 
-describe('MachinesController', () => {
-  const fakeUser = {
-    email: 'test@test.com',
-    id: 5,
-  };
-
-  const anotherUser = {
-    email: 'another@test.com',
-    id: 6,
-  };
-
+describe('Machines Controller', () => {
   let controller: MachinesController;
+  let service: MockMachinesService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -102,153 +29,210 @@ describe('MachinesController', () => {
     }).compile();
 
     controller = module.get<MachinesController>(MachinesController);
+    service = module.get<MockMachinesService>(MachinesService);
   });
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
+    expect(service).toBeDefined();
   });
 
-  describe('Create Machine', () => {
-    it('should create a machine for the user', async () => {
+  describe('It should create a machine - POST route', () => {
+    it('should create a machine with correct parameters', async () => {
+      const fakeUser = {
+        email: 'test@test.com',
+        id: 5,
+      };
       const createDto: CreateMachineDto = {
         name: 'Machine A',
         type: 'Pump',
       };
 
+      service.create.mockReturnValue({
+        id: 1,
+        name: createDto.name,
+        type: createDto.type,
+        userId: fakeUser.id,
+      });
+
       const machine = await controller.create(createDto, fakeUser);
 
-      expect(machine).toHaveProperty('id');
-      expect(machine.name).toBe(createDto.name);
-      expect(machine.type).toBe(createDto.type);
-      expect(machine.userId).toBe(fakeUser.id);
-    });
-  });
-
-  describe('Get All Machines', () => {
-    it('should return all machines for the user', async () => {
-      await controller.create({ name: 'Machine B', type: 'Fan' }, fakeUser);
-      await controller.create({ name: 'Machine C', type: 'Pump' }, fakeUser);
-
-      await controller.create({ name: 'Machine D', type: 'Fan' }, anotherUser);
-
-      const machines = await controller.findAll(fakeUser);
-      expect(machines.length).toBe(2);
-      machines.forEach((machine) => {
-        expect(machine.userId).toBe(fakeUser.id);
+      expect(service.create).toHaveBeenCalledWith(createDto, fakeUser.id);
+      expect(machine).toEqual({
+        id: 1,
+        name: createDto.name,
+        type: createDto.type,
+        userId: fakeUser.id,
       });
     });
   });
 
-  describe('Get Single Machine', () => {
-    it('should return the machine if it belongs to the user', async () => {
-      const createDto: CreateMachineDto = {
-        name: 'Machine E',
-        type: 'Fan',
+  describe('It should return all machines or an empty array - GET Route', () => {
+    it('should return empty array if no machines are available', async () => {
+      const fakeUser = {
+        email: 'test@test.com',
+        id: 5,
       };
 
-      const createdMachine = await controller.create(createDto, fakeUser);
+      service.findAll.mockReturnValue([]);
+      const result = await controller.findAll(fakeUser);
 
-      const machine = await controller.findOne(createdMachine.id, fakeUser);
-
-      expect(machine).toBeDefined();
-      expect(machine.id).toBe(createdMachine.id);
-      expect(machine.name).toBe(createDto.name);
+      expect(result).toMatchObject([]);
+      expect(service.findAll).toHaveBeenCalledWith(fakeUser.id);
     });
-
-    it("should throw Not Found if the machine doesn't belong to the user", async () => {
-      const createDto: CreateMachineDto = {
-        name: 'Machine F',
-        type: 'Fan',
+    it('should return machines array if there are some created', async () => {
+      const fakeUser = {
+        email: 'test@test.com',
+        id: 5,
       };
-
-      const createdMachine = await controller.create(createDto, fakeUser);
-
-      await expect(
-        controller.findOne(createdMachine.id, anotherUser)
-      ).rejects.toThrow();
-    });
-  });
-
-  describe('Update Machine', () => {
-    it('should update the machine if it belongs to the user', async () => {
       const createDto: CreateMachineDto = {
-        name: 'Machine G',
+        name: 'Machine A',
         type: 'Pump',
       };
 
-      const createdMachine = await controller.create(createDto, fakeUser);
+      const expectedResult = [
+        {
+          id: 1,
+          name: createDto.name,
+          type: createDto.type,
+          userId: fakeUser.id,
+        },
+        {
+          id: 2,
+          name: createDto.name,
+          type: createDto.type,
+          userId: fakeUser.id,
+        },
+      ];
 
-      const updateDto: UpdateMachineDto = {
-        name: 'Machine G Updated',
-      };
+      service.findAll.mockReturnValue(expectedResult);
 
-      const updatedMachine = await controller.update(
-        createdMachine.id,
-        fakeUser,
-        updateDto
-      );
+      const result = await controller.findAll(fakeUser);
 
-      expect(updatedMachine).toBeDefined();
-      expect(updatedMachine.name).toBe(updateDto.name);
-    });
-
-    it("should not update the machine if it doesn't belong to the user", async () => {
-      const createDto: CreateMachineDto = {
-        name: 'Machine H',
-        type: 'Fan',
-      };
-
-      const createdMachine = await controller.create(createDto, fakeUser);
-
-      const updateDto: UpdateMachineDto = {
-        name: 'Machine H Updated',
-      };
-
-      await expect(
-        controller.update(createdMachine.id, anotherUser, updateDto)
-      ).rejects.toThrow();
+      expect(result).toMatchObject(expectedResult);
+      expect(service.findAll).toHaveBeenCalledWith(fakeUser.id);
     });
   });
 
-  describe('Delete Machine', () => {
-    it('should delete the machine if it belongs to the user', async () => {
-      const createDto: CreateMachineDto = {
-        name: 'Machine I',
+  describe('It should return a single machine - GET Machine Route', () => {
+    it('Should return the machine if it was found', async () => {
+      const fakeUser = {
+        email: 'test@test.com',
+        id: 5,
+      };
+      const machine: Machine = {
+        id: 2,
+        createdAt: new Date(),
+        name: 'Machine A',
+        type: 'Pump',
+        userId: 5,
+      };
+      service.findOne.mockReturnValue(machine);
+
+      const result = await controller.findOne(machine.id, fakeUser);
+
+      expect(result).toMatchObject(machine);
+      expect(service.findOne).toHaveBeenCalledWith(machine.id, fakeUser.id);
+    });
+
+    describe('it should throw if no one is found', () => {
+      it('should throw an error when machine is not found', async () => {
+        const fakeUser = {
+          email: 'test@test.com',
+          id: 5,
+        };
+        const machine: Machine = {
+          id: 2,
+          createdAt: new Date(),
+          name: 'Machine A',
+          type: 'Pump',
+          userId: 5,
+        };
+        service.findOne.mockRejectedValue(new Error('Machine not found'));
+
+        await expect(
+          controller.findOne(machine.id + 1, fakeUser)
+        ).rejects.toThrow('Machine not found');
+      });
+    });
+  });
+
+  describe('It should update and return the updated machine - PATCH machine route', () => {
+    it('should return the updated machine with new data', async () => {
+      const fakeUser = {
+        email: 'test@test.com',
+        id: 5,
+      };
+      const machine: Machine = {
+        id: 2,
+        createdAt: new Date(),
+        name: 'Machine A',
+        type: 'Pump',
+        userId: 5,
+      };
+      const updateData: UpdateMachineDto = {
+        name: 'Machine A+',
         type: 'Pump',
       };
 
-      const createdMachine = await controller.create(createDto, fakeUser);
+      service.update.mockReturnValue({ ...machine, ...updateData });
 
-      const deletedMachine = await controller.remove(
-        createdMachine.id,
-        fakeUser
+      const result = await controller.update(machine.id, fakeUser, updateData);
+      expect(result).toMatchObject({ ...machine, ...updateData });
+      expect(service.update).toHaveBeenCalledWith(
+        machine.id,
+        fakeUser.id,
+        updateData
       );
-
-      expect(deletedMachine).toBeDefined();
-      expect(deletedMachine.id).toBe(createdMachine.id);
-
-      const machines = await controller.findAll(fakeUser);
-      expect(
-        machines.find((machine) => machine.id === createdMachine.id)
-      ).toBeUndefined();
     });
-
-    it("should not delete the machine if it doesn't belong to the user", async () => {
-      const createDto: CreateMachineDto = {
-        name: 'Machine J',
-        type: 'Fan',
+    it('should throw an error if invalid userId/machine', async () => {
+      const fakeUser = {
+        email: 'test@test.com',
+        id: 5,
+      };
+      const updateData: UpdateMachineDto = {
+        name: 'Machine A+',
+        type: 'Pump',
       };
 
-      const createdMachine = await controller.create(createDto, fakeUser);
+      service.update.mockRejectedValue(new Error('Invalid machine id'));
 
       await expect(
-        controller.remove(createdMachine.id, anotherUser)
-      ).rejects.toThrow();
+        controller.update(999, fakeUser, updateData)
+      ).rejects.toThrow('Invalid machine id');
+    });
+  });
+  describe('It should delete a machine - DELETE route', () => {
+    it('should delete the machine with the provided id', async () => {
+      const fakeUser = {
+        email: 'test@test.com',
+        id: 5,
+      };
+      const machine: Machine = {
+        id: 2,
+        createdAt: new Date(),
+        name: 'Machine A',
+        type: 'Pump',
+        userId: 5,
+      };
 
-      const machines = await controller.findAll(fakeUser);
-      expect(
-        machines.find((machine) => machine.id === createdMachine.id)
-      ).toBeDefined();
+      service.remove.mockReturnValue(machine);
+
+      const result = await controller.remove(machine.id, fakeUser);
+      expect(result).toMatchObject(machine);
+      expect(service.remove).toHaveBeenCalledWith(machine.id, fakeUser.id);
+    });
+    it('should throw error if invalid machine id', async () => {
+      const fakeUser = {
+        email: 'test@test.com',
+        id: 5,
+      };
+
+      service.remove.mockRejectedValue(new Error('Machine not found'));
+
+      await expect(controller.remove(999, fakeUser)).rejects.toThrow(
+        'Machine not found'
+      );
     });
   });
 });

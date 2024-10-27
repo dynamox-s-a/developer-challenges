@@ -17,29 +17,6 @@ type MonitoringPointWithSensor = {
 export class MachinesService {
   constructor(private prisma: PrismaService) {}
 
-  private checkSensorsCompatibility(
-    monitoringPoints: MonitoringPointWithSensor[],
-    futureMachineType: MachineType
-  ) {
-    monitoringPoints.forEach((mp) => {
-      const sensor = mp.sensor?.model ?? null;
-
-      if (!sensor) {
-        return;
-      }
-
-      const isChangeAllowed = ALLOWED_SENSORS[futureMachineType].some(
-        (s) => s === sensor
-      );
-
-      if (!isChangeAllowed) {
-        throw new ConflictException(
-          'This machine currently has sensors associated with that do not support new type. Please delete them first before updating.'
-        );
-      }
-    });
-  }
-
   async create(createMachineDto: CreateMachineDto, userId: number) {
     return await this.prisma.machine.create({
       data: {
@@ -135,6 +112,24 @@ export class MachinesService {
         throw new NotFoundException();
       }
       throw error;
+    }
+  }
+
+  private checkSensorsCompatibility(
+    monitoringPoints: MonitoringPointWithSensor[],
+    futureMachineType: MachineType
+  ) {
+    const incompatibleSensor = monitoringPoints.find((mp) => {
+      const sensor = mp.sensor?.model;
+      const isChangeAllowed =
+        ALLOWED_SENSORS[futureMachineType].includes(sensor);
+      return sensor && !isChangeAllowed;
+    });
+
+    if (incompatibleSensor) {
+      throw new ConflictException(
+        'This machine currently has sensors associated with that do not support new type. Please delete them first before updating.'
+      );
     }
   }
 }
