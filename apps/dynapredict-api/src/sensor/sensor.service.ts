@@ -16,8 +16,17 @@ export const ALLOWED_SENSORS = {
 export class SensorService {
   constructor(private prisma: PrismaService) {}
 
-  private isModelAllowed(sensorModel: SensorModel, machineType: MachineType) {
-    return ALLOWED_SENSORS[machineType].includes(sensorModel);
+  private checkModelOrThrow(
+    sensorModel: SensorModel,
+    machineType: MachineType
+  ) {
+    const isAllowed = ALLOWED_SENSORS[machineType].includes(sensorModel);
+
+    if (!isAllowed) {
+      throw new BadRequestException(
+        `This model: ${sensorModel} is incompatible with this monitoring point's machine: ${machineType}`
+      );
+    }
   }
 
   async create(
@@ -38,11 +47,7 @@ export class SensorService {
       const { model: sensorModel } = createSensorDto;
       const { type: machineType } = machine;
 
-      if (!this.isModelAllowed(sensorModel, machineType)) {
-        throw new BadRequestException(
-          `This model: ${sensorModel} is incompatible with this monitoring point's machine: ${machineType}`
-        );
-      }
+      this.checkModelOrThrow(sensorModel, machineType);
 
       return await this.prisma.sensor.upsert({
         where: {
