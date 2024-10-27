@@ -12,6 +12,10 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { useDispatch } from "react-redux";
+import { logout } from "../../features/authSlice";
+import { useRouter } from "next/navigation";
+import withAuth from "../withAuth";
 
 interface Machine {
   id: string;
@@ -20,12 +24,20 @@ interface Machine {
 }
 
 const MachineList = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const [machines, setMachines] = useState<Machine[]>([]);
+
   const [newMachine, setNewMachine] = useState<Machine>({
     id: "",
     name: "",
     type: "Pump",
   });
+
+  const handleLogout = () => {
+    dispatch(logout());
+    router.push("/login");
+  };
 
   const handleAddMachine = () => {
     if (newMachine.name) {
@@ -90,8 +102,12 @@ const MachineList = () => {
           </ListItem>
         ))}
       </List>
+
+      <div>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
     </div>
   );
 };
 
-export default MachineList;
+export default withAuth(MachineList);
