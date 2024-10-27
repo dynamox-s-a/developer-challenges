@@ -1,33 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { User } from '@prisma/client';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 
 class MockUserService {
-  private users: Omit<User, 'password'>[] = [];
-  private counter = 1;
-
-  checkExists(email: string) {
-    return this.users.some((user) => user.email === email);
-  }
-
-  create({ email }: CreateUserDto): Promise<Omit<User, 'password'>> {
-    if (this.checkExists(email)) throw new Error();
-    const user = {
-      email,
-      id: this.counter++,
-      createdAt: new Date(),
-    };
-
-    this.users.push(user);
-
-    return Promise.resolve(user);
-  }
+  create = jest.fn();
 }
 
-describe('UserController', () => {
+describe('User Controller', () => {
   let controller: UserController;
+  let service: MockUserService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -41,34 +23,43 @@ describe('UserController', () => {
     }).compile();
 
     controller = module.get<UserController>(UserController);
+    service = module.get<MockUserService>(UserService);
   });
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('Create User', () => {
-    it('should create a user', async () => {
-      const createDto: CreateUserDto = {
-        email: 'test@example.com',
-        password: 'password123',
+  describe('create', () => {
+    it('should successfully create a user', async () => {
+      const createUserDto: CreateUserDto = {
+        email: 'testuser@example.com',
+        password: 'securePassword123',
       };
 
-      const user = await controller.create(createDto);
+      const result = {
+        id: '1',
+        ...createUserDto,
+      };
 
-      expect(user).toHaveProperty('id');
-      expect(user.email).toBe(createDto.email);
-      expect(user).not.toHaveProperty('password');
+      service.create.mockResolvedValue(result);
+
+      expect(await controller.create(createUserDto)).toEqual(result);
+      expect(service.create).toHaveBeenCalledWith(createUserDto);
     });
-    it('should throw if using existing user', async () => {
-      const createDto: CreateUserDto = {
-        email: 'test@example.com',
-        password: 'password123',
+
+    it('should handle errors when user creation fails', async () => {
+      const createUserDto: CreateUserDto = {
+        email: 'testuser@example.com',
+        password: 'securePassword123',
       };
 
-      await controller.create(createDto);
+      service.create.mockRejectedValue(new Error('User creation failed'));
 
-      await expect(controller.create(createDto)).rejects.toThrow();
+      await expect(controller.create(createUserDto)).rejects.toThrow(
+        'User creation failed'
+      );
+      expect(service.create).toHaveBeenCalledWith(createUserDto);
     });
   });
 });

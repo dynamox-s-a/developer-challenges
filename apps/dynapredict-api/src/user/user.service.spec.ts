@@ -1,122 +1,101 @@
+import { ConflictException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../db/prisma.service';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 
-type Data = {
-  email: string;
-  password: string;
-};
-
-type PrismaCreateParameter = {
-  data: Data;
-};
-
-type PrismaFindParameter = {
-  where: {
-    email: string;
-  };
-};
-
-type User = {
-  createdAt: number;
-  id: number;
-} & Data;
-
-class MockPrismaService {
-  private users: User[] = [];
-  private idCounter = 1;
-
+class MockPrisma {
   user = {
-    create: async (opts: PrismaCreateParameter) => {
-      const { data } = opts;
-      const newUser: User = {
-        ...data,
-        createdAt: Date.now(),
-        id: this.idCounter++,
-      };
-
-      if (this.users.some((user) => user.email === data.email)) {
-        throw new Error();
-      }
-
-      this.users.push(newUser);
-
-      return newUser;
-    },
-
-    findUnique: async (opts: PrismaFindParameter): Promise<User | null> => {
-      const {
-        where: { email },
-      } = opts;
-      const user = this.users.find((u) => u.email === email);
-
-      if (!user) {
-        return null;
-      }
-
-      return user;
-    },
+    create: jest.fn(),
+    findUnique: jest.fn(),
   };
 }
 
 describe('UserService', () => {
   let service: UserService;
+  let prisma: MockPrisma;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UserService,
-        {
-          provide: PrismaService,
-          useClass: MockPrismaService,
-        },
+        { provide: PrismaService, useClass: MockPrisma },
       ],
     }).compile();
 
     service = module.get<UserService>(UserService);
-  });
-
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+    prisma = module.get<MockPrisma>(PrismaService);
   });
 
   describe('create', () => {
-    it('should create a new user', async () => {
-      const userData = { email: 'test@example.com', password: 'password123' };
-      const createdUser = await service.create(userData);
-
-      expect(createdUser).toBeDefined();
-      expect(createdUser.email).toBe(userData.email);
-      expect(createdUser.id).toBeDefined();
-    });
-
-    it('should throw error if user with email already exists', async () => {
-      const userData = {
-        email: 'existing@example.com',
+    it('should successfully create a user', async () => {
+      const dto: CreateUserDto = {
+        email: 'test@example.com',
         password: 'password123',
       };
-      await service.create(userData);
 
-      await expect(service.create(userData)).rejects.toThrow();
+      prisma.user.create.mockResolvedValue({
+        id: 1,
+        email: dto.email,
+        createdAt: new Date(),
+      });
+
+      const result = await service.create(dto);
+
+      expect(prisma.user.create).toHaveBeenCalledWith({
+        data: {
+          email: dto.email,
+          password: expect.any(String),
+        },
+      });
+      expect(result).toHaveProperty('id');
+      expect(result).toHaveProperty('email', dto.email);
+      expect(result).toHaveProperty('createdAt');
+    });
+
+    it('should throw ConflictException when email already exists', async () => {
+      const dto: CreateUserDto = {
+        email: 'test@example.com',
+        password: 'password123',
+      };
+
+      const prismaError: any = { code: 'P2002' };
+      prisma.user.create.mockRejectedValue(prismaError);
+
+      await expect(service.create(dto)).rejects.toThrow(ConflictException);
+      expect(prisma.user.create).toHaveBeenCalled();
     });
   });
 
   describe('findOne', () => {
-    it('should find a user by email', async () => {
-      const userData = { email: 'find@example.com', password: 'password123' };
-      await service.create(userData);
+    it('should return a user if found', async () => {
+      const email = 'test@example.com';
+      const user = {
+        id: 1,
+        email,
+        password: 'hashedPwd',
+        createdAt: new Date(),
+      };
+      prisma.user.findUnique.mockResolvedValue(user);
 
-      const foundUser = await service.findOne(userData.email);
+      const result = await service.findOne(email);
 
-      expect(foundUser).toBeDefined();
-      expect(foundUser?.email).toBe(userData.email);
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({
+        where: { email },
+      });
+      expect(result).toEqual(user);
     });
 
     it('should return null if user is not found', async () => {
-      const nonExistentEmail = 'nonexistent@example.com';
-      const foundUser = await service.findOne(nonExistentEmail);
+      const email = 'nonexistent@example.com';
+      prisma.user.findUnique.mockResolvedValue(null);
 
-      expect(foundUser).toBeNull();
+      const result = await service.findOne(email);
+
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({
+        where: { email },
+      });
+      expect(result).toBeNull();
     });
   });
 });
