@@ -14,14 +14,16 @@ type PrismaFindParameter = {
   };
 };
 
-type PrismaCreateParameter = {
-  data: {
+type PrismaUpsertParameter = {
+  where: {
+    monitoringPointId: number;
+  };
+  create: {
     model: SensorModel;
-    monitoringPoint: {
-      connect: {
-        id: number;
-      };
-    };
+    monitoringPointId: number;
+  };
+  update: {
+    model: SensorModel;
   };
 };
 
@@ -103,20 +105,13 @@ class MockPrismaService {
   };
 
   sensor = {
-    create: async (opts: PrismaCreateParameter) => {
-      const {
-        data: {
-          monitoringPoint: {
-            connect: { id },
-          },
-          model,
-        },
-      } = opts;
+    upsert: async (opts: PrismaUpsertParameter) => {
+      const { where, create } = opts;
 
       const newSensor = {
-        model,
+        model: create.model,
         id: this.idCounter++,
-        monitoringPointId: id,
+        monitoringPointId: where.monitoringPointId,
       };
 
       this.sensors.push(newSensor);
