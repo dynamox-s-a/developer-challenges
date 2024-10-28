@@ -1,3 +1,6 @@
+# Link to access the application
+## https://dynamox-test.netlify.app/routes/login
+
 # Back-End Overview
 
  1. **Machine Management**:
