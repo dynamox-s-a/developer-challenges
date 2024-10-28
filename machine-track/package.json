@@ -13,6 +13,7 @@
     "bcrypt": "^5.1.1",
     "cookie": "^1.0.1",
     "dotenv": "^16.4.5",
+    "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "next": "15.0.1",
     "pg": "^8.13.1",
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/js-cookie": "^3.0.6",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/next-auth": "^3.13.0",
     "@types/node": "^20",
