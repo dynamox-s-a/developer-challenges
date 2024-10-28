@@ -1,48 +1,158 @@
-# Dynamox Developer Challenges
+# Back-End Overview
 
-## About Dynamox
+ 1. **Machine Management**:
+    - Create, read, update, and delete machines.
+    - Machines can be of type `FAN` or `PUMP`, validated on creation and update.
+    - Checks for existing machines based on machine name to avoid duplicates.
 
-[Dynamox](https://dynamox.net/) is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications. 
+2. **Monitoring Points Management**:
+    - Create, read, update, and delete monitoring points.
+    - Each monitoring point is associated with a machine and sensor, with data validation to ensure compatibility.
+    - Returns detailed information about associated machines and sensors in response.
 
-With our proficiency in signal processing for vibration and acoustics, we deliver advanced and precise monitoring systems. We are committed to optimizing operational efficiency and facilitating proactive maintenance through our innovative technology and integrated solutions.
+3. **Authentication**:
+    - Every endpoint is protected by authentication middleware using JWT.
+    - Users must authenticate to interact with the API.
 
-## Positions
+4. **Validation**:
+    - Data validation is applied to ensure that only valid machines and monitoring points are created or updated.
+    - Monitoring points are only allowed for specific machine types based on sensor compatibility.
 
-We are actively seeking a versatile Full Stack Developer with a strong emphasis on front-end development to join our team. Your primary responsibility will be enhancing our Corporate Channels—our Website, Blog, Support Portal, Salesforce integration, and our asset condition monitoring platform, [DynaPredict](https://dynamox.net/en/dynapredict). You will become an essential part of one of our dedicated development teams, where your front-end expertise will drive our projects to new heights.
+5. **Database Integration**:
+    - Data is stored in a PostgreSQL database.
+    - Prisma ORM is used to manage schema migrations and communicate with the PostgreSQL database.
 
-However, while your main focus will be on front-end tasks, we also expect you to navigate backend development as and when necessary. You won't be alone in this; you will have the full support of our team to guide you through. This opportunity to learn and grow across different aspects of development will foster a dynamic and engaging work environment.
+## Endpoints
 
-We value flexibility and collaboration, hence we provide opportunities for you to lend your skills to other teams when required. Join us on this exciting journey as we revolutionize our digital platforms. Currently we are particularly interested in individuals who can identify with one of the following role descriptions:
+### Authentication Endpoints
 
-### Junior Software Developer
+- **Create user**:
+- `Post /auth/register`
+- Used to register a new user
 
-With limited experience, assists in coding, testing, and stabilizing systems under supervision. Communicates with immediate team members and solves straightforward problems with guidance. Should display a willingness to learn and grow professionally. This is an individual contributor role.
+- **Login**:
+- `Post /auth/login`
+- Used to login a user  
 
-### Mid-level Software Developer
+- **Create Machine**:  
+  `POST /machines`  
+  Creates a new machine. Only 'FAN' and 'PUMP' types are allowed. If a machine with the same name exists, it throws an error.
 
-With a certain level of proven experience, contributes to software development, solves moderate problems, and starts handling ambiguous situations with minimal guidance. Communicates with the broader team and engages in code reviews and documentation. This role also includes mentorship of junior engineers and a commitment to continuous learning. This is an individual contributor role.
+- **Get All Machines**:  
+  `GET /machines`  
+  Retrieves a list of all machines.
 
-### Senior-level Software Developer
+- **Get Machine by ID**:  
+  `GET /machines/:id`  
+  Retrieves details of a machine by its ID.
 
-With vast experience, enhances software development, leading complex system development and ambiguous situation handling. Tackles intricate problems and mentors junior and mid-level engineers. Champions coding standards, project strategy, and technology adoption. Communicates across teams, influencing technical and non-technical stakeholders. This individual contributor role blends technical expertise with leadership, focusing on innovation, mentorship, and strategic contributions to the development process.
+- **Update Machine**:  
+  `PUT /machines`  
+  Updates an existing machine, checking for name conflicts and ensuring the type is either 'FAN' or 'PUMP'.
 
-## Challenges
+- **Delete Machine**:  
+  `DELETE /machines/:id`  
+  Deletes a machine by its ID. Throws an error if the machine has any associated monitoring points.
 
-- [ ] [01 - Dynamox Full-Stack Developer Challenge](./full-stack-challenge.md)
-- [ ] [02 - Dynamox Front-end Developer Challenge](./front-end-challenge.md)
+### Machine Endpoints
 
-## Ready to Begin the Challenges?
+- **Create Machine**:  
+  `POST /machines`  
+  Creates a new machine. Only 'FAN' and 'PUMP' types are allowed. If a machine with the same name exists, it throws an error.
 
-1. [ ] Fork this repository to your own Github account.
-1. [ ] Create a new branch using your first name and last name. For example: `caroline-oliveira`.
-1. [ ] After completing the challenge, create a pull request to this repository (https://github.com/dynamox-s-a/js-ts-full-stack-test), aimed at the main branch.
-1. [ ] We will receive a notification about your pull request, review your solution, and get in touch with you.
+- **Get All Machines**:  
+  `GET /machines`  
+  Retrieves a list of all machines.
 
-## Frequently Asked Questions
+- **Get Machine by ID**:  
+  `GET /machines/:id`  
+  Retrieves details of a machine by its ID.
 
-1. Is it necessary to fork the project?
-  **Yes, this allows us to see how much time you spent on the challenge.**
+- **Update Machine**:  
+  `PUT /machines`  
+  Updates an existing machine, checking for name conflicts and ensuring the type is either 'FAN' or 'PUMP'.
 
-</br>
+- **Delete Machine**:  
+  `DELETE /machines/:id`  
+  Deletes a machine by its ID. Throws an error if the machine has any associated monitoring points.
 
-**Good luck! We look forward to reviewing your submission.** 🚀
+### Monitoring Points Endpoints
+
+- **Create Monitoring Point**:  
+  `POST /monitoringPoints`  
+  Creates a new monitoring point, validating the compatibility between the sensor and the machine.
+
+- **Get All Monitoring Points**:  
+  `GET /monitoringPoints`  
+  Retrieves a list of all monitoring points, including machine and sensor details.
+
+- **Get Monitoring Point by ID**:  
+  `GET /monitoringPoints/:id`  
+  Retrieves details of a monitoring point by its ID.
+
+- **Update Monitoring Point**:  
+  `PUT /monitoringPoints`  
+  Updates an existing monitoring point, validating sensor and machine compatibility.
+
+- **Delete Monitoring Point**:  
+  `DELETE /monitoringPoints/:id`  
+  Deletes a monitoring point by its ID.
+
+## Technologies
+
+- **NestJS**: A progressive Node.js framework for building efficient and scalable server-side applications.
+- **Prisma ORM**: A next-generation ORM for Node.js and TypeScript that helps developers build faster and make fewer errors.
+- **JWT**: Used for securing endpoints and handling authentication.
+- **PostgreSQL**: Used how database
+
+## Error Handling
+
+The system uses `InternalServerErrorException` to handle various cases of errors, such as invalid machine types, machine name conflicts, and errors related to monitoring point creation or updates. Custom messages are included to help identify the root cause of failures.
+
+## Running the Project
+
+1. Clone the repository.
+2. Install dependencies using `npm install`.
+3. Set up the environment variables (e.g., database URL, authentication keys).
+4. Run the Prisma migrations using `npx prisma migrate dev`.
+5. Start the application using `npm run start`.
+
+## Prisma Migrations
+
+To generate Prisma migrations automatically upon application startup, the following command is executed:
+
+```bash
+npx prisma migrate dev
+```
+
+# Front-End Overview
+
+This project implements key functionalities for a monitoring system, focusing on authentication, responsive design, form validation, and dynamic UI elements. Below is a detailed explanation of the features implemented on the frontend.
+
+## Features Implemented
+
+### 1. Authentication
+- **JWT for session control**: The login system uses JSON Web Tokens (JWT) to manage user sessions securely.
+- **Bcrypt for password hashing**: User passwords are encrypted using Bcrypt before being stored, ensuring a high level of security.
+- **CryptoJS for payload encryption**: The form payload, including sensitive information like the password, is encrypted before being sent. You can observe that the password appears as a hash in the request payload.
+
+### 2. Responsive Design
+- The application is fully responsive, supporting devices with a minimum width of 320px. If any responsiveness issues are encountered in Chrome's emulator, simply refresh the page (F5).
+
+### 3. Form Validation
+- Form validation has been implemented using **HookForm** in combination with **YUP**. This approach provides better control and error handling across forms.
+
+### 4. Dynamic Color System
+- A simple system for switching colors has been integrated, allowing basic customization of the user interface.
+
+### 5. Column Hiding in Main Grid
+- A column-hiding feature has been added to the main grid, specifically in the machines table. This functionality serves as a demonstration and does not affect the display of monitoring point data, which remains intact as per requirements.
+
+## How to Run
+
+To run the project, ensure you have the necessary dependencies installed. You can start the application by running the following commands:
+
+```bash
+npm install
+npm run dev
+```
