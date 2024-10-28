@@ -30,7 +30,7 @@ services:
     networks:
       - dynamox-network   
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9080/api"]
+      test: ["CMD", "curl", "-f", "http://dynamox-auth:9080/api"]
       interval: 30s
       timeout: 10s
       retries: 3   
@@ -55,7 +55,7 @@ services:
     networks:
       - dynamox-network 
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9080/api"]
+      test: ["CMD", "curl", "-f", "http://dynamox-be:9081/api"]
       interval: 30s
       timeout: 10s
       retries: 3                      

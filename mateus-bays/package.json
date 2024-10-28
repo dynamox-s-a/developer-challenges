@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "seed": "ts-node prisma/seeds.ts",
+    "start:fe": "nx serve dynamox-fe",
     "start:auth": "npx prisma generate && npm run seed && nx serve dynamox-auth",
     "start:be": "npx prisma generate && nx serve dynamox-be"
   },
