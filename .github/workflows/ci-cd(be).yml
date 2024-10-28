@@ -1,0 +1,23 @@
+name: CI/CD (BE)
+
+on:
+  push:
+    branches: ['**']
+    paths:
+      - 'apps/dynapredict-api/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/dynapredict-api/**'
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci(be).yml
+
+  cd:
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/deploy_dockerhub' || github.event_name == 'pull_request' && github.base_ref == 'main'
+    uses: ./.github/workflows/cd(be).yml
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
