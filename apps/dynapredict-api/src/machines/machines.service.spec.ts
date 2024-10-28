@@ -1,12 +1,6 @@
 import { ConflictException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  Machine,
-  MachineType,
-  MonitoringPoint,
-  Sensor,
-  User,
-} from '@prisma/client';
+import { Machine, MachineType, Sensor, User } from '@prisma/client';
 import { PrismaService } from '../db/prisma.service';
 import { CreateMachineDto } from './dto/create-machine.dto';
 import { UpdateMachineDto } from './dto/update-machine.dto';
