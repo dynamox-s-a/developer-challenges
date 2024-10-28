@@ -25,7 +25,7 @@ You can use the following user stories as a guide to implement the application f
 1 - Authentication
 
 1. [x] As a user, I want to log in using a fixed email and password so that I can access private routes.
-1. [ ] As a user, I want to be able to log out of the system so that I can prevent unauthorized access to my account.
+1. [x] As a user, I want to be able to log out of the system so that I can prevent unauthorized access to my account.
 1. [x] No private routes should be accessible without authentication.
 
 2 - Machine Management
@@ -44,8 +44,8 @@ You can use the following user stories as a guide to implement the application f
 
 4 - Ambiguity Handling
 
-1. [ ] Make reasonable assumptions and design the application accordingly for any ambiguities in the challenge.
-1. [ ] Document your assumptions in the README file.
+1. [x] Make reasonable assumptions and design the application accordingly for any ambiguities in the challenge.
+1. [x] Document your assumptions in the README file.
 
 5 - Technical requirements
 
@@ -62,16 +62,16 @@ You can use the following user stories as a guide to implement the application f
 
 6 - Bonus
 
-1. [ ] Implement unit tests for the application (let us know how to run them, otherwise we won't be able to evaluate).
-1. [ ] Implement your own back-end code. If you pick this option, write it using NodeJS JavaScript runtime (not Java, not PHP...). Although we also work with Python here, we are looking for JavaScript related skills in this test.
-1. [ ] If you choose to implement your own back-end, we encourage you to use either PostgreSQL or MongoDB as a persistence layer.
-1. [ ] If you choose to use PostgreSQL, use Prisma ORM (or even try Drizzle, or Kysely) to interact with PostgreSQL.
+1. [x] Implement unit tests for the application (let us know how to run them, otherwise we won't be able to evaluate).
+1. [x] Implement your own back-end code. If you pick this option, write it using NodeJS JavaScript runtime (not Java, not PHP...). Although we also work with Python here, we are looking for JavaScript related skills in this test.
+1. [x] If you choose to implement your own back-end, we encourage you to use either PostgreSQL or MongoDB as a persistence layer.
+1. [x] If you choose to use PostgreSQL, use Prisma ORM (or even try Drizzle, or Kysely) to interact with PostgreSQL.
 1. [ ] If you choose to use MongoDB, use Mongoose ORM to interact with the database;
-1. [ ] Use Nest.js Framework for the back-end (we are moving some services to that tool).
-1. [ ] Use Nx to manage the whole application as a monorepo (we use that tool a lot here).
+1. [x] Use Nest.js Framework for the back-end (we are moving some services to that tool).
+1. [x] Use Nx to manage the whole application as a monorepo (we use that tool a lot here).
 1. [ ] Add e2e tests with Cypress (use it to test a full user flow).
 1. [ ] If you were provided with a baseline code, identify any areas of bad code or suboptimal implementations and refactor them.
-1. [ ] Deploy your application to a cloud provider and provide a link for the running app.
+1. [x] Deploy your application to a cloud provider and provide a link for the running app.
 
 7 - Tips
 
