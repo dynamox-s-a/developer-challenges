@@ -7,7 +7,7 @@ import { UserService } from './user.service';
 class MockPrisma {
   user = {
     create: jest.fn(),
-    findUnique: jest.fn(),
+    findUniqueOrThrow: jest.fn(),
   };
 }
 
@@ -76,26 +76,24 @@ describe('UserService', () => {
         password: 'hashedPwd',
         createdAt: new Date(),
       };
-      prisma.user.findUnique.mockResolvedValue(user);
+      prisma.user.findUniqueOrThrow.mockResolvedValue(user);
 
       const result = await service.findOne(email);
 
-      expect(prisma.user.findUnique).toHaveBeenCalledWith({
+      expect(prisma.user.findUniqueOrThrow).toHaveBeenCalledWith({
         where: { email },
       });
       expect(result).toEqual(user);
     });
 
-    it('should return null if user is not found', async () => {
+    it('should throw NotFoundException if user is not found', async () => {
       const email = 'nonexistent@example.com';
-      prisma.user.findUnique.mockResolvedValue(null);
+      prisma.user.findUniqueOrThrow.mockRejectedValue(new Error());
 
-      const result = await service.findOne(email);
-
-      expect(prisma.user.findUnique).toHaveBeenCalledWith({
+      await expect(service.findOne(email)).rejects.toThrow();
+      expect(prisma.user.findUniqueOrThrow).toHaveBeenCalledWith({
         where: { email },
       });
-      expect(result).toBeNull();
     });
   });
 });
