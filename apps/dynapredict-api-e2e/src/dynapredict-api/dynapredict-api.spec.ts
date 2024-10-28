@@ -27,7 +27,7 @@ describe('User Authentication', () => {
   it('should login an existing user and receive a JWT token', async () => {
     const res = await axios.post(`${API_BASE}/auth/login`, userCredentials);
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(201);
     expect(res.data).toHaveProperty('access_token');
     accessToken = res.data.access_token;
   });
@@ -47,8 +47,8 @@ describe('Machines Management', () => {
   beforeAll(async () => {
     if (!accessToken) {
       const userCredentials = {
-        email: 'testuser@example.com',
-        password: 'securePassword123',
+        email: 'test1@example.com',
+        password: '12345678',
       };
       const res = await axios.post(`${API_BASE}/auth/login`, userCredentials);
       accessToken = res.data.access_token;
@@ -263,8 +263,8 @@ describe('Sensors Management', () => {
     // Ensure accessToken is available
     if (!accessToken) {
       const userCredentials = {
-        email: 'testuser@example.com',
-        password: 'securePassword123',
+        email: 'test1@example.com',
+        password: '12345678',
       };
       const res = await axios.post(`${API_BASE}/auth/login`, userCredentials);
       accessToken = res.data.access_token;
