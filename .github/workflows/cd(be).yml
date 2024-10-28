@@ -7,6 +7,8 @@ on:
         required: true
       DOCKERHUB_TOKEN:
         required: true
+      RENDER_HOOK_URL:
+        required: true
 
 jobs:
   deploy:
@@ -47,3 +49,7 @@ jobs:
 
       - name: Notify Deployment Success
         run: echo "Deployment to Docker Hub was successful!"
+
+      - name: Notify Render of New Deployment
+        run: |
+          curl -X POST "${{ secrets.RENDER_HOOK_URL }}"
