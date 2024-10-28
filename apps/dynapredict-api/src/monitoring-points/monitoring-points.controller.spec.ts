@@ -1,91 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Machine, MonitoringPoint } from '@prisma/client';
+import { AuthUser } from '../auth/user.decorator';
 import { CreateMonitoringPointDto } from './dto/create-monitoring-point.dto';
 import { MonitoringPointsController } from './monitoring-points.controller';
 import { MonitoringPointsService } from './monitoring-points.service';
 
-const machines: Machine[] = [
-  {
-    id: 3,
-    name: 'fake-machine',
-    type: 'Pump',
-    createdAt: new Date(),
-    userId: 1,
-  },
-  {
-    id: 4,
-    name: 'fake-machine',
-    type: 'Pump',
-    createdAt: new Date(),
-    userId: 2,
-  },
-];
-
-class MockMPService {
-  private monitoringPoints: MonitoringPoint[] = [];
-  private idCounter = 1;
-
-  checkMachine(machineId: number, userId: number) {
-    return machines.some(
-      (machine) => machine.id === machineId && machine.userId === userId
-    );
-  }
-
-  async create(
-    machineId: number,
-    userId: number,
-    { name }: CreateMonitoringPointDto
-  ): Promise<MonitoringPoint | null> {
-    const isValidMachine = this.checkMachine(machineId, userId);
-
-    if (!isValidMachine) {
-      throw new Error();
-    }
-
-    const monitoringPoint = {
-      machineId,
-      name,
-      userId: userId,
-      createdAt: new Date(),
-      id: this.idCounter++,
-    };
-
-    this.monitoringPoints.push(monitoringPoint);
-
-    return Promise.resolve(monitoringPoint);
-  }
-
-  remove(
-    machineId: number,
-    monitoringPointId: number,
-    userId: number
-  ): Promise<MonitoringPoint | undefined> {
-    const monitoringPoint = this.monitoringPoints.find(
-      (mp) =>
-        mp.id === monitoringPointId &&
-        mp.userId === userId &&
-        mp.machineId === machineId
-    );
-
-    if (!monitoringPoint) {
-      throw new Error();
-    }
-
-    this.monitoringPoints = this.monitoringPoints.filter(
-      (mp) => mp.id !== monitoringPointId
-    );
-
-    return Promise.resolve(monitoringPoint);
-  }
+class MockMonitoringPointsService {
+  create = jest.fn();
+  remove = jest.fn();
 }
 
 describe('MonitoringPointsController', () => {
-  const fakeUser = {
-    email: 'test@test.com',
-    id: 1,
-  };
-
   let controller: MonitoringPointsController;
+  let service: MockMonitoringPointsService;
+
+  const mockUser: AuthUser = { id: 1, email: 'test@test.com' };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -93,7 +21,7 @@ describe('MonitoringPointsController', () => {
       providers: [
         {
           provide: MonitoringPointsService,
-          useClass: MockMPService,
+          useClass: MockMonitoringPointsService,
         },
       ],
     }).compile();
@@ -101,79 +29,78 @@ describe('MonitoringPointsController', () => {
     controller = module.get<MonitoringPointsController>(
       MonitoringPointsController
     );
+    service = module.get<MockMonitoringPointsService>(MonitoringPointsService);
   });
 
   describe('create', () => {
-    it('should create a monitoring point successfully', async () => {
+    it('should call MonitoringPointsService.create with correct parameters', async () => {
+      const machineId = 1;
       const dto: CreateMonitoringPointDto = {
-        name: 'Temperature Sensor',
+        name: 'Test',
       };
-      const result = await controller.create(3, fakeUser, dto);
+      const result = { id: 1, ...dto };
 
-      expect(result).toMatchObject({
-        id: 1,
-        machineId: 3,
-        name: 'Temperature Sensor',
-        userId: fakeUser.id,
-      });
-      expect(result.createdAt).toBeInstanceOf(Date);
+      service.create.mockResolvedValue(result);
+
+      const response = await controller.create(machineId, mockUser, dto);
+
+      expect(service.create).toHaveBeenCalledWith(machineId, mockUser.id, dto);
+      expect(response).toEqual(result);
     });
 
-    it('should throw if the machine is invalid', async () => {
+    it('should handle service exceptions', async () => {
+      const machineId = 1;
       const dto: CreateMonitoringPointDto = {
-        name: 'Pressure Sensor',
+        name: 'Test',
       };
+      const error = new Error('Service error');
 
-      await expect(controller.create(999, fakeUser, dto)).rejects.toThrow();
-    });
+      service.create.mockRejectedValue(error);
 
-    it('should throw if the user does not own the machine', async () => {
-      const dto: CreateMonitoringPointDto = {
-        name: 'Pressure Sensor',
-      };
-
-      const anotherUser = { ...fakeUser, id: 1021 };
-
-      await expect(controller.create(3, anotherUser, dto)).rejects.toThrow();
+      await expect(controller.create(machineId, mockUser, dto)).rejects.toThrow(
+        'Service error'
+      );
+      expect(service.create).toHaveBeenCalledWith(machineId, mockUser.id, dto);
     });
   });
 
   describe('remove', () => {
-    it('should remove a monitoring point successfully', async () => {
-      const removedMonitoringPoint: MonitoringPoint = {
-        id: 1,
-        machineId: 3,
-        name: 'Temperature Sensor',
-        userId: fakeUser.id,
-        createdAt: new Date(),
-      };
+    it('should call MonitoringPointsService.remove with correct parameters', async () => {
+      const machineId = 1;
+      const monitoringPointId = 2;
+      const result = { success: true };
 
-      await controller.create(removedMonitoringPoint.machineId, fakeUser, {
-        name: 'Temperature Sensor',
-      });
+      service.remove.mockResolvedValue(result);
+
+      const response = await controller.remove(
+        machineId,
+        monitoringPointId,
+        mockUser
+      );
+
+      expect(service.remove).toHaveBeenCalledWith(
+        machineId,
+        mockUser.id,
+        monitoringPointId
+      );
+      expect(response).toEqual(result);
+    });
+
+    it('should handle service exceptions', async () => {
+      const machineId = 1;
+      const monitoringPointId = 2;
+      const error = new Error('Service error');
+
+      service.remove.mockRejectedValue(error);
 
       await expect(
-        controller.remove(
-          removedMonitoringPoint.machineId,
-          removedMonitoringPoint.id,
-          fakeUser
-        )
-      ).resolves.toEqual(removedMonitoringPoint);
-    });
-
-    it('should throw if the monitoring point does not exist', async () => {
-      await expect(controller.remove(3, 999, fakeUser)).rejects.toThrow();
-    });
-
-    it('should throw if the monitoring point belongs to a machine the user does not own', async () => {
-      // Create a monitoring point first
-      await controller.create(3, fakeUser, {
-        name: 'Temperature Sensor',
-      });
-
-      // Try to remove it with a different user
-      const anotherUser = { ...fakeUser, id: 2 };
-      await expect(controller.remove(3, 1, anotherUser)).rejects.toThrow();
+        controller.remove(machineId, monitoringPointId, mockUser)
+      ).rejects.toThrow('Service error');
+      expect(service.remove).toHaveBeenCalledWith(
+        machineId,
+        mockUser.id,
+        monitoringPointId
+      );
     });
   });
 });

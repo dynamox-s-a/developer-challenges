@@ -37,14 +37,6 @@ describe('MachinesService', () => {
     createdAt: new Date(),
   };
 
-  const mockMP: MonitoringPoint = {
-    createdAt: new Date(),
-    id: 1,
-    machineId: 1,
-    name: 'Test',
-    userId: 1,
-  };
-
   const mockSensor: Sensor = {
     id: 1,
     monitoringPointId: 1,

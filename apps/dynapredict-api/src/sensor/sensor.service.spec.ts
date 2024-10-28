@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { MachineType, Sensor, SensorModel } from '@prisma/client';
 import { PrismaService } from '../db/prisma.service';
 import { CreateSensorDto } from './dto/create-sensor.dto';
-import { ALLOWED_SENSORS, SensorService } from './sensor.service';
+import { SensorService } from './sensor.service';
 
 class MockPrismaService {
   monitoringPoint = {

@@ -1,6 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { AuthUser, User } from '../../auth/user.decorator';
 import { MonitoringPointsService } from '../monitoring-points.service';
+import { QueryDto } from './query.dto';
 
 @Controller('monitoring-points')
 export class GetAllController {
@@ -9,7 +10,7 @@ export class GetAllController {
   ) {}
 
   @Get()
-  async findAll(@User() user: AuthUser) {
-    return await this.monitoringPointsService.findAll(user.id);
+  async getMonitoringPoints(@Query() query: QueryDto, @User() user: AuthUser) {
+    return await this.monitoringPointsService.findAll(query, user.id);
   }
 }

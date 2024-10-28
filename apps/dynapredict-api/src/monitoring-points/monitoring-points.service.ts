@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { MonitoringPoint } from '@prisma/client';
 import { PrismaService } from '../db/prisma.service';
 import { CreateMonitoringPointDto } from './dto/create-monitoring-point.dto';
+import { QueryDto } from './get-all/query.dto';
 
 @Injectable()
 export class MonitoringPointsService {
@@ -37,19 +38,43 @@ export class MonitoringPointsService {
     }
   }
 
-  async findAll(userId: number) {
-    return await this.prisma.user
-      .findUnique({
-        where: {
-          id: userId,
+  async findAll(query: QueryDto, userId: number) {
+    const { page = 1, sortBy = 'machine_name', sortOrder = 'asc' } = query;
+    const limit = 5;
+    const skip = (page - 1) * limit;
+    const orderBy = this.buildOrderBy(sortBy, sortOrder);
+
+    const {
+      monitoringPoints,
+      _count: { monitoringPoints: totalMps },
+    } = await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        monitoringPoints: {
+          skip,
+          take: limit,
+          orderBy,
+          include: {
+            machine: true,
+            sensor: true,
+          },
         },
-      })
-      .monitoringPoints({
-        include: {
-          machine: true,
-          sensor: true,
+        _count: {
+          select: {
+            monitoringPoints: true,
+          },
         },
-      });
+      },
+    });
+
+    return {
+      data: monitoringPoints,
+      total: totalMps,
+      page,
+      totalPages: Math.ceil(totalMps / limit),
+    };
   }
 
   async remove(
@@ -71,5 +96,16 @@ export class MonitoringPointsService {
       }
       throw error;
     }
+  }
+
+  private buildOrderBy(sortBy: string, sortOrder: 'asc' | 'desc') {
+    const sortByMap = {
+      machine_name: { machine: { name: sortOrder } },
+      machine_type: { machine: { type: sortOrder } },
+      monitoring_point_name: { name: sortOrder },
+      sensor_model: { sensor: { model: sortOrder } },
+    };
+
+    return sortByMap[sortBy] || { machine: { name: sortOrder } };
   }
 }

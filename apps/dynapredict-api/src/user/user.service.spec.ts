@@ -59,7 +59,7 @@ describe('UserService', () => {
         password: 'password123',
       };
 
-      const prismaError: any = { code: 'P2002' };
+      const prismaError = { code: 'P2002' };
       prisma.user.create.mockRejectedValue(prismaError);
 
       await expect(service.create(dto)).rejects.toThrow(ConflictException);

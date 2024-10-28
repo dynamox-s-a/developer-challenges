@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  ParseIntPipe,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { AuthUser, User } from '../auth/user.decorator';
 import { CreateSensorDto } from './dto/create-sensor.dto';
 import { SensorService } from './sensor.service';
