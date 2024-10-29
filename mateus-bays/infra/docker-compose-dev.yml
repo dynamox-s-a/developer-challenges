@@ -60,6 +60,23 @@ services:
       timeout: 10s
       retries: 3                      
 
+  dynamox-fe:
+    image: dynamox-fe
+    build:
+       context: ..
+       dockerfile: Dockerfile    
+    container_name: dynamox-fe
+    restart: unless-stopped
+    command: npm run start:fe 
+    env_file:
+      - .env  
+    ports:
+      - "${FE_SERVER_PORT}:4200"
+    volumes:
+      - ../dynamox-fe/:/app/dynamox-fe  
+    networks:
+      - dynamox-network 
+
   dynamox-nginx:
     image: nginx:latest
     container_name: dynamox-nginx

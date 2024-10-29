@@ -2,7 +2,10 @@
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "defaultBase": "master",
   "namedInputs": {
-    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "default": [
+      "{projectRoot}/**/*",
+      "sharedGlobals"
+    ],
     "production": [
       "default",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
@@ -30,17 +33,6 @@
       }
     },
     {
-      "plugin": "@nx/vite/plugin",
-      "options": {
-        "buildTargetName": "build",
-        "testTargetName": "test",
-        "serveTargetName": "serve",
-        "previewTargetName": "preview",
-        "serveStaticTargetName": "serve-static",
-        "typecheckTargetName": "typecheck"
-      }
-    },
-    {
       "plugin": "@nx/eslint/plugin",
       "options": {
         "targetName": "lint"
@@ -51,29 +43,24 @@
       "options": {
         "targetName": "test"
       },
-      "exclude": ["dynamox-be-e2e/**/*", "dynamox-auth-e2e/**/*"]
+      "exclude": [
+        "dynamox-be-e2e/**/*",
+        "dynamox-auth-e2e/**/*"
+      ]
     },
     {
-      "plugin": "@nx/webpack/plugin",
+      "plugin": "@nx/next/plugin",
       "options": {
         "buildTargetName": "build",
         "serveTargetName": "serve",
-        "previewTargetName": "preview"
+        "lintTargetName": "lint",
+        "testTargetName": "test"
       }
     }
   ],
   "generators": {
-    "@nx/react": {
+    "@nx/next": {
       "application": {
-        "babel": true,
-        "style": "none",
-        "linter": "eslint",
-        "bundler": "vite"
-      },
-      "component": {
-        "style": "none"
-      },
-      "library": {
         "style": "none",
         "linter": "eslint"
       }

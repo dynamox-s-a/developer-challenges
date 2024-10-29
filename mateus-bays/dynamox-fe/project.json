@@ -4,6 +4,20 @@
   "sourceRoot": "dynamox-fe/src",
   "projectType": "application",
   "tags": [],
-  "// targets": "to see all targets run: nx show project dynamox-fe --web",
-  "targets": {}
+  "targets": {
+    "build": {
+      "executor": "@nx/next:build",
+      "options": {
+        "outputPath": "dist/dynamox-fe",
+        "root": "dynamox-fe",
+        "sourceRoot": "dynamox-fe/src"
+      }
+    },
+    "serve": {
+      "executor": "@nx/next:server",
+      "options": {
+        "buildTarget": "dynamox-fe:build"
+      }
+    }
+  }
 }

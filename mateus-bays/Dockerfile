@@ -13,4 +13,4 @@ COPY . .
 
 USER root
 
-CMD [ "npm", "start:auth start:be" ]
+CMD [ "npm", "start:auth start:be start:fe" ]
