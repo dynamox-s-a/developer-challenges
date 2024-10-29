@@ -12,10 +12,11 @@ import { TransformResponseInterceptor } from 'interceptors/transform-response.in
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalInterceptors(new TransformResponseInterceptor());
-  const globalPrefix = 'api';
+  const globalPrefix = 'api/be';
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.BE_SERVER_PORT || 9001;
   app.useGlobalPipes(new ValidationPipe());
+  app.enableCors();
   await app.listen(port);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`

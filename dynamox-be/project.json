@@ -1,8 +1,8 @@
 {
   "name": "dynamox-be",
+  "projectType": "application",
   "$schema": "../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "dynamox-be/src",
-  "projectType": "application",
   "tags": [],
   "targets": {
     "serve": {

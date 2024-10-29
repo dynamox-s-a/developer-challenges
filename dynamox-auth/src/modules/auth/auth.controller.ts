@@ -8,7 +8,7 @@ interface RequestWithUser extends ExpressRequest {
   user?: string;
 }
 
-@Controller('auth')
+@Controller('')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
