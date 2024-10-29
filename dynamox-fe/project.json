@@ -1,0 +1,23 @@
+{
+  "name": "dynamox-fe",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "dynamox-fe/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/next:build",
+      "options": {
+        "outputPath": "dist/dynamox-fe",
+        "root": "dynamox-fe",
+        "sourceRoot": "dynamox-fe/src"
+      }
+    },
+    "serve": {
+      "executor": "@nx/next:server",
+      "options": {
+        "buildTarget": "dynamox-fe:build"
+      }
+    }
+  }
+}
