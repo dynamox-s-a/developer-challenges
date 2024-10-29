@@ -3,7 +3,7 @@
   "licence": "MIT",
   "private": true,
   "scripts": {
-    "dev": "nx next:dev",
+    "dev": "nx next:dev -p 3002",
     "build": "nx next:build",
     "start": "nx next:start",
     "lint": "next lint",
@@ -27,6 +27,7 @@
     "@mui/utils": "5.15.20",
     "@mui/x-date-pickers": "7.7.1",
     "@phosphor-icons/react": "2.1.6",
+    "axios": "^1.6.0",
     "apexcharts": "3.49.2",
     "dayjs": "1.11.11",
     "next": "14.2.4",

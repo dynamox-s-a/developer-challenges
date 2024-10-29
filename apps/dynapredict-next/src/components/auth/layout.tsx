@@ -7,6 +7,8 @@ import Typography from '@mui/material/Typography';
 import { paths } from '@/paths';
 import { Logo } from '@/components/core/logo';
 
+import MobileHeader from './mobile-header';
+
 export interface LayoutProps {
   children: React.ReactNode;
 }
@@ -22,9 +24,7 @@ export function Layout({ children }: LayoutProps): React.JSX.Element {
       }}
     >
       <Box sx={{ display: 'flex', flex: '1 1 auto', flexDirection: 'column' }}>
-        <Box sx={{ p: 3 }}>
-          <Box component={RouterLink} href={paths.home} sx={{ display: 'inline-block', fontSize: 0 }}></Box>
-        </Box>
+        <MobileHeader />
         <Box sx={{ alignItems: 'center', display: 'flex', flex: '1 1 auto', justifyContent: 'center', p: 3 }}>
           <Box sx={{ maxWidth: '450px', width: '100%' }}>{children}</Box>
         </Box>
