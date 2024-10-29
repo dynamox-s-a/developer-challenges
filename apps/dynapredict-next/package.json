@@ -1,10 +1,7 @@
 {
-  "name": "material-kit-react",
-  "version": "4.0.0",
-  "author": "Devias",
+  "name": "dynapredict-next",
   "licence": "MIT",
-  "homepage": "https://devias.io",
-  "private": false,
+  "private": true,
   "scripts": {
     "dev": "nx next:dev",
     "build": "nx next:build",

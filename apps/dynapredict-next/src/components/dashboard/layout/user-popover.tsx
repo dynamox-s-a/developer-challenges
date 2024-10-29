@@ -56,26 +56,7 @@ export function UserPopover({ anchorEl, onClose, open }: UserPopoverProps): Reac
       open={open}
       slotProps={{ paper: { sx: { width: '240px' } } }}
     >
-      <Box sx={{ p: '16px 20px ' }}>
-        <Typography variant="subtitle1">Sofia Rivers</Typography>
-        <Typography color="text.secondary" variant="body2">
-          sofia.rivers@devias.io
-        </Typography>
-      </Box>
-      <Divider />
       <MenuList disablePadding sx={{ p: '8px', '& .MuiMenuItem-root': { borderRadius: 1 } }}>
-        <MenuItem component={RouterLink} href={paths.dashboard.settings} onClick={onClose}>
-          <ListItemIcon>
-            <GearSixIcon fontSize="var(--icon-fontSize-md)" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
-        <MenuItem component={RouterLink} href={paths.dashboard.account} onClick={onClose}>
-          <ListItemIcon>
-            <UserIcon fontSize="var(--icon-fontSize-md)" />
-          </ListItemIcon>
-          Profile
-        </MenuItem>
         <MenuItem onClick={handleSignOut}>
           <ListItemIcon>
             <SignOutIcon fontSize="var(--icon-fontSize-md)" />
