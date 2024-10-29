@@ -1,0 +1,16 @@
+services:
+  dynamox-db:
+    image: postgres:latest
+    container_name: dynamox-db
+    environment:
+      POSTGRES_USER: dynamox    
+      POSTGRES_PASSWORD: dynamoxdb   
+      POSTGRES_DB: dynamox_db         
+    ports:
+      - "${DB_SERVER_PORT}:5432"                      
+    volumes:
+      - postgres_data:/var/lib/postgresql/data 
+
+volumes:
+  postgres_data:
+

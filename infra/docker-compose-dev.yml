@@ -3,79 +3,79 @@ services:
     image: postgres:latest
     container_name: dynamox-db
     environment:
-      POSTGRES_USER: dynamox    
-      POSTGRES_PASSWORD: dynamoxdb   
-      POSTGRES_DB: dynamox_db         
+      POSTGRES_USER: dynamox
+      POSTGRES_PASSWORD: dynamoxdb
+      POSTGRES_DB: dynamox_db
     ports:
-      - "${DB_SERVER_PORT}:5432"                      
+      - "${DB_SERVER_PORT}:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data 
+      - postgres_data:/var/lib/postgresql/data
     networks:
-      - dynamox-network         
+      - dynamox-network
 
   dynamox-auth:
     image: dynamox-auth
     build:
-       context: .. 
-       dockerfile: Dockerfile  
+      context: ..
+      dockerfile: Dockerfile
     container_name: dynamox-auth
     restart: unless-stopped
-    command: npm run start:auth 
+    command: npm run start:auth
     env_file:
       - .env
     ports:
       - "${AUTH_SERVER_PORT}:9080"
     volumes:
-      - ../dynamox-auth/:/app/dynamox-auth  
+      - ../dynamox-auth/:/app/dynamox-auth
     networks:
-      - dynamox-network   
+      - dynamox-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://dynamox-auth:9080/api"]
+      test: [ "CMD", "curl", "-f", "http://dynamox-auth:9080/api" ]
       interval: 30s
       timeout: 10s
-      retries: 3   
+      retries: 3
 
   dynamox-be:
     image: dynamox-be
     build:
-       context: ..
-       dockerfile: Dockerfile    
+      context: ..
+      dockerfile: Dockerfile
     container_name: dynamox-be
     restart: unless-stopped
-    command: npm run start:be 
+    command: npm run start:be
     env_file:
-      - .env  
+      - .env
     ports:
       - "${BE_SERVER_PORT}:9081"
     depends_on:
       - dynamox-auth
       - dynamox-db
     volumes:
-      - ../dynamox-be/:/app/dynamox-be  
+      - ../dynamox-be/:/app/dynamox-be
     networks:
-      - dynamox-network 
+      - dynamox-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://dynamox-be:9081/api"]
+      test: [ "CMD", "curl", "-f", "http://dynamox-be:9081/api" ]
       interval: 30s
       timeout: 10s
-      retries: 3                      
+      retries: 3
 
   dynamox-fe:
     image: dynamox-fe
     build:
-       context: ..
-       dockerfile: Dockerfile    
+      context: ..
+      dockerfile: Dockerfile
     container_name: dynamox-fe
     restart: unless-stopped
-    command: npm run start:fe 
+    command: npm run start:fe
     env_file:
-      - .env  
+      - .env
     ports:
       - "${FE_SERVER_PORT}:4200"
     volumes:
-      - ../dynamox-fe/:/app/dynamox-fe  
+      - ../dynamox-fe/:/app/dynamox-fe
     networks:
-      - dynamox-network 
+      - dynamox-network
 
   dynamox-nginx:
     image: nginx:latest
@@ -99,6 +99,7 @@ services:
 
 volumes:
   postgres_data:
+
 
 networks:
   dynamox-network:
