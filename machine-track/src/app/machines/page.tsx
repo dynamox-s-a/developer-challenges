@@ -1,67 +1,111 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import NavBar from "@/components/NavBar";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+
+interface Machine {
+  id: number;
+  name: string;
+  type: string;
+}
 
 export default function Machines() {
-  const [machines, setMachines] = useState([]);
+  const [machines, setMachines] = useState<Machine[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  // Função para fazer logout
-  const handleLogout = () => {
-    Cookies.remove("token"); // Remove o token dos cookies
-    router.push("/"); // Redireciona para a página inicial
-  };
-
   useEffect(() => {
-    const token = Cookies.get("token");
-
-    if (!token) {
-      // Se não houver token, redireciona para a página inicial
-      router.push("/");
-      return;
-    }
-
     const fetchMachines = async () => {
-      const response = await fetch("/api/machines", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      try {
+        const response = await fetch("/api/machines", {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          },
+        });
 
-      if (response.ok) {
+        if (!response.ok) {
+          throw new Error(`Failed to fetch machines: ${response.statusText}`);
+        }
+
         const data = await response.json();
         setMachines(data);
-      } else {
-        alert("Erro ao carregar as máquinas");
-        router.push("/"); // Redireciona para a página inicial em caso de erro
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchMachines();
-  }, [router]);
+  }, []);
+
+  const handleDelete = async (id: number) => {
+    try {
+      await fetch(`/api/machines/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+      });
+      setMachines((prev) => prev.filter((machine) => machine.id !== id));
+    } catch (err) {
+      console.error("Failed to delete machine:", err);
+    }
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) {
+    alert(`Error: ${error}`);
+    router.push("/");
+  }
 
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Máquinas</h1>
+    <div>
+      <NavBar />
+      <div className="p-8">
+        <h1 className="text-3xl font-bold mb-6">Machines</h1>
+        <table className="min-w-full bg-white border">
+          <thead>
+            <tr>
+              <th className="border px-4 py-2">ID</th>
+              <th className="border px-4 py-2">Name</th>
+              <th className="border px-4 py-2">Type</th>
+              <th className="border px-4 py-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {machines.map((machine) => (
+              <tr key={machine.id}>
+                <td className="border px-4 py-2 text-center">{machine.id}</td>
+                <td className="border px-4 py-2 text-center">{machine.name}</td>
+                <td className="border px-4 py-2 text-center">{machine.type}</td>
+                <td className="border px-4 py-2 text-center">
+                  <button
+                    onClick={() => router.push(`/machines/edit/${machine.id}`)}
+                    className="bg-blue-500 text-white px-2 py-1 mr-2 rounded hover:bg-blue-600"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(machine.id)}
+                    className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
         <button
-          onClick={handleLogout}
-          className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600"
+          onClick={() => router.push("/machines/create")}
+          className="bg-green-500 text-white px-4 py-2 mt-4 rounded hover:bg-green-600"
         >
-          Logout
+          Create Machine
         </button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {machines.map((machine: any) => (
-          <div
-            key={machine.id}
-            className="p-4 bg-white shadow-md rounded-lg hover:shadow-lg"
-          >
-            <h2 className="text-xl font-semibold">{machine.name}</h2>
-            <p className="text-gray-500">Tipo: {machine.type}</p>
-          </div>
-        ))}
       </div>
     </div>
   );

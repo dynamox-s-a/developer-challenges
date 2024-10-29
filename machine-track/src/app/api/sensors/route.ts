@@ -2,6 +2,19 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/client';
 import { authMiddleware } from '@/lib/middleware';
 
+// Listar sensores
+export const GET = authMiddleware(async () => {
+  try {
+    const sensors = await prisma.sensor.findMany({
+      include: { monitoringPoint: true },
+    });
+    return NextResponse.json(sensors, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching sensors:", error);
+    return NextResponse.json({ error: 'Failed to fetch sensors' }, { status: 500 });
+  }
+});
+
 // Associar sensor a ponto de monitoramento
 export const POST = authMiddleware(async (req: NextRequest) => {
   const { uniqueId, modelName, monitoringPointId } = await req.json();

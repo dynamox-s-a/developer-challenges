@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Machine Track
 
-## Getting Started
+Machine Track is a fullstack web application for managing machines, monitoring points, and sensors. It enables users to create, edit, and track various entities in a structured interface with a focus on machine maintenance and monitoring. 
 
-First, run the development server:
+This project was built with:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Frontend:** Next.js (React-based framework)
+- **Backend:** Prisma with REST API endpoints
+- **Database:** PostgreSQL for persistent data storage
+- **Authentication:** JWT (JSON Web Tokens) for user session management
+
+## **Setup Instructions**
+
+Follow these steps to set up the project on your local machine:
+
+### **Prerequisites**
+
+1. Install [Node.js](https://nodejs.org/) (version 18 or above).
+2. Install [PostgreSQL](https://www.postgresql.org/) and ensure it's running.
+3. Install **Git** to clone the repository.
+
+### **Running the project**
+
+1. **Install dependencies**:
+
+```
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Set up the database**:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Create a PostgreSQL database.
+- Save your database connection information (host, port, user, password) for the next step.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. **Configure the environment**:
 
-## Learn More
+Create a .env file in the project root with the following content:
 
-To learn more about Next.js, take a look at the following resources:
+```
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_NAME=your_database
+DATABASE_USER=your_username
+DATABASE_PASSWORD=your_password
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+DATABASE_URL="postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}"
+SECRET_KEY="your_secret_key"
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. **Generate the Prisma client**:
 
-## Deploy on Vercel
+```
+npx prisma generate
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. **Run database migrations**:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+npx prisma migrate dev --name init
+```
+
+This command applies all pending migrations and creates the necessary tables in your PostgreSQL database.
+
+6. **Start the development server**:
+
+Open http://localhost:3000 in your browser.
+
+### **Project Structure**
+
+- /prisma – Prisma schema and migration files.
+- /src/app – Frontend pages and components.
+- /src/app/api – Backend API routes for managing machines, monitoring points, and sensors.
+- /src/lib – Utility functions (e.g., database client, middleware).
+
+## **Authentication**
+
+Upon successful login, a JWT token is saved in a cookie named token.
+Protected routes and APIs require the token for access.
+
+# **Contact**
+
+For any questions or support, please contact:
+
+- Author: Guilherme Scoz Girardi
+- Email: gui.x.scoz@gmail.com
