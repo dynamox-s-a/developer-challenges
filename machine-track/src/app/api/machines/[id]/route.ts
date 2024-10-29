@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/client';
 import { authMiddleware } from '@/lib/middleware';
+import { z } from 'zod';
 
-// Obter detalhes de uma máquina específica
+const machineSchema = z.object({
+  name: z.string().min(2, { message: "Name must have at least 2 characters." }),
+  type: z.enum(["Pump", "Fan"], { errorMap: () => ({ message: "Invalid machine type." }) }),
+});
+
 export const GET = authMiddleware(async (req: NextRequest, context: { params?: { id: string } }) => {
   const { id } = context.params || {};
 
@@ -21,7 +26,6 @@ export const GET = authMiddleware(async (req: NextRequest, context: { params?: {
   }
 });
 
-// Atualizar uma máquina
 export const PUT = authMiddleware(async (req: NextRequest, context: { params?: { id: string } }) => {
   const { id } = context.params || {};
   const { name, type } = await req.json();
@@ -31,6 +35,9 @@ export const PUT = authMiddleware(async (req: NextRequest, context: { params?: {
   }
 
   try {
+    const body = await req.json();
+    const { name, type } = machineSchema.parse(body);
+
     const updatedMachine = await prisma.machine.update({
       where: { id: Number(id) },
       data: { name, type },
@@ -41,7 +48,6 @@ export const PUT = authMiddleware(async (req: NextRequest, context: { params?: {
   }
 });
 
-// Deletar uma máquina
 export const DELETE = authMiddleware(async (req: NextRequest, context: { params?: { id: string } }) => {
   const { id } = context.params || {};
 

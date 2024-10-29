@@ -9,9 +9,17 @@ const machineTypes = ["Pump", "Fan"];
 export default function CreateMachine() {
   const [name, setName] = useState("");
   const [type, setType] = useState(machineTypes[0]);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleCreate = async () => {
+    setError(null);
+
+    if (name.trim().length < 2) {
+      setError("Name must have at least 2 characters.");
+      return;
+    }
+
     try {
       const response = await fetch("/api/machines", {
         method: "POST",
@@ -36,6 +44,7 @@ export default function CreateMachine() {
   return (
     <div className="p-8">
         <h1 className="text-2xl font-bold mb-4">Create Machine</h1>
+        {error && <div className="bg-red-100 text-red-700 p-2 rounded mb-4">{error}</div>}
         <input
             type="text"
             placeholder="Name"

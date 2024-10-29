@@ -9,12 +9,23 @@ export default function Home() {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({ email: "", password: "" });
 
+  const validateEmail = (email: string) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateEmail(formData.email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
     const endpoint = isLogin ? "/api/auth/login" : "/api/auth/signup";
 
     const response = await fetch(endpoint, {
@@ -25,10 +36,10 @@ export default function Home() {
 
     if (response.ok) {
       const { token } = await response.json();
-      Cookies.set("token", token);
-      router.push("/machines"); // Redireciona para a página de máquinas
+      Cookies.set("token", token, { expires: 1 });
+      router.push("/machines");
     } else {
-      alert("Erro na autenticação");
+      alert("Authentication failed.");
     }
   };
 

@@ -9,6 +9,7 @@ const machineTypes = ["Pump", "Fan"];
 export default function EditMachine() {
   const [name, setName] = useState("");
   const [type, setType] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const { id } = useParams();
 
@@ -32,6 +33,13 @@ export default function EditMachine() {
   }, [id]);
 
   const handleUpdate = async () => {
+    setError(null);
+
+    if (name.trim().length < 2) {
+      setError("Name must have at least 2 characters.");
+      return;
+    }
+
     try {
       await fetch(`/api/machines/${id}`, {
         method: "PUT",
@@ -51,6 +59,7 @@ export default function EditMachine() {
   return (
     <div className="p-8">
         <h1 className="text-2xl font-bold mb-4">Edit Machine</h1>
+        {error && <div className="bg-red-100 text-red-700 p-2 rounded mb-4">{error}</div>}
         <input
             type="text"
             value={name}

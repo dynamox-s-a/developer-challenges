@@ -65,19 +65,81 @@ This command applies all pending migrations and creates the necessary tables in 
 
 Open http://localhost:3000 in your browser.
 
-### **Project Structure**
+## **Project Structure**
+
+### **Used folders**
 
 - /prisma – Prisma schema and migration files.
 - /src/app – Frontend pages and components.
 - /src/app/api – Backend API routes for managing machines, monitoring points, and sensors.
 - /src/lib – Utility functions (e.g., database client, middleware).
 
-## **Authentication**
+### **Available api routes**
+
+1. **Users**
+
+[POST] Login (http://localhost:3000/api/auth/login):
+
+```
+email: string
+password: string
+```
+
+[POST] Sign up (http://localhost:3000/api/auth/signup):
+
+```
+email: string
+password: string
+```
+
+[DELETE] Logout (http://localhost:3000/api/auth/logout)
+
+2. **Machines**
+
+[GET] Get one machine (http://localhost:3000/api/machines/{id})
+[GET] List all machines (http://localhost:3000/api/machines)
+[DELETE] Delete machine (http://localhost:3000/api/machines/{id})
+
+[POST] Create machine (http://localhost:3000/api/machines):
+
+```
+name: string
+type: enum(Pump, Fan)
+```
+
+[PUT] Edit machine (http://localhost:3000/api/machines/{id}):
+
+```
+name: string
+type: enum(Pump, Fan)
+```
+
+3. **Monitoring points and Sensors**
+
+[GET] List all monitoring points (http://localhost:3000/api/monitoring-points)
+[GET] List all sensors (http://localhost:3000/api/sensors)
+
+[POST] Create monitoring point (http://localhost:3000/api/monitoring-points)
+
+```
+name: string
+machineId: foreign key for machines
+```
+
+[POST] Create sensor (http://localhost:3000/api/sensors)
+
+```
+uniqueId: string
+modelName: enum(TcAg, TcAs, HFPlus)
+monitoringPointId: foreign key for monitoring points
+```
+
+### **Authentication**
 
 Upon successful login, a JWT token is saved in a cookie named token.
 Protected routes and APIs require the token for access.
 
-# **Contact**
+## **Contact**
 
 For any questions or support, please contact:
 

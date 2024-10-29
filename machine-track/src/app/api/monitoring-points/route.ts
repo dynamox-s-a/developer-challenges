@@ -1,25 +1,49 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/client';
+import { z } from "zod";
 import { authMiddleware } from '@/lib/middleware';
 
-// Criar ponto de monitoramento
-export const POST = authMiddleware(async (req, res) => {
-  const { name, machineId } = await req.json();
+const monitoringPointSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters long."),
+  machineId: z.string().nonempty("Machine ID is required."),
+});
 
-  const machine = await prisma.machine.findUnique({ where: { id: machineId } });
-  if (!machine) {
-    return NextResponse.json({ error: 'Machine not found' }, { status: 404 });
+export const POST = authMiddleware(async (req: NextRequest) => {
+  try {
+    const body = await req.json();
+    const { name, machineId } = monitoringPointSchema.parse(body);
+
+    const machine = await prisma.machine.findUnique({
+      where: { id: parseInt(machineId) },
+    });
+
+    if (!machine) {
+      return NextResponse.json(
+        { error: "Machine not found" },
+        { status: 404 }
+      );
+    }
+
+    const monitoringPoint = await prisma.monitoringPoint.create({
+      data: { name, machineId: machine.id },
+    });
+
+    return NextResponse.json(monitoringPoint, { status: 201 });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ error: error.errors }, { status: 400 });
+    }
+
+    console.error("Failed to create monitoring point:", error);
+    
+    return NextResponse.json(
+      { error: "Failed to create monitoring point" },
+      { status: 500 }
+    );
   }
-
-  const point = await prisma.monitoringPoint.create({
-    data: { name, machineId },
-  });
-
-  return NextResponse.json(point, { status: 201 });
 });
 
 
-// Listar pontos de monitoramento com paginação e ordenação
 export const GET = authMiddleware(async (req: NextRequest, res) => {
   const url = new URL(req.url);
   const searchParams = url.searchParams;

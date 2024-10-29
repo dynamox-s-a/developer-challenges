@@ -14,10 +14,10 @@ export default function CreateMonitoringPoint() {
   const [name, setName] = useState("");
   const [machineId, setMachineId] = useState("");
   const [machines, setMachines] = useState<Machine[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    // Carregar máquinas do banco
     const fetchMachines = async () => {
       try {
         const response = await fetch("/api/machines", {
@@ -25,7 +25,7 @@ export default function CreateMonitoringPoint() {
         });
         const data = await response.json();
         setMachines(data);
-        if (data.length) setMachineId(data[0].id); // Definir o primeiro como valor padrão
+        if (data.length) setMachineId(data[0].id); 
       } catch (error) {
         console.error("Error fetching machines:", error);
       }
@@ -34,6 +34,18 @@ export default function CreateMonitoringPoint() {
   }, []);
 
   const handleCreate = async () => {
+    setError(null);
+
+    if (name.length < 2) {
+      setError("Name must be at least 2 characters long.");
+      return;
+    }
+
+    if (!machineId) {
+      setError("Please select a machine.");
+      return;
+    }
+
     try {
       const response = await fetch("/api/monitoring-points", {
         method: "POST",
@@ -48,6 +60,7 @@ export default function CreateMonitoringPoint() {
         router.push("/monitoring-points");
       } else {
         const errorData = await response.json();
+        console.log(errorData);
         alert(`Failed to create monitoring point:\n${errorData.error}`);
       }
     } catch (error) {
@@ -58,17 +71,20 @@ export default function CreateMonitoringPoint() {
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-4">Create Monitoring Point</h1>
+      {error && <div className="bg-red-100 text-red-700 p-2 rounded mb-4">{error}</div>}
       <input
         type="text"
         placeholder="Name"
         value={name}
         onChange={(e) => setName(e.target.value)}
         className="border p-2 mb-4 w-full"
+        required
       />
       <select
         value={machineId}
         onChange={(e) => setMachineId(e.target.value)}
         className="border p-2 mb-4 w-full"
+        required
       >
         {machines.map((machine) => (
           <option key={machine.id} value={machine.id}>

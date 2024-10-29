@@ -13,12 +13,11 @@ export function authMiddleware(handler: Handler) {
 
       const decoded = verifyToken(token);
 
-      // Anexar userId ao request (se necessário)
       if (typeof decoded !== 'string' && 'userId' in decoded) {
         req.headers.set('x-user-id', decoded.userId.toString());
       }
 
-      return handler(req, context); // Passar o contexto para o handler
+      return handler(req, context);
     } catch (error) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }

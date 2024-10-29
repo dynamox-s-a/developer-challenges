@@ -3,6 +3,6 @@ import { authMiddleware } from '@/lib/middleware';
 
 export const DELETE = authMiddleware(async () => {
   const response = NextResponse.json({ message: 'Logged out' });
-  response.cookies.set('token', '', { maxAge: -1 }); // Remove o cookie do token
+  response.cookies.set('token', '', { maxAge: -1 });
   return response;
 });
