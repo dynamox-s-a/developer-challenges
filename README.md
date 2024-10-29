@@ -1,5 +1,14 @@
-# Link to access the application
-## https://dynamox-test.netlify.app/routes/login
+
+
+# Deploy Overview
+
+This document outlines the deployment setup for the project, detailing the backend deployment on Railway and the frontend deployment on Netlify.
+
+- **Backend Deployment:** Hosted on [Railway] - (dynamox-fullstack-test-production.up.railway.app)
+- **Frontend Deployment:** Hosted on [Netlify]
+
+### Application Access
+You can access the application login page here: [Dynamox Test Login](https://dynamox-test.netlify.app/routes/login)
 
 # Back-End Overview
 
