@@ -49,22 +49,28 @@ export function SignInForm(): React.JSX.Element {
 
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
-      setIsPending(true);
+      try {
+        setIsPending(true);
 
-      const { error } = await authClient.signInWithPassword(values);
+        const { success, error } = await authClient.signInWithPassword(values);
 
-      if (error) {
-        setError('root', { type: 'server', message: error });
+        if (!success) {
+          setError('root', { type: 'server', message: error || 'Sign in failed' });
+          setIsPending(false);
+          return;
+        }
+
+        console.log('Sign in successful, refreshing session...');
+
+        await checkSession?.();
+
+        router.refresh();
+      } catch (err) {
+        console.error('Sign in error:', err);
+        setError('root', { type: 'server', message: 'An unexpected error occurred' });
+      } finally {
         setIsPending(false);
-        return;
       }
-
-      // Refresh the auth state
-      await checkSession?.();
-
-      // UserProvider, for this case, will not refresh the router
-      // After refresh, GuestGuard will handle the redirect
-      router.refresh();
     },
     [checkSession, router, setError]
   );
