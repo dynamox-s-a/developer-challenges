@@ -33,12 +33,15 @@ export function EditForm({ machine }: EditFormProps): React.JSX.Element {
     async (values: MachineFormValues): Promise<void> => {
       try {
         await checkSession?.();
-        await updateMachine({ id: machine.id, ...values });
+        await updateMachine({ id: machine.id, ...values }).unwrap();
         router.push('/dashboard/machines');
-      } catch (error) {
+      } catch (error: unknown) {
+        const apiError = error as { data?: { message?: string }; status?: number };
+        const errorMessage = apiError.data?.message || 'Something went wrong';
+
         form.setError('root', {
           type: 'server',
-          message: error instanceof Error ? error.message : 'Something went wrong',
+          message: errorMessage,
         });
       }
     },

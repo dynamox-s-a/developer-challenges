@@ -29,9 +29,12 @@ export function MachinesForm({ isFormDisabled }: MachinesFormProps): React.JSX.E
         await checkSession?.();
         await addMachine(values).unwrap();
       } catch (error) {
+        const apiError = error as { data?: { message?: string }; status?: number };
+        const errorMessage = apiError.data?.message || 'Something went wrong';
+
         form.setError('root', {
           type: 'server',
-          message: error instanceof Error ? error.message : 'Something went wrong',
+          message: errorMessage,
         });
       }
     },
