@@ -96,12 +96,19 @@ class AuthClient {
     }
 
     const decoded = this.decodeToken(token);
-    const isNotExpired = !this.isTokenExpired(decoded);
-    const isValid = decoded.email && decoded.sub && isNotExpired;
+    if (!decoded) {
+      this.signOut();
+      return { data: null, error: 'Invalid token format' };
+    }
 
-    if (!isValid) {
+    if (this.isTokenExpired(decoded)) {
       this.signOut();
       return { data: null, error: 'Session expired' };
+    }
+
+    if (!decoded.email || !decoded.sub) {
+      this.signOut();
+      return { data: null, error: 'Invalid token payload' };
     }
 
     return {
@@ -110,6 +117,10 @@ class AuthClient {
         email: decoded.email,
       },
     };
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('jwt-token');
   }
 }
 
