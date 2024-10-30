@@ -83,6 +83,58 @@ describe('MonitoringPointsService', () => {
   });
 
   describe('findAll', () => {
+    it('should return all monitoring points for a user', async () => {
+      const userId = 1;
+      const mockMonitoringPoints = [
+        {
+          id: 1,
+          name: 'Point A',
+          machine: { name: 'Machine A' },
+          sensor: { model: 'Model X' },
+        },
+        {
+          id: 2,
+          name: 'Point B',
+          machine: { name: 'Machine B' },
+          sensor: { model: 'Model Y' },
+        },
+      ];
+
+      prisma.user.findUnique.mockResolvedValue({
+        monitoringPoints: mockMonitoringPoints,
+      });
+
+      const result = await service.findAll(userId);
+
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({
+        where: { id: userId },
+        select: {
+          monitoringPoints: {
+            include: {
+              machine: true,
+              sensor: true,
+            },
+          },
+        },
+      });
+
+      expect(result).toEqual(mockMonitoringPoints);
+    });
+
+    it('should return empty array when user has no monitoring points', async () => {
+      const userId = 1;
+
+      prisma.user.findUnique.mockResolvedValue({
+        monitoringPoints: [],
+      });
+
+      const result = await service.findAll(userId);
+
+      expect(result).toEqual([]);
+    });
+  });
+
+  describe('findAllPaginated', () => {
     it('should return paginated monitoring points', async () => {
       const query: QueryDto = {
         page: 2,
@@ -103,21 +155,18 @@ describe('MonitoringPointsService', () => {
           machine: { name: 'Machine B' },
           sensor: { model: 'Model Y' },
         },
-        {
-          id: 4,
-          name: 'Point D',
-          machine: { name: 'Machine C' },
-          sensor: { model: 'Model Z' },
-        },
       ];
-      const mockCount = { monitoringPoints: 10 };
-
-      prisma.user.findUnique.mockResolvedValue({
+      const mockResponse = {
         monitoringPoints: mockMonitoringPoints,
-        _count: mockCount,
-      });
+        _count: {
+          monitoringPoints: 10,
+          machines: 5,
+        },
+      };
 
-      const result = await service.findAll(query, userId);
+      prisma.user.findUnique.mockResolvedValue(mockResponse);
+
+      const result = await service.findAllPaginated(query, userId);
 
       expect(prisma.user.findUnique).toHaveBeenCalledWith({
         where: { id: userId },
@@ -128,15 +177,21 @@ describe('MonitoringPointsService', () => {
             orderBy: { machine: { name: 'desc' } },
             include: { machine: true, sensor: true },
           },
-          _count: { select: { monitoringPoints: true } },
+          _count: {
+            select: {
+              monitoringPoints: true,
+              machines: true,
+            },
+          },
         },
       });
 
       expect(result).toEqual({
         data: mockMonitoringPoints,
-        total: mockCount.monitoringPoints,
+        total: 10,
         page: 2,
         totalPages: 2,
+        totalMachines: 5,
       });
     });
 
@@ -150,33 +205,18 @@ describe('MonitoringPointsService', () => {
           machine: { name: 'Machine A' },
           sensor: { model: 'Model Y' },
         },
-        {
-          id: 2,
-          name: 'Point B',
-          machine: { name: 'Machine B' },
-          sensor: { model: 'Model X' },
-        },
-        {
-          id: 3,
-          name: 'Point C',
-          machine: { name: 'Machine C' },
-          sensor: { model: 'Model Z' },
-        },
-        {
-          id: 4,
-          name: 'Point D',
-          machine: { name: 'Machine D' },
-          sensor: { model: 'Model W' },
-        },
       ];
-      const mockCount = { monitoringPoints: 4 };
-
-      prisma.user.findUnique.mockResolvedValue({
+      const mockResponse = {
         monitoringPoints: mockMonitoringPoints,
-        _count: mockCount,
-      });
+        _count: {
+          monitoringPoints: 4,
+          machines: 2,
+        },
+      };
 
-      const result = await service.findAll(query, userId);
+      prisma.user.findUnique.mockResolvedValue(mockResponse);
+
+      const result = await service.findAllPaginated(query, userId);
 
       expect(prisma.user.findUnique).toHaveBeenCalledWith({
         where: { id: userId },
@@ -187,15 +227,21 @@ describe('MonitoringPointsService', () => {
             orderBy: { machine: { name: 'asc' } },
             include: { machine: true, sensor: true },
           },
-          _count: { select: { monitoringPoints: true } },
+          _count: {
+            select: {
+              monitoringPoints: true,
+              machines: true,
+            },
+          },
         },
       });
 
       expect(result).toEqual({
         data: mockMonitoringPoints,
-        total: mockCount.monitoringPoints,
+        total: 4,
         page: 1,
         totalPages: 1,
+        totalMachines: 2,
       });
     });
   });

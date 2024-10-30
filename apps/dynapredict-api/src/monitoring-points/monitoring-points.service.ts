@@ -38,7 +38,25 @@ export class MonitoringPointsService {
     }
   }
 
-  async findAll(query: QueryDto, userId: number) {
+  async findAll(userId: number) {
+    const { monitoringPoints } = await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        monitoringPoints: {
+          include: {
+            machine: true,
+            sensor: true,
+          },
+        },
+      },
+    });
+
+    return monitoringPoints;
+  }
+
+  async findAllPaginated(query: QueryDto, userId: number) {
     const { page = 1, sortBy = 'machine_name', sortOrder = 'asc' } = query;
     const limit = 5;
     const skip = (page - 1) * limit;
@@ -46,7 +64,7 @@ export class MonitoringPointsService {
 
     const {
       monitoringPoints,
-      _count: { monitoringPoints: totalMps },
+      _count: { monitoringPoints: totalMps, machines: totalMachines },
     } = await this.prisma.user.findUnique({
       where: {
         id: userId,
@@ -64,6 +82,7 @@ export class MonitoringPointsService {
         _count: {
           select: {
             monitoringPoints: true,
+            machines: true,
           },
         },
       },
@@ -74,6 +93,7 @@ export class MonitoringPointsService {
       total: totalMps,
       page,
       totalPages: Math.ceil(totalMps / limit),
+      totalMachines,
     };
   }
 
