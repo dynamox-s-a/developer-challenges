@@ -183,8 +183,9 @@ const MachineList = () => {
 
       if (lastMonitoringPoint) {
         try {
-          const sensorData = { ...newSensor, id: uuidv4() };
+          const sensorData = { id: uuidv4(), model: newSensor.type };
           const updatedPoint = await addSensorToMonitoringPoint(
+            selectedMachine.id,
             lastMonitoringPoint.id,
             sensorData
           );
@@ -212,7 +213,6 @@ const MachineList = () => {
       }
     }
   };
-
   const handleLogout = () => {
     dispatch(logout());
     router.push("/login");

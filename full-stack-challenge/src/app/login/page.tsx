@@ -2,7 +2,7 @@
 
 import { useAppDispatch } from "../../features/store";
 import { login } from "../../features/authSlice";
-import { Button, TextField, Container, Typography } from "@mui/material";
+import { Button, TextField, Container, Typography, Box } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -22,35 +22,48 @@ const LoginPage = () => {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Typography variant="h4" component="h1" gutterBottom>
-        Login
-      </Typography>
-      <TextField
-        label="Email"
-        type="email"
-        fullWidth
-        margin="normal"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <TextField
-        label="Senha"
-        type="password"
-        fullWidth
-        margin="normal"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <Button
-        variant="contained"
-        color="primary"
-        fullWidth
-        onClick={handleLogin}
-      >
-        Entrar
-      </Button>
-    </Container>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
+        backgroundColor: "darkgrey",
+        padding: "20px",
+      }}
+    >
+      <Container maxWidth="sm">
+        <Typography variant="h4" component="h1" gutterBottom>
+          Login
+        </Typography>
+        <TextField
+          label="Email"
+          type="email"
+          fullWidth
+          margin="normal"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <TextField
+          label="Senha"
+          type="password"
+          fullWidth
+          margin="normal"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          onClick={handleLogin}
+          style={{ backgroundColor: "#696969" }}
+        >
+          Entrar
+        </Button>
+      </Container>
+    </Box>
   );
 };
 

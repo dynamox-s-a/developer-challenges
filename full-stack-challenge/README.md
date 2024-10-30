@@ -35,9 +35,19 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-## Suposições
+## Assumptions
 
-1. Um sensor pode ser associado a um único ponto de monitoramento.
-2. Os usuários podem nomear seus pontos de monitoramento com nomes arbitrários, desde que não sejam deixados em branco.
-3. Para a associação de sensores, apenas um sensor pode ser associado a um ponto de monitoramento de cada vez.
-4. A lista de pontos de monitoramento pode ser ordenada por qualquer coluna, independentemente de quantos pontos de monitoramento existem.
+1. A sensor can be associated with a single monitoring point.
+2. Users can name their monitoring points with arbitrary names, as long as they are not left blank.
+3. For sensor association, only one sensor can be associated with a monitoring point at a time.
+4. The list of monitoring points can be sorted by any column, regardless of how many monitoring points there are.
+
+## Remarks / future implementations
+
+1. I haven't had time to clean up the project and organize it into clean code and clean architecture
+2. Standardize the code in English
+3. After I added the back-end and the database, the registration of sensors is not working, when creating the monitoring point, immediately afterwards, press cancel or refresh the page.
+4. I haven't had time to implement unit tests.
+5. The front end must run on port 3001 and the back end on port 3000. To run the front end just use the command npm run dev and for the back end npm run start:dev
+
+6. The default user is login: admin password: admin

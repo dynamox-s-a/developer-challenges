@@ -35,12 +35,15 @@ export const createMonitoringPoint = async (machineId, monitoringPoint) => {
   return response.data;
 };
 
-export const addSensorToMonitoringPoint = async (monitoringPointId, sensor) => {
+export const addSensorToMonitoringPoint = async (
+  machineId,
+  monitoringPointId,
+  sensor
+) => {
   const response = await api.post(
-    `/monitoring-points/${monitoringPointId}/sensors`,
+    `/machines/${machineId}/monitoring-points/${monitoringPointId}/sensors`,
     sensor
   );
   return response.data;
 };
-
 export default api;
