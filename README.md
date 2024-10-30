@@ -70,3 +70,8 @@ Este serviço é responsável pela api de maquinas e pontos de monitoriamento. P
  ```bash
     docker start dynamox-nginx 
  ```
+
+Assumptions:
+- Assumi que cada ponto de monitoramento deve pertencer a somente um sensor. Dessa forma, ficou possível criar somente três pontos de monitoramento, pois só existem três sensores pré configurados no seed.
+- Poderia ter feito a parte de CRUD dos sensores também, mas como não era uma solicitação no teste, poderia vir como melhoria.
+- Ao desenvolver, coloquei uma camada de proxy com o NGINX na frente da api de autenticação e da api do backend, para não expor as apis.
