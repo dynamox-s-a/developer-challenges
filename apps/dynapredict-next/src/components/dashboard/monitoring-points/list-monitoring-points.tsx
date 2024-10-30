@@ -1,51 +1,22 @@
 'use client';
 
 import * as React from 'react';
-import { useRouter } from 'next/navigation';
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
+import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Tooltip from '@mui/material/Tooltip';
-import { PencilSimple } from '@phosphor-icons/react/dist/ssr/PencilSimple';
 
-export interface MonitoringPoint {
-  id: string;
-  name: string;
-  machineId: string;
-  machineName: string;
-  sensorId: string | null;
-  isEnabled: boolean;
-}
+import { useGetMonitoringPointsQuery } from '@/lib/redux/service/api';
 
-interface Sensor {
-  id: string;
-  name: string;
-}
+import ListAwaitingLayout from '../list-awaiting-layout';
+import MonitoringPointsTable from './monitoring-points-table';
 
-interface ListMonitoringPointsProps {
-  monitoringPoints: MonitoringPoint[];
-  availableSensors: Sensor[];
-  onSensorChange?: (monitoringPointId: string, sensorId: string) => void;
-  onToggleEdit?: (monitoringPointId: string) => void;
-  editingPointId: string | null;
-}
+export function ListMonitoringPoints(): React.JSX.Element {
+  const { data: monitoringPoints, isLoading, error } = useGetMonitoringPointsQuery();
+  const isReadyForTable = !isLoading && !error && monitoringPoints;
 
-export function ListMonitoringPoints({
-  monitoringPoints = [],
-  availableSensors = [],
-  onSensorChange,
-  onToggleEdit,
-  editingPointId,
-}: ListMonitoringPointsProps): React.JSX.Element {
   return (
     <Card>
       <CardHeader
@@ -58,51 +29,9 @@ export function ListMonitoringPoints({
         }}
       />
       <Divider />
-      <Box sx={{ overflowX: 'auto' }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Sensor Assignment</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Machine</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {monitoringPoints.map((point) => (
-              <TableRow hover key={point.id}>
-                <TableCell>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, maxWidth: '200px' }}>
-                    <Select
-                      size="small"
-                      value={point.sensorId || ''}
-                      onChange={(e) => onSensorChange?.(point.id, e.target.value)}
-                      disabled={editingPointId !== point.id}
-                    >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      {availableSensors.map((sensor) => (
-                        <MenuItem key={sensor.id} value={sensor.id}>
-                          {sensor.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    <Tooltip title={editingPointId === point.id ? 'Disable Assignment' : 'Enable Assignment'}>
-                      <IconButton
-                        onClick={() => onToggleEdit?.(point.id)}
-                        color={editingPointId === point.id ? 'primary' : 'default'}
-                      >
-                        <PencilSimple weight={editingPointId === point.id ? 'fill' : 'regular'} />
-                      </IconButton>
-                    </Tooltip>
-                  </Box>
-                </TableCell>
-                <TableCell>{point.name}</TableCell>
-                <TableCell>{point.machineName}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+      <Box sx={{ overflowX: 'auto', minHeight: 200, position: 'relative' }}>
+        <ListAwaitingLayout isLoading={isLoading} error={error ?? null} />
+        {isReadyForTable && <MonitoringPointsTable monitoringPoints={monitoringPoints} />}
       </Box>
     </Card>
   );
