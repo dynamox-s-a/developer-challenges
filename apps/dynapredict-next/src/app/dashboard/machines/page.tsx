@@ -1,21 +1,20 @@
+'use client';
+
 import Grid from '@mui/material/Unstable_Grid2';
 
+import { useGetMachinesQuery } from '@/lib/redux/service/api';
 import DidYouKnow from '@/components/dashboard/did-you-know';
 import { ListMachines } from '@/components/dashboard/machines/list-machines';
 import { MachinesForm } from '@/components/dashboard/machines/machines-form';
 
 export default function Page(): React.JSX.Element {
-  const machineTypes = ['Pump', 'Fan'];
-
-  const mockMachines = [
-    { id: '1', name: 'Pump A1', type: 'Pump' as const, createdAt: new Date() },
-    { id: '2', name: 'Fan B2', type: 'Fan' as const, createdAt: new Date() },
-  ];
+  const { data: machines, isLoading, error } = useGetMachinesQuery();
+  const isFormDisabled = isLoading || !!error;
 
   return (
     <Grid container spacing={3}>
       <Grid lg={6} sm={6} xs={12} order={{ xs: 2, sm: 1 }}>
-        <MachinesForm types={machineTypes} />
+        <MachinesForm isFormDisabled={isFormDisabled} />
       </Grid>
       <Grid lg={6} sm={6} xs={12} order={{ xs: 1, sm: 2 }}>
         <DidYouKnow
@@ -25,7 +24,7 @@ export default function Page(): React.JSX.Element {
         />
       </Grid>
       <Grid lg={12} sm={12} xs={12} order={{ xs: 3, sm: 3 }}>
-        <ListMachines machines={mockMachines} />
+        <ListMachines isLoading={isLoading} error={error ?? null} machines={machines ?? []} />
       </Grid>
     </Grid>
   );

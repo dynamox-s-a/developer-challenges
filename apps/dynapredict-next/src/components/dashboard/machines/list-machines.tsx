@@ -1,45 +1,27 @@
 'use client';
 
 import * as React from 'react';
-import { useRouter } from 'next/navigation';
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import Chip from '@mui/material/Chip';
+import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import type { SxProps } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Tooltip from '@mui/material/Tooltip';
-import { PencilSimple as EditIcon } from '@phosphor-icons/react/dist/ssr/PencilSimple';
-import { Trash as TrashIcon } from '@phosphor-icons/react/dist/ssr/Trash';
-import dayjs from 'dayjs';
+import { SerializedError } from '@reduxjs/toolkit';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
-import { paths } from '@/paths';
+import { Machine } from '@/types/data-types';
 
-const typeMap = {
-  Pump: { color: 'primary' },
-  Fan: { color: 'secondary' },
-} as const;
-
-export interface Machine {
-  id: string;
-  name: string;
-  type: 'Pump' | 'Fan';
-  createdAt: Date;
-}
+import { MachinesTable } from './machines-table';
 
 type ListMachinesProps = {
-  machines?: Machine[];
-  sx?: SxProps;
+  isLoading: boolean;
+  error: FetchBaseQueryError | SerializedError | null;
+  machines: Machine[];
 };
 
-export function ListMachines({ machines = [] }: ListMachinesProps): React.JSX.Element {
-  const router = useRouter();
+export function ListMachines({ isLoading, error, machines }: ListMachinesProps): React.JSX.Element {
+  const isReadyForTable = !isLoading && !error && machines;
 
   return (
     <Card>
@@ -53,48 +35,25 @@ export function ListMachines({ machines = [] }: ListMachinesProps): React.JSX.El
         }}
       />
       <Divider />
-      <Box sx={{ overflowX: 'auto' }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Type</TableCell>
-              <TableCell>Created At</TableCell>
-              <TableCell align="right">Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {machines.map((machine) => {
-              const { color } = typeMap[machine.type] ?? { color: 'default' };
-
-              return (
-                <TableRow hover key={machine.id}>
-                  <TableCell>{machine.name}</TableCell>
-                  <TableCell>
-                    <Chip color={color} label={machine.type} size="small" />
-                  </TableCell>
-                  <TableCell>{dayjs(machine.createdAt).format('MMM D, YYYY')}</TableCell>
-                  <TableCell align="right">
-                    <Tooltip title="Edit">
-                      <IconButton onClick={() => router.push(`${paths.dashboard.machines}/${machine.id}`)}>
-                        <EditIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete">
-                      <IconButton
-                        onClick={() => {
-                          console.log('Delete machine:', machine.id);
-                        }}
-                      >
-                        <TrashIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+      <Box sx={{ overflowX: 'auto', minHeight: 200, position: 'relative' }}>
+        {isLoading && (
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        )}
+        {error && (
+          <Box sx={{ p: 2 }}>
+            <Alert severity="error">Failed to fetch machines. Please try again later.</Alert>
+          </Box>
+        )}
+        {isReadyForTable && <MachinesTable machines={machines} />}
       </Box>
     </Card>
   );
