@@ -1,5 +1,6 @@
 import {
   Controller,
+  HttpCode,
   Post,
   Request,
   SetMetadata,
@@ -19,6 +20,7 @@ export class AppController {
   @Public()
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
+  @HttpCode(200)
   async login(@Request() req) {
     return this.authService.login(req.user as ValidatedUser);
   }

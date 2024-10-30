@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Delete,
+  HttpCode,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Post,
@@ -30,6 +32,7 @@ export class MonitoringPointsController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async remove(
     @Param('machineId', ParseIntPipe) machineId: number,
     @Param('id', ParseIntPipe) monitoringPointId: number,
