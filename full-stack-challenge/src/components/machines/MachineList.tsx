@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   TextField,
@@ -18,6 +18,14 @@ import {
   TableRow,
   TableSortLabel,
 } from "@mui/material";
+import {
+  fetchMachines,
+  addMachine,
+  updateMachine,
+  deleteMachine,
+  createMonitoringPoint,
+  addSensorToMonitoringPoint,
+} from "../../services/api";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { v4 as uuidv4 } from "uuid";
@@ -42,7 +50,7 @@ interface Machine {
   id: string;
   name: string;
   type: "Pump" | "Fan";
-  monitoringPoints: MonitoringPoint[];
+  monitoringPoints: MonitoringPoint[]; // Adicionado o tipo correto para monitoringPoints
 }
 
 const MachineList = () => {
@@ -80,67 +88,74 @@ const MachineList = () => {
   const [order, setOrder] = useState<"asc" | "desc">("asc");
   const [orderBy, setOrderBy] = useState<string>("");
 
-  const handleAddMachine = () => {
-    const newMachineData: Machine = {
-      ...newMachine,
-      id: Date.now().toString(),
+  const [showAddMonitoringPoint, setShowAddMonitoringPoint] = useState(false);
+  const [showAddSensor, setShowAddSensor] = useState(false);
+
+  useEffect(() => {
+    const loadMachines = async () => {
+      try {
+        const data = await fetchMachines();
+        setMachines(data);
+      } catch (error) {
+        console.error("Erro ao carregar máquinas:", error);
+      }
     };
-    setMachines([...machines, newMachineData]);
-    setNewMachine({ id: "", name: "", type: "Pump", monitoringPoints: [] });
-  };
 
-  const handleDeleteMachine = (id: string) => {
-    setMachines(machines.filter((machine) => machine.id !== id));
-  };
+    loadMachines();
+  }, []);
 
-  const handleAddMonitoringPoint = () => {
-    if (selectedMachine) {
-      const updatedMachine = {
-        ...selectedMachine,
-        monitoringPoints: [
-          ...selectedMachine.monitoringPoints,
-          { ...newMonitoringPoint, id: Date.now().toString(), sensors: [] },
-        ],
-      };
-
-      setMachines(
-        machines.map((machine) =>
-          machine.id === selectedMachine.id ? updatedMachine : machine
-        )
-      );
-      setNewMonitoringPoint({ id: "", name: "", sensors: [] });
-      setSelectedMachine(updatedMachine);
+  const handleAddMachine = async () => {
+    try {
+      const machineData = await addMachine(newMachine);
+      setMachines([...machines, machineData]);
+      setNewMachine({ id: "", name: "", type: "Pump", monitoringPoints: [] });
+    } catch (error) {
+      console.error("Erro ao adicionar máquina:", error);
     }
   };
 
-  const handleAddSensor = () => {
+  const handleDeleteMachine = async (id: string) => {
+    try {
+      await deleteMachine(id);
+      setMachines(machines.filter((machine) => machine.id !== id));
+    } catch (error) {
+      console.error("Erro ao excluir máquina:", error);
+    }
+  };
+
+  const handleUpdateMachine = async () => {
     if (selectedMachine) {
-      const lastMonitoringPoint =
-        selectedMachine.monitoringPoints[
-          selectedMachine.monitoringPoints.length - 1
-        ];
+      const updatedMachine = await updateMachine(
+        selectedMachine.id,
+        selectedMachine
+      );
+      setMachines(
+        machines.map((machine) =>
+          machine.id === updatedMachine.id ? updatedMachine : machine
+        )
+      );
+      setOpenDialog(false);
+    }
+  };
 
-      if (lastMonitoringPoint) {
-        if (
-          (newSensor.type === "TcAg" || newSensor.type === "TcAs") &&
-          selectedMachine.type === "Pump"
-        ) {
-          alert(
-            "Sensores 'TcAg' e 'TcAs' não são permitidos para máquinas do tipo 'Pump'."
-          );
-          return;
-        }
+  const handleAddMonitoringPoint = async () => {
+    if (selectedMachine) {
+      const monitoringPoint = {
+        ...newMonitoringPoint,
+        id: Date.now().toString(),
+      };
 
+      try {
+        const createdPoint = await createMonitoringPoint(
+          selectedMachine.id,
+          monitoringPoint
+        );
         const updatedMachine = {
           ...selectedMachine,
-          monitoringPoints: selectedMachine.monitoringPoints.map((mp) =>
-            mp.id === lastMonitoringPoint.id
-              ? {
-                  ...mp,
-                  sensors: [...mp.sensors, { ...newSensor, id: uuidv4() }],
-                }
-              : mp
-          ),
+          monitoringPoints: [
+            ...(selectedMachine.monitoringPoints || []),
+            createdPoint,
+          ], // Verificação de segurança
         };
 
         setMachines(
@@ -148,9 +163,48 @@ const MachineList = () => {
             machine.id === selectedMachine.id ? updatedMachine : machine
           )
         );
-
         setSelectedMachine(updatedMachine);
-        setNewSensor({ id: "", name: "", type: "" });
+        setNewMonitoringPoint({ id: "", name: "", sensors: [] });
+        setShowAddMonitoringPoint(false); // Ocultar após adicionar
+      } catch (error) {
+        console.error("Erro ao adicionar ponto de monitoramento:", error);
+      }
+    }
+  };
+
+  const handleAddSensor = async () => {
+    if (selectedMachine) {
+      const lastMonitoringPoint =
+        selectedMachine.monitoringPoints?.[
+          selectedMachine.monitoringPoints.length - 1
+        ];
+
+      if (lastMonitoringPoint) {
+        try {
+          const sensorData = { ...newSensor, id: uuidv4() };
+          const updatedPoint = await addSensorToMonitoringPoint(
+            lastMonitoringPoint.id,
+            sensorData
+          );
+
+          const updatedMachine = {
+            ...selectedMachine,
+            monitoringPoints: selectedMachine.monitoringPoints.map((mp) =>
+              mp.id === lastMonitoringPoint.id ? updatedPoint : mp
+            ),
+          };
+
+          setMachines(
+            machines.map((machine) =>
+              machine.id === selectedMachine.id ? updatedMachine : machine
+            )
+          );
+          setSelectedMachine(updatedMachine);
+          setNewSensor({ id: "", name: "", type: "" });
+          setShowAddSensor(false); // Ocultar após adicionar
+        } catch (error) {
+          console.error("Erro ao adicionar sensor:", error);
+        }
       } else {
         alert("Adicione um ponto de monitoramento primeiro.");
       }
@@ -245,23 +299,26 @@ const MachineList = () => {
               <TableCell>{machine.name}</TableCell>
               <TableCell>{machine.type}</TableCell>
               <TableCell>
-                {machine.monitoringPoints.map((point) => (
-                  <div key={point.id} style={{ marginLeft: "20px" }}>
-                    <strong>{point.name}</strong>
-                    <ul>
-                      {point.sensors.map((sensor) => (
-                        <li key={sensor.id}>
-                          {sensor.name} - {sensor.type}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+                {Array.isArray(machine.monitoringPoints) &&
+                machine.monitoringPoints.length > 0 ? (
+                  machine.monitoringPoints.map((point) => (
+                    <div key={point.id} style={{ marginLeft: "20px" }}>
+                      <strong>{point.name}</strong>
+                      <ul>
+                        {Array.isArray(point.sensors) &&
+                          point.sensors.map((sensor) => (
+                            <li key={sensor.id}>
+                              {sensor.name} ({sensor.type})
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
+                  ))
+                ) : (
+                  <p>Nenhum ponto de monitoramento disponível</p>
+                )}
               </TableCell>
               <TableCell>
-                <IconButton onClick={() => handleDeleteMachine(machine.id)}>
-                  <DeleteIcon />
-                </IconButton>
                 <IconButton
                   onClick={() => {
                     setSelectedMachine(machine);
@@ -270,15 +327,57 @@ const MachineList = () => {
                 >
                   <EditIcon />
                 </IconButton>
+                <IconButton onClick={() => handleDeleteMachine(machine.id)}>
+                  <DeleteIcon />
+                </IconButton>
+                <Button
+                  onClick={() => {
+                    setSelectedMachine(machine);
+                    setShowAddMonitoringPoint(true);
+                  }}
+                >
+                  Adicionar Ponto
+                </Button>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
 
+      {/* Dialog de Atualização de Máquina */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>Adicionar Ponto de Monitoramento</DialogTitle>
+        <DialogTitle>Atualizar Máquina</DialogTitle>
         <DialogContent>
+          <TextField
+            label="Nome da Máquina"
+            value={selectedMachine?.name || ""}
+            onChange={(e) =>
+              setSelectedMachine({ ...selectedMachine!, name: e.target.value })
+            }
+          />
+          <Select
+            value={selectedMachine?.type}
+            onChange={(e) =>
+              setSelectedMachine({
+                ...selectedMachine!,
+                type: e.target.value as "Pump" | "Fan",
+              })
+            }
+          >
+            <MenuItem value="Pump">Pump</MenuItem>
+            <MenuItem value="Fan">Fan</MenuItem>
+          </Select>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>Cancelar</Button>
+          <Button onClick={handleUpdateMachine}>Salvar</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Adicionar Ponto de Monitoramento */}
+      {showAddMonitoringPoint && (
+        <div style={{ marginTop: "20px" }}>
+          <h3>Adicionar Ponto de Monitoramento</h3>
           <TextField
             label="Nome do Ponto de Monitoramento"
             value={newMonitoringPoint.name}
@@ -292,8 +391,16 @@ const MachineList = () => {
           <Button variant="contained" onClick={handleAddMonitoringPoint}>
             Adicionar Ponto
           </Button>
+          <Button onClick={() => setShowAddMonitoringPoint(false)}>
+            Cancelar
+          </Button>
+        </div>
+      )}
 
-          <h4>Adicionar Sensor</h4>
+      {/* Adicionar Sensor */}
+      {showAddSensor && (
+        <div style={{ marginTop: "20px" }}>
+          <h3>Adicionar Sensor</h3>
           <TextField
             label="Nome do Sensor"
             value={newSensor.name}
@@ -301,40 +408,27 @@ const MachineList = () => {
               setNewSensor({ ...newSensor, name: e.target.value })
             }
           />
-          <Select
+          <TextField
+            label="Tipo de Sensor"
             value={newSensor.type}
             onChange={(e) =>
               setNewSensor({ ...newSensor, type: e.target.value })
             }
-          >
-            <MenuItem value="TcAg">TcAg</MenuItem>
-            <MenuItem value="TcAs">TcAs</MenuItem>
-            <MenuItem value="HF+">HF+</MenuItem>
-          </Select>
+          />
           <Button variant="contained" onClick={handleAddSensor}>
             Adicionar Sensor
           </Button>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Fechar</Button>
-        </DialogActions>
-      </Dialog>
+          <Button onClick={() => setShowAddSensor(false)}>Cancelar</Button>
+        </div>
+      )}
 
-      <Button variant="contained" onClick={handleLogout}>
-        Logout
+      <Button
+        variant="contained"
+        onClick={handleLogout}
+        style={{ marginTop: "20px" }}
+      >
+        Sair
       </Button>
-      <div>
-        {currentPage > 0 && (
-          <Button onClick={() => setCurrentPage(currentPage - 1)}>
-            Anterior
-          </Button>
-        )}
-        {currentPage < Math.ceil(sortedMachines.length / itemsPerPage) - 1 && (
-          <Button onClick={() => setCurrentPage(currentPage + 1)}>
-            Próximo
-          </Button>
-        )}
-      </div>
     </div>
   );
 };
