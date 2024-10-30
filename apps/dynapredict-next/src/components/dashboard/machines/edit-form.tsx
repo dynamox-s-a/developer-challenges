@@ -8,8 +8,9 @@ import { useForm } from 'react-hook-form';
 import { Machine } from '@/types/data-types';
 import { useUpdateMachineMutation } from '@/lib/redux/service/api';
 import { useUser } from '@/hooks/use-user';
+import { GenericForm } from '@/components/dashboard/form/form-component';
 
-import { MachineForm, MachineFormValues, schema } from './form-component';
+import { machineFormFields, MachineFormValues, schema } from './form-config';
 
 type EditFormProps = {
   machine: Machine;
@@ -45,13 +46,14 @@ export function EditForm({ machine }: EditFormProps): React.JSX.Element {
   );
 
   return (
-    <MachineForm
+    <GenericForm
       form={form}
       onSubmit={handleFormSubmit}
       isLoading={isLoading}
       title="Edit Machine"
       description="Update the machine details"
       submitText="Update Machine"
+      fields={machineFormFields}
       cardProps={{ sx: { height: '100%' } }}
     />
   );

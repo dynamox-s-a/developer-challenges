@@ -6,8 +6,9 @@ import { useForm } from 'react-hook-form';
 
 import { useAddMachineMutation } from '@/lib/redux/service/api';
 import { useUser } from '@/hooks/use-user';
+import { GenericForm } from '@/components/dashboard/form/form-component';
 
-import { defaultValues, MachineForm, MachineFormValues, schema } from './form-component';
+import { defaultValues, machineFormFields, MachineFormValues, schema } from './form-config';
 
 type MachinesFormProps = {
   isFormDisabled: boolean;
@@ -38,13 +39,14 @@ export function MachinesForm({ isFormDisabled }: MachinesFormProps): React.JSX.E
   );
 
   return (
-    <MachineForm
+    <GenericForm
       form={form}
       onSubmit={handleFormSubmit}
       isLoading={isLoading}
-      title="Add New Machine"
+      title="Add new machine"
       description="Fill in the details to add a new machine to your inventory"
-      submitText="Add Machine"
+      submitText="Add machine"
+      fields={machineFormFields}
       cardProps={{
         sx: {
           height: '100%',
