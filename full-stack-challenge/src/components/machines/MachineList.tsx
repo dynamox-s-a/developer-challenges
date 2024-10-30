@@ -17,6 +17,7 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
+  Box,
 } from "@mui/material";
 import {
   fetchMachines,
@@ -50,7 +51,7 @@ interface Machine {
   id: string;
   name: string;
   type: "Pump" | "Fan";
-  monitoringPoints: MonitoringPoint[]; // Adicionado o tipo correto para monitoringPoints
+  monitoringPoints: MonitoringPoint[];
 }
 
 const MachineList = () => {
@@ -82,7 +83,7 @@ const MachineList = () => {
   const [selectedMachine, setSelectedMachine] = useState<Machine | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
 
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage] = useState(0);
   const itemsPerPage = 5;
 
   const [order, setOrder] = useState<"asc" | "desc">("asc");
@@ -155,7 +156,7 @@ const MachineList = () => {
           monitoringPoints: [
             ...(selectedMachine.monitoringPoints || []),
             createdPoint,
-          ], // Verificação de segurança
+          ],
         };
 
         setMachines(
@@ -165,7 +166,8 @@ const MachineList = () => {
         );
         setSelectedMachine(updatedMachine);
         setNewMonitoringPoint({ id: "", name: "", sensors: [] });
-        setShowAddMonitoringPoint(false); // Ocultar após adicionar
+        setShowAddMonitoringPoint(false);
+        setShowAddSensor(true);
       } catch (error) {
         console.error("Erro ao adicionar ponto de monitoramento:", error);
       }
@@ -201,7 +203,7 @@ const MachineList = () => {
           );
           setSelectedMachine(updatedMachine);
           setNewSensor({ id: "", name: "", type: "" });
-          setShowAddSensor(false); // Ocultar após adicionar
+          setShowAddSensor(false);
         } catch (error) {
           console.error("Erro ao adicionar sensor:", error);
         }
@@ -241,125 +243,31 @@ const MachineList = () => {
   );
 
   return (
-    <div>
-      <h2>Gerenciar Máquinas</h2>
-      <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-        <TextField
-          label="Nome da Máquina"
-          value={newMachine.name}
-          onChange={(e) =>
-            setNewMachine({ ...newMachine, name: e.target.value })
-          }
-        />
-        <Select
-          value={newMachine.type}
-          onChange={(e) =>
-            setNewMachine({
-              ...newMachine,
-              type: e.target.value as "Pump" | "Fan",
-            })
-          }
-        >
-          <MenuItem value="Pump">Pump</MenuItem>
-          <MenuItem value="Fan">Fan</MenuItem>
-        </Select>
-        <Button variant="contained" onClick={handleAddMachine}>
-          Adicionar Máquina
-        </Button>
-      </div>
-
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>
-              <TableSortLabel
-                active={orderBy === "machineName"}
-                direction={orderBy === "machineName" ? order : "asc"}
-                onClick={() => handleRequestSort("machineName")}
-              >
-                Nome da Máquina
-              </TableSortLabel>
-            </TableCell>
-            <TableCell>
-              <TableSortLabel
-                active={orderBy === "machineType"}
-                direction={orderBy === "machineType" ? order : "asc"}
-                onClick={() => handleRequestSort("machineType")}
-              >
-                Tipo da Máquina
-              </TableSortLabel>
-            </TableCell>
-            <TableCell>Pontos de Monitoramento</TableCell>
-            <TableCell>Ações</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {paginatedMachines.map((machine) => (
-            <TableRow key={machine.id}>
-              <TableCell>{machine.name}</TableCell>
-              <TableCell>{machine.type}</TableCell>
-              <TableCell>
-                {Array.isArray(machine.monitoringPoints) &&
-                machine.monitoringPoints.length > 0 ? (
-                  machine.monitoringPoints.map((point) => (
-                    <div key={point.id} style={{ marginLeft: "20px" }}>
-                      <strong>{point.name}</strong>
-                      <ul>
-                        {Array.isArray(point.sensors) &&
-                          point.sensors.map((sensor) => (
-                            <li key={sensor.id}>
-                              {sensor.name} ({sensor.type})
-                            </li>
-                          ))}
-                      </ul>
-                    </div>
-                  ))
-                ) : (
-                  <p>Nenhum ponto de monitoramento disponível</p>
-                )}
-              </TableCell>
-              <TableCell>
-                <IconButton
-                  onClick={() => {
-                    setSelectedMachine(machine);
-                    setOpenDialog(true);
-                  }}
-                >
-                  <EditIcon />
-                </IconButton>
-                <IconButton onClick={() => handleDeleteMachine(machine.id)}>
-                  <DeleteIcon />
-                </IconButton>
-                <Button
-                  onClick={() => {
-                    setSelectedMachine(machine);
-                    setShowAddMonitoringPoint(true);
-                  }}
-                >
-                  Adicionar Ponto
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-
-      {/* Dialog de Atualização de Máquina */}
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>Atualizar Máquina</DialogTitle>
-        <DialogContent>
+    <Box
+      sx={{
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
+        backgroundColor: "darkgrey",
+        padding: "20px",
+      }}
+    >
+      <div style={{ marginBottom: "20px" }}>
+        <h2 style={{ marginBottom: "20px" }}>Gerenciar Máquinas</h2>
+        <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
           <TextField
             label="Nome da Máquina"
-            value={selectedMachine?.name || ""}
+            value={newMachine.name}
             onChange={(e) =>
-              setSelectedMachine({ ...selectedMachine!, name: e.target.value })
+              setNewMachine({ ...newMachine, name: e.target.value })
             }
           />
           <Select
-            value={selectedMachine?.type}
+            value={newMachine.type}
             onChange={(e) =>
-              setSelectedMachine({
-                ...selectedMachine!,
+              setNewMachine({
+                ...newMachine,
                 type: e.target.value as "Pump" | "Fan",
               })
             }
@@ -367,69 +275,184 @@ const MachineList = () => {
             <MenuItem value="Pump">Pump</MenuItem>
             <MenuItem value="Fan">Fan</MenuItem>
           </Select>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Cancelar</Button>
-          <Button onClick={handleUpdateMachine}>Salvar</Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Adicionar Ponto de Monitoramento */}
-      {showAddMonitoringPoint && (
-        <div style={{ marginTop: "20px" }}>
-          <h3>Adicionar Ponto de Monitoramento</h3>
-          <TextField
-            label="Nome do Ponto de Monitoramento"
-            value={newMonitoringPoint.name}
-            onChange={(e) =>
-              setNewMonitoringPoint({
-                ...newMonitoringPoint,
-                name: e.target.value,
-              })
-            }
-          />
-          <Button variant="contained" onClick={handleAddMonitoringPoint}>
-            Adicionar Ponto
-          </Button>
-          <Button onClick={() => setShowAddMonitoringPoint(false)}>
-            Cancelar
+          <Button
+            variant="contained"
+            onClick={handleAddMachine}
+            style={{ backgroundColor: "#696969" }}
+          >
+            Adicionar Máquina
           </Button>
         </div>
-      )}
 
-      {/* Adicionar Sensor */}
-      {showAddSensor && (
-        <div style={{ marginTop: "20px" }}>
-          <h3>Adicionar Sensor</h3>
-          <TextField
-            label="Nome do Sensor"
-            value={newSensor.name}
-            onChange={(e) =>
-              setNewSensor({ ...newSensor, name: e.target.value })
-            }
-          />
-          <TextField
-            label="Tipo de Sensor"
-            value={newSensor.type}
-            onChange={(e) =>
-              setNewSensor({ ...newSensor, type: e.target.value })
-            }
-          />
-          <Button variant="contained" onClick={handleAddSensor}>
-            Adicionar Sensor
-          </Button>
-          <Button onClick={() => setShowAddSensor(false)}>Cancelar</Button>
-        </div>
-      )}
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                <TableSortLabel
+                  active={orderBy === "machineName"}
+                  direction={orderBy === "machineName" ? order : "asc"}
+                  onClick={() => handleRequestSort("machineName")}
+                >
+                  Nome da Máquina
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={orderBy === "machineType"}
+                  direction={orderBy === "machineType" ? order : "asc"}
+                  onClick={() => handleRequestSort("machineType")}
+                >
+                  Tipo da Máquina
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>Pontos de Monitoramento</TableCell>
+              <TableCell>Ações</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {paginatedMachines.map((machine) => (
+              <TableRow key={machine.id}>
+                <TableCell>{machine.name}</TableCell>
+                <TableCell>{machine.type}</TableCell>
+                <TableCell>
+                  {Array.isArray(machine.monitoringPoints) &&
+                  machine.monitoringPoints.length > 0 ? (
+                    machine.monitoringPoints.map((point) => (
+                      <div key={point.id} style={{ marginLeft: "20px" }}>
+                        <strong>{point.name}</strong>
+                        <ul>
+                          {Array.isArray(point.sensors) &&
+                            point.sensors.map((sensor) => (
+                              <li key={sensor.id}>{sensor.name}</li>
+                            ))}
+                        </ul>
+                      </div>
+                    ))
+                  ) : (
+                    <p>Nenhum ponto de monitoramento</p>
+                  )}
+                </TableCell>
+                <TableCell>
+                  <IconButton
+                    onClick={() => {
+                      setSelectedMachine(machine);
+                      setOpenDialog(true);
+                    }}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton onClick={() => handleDeleteMachine(machine.id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                  <Button
+                    variant="outlined"
+                    onClick={() => {
+                      setSelectedMachine(machine);
+                      setShowAddMonitoringPoint(true);
+                    }}
+                    style={{ color: "white", backgroundColor: "#696969" }}
+                  >
+                    Adicionar Ponto de Monitoramento
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
 
-      <Button
-        variant="contained"
-        onClick={handleLogout}
-        style={{ marginTop: "20px" }}
-      >
-        Sair
-      </Button>
-    </div>
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+          <DialogTitle>Editar Máquina</DialogTitle>
+          <DialogContent>
+            <TextField
+              label="Nome da Máquina"
+              value={selectedMachine?.name || ""}
+              onChange={(e) =>
+                setSelectedMachine((prev) => ({
+                  ...prev!,
+                  name: e.target.value,
+                }))
+              }
+            />
+            <Select
+              value={selectedMachine?.type || ""}
+              onChange={(e) =>
+                setSelectedMachine((prev) => ({
+                  ...prev!,
+                  type: e.target.value as "Pump" | "Fan",
+                }))
+              }
+            >
+              <MenuItem value="Pump">Pump</MenuItem>
+              <MenuItem value="Fan">Fan</MenuItem>
+            </Select>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleUpdateMachine}>Salvar</Button>
+            <Button onClick={() => setOpenDialog(false)}>Cancelar</Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog
+          open={showAddMonitoringPoint}
+          onClose={() => setShowAddMonitoringPoint(false)}
+        >
+          <DialogTitle>Adicionar Ponto de Monitoramento</DialogTitle>
+          <DialogContent>
+            <TextField
+              label="Nome do Ponto"
+              value={newMonitoringPoint.name}
+              onChange={(e) =>
+                setNewMonitoringPoint({
+                  ...newMonitoringPoint,
+                  name: e.target.value,
+                })
+              }
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleAddMonitoringPoint}>Adicionar Ponto</Button>
+            <Button onClick={() => setShowAddMonitoringPoint(false)}>
+              Cancelar
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog open={showAddSensor} onClose={() => setShowAddSensor(false)}>
+          <DialogTitle>Adicionar Sensor</DialogTitle>
+          <DialogContent>
+            <TextField
+              label="Nome do Sensor"
+              value={newSensor.name}
+              onChange={(e) =>
+                setNewSensor({ ...newSensor, name: e.target.value })
+              }
+            />
+            <TextField
+              label="Tipo do Sensor"
+              value={newSensor.type}
+              onChange={(e) =>
+                setNewSensor({ ...newSensor, type: e.target.value })
+              }
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleAddSensor}>Adicionar Sensor</Button>
+            <Button onClick={() => setShowAddSensor(false)}>Cancelar</Button>
+          </DialogActions>
+        </Dialog>
+
+        <Button
+          style={{
+            marginTop: "2%",
+            color: "white",
+            backgroundColor: "#696969",
+          }}
+          onClick={handleLogout}
+        >
+          Sair
+        </Button>
+      </div>
+    </Box>
   );
 };
 

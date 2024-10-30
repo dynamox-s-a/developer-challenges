@@ -29,7 +29,7 @@ export const deleteMachine = async (id) => {
 
 export const createMonitoringPoint = async (machineId, monitoringPoint) => {
   const response = await api.post(
-    `/machines/${machineId}/monitoringPoints`,
+    `/machines/${machineId}/monitoring-points`,
     monitoringPoint
   );
   return response.data;
@@ -37,7 +37,7 @@ export const createMonitoringPoint = async (machineId, monitoringPoint) => {
 
 export const addSensorToMonitoringPoint = async (monitoringPointId, sensor) => {
   const response = await api.post(
-    `/monitoringPoints/${monitoringPointId}/sensors`,
+    `/monitoring-points/${monitoringPointId}/sensors`,
     sensor
   );
   return response.data;
