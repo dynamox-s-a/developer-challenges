@@ -49,5 +49,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 3. After I added the back-end and the database, the registration of sensors is not working, when creating the monitoring point, immediately afterwards, press cancel or refresh the page.
 4. I haven't had time to implement unit tests.
 5. The front end must run on port 3001 and the back end on port 3000. To run the front end just use the command npm run dev and for the back end npm run start:dev
-
 6. The default user is login: admin password: admin
