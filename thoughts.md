@@ -21,3 +21,5 @@ To setup the frontend project it took me a while to figure out how to start a Ne
 While I do think I could improve, for instance, the setup for authentication provided by the boilerplate, which sets up a localStorage token, I did think it was a perfect starting point to just focus on delivering the application. It has the necessary tools to managing the expectations from the Dynamox team.
 
 Another thing that I'll make a decision on my own is to leverage Redux Toolkit Query for managing this application, since it's a newly addition to the Redux ecosystem that I think that simplifies greatly the async side effects management. Given that the original fullstack challenge was written a year ago, I do think this is the best route to take: I can showcase I keep up with new things and I can implement then quickly.
+
+I'm nearly at the deadline and I managed to sync all of the resources with their appropriate API endpoints. Now it's a matter of creating the paginated table with sensors. The good news is that I'll be able to submit the project until end of the day :)
