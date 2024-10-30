@@ -36,9 +36,33 @@ export default function Layout({ children }: LayoutProps): React.JSX.Element {
         }}
       >
         <SideNav />
-        <Box sx={{ display: 'flex', flex: '1 1 auto', flexDirection: 'column', pl: { lg: 'var(--SideNav-width)' } }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flex: '1 1 auto',
+            flexDirection: 'column',
+            position: 'relative',
+            pl: { lg: 'var(--SideNav-width)' },
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              width: '100%',
+              height: '100%',
+              backgroundSize: 'cover',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'top left',
+              backgroundImage: 'url("/new_assets/grafismo.png")',
+              opacity: 0.5,
+              zIndex: 0,
+            },
+          }}
+        >
           <MainNav />
-          <main>
+          <main style={{ position: 'relative', zIndex: 1 }}>
             <Container maxWidth="xl" sx={{ py: '64px' }}>
               {children}
             </Container>
