@@ -49,15 +49,15 @@ You can use the following user stories as a guide to implement the application f
 
 5 - Technical requirements
 
-1. [ ] Use TypeScript.
-1. [ ] Use React.
+1. [x] Use TypeScript.
+1. [x] Use React.
 1. [ ] Use Redux for managing global states.
 1. [ ] Use Redux Thunks or Redux Saga for managing asynchronous side effects.
-1. [ ] Use Next.js or Vite.
-1. [ ] Use Material UI 5 for styling the application.
-1. [ ] Create reusable components.
-1. [ ] The code is well-organized and documented.
-1. [ ] The application layout is responsive.
+1. [x] Use Next.js or Vite.
+1. [x] Use Material UI 5 for styling the application.
+1. [x] Create reusable components.
+1. [x] The code is well-organized and documented.
+1. [x] The application layout is responsive.
        The choice of remaining tools is at your discretion.
 
 6 - Bonus
