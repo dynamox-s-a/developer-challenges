@@ -4,7 +4,11 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install --verbose
+RUN npm config set registry https://registry.npmjs.org/
+
+RUN npm config set maxsockets 3
+
+RUN npm ci --loglevel verbose
 
 RUN mkdir -p .nx/workspace-data && chown -R node:node .nx
 
