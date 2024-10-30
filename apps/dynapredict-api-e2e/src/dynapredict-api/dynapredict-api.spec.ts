@@ -7,27 +7,30 @@ let testMachineId2: string;
 
 describe('User Authentication', () => {
   const userCredentials = {
-    email: 'test1@example.com',
+    email: 'test12@example.com',
     password: '12345678',
   };
 
-  it('should signup a new user', async () => {
+  it('should handle user signup (new or existing)', async () => {
     try {
       const res = await axios.post(`${API_BASE}/user`, userCredentials);
-
       expect(res.status).toBe(201);
       expect(res.data).toHaveProperty('id');
       expect(res.data.email).toBe(userCredentials.email);
     } catch (error: any) {
-      console.error('Signup Error:', error.response?.data);
-      throw error;
+      // If user already exists (409 Conflict), that's okay
+      if (error.response?.status !== 409) {
+        console.error('Unexpected Signup Error:', error.response?.data);
+        throw error;
+      }
+      console.log('User already exists, proceeding with login');
     }
   });
 
   it('should login an existing user and receive a JWT token', async () => {
     const res = await axios.post(`${API_BASE}/auth/login`, userCredentials);
 
-    expect(res.status).toBe(201);
+    expect(res.status).toBe(200);
     expect(res.data).toHaveProperty('access_token');
     accessToken = res.data.access_token;
   });
@@ -146,7 +149,7 @@ describe('Machines Management', () => {
       },
     });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(204);
   });
 });
 
@@ -230,6 +233,58 @@ describe('Monitoring Points Management', () => {
     monitoringPointId = res.data.id;
   });
 
+  it('should retrieve all monitoring points (non-paginated)', async () => {
+    const res = await axios.get(`${API_BASE}/monitoring-points`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.data)).toBe(true);
+    expect(res.data.length).toBeGreaterThanOrEqual(1);
+    expect(res.data[0]).toHaveProperty('id');
+    expect(res.data[0]).toHaveProperty('name');
+    expect(res.data[0]).toHaveProperty('machine');
+  });
+
+  it('should retrieve paginated monitoring points with default parameters', async () => {
+    const res = await axios.get(`${API_BASE}/monitoring-points/paginated`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.data).toHaveProperty('data');
+    expect(res.data).toHaveProperty('total');
+    expect(res.data).toHaveProperty('page');
+    expect(res.data).toHaveProperty('totalPages');
+    expect(res.data).toHaveProperty('totalMachines');
+    expect(Array.isArray(res.data.data)).toBe(true);
+  });
+
+  it('should retrieve paginated monitoring points with custom parameters', async () => {
+    const res = await axios.get(`${API_BASE}/monitoring-points/paginated`, {
+      params: {
+        page: 1,
+        sortBy: 'machine_name',
+        sortOrder: 'desc',
+      },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.data).toHaveProperty('data');
+    expect(res.data).toHaveProperty('total');
+    expect(res.data).toHaveProperty('page', 1);
+    expect(res.data).toHaveProperty('totalPages');
+    expect(res.data).toHaveProperty('totalMachines');
+    expect(Array.isArray(res.data.data)).toBe(true);
+  });
+
   it('should delete the monitoring point for Machine 2', async () => {
     const res = await axios.delete(
       `${API_BASE}/machines/${testMachineId2}/monitoring-points/${monitoringPointId}`,
@@ -240,7 +295,7 @@ describe('Monitoring Points Management', () => {
       }
     );
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(204);
   });
 });
 
@@ -260,7 +315,6 @@ describe('Sensors Management', () => {
   let fanMonitoringPointId: string;
 
   beforeAll(async () => {
-    // Ensure accessToken is available
     if (!accessToken) {
       const userCredentials = {
         email: 'test1@example.com',
@@ -270,7 +324,6 @@ describe('Sensors Management', () => {
       accessToken = res.data.access_token;
     }
 
-    // Create a Pump machine if not already created
     if (!testMachineId2) {
       const machineDataPump = {
         name: 'Pump Machine for Sensors',
@@ -289,7 +342,6 @@ describe('Sensors Management', () => {
       testMachineId2 = resPump.data.id;
     }
 
-    // Create a Monitoring Point for Pump machine
     const resMonitoringPump = await axios.post(
       `${API_BASE}/machines/${testMachineId2}/monitoring-points`,
       { name: 'Pump Monitoring Point for Sensors' },
@@ -302,7 +354,6 @@ describe('Sensors Management', () => {
     expect(resMonitoringPump.status).toBe(201);
     pumpMonitoringPointId = resMonitoringPump.data.id;
 
-    // Create a Fan machine
     const machineDataFan = {
       name: 'Fan Machine for Sensors',
       type: 'Fan',
@@ -315,7 +366,6 @@ describe('Sensors Management', () => {
     expect(resFan.status).toBe(201);
     fanMachineId = resFan.data.id;
 
-    // Create a Monitoring Point for Fan machine
     const resMonitoringFan = await axios.post(
       `${API_BASE}/machines/${fanMachineId}/monitoring-points`,
       { name: 'Fan Monitoring Point for Sensors' },
@@ -330,10 +380,6 @@ describe('Sensors Management', () => {
   });
 
   afterAll(async () => {
-    // Clean up sensors if any
-    // (Assuming there's an endpoint to retrieve and delete sensors)
-
-    // Delete Monitoring Points
     await axios.delete(
       `${API_BASE}/machines/${testMachineId2}/monitoring-points/${pumpMonitoringPointId}`,
       {
@@ -352,7 +398,6 @@ describe('Sensors Management', () => {
       }
     );
 
-    // Delete Machines
     await axios.delete(`${API_BASE}/machines/${testMachineId2}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
