@@ -5,11 +5,7 @@ import { Wrench } from '@phosphor-icons/react/dist/ssr/Wrench';
 
 import { paths } from '@/paths';
 
-type TotalMachinesProps = {
-  machinesCount: number;
-};
-
-export function TotalMachines({ machinesCount = 0 }: TotalMachinesProps) {
+export function TotalMachines({ machinesCount }: { machinesCount: number }) {
   return (
     <Card sx={{ height: '100%' }}>
       <CardContent>

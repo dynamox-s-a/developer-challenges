@@ -9,7 +9,7 @@ type TotalMonitoringPointsProps = {
   mpsCount: number;
 };
 
-export function TotalMonitoringPoints({ mpsCount = 0 }: TotalMonitoringPointsProps) {
+export function TotalMonitoringPoints({ mpsCount }: TotalMonitoringPointsProps) {
   return (
     <Card sx={{ height: '100%' }}>
       <CardContent>
