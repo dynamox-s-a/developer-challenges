@@ -10,6 +10,7 @@ type FormFieldProps = {
 };
 
 export function FormField({ control, field, error }: FormFieldProps): React.JSX.Element {
+  const isSelect = field.type === 'select';
   return (
     <Controller
       control={control}
@@ -17,7 +18,7 @@ export function FormField({ control, field, error }: FormFieldProps): React.JSX.
       render={({ field: fieldProps }) => (
         <FormControl error={Boolean(error)}>
           <InputLabel>{field.label}</InputLabel>
-          {field.type === 'select' ? (
+          {isSelect && (
             <Select {...fieldProps} label={field.label}>
               {field.options?.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
@@ -25,9 +26,8 @@ export function FormField({ control, field, error }: FormFieldProps): React.JSX.
                 </MenuItem>
               ))}
             </Select>
-          ) : (
-            <OutlinedInput {...fieldProps} label={field.label} />
           )}
+          {!isSelect && <OutlinedInput {...fieldProps} label={field.label} />}
           {error ? <FormHelperText>{error.message}</FormHelperText> : null}
         </FormControl>
       )}

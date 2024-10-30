@@ -12,6 +12,7 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
 import { Machine } from '@/types/data-types';
 
+import ListAwaitingLayout from '../list-awaiting-layout';
 import { MachinesTable } from './machines-table';
 
 type ListMachinesProps = {
@@ -36,23 +37,7 @@ export function ListMachines({ isLoading, error, machines }: ListMachinesProps):
       />
       <Divider />
       <Box sx={{ overflowX: 'auto', minHeight: 200, position: 'relative' }}>
-        {isLoading && (
-          <Box
-            sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-            }}
-          >
-            <CircularProgress />
-          </Box>
-        )}
-        {error && (
-          <Box sx={{ p: 2 }}>
-            <Alert severity="error">Failed to fetch machines. Please try again later.</Alert>
-          </Box>
-        )}
+        <ListAwaitingLayout isLoading={isLoading} error={error ?? null} />
         {isReadyForTable && <MachinesTable machines={machines} />}
       </Box>
     </Card>

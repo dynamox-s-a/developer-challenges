@@ -1,4 +1,4 @@
-import { Avatar, Box, Card, CardContent, Stack, Typography } from '@mui/material';
+import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
 import { Lightbulb } from '@phosphor-icons/react/dist/ssr/Lightbulb';
 
 type DidYouKnowProps = {
