@@ -1,6 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { Machine, MonitoringPoint, Sensor } from '@/types/data-types';
+import {
+  Machine,
+  MonitoringPoint,
+  PaginatedMonitoringPoints,
+  PaginatedMonitoringPointsQuery,
+  Sensor,
+} from '@/types/data-types';
 import { authClient } from '@/lib/auth/client';
 
 export const api = createApi({
@@ -15,14 +21,11 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Machine', 'MonitoringPoint'],
+  tagTypes: ['Machine', 'MonitoringPoint', 'PaginatedMonitoringPoints'],
   endpoints: (builder) => ({
     getMachines: builder.query<Machine[], void>({
       query: () => '/machines',
       providesTags: ['Machine'],
-    }),
-    getMachineTypes: builder.query<string[], void>({
-      query: () => '/machines/types',
     }),
     getMachine: builder.query<Machine, number>({
       query: (id) => `/machines/${id}`,
@@ -42,35 +45,44 @@ export const api = createApi({
         method: 'PATCH',
         body: patch,
       }),
-      invalidatesTags: ['Machine'],
+      invalidatesTags: ['Machine', 'MonitoringPoint', 'PaginatedMonitoringPoints'],
     }),
     deleteMachine: builder.mutation<{ success: boolean; id: number }, number>({
       query: (id) => ({
         url: `/machines/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Machine'],
+      invalidatesTags: ['Machine', 'MonitoringPoint', 'PaginatedMonitoringPoints'],
     }),
 
-    // getMonitoringPoints: builder.query<MonitoringPoint[], string>({
-    //   query: (machineId) => `/machines/${machineId}/monitoring-points`,
-    // }),
+    getMonitoringPoints: builder.query<MonitoringPoint[], void>({
+      query: () => '/monitoring-points',
+      providesTags: ['MonitoringPoint'],
+    }),
     addMonitoringPoint: builder.mutation<MonitoringPoint, Partial<MonitoringPoint> & { machineId: number }>({
       query: ({ machineId, ...body }) => ({
         url: `/machines/${machineId}/monitoring-points`,
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['MonitoringPoint'],
+      invalidatesTags: ['MonitoringPoint', 'PaginatedMonitoringPoints'],
     }),
 
     assignSensor: builder.mutation<MonitoringPoint, Partial<Sensor> & { pointId: number }>({
       query: ({ pointId, ...body }) => ({
-        url: `/monitoring-points/${pointId}/sensors`,
+        url: `/monitoring-points/${pointId}/sensor`,
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['MonitoringPoint'],
+      invalidatesTags: ['MonitoringPoint', 'PaginatedMonitoringPoints'],
+    }),
+
+    getPaginatedMonitoringPoints: builder.query<PaginatedMonitoringPoints, PaginatedMonitoringPointsQuery>({
+      query: ({ page = 1, sortBy = 'machine_name', sortOrder = 'asc' }) => ({
+        url: '/monitoring-points/paginated',
+        params: { page, sortBy, sortOrder },
+      }),
+      providesTags: ['PaginatedMonitoringPoints'],
     }),
   }),
 });
@@ -78,9 +90,11 @@ export const api = createApi({
 export const {
   useGetMachinesQuery,
   useGetMachineQuery,
+  useGetMonitoringPointsQuery,
   useAddMachineMutation,
   useUpdateMachineMutation,
   useDeleteMachineMutation,
   useAddMonitoringPointMutation,
   useAssignSensorMutation,
+  useGetPaginatedMonitoringPointsQuery,
 } = api;
