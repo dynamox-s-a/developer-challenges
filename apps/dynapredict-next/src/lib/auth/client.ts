@@ -125,19 +125,12 @@ class AuthClient {
     }
 
     const decoded = this.decodeToken(token);
-    if (!decoded) {
-      await this.signOut();
-      return { data: null, error: 'Invalid token format' };
-    }
 
-    if (this.isTokenExpired(decoded)) {
-      await this.signOut();
-      return { data: null, error: 'Session expired' };
-    }
+    const isExpired = !decoded || this.isTokenExpired(decoded) || !decoded.email || !decoded.sub;
 
-    if (!decoded.email || !decoded.sub) {
+    if (isExpired) {
       await this.signOut();
-      return { data: null, error: 'Invalid token payload' };
+      return { data: null };
     }
 
     return {
