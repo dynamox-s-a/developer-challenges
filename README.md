@@ -9,8 +9,14 @@
 Nx was used to set up this repository.
 
 - **API**: [https://dynapredict-api.onrender.com](https://dynapredict-api.onrender.com)
+
   - Built with **TypeScript**, **Nest.js**, **Prisma**, **PostgreSQL**, **Jest**, **Passport**, and helper libraries (JWT auth).
   - **CI/CD** implemented using **GitHub Actions** and **Docker**.
+  - Deployment on **Render**.
+
+- **Client**: [https://developer-challenges-kappa.vercel.app/](https://developer-challenges-kappa.vercel.app/)
+  - Built with **Next.js**, **Redux Toolkit**, **Material-UI (MUI)**, **Devias Kit** (https://mui.com/store/items/devias-kit/), **React Hook Form** and **Zod**.
+  - Deployment on **Vercel**.
 
 ---
 
@@ -30,10 +36,10 @@ Nx was used to set up this repository.
 > 2. **Install Dependencies**
 >
 >    ```bash
->    npm install
+>    pnpm install
 >    ```
 >
-> 3. **Create an `.env` file in /apps/dynapredict-api/ and also on /apps/dynapredict-api/prisma**
+> 3. **Create an `.env` file in /apps/dynapredict-api/, on /apps/dynapredict-api/prisma and on /apps/dynapredict-next**
 >
 >    In the root directory of the api project, create a `.env` file and add the following environment variables:
 >
@@ -46,6 +52,14 @@ Nx was used to set up this repository.
 >    ```env
 >    DATABASE_URL=your_database_url
 >    ```
+>
+>    In the root directory of the next project, create another `.env` file and add the following environment variables:
+>
+>    ```env
+>    NEXT_PUBLIC_API_URL="http://localhost:3000/api"
+>    ```
+>
+>    **Note:** The `NEXT_PUBLIC_API_URL` must point to the API's base URL, **including the `/api` path**.
 >
 > 4. **Setup Prisma and Run Development Commands**
 >
@@ -65,7 +79,7 @@ Nx was used to set up this repository.
 >       npx prisma migrate dev
 >       ```
 >
->       This will apply the database migrations and set up your development database. The `--name init` flag names the migration for reference.
+>       This will apply the database migrations and set up your development database.
 >
 > ### Running the API Application
 >
@@ -91,9 +105,24 @@ Nx was used to set up this repository.
 >   nx run dynapredict-api-e2e:e2e
 >   ```
 >
-> ### Additional Commands
+> ### Running the client application
 >
-> As the project evolves, additional commands may be added to facilitate development and deployment.
+> Use the following commands to interact with the client application:
+>
+> - **Run the client application**
+>
+>   ```bash
+>   nx dev dynapredict-next
+>   ```
+>
+> ### Other commands
+>
+> - **Run the NX command to see available commands for the project**
+>
+>   ```bash
+>   nx show projects
+>   nx show name_of_the_project
+>   ```
 
 <hr>
 
@@ -105,15 +134,21 @@ This will act as a logger for my progress at the project. Not everything written
 >
 > My chain of thoughts can be read [here](/thoughts.md).
 
-> Hey, I'm back. It's _5:30 PM_ on Monday, Oct 28, and I have just completed everything I aimed to achieve for my backend. The features include:
-
-> **Unit Tests** > **CI/CD**:
-> CI for linting, typechecking and unit testing;
-> CD workflow that pushes a **Docker image** to Docker Hub and also interacts with the **Render Webhook** to trigger new deployments.
+> Hey, I'm back. It's _5:30 PM_ on Monday, Oct 28, and I have just completed everything I aimed to achieve for my backend.
 >
 > While the backend took more time than anticipated, I'm really satisfied with the outcome. I successfully implemented all the requirements and went beyond.
 >
 > I will now start building the frontend using the template suggested in the Markdown.
+
+<hr>
+
+This is the commit right before I submit the PR to the developer challenges repository. I found this challenge really nice but also really hard, so I'm happy to make it through achieving all of the requirements and most of the bonus requirements. I'm also happy to have learned a lot of new things and to have improved my skills.
+
+Even though I had not worked with Nest.js before, I think the outcome looked really nice, and it was the smoothest part of the project. In the final days, I thought that, because of my experience with Next.js, I could handle everything pretty effortlessly, but I was wrong, given the time constraints and some initial difficulties to leverage the template with Nx. MUI is a bliss to work with, and I think the Devias Kit is a really nice template to build a solid project with.
+
+There are huge improvements that can be made, specially on the frontend and that I'd be happy to discuss in the future, but I'm confident that I was able to showcase many skills here. I tried to focus in achieving the requirements and using some code that was already provided by the template, so there were points of bottlenecks of my understanding of the codebase and assessing their problems. Right before the deploy I saw how many flags the Vercel linter was throwing and I was able to fix all of the problems, resulting in a clean deploy and hopefully a good UX for my reviewer!
+
+<hr>
 
 ### 🛠️ Tech Stack
 
