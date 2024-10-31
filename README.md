@@ -11,7 +11,7 @@ Nx was used to set up this repository.
 - **API**: [https://dynapredict-api.onrender.com](https://dynapredict-api.onrender.com)
 
   - Built with **TypeScript**, **Nest.js**, **Prisma**, **PostgreSQL**, **Jest**, **Passport**, and helper libraries (JWT auth).
-  - **CI/CD** implemented using **GitHub Actions** and **Docker**.
+  - **CI/CD** implemented using **GitHub Actions** and **Docker** - check branch deploy_dockerhub!
   - Deployment on **Render**.
 
 - **Client**: [https://developer-challenges-kappa.vercel.app/](https://developer-challenges-kappa.vercel.app/)
