@@ -2,9 +2,6 @@
 
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import { useColorScheme } from '@mui/material/styles';
-
-import { NoSsr } from '@/components/core/no-ssr';
 
 const HEIGHT = 60;
 const WIDTH = 60;
@@ -19,13 +16,7 @@ export interface LogoProps {
   type: 'dynamox' | 'dynapredict';
 }
 
-export function Logo({
-  color = 'dark',
-  emblem,
-  height = HEIGHT,
-  width = WIDTH,
-  type = 'dynapredict',
-}: LogoProps): React.JSX.Element {
+export function Logo({ height = HEIGHT, width = WIDTH, type = 'dynapredict' }: LogoProps): React.JSX.Element {
   const url = type === 'dynapredict' ? '/new_assets/logo-dynapredict.png' : '/new_assets/logo-dynamox.png';
   const alt = type === 'dynapredict' ? 'Dynapredict' : 'Dynamox';
 

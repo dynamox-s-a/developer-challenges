@@ -1,3 +1,4 @@
+import React from 'react';
 import Link from 'next/link';
 import { Avatar, Button, Card, CardActions, CardContent, Stack, Typography } from '@mui/material';
 import { ArrowRight as ArrowRightIcon } from '@phosphor-icons/react/dist/ssr/ArrowRight';

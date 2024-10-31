@@ -23,6 +23,16 @@ const COOKIE_OPTIONS = {
   path: '/',
 };
 
+interface JWTPayload {
+  exp?: number;
+  sub: string;
+  email: string;
+}
+
+interface APIErrorResponse {
+  message: string;
+}
+
 class AuthClient {
   private apiUrl: string;
 
@@ -33,10 +43,10 @@ class AuthClient {
     this.apiUrl = process.env.NEXT_PUBLIC_API_URL;
   }
 
-  private decodeToken(token: string) {
+  private decodeToken(token: string): JWTPayload | null {
     try {
       const [, payloadBase64] = token.split('.');
-      const payload = JSON.parse(atob(payloadBase64));
+      const payload = JSON.parse(atob(payloadBase64)) as JWTPayload;
       return payload;
     } catch {
       return null;
@@ -61,32 +71,40 @@ class AuthClient {
 
       if (response.status === 201) {
         return { success: true };
-      } else {
-        return { success: false, error: 'Unexpected response from server.' };
       }
-    } catch (error: any) {
-      return { success: false, error: error.response?.data?.message || 'Sign up failed.' };
+      return { success: false, error: 'Unexpected response from server.' };
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const errorData = error.response.data as APIErrorResponse;
+        return { success: false, error: errorData.message };
+      }
+      return { success: false, error: 'Sign up failed.' };
     }
   }
 
   async signInWithPassword(params: SignInWithPasswordParams): Promise<{ success: boolean; error?: string }> {
     try {
-      const response = await axios.post(`${this.apiUrl}/auth/login`, params, {
+      interface LoginResponse {
+        access_token: string;
+      }
+
+      const response = await axios.post<LoginResponse>(`${this.apiUrl}/auth/login`, params, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
       if (response.status === 200 && response.data.access_token) {
-        console.log('Setting token:', response.data.access_token);
         setCookie(TOKEN_COOKIE_NAME, response.data.access_token, COOKIE_OPTIONS);
         return { success: true };
-      } else {
-        return { success: false, error: 'Invalid response from server.' };
       }
-    } catch (error: any) {
-      console.error('Sign in error:', error);
-      return { success: false, error: error.response?.data?.message || 'Sign in failed.' };
+      return { success: false, error: 'Invalid response from server.' };
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const errorData = error.response.data as APIErrorResponse;
+        return { success: false, error: errorData.message };
+      }
+      return { success: false, error: 'Sign in failed.' };
     }
   }
 
@@ -94,7 +112,7 @@ class AuthClient {
     try {
       deleteCookie(TOKEN_COOKIE_NAME);
       return {};
-    } catch (error: any) {
+    } catch (error: unknown) {
       return { error: 'Sign out failed.' };
     }
   }
@@ -108,17 +126,17 @@ class AuthClient {
 
     const decoded = this.decodeToken(token);
     if (!decoded) {
-      this.signOut();
+      await this.signOut();
       return { data: null, error: 'Invalid token format' };
     }
 
     if (this.isTokenExpired(decoded)) {
-      this.signOut();
+      await this.signOut();
       return { data: null, error: 'Session expired' };
     }
 
     if (!decoded.email || !decoded.sub) {
-      this.signOut();
+      await this.signOut();
       return { data: null, error: 'Invalid token payload' };
     }
 

@@ -60,13 +60,10 @@ export function SignInForm(): React.JSX.Element {
           return;
         }
 
-        console.log('Sign in successful, refreshing session...');
-
         await checkSession?.();
 
         router.refresh();
       } catch (err) {
-        console.error('Sign in error:', err);
         setError('root', { type: 'server', message: 'An unexpected error occurred' });
       } finally {
         setIsPending(false);

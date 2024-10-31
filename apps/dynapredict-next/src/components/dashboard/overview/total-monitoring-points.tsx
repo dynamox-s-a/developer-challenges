@@ -1,3 +1,4 @@
+import React from 'react';
 import Link from 'next/link';
 import { Avatar, Button, Card, CardActions, CardContent, Stack, Typography } from '@mui/material';
 import { ArrowRight as ArrowRightIcon } from '@phosphor-icons/react/dist/ssr/ArrowRight';
@@ -5,9 +6,9 @@ import { SecurityCamera } from '@phosphor-icons/react/dist/ssr/SecurityCamera';
 
 import { paths } from '@/paths';
 
-type TotalMonitoringPointsProps = {
+interface TotalMonitoringPointsProps {
   mpsCount: number;
-};
+}
 
 export function TotalMonitoringPoints({ mpsCount }: TotalMonitoringPointsProps) {
   return (

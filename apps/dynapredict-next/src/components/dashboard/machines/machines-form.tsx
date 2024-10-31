@@ -10,9 +10,9 @@ import { GenericForm } from '@/components/dashboard/form/form-component';
 
 import { defaultValues, machineFormFields, MachineFormValues, schema } from './form-config';
 
-type MachinesFormProps = {
+interface MachinesFormProps {
   isFormDisabled: boolean;
-};
+}
 
 export function MachinesForm({ isFormDisabled }: MachinesFormProps): React.JSX.Element {
   const [addMachine, { isLoading }] = useAddMachineMutation();

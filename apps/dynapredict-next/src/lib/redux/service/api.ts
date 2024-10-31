@@ -23,7 +23,7 @@ export const api = createApi({
   }),
   tagTypes: ['Machine', 'MonitoringPoint', 'PaginatedMonitoringPoints'],
   endpoints: (builder) => ({
-    getMachines: builder.query<Machine[], void>({
+    getMachines: builder.query<Machine[], undefined>({
       query: () => '/machines',
       providesTags: ['Machine'],
     }),
@@ -55,7 +55,7 @@ export const api = createApi({
       invalidatesTags: ['Machine', 'MonitoringPoint', 'PaginatedMonitoringPoints'],
     }),
 
-    getMonitoringPoints: builder.query<MonitoringPoint[], void>({
+    getMonitoringPoints: builder.query<MonitoringPoint[], undefined>({
       query: () => '/monitoring-points',
       providesTags: ['MonitoringPoint'],
     }),

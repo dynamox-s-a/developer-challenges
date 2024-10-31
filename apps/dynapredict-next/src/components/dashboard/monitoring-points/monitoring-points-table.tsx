@@ -11,6 +11,7 @@ import TableRow from '@mui/material/TableRow';
 import { PencilSimple } from '@phosphor-icons/react/dist/ssr/PencilSimple';
 
 import { MonitoringPoint } from '@/types/data-types';
+import { logger } from '@/lib/default-logger';
 import { useAssignSensorMutation } from '@/lib/redux/service/api';
 import { useUser } from '@/hooks/use-user';
 
@@ -37,7 +38,9 @@ export default function MonitoringPointsTable({ monitoringPoints }: MonitoringPo
     }
     try {
       setOptimisticSensors((prev) => ({ ...prev, [monitoringPointId]: sensorName }));
-      await checkSession?.();
+      if (checkSession) {
+        await checkSession();
+      }
       await assignSensor({ pointId: monitoringPointId, model: sensorName }).unwrap();
       setShowFeedback({ pointId: monitoringPointId, success: true });
       setEditingPointId(null);
@@ -46,7 +49,7 @@ export default function MonitoringPointsTable({ monitoringPoints }: MonitoringPo
         ...prev,
         [monitoringPointId]: prev[monitoringPointId] || 'default',
       }));
-      console.error('Failed to assign sensor:', error);
+      logger.error('Failed to assign sensor:', error);
       setShowFeedback({ pointId: monitoringPointId, success: false });
     }
   };
@@ -74,7 +77,9 @@ export default function MonitoringPointsTable({ monitoringPoints }: MonitoringPo
                 <Select
                   size="small"
                   value={optimisticSensors[point.id] || point.sensor?.model || 'default'}
-                  onChange={(e) => onSensorChange(point.id, e.target.value as string)}
+                  onChange={(e) => {
+                    void onSensorChange(point.id, e.target.value);
+                  }}
                   disabled={editingPointId !== point.id || isChanging}
                   sx={{
                     '& .MuiOutlinedInput-notchedOutline': {
@@ -110,7 +115,9 @@ export default function MonitoringPointsTable({ monitoringPoints }: MonitoringPo
                 </Select>
                 <Tooltip title={editingPointId === point.id ? 'Disable Assignment' : 'Enable Assignment'}>
                   <IconButton
-                    onClick={() => onToggleEdit?.(point.id)}
+                    onClick={() => {
+                      onToggleEdit(point.id);
+                    }}
                     color={editingPointId === point.id ? 'primary' : 'default'}
                   >
                     <PencilSimple weight={editingPointId === point.id ? 'fill' : 'regular'} />

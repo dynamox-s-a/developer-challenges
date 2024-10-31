@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 
 export default function MobileHeader() {

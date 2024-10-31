@@ -2,8 +2,8 @@
 
 import * as React from 'react';
 import { useServerInsertedHTML } from 'next/navigation';
-import createCache from '@emotion/cache';
 import type { EmotionCache, Options as OptionsOfCreateCache } from '@emotion/cache';
+import createCache from '@emotion/cache';
 import { CacheProvider as DefaultCacheProvider } from '@emotion/react';
 
 interface Registry {
@@ -61,9 +61,11 @@ export default function NextAppDirEmotionCacheProvider(props: NextAppDirEmotionC
 
       if (typeof style !== 'boolean') {
         if (isGlobal) {
-          globals.push({ name, style });
+          globals.push({ name, style: style || '' });
         } else {
-          styles += style;
+          if (style) {
+            styles += style;
+          }
           dataEmotionAttribute += ` ${name}`;
         }
       }

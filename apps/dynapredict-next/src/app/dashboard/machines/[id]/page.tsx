@@ -1,5 +1,6 @@
 'use client';
 
+import React, { ReactNode } from 'react';
 import { notFound } from 'next/navigation';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -9,7 +10,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { useGetMachineQuery } from '@/lib/redux/service/api';
 import { EditForm } from '@/components/dashboard/machines/edit-form';
 
-export default function Page({ params }: { params: { id: string } }): React.JSX.Element {
+export default function Page({ params }: { params: { id: string } }): ReactNode {
   const { data: machine, isLoading, isError } = useGetMachineQuery(Number(params.id));
 
   if (!isLoading && (isError || !machine)) {

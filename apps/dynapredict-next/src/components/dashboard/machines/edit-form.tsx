@@ -12,9 +12,9 @@ import { GenericForm } from '@/components/dashboard/form/form-component';
 
 import { machineFormFields, MachineFormValues, schema } from './form-config';
 
-type EditFormProps = {
+interface EditFormProps {
   machine: Machine;
-};
+}
 
 export function EditForm({ machine }: EditFormProps): React.JSX.Element {
   const [updateMachine, { isLoading }] = useUpdateMachineMutation();

@@ -1,10 +1,11 @@
+import React, { ReactNode } from 'react';
 import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
 import { Lightbulb } from '@phosphor-icons/react/dist/ssr/Lightbulb';
 
-type DidYouKnowProps = {
+interface DidYouKnowProps {
   message: string;
-  children?: React.ReactNode;
-};
+  children?: ReactNode;
+}
 
 export default function DidYouKnow({ message, children }: DidYouKnowProps) {
   return (

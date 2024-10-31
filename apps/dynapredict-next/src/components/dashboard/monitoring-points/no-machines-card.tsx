@@ -1,3 +1,4 @@
+import React from 'react';
 import { Card, CardContent } from '@mui/material';
 
 export default function NoMachinesCard(): React.JSX.Element {

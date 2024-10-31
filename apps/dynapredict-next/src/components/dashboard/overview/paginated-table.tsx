@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -13,9 +12,8 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 
-import { MonitoringPoint, PaginatedMonitoringPoints } from '@/types/data-types';
+import { MonitoringPoint } from '@/types/data-types';
 import { useGetPaginatedMonitoringPointsQuery } from '@/lib/redux/service/api';
-import { useUser } from '@/hooks/use-user';
 
 type SortColumn = 'machine_name' | 'machine_type' | 'monitoring_point_name' | 'sensor_model';
 type SortOrder = 'asc' | 'desc';
@@ -94,7 +92,9 @@ export function MonitoringPointsTable(): React.JSX.Element {
                 <TableSortLabel
                   active={sortBy === column.id}
                   direction={sortBy === column.id ? sortOrder : 'asc'}
-                  onClick={() => handleSort(column.id)}
+                  onClick={() => {
+                    handleSort(column.id);
+                  }}
                 >
                   {column.label}
                 </TableSortLabel>

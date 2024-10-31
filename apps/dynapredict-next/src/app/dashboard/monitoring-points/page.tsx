@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { Alert, Card, CardContent, CircularProgress } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 
@@ -11,7 +12,7 @@ import NoMachinesCard from '@/components/dashboard/monitoring-points/no-machines
 import SensorsImages from '@/components/dashboard/monitoring-points/sensors-images';
 
 export default function Page(): React.JSX.Element {
-  const { data: machines, isLoading, error } = useGetMachinesQuery();
+  const { data: machines, isLoading, error } = useGetMachinesQuery(undefined);
   const areThereMachines = machines && machines.length > 0;
   const isReadyForForm = !isLoading && !error;
 

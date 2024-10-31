@@ -1,6 +1,7 @@
+import React from 'react';
 import { Box, Stack } from '@mui/material';
 
-export default function SensorsImages() {
+export default function SensorsImages(): React.JSX.Element {
   return (
     <Stack
       direction="row"

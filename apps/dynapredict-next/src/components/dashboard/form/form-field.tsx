@@ -1,20 +1,21 @@
+import React from 'react';
 import { FormControl, FormHelperText, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material';
-import { Controller } from 'react-hook-form';
+import { Control, Controller, FieldError, FieldValues, Path } from 'react-hook-form';
 
-import type { IFormField } from './form-component';
+import type { FormField } from './form-component';
 
-type FormFieldProps = {
-  control: any;
-  field: IFormField;
-  error: any;
-};
+interface FormFieldProps<T extends FieldValues> {
+  control: Control<T>;
+  field: FormField;
+  error: FieldError | undefined;
+}
 
-export function FormField({ control, field, error }: FormFieldProps): React.JSX.Element {
+export function FormField<T extends FieldValues>({ control, field, error }: FormFieldProps<T>): React.JSX.Element {
   const isSelect = field.type === 'select';
   return (
     <Controller
       control={control}
-      name={field.name}
+      name={field.name as Path<T>}
       render={({ field: fieldProps }) => (
         <FormControl error={Boolean(error)}>
           <InputLabel>{field.label}</InputLabel>

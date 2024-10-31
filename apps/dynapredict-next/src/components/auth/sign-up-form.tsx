@@ -18,7 +18,6 @@ import { z as zod } from 'zod';
 
 import { paths } from '@/paths';
 import { authClient } from '@/lib/auth/client';
-import { useUser } from '@/hooks/use-user';
 
 const schema = zod.object({
   email: zod.string().min(1, { message: 'Email is required' }).email(),
@@ -31,8 +30,6 @@ const defaultValues = { email: '', password: '' } satisfies Values;
 
 export function SignUpForm(): React.JSX.Element {
   const router = useRouter();
-
-  const { checkSession } = useUser();
 
   const [isPending, setIsPending] = React.useState<boolean>(false);
 
@@ -57,7 +54,7 @@ export function SignUpForm(): React.JSX.Element {
 
       router.push('/auth/sign-in');
     },
-    [checkSession, router, setError]
+    [router, setError]
   );
 
   return (

@@ -8,8 +8,7 @@ import { z as zod } from 'zod';
 import { Machine } from '@/types/data-types';
 import { useAddMonitoringPointMutation } from '@/lib/redux/service/api';
 import { useUser } from '@/hooks/use-user';
-import type { IFormField } from '@/components/dashboard/form/form-component';
-import { GenericForm } from '@/components/dashboard/form/form-component';
+import { FormField, GenericForm } from '@/components/dashboard/form/form-component';
 
 const schema = zod.object({
   name: zod.string().min(1, { message: 'Monitoring point name is required' }),
@@ -23,9 +22,9 @@ const defaultValues = {
   machineId: '',
 } satisfies Values;
 
-type MonitoringPointsFormProps = {
+interface MonitoringPointsFormProps {
   machines: Machine[];
-};
+}
 
 export function MonitoringPointsForm({ machines }: MonitoringPointsFormProps): React.JSX.Element {
   const [addMonitoringPoint, { isLoading }] = useAddMonitoringPointMutation();
@@ -36,7 +35,7 @@ export function MonitoringPointsForm({ machines }: MonitoringPointsFormProps): R
     resolver: zodResolver(schema),
   });
 
-  const fields: IFormField[] = [
+  const fields: FormField[] = [
     {
       name: 'name',
       label: 'Monitoring Point Name',

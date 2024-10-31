@@ -1,3 +1,4 @@
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
@@ -13,6 +14,7 @@ import dayjs from 'dayjs';
 
 import { Machine } from '@/types/data-types';
 import { paths } from '@/paths';
+import { logger } from '@/lib/default-logger';
 import { useDeleteMachineMutation } from '@/lib/redux/service/api';
 import { useUser } from '@/hooks/use-user';
 
@@ -35,7 +37,7 @@ export function MachinesTable({ machines }: MachinesTableProps): React.JSX.Eleme
       await checkSession?.();
       await deleteMachine(machineId).unwrap();
     } catch (error) {
-      console.error('Failed to delete machine:', error);
+      logger.error('Failed to delete machine:', error);
     }
   };
 
@@ -66,7 +68,11 @@ export function MachinesTable({ machines }: MachinesTableProps): React.JSX.Eleme
               <TableCell>{dayjs(machine.createdAt).format('MMM D, YYYY')}</TableCell>
               <TableCell align="right">
                 <Tooltip title="Edit">
-                  <IconButton onClick={() => router.push(`${paths.dashboard.machines}/${machine.id}`)}>
+                  <IconButton
+                    onClick={() => {
+                      router.push(`${paths.dashboard.machines}/${machine.id}`);
+                    }}
+                  >
                     <EditIcon />
                   </IconButton>
                 </Tooltip>
