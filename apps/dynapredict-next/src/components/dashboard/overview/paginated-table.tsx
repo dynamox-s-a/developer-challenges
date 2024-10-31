@@ -7,6 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
@@ -84,41 +85,43 @@ export function MonitoringPointsTable(): React.JSX.Element {
           <CircularProgress />
         </Box>
       )}
-      <Table>
-        <TableHead>
-          <TableRow>
-            {columns.map((column) => (
-              <TableCell key={column.id}>
-                <TableSortLabel
-                  active={sortBy === column.id}
-                  direction={sortBy === column.id ? sortOrder : 'asc'}
-                  onClick={() => {
-                    handleSort(column.id);
-                  }}
-                >
-                  {column.label}
-                </TableSortLabel>
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.data.map((point: MonitoringPoint) => {
-            const { color } = typeMap[point.machine.type] ?? { color: 'default' };
-
-            return (
-              <TableRow hover key={point.id}>
-                <TableCell>{point.machine.name}</TableCell>
-                <TableCell>
-                  <Chip color={color} label={point.machine.type} size="small" />
+      <TableContainer sx={{ overflowX: 'auto' }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              {columns.map((column) => (
+                <TableCell key={column.id}>
+                  <TableSortLabel
+                    active={sortBy === column.id}
+                    direction={sortBy === column.id ? sortOrder : 'asc'}
+                    onClick={() => {
+                      handleSort(column.id);
+                    }}
+                  >
+                    {column.label}
+                  </TableSortLabel>
                 </TableCell>
-                <TableCell>{point.name}</TableCell>
-                <TableCell>{point.sensor?.model || 'No sensor'}</TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.data.map((point: MonitoringPoint) => {
+              const { color } = typeMap[point.machine.type] ?? { color: 'default' };
+
+              return (
+                <TableRow hover key={point.id}>
+                  <TableCell>{point.machine.name}</TableCell>
+                  <TableCell>
+                    <Chip color={color} label={point.machine.type} size="small" />
+                  </TableCell>
+                  <TableCell>{point.name}</TableCell>
+                  <TableCell>{point.sensor?.model || 'No sensor'}</TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
       <TablePagination
         component="div"
         count={data.total}

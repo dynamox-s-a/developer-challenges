@@ -51,8 +51,8 @@ You can use the following user stories as a guide to implement the application f
 
 1. [x] Use TypeScript.
 1. [x] Use React.
-1. [ ] Use Redux for managing global states.
-1. [ ] Use Redux Thunks or Redux Saga for managing asynchronous side effects.
+1. [x] Use Redux for managing global states.
+1. [x] Use Redux Thunks or Redux Saga for managing asynchronous side effects.
 1. [x] Use Next.js or Vite.
 1. [x] Use Material UI 5 for styling the application.
 1. [x] Create reusable components.
