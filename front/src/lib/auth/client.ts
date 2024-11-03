@@ -42,7 +42,7 @@ class AuthClient {
 
     // We do not handle the API, so we'll just generate a token and store it in localStorage.
     const token = generateToken();
-    localStorage.setItem('custom-auth-token', token);
+    document.cookie = `custom-auth-token=${token}; path=/; max-age=${60 * 60 * 24 * 7}; secure; SameSite=Strict`;
 
     return {};
   }
@@ -51,20 +51,22 @@ class AuthClient {
     return { error: 'Social authentication not implemented' };
   }
 
-  async signInWithPassword(params: SignInWithPasswordParams): Promise<{ error?: string }> {
+  async signInWithPassword(params: SignInWithPasswordParams): Promise<{ error?: string, token?: string }> {
     const { email, password } = params;
+    console.log(email, password)
 
     // Make API request
 
     // We do not handle the API, so we'll check if the credentials match with the hardcoded ones.
-    if (email !== 'sofia@devias.io' || password !== 'Secret1') {
+    if (email !== 'sofia@devias.io' || password !== '123') {
       return { error: 'Invalid credentials' };
     }
+    console.log('entrou')
 
     const token = generateToken();
-    localStorage.setItem('custom-auth-token', token);
+    document.cookie = `custom-auth-token=${token}; path=/; max-age=${60 * 60 * 24 * 7}; secure; SameSite=Strict`;
 
-    return {};
+    return { token };
   }
 
   async resetPassword(_: ResetPasswordParams): Promise<{ error?: string }> {

@@ -36,20 +36,20 @@ export function GuestGuard({ children }: GuestGuardProps): React.JSX.Element | n
     setIsChecking(false);
   };
 
-  React.useEffect(() => {
-    checkPermissions().catch(() => {
-      // noop
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- Expected
-  }, [user, error, isLoading]);
+  // React.useEffect(() => {
+  //   checkPermissions().catch(() => {
+  //     // noop
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps -- Expected
+  // }, [user, error, isLoading]);
 
-  if (isChecking) {
-    return null;
-  }
+  // if (isChecking) {
+  //   return null;
+  // }
 
-  if (error) {
-    return <Alert color="error">{error}</Alert>;
-  }
+  // if (error) {
+  //   return <Alert color="error">{error}</Alert>;
+  // }
 
   return <React.Fragment>{children}</React.Fragment>;
 }
