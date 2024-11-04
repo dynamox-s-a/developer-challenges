@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { userRoutes } = require('./routes');
+const { userRoutes, assetRoutes } = require('./routes');
 
 const app = express();
 
@@ -14,5 +14,6 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use('/user', userRoutes);
+app.use('/asset', assetRoutes);
 
 module.exports = app;

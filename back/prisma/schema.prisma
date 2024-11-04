@@ -19,3 +19,9 @@ model User {
   password String
   name  String?
 }
+
+model Asset {
+  id   Int    @id @default(autoincrement())
+  name String
+  type String
+}
