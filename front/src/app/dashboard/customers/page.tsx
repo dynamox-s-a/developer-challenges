@@ -1,26 +1,34 @@
-import * as React from 'react';
-import type { Metadata } from 'next';
+'use client'
+
+import React, { useEffect } from 'react';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 
-import { config } from '@/config';
 import { CustomersFilters } from '@/components/dashboard/customer/customers-filters';
 import { CustomersTable } from '@/components/dashboard/customer/customers-table';
-import type { Customer } from '@/components/dashboard/customer/customers-table';
-
-export const metadata = { title: `Machines | Dashboard | ${config.site.name}` } satisfies Metadata;
-
-const customers = [
-
-] satisfies Customer[];
+import type { Asset } from '@/components/dashboard/customer/customers-table';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { RootState } from '@/store/store';
+import { fetchAssets } from '@/store/assetsSlice';
 
 export default function Page(): React.JSX.Element {
-  const page = 0;
-  const rowsPerPage = 5;
+  const dispatch = useAppDispatch();
+  const { assets, status } = useAppSelector((state: RootState) => state.assets);
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchAssets());
+    }
+  }, [dispatch, status]);
 
-  const paginatedCustomers = applyPagination(customers, page, rowsPerPage);
+
+  if (status === 'loading') {
+    return <Typography variant="h6">Loading assets...</Typography>;
+  }
+  if (status === 'failed') {
+    return <Typography variant="h6">Failed to load assets. Please reload.</Typography>;
+  }
 
   return (
     <Stack spacing={3}>
@@ -36,15 +44,8 @@ export default function Page(): React.JSX.Element {
       </Stack>
       <CustomersFilters />
       <CustomersTable
-        count={paginatedCustomers.length}
-        page={page}
-        rows={paginatedCustomers}
-        rowsPerPage={rowsPerPage}
+        rows={assets}
       />
     </Stack>
   );
-}
-
-function applyPagination(rows: Customer[], page: number, rowsPerPage: number): Customer[] {
-  return rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 }
