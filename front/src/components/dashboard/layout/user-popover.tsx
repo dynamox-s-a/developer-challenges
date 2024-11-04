@@ -8,14 +8,12 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
-import { GearSix as GearSixIcon } from '@phosphor-icons/react/dist/ssr/GearSix';
 import { SignOut as SignOutIcon } from '@phosphor-icons/react/dist/ssr/SignOut';
 import { User as UserIcon } from '@phosphor-icons/react/dist/ssr/User';
 
 import { paths } from '@/paths';
 import { authClient } from '@/lib/auth/client';
 import { logger } from '@/lib/default-logger';
-import { useUser } from '@/hooks/use-user';
 
 export interface UserPopoverProps {
   anchorEl: Element | null;
@@ -36,13 +34,9 @@ export function UserPopover({ anchorEl, onClose, open }: UserPopoverProps): Reac
         logger.error('Sign out error', error);
         return;
       }
+      document.cookie = `custom-auth-token=; path=/; max-age=0; secure; SameSite=Strict`;
+      router.push('/auth/sign-in');
 
-      // Refresh the auth state
-
-
-      // UserProvider, for this case, will not refresh the router and we need to do it manually
-      router.refresh();
-      // After refresh, AuthGuard will handle the redirect
     } catch (err) {
       logger.error('Sign out error', err);
     }
@@ -64,12 +58,6 @@ export function UserPopover({ anchorEl, onClose, open }: UserPopoverProps): Reac
       </Box>
       <Divider />
       <MenuList disablePadding sx={{ p: '8px', '& .MuiMenuItem-root': { borderRadius: 1 } }}>
-        <MenuItem component={RouterLink} href={paths.dashboard.settings} onClick={onClose}>
-          <ListItemIcon>
-            <GearSixIcon fontSize="var(--icon-fontSize-md)" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
         <MenuItem component={RouterLink} href={paths.dashboard.account} onClick={onClose}>
           <ListItemIcon>
             <UserIcon fontSize="var(--icon-fontSize-md)" />
