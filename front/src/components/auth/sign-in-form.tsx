@@ -31,7 +31,7 @@ type Values = zod.infer<typeof schema>;
 export function SignInForm(): React.JSX.Element {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { error, isLoading, token } = useAppSelector((state: RootState) => state.auth);
+  const { error, isLoading } = useAppSelector((state: RootState) => state.auth);
   const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
   const { control, handleSubmit, formState: { errors } } = useForm<Values>({ resolver: zodResolver(schema) });
@@ -92,6 +92,7 @@ export function SignInForm(): React.JSX.Element {
           </Button>
         </Stack>
       </form>
+      <Typography variant="h5">Não possui uma conta? Faça seu cadastro <Link href="/auth/sign-up">aqui</Link></Typography>
     </Stack>
   );
 }

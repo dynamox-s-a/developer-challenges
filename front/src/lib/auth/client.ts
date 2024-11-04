@@ -8,23 +8,10 @@ function generateToken(): string {
   return Array.from(arr, (v) => v.toString(16).padStart(2, '0')).join('');
 }
 
-const user = {
-  id: 'USR-000',
-  avatar: '/assets/avatar.png',
-  firstName: 'Sofia',
-  lastName: 'Rivers',
-  email: 'sofia@devias.io',
-} satisfies User;
-
 export interface SignUpParams {
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
   password: string;
-}
-
-export interface SignInWithOAuthParams {
-  provider: 'google' | 'discord';
 }
 
 export interface SignInWithPasswordParams {
@@ -32,62 +19,53 @@ export interface SignInWithPasswordParams {
   password: string;
 }
 
-export interface ResetPasswordParams {
-  email: string;
-}
-
 class AuthClient {
-  async signUp(_: SignUpParams): Promise<{ error?: string }> {
-    // Make API request
+  async signUp(params: SignUpParams): Promise<{ error?: string, token?: string }> {
+    const { name, email, password } = params;
+
+    const response = await fetch('http://localhost:3001/user/sign_up', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email, password }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      return { error: errorData.message || 'Error occurred while signing in' };
+    }
 
     // We do not handle the API, so we'll just generate a token and store it in localStorage.
     const token = generateToken();
     document.cookie = `custom-auth-token=${token}; path=/; max-age=${60 * 60 * 24 * 7}; secure; SameSite=Strict`;
 
-    return {};
+    return {token};
   }
 
-  async signInWithOAuth(_: SignInWithOAuthParams): Promise<{ error?: string }> {
-    return { error: 'Social authentication not implemented' };
-  }
 
   async signInWithPassword(params: SignInWithPasswordParams): Promise<{ error?: string, token?: string }> {
     const { email, password } = params;
-    console.log(email, password)
 
-    // Make API request
+    const response = await fetch('http://localhost:3001/user/sign_in', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-    // We do not handle the API, so we'll check if the credentials match with the hardcoded ones.
-    if (email !== 'sofia@devias.io' || password !== '123') {
-      return { error: 'Invalid credentials' };
+    if (!response.ok) {
+      const errorData = await response.json();
+      return { error: errorData.message || 'Error occurred while signing in' };
     }
-    console.log('entrou')
+
+    const data = await response.json();
 
     const token = generateToken();
     document.cookie = `custom-auth-token=${token}; path=/; max-age=${60 * 60 * 24 * 7}; secure; SameSite=Strict`;
 
     return { token };
-  }
-
-  async resetPassword(_: ResetPasswordParams): Promise<{ error?: string }> {
-    return { error: 'Password reset not implemented' };
-  }
-
-  async updatePassword(_: ResetPasswordParams): Promise<{ error?: string }> {
-    return { error: 'Update reset not implemented' };
-  }
-
-  async getUser(): Promise<{ data?: User | null; error?: string }> {
-    // Make API request
-
-    // We do not handle the API, so just check if we have a token in localStorage.
-    const token = localStorage.getItem('custom-auth-token');
-
-    if (!token) {
-      return { data: null };
-    }
-
-    return { data: user };
   }
 
   async signOut(): Promise<{ error?: string }> {

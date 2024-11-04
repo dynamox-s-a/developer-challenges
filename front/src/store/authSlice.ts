@@ -31,6 +31,17 @@ export const signIn = createAsyncThunk(
   }
 );
 
+export const signUp = createAsyncThunk(
+  'auth/signUp',
+  async ({ name, email, password }: { name: string; email: string; password: string }, { rejectWithValue }) => {
+    const response = await authClient.signUp({ name, email, password });
+    if (response.error) {
+      return rejectWithValue(response.error);
+    }
+    return { token: response.token };
+  }
+);
+
 export const signOut = createAsyncThunk('auth/signOut', async () => {
   await authClient.signOut();
   return null;
@@ -52,7 +63,19 @@ const authSlice = createSlice({
       })
       .addCase(signIn.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = true;
+        state.error = action.payload as string;
+      })
+      .addCase(signUp.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(signUp.fulfilled, (state, action: PayloadAction<{ token: string }>) => {
+        state.isLoading = false;
+        state.token = action.payload.token;
+      })
+      .addCase(signUp.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
       })
       .addCase(signOut.fulfilled, (state) => {
         state.user = null;
@@ -60,6 +83,7 @@ const authSlice = createSlice({
       });
   },
 });
+
 
 export default authSlice.reducer;
 
