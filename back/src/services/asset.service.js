@@ -15,6 +15,18 @@ const registerAsset = async (body) => {
   }
 };
 
+const showAssets = async () => {
+  try {
+    const assets =  await prisma.asset.findMany();
+    if (!assets) return { status: 'INVALID_VALUE', data: { message: 'Nenhum ativo encontrado' } };
+
+    return { status: 'SUCCESSFUL', data: { assets } };
+  } catch (error) {
+    return { status: 'INVALID_VALUE', data: { message: error.message } };
+  }
+};
+
 module.exports = {
   registerAsset,
+  showAssets
 };
