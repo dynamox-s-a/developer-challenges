@@ -28,7 +28,6 @@ services:
       - db
     environment:
       - DATABASE_URL=postgres://user:password@db:5432/database
-    command: ["sh", "-c", "npx prisma migrate deploy && npm start"]
 
   db:
     image: postgres:15
