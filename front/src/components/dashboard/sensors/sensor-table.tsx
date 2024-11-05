@@ -33,7 +33,6 @@ export function SensorTable({
   sensors = [],
   onDelete,
 }: SensorTableProps): React.JSX.Element {
-  console.log(sensors)
   return (
     <Card>
       <Box sx={{ overflowX: 'auto' }}>

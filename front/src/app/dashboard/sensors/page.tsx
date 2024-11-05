@@ -5,22 +5,22 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
-
-import { CustomersTable } from '@/components/dashboard/assets/customers-table';
-import { AddAssetModal } from '@/components/dashboard/assets/add-asset-modal';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { RootState } from '@/store/store';
-import { addAsset, deleteAsset, fetchAssets } from '@/store/assetsSlice';
 import { SensorTable } from '@/components/dashboard/sensors/sensor-table';
-import { fetchSensors } from '@/store/sensorSlice';
+import { fetchSensors, registerSensor } from '@/store/sensorSlice';
+import { AddSensorModal } from '@/components/dashboard/sensors/add-sensor-modal';
+import { fetchAssets } from '@/store/assetsSlice';
 
 const SensorPage = () => {
   const dispatch = useAppDispatch();
   const sensors = useAppSelector((state: RootState) => state.sensors.sensors);
+  const assets = useAppSelector((state: RootState) => state.assets.assets);
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   React.useEffect(() => {
     dispatch(fetchSensors());
+    dispatch(fetchAssets());
   }, [dispatch]);
 
   const handleDelete = (id: number) => {
@@ -33,6 +33,11 @@ const SensorPage = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+  };
+
+  const handleSave = (name: string, type: string, assetId: number) => {
+    dispatch(registerSensor({ name, type, assetId }));
+    handleCloseModal();
   };
 
   return (
@@ -51,6 +56,7 @@ const SensorPage = () => {
         </Stack>
       </Stack>
       <SensorTable sensors={sensors} onDelete={handleDelete} />
+      <AddSensorModal open={isModalOpen} onClose={handleCloseModal} onSave={handleSave} assets={assets}/>
     </Stack>
   );
 };

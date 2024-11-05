@@ -32,6 +32,30 @@ export const fetchSensors = createAsyncThunk('sensors/fetchSensors', async () =>
   return data;
 });
 
+export const registerSensor = createAsyncThunk(
+  'sensors/register',
+  async ({ name, type, assetId }: { name: string; type: string; assetId: number }, { rejectWithValue }) => {
+    try {
+      const response = await fetch('http://localhost:3001/sensor/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, type, assetId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to register sensor');
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message || 'Failed to register sensor');
+    }
+  }
+);
+
 const sensorsSlice = createSlice({
   name: 'sensors',
   initialState,
@@ -48,6 +72,14 @@ const sensorsSlice = createSlice({
       .addCase(fetchSensors.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message || null;
+      })
+      .addCase(registerSensor.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.sensors.push(action.payload);
+      })
+      .addCase(registerSensor.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload || 'Failed to register sensor';
       });
   },
 });
