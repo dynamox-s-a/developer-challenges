@@ -2,7 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 const registerSensor = async (body) => {
-  const { name, type, id: assetId } = body;
+  const { name, type, assetId } = body;
 
   try {
     const assetExists = await prisma.asset.findUnique({
@@ -21,9 +21,12 @@ const registerSensor = async (body) => {
           connect: { id: assetId },
         },
       },
+      include: {
+        asset: true,
+      },
     });
     if (!sensor) return { status: 'INVALID_VALUE', data: { message: 'Não foi possível cadastrar' } };
-    const data = { id: sensor.id, name: sensor.name, type: sensor.type };
+    const data = { id: sensor.id, name: sensor.name, type: sensor.type, asset: sensor.asset };
 
     return { status: 'SUCCESSFUL', data: { ...data } };
   } catch (error) {
