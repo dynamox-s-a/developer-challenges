@@ -11,7 +11,13 @@ const showSensor = async (req, res) => {
   return res.status(mapStatusHTTP(status)).json(data);
 }
 
+const deleteSensor = async (req, res) => {
+  const { status, data } = await sensorService.deleteSensor(req.params.id);
+  return res.status(mapStatusHTTP(status)).json(data);
+}
+
 module.exports = {
   registerSensor,
-  showSensor
+  showSensor,
+  deleteSensor
 };

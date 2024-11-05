@@ -54,7 +54,21 @@ const showSensor = async () => {
   }
 };
 
+const deleteSensor = async (sensorId) => {
+  try {
+    const deletedSensor = await prisma.sensor.delete({
+      where: { id: Number(sensorId) },
+    });
+
+    return { status: 'SUCCESSFUL' };
+  } catch (error) {
+    console.log(error);
+    return { status: 'INVALID_VALUE', data: { message: error.message } };
+  }
+};
+
 module.exports = {
   registerSensor,
-  showSensor
+  showSensor,
+  deleteSensor
 };
