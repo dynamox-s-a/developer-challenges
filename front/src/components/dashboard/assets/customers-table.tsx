@@ -19,7 +19,7 @@ export interface Asset {
 
 interface CustomersTableProps {
   rows?: Asset[];
-  onDelete: (id: string) => void; // Modificado para receber o ID do ativo
+  onDelete: (id: string) => void;
 }
 
 export function CustomersTable({
@@ -46,7 +46,7 @@ export function CustomersTable({
                   <Button
                     startIcon={<TrashSimple fontSize="var(--icon-fontSize-md)" />}
                     variant="contained"
-                    onClick={() => onDelete(row.id)} // Passando o ID do ativo para o onDelete
+                    onClick={() => onDelete(row.id)}
                   >
                     Delete
                   </Button>

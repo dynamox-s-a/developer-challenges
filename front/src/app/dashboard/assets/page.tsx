@@ -6,8 +6,8 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 
-import { CustomersTable } from '@/components/dashboard/customer/customers-table';
-import { AddAssetModal } from '@/components/dashboard/customer/add-asset-modal';
+import { CustomersTable } from '@/components/dashboard/assets/customers-table';
+import { AddAssetModal } from '@/components/dashboard/assets/add-asset-modal';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { RootState } from '@/store/store';
 import { addAsset, deleteAsset, fetchAssets } from '@/store/assetsSlice';
@@ -51,14 +51,14 @@ export default function Page(): React.JSX.Element {
         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
           <Typography variant="h4">Assets</Typography>
         </Stack>
-        <div>
+        <Stack>
           <Button startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
             variant="contained"
             onClick={handleOpenModal}
           >
             Add
           </Button>
-        </div>
+        </Stack>
       </Stack>
       <CustomersTable
         rows={assets}
