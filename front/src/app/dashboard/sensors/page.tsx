@@ -8,7 +8,7 @@ import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { RootState } from '@/store/store';
 import { SensorTable } from '@/components/dashboard/sensors/sensor-table';
-import { fetchSensors, registerSensor } from '@/store/sensorSlice';
+import { deleteSensor, fetchSensors, registerSensor } from '@/store/sensorSlice';
 import { AddSensorModal } from '@/components/dashboard/sensors/add-sensor-modal';
 import { fetchAssets } from '@/store/assetsSlice';
 
@@ -24,7 +24,7 @@ const SensorPage = () => {
   }, [dispatch]);
 
   const handleDelete = (id: number) => {
-    
+    dispatch(deleteSensor(id));
   };
 
   const handleOpenModal = () => {

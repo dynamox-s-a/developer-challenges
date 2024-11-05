@@ -56,6 +56,25 @@ export const registerSensor = createAsyncThunk(
   }
 );
 
+export const deleteSensor = createAsyncThunk(
+  'sensors/delete',
+  async (sensorId: number, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`http://localhost:3001/sensor/delete/${sensorId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete sensor');
+      }
+
+      return sensorId;
+    } catch (error) {
+      return rejectWithValue(error.message || 'Failed to delete sensor');
+    }
+  }
+);
+
 const sensorsSlice = createSlice({
   name: 'sensors',
   initialState,
@@ -80,6 +99,13 @@ const sensorsSlice = createSlice({
       .addCase(registerSensor.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload || 'Failed to register sensor';
+      })
+      .addCase(deleteSensor.fulfilled, (state, action) => {
+        state.sensors = state.sensors.filter(sensor => sensor.id !== action.payload);
+      })
+      .addCase(deleteSensor.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload || 'Failed to delete sensor';
       });
   },
 });
