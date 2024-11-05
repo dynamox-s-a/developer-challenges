@@ -26,7 +26,24 @@ const showAssets = async () => {
   }
 };
 
+const deleteAssets = async (id) => {
+  console.log(id)
+  try {
+    const assets =  await prisma.asset.delete({
+      where: {
+        id: Number(id)
+      },
+    })
+    if (!assets) return { status: 'INVALID_VALUE', data: { message: 'Nenhum ativo encontrado' } };
+
+    return { status: 'SUCCESSFUL' };
+  } catch (error) {
+    return { status: 'INVALID_VALUE', data: { message: error.message } };
+  }
+};
+
 module.exports = {
   registerAsset,
-  showAssets
+  showAssets,
+  deleteAssets
 };

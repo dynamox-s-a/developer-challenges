@@ -11,7 +11,13 @@ const showAssets = async (req, res) => {
   return res.status(mapStatusHTTP(status)).json(data);
 }
 
+const deleteAssets = async (req, res) => {
+  const { status, data } = await assetService.deleteAssets(req.params.id);
+  return res.status(mapStatusHTTP(status)).json(data);
+}
+
 module.exports = {
   registerAsset,
-  showAssets
+  showAssets,
+  deleteAssets
 };
