@@ -32,6 +32,26 @@ const registerSensor = async (body) => {
   }
 };
 
+const showSensor = async () => {
+  try {
+    const sensors = await prisma.sensor.findMany({
+      include: {
+        asset: true,
+      },
+    });
+
+    if (!sensors.length) {
+      return { status: 'NOT_FOUND', data: { message: 'Nenhum sensor encontrado' } };
+    }
+
+    return { status: 'SUCCESSFUL', data: sensors };
+  } catch (error) {
+    console.error(error);
+    return { status: 'ERROR', data: { message: 'Erro ao buscar sensores' } };
+  }
+};
+
 module.exports = {
   registerSensor,
+  showSensor
 };

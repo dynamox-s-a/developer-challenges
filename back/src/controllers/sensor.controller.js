@@ -6,6 +6,12 @@ const registerSensor = async (req, res) => {
   return res.status(mapStatusHTTP(status)).json(data);
 };
 
+const showSensor = async (req, res) => {
+  const { status, data } = await sensorService.showSensor();
+  return res.status(mapStatusHTTP(status)).json(data);
+}
+
 module.exports = {
   registerSensor,
+  showSensor
 };
