@@ -24,4 +24,13 @@ model Asset {
   id   Int    @id @default(autoincrement())
   name String
   type String
+  sensors Sensor[]
+}
+
+model Sensor {
+  id      Int     @id @default(autoincrement())
+  name    String
+  type    String
+  assetId Int
+  asset   Asset   @relation(fields: [assetId], references: [id])
 }
