@@ -1,3 +1,4 @@
+import Layout from "@/components/Layout";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
@@ -13,9 +14,9 @@ const PrivatePage = () => {
   }
 
   return (
-    <div>
+    <Layout>
       <h1>Welcome to the private page, {session.user?.name}</h1>
-    </div>
+    </Layout>
   );
 };
 

@@ -2,7 +2,6 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { Session, User, JWT } from "next-auth";
 
-
 export default NextAuth({
   providers: [
     CredentialsProvider({
@@ -21,7 +20,7 @@ export default NextAuth({
           return { id: "1", name: "João da Silva", email: validEmail };
         }
 
-        return null; 
+        return null;
       },
     }),
   ],
@@ -48,6 +47,6 @@ export default NextAuth({
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: '/login',
+    signIn: "/login",
   },
 });

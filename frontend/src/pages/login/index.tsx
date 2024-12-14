@@ -1,14 +1,19 @@
-import { useState } from 'react';
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/router';
-import { Container, TextField, Button, Typography, Box } from '@mui/material';
+import { useState } from "react";
+import Image from "next/image";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
+import { Box } from "@mui/material";
+import LoginBackgroundImage from "@/components/LoginBackgroundImage";
+import SignInForm from "./components/SignInForm";
 
 const Login = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleLogin = async () => {
+    setError(null);
     const res = await signIn("credentials", {
       redirect: false,
       email,
@@ -16,53 +21,38 @@ const Login = () => {
     });
 
     if (res?.error) {
-      alert("Invalid email or password");
+      setError("Invalid email or password");
     } else {
-      // Redirect to the private route after successful login
       router.push("/private");
     }
   };
 
   return (
-    <Container maxWidth="sm">
+    <Box height="100vh" display="flex">
+      <LoginBackgroundImage />
       <Box
+        m={8}
         display="flex"
         flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        height="100vh"
+        justifyContent="space-between"
       >
-        <Typography variant="h4" component="h1" gutterBottom>
-          Login
-        </Typography>
-        <TextField
-          label="Email"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+        <Image
+          src="/logo-dynapredict.png"
+          alt="Company Logo"
+          width={202}
+          height={32}
         />
-        <TextField
-          label="Password"
-          type="password"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+        <SignInForm
+          email={email}
+          setEmail={setEmail}
+          password={password}
+          setPassword={setPassword}
+          error={error}
+          handleLogin={handleLogin}
         />
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          onClick={handleLogin}
-          sx={{ mt: 2 }}
-        >
-          Login
-        </Button>
+        <Box />
       </Box>
-    </Container>
+    </Box>
   );
 };
 
