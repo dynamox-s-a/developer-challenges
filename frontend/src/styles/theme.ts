@@ -68,7 +68,30 @@ const lightPalette = {
   },
 } as const;
 
-const darkTheme = createTheme({ palette: darkPalette });
-const lightTheme = createTheme({ palette: lightPalette });
+const darkTheme = createTheme({
+  palette: darkPalette,
+  components: {
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: darkPalette.background.default,
+        },
+      },
+    },
+  },
+});
+
+const lightTheme = createTheme({
+  palette: lightPalette,
+  components: {
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: lightPalette.background.default,
+        },
+      },
+    },
+  },
+});
 
 export { darkTheme, lightTheme };

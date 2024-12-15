@@ -1,39 +1,36 @@
 import type { AppProps } from "next/app";
 import { CssBaseline } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
 import { SessionProvider } from "next-auth/react";
-import React, { useState, useEffect } from "react";
-import { darkTheme, lightTheme } from "@/styles/theme";
-
-const ThemeContext = React.createContext({
-  isDarkMode: true,
-  toggleTheme: () => {},
-});
+import React from "react";
+import { ThemeContextProvider } from "@/context/ThemeProvider";
+import Layout from "@/components/layout";
+import { darkTheme } from "@/styles/theme";
+import { useRouter } from "next/router";
+import { ThemeProvider } from "@mui/material/styles";
+import store from "@/store/store";
+import { Provider } from "react-redux";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      setIsDarkMode(savedTheme === "dark");
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    const newTheme = !isDarkMode;
-    setIsDarkMode(newTheme);
-    localStorage.setItem("theme", newTheme ? "dark" : "light");
-  };
+  const router = useRouter();
+  const isLoginPage = router.pathname === "/login";
 
   return (
     <SessionProvider session={pageProps.session}>
-      <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
-        <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-          <CssBaseline />
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </ThemeContext.Provider>
+      <Provider store={store}>
+        {isLoginPage ? (
+          <ThemeProvider theme={darkTheme}>
+            <CssBaseline />
+            <Component {...pageProps} />
+          </ThemeProvider>
+        ) : (
+          <ThemeContextProvider>
+            <CssBaseline />
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </ThemeContextProvider>
+        )}
+      </Provider>
     </SessionProvider>
   );
 }

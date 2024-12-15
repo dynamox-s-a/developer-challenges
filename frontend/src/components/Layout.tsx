@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import { Container, Box } from "@mui/material";
-import NavBar from "./Navbar";
+import { Container } from "@mui/material";
+import NavBar from "./navbar";
 
 interface LayoutProps {
   children: ReactNode;
@@ -8,10 +8,10 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <Box>
+    <>
       <NavBar />
-      <Container sx={{ marginTop: 3 }}>{children}</Container>
-    </Box>
+      <Container>{children}</Container>
+    </>
   );
 };
 

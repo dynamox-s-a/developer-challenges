@@ -1,8 +1,8 @@
-import NextAuth from "next-auth";
+import NextAuth, { Session, User, NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { Session, User, JWT } from "next-auth";
+import { JWT } from "next-auth/jwt";
 
-export default NextAuth({
+const options: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -13,40 +13,35 @@ export default NextAuth({
       async authorize(credentials) {
         const { email, password } = credentials || {};
 
-        const validEmail = "user@example.com";
-        const validPassword = "password123";
-
-        if (email === validEmail && password === validPassword) {
-          return { id: "1", name: "João da Silva", email: validEmail };
+        if (email === "user@example.com" && password === "password123") {
+          return { id: "1", name: "João da Silva", email };
         }
 
         return null;
       },
     }),
   ],
-  session: {
-    strategy: "jwt",
-  },
+  session: { strategy: "jwt" },
   callbacks: {
     async jwt({ token, user }: { token: JWT; user?: User }) {
       if (user) {
         token.id = user.id;
         token.email = user.email;
+        token.name = user.name;
       }
       return token;
     },
     async session({ session, token }: { session: Session; token: JWT }) {
-      if (session.user) {
-        session.user.id = token.id;
-        session.user.email = token.email;
-      } else {
-        session.user = { id: token.id, email: token.email };
-      }
+      session.user = {
+        id: token.id as string,
+        email: token.email as string,
+        name: token.name as string,
+      };
       return session;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-  pages: {
-    signIn: "/login",
-  },
-});
+  pages: { signIn: "/login" },
+};
+
+export default NextAuth(options);
