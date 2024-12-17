@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
-import { darkTheme, lightTheme } from "@/styles/theme";
 import { ThemeProvider } from "@mui/material/styles";
+import { darkTheme, lightTheme } from "@/styles/theme";
 
 export const ThemeContext = createContext({
   isDarkMode: true,
@@ -27,7 +27,10 @@ export const ThemeContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
-      <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+      <ThemeProvider
+        theme={isDarkMode ? darkTheme : lightTheme}
+        defaultMode="dark"
+      >
         {children}
       </ThemeProvider>
     </ThemeContext.Provider>

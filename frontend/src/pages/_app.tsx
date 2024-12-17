@@ -1,14 +1,13 @@
 import type { AppProps } from "next/app";
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import { SessionProvider } from "next-auth/react";
 import React from "react";
-import { ThemeContextProvider } from "@/context/ThemeProvider";
 import Layout from "@/components/layout";
-import { darkTheme } from "@/styles/theme";
 import { useRouter } from "next/router";
-import { ThemeProvider } from "@mui/material/styles";
 import store from "@/store/store";
 import { Provider } from "react-redux";
+import { ThemeContextProvider } from "@/context/ThemeProvider";
+import { darkTheme } from "@/styles/theme";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();

@@ -13,6 +13,7 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@hookform/resolvers": "^3.9.1",
     "@mui/icons-material": "^6.2.0",
     "@mui/material": "^6.2.0",
     "@reduxjs/toolkit": "^2.5.0",
@@ -22,7 +23,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
-    "styled-components": "^6.1.13"
+    "styled-components": "^6.1.13",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

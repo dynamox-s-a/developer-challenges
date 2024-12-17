@@ -1,124 +1,165 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
-import { TextField, Button, MenuItem } from "@mui/material";
-import styled from "styled-components";
 import { addMonitoringPoint } from "../redux/machinesSlice";
 import { RootState } from "@/store/store";
+import {
+  Box,
+  TextField,
+  Button,
+  MenuItem,
+  Card,
+  CardHeader,
+  Divider,
+} from "@mui/material";
+import { z } from "zod";
 
-interface Sensor {
-  id: string;
-  model: "TcAg" | "TcAs" | "HF+";
-}
+// Validation schema
+const monitoringPointSchema = z.object({
+  machineId: z.string().min(1, "Machine selection is required"),
+  name: z.string().min(1, "Monitoring point name is required"),
+  sensorModel: z.enum(["TcAg", "TcAs", "HF+"], {
+    required_error: "Sensor model is required",
+  }),
+});
 
-interface MonitoringPoint {
-  id: string;
-  machineId: string;
-  name: string;
-  sensor: Sensor;
-}
-
-const FormContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
+type MonitoringPointFormValues = z.infer<typeof monitoringPointSchema>;
 
 const MonitoringPointForm: React.FC = () => {
   const dispatch = useDispatch();
   const machines = useSelector((state: RootState) => state.machines.machines);
 
-  const [selectedMachineId, setSelectedMachineId] = useState<string>("");
-  const [pointName, setPointName] = useState<string>("");
-  const [sensorModel, setSensorModel] = useState<"TcAg" | "TcAs" | "HF+">(
-    "HF+",
-  );
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<MonitoringPointFormValues>({
+    defaultValues: {
+      machineId: "",
+      name: "",
+      sensorModel: "HF+",
+    },
+    resolver: zodResolver(monitoringPointSchema),
+  });
 
+  // Watch selected machine to determine sensor options
+  const selectedMachineId = watch("machineId");
   const selectedMachine = machines.find(
     (machine) => machine.id === selectedMachineId,
   );
-  const machineType = selectedMachine?.type;
-
-  const sensorModels =
-    machineType === "Fan"
+  const sensorOptions =
+    selectedMachine?.type === "Fan"
       ? [
           { value: "TcAg", label: "TcAg" },
           { value: "TcAs", label: "TcAs" },
           { value: "HF+", label: "HF+" },
         ]
-      : machineType === "Pump"
-        ? [{ value: "HF+", label: "HF+" }]
-        : [];
+      : [{ value: "HF+", label: "HF+" }];
 
-  useEffect(() => {
-    if (machineType === "Pump") {
-      setSensorModel("HF+");
-    } else if (
-      machineType === "Fan" &&
-      !["TcAg", "TcAs", "HF+"].includes(sensorModel)
-    ) {
-      setSensorModel("HF+");
-    }
-  }, [machineType]);
-
-  const handleSubmit = () => {
-    if (!selectedMachineId) {
-      alert("Please select a machine!");
-      return;
-    }
-
-    const monitoringPoint: MonitoringPoint = {
+  const onSubmit = (data: MonitoringPointFormValues) => {
+    const monitoringPoint = {
       id: Date.now().toString(),
-      machineId: selectedMachineId,
-      name: pointName,
-      sensor: { id: Date.now().toString(), model: sensorModel },
+      machineId: data.machineId,
+      name: data.name,
+      sensor: {
+        id: Date.now().toString(),
+        model: data.sensorModel,
+      },
     };
 
     dispatch(
       addMonitoringPoint({
-        machineId: selectedMachineId,
+        machineId: data.machineId,
         monitoringPoint,
       }),
     );
-
-    setPointName("");
-    setSensorModel("HF+");
-    setSelectedMachineId("");
   };
 
   return (
-    <FormContainer>
-      <TextField
-        select
-        label="Select Machine"
-        value={selectedMachineId}
-        onChange={(e) => setSelectedMachineId(e.target.value)}
-      >
-        {machines.map((machine) => (
-          <MenuItem key={machine.id} value={machine.id}>
-            {machine.name}
-          </MenuItem>
-        ))}
-      </TextField>
+    <Card variant="outlined" sx={{ flex: 1 }}>
+      <CardHeader
+        title="Add New Monitoring Point"
+        sx={{
+          "& .MuiCardHeader-title": { fontWeight: 600, fontSize: "1.5rem" },
+        }}
+      />
+      <Divider />
+      <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ p: 3 }}>
+        {/* Select Machine */}
+        <Controller
+          name="machineId"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              select
+              label="Select Machine"
+              fullWidth
+              error={!!errors.machineId}
+              helperText={errors.machineId?.message}
+              margin="normal"
+            >
+              {machines.map((machine) => (
+                <MenuItem key={machine.id} value={machine.id}>
+                  {machine.name}
+                </MenuItem>
+              ))}
+            </TextField>
+          )}
+        />
 
-      <TextField
-        select
-        label="Sensor Model"
-        value={sensorModel}
-        onChange={(e) =>
-          setSensorModel(e.target.value as "TcAg" | "TcAs" | "HF+")
-        }
-      >
-        {sensorModels.map((sensor) => (
-          <MenuItem key={sensor.value} value={sensor.value}>
-            {sensor.label}
-          </MenuItem>
-        ))}
-      </TextField>
+        {/* Monitoring Point Name */}
+        <Controller
+          name="name"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Monitoring Point Name"
+              fullWidth
+              error={!!errors.name}
+              helperText={errors.name?.message}
+              margin="normal"
+            />
+          )}
+        />
 
-      <Button variant="contained" color="primary" onClick={handleSubmit}>
-        Add Monitoring Point
-      </Button>
-    </FormContainer>
+        {/* Sensor Model */}
+        <Controller
+          name="sensorModel"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              select
+              label="Sensor Model"
+              fullWidth
+              error={!!errors.sensorModel}
+              helperText={errors.sensorModel?.message}
+              margin="normal"
+            >
+              {sensorOptions.map((sensor) => (
+                <MenuItem key={sensor.value} value={sensor.value}>
+                  {sensor.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          )}
+        />
+
+        {/* Submit Button */}
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          sx={{ width: "100%", mt: "1rem" }}
+        >
+          Add Monitoring Point
+        </Button>
+      </Box>
+    </Card>
   );
 };
 

@@ -10,7 +10,11 @@ import {
   FormControl,
   Select,
   MenuItem,
+  FormHelperText,
 } from "@mui/material";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 interface EditMachineModalProps {
   open: boolean;
@@ -19,20 +23,37 @@ interface EditMachineModalProps {
   onSave: (id: string, name: string, type: "Pump" | "Fan") => void;
 }
 
+// Zod validation schema
+const machineSchema = z.object({
+  name: z.string().min(1, "Machine name is required"),
+  type: z.enum(["Pump", "Fan"], {
+    errorMap: () => ({ message: "Select a valid machine type" }),
+  }),
+});
+
+type MachineFormValues = z.infer<typeof machineSchema>;
+
 const EditMachineModal: React.FC<EditMachineModalProps> = ({
   open,
   machine,
   onClose,
   onSave,
 }) => {
-  const [name, setName] = React.useState(machine?.name || "");
-  const [type, setType] = React.useState<"Pump" | "Fan">(
-    machine?.type || "Pump",
-  );
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<MachineFormValues>({
+    defaultValues: {
+      name: machine?.name || "",
+      type: machine?.type || "Pump",
+    },
+    resolver: zodResolver(machineSchema),
+  });
 
-  const handleSubmit = () => {
+  const onSubmit = (data: MachineFormValues) => {
     if (machine) {
-      onSave(machine.id, name, type);
+      onSave(machine.id, data.name, data.type);
     }
     onClose();
   };
@@ -41,38 +62,53 @@ const EditMachineModal: React.FC<EditMachineModalProps> = ({
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Edit Machine</DialogTitle>
       <DialogContent>
-        <div>
-          <TextField
-            label="Machine Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            fullWidth
-            margin="normal"
-            placeholder="Machine Name"
-          />
-        </div>
-        <div>
-          <FormControl fullWidth margin="normal">
-            <InputLabel>Machine Type</InputLabel>
-            <Select
-              value={type}
-              onChange={(e) => setType(e.target.value as "Pump" | "Fan")}
-              label="Machine Type"
-            >
-              <MenuItem value="Pump">Pump</MenuItem>
-              <MenuItem value="Fan">Fan</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div>
+            <Controller
+              name="name"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Machine Name"
+                  fullWidth
+                  margin="normal"
+                  placeholder="Machine Name"
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
+                  sx={{ minWidth: "20rem" }}
+                />
+              )}
+            />
+          </div>
+          <div>
+            <FormControl fullWidth margin="normal" error={!!errors.type}>
+              <InputLabel>Machine Type</InputLabel>
+              <Controller
+                name="type"
+                control={control}
+                render={({ field }) => (
+                  <Select {...field} label="Machine Type">
+                    <MenuItem value="Pump">Pump</MenuItem>
+                    <MenuItem value="Fan">Fan</MenuItem>
+                  </Select>
+                )}
+              />
+              {errors.type && (
+                <FormHelperText>{errors.type.message}</FormHelperText>
+              )}
+            </FormControl>
+          </div>
+          <DialogActions>
+            <Button variant="outlined" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button variant="contained" type="submit">
+              Save
+            </Button>
+          </DialogActions>
+        </form>
       </DialogContent>
-      <DialogActions>
-        <Button variant="outlined" color="secondary" onClick={onClose}>
-          Cancel
-        </Button>
-        <Button variant="contained" color="secondary" onClick={handleSubmit}>
-          Save
-        </Button>
-      </DialogActions>
     </Dialog>
   );
 };

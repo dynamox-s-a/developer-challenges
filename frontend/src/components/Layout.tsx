@@ -10,7 +10,9 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <>
       <NavBar />
-      <Container>{children}</Container>
+      <Container maxWidth="xl" sx={{ my: "3rem" }}>
+        {children}
+      </Container>
     </>
   );
 };

@@ -16,6 +16,7 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import LogoDynamox from "@/assets/logo-dynapredict.png";
 import Image from "next/image";
+import ThemeToggle from "./themeToggle";
 
 const pages = [
   { name: "Home", path: "/" },
@@ -109,6 +110,8 @@ const ResponsiveAppBar = () => {
               </Link>
             ))}
           </Box>
+
+          <ThemeToggle />
 
           {/* logout */}
           {session && (

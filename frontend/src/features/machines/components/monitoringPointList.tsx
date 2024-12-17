@@ -8,23 +8,17 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Button,
+  IconButton,
+  Card,
+  CardHeader,
+  Divider,
+  Tooltip,
   Typography,
+  Box,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteMonitoringPoint } from "../redux/machinesSlice";
 import { useAppSelector } from "@/store/store";
-import styled from "styled-components";
-
-const ListContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 2rem;
-`;
-
-const TableHeaderCell = styled(TableCell)`
-  font-weight: 600;
-`;
 
 const MonitoringPointsList = () => {
   const dispatch = useDispatch();
@@ -43,9 +37,10 @@ const MonitoringPointsList = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [order, setOrder] = useState<"asc" | "desc">("asc");
-  const [orderBy, setOrderBy] = useState<string>("name");
+  const [orderBy, setOrderBy] =
+    useState<keyof (typeof monitoringPoints)[0]>("name");
 
-  const handleRequestSort = (property: string) => {
+  const handleRequestSort = (property: keyof (typeof monitoringPoints)[0]) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
@@ -66,103 +61,100 @@ const MonitoringPointsList = () => {
     dispatch(deleteMonitoringPoint({ machineId, monitoringPointId }));
   };
 
-  const sortedMonitoringPoints = monitoringPoints.sort((a, b) => {
-    if (orderBy === "name") {
+  const sortedMonitoringPoints = [...monitoringPoints].sort((a, b) => {
+    if (
+      orderBy === "name" ||
+      orderBy === "machineName" ||
+      orderBy === "machineType"
+    ) {
       return order === "asc"
-        ? a.name.localeCompare(b.name)
-        : b.name.localeCompare(a.name);
+        ? a[orderBy].localeCompare(b[orderBy])
+        : b[orderBy].localeCompare(a[orderBy]);
     }
     return 0;
   });
 
   return (
-    <ListContainer>
-      {monitoringPoints.length === 0 ? (
-        <Typography variant="h6" color="textSecondary">
-          There are no monitoring points yet!
-        </Typography>
-      ) : (
-        <>
-          <TableContainer
-            sx={{
-              boxShadow: 3,
-              borderRadius: 2,
-            }}
-          >
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableHeaderCell onClick={() => handleRequestSort("name")}>
-                    Monitoring Point Name
-                  </TableHeaderCell>
-                  <TableHeaderCell
-                    onClick={() => handleRequestSort("machineName")}
-                  >
-                    Machine Name
-                  </TableHeaderCell>
-                  <TableHeaderCell
-                    onClick={() => handleRequestSort("machineType")}
-                  >
-                    Machine Type
-                  </TableHeaderCell>
-                  <TableHeaderCell
-                    onClick={() => handleRequestSort("sensorModel")}
-                  >
-                    Sensor Model
-                  </TableHeaderCell>
-                  <TableHeaderCell>Actions</TableHeaderCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {sortedMonitoringPoints
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((point) => (
-                    <TableRow key={point.id}>
-                      <TableCell>{point.name}</TableCell>
-                      <TableCell>{point.machineName}</TableCell>
-                      <TableCell>{point.machineType}</TableCell>
-                      <TableCell>
-                        {point.sensor ? point.sensor.model : "N/A"}
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          variant="contained"
-                          color="error"
-                          sx={{
-                            margin: "0 0.5rem",
-                            textTransform: "capitalize",
-                          }}
-                          onClick={() =>
-                            handleDelete(point.machineId, point.id)
-                          }
-                        >
-                          Delete
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={monitoringPoints.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            sx={{
-              marginTop: "1rem",
-              display: "flex",
-              justifyContent: "flex-end",
-              borderTop: "1px solid #ccc",
-            }}
-          />
-        </>
-      )}
-    </ListContainer>
+    <Card variant="outlined" sx={{ flex: 1 }}>
+      <CardHeader
+        title="Monitoring Points"
+        sx={{
+          "& .MuiCardHeader-title": { fontWeight: 600, fontSize: "1.5rem" },
+        }}
+      />
+      <Divider />
+      <Box sx={{ overflowX: "auto", minHeight: 200 }}>
+        {monitoringPoints.length > 0 ? (
+          <>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell onClick={() => handleRequestSort("name")}>
+                      Monitoring Point Name
+                    </TableCell>
+                    <TableCell onClick={() => handleRequestSort("machineName")}>
+                      Machine Name
+                    </TableCell>
+                    <TableCell onClick={() => handleRequestSort("machineType")}>
+                      Machine Type
+                    </TableCell>
+                    <TableCell>Sensor Model</TableCell>
+                    <TableCell>Actions</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {sortedMonitoringPoints
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((point) => (
+                      <TableRow key={point.id}>
+                        <TableCell>{point.name}</TableCell>
+                        <TableCell>{point.machineName}</TableCell>
+                        <TableCell>{point.machineType}</TableCell>
+                        <TableCell>
+                          {point.sensor ? point.sensor.model : "N/A"}
+                        </TableCell>
+                        <TableCell>
+                          <Tooltip title="Delete">
+                            <IconButton
+                              color="error"
+                              onClick={() =>
+                                handleDelete(point.machineId, point.id)
+                              }
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={monitoringPoints.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              sx={{
+                marginTop: "1rem",
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            />
+          </>
+        ) : (
+          <Box sx={{ textAlign: "center", p: 2 }}>
+            <Typography color="text.secondary">
+              There are no monitoring points yet!
+            </Typography>
+          </Box>
+        )}
+      </Box>
+    </Card>
   );
 };
 
