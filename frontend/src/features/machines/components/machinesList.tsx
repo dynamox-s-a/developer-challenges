@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { useAppSelector } from "@/store/store";
 import { useDispatch } from "react-redux";

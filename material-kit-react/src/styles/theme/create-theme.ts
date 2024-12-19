@@ -1,12 +1,12 @@
-import { experimental_extendTheme as extendTheme } from '@mui/material/styles';
+import { experimental_extendTheme as extendTheme } from "@mui/material/styles";
 
-import { colorSchemes } from './color-schemes';
-import { components } from './components/components';
-import { shadows } from './shadows';
-import type { Theme } from './types';
-import { typography } from './typography';
+import { colorSchemes } from "./color-schemes";
+import { components } from "./components/components";
+import { shadows } from "./shadows";
+import type { Theme } from "./types";
+import { typography } from "./typography";
 
-declare module '@mui/material/styles/createPalette' {
+declare module "@mui/material/styles/createPalette" {
   interface PaletteRange {
     50: string;
     100: string;

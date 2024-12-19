@@ -1,4 +1,4 @@
-import type { NavItemConfig } from '@/types/nav';
+import type { NavItemConfig } from "@/types/nav";
 
 export function isNavItemActive({
   disabled,
@@ -6,17 +6,19 @@ export function isNavItemActive({
   href,
   matcher,
   pathname,
-}: Pick<NavItemConfig, 'disabled' | 'external' | 'href' | 'matcher'> & { pathname: string }): boolean {
+}: Pick<NavItemConfig, "disabled" | "external" | "href" | "matcher"> & {
+  pathname: string;
+}): boolean {
   if (disabled || !href || external) {
     return false;
   }
 
   if (matcher) {
-    if (matcher.type === 'startsWith') {
+    if (matcher.type === "startsWith") {
       return pathname.startsWith(matcher.href);
     }
 
-    if (matcher.type === 'equals') {
+    if (matcher.type === "equals") {
       return pathname === matcher.href;
     }
 

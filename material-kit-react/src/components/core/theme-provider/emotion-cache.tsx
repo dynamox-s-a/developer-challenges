@@ -1,10 +1,13 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { useServerInsertedHTML } from 'next/navigation';
-import createCache from '@emotion/cache';
-import type { EmotionCache, Options as OptionsOfCreateCache } from '@emotion/cache';
-import { CacheProvider as DefaultCacheProvider } from '@emotion/react';
+import * as React from "react";
+import { useServerInsertedHTML } from "next/navigation";
+import createCache from "@emotion/cache";
+import type {
+  EmotionCache,
+  Options as OptionsOfCreateCache,
+} from "@emotion/cache";
+import { CacheProvider as DefaultCacheProvider } from "@emotion/react";
 
 interface Registry {
   cache: EmotionCache;
@@ -12,13 +15,18 @@ interface Registry {
 }
 
 export interface NextAppDirEmotionCacheProviderProps {
-  options: Omit<OptionsOfCreateCache, 'insertionPoint'>;
-  CacheProvider?: (props: { value: EmotionCache; children: React.ReactNode }) => React.JSX.Element | null;
+  options: Omit<OptionsOfCreateCache, "insertionPoint">;
+  CacheProvider?: (props: {
+    value: EmotionCache;
+    children: React.ReactNode;
+  }) => React.JSX.Element | null;
   children: React.ReactNode;
 }
 
 // Adapted from https://github.com/garronej/tss-react/blob/main/src/next/appDir.tsx
-export default function NextAppDirEmotionCacheProvider(props: NextAppDirEmotionCacheProviderProps): React.JSX.Element {
+export default function NextAppDirEmotionCacheProvider(
+  props: NextAppDirEmotionCacheProviderProps,
+): React.JSX.Element {
   const { options, CacheProvider = DefaultCacheProvider, children } = props;
 
   const [registry] = React.useState<Registry>(() => {
@@ -51,7 +59,7 @@ export default function NextAppDirEmotionCacheProvider(props: NextAppDirEmotionC
       return null;
     }
 
-    let styles = '';
+    let styles = "";
     let dataEmotionAttribute = registry.cache.key;
 
     const globals: { name: string; style: string }[] = [];
@@ -59,7 +67,7 @@ export default function NextAppDirEmotionCacheProvider(props: NextAppDirEmotionC
     inserted.forEach(({ name, isGlobal }) => {
       const style = registry.cache.inserted[name];
 
-      if (typeof style !== 'boolean') {
+      if (typeof style !== "boolean") {
         if (isGlobal) {
           globals.push({ name, style });
         } else {
@@ -78,9 +86,14 @@ export default function NextAppDirEmotionCacheProvider(props: NextAppDirEmotionC
               data-emotion={`${registry.cache.key}-global ${name}`}
               key={name}
             />
-          )
+          ),
         )}
-        {styles ? <style dangerouslySetInnerHTML={{ __html: styles }} data-emotion={dataEmotionAttribute} /> : null}
+        {styles ? (
+          <style
+            dangerouslySetInnerHTML={{ __html: styles }}
+            data-emotion={dataEmotionAttribute}
+          />
+        ) : null}
       </React.Fragment>
     );
   });

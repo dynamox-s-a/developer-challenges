@@ -1,56 +1,62 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import { useColorScheme } from '@mui/material/styles';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import { NoSsr } from "@/components/core/no-ssr";
+import Image from "next/image";
 
-import { NoSsr } from '@/components/core/no-ssr';
+// Default dimensions for the logo
+const DEFAULT_HEIGHT = 190;
+const DEFAULT_WIDTH = 40;
 
-const HEIGHT = 60;
-const WIDTH = 60;
+/**
+ * Logo component that displays an image of the logo with customizable height and width.
+ * @param {Object} props - The properties for the Logo component.
+ * @param {number} [props.height=DEFAULT_HEIGHT] - The height of the logo.
+ * @param {number} [props.width=DEFAULT_WIDTH] - The width of the logo.
+ * @returns {React.JSX.Element} - The rendered Logo component.
+ */
+export function Logo({
+  height = DEFAULT_HEIGHT,
+  width = DEFAULT_WIDTH,
+}: LogoProps): React.JSX.Element {
+  return (
+    <Image
+      alt="logo"
+      src="/assets/logo-dynapredict.png"
+      height={height}
+      width={width}
+    />
+  );
+}
 
-type Color = 'dark' | 'light';
-
-export interface LogoProps {
-  color?: Color;
-  emblem?: boolean;
+interface LogoProps {
   height?: number;
   width?: number;
 }
 
-export function Logo({ color = 'dark', emblem, height = HEIGHT, width = WIDTH }: LogoProps): React.JSX.Element {
-  let url: string;
-
-  if (emblem) {
-    url = color === 'light' ? '/assets/logo-emblem.svg' : '/assets/logo-emblem--dark.svg';
-  } else {
-    url = color === 'light' ? '/assets/logo.svg' : '/assets/logo--dark.svg';
-  }
-
-  return <Box alt="logo" component="img" height={height} src={url} width={width} />;
-}
-
-export interface DynamicLogoProps {
-  colorDark?: Color;
-  colorLight?: Color;
-  emblem?: boolean;
-  height?: number;
-  width?: number;
-}
-
+/**
+ * DynamicLogo component that uses `NoSsr` to render the Logo only on the client-side.
+ * @param {Object} props - The properties for the DynamicLogo component.
+ * @param {number} [props.height=DEFAULT_HEIGHT] - The height of the logo.
+ * @param {number} [props.width=DEFAULT_WIDTH] - The width of the logo.
+ * @returns {React.JSX.Element} - The rendered DynamicLogo component with SSR fallback.
+ */
 export function DynamicLogo({
-  colorDark = 'light',
-  colorLight = 'dark',
-  height = HEIGHT,
-  width = WIDTH,
+  height = DEFAULT_HEIGHT,
+  width = DEFAULT_WIDTH,
   ...props
 }: DynamicLogoProps): React.JSX.Element {
-  const { colorScheme } = useColorScheme();
-  const color = colorScheme === 'dark' ? colorDark : colorLight;
-
   return (
-    <NoSsr fallback={<Box sx={{ height: `${height}px`, width: `${width}px` }} />}>
-      <Logo color={color} height={height} width={width} {...props} />
+    <NoSsr
+      fallback={<Box sx={{ height: `${height}px`, width: `${width}px` }} />}
+    >
+      <Logo height={height} width={width} {...props} />
     </NoSsr>
   );
+}
+
+interface DynamicLogoProps {
+  height?: number;
+  width?: number;
 }

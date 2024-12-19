@@ -23,7 +23,7 @@ We will expect candidates applying to more senior levels to demonstrate a deeper
 You can use the following user stories as a guide to implement the application features:
 
 1 - Authentication
-
+F
 1. [ ] As a user, I want to log in using a fixed email and password so that I can access private routes.
 1. [ ] As a user, I want to be able to log out of the system so that I can prevent unauthorized access to my account.
 1. [ ] No private routes should be accessible without authentication.
