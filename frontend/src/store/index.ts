@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import machinesReducer from "@/redux/machinesSlice";
-import monitoringPointReducer from "@/redux/monitoringPointSlice";
 
 /**
  * Configures the Redux store with the specified reducers.
@@ -8,7 +7,6 @@ import monitoringPointReducer from "@/redux/monitoringPointSlice";
 export const store = configureStore({
   reducer: {
     machines: machinesReducer,
-    monitoringPoint: monitoringPointReducer,
   },
 });
 

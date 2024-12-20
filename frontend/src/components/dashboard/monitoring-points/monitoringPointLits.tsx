@@ -18,13 +18,12 @@ import {
   TablePagination,
 } from "@mui/material";
 import { Trash } from "@phosphor-icons/react";
-import { useAppSelector } from "@/types/hooks";
-// import DeleteIcon from "@mui/icons-material/Delete";
-// import { deleteMonitoringPoint } from "../redux/machinesSlice";
+import { useAppDispatch, useAppSelector } from "@/types/hooks";
+import { deleteMonitoringPoint } from "@/redux/machinesSlice";
 
 
 const MonitoringPointsList = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const machines = useAppSelector((state) => state.machines.machines);
 
   const monitoringPoints = machines.flatMap((machine) =>
@@ -59,10 +58,6 @@ const MonitoringPointsList = () => {
     setPage(0);
   };
 
-  const handleDelete = (machineId: string, monitoringPointId: string) => {
-    // dispatch(deleteMonitoringPoint({ machineId, monitoringPointId }));
-  };
-
   const sortedMonitoringPoints = [...monitoringPoints].sort((a, b) => {
     if (
       orderBy === "name" ||
@@ -75,6 +70,12 @@ const MonitoringPointsList = () => {
     }
     return 0;
   });
+  
+  const handleDeleteMonitoringPoint = (machineId: string, monitoringPointId: string) => {
+    if (machineId) {
+      dispatch(deleteMonitoringPoint({ machineId, monitoringPointId }));
+    }
+  }
 
   return (
     <Card variant="outlined" sx={{ flex: 1, boxShadow: 3 }}>
@@ -145,7 +146,7 @@ const MonitoringPointsList = () => {
                             <IconButton
                               color="error"
                               onClick={() =>
-                                handleDelete(point.machineId, point.id)
+                                handleDeleteMonitoringPoint(point.machineId, point.id)
                               }
                               sx={{
                                 "&:hover": {

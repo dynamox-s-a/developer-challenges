@@ -28,13 +28,16 @@ interface MachineFormProps {
   onClose?: () => void;
 }
 
-const MachineForm: React.FC<MachineFormProps> = ({ existingMachine = null, onClose }) => {
+const MachineForm: React.FC<MachineFormProps> = ({
+  existingMachine = null,
+  onClose,
+}) => {
   const dispatch = useDispatch();
 
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     reset,
   } = useForm<MachineFormValues>({
     defaultValues: {
@@ -62,13 +65,17 @@ const MachineForm: React.FC<MachineFormProps> = ({ existingMachine = null, onClo
     } else {
       dispatch(addMachine(machine));
     }
-
+    reset();
     if (onClose) onClose();
   };
 
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-      <Typography variant="h6" mb={2} display={existingMachine ? "block" : "none"}>
+      <Typography
+        variant="h6"
+        mb={2}
+        display={existingMachine ? "block" : "none"}
+      >
         Update machine
       </Typography>
 
@@ -117,7 +124,13 @@ const MachineForm: React.FC<MachineFormProps> = ({ existingMachine = null, onClo
             Cancel
           </Button>
         )}
-        <Button variant="contained" color="primary" type="submit" sx={{ flex: 1 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          sx={{ flex: 1 }}
+          disabled={!isValid}
+        >
           {existingMachine ? "Update" : "Add"}
         </Button>
       </Box>

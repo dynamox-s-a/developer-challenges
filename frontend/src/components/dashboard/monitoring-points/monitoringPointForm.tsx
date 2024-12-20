@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
   Button,
-  Divider,
   FormControl,
   FormHelperText,
   InputLabel,
@@ -13,12 +12,14 @@ import {
   Select,
   Stack,
   TextField,
+  CircularProgress,
 } from "@mui/material";
 import { z } from "zod";
 import { useAppSelector } from "@/types/hooks";
 import { useDispatch } from "react-redux";
-import { addMonitoringPoint } from "@/redux/monitoringPointSlice";
-// Validation schema
+import { addMonitoringPointToMachine } from "@/redux/machinesSlice";
+
+// Validation schema for the form
 const monitoringPointSchema = z.object({
   machineId: z.string().min(1, "Machine selection is required"),
   name: z.string().min(1, "Monitoring point name is required"),
@@ -32,12 +33,14 @@ type MonitoringPointFormValues = z.infer<typeof monitoringPointSchema>;
 const MonitoringPointForm: React.FC = () => {
   const dispatch = useDispatch();
   const machines = useAppSelector((state) => state.machines.machines);
+  const isLoading = useAppSelector((state) => state.machines.isLoading); 
 
   const {
     control,
     handleSubmit,
     watch,
-    formState: { errors },
+    reset,
+    formState: { errors, isValid },
   } = useForm<MonitoringPointFormValues>({
     defaultValues: {
       machineId: "",
@@ -45,24 +48,37 @@ const MonitoringPointForm: React.FC = () => {
       sensorModel: "HF+",
     },
     resolver: zodResolver(monitoringPointSchema),
+    mode: "onChange",
   });
 
   const selectedMachineId = watch("machineId");
-
   const selectedMachine = machines.find(
     (machine) => machine.id === selectedMachineId,
   );
-  const sensorOptions =
-    selectedMachine?.type === "Fan"
+
+  const sensorOptions = getSensorOptions(selectedMachine);
+
+  /**
+   * Fetches the sensor options based on the machine type.
+   * @param selectedMachine - The selected machine to determine the available sensor models
+   * @returns An array of available sensor models
+   */
+  function getSensorOptions(selectedMachine?: { type: string }) {
+    if (!selectedMachine) return [];
+    return selectedMachine.type === "Fan"
       ? [
           { value: "TcAg", label: "TcAg" },
           { value: "TcAs", label: "TcAs" },
           { value: "HF+", label: "HF+" },
         ]
       : [{ value: "HF+", label: "HF+" }];
+  }
 
+  /**
+   * Handles form submission, dispatches action to add monitoring point to a machine
+   * @param data - The form data
+   */
   const onSubmit = (data: MonitoringPointFormValues) => {
-    console.log("data is", data);
     const monitoringPoint = {
       id: Date.now().toString(),
       name: data.name,
@@ -72,8 +88,14 @@ const MonitoringPointForm: React.FC = () => {
       },
     };
 
-    dispatch(addMonitoringPoint(monitoringPoint));
-    console.log("machines after add", machines);
+    dispatch(
+      addMonitoringPointToMachine({
+        machineId: data.machineId,
+        monitoringPoint,
+      }),
+    );
+
+    reset();
   };
 
   return (
@@ -87,11 +109,17 @@ const MonitoringPointForm: React.FC = () => {
               <FormControl fullWidth error={!!errors.machineId}>
                 <InputLabel>Select Machine</InputLabel>
                 <Select {...field} label="Select Machine">
-                  {machines.map((machine) => (
-                    <MenuItem key={machine.id} value={machine.id}>
-                      {machine.name}
+                  {isLoading ? (
+                    <MenuItem disabled>
+                      <CircularProgress size={24} />
                     </MenuItem>
-                  ))}
+                  ) : (
+                    machines.map((machine) => (
+                      <MenuItem key={machine.id} value={machine.id}>
+                        {machine.name}
+                      </MenuItem>
+                    ))
+                  )}
                 </Select>
                 {errors.machineId && (
                   <FormHelperText>{errors.machineId?.message}</FormHelperText>
@@ -134,14 +162,16 @@ const MonitoringPointForm: React.FC = () => {
             )}
           />
 
-          <Button
-            type="submit"
-            variant="contained"
-            fullWidth
-            sx={{ marginTop: 2 }}
-          >
-            Add Monitoring Point
-          </Button>
+          <Stack direction="row" spacing={2}>
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              disabled={!isValid}
+            >
+              Add Monitoring Point
+            </Button>
+          </Stack>
         </Stack>
       </form>
     </Box>
