@@ -1,13 +1,7 @@
 "use client";
 import React, { useState } from "react";
-// import { useAppSelector } from "@/store/store";
-// import { useDispatch } from "react-redux";
-// import { deleteMachine, updateMachine } from "../redux/machinesSlice";
 import {
-  Grid,
   Card,
-  CardHeader,
-  Divider,
   Box,
   Typography,
   IconButton,
@@ -18,75 +12,14 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Button,
 } from "@mui/material";
 import { Pencil, Trash } from "@phosphor-icons/react/dist/ssr";
+import { Machine } from "@/types/machine";
 // import EditMachineModal from "./editMachineModal";
 
-interface Sensor {
-  id: string;
-  model: "TcAg" | "TcAs" | "HF+";
-}
-
-interface MonitoringPoint {
-  id: string;
-  name: string;
-  sensor: Sensor | null;
-}
-
-interface Machine {
-  id: string;
-  name: string;
-  type: "Pump" | "Fan";
-  monitoringPoints: MonitoringPoint[];
-}
-
-const mockMachines = [
-  {
-    id: "1",
-    name: "Pump 1",
-    type: "Pump",
-    monitoringPoints: [
-      { id: "mp1", name: "Point A", sensor: { id: "s1", model: "TcAg" } },
-      { id: "mp2", name: "Point B", sensor: { id: "s2", model: "TcAs" } },
-    ],
-  },
-  {
-    id: "2",
-    name: "Fan 1",
-    type: "Fan",
-    monitoringPoints: [
-      { id: "mp3", name: "Point C", sensor: { id: "s3", model: "HF+" } },
-    ],
-  },
-  {
-    id: "2",
-    name: "Fan 1",
-    type: "Fan",
-    monitoringPoints: [
-      { id: "mp3", name: "Point C", sensor: { id: "s3", model: "HF+" } },
-    ],
-  },
-  {
-    id: "2",
-    name: "Fan 1",
-    type: "Fan",
-    monitoringPoints: [
-      { id: "mp3", name: "Point C", sensor: { id: "s3", model: "HF+" } },
-    ],
-  },
-  {
-    id: "2",
-    name: "Fan 1",
-    type: "Fan",
-    monitoringPoints: [
-      { id: "mp3", name: "Point C", sensor: { id: "s3", model: "HF+" } },
-    ],
-  },
-];
 
 const MachinesList = () => {
-  // const machines = useAppSelector((state) => state.machines.machines);
+  const machines = useAppSelector((state) => state.machines.machines);
   // const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [editingMachine, setEditingMachine] = useState<Machine | null>(null);
