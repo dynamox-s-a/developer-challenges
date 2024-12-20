@@ -42,7 +42,7 @@ export function MainNav({ title }: MainNavProps): React.JSX.Element {
             px: 2,
           }}
         >
-          <IconButton onClick={toggleNav}>
+          <IconButton onClick={toggleNav} sx={{ display: { lg: "none" } }}>
             <List />
           </IconButton>
 

@@ -117,66 +117,59 @@ const MachinesList = () => {
   };
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <Card variant="outlined">
-          <CardHeader
-            title="Machines"
-            sx={{
-              "& .MuiCardHeader-title": { fontWeight: 600, fontSize: "1.5rem" },
-            }}
-          />
-          <Divider />
-          <Box sx={{ overflowX: "auto", minHeight: 200 }}>
-            {mockMachines.length > 0 ? (
-              <TableContainer>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>
-                        <Typography fontWeight={600}>Machine Name</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography fontWeight={600}>Machine Type</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography fontWeight={600}>Actions</Typography>
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {mockMachines.map((machine) => (
-                      <TableRow key={machine.id} hover>
-                        <TableCell>{machine.name}</TableCell>
-                        <TableCell>{machine.type}</TableCell>
-                        <TableCell>
-                          <Tooltip title="Edit">
-                            <IconButton>
-                              <Pencil />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title="Delete">
-                            <IconButton
-                            // dispatch(deleteMachine(machine.id))
-                            >
-                              <Trash />
-                            </IconButton>
-                          </Tooltip>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            ) : (
-              <Box sx={{ textAlign: "center", p: 2 }}>
-                <Typography color="text.secondary">
-                  No machines available
-                </Typography>
-              </Box>
-            )}
+    <Card variant="outlined" sx={{ flexGrow: 1 }}>
+      <Box sx={{ overflowX: "auto", minHeight: 200 }}>
+        {mockMachines.length > 0 ? (
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                    <Typography fontWeight={600}>Machine Name</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography fontWeight={600}>Machine Type</Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Typography fontWeight={600}>Actions</Typography>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {mockMachines.map((machine) => (
+                  <TableRow key={machine.id} hover>
+                    <TableCell>
+                      <Typography>{machine.name}</Typography>
+                    </TableCell>
+                    <TableCell>{machine.type}</TableCell>
+                    <TableCell align="right">
+                      <Tooltip title="Edit">
+                        <IconButton>
+                          <Pencil />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Delete">
+                        <IconButton
+                        // dispatch(deleteMachine(machine.id))
+                        >
+                          <Trash />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : (
+          <Box sx={{ textAlign: "center", p: 2 }}>
+            <Typography color="text.secondary">
+              No machines available
+            </Typography>
           </Box>
-          {/* {editingMachine && (
+        )}
+      </Box>
+      {/* {editingMachine && (
             <EditMachineModal
               open={open}
               machine={editingMachine}
@@ -184,9 +177,7 @@ const MachinesList = () => {
               onSave={handleSave}
             />
           )} */}
-        </Card>
-      </Grid>
-    </Grid>
+    </Card>
   );
 };
 

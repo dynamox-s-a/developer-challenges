@@ -126,7 +126,7 @@ const MonitoringPointForm: React.FC = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 600, margin: "0 auto", padding: 3 }}>
+    <Box sx={{ minWidth: "300px" }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={3}>
           <Controller
