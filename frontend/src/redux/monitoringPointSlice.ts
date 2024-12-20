@@ -18,22 +18,16 @@ const monitoringPointsSlice = createSlice({
      * @param state - The current state of monitoring points.
      * @param action - The action containing the new monitoring point to add.
      */
-    addMonitoringPoint: (
-      state,
-      action: PayloadAction<MonitoringPoint>,
-    ) => {
+    addMonitoringPoint: (state, action: PayloadAction<MonitoringPoint>) => {
       state.monitoringPoints.push(action.payload);
     },
-    
+
     /**
      * Removes a monitoring point from the state by its ID.
      * @param state - The current state of monitoring points.
      * @param action - The action containing the ID of the monitoring point to remove.
      */
-    removeMonitoringPoint: (
-      state,
-      action: PayloadAction<string>,
-    ) => {
+    removeMonitoringPoint: (state, action: PayloadAction<string>) => {
       state.monitoringPoints = state.monitoringPoints.filter(
         (mp) => mp.id !== action.payload,
       );
@@ -41,4 +35,6 @@ const monitoringPointsSlice = createSlice({
   },
 });
 
+export const { addMonitoringPoint, removeMonitoringPoint } =
+  monitoringPointsSlice.actions;
 export default monitoringPointsSlice.reducer;

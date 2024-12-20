@@ -21,15 +21,17 @@ export default function Page(): React.JSX.Element {
         sx={{
           p: 4,
           display: "flex",
-          flexDirection: { xs: "column", lg: "row" },
+          flexDirection: "column",
           gap: 3,
         }}
       >
-        <Card sx={{ p: 3, boxShadow: 1 }}>
+        <Card sx={{ p: 3, boxShadow: 1 }} variant="outlined">
           <MachineForm />
         </Card>
 
-        <MachinesList />
+        <Card sx={{ boxShadow: 1, flex: 1 }}>
+          <MachinesList />
+        </Card>
       </Box>
     </>
   );

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 // import { useDispatch } from "react-redux";
 import {
   Table,
@@ -18,56 +18,16 @@ import {
   TablePagination,
 } from "@mui/material";
 import { Trash } from "@phosphor-icons/react";
+import { useAppSelector } from "@/types/hooks";
 // import DeleteIcon from "@mui/icons-material/Delete";
 // import { deleteMonitoringPoint } from "../redux/machinesSlice";
-// import { useAppSelector } from "@/store/store";
 
-const mockMachines = [
-  {
-    id: "1",
-    name: "Pump 1",
-    type: "Pump",
-    monitoringPoints: [
-      { id: "mp1", name: "Point A", sensor: { id: "s1", model: "TcAg" } },
-      { id: "mp2", name: "Point B", sensor: { id: "s2", model: "TcAs" } },
-    ],
-  },
-  {
-    id: "2",
-    name: "Fan 1",
-    type: "Fan",
-    monitoringPoints: [
-      { id: "mp3", name: "Point C", sensor: { id: "s3", model: "HF+" } },
-    ],
-  },
-  {
-    id: "2",
-    name: "Fan 1",
-    type: "Fan",
-    monitoringPoints: [
-      { id: "mp3", name: "Point C", sensor: { id: "s3", model: "HF+" } },
-    ],
-  },
-  {
-    id: "2",
-    name: "Fan 1",
-    type: "Fan",
-    monitoringPoints: [
-      { id: "mp3", name: "Point C", sensor: { id: "s3", model: "HF+" } },
-    ],
-  },
-  {
-    id: "2",
-    name: "Fan 1",
-    type: "Fan",
-    monitoringPoints: [
-      { id: "mp3", name: "Point C", sensor: { id: "s3", model: "HF+" } },
-    ],
-  },
-];
+
 const MonitoringPointsList = () => {
   // const dispatch = useDispatch();
-  const monitoringPoints = mockMachines.flatMap((machine) =>
+  const machines = useAppSelector((state) => state.machines.machines);
+
+  const monitoringPoints = machines.flatMap((machine) =>
     machine.monitoringPoints.map((mp) => ({
       ...mp,
       machineId: machine.id,

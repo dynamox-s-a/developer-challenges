@@ -28,9 +28,11 @@ const machinesSlice = createSlice({
      * @param action - The action containing the ID of the machine to delete.
      */
     deleteMachine: (state, action: PayloadAction<string>) => {
-      state.machines = state.machines.filter((machine) => machine.id !== action.payload);
+      state.machines = state.machines.filter(
+        (machine) => machine.id !== action.payload,
+      );
     },
-    
+
     /**
      * Updates an existing machine in the state.
      * @param state - The current state of machines.
@@ -45,4 +47,6 @@ const machinesSlice = createSlice({
   },
 });
 
+export const { addMachine, deleteMachine, updateMachine } =
+  machinesSlice.actions;
 export default machinesSlice.reducer;

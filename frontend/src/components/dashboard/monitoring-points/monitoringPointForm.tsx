@@ -2,9 +2,6 @@
 import * as React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { useDispatch, useSelector } from "react-redux";
-// import { addMonitoringPoint } from "../redux/machinesSlice";
-// import { RootState } from "@/store/store";
 import {
   Box,
   Button,
@@ -16,54 +13,11 @@ import {
   Select,
   Stack,
   TextField,
-  Typography,
 } from "@mui/material";
 import { z } from "zod";
-
-const mockMachines = [
-  {
-    id: "1",
-    name: "Pump 1",
-    type: "Pump",
-    monitoringPoints: [
-      { id: "mp1", name: "Point A", sensor: { id: "s1", model: "TcAg" } },
-      { id: "mp2", name: "Point B", sensor: { id: "s2", model: "TcAs" } },
-    ],
-  },
-  {
-    id: "2",
-    name: "Fan 1",
-    type: "Fan",
-    monitoringPoints: [
-      { id: "mp3", name: "Point C", sensor: { id: "s3", model: "HF+" } },
-    ],
-  },
-  {
-    id: "2",
-    name: "Fan 1",
-    type: "Fan",
-    monitoringPoints: [
-      { id: "mp3", name: "Point C", sensor: { id: "s3", model: "HF+" } },
-    ],
-  },
-  {
-    id: "2",
-    name: "Fan 1",
-    type: "Fan",
-    monitoringPoints: [
-      { id: "mp3", name: "Point C", sensor: { id: "s3", model: "HF+" } },
-    ],
-  },
-  {
-    id: "2",
-    name: "Fan 1",
-    type: "Fan",
-    monitoringPoints: [
-      { id: "mp3", name: "Point C", sensor: { id: "s3", model: "HF+" } },
-    ],
-  },
-];
-
+import { useAppSelector } from "@/types/hooks";
+import { useDispatch } from "react-redux";
+import { addMonitoringPoint } from "@/redux/monitoringPointSlice";
 // Validation schema
 const monitoringPointSchema = z.object({
   machineId: z.string().min(1, "Machine selection is required"),
@@ -76,8 +30,8 @@ const monitoringPointSchema = z.object({
 type MonitoringPointFormValues = z.infer<typeof monitoringPointSchema>;
 
 const MonitoringPointForm: React.FC = () => {
-  // const dispatch = useDispatch();
-  // const machines = useSelector((state: RootState) => state.machines.machines);
+  const dispatch = useDispatch();
+  const machines = useAppSelector((state) => state.machines.machines);
 
   const {
     control,
@@ -94,7 +48,8 @@ const MonitoringPointForm: React.FC = () => {
   });
 
   const selectedMachineId = watch("machineId");
-  const selectedMachine = mockMachines.find(
+
+  const selectedMachine = machines.find(
     (machine) => machine.id === selectedMachineId,
   );
   const sensorOptions =
@@ -107,9 +62,9 @@ const MonitoringPointForm: React.FC = () => {
       : [{ value: "HF+", label: "HF+" }];
 
   const onSubmit = (data: MonitoringPointFormValues) => {
+    console.log("data is", data);
     const monitoringPoint = {
       id: Date.now().toString(),
-      machineId: data.machineId,
       name: data.name,
       sensor: {
         id: Date.now().toString(),
@@ -117,12 +72,8 @@ const MonitoringPointForm: React.FC = () => {
       },
     };
 
-    // dispatch(
-    //   addMonitoringPoint({
-    //     machineId: data.machineId,
-    //     monitoringPoint,
-    //   }),
-    // );
+    dispatch(addMonitoringPoint(monitoringPoint));
+    console.log("machines after add", machines);
   };
 
   return (
@@ -136,7 +87,7 @@ const MonitoringPointForm: React.FC = () => {
               <FormControl fullWidth error={!!errors.machineId}>
                 <InputLabel>Select Machine</InputLabel>
                 <Select {...field} label="Select Machine">
-                  {mockMachines.map((machine) => (
+                  {machines.map((machine) => (
                     <MenuItem key={machine.id} value={machine.id}>
                       {machine.name}
                     </MenuItem>
