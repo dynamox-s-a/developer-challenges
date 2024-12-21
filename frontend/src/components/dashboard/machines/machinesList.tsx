@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -17,18 +17,22 @@ import {
   InputLabel,
   MenuItem,
   Toolbar,
+  CircularProgress,
+  Alert,
 } from "@mui/material";
 import { Pencil, Trash } from "@phosphor-icons/react/dist/ssr";
-import { useAppSelector } from "@/types/hooks";
+import { useAppDispatch, useAppSelector } from "@/types/hooks";
 import { Machine } from "@/types/machines";
-import { deleteMachine } from "@/redux/machinesSlice";
-import { useDispatch } from "react-redux";
+import { deleteMachine, fetchMachines } from "@/redux/machinesSlice";
 import UpdateMachineDialog from "./updateMachineDialog";
 import DeleteMachineDialog from "./deleteMachineDialog";
 
 const MachinesList = () => {
-  const machines = useAppSelector((state) => state.machines.machines);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
+  const { machines, isLoading, error } = useAppSelector(
+    (state) => state.machines,
+  );
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedType, setSelectedType] = useState<string>("");
@@ -36,6 +40,11 @@ const MachinesList = () => {
   const [selectedMachine, setSelectedMachine] = useState<Machine | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [machineToDelete, setMachineToDelete] = useState<Machine | null>(null);
+
+  // Fetch machines on component mount
+  useEffect(() => {
+    dispatch(fetchMachines());
+  }, [dispatch]);
 
   /**
    * Opens the modal to update an existing machine.
@@ -115,9 +124,17 @@ const MachinesList = () => {
           </Select>
         </FormControl>
       </Toolbar>
-      
+
       <Box sx={{ overflowX: "auto", maxHeight: "600px" }}>
-        {filteredMachines.length > 0 ? (
+        {isLoading ? (
+          <Box sx={{ textAlign: "center", p: 2 }}>
+            <CircularProgress />
+          </Box>
+        ) : error ? (
+          <Box sx={{ textAlign: "center", p: 2 }}>
+            <Alert severity="error">{error}</Alert>
+          </Box>
+        ) : filteredMachines.length > 0 ? (
           <TableContainer>
             <Table>
               <TableHead>

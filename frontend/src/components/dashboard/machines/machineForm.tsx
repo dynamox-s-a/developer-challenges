@@ -33,6 +33,7 @@ const MachineForm: React.FC<MachineFormProps> = ({
   onClose,
 }) => {
   const dispatch = useDispatch();
+  console.log("API URL:", process.env.NEXT_PUBLIC_API_URL);
 
   const {
     control,

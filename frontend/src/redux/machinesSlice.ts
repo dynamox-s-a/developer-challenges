@@ -1,6 +1,6 @@
 import { Machine, MonitoringPoint } from "@/types/machines";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import axiosInstance from "../services/axiosInstance";
 /**
  * Defines the state structure for the machines feature.
  * @interface MachinesState
@@ -10,12 +10,22 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface MachinesState {
   machines: Machine[];
   isLoading: boolean;
+  error: string | null;
 }
 
 const initialState: MachinesState = {
   machines: [],
   isLoading: false,
+  error: null,
 };
+
+export const fetchMachines = createAsyncThunk<Machine[], void>(
+  'machines/fetchMachines',
+  async () => {
+    const response = await axiosInstance.get('/machines');
+    return response.data;
+  }
+);
 
 const machinesSlice = createSlice({
   name: "machines",
@@ -77,7 +87,7 @@ const machinesSlice = createSlice({
     /**
      * Adds a monitoring point to a specific machine in the state.
      * @param {MachinesState} state - The current state of machines.
-     * @param {PayloadAction<{ machineId: string; monitoringPoint: MonitoringPoint }>} action - 
+     * @param {PayloadAction<{ machineId: string; monitoringPoint: MonitoringPoint }>} action -
      * An object containing the machine ID and the monitoring point to add.
      * @returns {void}
      */
@@ -101,7 +111,7 @@ const machinesSlice = createSlice({
     /**
      * Deletes a monitoring point from a specific machine in the state.
      * @param {MachinesState} state - The current state of machines.
-     * @param {PayloadAction<{ machineId: string; monitoringPointId: string }>} action - 
+     * @param {PayloadAction<{ machineId: string; monitoringPointId: string }>} action -
      * An object containing the machine ID and the monitoring point ID to delete.
      * @returns {void}
      */
@@ -117,6 +127,21 @@ const machinesSlice = createSlice({
         );
       }
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchMachines.pending, (state) => {
+        state.isLoading = true;
+        state.error = null; // Clear previous errors when starting to load
+      })
+      .addCase(fetchMachines.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.machines = action.payload; // Update machines with the fetched data
+      })
+      .addCase(fetchMachines.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string; // Set error message if the fetch fails
+      });
   },
 });
 
