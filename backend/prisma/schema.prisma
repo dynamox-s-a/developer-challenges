@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Machine {
+  id                String            @id @default(uuid())
+  name              String
+  type              String
+  monitoringPoints  MonitoringPoint[] 
+}
+
+model MonitoringPoint {
+  id        String   @id @default(uuid())
+  name      String
+  sensorId  String  
+  sensor    Sensor   @relation(fields: [sensorId], references: [id])
+  machineId String 
+  machine   Machine  @relation(fields: [machineId], references: [id])
+}
+
+model Sensor {
+  id        String  @id @default(uuid())
+  name      String 
+  points    MonitoringPoint[] 
+}
