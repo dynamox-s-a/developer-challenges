@@ -10,6 +10,7 @@ import { SignInContainer } from "../Login/styles"
 import { Delete, Edit } from "@mui/icons-material"
 import { useHomeContext } from "./hooks/useHomeContext"
 import { Table } from "../../components"
+import { FlexVertical } from "../../components/FlexVertical"
 
 export const HomeContent = () => {
   const navigate = useNavigate()
@@ -31,18 +32,16 @@ export const HomeContent = () => {
           width: '100vw'
         }}
       >
-        <div 
+        <FlexVertical 
           style={{ 
-            display: 'flex',
-            flexDirection: 'column', 
             gap: 8, 
             marginTop: 64, 
             padding: 8 
           }}
         >
           <Card sx={{ padding: 2 }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <div>
+            <FlexVertical style={{ gap: 16 }}>
+              <FlexVertical style={{ gap: 16 }}>
                 <Typography variant="h6" gutterBottom>
                   Máquinas
                 </Typography>
@@ -80,7 +79,7 @@ export const HomeContent = () => {
                     )
                   }}
                 />
-              </div>
+              </FlexVertical>
               <div>
                 <Typography variant="h6" gutterBottom>
                   Pontos de Monitoramento
@@ -111,9 +110,9 @@ export const HomeContent = () => {
                   }}
                 />
               </div>
-            </div>
+            </FlexVertical>
           </Card>
-        </div>
+        </FlexVertical>
       </Box>
     </SignInContainer>
   )

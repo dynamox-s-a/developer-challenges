@@ -14,6 +14,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { SignInContainer } from "../Login/styles"
 import { Card, Snackbar, Table } from '../../components'
 import { Delete, Edit } from "@mui/icons-material"
+import { FlexVertical } from "../../components/FlexVertical"
 
 export const MachineCard = () => {
   const navigate = useNavigate()
@@ -80,7 +81,7 @@ export const MachineCard = () => {
           {machineTypeError?.visible && (<FormHelperText>Por favor, selecione o tipo de máquina.</FormHelperText>)}
         </FormControl>
         <div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <FlexVertical style={{ gap: 16 }}>
             <Divider />
             <Typography variant="h6" gutterBottom>
               Pontos de Monitoramento
@@ -119,7 +120,7 @@ export const MachineCard = () => {
               }}
             />
             <Divider />
-          </div>
+          </FlexVertical>
         </div>
         <div>
           <Button

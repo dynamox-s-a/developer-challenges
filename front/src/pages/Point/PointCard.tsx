@@ -11,6 +11,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { SignInContainer } from "../Login/styles"
 import { Card, Snackbar, Table } from '../../components'
 import { Delete } from "@mui/icons-material"
+import { FlexVertical } from "../../components/FlexVertical"
 
 export const PointCard = () => {
   const navigate = useNavigate()
@@ -54,7 +55,7 @@ export const PointCard = () => {
           />
         </FormControl>
         <div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <FlexVertical style={{ gap: 16 }}>
             <Divider />
             <Typography variant="h6" gutterBottom>
               Sensores
@@ -84,7 +85,7 @@ export const PointCard = () => {
               }}
             />
             <Divider />
-          </div>
+          </FlexVertical>
         </div>
         <div>
           <Button
