@@ -5,7 +5,7 @@ import {
   Select,
   MenuItem,
   FormHelperText,
-  FormLabel
+  InputLabel
 } from "@mui/material"
 import { useSensorContext } from "./hooks/useSensorContext"
 import { useNavigate } from "react-router-dom"
@@ -36,8 +36,10 @@ export const SensorCard = () => {
           Cadastrar Sensor
         </Typography>
         <FormControl error={modelError?.alreadyFilled && modelError?.visible}>
-          <FormLabel>Selecione o Tipo de Sensor</FormLabel>
+          <InputLabel id="sensor-type-label">Selecione o tipo de sensor *</InputLabel>
           <Select
+            label="Selecione o tipo de sensor"
+            labelId="sensor-type-label"
             value={sensor.model}
             onChange={handleSensorModelChange}
             displayEmpty

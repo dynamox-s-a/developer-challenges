@@ -7,7 +7,8 @@ import {
   MenuItem,
   FormHelperText,
   Divider,
-  IconButton
+  IconButton,
+  InputLabel
 } from "@mui/material"
 import { useMachineContext } from "./hooks/useMachineContext"
 import { useNavigate, useParams } from "react-router-dom"
@@ -61,16 +62,16 @@ export const MachineCard = () => {
           />
         </FormControl>
         <FormControl error={machineTypeError?.alreadyFilled && machineTypeError?.visible}>
+          <InputLabel id="machine-type-label">Selecione o tipo de máquina *</InputLabel>
           <Select
+            label="Selecione o tipo de máquina"
+            labelId="machine-type-label"
             value={machine?.type}
             onChange={handleMachineTypeChange}
             displayEmpty
             variant="outlined"
             required
           >
-            <MenuItem value="None" disabled>
-              Selecione o Tipo de Máquina
-            </MenuItem>
             <MenuItem value="Pump">
               Pump
             </MenuItem>

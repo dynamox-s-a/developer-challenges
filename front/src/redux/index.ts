@@ -1,3 +1,3 @@
 export * from './store'
 export * from './interface'
-export * from './userSlice'
+export * from './slices'

@@ -9,7 +9,7 @@ export function MachineContextProvider ({ children }: { children: ReactNode }) {
   const { id: idMachine } = useParams<{ id: string }>()
 
   const [loading, setLoading] = useState(false)
-  const [machine, setMachine] = useState<MachineProps>({ type: "None" })
+  const [machine, setMachine] = useState<MachineProps>({})
   const [points, setPoints] = useState([{ id: 1, name: 'string', linkedMachine: 1, totalSensors: 1 }])
 
 
