@@ -1,9 +1,7 @@
 import { 
   TextField, 
   Button,
-  FormControl, 
-  Snackbar,
-  Alert,
+  FormControl,
   Typography
 } from "@mui/material"
 import { useUserContext } from "./hooks/useUserContext"
@@ -12,7 +10,7 @@ import { SignInContainer } from "../Login/styles"
 import { useSelector } from "react-redux"
 import { UserReduxState } from "../../redux"
 import { useMemo } from "react"
-import { Card } from '../../components'
+import { Card, Snackbar } from '../../components'
 
 export const UserCard = () => {
   const navigate = useNavigate()
@@ -116,19 +114,9 @@ export const UserCard = () => {
         {renderReturnButton}
       </Card>
       <Snackbar
-        open={openSnackbar.visible}
-        autoHideDuration={4000}
+        snackbar={openSnackbar}
         onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity="success"
-          sx={{ width: '100%' }}
-        >
-          {openSnackbar?.message}
-        </Alert>
-      </Snackbar>
+      />
     </SignInContainer>
   )
 }
