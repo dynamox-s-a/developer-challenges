@@ -17,16 +17,10 @@ export class MachinesController {
     return this.machinesService.createMachine(createMachineDto);
   }
 
-  // @Post(':machineId/monitoring-points')
-  // async addMonitoringPoints(
-  //   @Param('machineId') machineId: string,
-  //   @Body() addMonitoringPointsDto: AddMonitoringPointsDto,
-  // ) {
-  //   return this.machinesService.addMonitoringPoints(
-  //     machineId,
-  //     addMonitoringPointsDto,
-  //   );
-  // }
+  @Get('sensors')
+  async getSensors() {
+    return this.machinesService.getSensors();
+  }
 
   @Post(':machineId/monitoring-points')
   async addMonitoringPoints(

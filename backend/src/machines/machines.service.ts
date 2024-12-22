@@ -25,61 +25,16 @@ export class MachinesService {
   }
 
   async createMachine(createMachineDto: CreateMachineDto) {
-    // Validate that the sensors are correct (if monitoring points are provided)
-    if (createMachineDto.monitoringPoints) {
-      const validSensorModels = ['TcAg', 'TcAs', 'HF+'];
-
-      if (createMachineDto.type === 'Pump') {
-        // Validate each monitoring point's sensor
-        for (const point of createMachineDto.monitoringPoints) {
-          const sensor = await this.prisma.sensor.findUnique({
-            where: { id: point.sensorId },
-          });
-
-          // If the sensor doesn't exist or has an invalid model
-          if (!sensor) {
-            throw new Error(`Sensor with ID ${point.sensorId} does not exist.`);
-          }
-
-          // If the sensor model is invalid for Pump machines
-          if (['TcAg', 'TcAs'].includes(sensor.name)) {
-            throw new Error(
-              `Sensors TcAg and TcAs cannot be used with Pump machines.`,
-            );
-          }
-
-          // Check if the sensor model is not valid
-          if (!validSensorModels.includes(sensor.name)) {
-            throw new Error(
-              `Invalid sensor model: ${sensor.name}. Allowed models are: TcAg, TcAs, HF+.`,
-            );
-          }
-        }
-      }
-    }
-
-    // Create the machine (without monitoring points if they are not provided)
     return this.prisma.machine.create({
       data: {
         name: createMachineDto.name,
         type: createMachineDto.type,
-        monitoringPoints: createMachineDto.monitoringPoints
-          ? {
-              create: createMachineDto.monitoringPoints.map((point) => ({
-                name: point.name,
-                sensor: { connect: { id: point.sensorId } },
-              })),
-            }
-          : undefined,
-      },
-      include: {
-        monitoringPoints: {
-          include: {
-            sensor: true,
-          },
-        },
       },
     });
+  }
+
+  async getSensors() {
+    return this.prisma.sensor.findMany();
   }
 
   async addMonitoringPoints(
@@ -135,4 +90,7 @@ export class MachinesService {
 
     return monitoringPoint;
   }
+
+  // delete machine
+  // delete monnitoring points
 }

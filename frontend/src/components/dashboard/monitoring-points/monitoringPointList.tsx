@@ -1,6 +1,5 @@
 "use client";
-import React, { use, useState } from "react";
-// import { useDispatch } from "react-redux";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -18,30 +17,40 @@ import {
   TablePagination,
 } from "@mui/material";
 import { Trash } from "@phosphor-icons/react";
-import { useAppDispatch, useAppSelector } from "@/types/hooks";
-import { deleteMonitoringPoint } from "@/redux/machinesSlice";
+import { useAppSelector } from "@/types/hooks";
 
+type MonitoringPoint = {
+  id?: string;
+  machineId: string;
+  name: string;
+  machineName: string;
+  machineType: "Pump" | "Fan";
+  sensorId: string;
+  sensor: { name: string };
+};
+
+type MonitoringPointKey = keyof MonitoringPoint;
 
 const MonitoringPointsList = () => {
-  const dispatch = useAppDispatch();
   const machines = useAppSelector((state) => state.machines.machines);
 
   const monitoringPoints = machines.flatMap((machine) =>
-    machine.monitoringPoints.map((mp) => ({
+    machine.monitoringPoints?.map((mp) => ({
       ...mp,
       machineId: machine.id,
       machineName: machine.name,
       machineType: machine.type,
+      sensorName: mp.sensor?.name,
     })),
   );
+  console.log("monitoring points", monitoringPoints);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [order, setOrder] = useState<"asc" | "desc">("asc");
-  const [orderBy, setOrderBy] =
-    useState<keyof (typeof monitoringPoints)[0]>("name");
+  const [orderBy, setOrderBy] = useState<MonitoringPointKey>("name");
 
-  const handleRequestSort = (property: keyof (typeof monitoringPoints)[0]) => {
+  const handleRequestSort = (property: MonitoringPointKey) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
@@ -58,24 +67,28 @@ const MonitoringPointsList = () => {
     setPage(0);
   };
 
-  const sortedMonitoringPoints = [...monitoringPoints].sort((a, b) => {
-    if (
-      orderBy === "name" ||
-      orderBy === "machineName" ||
-      orderBy === "machineType"
-    ) {
-      return order === "asc"
-        ? a[orderBy].localeCompare(b[orderBy])
-        : b[orderBy].localeCompare(a[orderBy]);
-    }
-    return 0;
-  });
-  
-  const handleDeleteMonitoringPoint = (machineId: string, monitoringPointId: string) => {
+  const sortedMonitoringPoints = [...monitoringPoints]
+    .filter((point) => point !== undefined)
+    .sort((a, b) => {
+      if (
+        orderBy === "name" ||
+        orderBy === "machineName" ||
+        orderBy === "machineType"
+      ) {
+        return order === "asc"
+          ? a[orderBy].localeCompare(b[orderBy])
+          : b[orderBy].localeCompare(a[orderBy]);
+      }
+      return 0;
+    });
+  const handleDeleteMonitoringPoint = (
+    machineId: string,
+    monitoringPointId: string,
+  ) => {
     if (machineId) {
-      dispatch(deleteMonitoringPoint({ machineId, monitoringPointId }));
+      // dispatch(deleteMonitoringPoint({ machineId, monitoringPointId }));
     }
-  }
+  };
 
   return (
     <Card variant="outlined" sx={{ flex: 1, boxShadow: 3 }}>
@@ -133,21 +146,22 @@ const MonitoringPointsList = () => {
                 <TableBody>
                   {sortedMonitoringPoints
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((point) => (
-                      <TableRow key={point.id}>
-                        <TableCell>{point.name}</TableCell>
-                        <TableCell>{point.machineName}</TableCell>
-                        <TableCell>{point.machineType}</TableCell>
-                        <TableCell>
-                          {point.sensor ? point.sensor.model : "N/A"}
-                        </TableCell>
+                    .map((mp) => (
+                      <TableRow key={mp.id}>
+                        <TableCell>{mp.name}</TableCell>
+                        <TableCell>{mp.machineName}</TableCell>
+                        <TableCell>{mp.machineType}</TableCell>
+                        <TableCell>{mp.sensorName}</TableCell>
                         <TableCell>
                           <Tooltip title="Delete">
                             <IconButton
                               color="error"
-                              onClick={() =>
-                                handleDeleteMonitoringPoint(point.machineId, point.id)
-                              }
+                              // onClick={() =>
+                              //   handleDeleteMonitoringPoint(
+                              //     mp.machineId,
+                              //     mp.id,
+                              //   )
+                              // }
                               sx={{
                                 "&:hover": {
                                   backgroundColor: "rgba(255, 0, 0, 0.1)",

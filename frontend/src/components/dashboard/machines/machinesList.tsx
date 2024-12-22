@@ -23,9 +23,9 @@ import {
 import { Pencil, Trash } from "@phosphor-icons/react/dist/ssr";
 import { useAppDispatch, useAppSelector } from "@/types/hooks";
 import { Machine } from "@/types/machines";
-import { deleteMachine, fetchMachines } from "@/redux/machinesSlice";
 import UpdateMachineDialog from "./updateMachineDialog";
 import DeleteMachineDialog from "./deleteMachineDialog";
+import { fetchMachines } from "@/redux/machinesSlice";
 
 const MachinesList = () => {
   const dispatch = useAppDispatch();
@@ -85,7 +85,7 @@ const MachinesList = () => {
    */
   const handleDelete = () => {
     if (machineToDelete) {
-      dispatch(deleteMachine(machineToDelete.id));
+      // dispatch(deleteMachine(machineToDelete.id));
       handleCloseDeleteDialog();
     }
   };

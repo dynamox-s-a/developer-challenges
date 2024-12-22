@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Card } from "@mui/material";
 import MonitoringPointForm from "@/components/dashboard/monitoring-points/monitoringPointForm";
-import MonitoringPointsList from "@/components/dashboard/monitoring-points/monitoringPointLits";
+import MonitoringPointsList from "@/components/dashboard/monitoring-points/monitoringPointList";
 import { MainNav } from "@/components/dashboard/layout/main-nav";
 import { config } from "@/config";
 import { Metadata } from "next";

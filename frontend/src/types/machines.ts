@@ -1,21 +1,21 @@
-
 /** Machine type representing a piece of equipment. */
 export interface Machine {
-  id: string;
+  id?: string;
   name: string;
   type: "Pump" | "Fan";
-  monitoringPoints: MonitoringPoint[];
+  monitoringPoints?: MonitoringPoint[];
 }
 
 /** Sensor type representing a monitoring sensor. */
 export interface Sensor {
   id: string;
-  model: "TcAg" | "TcAs" | "HF+";
+  name: "TcAg" | "TcAs" | "HF+";
 }
 
 /** Monitoring point type for tracking machine performance. */
 export interface MonitoringPoint {
-  id: string;
+  id?: string;
   name: string;
-  sensor: Sensor | null;
+  sensorId: string;
+  sensorModel: string;
 }

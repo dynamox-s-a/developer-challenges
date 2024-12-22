@@ -5,9 +5,9 @@ import { Box, Button, TextField, MenuItem, Typography } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { addMachine, updateMachine } from "@/redux/machinesSlice";
+import { createMachineThunk } from "@/redux/machinesSlice";
 import { Machine } from "@/types/machines";
+import { useAppDispatch } from "@/types/hooks";
 
 // Validation schema for the machine form
 const machineSchema = z.object({
@@ -32,7 +32,7 @@ const MachineForm: React.FC<MachineFormProps> = ({
   existingMachine = null,
   onClose,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   console.log("API URL:", process.env.NEXT_PUBLIC_API_URL);
 
   const {
@@ -53,19 +53,16 @@ const MachineForm: React.FC<MachineFormProps> = ({
    * Dispatches an action to either update or add a machine to the store.
    * @param {MachineFormValues} data - The form data submitted by the user.
    */
+  // Handle form submission (either create or update machine)
   const onSubmit = (data: MachineFormValues) => {
-    const machine: Machine = {
-      id: existingMachine ? existingMachine.id : Date.now().toString(),
-      name: data.name,
-      type: data.type,
-      monitoringPoints: existingMachine?.monitoringPoints || [],
-    };
-
+    console.log("data", data);
     if (existingMachine) {
-      dispatch(updateMachine(machine));
+      // dispatch(updateMachine({ ...existingMachine, ...data }));
     } else {
-      dispatch(addMachine(machine));
+      dispatch(createMachineThunk(data));
     }
+
+    // Reset the form and close it after submission
     reset();
     if (onClose) onClose();
   };
