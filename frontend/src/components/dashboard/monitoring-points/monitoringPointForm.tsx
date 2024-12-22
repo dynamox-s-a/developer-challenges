@@ -63,7 +63,6 @@ const MonitoringPointForm: React.FC = () => {
 
   // Fetch machines on component mount
   React.useEffect(() => {
-    console.log("dispatch fetch sensors");
     dispatch(fetchSensors());
   }, [dispatch]);
 

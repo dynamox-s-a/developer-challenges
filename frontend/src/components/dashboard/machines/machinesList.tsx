@@ -19,57 +19,64 @@ import {
   Toolbar,
   CircularProgress,
   Alert,
+  Snackbar,
   debounce,
 } from "@mui/material";
 import { Pencil, Trash } from "@phosphor-icons/react/dist/ssr";
 import { useAppDispatch, useAppSelector } from "@/types/hooks";
-import { Machine } from "@/types/machines";
+import { Machine, FilterState, ModalState } from "@/types/machines";
+import {
+  MACHINE_TYPES,
+  NOTIFICATION_MESSAGES,
+} from "@/constants/machines";
 import UpdateMachineDialog from "./updateMachineDialog";
 import DeleteMachineDialog from "./deleteMachineDialog";
 import { deleteMachineThunk, fetchMachines } from "@/redux/machines/thunks";
-
-// Define constants to avoid magic strings
-const MACHINE_TYPES = {
-  PUMP: "Pump",
-  FAN: "Fan",
-} as const;
-
-// Define interface for the component's state
-interface FilterState {
-  searchQuery: string;
-  selectedType: string;
-}
+import { useNotification } from "@/hooks/use-notifications";
 
 const MachinesList: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { machines, isLoading, error } = useAppSelector((state) => state.machines);
+  const { machines, isLoading, error } = useAppSelector(
+    (state) => state.machines,
+  );
+  const { notification, showNotification, hideNotification } =
+    useNotification();
 
-  // Combine related state into an object
+  // State management
   const [filters, setFilters] = useState<FilterState>({
     searchQuery: "",
     selectedType: "",
   });
 
-  // Modal states
-  const [modalState, setModalState] = useState({
+  const [modalState, setModalState] = useState<ModalState>({
     isUpdateOpen: false,
     isDeleteOpen: false,
-    selectedMachine: null as Machine | null,
+    selectedMachine: null,
   });
 
   // Fetch machines on component mount
   useEffect(() => {
-    dispatch(fetchMachines());
-  }, [dispatch]);
+    const loadMachines = async () => {
+      try {
+        await dispatch(fetchMachines());
+      } catch (error) {
+        showNotification(NOTIFICATION_MESSAGES.FETCH_ERROR, "error");
+      }
+    };
 
-  // Memoize the filtered machines to prevent unnecessary recalculations
+    loadMachines();
+  }, [dispatch, showNotification]);
+
+  // Memoized filtered machines
   const filteredMachines = useMemo(() => {
     return machines.filter((machine) => {
       const matchesSearch = filters.searchQuery
-        ? machine.name.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
+        ? machine.name
+            .toLowerCase()
+            .includes(filters.searchQuery.toLowerCase()) ||
           machine.type.toLowerCase().includes(filters.searchQuery.toLowerCase())
         : true;
-      
+
       const matchesType = filters.selectedType
         ? machine.type === filters.selectedType
         : true;
@@ -78,16 +85,15 @@ const MachinesList: React.FC = () => {
     });
   }, [machines, filters.searchQuery, filters.selectedType]);
 
-  // Debounced search handler to improve performance
+  // Event handlers
   const debouncedSearch = useCallback(
     debounce((value: string) => {
       setFilters((prev) => ({ ...prev, searchQuery: value }));
     }, 300),
-    []
+    [],
   );
 
-  // Event handlers
-  const handleTypeChange = (value: string) => {
+  const handleTypeChange = (value: "" | "Pump" | "Fan") => {
     setFilters((prev) => ({ ...prev, selectedType: value }));
   };
 
@@ -117,12 +123,17 @@ const MachinesList: React.FC = () => {
 
   const handleConfirmDelete = async () => {
     if (modalState.selectedMachine?.id) {
-      await dispatch(deleteMachineThunk(modalState.selectedMachine.id));
-      handleCloseModals();
+      try {
+        await dispatch(deleteMachineThunk(modalState.selectedMachine.id));
+        showNotification(NOTIFICATION_MESSAGES.DELETE_SUCCESS, "success");
+        handleCloseModals();
+      } catch (error) {
+        showNotification(NOTIFICATION_MESSAGES.OPERATION_ERROR, "error");
+      }
     }
   };
 
-  // Render helpers
+  // Render methods
   const renderToolbar = () => (
     <Toolbar sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
       <TextField
@@ -136,7 +147,9 @@ const MachinesList: React.FC = () => {
         <InputLabel>Machine Type</InputLabel>
         <Select
           value={filters.selectedType}
-          onChange={(e) => handleTypeChange(e.target.value)}
+          onChange={(e) =>
+            handleTypeChange(e.target.value as "" | "Pump" | "Fan")
+          }
           label="Machine Type"
           sx={{ width: 200 }}
         >
@@ -217,7 +230,7 @@ const MachinesList: React.FC = () => {
         ) : (
           <Box sx={{ textAlign: "center", p: 2 }}>
             <Typography color="text.secondary">
-              No machines match your search criteria
+              {NOTIFICATION_MESSAGES.NO_MACHINES}
             </Typography>
           </Box>
         )}
@@ -226,6 +239,12 @@ const MachinesList: React.FC = () => {
           open={modalState.isUpdateOpen}
           onClose={handleCloseModals}
           machine={modalState.selectedMachine}
+          onSuccess={() =>
+            showNotification(NOTIFICATION_MESSAGES.UPDATE_SUCCESS, "success")
+          }
+          onError={() =>
+            showNotification(NOTIFICATION_MESSAGES.OPERATION_ERROR, "error")
+          }
         />
 
         <DeleteMachineDialog
@@ -234,6 +253,20 @@ const MachinesList: React.FC = () => {
           machine={modalState.selectedMachine}
           onDelete={handleConfirmDelete}
         />
+
+        <Snackbar
+          open={notification.open}
+          autoHideDuration={3000}
+          onClose={hideNotification}
+        >
+          <Alert
+            onClose={hideNotification}
+            severity={notification.severity}
+            sx={{ width: "100%" }}
+          >
+            {notification.message}
+          </Alert>
+        </Snackbar>
       </Box>
     </Box>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Box, Button, TextField, MenuItem, Typography } from "@mui/material";
+import { Box, Button, TextField, MenuItem, Typography, Snackbar, Alert } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
@@ -11,6 +11,8 @@ import {
   createMachineThunk,
   updateMachineThunk,
 } from "@/redux/machines/thunks";
+import { useNotification } from "@/hooks/use-notifications";
+import { NOTIFICATION_DURATION, NOTIFICATION_MESSAGES } from "@/constants/machines";
 
 // Validation schema for the machine form
 const machineSchema = z.object({
@@ -25,18 +27,22 @@ type MachineFormValues = z.infer<typeof machineSchema>;
  * @interface MachineFormProps
  * @property {Machine | null} [existingMachine] - An optional machine object to edit, if available.
  * @property {() => void} [onClose] - Optional callback function to close the form dialog.
+ * @property {(success: boolean) => void} [onSubmitComplete] - Optional callback for handling submission completion.
  */
 interface MachineFormProps {
   existingMachine?: Machine | null;
   onClose?: () => void;
+  onSubmitComplete?: (success: boolean) => void;
 }
 
 const MachineForm: React.FC<MachineFormProps> = ({
   existingMachine = null,
   onClose,
+  onSubmitComplete,
 }) => {
   const dispatch = useAppDispatch();
-  console.log("API URL:", process.env.NEXT_PUBLIC_API_URL);
+  const { notification, showNotification, hideNotification } =
+    useNotification();
 
   const {
     control,
@@ -54,25 +60,31 @@ const MachineForm: React.FC<MachineFormProps> = ({
   /**
    * Handle the form submission.
    * Dispatches an action to either update or add a machine to the store.
+   * Handles success and error cases through callbacks.
    * @param {MachineFormValues} data - The form data submitted by the user.
    */
-  // Handle form submission (either create or update machine)
-  const onSubmit = (data: MachineFormValues) => {
-    console.log("data", data);
-    console.log("existingMachine", existingMachine);
-    if (existingMachine) {
-      const updateMachine = {
-        id: existingMachine.id,
-        name: data.name,
-        type: data.type,
-      };
-      dispatch(updateMachineThunk(updateMachine));
-    } else {
-      dispatch(createMachineThunk(data));
-    }
+  const onSubmit = async (data: MachineFormValues) => {
+    try {
+      if (existingMachine) {
+        const updateMachine = {
+          id: existingMachine.id,
+          name: data.name,
+          type: data.type,
+        };
+        await dispatch(updateMachineThunk(updateMachine)).unwrap();
+        showNotification(NOTIFICATION_MESSAGES.CREATE_SUCCESS, "success");
+      } else {
+        await dispatch(createMachineThunk(data)).unwrap();
+        showNotification(NOTIFICATION_MESSAGES.OPERATION_ERROR, "success");
+      }
 
-    reset();
-    if (onClose) onClose();
+      reset();
+      onSubmitComplete?.(true);
+      onClose?.();
+    } catch (error) {
+      console.error("Failed to submit machine:", error);
+      onSubmitComplete?.(false);
+    }
   };
 
   return (
@@ -140,6 +152,20 @@ const MachineForm: React.FC<MachineFormProps> = ({
           {existingMachine ? "Update" : "Add"}
         </Button>
       </Box>
+
+      <Snackbar
+        open={notification.open}
+        autoHideDuration={NOTIFICATION_DURATION}
+        onClose={hideNotification}
+      >
+        <Alert
+          onClose={hideNotification}
+          severity={notification.severity}
+          sx={{ width: "100%" }}
+        >
+          {notification.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

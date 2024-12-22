@@ -1,3 +1,4 @@
+// Domain Models
 /** Machine type representing a piece of equipment. */
 export interface Machine {
   id?: string;
@@ -18,4 +19,26 @@ export interface MonitoringPoint {
   name: string;
   sensorId: string;
   sensorModel: string;
+}
+
+// Component State Types
+/** State for filtering and searching machines */
+export interface FilterState {
+  searchQuery: string;
+  selectedType: "Pump" | "Fan" | "";
+}
+
+/** State for managing machine-related modals */
+export interface ModalState {
+  isUpdateOpen: boolean;
+  isDeleteOpen: boolean;
+  selectedMachine: Machine | null;
+}
+
+// Utility Types
+/** State for managing notification display */
+export interface NotificationState {
+  open: boolean;
+  message: string;
+  severity: "success" | "error" | "info" | "warning";
 }
