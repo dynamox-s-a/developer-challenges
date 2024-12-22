@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 import { Trash } from "@phosphor-icons/react";
 import { useAppDispatch, useAppSelector } from "@/types/hooks";
-import { deleteMonitoringPointThunk } from "@/redux/machinesSlice";
+import { deleteMonitoringPointThunk } from "@/redux/machines/slice";
 
 type MonitoringPoint = {
   id?: string;

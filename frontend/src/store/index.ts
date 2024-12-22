@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import machinesReducer from "@/redux/machinesSlice";
+import machinesReducer from "@/redux/machines/slice";
 
 /**
  * Configures the Redux store with the specified reducers.

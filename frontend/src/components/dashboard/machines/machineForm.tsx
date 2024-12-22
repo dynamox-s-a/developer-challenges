@@ -5,9 +5,12 @@ import { Box, Button, TextField, MenuItem, Typography } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
-import { createMachineThunk } from "@/redux/machinesSlice";
 import { Machine } from "@/types/machines";
 import { useAppDispatch } from "@/types/hooks";
+import {
+  createMachineThunk,
+  updateMachineThunk,
+} from "@/redux/machines/thunks";
 
 // Validation schema for the machine form
 const machineSchema = z.object({
@@ -56,13 +59,18 @@ const MachineForm: React.FC<MachineFormProps> = ({
   // Handle form submission (either create or update machine)
   const onSubmit = (data: MachineFormValues) => {
     console.log("data", data);
+    console.log("existingMachine", existingMachine);
     if (existingMachine) {
-      // dispatch(updateMachine({ ...existingMachine, ...data }));
+      const updateMachine = {
+        id: existingMachine.id,
+        name: data.name,
+        type: data.type,
+      };
+      dispatch(updateMachineThunk(updateMachine));
     } else {
       dispatch(createMachineThunk(data));
     }
 
-    // Reset the form and close it after submission
     reset();
     if (onClose) onClose();
   };

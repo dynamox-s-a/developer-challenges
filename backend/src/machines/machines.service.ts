@@ -6,6 +6,7 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateMachineDto } from './create-machine.dto';
 import { AddMonitoringPointsDto } from './add-monitoring-points.dto';
+import { UpdateMachineDto } from './update-machine-dto';
 
 @Injectable()
 export class MachinesService {
@@ -31,6 +32,26 @@ export class MachinesService {
         type: createMachineDto.type,
       },
     });
+  }
+
+  async updateMachine(machineId: string, updateMachineDto: UpdateMachineDto) {
+    const machine = await this.prisma.machine.findUnique({
+      where: { id: machineId },
+    });
+
+    if (!machine) {
+      throw new NotFoundException('Machine not found');
+    }
+
+    const updatedMachine = await this.prisma.machine.update({
+      where: { id: machineId },
+      data: {
+        name: updateMachineDto.name || machine.name,
+        type: updateMachineDto.type || machine.type,
+      },
+    });
+
+    return updatedMachine;
   }
 
   async getSensors() {

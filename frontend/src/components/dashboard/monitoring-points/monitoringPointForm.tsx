@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import { z } from "zod";
 import { useAppDispatch, useAppSelector } from "@/types/hooks";
-import { addMonitoringPointThunk, fetchSensors } from "@/redux/machinesSlice";
+import { addMonitoringPointThunk, fetchSensors } from "@/redux/machines/thunks";
 
 // Validation schema for the form
 const monitoringPointSchema = z.object({
@@ -72,7 +72,9 @@ const MonitoringPointForm: React.FC = () => {
    * @param data - The form data
    */
   const onSubmit = (data: MonitoringPointFormValues) => {
-    const selectedSensor = sensors.find((sensor) => sensor.id === data.sensorId);
+    const selectedSensor = sensors.find(
+      (sensor) => sensor.id === data.sensorId,
+    );
 
     if (!selectedSensor) {
       console.error("Sensor not found");
@@ -89,7 +91,7 @@ const MonitoringPointForm: React.FC = () => {
       addMonitoringPointThunk({
         machineId: data.machineId,
         monitoringPoint,
-      })
+      }),
     );
 
     reset();
