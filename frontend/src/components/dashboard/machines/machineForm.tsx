@@ -1,7 +1,15 @@
 "use client";
 
 import React from "react";
-import { Box, Button, TextField, MenuItem, Typography, Snackbar, Alert } from "@mui/material";
+import {
+  Box,
+  Button,
+  TextField,
+  MenuItem,
+  Typography,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
@@ -12,7 +20,10 @@ import {
   updateMachineThunk,
 } from "@/redux/machines/thunks";
 import { useNotification } from "@/hooks/use-notifications";
-import { NOTIFICATION_DURATION, NOTIFICATION_MESSAGES } from "@/constants/machines";
+import {
+  NOTIFICATION_DURATION,
+  NOTIFICATION_MESSAGES,
+} from "@/constants/machines";
 
 // Validation schema for the machine form
 const machineSchema = z.object({
@@ -72,18 +83,17 @@ const MachineForm: React.FC<MachineFormProps> = ({
           type: data.type,
         };
         await dispatch(updateMachineThunk(updateMachine)).unwrap();
-        showNotification(NOTIFICATION_MESSAGES.CREATE_SUCCESS, "success");
       } else {
         await dispatch(createMachineThunk(data)).unwrap();
-        showNotification(NOTIFICATION_MESSAGES.OPERATION_ERROR, "success");
+        showNotification(NOTIFICATION_MESSAGES.CREATE_SUCCESS, "success");
       }
 
       reset();
       onSubmitComplete?.(true);
       onClose?.();
     } catch (error) {
-      console.error("Failed to submit machine:", error);
       onSubmitComplete?.(false);
+      showNotification(NOTIFICATION_MESSAGES.UPDATE_SUCCESS, "success");
     }
   };
 

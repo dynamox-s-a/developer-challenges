@@ -1,12 +1,21 @@
+/**
+ * The generator for Prisma Client JS. 
+ */
 generator client {
   provider = "prisma-client-js"
 }
 
+/**
+ * The datasource configuration to connect to the PostgreSQL database.
+ */
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+/**
+ * Represents a machine in the system.
+ */
 model Machine {
   id                String            @id @default(uuid())
   name              String
@@ -14,6 +23,9 @@ model Machine {
   monitoringPoints  MonitoringPoint[] 
 }
 
+/**
+ * Represents a monitoring point on a machine.
+ */
 model MonitoringPoint {
   id        String   @id @default(uuid())
   name      String
@@ -23,8 +35,20 @@ model MonitoringPoint {
   machine   Machine  @relation(fields: [machineId], references: [id])
 }
 
+/**
+ * Represents a sensor that collects data for monitoring points.
+ */
 model Sensor {
   id        String  @id @default(uuid())
   name      String 
   points    MonitoringPoint[] 
+}
+
+/**
+ * Represents a user in the system.
+ */
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
 }
