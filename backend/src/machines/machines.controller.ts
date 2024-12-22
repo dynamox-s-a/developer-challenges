@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { MachinesService } from './machines.service';
 import { CreateMachineDto } from './create-machine.dto';
 import { AddMonitoringPointsDto } from './add-monitoring-points.dto';
@@ -30,6 +30,23 @@ export class MachinesController {
     return this.machinesService.addMonitoringPoints(
       machineId,
       addMonitoringPointsDto,
+    );
+  }
+
+  @Delete(':machineId')
+  async deleteMachine(@Param('machineId') machineId: string) {
+    return this.machinesService.deleteMachine(machineId);
+  }
+
+  // DELETE endpoint to delete a monitoring point
+  @Delete(':machineId/monitoring-points/:monitoringPointId')
+  async deleteMonitoringPoint(
+    @Param('machineId') machineId: string,
+    @Param('monitoringPointId') monitoringPointId: string,
+  ) {
+    return this.machinesService.deleteMonitoringPoint(
+      machineId,
+      monitoringPointId,
     );
   }
 }

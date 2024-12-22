@@ -1,6 +1,7 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 import { Machine, MonitoringPoint, Sensor } from "@/types/machines";
+import { machine } from "os";
 
 /**
  * Fetch machines from the API.
@@ -74,6 +75,42 @@ export const addMonitoringPointController = async (
 
   if (!response.ok) {
     throw new Error("Failed to add monitoring point");
+  }
+
+  return await response.json();
+};
+
+export const deleteMachineController = async (machineId: string) => {
+  const response = await fetch(`${API_URL}/machines/${machineId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete machine");
+  }
+
+  return await response.json();
+};
+
+export const deleteMonitoringPointController = async (
+  machineId: string,
+  monitoringPointId: string,
+) => {
+  const response = await fetch(
+    `${API_URL}/machines/${machineId}/monitoring-points/${monitoringPointId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to delete monitoring point");
   }
 
   return await response.json();

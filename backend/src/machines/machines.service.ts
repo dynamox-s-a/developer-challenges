@@ -91,6 +91,55 @@ export class MachinesService {
     return monitoringPoint;
   }
 
-  // delete machine
-  // delete monnitoring points
+  async deleteMachine(machineId: string) {
+    const machine = await this.prisma.machine.findUnique({
+      where: { id: machineId },
+    });
+
+    if (!machine) {
+      throw new NotFoundException('Machine not found');
+    }
+
+    await this.prisma.monitoringPoint.deleteMany({
+      where: { machineId: machineId },
+    });
+
+    await this.prisma.machine.delete({
+      where: { id: machineId },
+    });
+
+    return { message: 'Machine and its monitoring points have been deleted' };
+  }
+
+  // Delete a monitoring point by its ID
+  async deleteMonitoringPoint(machineId: string, monitoringPointId: string) {
+    const machine = await this.prisma.machine.findUnique({
+      where: { id: machineId },
+    });
+
+    if (!machine) {
+      throw new NotFoundException('Machine not found');
+    }
+
+    // Check if the monitoring point exists
+    const monitoringPoint = await this.prisma.monitoringPoint.findUnique({
+      where: { id: monitoringPointId },
+    });
+
+    if (!monitoringPoint) {
+      throw new NotFoundException('Monitoring point not found');
+    }
+
+    if (monitoringPoint.machineId !== machineId) {
+      throw new BadRequestException(
+        'Monitoring point does not belong to this machine',
+      );
+    }
+
+    await this.prisma.monitoringPoint.delete({
+      where: { id: monitoringPointId },
+    });
+
+    return { message: 'Monitoring point has been deleted' };
+  }
 }

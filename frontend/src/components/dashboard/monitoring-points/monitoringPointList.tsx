@@ -17,7 +17,8 @@ import {
   TablePagination,
 } from "@mui/material";
 import { Trash } from "@phosphor-icons/react";
-import { useAppSelector } from "@/types/hooks";
+import { useAppDispatch, useAppSelector } from "@/types/hooks";
+import { deleteMonitoringPointThunk } from "@/redux/machinesSlice";
 
 type MonitoringPoint = {
   id?: string;
@@ -32,6 +33,7 @@ type MonitoringPoint = {
 type MonitoringPointKey = keyof MonitoringPoint;
 
 const MonitoringPointsList = () => {
+  const dispatch = useAppDispatch();
   const machines = useAppSelector((state) => state.machines.machines);
 
   const monitoringPoints = machines.flatMap((machine) =>
@@ -43,7 +45,6 @@ const MonitoringPointsList = () => {
       sensorName: mp.sensor?.name,
     })),
   );
-  console.log("monitoring points", monitoringPoints);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -81,12 +82,13 @@ const MonitoringPointsList = () => {
       }
       return 0;
     });
+
   const handleDeleteMonitoringPoint = (
     machineId: string,
     monitoringPointId: string,
   ) => {
     if (machineId) {
-      // dispatch(deleteMonitoringPoint({ machineId, monitoringPointId }));
+      dispatch(deleteMonitoringPointThunk({ machineId, monitoringPointId }));
     }
   };
 
@@ -156,12 +158,9 @@ const MonitoringPointsList = () => {
                           <Tooltip title="Delete">
                             <IconButton
                               color="error"
-                              // onClick={() =>
-                              //   handleDeleteMonitoringPoint(
-                              //     mp.machineId,
-                              //     mp.id,
-                              //   )
-                              // }
+                              onClick={() =>
+                                handleDeleteMonitoringPoint(mp.machineId, mp.id)
+                              }
                               sx={{
                                 "&:hover": {
                                   backgroundColor: "rgba(255, 0, 0, 0.1)",

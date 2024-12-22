@@ -1,6 +1,8 @@
 import {
   addMonitoringPointController,
   createMachineController,
+  deleteMachineController,
+  deleteMonitoringPointController,
   fetchMachinesController,
   fetchSensorsController,
 } from "@/controller/machines";
@@ -31,4 +33,15 @@ export const addMonitoringPoint = async (
   monitoringPoint: MonitoringPoint,
 ) => {
   return addMonitoringPointController(machineId, monitoringPoint);
+};
+
+export const deleteMachine = async (machineId: string) => {
+  return deleteMachineController(machineId);
+};
+
+export const deleteMonitoringPoint = async (
+  machineId: string,
+  monitoringPointId: string,
+) => {
+  return deleteMonitoringPointController(machineId, monitoringPointId);
 };

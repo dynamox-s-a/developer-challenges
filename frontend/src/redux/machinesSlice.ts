@@ -3,6 +3,8 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   addMonitoringPoint,
   createMachineService,
+  deleteMachine,
+  deleteMonitoringPoint,
   fetchMachinesService,
   fetchSensorsService,
 } from "@/services/machines";
@@ -64,6 +66,28 @@ export const addMonitoringPointThunk = createAsyncThunk<
   return await addMonitoringPoint(machineId, monitoringPoint);
 });
 
+export const deleteMachineThunk = createAsyncThunk<void, string>(
+  actionTypes.DELETE_MACHINE,
+  async (machineId) => {
+    return await deleteMachine(machineId);
+  },
+);
+
+export const deleteMonitoringPointThunk = createAsyncThunk(
+  "machines/deleteMonitoringPoint",
+  async ({
+    machineId,
+    monitoringPointId,
+  }: {
+    machineId: string;
+    monitoringPointId: string;
+  }) => {
+    await deleteMonitoringPoint(machineId, monitoringPointId);
+
+    return { machineId, monitoringPointId };
+  },
+);
+
 const machinesSlice = createSlice({
   name: "machines",
   initialState,
@@ -106,6 +130,27 @@ const machinesSlice = createSlice({
         );
         if (machine) {
           machine.monitoringPoints?.push(action.payload);
+        }
+      },
+    );
+
+    handleAsyncAction(builder, actionTypes.DELETE_MACHINE, (state, action) => {
+      state.machines = state.machines.filter(
+        (machine: Machine) => machine.id !== action.payload,
+      );
+    });
+
+    handleAsyncAction(
+      builder,
+      actionTypes.DELETE_MONITORING_POINT,
+      (state, action) => {
+        const machine = state.machines.find(
+          (m: Machine) => m.id === action.payload.machineId,
+        );
+        if (machine) {
+          machine.monitoringPoints = machine.monitoringPoints?.filter(
+            (mp: MonitoringPoint) => mp.id !== action.payload.monitoringPointId,
+          );
         }
       },
     );

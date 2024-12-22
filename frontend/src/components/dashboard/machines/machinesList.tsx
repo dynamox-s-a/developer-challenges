@@ -25,7 +25,7 @@ import { useAppDispatch, useAppSelector } from "@/types/hooks";
 import { Machine } from "@/types/machines";
 import UpdateMachineDialog from "./updateMachineDialog";
 import DeleteMachineDialog from "./deleteMachineDialog";
-import { fetchMachines } from "@/redux/machinesSlice";
+import { deleteMachineThunk, fetchMachines } from "@/redux/machinesSlice";
 
 const MachinesList = () => {
   const dispatch = useAppDispatch();
@@ -84,8 +84,8 @@ const MachinesList = () => {
    * Deletes the selected machine after confirmation.
    */
   const handleDelete = () => {
-    if (machineToDelete) {
-      // dispatch(deleteMachine(machineToDelete.id));
+    if (machineToDelete?.id) {
+      dispatch(deleteMachineThunk(machineToDelete.id));
       handleCloseDeleteDialog();
     }
   };
