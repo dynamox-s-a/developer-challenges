@@ -10,11 +10,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle"
 import { StyledMenuItem } from "./styles"
 import { Outlet, useNavigate } from 'react-router-dom'
 import { useCallback, useState } from "react"
-import { useDispatch } from "react-redux"
-import { clearUser } from '../../redux/userSlice'
-
-import { useSelector } from 'react-redux'
-import { UserReduxState } from "../../redux/types"
+import { useDispatch, useSelector } from 'react-redux'
+import { UserReduxState, clearUser } from "../../redux"
 
 export const Layout = () => {
   const navigate = useNavigate()
@@ -72,7 +69,7 @@ export const Layout = () => {
       </AppBar>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, marginTop: "64px", overflow: "auto" }}
+        sx={{ flexGrow: 1, alignItems: "start", overflow: "auto" }}
       >
         <Outlet />
       </Box>
