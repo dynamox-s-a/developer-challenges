@@ -10,10 +10,18 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle"
 import { StyledMenuItem } from "./styles"
 import { Outlet, useNavigate } from 'react-router-dom'
 import { useCallback, useState } from "react"
+import { useDispatch } from "react-redux"
+import { clearUser } from '../../redux/userSlice'
+
+import { useSelector } from 'react-redux'
+import { UserReduxState } from "../../redux/types"
 
 export const Layout = () => {
-  const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const user = useSelector((state: { user: UserReduxState }) => state.user)
+
+  const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null)
 
   const handleMenuToggle = useCallback((event: React.MouseEvent<HTMLElement>) => {
     setMenuAnchor(menuAnchor ? null : event.currentTarget)
@@ -24,12 +32,13 @@ export const Layout = () => {
   }, [navigate])
 
   const onClickLogout = useCallback(() => {
+    dispatch(clearUser())
     navigate("/login")
-  }, [navigate])
+  }, [dispatch, navigate])
 
   const onClickEditUser = useCallback(() => {
-    navigate("/users/edit/1")
-  }, [navigate])
+    navigate(`/users/edit/${user?.id}`)
+  }, [navigate, user?.id])
 
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
