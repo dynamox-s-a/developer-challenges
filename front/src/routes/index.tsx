@@ -1,5 +1,12 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { Login, User } from '../pages'
+import { 
+  Login, 
+  User, 
+  Home, 
+  Machine,
+  Point, 
+  Sensor
+} from '../pages'
 import { Layout } from '../components'
 import { UserReduxState } from '../redux'
 import { useSelector } from 'react-redux'
@@ -22,12 +29,14 @@ export const RoutesConfig = () => {
         path="/*" 
         element={isAuthenticated ? <Layout /> : <Navigate to="/login" replace />}
       >
-        <Route path="home" element={<div>Home</div>} />
+        <Route path="home" element={<Home />} />
         <Route path="users/edit/:id" element={<User />} />
-        <Route path="machines/create" element={<div>Criação de Máquina</div>} />
-        <Route path="machines/edit/:id" element={<div>Edição de Máquina</div>} />
-        <Route path="sensors/create" element={<div>Criação de Sensor</div>} />
-        <Route path="sensors/edit/:id" element={<div>Edição de Sensor</div>} />
+        <Route path="machines/create" element={<Machine />} />
+        <Route path="machines/edit/:id" element={<Machine />} />
+        <Route path="points/create" element={<Point />} />
+        <Route path="points/edit/:id" element={<Point />} />
+        <Route path="sensors/create" element={<Sensor />} />
+        <Route path="sensors/edit/:id" element={<Sensor />} />
       </Route>
       <Route 
         path="*" 

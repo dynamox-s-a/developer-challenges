@@ -1,2 +1,6 @@
 export * from './Login'
 export * from './User'
+export * from './Home'
+export * from './Machine'
+export * from './Point'
+export * from './Sensor'
