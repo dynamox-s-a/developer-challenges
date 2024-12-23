@@ -14,6 +14,7 @@ import { Delete } from "@mui/icons-material"
 import { FlexVertical } from "../../components/FlexVertical"
 import { MachineReduxState } from "../../redux"
 import { useSelector } from "react-redux"
+import { LoadingSpinner } from "../../components/LoadingSpinner"
 
 export const PointCard = () => {
   const navigate = useNavigate()
@@ -22,6 +23,7 @@ export const PointCard = () => {
   const machineId = useSelector((state: { machine: MachineReduxState }) => state.machine)?.id
 
   const { 
+    loading,
     handleSubmit,
     submitDisabled,
     openSnackbar,
@@ -33,6 +35,8 @@ export const PointCard = () => {
     onDeletePoint,
     onDeleteSensor
   } = usePointContext()
+
+  if (loading) return <LoadingSpinner />
 
   return (
     <MainContainer
@@ -52,11 +56,15 @@ export const PointCard = () => {
             onChange={handleNameChange}
             label="Nome"
             name="name"
+            
             autoFocus
             required
             fullWidth
             variant="outlined"
             color={nameError?.visible ? 'error' : 'primary'}
+            InputLabelProps={{
+              shrink: true
+            }}
           />
         </FormControl>
         <div>

@@ -43,12 +43,15 @@ export const SensorCard = () => {
           <Select
             label="Selecione o tipo de sensor"
             labelId="sensor-type-label"
-            value={sensor.model}
+            value={sensor.type ?? ''}
             onChange={handleSensorModelChange}
             displayEmpty
             variant="outlined"
             required
           >
+            <MenuItem value="" disabled>
+              Selecione o tipo de sensor
+            </MenuItem>
             <MenuItem value="TcAg" disabled={machineType === 'Pump'}>
               TcAg
             </MenuItem>

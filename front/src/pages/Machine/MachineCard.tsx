@@ -16,12 +16,14 @@ import { MainContainer } from "../Login/styles"
 import { Card, Snackbar, Table } from '../../components'
 import { Delete, Edit } from "@mui/icons-material"
 import { FlexVertical } from "../../components/FlexVertical"
+import { LoadingSpinner } from "../../components/LoadingSpinner"
 
 export const MachineCard = () => {
   const navigate = useNavigate()
   const { id: idMachine } = useParams<{ id: string }>()
 
   const { 
+    loading,
     handleSubmit,
     submitDisabled,
     openSnackbar,
@@ -36,6 +38,8 @@ export const MachineCard = () => {
     onEditPoint,
     onDeletePoint
   } = useMachineContext()
+
+  if (loading) return <LoadingSpinner />
 
   return (
     <MainContainer
@@ -60,6 +64,9 @@ export const MachineCard = () => {
             fullWidth
             variant="outlined"
             color={nameError?.visible ? 'error' : 'primary'}
+            InputLabelProps={{
+              shrink: true
+            }}
           />
         </FormControl>
         <FormControl error={machineTypeError?.alreadyFilled && machineTypeError?.visible}>

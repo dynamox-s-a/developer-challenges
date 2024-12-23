@@ -30,13 +30,25 @@ export function PointContextProvider ({ children }: { children: ReactNode }) {
 
   const getPointById = useCallback(async () => {
     if (pointId) {
-      const resp: { data: PointWithSensors[] } = await axios.get(`http://localhost:3000/point/${pointId}`)
-      const foundedPoint = resp.data[0]
-      if (foundedPoint) {
-        const { sensors, ...rest } = foundedPoint
-        dispatch(setReduxPoint(rest))
-        setPoint(rest)
-        setSensors(sensors ?? [])
+      try {
+        setLoading(true)
+        const resp: { data: PointWithSensors[] } = await axios.get(`http://localhost:3000/point/${pointId}`)
+        const foundedPoint = resp.data[0]
+        if (foundedPoint) {
+          const { sensors, ...rest } = foundedPoint
+          dispatch(setReduxPoint(rest))
+          setPoint(rest)
+          setSensors(sensors ?? [])
+        }
+      } catch (error) {
+        const err = error as AxiosError<{ error: { detail: string } }>
+        setOpenSnackbar({
+          visible: true,
+          message: `Erro! ${err?.response?.data?.error?.detail}`,
+          type: 'error'
+        })
+      } finally {
+        setLoading(false)
       }
     }
   }, [dispatch, pointId])
@@ -66,9 +78,7 @@ export function PointContextProvider ({ children }: { children: ReactNode }) {
           message,
           type: 'success'
         })
-        setTimeout(() => {
-          navigate(`/points/edit/${respPoint.id}`)
-        }, 4000)
+        navigate(`/points/edit/${respPoint.id}`)
       }
     } catch (error) {
       const err = error as AxiosError<{ error: { detail: string } }>

@@ -31,13 +31,25 @@ export function MachineContextProvider ({ children }: { children: ReactNode }) {
 
   const getMachineById = useCallback(async () => {
     if (machineId) {
-      const resp: { data: MachineWithPoints[] } = await axios.get(`http://localhost:3000/machine/${machineId}`)
-      const foundedMachine = resp.data[0]
-      if (foundedMachine) {
-        const { points, ...rest } = foundedMachine
-        dispatch(setReduxMachine(rest))
-        setMachine(rest)
-        setPoints(points)
+      try {
+        setLoading(true)
+        const resp: { data: MachineWithPoints[] } = await axios.get(`http://localhost:3000/machine/${machineId}`)
+        const foundedMachine = resp.data[0]
+        if (foundedMachine) {
+          const { points, ...rest } = foundedMachine
+          dispatch(setReduxMachine(rest))
+          setMachine(rest)
+          setPoints(points)
+        }
+      } catch (error) {
+        const err = error as AxiosError<{ error: { detail: string } }>
+        setOpenSnackbar({
+          visible: true,
+          message: `Erro! ${err?.response?.data?.error?.detail}`,
+          type: 'error'
+        })
+      } finally {
+        setLoading(false)
       }
     }
   }, [dispatch, machineId])
