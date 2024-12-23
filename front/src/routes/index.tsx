@@ -8,12 +8,18 @@ import {
   Sensor
 } from '../pages'
 import { Layout } from '../components'
-import { UserReduxState } from '../redux'
-import { useSelector } from 'react-redux'
+import { ReactNode } from 'react'
+
+const ProtectedRoute = ({ children }: { children: ReactNode }) => {
+  const token = localStorage.getItem('authToken')
+  if (!token) {
+    return <Navigate to="/login" replace />
+  }
+  return children
+}
 
 export const RoutesConfig = () => {
-  const user = useSelector((state: { user: UserReduxState }) => state.user)
-  const isAuthenticated = user?.id
+  const isAuthenticated = localStorage.getItem('authToken')
 
   return (
     <Routes>
@@ -27,7 +33,11 @@ export const RoutesConfig = () => {
       />
       <Route 
         path="/*" 
-        element={isAuthenticated ? <Layout /> : <Navigate to="/login" replace />}
+        element={
+          <ProtectedRoute>
+            <Layout />
+          </ProtectedRoute>
+        }
       >
         <Route path="home" element={<Home />} />
         <Route path="users/edit/:id" element={<User />} />

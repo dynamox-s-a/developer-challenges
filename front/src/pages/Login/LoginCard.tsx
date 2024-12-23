@@ -7,18 +7,32 @@ import {
 import { useLoginContext } from "./hooks/useLoginContext"
 import { SignInContainer } from "./styles"
 import { useNavigate } from "react-router-dom"
-import { Card } from '../../components'
+import { Card, Snackbar } from '../../components'
 
 export const LoginCard = () => {
   const navigate = useNavigate()
   const { 
-    handleSubmit,
+    openSnackbar,
     submitDisabled,
     emailError,
     passwordError,
+    handleSubmit,
     handleEmailChange,
-    handlePasswordChange
+    handlePasswordChange,
+    handleCloseSnackbar
   } = useLoginContext()
+
+  const { 
+    alreadyFilled: emailAlreadyFilled,
+    message: emailInputHelperText,
+    visible: emailErrorVisible
+  } = emailError
+
+  const { 
+    alreadyFilled: passwordAlreadyFilled,
+    message: passwordInputHelperText,
+    visible: passwordErrorVisible
+  } = passwordError
 
   return (
     <SignInContainer 
@@ -32,32 +46,34 @@ export const LoginCard = () => {
         </Typography>
         <FormControl>
           <TextField
-            error={emailError?.alreadyFilled && emailError?.visible}
-            helperText={emailError?.message}
+            error={emailAlreadyFilled && emailErrorVisible}
+            helperText={emailInputHelperText}
             label="E-mail"
             type="email"
             name="email"
             autoFocus
+            autoComplete="email"
             required
             fullWidth
             variant="outlined"
             onChange={handleEmailChange}
-            color={emailError?.visible ? 'error' : 'primary'}
+            color={emailErrorVisible ? 'error' : 'primary'}
           />
         </FormControl>
         <FormControl>
           <TextField
-            error={passwordError?.alreadyFilled && passwordError?.visible}
-            helperText={passwordError?.message}
+            error={passwordAlreadyFilled && passwordErrorVisible}
+            helperText={passwordInputHelperText}
             label="Senha"
             name="password"
             type="password"
+            autoComplete="password"
             autoFocus
             required
             fullWidth
             variant="outlined"
             onChange={handlePasswordChange}
-            color={passwordError?.visible ? 'error' : 'primary'}
+            color={passwordErrorVisible ? 'error' : 'primary'}
           />
         </FormControl>
         <Button
@@ -76,6 +92,10 @@ export const LoginCard = () => {
           Cadastrar Usuário
         </Button>
       </Card>
+      <Snackbar
+        snackbar={openSnackbar}
+        onClose={handleCloseSnackbar}
+      />
     </SignInContainer>
   )
 }

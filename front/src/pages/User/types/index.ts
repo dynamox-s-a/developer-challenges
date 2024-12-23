@@ -1,6 +1,7 @@
 export type InputErrorControlType = {
   alreadyFilled?: boolean
   visible: boolean
+  type?: 'success' | 'info' | 'warning' | 'error'
   message: string
 }
 

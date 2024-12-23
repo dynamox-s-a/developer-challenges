@@ -29,6 +29,7 @@ export const Layout = () => {
   }, [navigate])
 
   const onClickLogout = useCallback(() => {
+    localStorage.removeItem('authToken')
     dispatch(clearUser())
     navigate("/login")
   }, [dispatch, navigate])

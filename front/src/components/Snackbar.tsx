@@ -17,7 +17,7 @@ export const Snackbar = ({
     >
       <Alert
         onClose={onClose}
-        severity="success"
+        severity={snackbar.type ?? "success"}
         sx={{ width: '100%' }}
       >
         {snackbar?.message}

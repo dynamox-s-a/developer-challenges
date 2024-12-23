@@ -65,6 +65,7 @@ export const UserCard = () => {
             type="email"
             name="email"
             value={user?.email}
+            autoComplete="email"
             autoFocus
             required
             fullWidth
@@ -80,6 +81,7 @@ export const UserCard = () => {
             label="Senha"
             name="password"
             type="password"
+            autoComplete="new-password"
             autoFocus
             required
             fullWidth
@@ -93,6 +95,7 @@ export const UserCard = () => {
             error={confirmPasswordError?.alreadyFilled && confirmPasswordError?.visible}
             helperText={confirmPasswordError?.message}
             label="Confirmar Senha"
+            autoComplete="new-password"
             name="confirm-password"
             type="password"
             autoFocus
