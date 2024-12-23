@@ -3,7 +3,7 @@ import { InputErrorControlType } from "../../User/types"
 
 export type SensorProps = { 
   id?: number, 
-  model?: string
+  type?: string
 }
 
 export type SensorContextType = {

@@ -9,6 +9,9 @@ import { useNavigate } from 'react-router-dom'
 import { SelectChangeEvent } from '@mui/material'
 import { InputErrorControlType } from '../../User/types'
 import { SensorProps } from '../types'
+import axios, { AxiosError } from 'axios'
+import { useSelector } from 'react-redux'
+import { PointReduxState } from '../../../redux'
 
 const initialStateInputError: InputErrorControlType = {
   alreadyFilled: false,
@@ -18,6 +21,7 @@ const initialStateInputError: InputErrorControlType = {
 
 export function SensorContextProvider ({ children }: { children: ReactNode }) {
   const navigate = useNavigate()
+  const pointId = useSelector((state: { point: PointReduxState }) => state.point)?.id
 
   const [loading, setLoading] = useState(false)
   const [sensor, setSensor] = useState<SensorProps>({})
@@ -26,29 +30,36 @@ export function SensorContextProvider ({ children }: { children: ReactNode }) {
 
   const [modelError, setModelError] = useState(initialStateInputError)
 
-  const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
       setLoading(true)
-      if (sensor.model) {
-        setOpenSnackbar({
-          visible: true,
-          message: 'Sensor cadastrado com sucesso!'
-        })
-        setTimeout(() => {
-          navigate(-1)
-        }, 4000)
-      }
+      if (!sensor.type) return
+  
+      await axios.post(`http://localhost:3000/sensor/`, { type: sensor.type, point_id: pointId })
+      setOpenSnackbar({
+        visible: true,
+        message: 'Sensor cadastrado com sucesso!',
+        type: 'success'
+      })
+      setTimeout(() => {
+        navigate(`/points/edit/${pointId}`)
+      }, 2500)
     } catch (error) {
-      
+      const err = error as AxiosError<{ error: { detail: string } }>
+      setOpenSnackbar({
+        visible: true,
+        message: `Erro! ${err?.response?.data?.error?.detail}`,
+        type: 'error'
+      })
     } finally {
       setLoading(false)
     }
-  }, [sensor.model, navigate])
+  }, [sensor.type, pointId, navigate]) 
 
   const handleSensorModelChange = useCallback((e: SelectChangeEvent<string>) => {
     const value = e.target.value
-    setSensor({ ...sensor, model: value})
+    setSensor({ ...sensor, type: value})
     setModelError({ ...initialStateInputError, alreadyFilled: true })
   }, [sensor])
 

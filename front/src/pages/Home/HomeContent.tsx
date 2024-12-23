@@ -26,12 +26,7 @@ export const HomeContent = () => {
   
   return (
     <MainContainer  direction="row">
-      <Box
-        sx={{
-          height: '100vh',
-          width: '100vw'
-        }}
-      >
+      <Box sx={{ width: '100vw' }}>
         <FlexVertical 
           style={{ 
             gap: 8,
