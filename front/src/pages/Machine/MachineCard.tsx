@@ -32,6 +32,7 @@ export const MachineCard = () => {
     handleNameChange,
     handleMachineTypeChange,
     handleCloseSnackbar,
+    onDeleteMachine,
     onEditPoint,
     onDeletePoint
   } = useMachineContext()
@@ -66,12 +67,15 @@ export const MachineCard = () => {
           <Select
             label="Selecione o tipo de máquina"
             labelId="machine-type-label"
-            value={machine?.type}
+            value={machine?.type || ''}
             onChange={handleMachineTypeChange}
             displayEmpty
             variant="outlined"
             required
           >
+            <MenuItem value="" disabled>
+              Selecione o tipo de máquina
+            </MenuItem>
             <MenuItem value="Pump">
               Pump
             </MenuItem>
@@ -91,6 +95,7 @@ export const MachineCard = () => {
               <Button
                 variant="contained"
                 onClick={() => navigate('/points/create')}
+                disabled={!idMachine}
               >
                 Adicionar Ponto
               </Button>
@@ -138,6 +143,7 @@ export const MachineCard = () => {
               color="error"
               sx={{ marginLeft: 1 }}
               disabled={points.length > 0}
+              onClick={onDeleteMachine}
             >
               Excluir Máquina
             </Button>
@@ -146,7 +152,7 @@ export const MachineCard = () => {
         <div>
           <Button
             variant="contained"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate('/home')}
           >
             Voltar
           </Button>
