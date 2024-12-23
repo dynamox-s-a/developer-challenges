@@ -58,17 +58,29 @@ export function HomeContextProvider ({ children }: { children: ReactNode }) {
     navigate(`/machines/edit/${machineId}`)
   }, [navigate])
 
-  const onDeleteMachine = useCallback((machineId?: number) => {
-  console.log("🚀 ~ onDelete ~ idMachine:", machineId)
+  const onDeleteMachine = useCallback(async (machineId?: number) => {
+    await axios.delete(`http://localhost:3000/machine/${machineId}`)
+    setOpenSnackbar({
+      visible: true,
+      message: 'Máquina excluída com sucesso',
+      type: 'success'
+    })
   }, [])
 
   const onEditPoint = useCallback((pointId?: number) => {
     navigate(`/points/edit/${pointId}`)
   }, [navigate])
 
-  const onDeletePoint = useCallback((pointId?: number) => {
-  console.log("🚀 ~ onDelete ~ idMachine:", pointId)
+  const onDeletePoint = useCallback(async (pointId?: number) => {
+    await axios.delete(`http://localhost:3000/point/${pointId}`)
+    setOpenSnackbar({
+      visible: true,
+      message: 'Ponto excluído com sucesso',
+      type: 'success'
+    })
   }, [])
+
+  const handleCloseSnackbar = useCallback(() => setOpenSnackbar({ visible: false, message: '' }), [])
 
   useLayoutEffect(() => {
     getMachinesList()
@@ -81,10 +93,12 @@ export function HomeContextProvider ({ children }: { children: ReactNode }) {
         machines,
         points,
         loading,
+        openSnackbar,
         onEditMachine,
         onDeleteMachine,
         onEditPoint,
-        onDeletePoint
+        onDeletePoint,
+        handleCloseSnackbar
       }}
     >
       {children}

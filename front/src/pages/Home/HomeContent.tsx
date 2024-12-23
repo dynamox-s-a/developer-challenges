@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom"
 import { MainContainer } from "../Login/styles"
 import { Delete, Edit } from "@mui/icons-material"
 import { useHomeContext } from "./hooks/useHomeContext"
-import { Table } from "../../components"
+import { Snackbar, Table } from "../../components"
 import { FlexVertical } from "../../components/FlexVertical"
 
 export const HomeContent = () => {
@@ -18,10 +18,12 @@ export const HomeContent = () => {
   const { 
     machines, 
     points, 
+    openSnackbar,
     onEditMachine, 
     onDeleteMachine, 
     onEditPoint,
-    onDeletePoint
+    onDeletePoint,
+    handleCloseSnackbar
   } = useHomeContext()
   
   return (
@@ -69,7 +71,7 @@ export const HomeContent = () => {
                         </IconButton>
                         <IconButton
                           color="error"
-                          disabled={machine.totalPoints > 0}
+                          disabled={machine.totalpoints > 0}
                           sx={{ margin:  '1px 0px' }}
                           onClick={() => onDeleteMachine(machineId)}
                         >
@@ -91,7 +93,7 @@ export const HomeContent = () => {
                     { label: 'Nome', key: 'point_name' },
                     { label: 'Nome Máquina', key: 'machine_name' },
                     { label: 'Tipo Máquina', key: 'machine_type' },
-                    { label: 'Sensores', key: 'sensors' }
+                    { label: 'Modelos Sensores', key: 'sensors' }
                   ]}
                   actionColumn={(pointId: number, item) => {
                     return (
@@ -105,7 +107,7 @@ export const HomeContent = () => {
                         </IconButton>
                         <IconButton
                           color="error"
-                          disabled={item.totalSensors > 0}
+                          disabled={item.sensors}
                           sx={{ margin:  '1px 0px' }}
                           onClick={() => onDeletePoint(pointId)}
                         >
@@ -120,6 +122,10 @@ export const HomeContent = () => {
           </Card>
         </FlexVertical>
       </Box>
+      <Snackbar
+        snackbar={openSnackbar}
+        onClose={handleCloseSnackbar}
+      />
     </MainContainer>
   )
 }
