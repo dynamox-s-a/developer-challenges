@@ -5,7 +5,7 @@ import {
   Typography
 } from "@mui/material";
 import { useLoginContext } from "./hooks/useLoginContext"
-import { SignInContainer } from "./styles"
+import { MainContainer } from "./styles"
 import { useNavigate } from "react-router-dom"
 import { Card, Snackbar } from '../../components'
 
@@ -35,7 +35,7 @@ export const LoginCard = () => {
   } = passwordError
 
   return (
-    <SignInContainer 
+    <MainContainer 
       direction="column" 
       justifyContent="center" 
       alignItems="center"
@@ -96,6 +96,6 @@ export const LoginCard = () => {
         snackbar={openSnackbar}
         onClose={handleCloseSnackbar}
       />
-    </SignInContainer>
+    </MainContainer>
   )
 }

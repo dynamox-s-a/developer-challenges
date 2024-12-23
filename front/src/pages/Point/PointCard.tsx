@@ -8,14 +8,18 @@ import {
 } from "@mui/material"
 import { usePointContext } from "./hooks/usePointContext"
 import { useNavigate, useParams } from "react-router-dom"
-import { SignInContainer } from "../Login/styles"
+import { MainContainer } from "../Login/styles"
 import { Card, Snackbar, Table } from '../../components'
 import { Delete } from "@mui/icons-material"
 import { FlexVertical } from "../../components/FlexVertical"
+import { MachineReduxState } from "../../redux"
+import { useSelector } from "react-redux"
 
 export const PointCard = () => {
   const navigate = useNavigate()
+
   const { id: idPoint } = useParams<{ id: string }>()
+  const machineId = useSelector((state: { machine: MachineReduxState }) => state.machine)?.id
 
   const { 
     handleSubmit,
@@ -26,11 +30,12 @@ export const PointCard = () => {
     nameError,
     handleNameChange,
     handleCloseSnackbar,
+    onDeletePoint,
     onDeleteSensor
   } = usePointContext()
 
   return (
-    <SignInContainer
+    <MainContainer
       direction="column" 
       justifyContent="center" 
       alignItems="center"
@@ -64,6 +69,7 @@ export const PointCard = () => {
               <Button
                 variant="contained"
                 onClick={() => navigate('/sensors/create')}
+                disabled={!idPoint}
               >
                 Adicionar Sensor
               </Button>
@@ -102,6 +108,7 @@ export const PointCard = () => {
               color="error"
               sx={{ marginLeft: 1 }}
               disabled={sensors.length > 0}
+              onClick={onDeletePoint}
             >
               Excluir Ponto
             </Button>
@@ -110,7 +117,7 @@ export const PointCard = () => {
         <div>
           <Button
             variant="contained"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate(`/machines/edit/${machineId}`)}
           >
             Voltar
           </Button>
@@ -120,6 +127,6 @@ export const PointCard = () => {
         snackbar={openSnackbar}
         onClose={handleCloseSnackbar}
       />
-    </SignInContainer>
+    </MainContainer>
   )
 }

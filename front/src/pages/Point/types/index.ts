@@ -2,10 +2,14 @@ import { SensorProps } from "../../Sensor/types"
 import { InputErrorControlType } from "../../User/types"
 
 export type PointProps = { 
-  id?: number, 
-  name?: string, 
-  linkedMachine?: number, 
+  id?: number
+  name?: string
+  machine_id?: number
   totalSensors?: number 
+}
+
+export interface PointWithSensors extends PointProps {
+  sensors: SensorProps[]
 }
 
 export type PointContextType = {
@@ -18,5 +22,6 @@ export type PointContextType = {
   handleCloseSnackbar: () => void
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
   handleNameChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onDeletePoint: () => void
   onDeleteSensor: (pointId: number) => void
 }

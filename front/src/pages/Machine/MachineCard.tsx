@@ -12,7 +12,7 @@ import {
 } from "@mui/material"
 import { useMachineContext } from "./hooks/useMachineContext"
 import { useNavigate, useParams } from "react-router-dom"
-import { SignInContainer } from "../Login/styles"
+import { MainContainer } from "../Login/styles"
 import { Card, Snackbar, Table } from '../../components'
 import { Delete, Edit } from "@mui/icons-material"
 import { FlexVertical } from "../../components/FlexVertical"
@@ -38,7 +38,7 @@ export const MachineCard = () => {
   } = useMachineContext()
 
   return (
-    <SignInContainer
+    <MainContainer
       direction="column" 
       justifyContent="center" 
       alignItems="center"
@@ -162,6 +162,6 @@ export const MachineCard = () => {
         snackbar={openSnackbar}
         onClose={handleCloseSnackbar}
       />
-    </SignInContainer>
+    </MainContainer>
   )
 }

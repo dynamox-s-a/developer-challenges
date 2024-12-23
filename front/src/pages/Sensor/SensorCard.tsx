@@ -9,11 +9,14 @@ import {
 } from "@mui/material"
 import { useSensorContext } from "./hooks/useSensorContext"
 import { useNavigate } from "react-router-dom"
-import { SignInContainer } from "../Login/styles"
+import { MainContainer } from "../Login/styles"
 import { Card, Snackbar } from '../../components'
+import { useSelector } from 'react-redux'
+import { MachineReduxState } from '../../redux'
 
 export const SensorCard = () => {
   const navigate = useNavigate()
+  const machineType = useSelector((state: { machine: MachineReduxState }) => state.machine)?.type
 
   const { 
     handleSubmit,
@@ -26,7 +29,7 @@ export const SensorCard = () => {
   } = useSensorContext()
 
   return (
-    <SignInContainer
+    <MainContainer
       direction="column" 
       justifyContent="center" 
       alignItems="center"
@@ -46,10 +49,10 @@ export const SensorCard = () => {
             variant="outlined"
             required
           >
-            <MenuItem value="TcAg">
+            <MenuItem value="TcAg" disabled={machineType === 'Pump'}>
               TcAg
             </MenuItem>
-            <MenuItem value="TcAs">
+            <MenuItem value="TcAs" disabled={machineType === 'Pump'}>
               TcAs
             </MenuItem>
             <MenuItem value="HF+">
@@ -81,6 +84,6 @@ export const SensorCard = () => {
         snackbar={openSnackbar}
         onClose={handleCloseSnackbar}
       />
-    </SignInContainer>
+    </MainContainer>
   )
 }

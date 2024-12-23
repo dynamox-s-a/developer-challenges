@@ -6,7 +6,7 @@ import {
 } from "@mui/material"
 import { useUserContext } from "./hooks/useUserContext"
 import { useNavigate } from "react-router-dom"
-import { SignInContainer } from "../Login/styles"
+import { MainContainer } from "../Login/styles"
 import { useSelector } from "react-redux"
 import { UserReduxState } from "../../redux"
 import { useMemo } from "react"
@@ -48,7 +48,7 @@ export const UserCard = () => {
   }, [navigate, user?.id])
 
   return (
-    <SignInContainer
+    <MainContainer
       direction="column" 
       justifyContent="center" 
       alignItems="center"
@@ -120,6 +120,6 @@ export const UserCard = () => {
         snackbar={openSnackbar}
         onClose={handleCloseSnackbar}
       />
-    </SignInContainer>
+    </MainContainer>
   )
 }

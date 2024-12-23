@@ -6,7 +6,7 @@ import {
   Typography
 } from "@mui/material"
 import { useNavigate } from "react-router-dom"
-import { SignInContainer } from "../Login/styles"
+import { MainContainer } from "../Login/styles"
 import { Delete, Edit } from "@mui/icons-material"
 import { useHomeContext } from "./hooks/useHomeContext"
 import { Table } from "../../components"
@@ -25,7 +25,7 @@ export const HomeContent = () => {
   } = useHomeContext()
   
   return (
-    <SignInContainer  direction="row">
+    <MainContainer  direction="row">
       <Box
         sx={{
           height: '100vh',
@@ -34,8 +34,7 @@ export const HomeContent = () => {
       >
         <FlexVertical 
           style={{ 
-            gap: 8, 
-            marginTop: 64, 
+            gap: 8,
             padding: 8 
           }}
         >
@@ -114,6 +113,6 @@ export const HomeContent = () => {
           </Card>
         </FlexVertical>
       </Box>
-    </SignInContainer>
+    </MainContainer>
   )
 }

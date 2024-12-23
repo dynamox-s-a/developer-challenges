@@ -35,11 +35,12 @@ export function MachineContextProvider ({ children }: { children: ReactNode }) {
       const foundedMachine = resp.data[0]
       if (foundedMachine) {
         const { points, ...rest } = foundedMachine
+        dispatch(setReduxMachine(rest))
         setMachine(rest)
         setPoints(points)
       }
     }
-  }, [machineId])
+  }, [dispatch, machineId])
 
   const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -116,6 +117,11 @@ export function MachineContextProvider ({ children }: { children: ReactNode }) {
 
   const onDeletePoint = useCallback(async (pointId: number) => {
     await axios.delete(`http://localhost:3000/point/${pointId}`)
+    setOpenSnackbar({
+      visible: true,
+      message: 'Ponto excluído com sucesso',
+      type: 'success'
+    })
     getMachineById()
   }, [getMachineById])
 

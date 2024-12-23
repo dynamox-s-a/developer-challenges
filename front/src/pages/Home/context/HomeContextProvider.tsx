@@ -6,8 +6,8 @@ export function HomeContextProvider ({ children }: { children: ReactNode }) {
   const navigate = useNavigate()
 
   const [loading, setLoading] = useState(false)
-  const [machines, setMachines] = useState([{ id: 2, name: 'string', type: 'Pump', totalPoints: 1, totalSensors: 1 }])
-  const [points, setPoints] = useState([{ id: 2, name: 'string', linkedMachine: 1, totalSensors: 1 }])
+  const [machines, setMachines] = useState([{ id: 4, name: 'string', type: 'Pump', totalPoints: 1, totalSensors: 1 }])
+  const [points, setPoints] = useState([])
 
   const onEditMachine = useCallback((machineId?: number) => {
     navigate(`/machines/edit/${machineId}`)

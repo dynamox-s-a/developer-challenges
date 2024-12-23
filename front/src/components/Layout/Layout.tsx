@@ -40,7 +40,7 @@ export const Layout = () => {
 
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
-      <AppBar position="fixed">
+      <AppBar>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <IconButton
             color="inherit"
@@ -70,7 +70,7 @@ export const Layout = () => {
       </AppBar>
       <Box
         component="main"
-        sx={{ flexGrow: 1, alignItems: "start", overflow: "auto" }}
+        sx={{ flexGrow: 1, alignItems: "start", overflow: "auto", marginTop: 8 }}
       >
         <Outlet />
       </Box>
