@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import machinesReducer from "@/redux/machines/slice";
+import authReducer from "@/redux/auth/slice";
 
 /**
  * Configures the Redux store with the specified reducers.
@@ -7,6 +8,7 @@ import machinesReducer from "@/redux/machines/slice";
 export const store = configureStore({
   reducer: {
     machines: machinesReducer,
+    auth: authReducer,
   },
 });
 

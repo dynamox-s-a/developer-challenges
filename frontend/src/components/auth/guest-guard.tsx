@@ -6,7 +6,7 @@ import Alert from "@mui/material/Alert";
 
 import { paths } from "@/paths";
 import { logger } from "@/lib/default-logger";
-import { useUser } from "@/hooks/use-user";
+import { useAppSelector } from "@/types/hooks";
 
 export interface GuestGuardProps {
   children: React.ReactNode;
@@ -21,7 +21,10 @@ export function GuestGuard({
   children,
 }: GuestGuardProps): React.JSX.Element | null {
   const router = useRouter();
-  const { user, error, isLoading } = useUser();
+  
+  // Access the auth state from Redux store
+  const { user, error, isLoading } = useAppSelector((state) => state.auth);
+  
   const [isChecking, setIsChecking] = React.useState<boolean>(true);
 
   /**
@@ -49,15 +52,14 @@ export function GuestGuard({
 
   React.useEffect(() => {
     checkPermissions();
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- Expected
   }, [user, error, isLoading]);
 
   if (isLoading || isChecking) {
-    return null;
+    return null; 
   }
 
   if (error) {
-    return <Alert color="error">{error}</Alert>;
+    return <Alert color="error">{error}</Alert>; 
   }
 
   return <>{children}</>;

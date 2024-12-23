@@ -1,23 +1,17 @@
 import { Method } from "axios";
 
-/**
- * HTTP Client wrapper for making API requests.
- * @template T - Type of the expected response.
- * @param {string} url - The API endpoint URL.
- * @param {Method} method - HTTP method (GET, POST, PUT, DELETE, etc.).
- * @param {object} [data] - Request body for POST/PUT requests.
- * @param {object} [headers] - Optional headers for the request.
- * @returns {Promise<T>} - The response data.
- */
 export const httpClient = async <T>(
   url: string,
   method: Method,
   data?: object,
-  headers: HeadersInit = { "Content-Type": "application/json" },
+  headers: HeadersInit = {
+    "Content-Type": "application/json",
+  },
 ): Promise<T> => {
   const options: RequestInit = {
     method,
     headers,
+    credentials: "include",
   };
 
   if (data) {
@@ -26,9 +20,18 @@ export const httpClient = async <T>(
 
   const response = await fetch(url, options);
 
+  // Handle empty responses
+  const contentType = response.headers.get("content-type");
+  const responseData = contentType?.includes("application/json")
+    ? await response.json()
+    : null;
+
   if (!response.ok) {
-    throw new Error(`HTTP Error: ${response.statusText}`);
+    throw new Error(
+      (responseData && responseData.message) ||
+        `HTTP Error: ${response.statusText}`,
+    );
   }
 
-  return response.json();
+  return responseData;
 };

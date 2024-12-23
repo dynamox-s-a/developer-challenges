@@ -8,54 +8,51 @@ import MenuList from "@mui/material/MenuList";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 import { SignOut as SignOutIcon } from "@phosphor-icons/react/dist/ssr/SignOut";
+import Alert from "@mui/material/Alert";
 
 import { paths } from "@/paths";
-import { authClient } from "@/lib/auth/client";
 import { logger } from "@/lib/default-logger";
-import { useUser } from "@/hooks/use-user";
+import { useAppDispatch, useAppSelector } from "@/types/hooks";
+import { logout } from "@/redux/auth/thunks";
 
-/**
- * Props for the UserPopover component.
- */
 export interface UserPopoverProps {
   anchorEl: Element | null;
   onClose: () => void;
   open: boolean;
 }
 
-/**
- * UserPopover component renders a popover with user details and a sign-out option.
- * @param {UserPopoverProps} props The props for the component.
- * @returns {React.JSX.Element} The rendered JSX element.
- */
 export function UserPopover({
   anchorEl,
   onClose,
   open,
 }: UserPopoverProps): React.JSX.Element {
-  const { checkSession } = useUser();
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  
+  const { user, error } = useAppSelector((state) => state.auth);
+  
+  const [isLoggingOut, setIsLoggingOut] = React.useState(false);
+  const [logoutError, setLogoutError] = React.useState<string | null>(null);
 
-  /**
-   * Handles the sign-out process.
-   * @returns {Promise<void>} A promise indicating the completion of the sign-out process.
-   */
   const handleSignOut = React.useCallback(async (): Promise<void> => {
     try {
-      const { error } = await authClient.signOut();
+      setIsLoggingOut(true);
+      setLogoutError(null);
 
-      if (error) {
-        logger.error("Sign out error", error);
-        return;
-      }
-
-      await checkSession?.();
-
+      await dispatch(logout()).unwrap();
+      
+      onClose();
+      
+      router.replace(paths.auth.signIn);
+      
       router.refresh();
-    } catch (err) {
-      logger.error("Sign out error", err);
+    } catch (error: any) {
+      logger.error("Sign out error:", error);
+      setLogoutError(error.message || "Failed to sign out. Please try again.");
+    } finally {
+      setIsLoggingOut(false);
     }
-  }, [checkSession, router]);
+  }, [dispatch, router, onClose]);
 
   return (
     <Popover
@@ -65,22 +62,39 @@ export function UserPopover({
       open={open}
       slotProps={{ paper: { sx: { width: "240px", marginLeft: 2 } } }}
     >
-      <Box sx={{ p: "16px 20px " }}>
-        <Typography variant="subtitle1">Sofia Rivers</Typography>
+      <Box sx={{ p: "16px 20px" }}>
+        <Typography variant="subtitle1">
+          {user?.name || "Unknown User"}
+        </Typography>
         <Typography color="text.secondary" variant="body2">
-          sofia.rivers@devias.io
+          {user?.email || ""}
         </Typography>
       </Box>
+      
+      {logoutError && (
+        <Box sx={{ px: 2, pb: 2 }}>
+          <Alert severity="error" sx={{ width: '100%' }}>
+            {logoutError}
+          </Alert>
+        </Box>
+      )}
+      
       <Divider />
       <MenuList
         disablePadding
         sx={{ p: "8px", "& .MuiMenuItem-root": { borderRadius: 1 } }}
       >
-        <MenuItem onClick={handleSignOut}>
+        <MenuItem 
+          onClick={handleSignOut}
+          disabled={isLoggingOut}
+        >
           <ListItemIcon>
-            <SignOutIcon fontSize="var(--icon-fontSize-md)" />
+            <SignOutIcon 
+              fontSize="var(--icon-fontSize-md)"
+              style={{ opacity: isLoggingOut ? 0.5 : 1 }}
+            />
           </ListItemIcon>
-          Sign out
+          {isLoggingOut ? "Signing out..." : "Sign out"}
         </MenuItem>
       </MenuList>
     </Popover>

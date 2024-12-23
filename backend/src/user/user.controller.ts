@@ -1,9 +1,32 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { UserService } from './user.service';
+import { User } from '@prisma/client';
+
+interface SessionRequest extends Request {
+  session: {
+    user: User;
+  };
+}
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  /**
+   * Retrieves the currently authenticated user.
+   * @param req - The request object containing the session.
+   * @returns The currently authenticated user.
+   */
+  @Get('me')
+  async getMe(@Req() req: SessionRequest) {
+    const user = req.session.user;
+    if (!user) {
+      console.log('user', user);
+      throw new Error('No user is currently authenticated');
+    }
+    console.log('user', user);
+    return this.userService.getMe(user);
+  }
 
   /**
    * Retrieves a user by their email.
@@ -14,7 +37,6 @@ export class UserController {
   async getUserByEmail(@Param('email') email: string) {
     return this.userService.findByEmail(email);
   }
-
   /**
    * Creates a new user.
    * @param body - The request body containing the user's email and password.

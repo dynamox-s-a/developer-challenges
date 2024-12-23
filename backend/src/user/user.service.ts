@@ -1,10 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
+
+  /**
+   * Retrieves the currently authenticated user from the session.
+   * @param user - The user object stored in the session.
+   * @returns The user with the corresponding ID.
+   */
+  async getMe(user: User): Promise<User | null> {
+    if (!user) {
+      throw new Error('No user is currently authenticated');
+    }
+    return user;
+  }
 
   /**
    * Finds a user by their email address.
@@ -14,7 +27,6 @@ export class UserService {
   async findByEmail(email: string) {
     return this.prisma.user.findUnique({ where: { email } });
   }
-
   /**
    * Creates a new user with the given email and password.
    * @param email - The email address of the new user.

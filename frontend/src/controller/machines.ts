@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 import { httpClient } from "@/utils/httpClient";
 import { Machine, MonitoringPoint, Sensor } from "@/types/machines";

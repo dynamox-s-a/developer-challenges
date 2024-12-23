@@ -17,10 +17,9 @@ import { Eye as EyeIcon } from "@phosphor-icons/react/dist/ssr/Eye";
 import { EyeSlash as EyeSlashIcon } from "@phosphor-icons/react/dist/ssr/EyeSlash";
 import { Controller, useForm } from "react-hook-form";
 import { z as zod } from "zod";
-
 import { paths } from "@/paths";
-import { authClient } from "@/lib/auth/client";
-import { useUser } from "@/hooks/use-user";
+import { useAppDispatch } from "@/types/hooks";
+import { login } from "@/redux/auth/thunks";
 
 // Validation schema using Zod
 const schema = zod.object({
@@ -30,17 +29,12 @@ const schema = zod.object({
 
 type Values = zod.infer<typeof schema>;
 
-const defaultValues: Values = {
-  email: "sofia@devias.io",
-  password: "Secret1",
-};
-
 /**
  * SignInForm component handles the user sign-in process.
  */
 export function SignInForm(): React.JSX.Element {
   const router = useRouter();
-  const { checkSession } = useUser();
+  const dispatch = useAppDispatch();
 
   const [showPassword, setShowPassword] = React.useState<boolean>(false);
   const [isPending, setIsPending] = React.useState<boolean>(false);
@@ -48,9 +42,10 @@ export function SignInForm(): React.JSX.Element {
   const {
     control,
     handleSubmit,
-    setError,
     formState: { errors },
-  } = useForm<Values>({ defaultValues, resolver: zodResolver(schema) });
+  } = useForm<Values>({
+    resolver: zodResolver(schema),
+  });
 
   /**
    * Handles form submission. Signs the user in and refreshes the session.
@@ -58,21 +53,23 @@ export function SignInForm(): React.JSX.Element {
    */
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
-      setIsPending(true);
+      try {
+        setIsPending(true);
+        await dispatch(
+          login({
+            email: values.email,
+            password: values.password,
+          }),
+        ).unwrap();
 
-      const { error } = await authClient.signInWithPassword(values);
-
-      if (error) {
-        setError("root", { type: "server", message: error });
+        router.replace(paths.dashboard.overview);
+      } catch (error: any) {
+        console.log("error is", error);
+      } finally {
         setIsPending(false);
-        return;
       }
-
-      await checkSession?.();
-
-      router.refresh();
     },
-    [checkSession, router, setError]
+    [dispatch, router],
   );
 
   return (
