@@ -1,10 +1,10 @@
 import {
-  getMeController,
   loginController,
   logoutController,
 } from "@/controller/auth";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import * as actionTypes from "@/redux/auth/actionTypes";
+import { getMe } from "../user/thunks";
 
 export const login = createAsyncThunk(
   actionTypes.AUTH_LOGIN,
@@ -29,17 +29,6 @@ export const logout = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await logoutController();
-    } catch (error: any) {
-      return rejectWithValue(error.message);
-    }
-  },
-);
-
-export const getMe = createAsyncThunk(
-  "auth/fetchCurrentUser",
-  async (_, { rejectWithValue }) => {
-    try {
-      return await getMeController();
     } catch (error: any) {
       return rejectWithValue(error.message);
     }

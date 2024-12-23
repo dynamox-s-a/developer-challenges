@@ -70,12 +70,6 @@ export class Logger {
     if (this.showLevel) {
       prefix = `- ${level} ${prefix}`;
     }
-
-    if (level === LogLevel.ERROR) {
-      console.error(prefix, ...args);
-    } else {
-      console.log(prefix, ...args);
-    }
   }
 }
 

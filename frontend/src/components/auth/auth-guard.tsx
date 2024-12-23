@@ -44,7 +44,6 @@ export function AuthGuard({
   React.useEffect(() => {
     checkPermissions();
   }, [user, error, isLoading]);
-  console.log(error, "errorrrr");
   if (isChecking) {
     return null;
   }

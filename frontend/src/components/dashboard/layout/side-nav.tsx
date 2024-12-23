@@ -72,7 +72,7 @@ export function SideNav(): React.JSX.Element {
       <Avatar
         onClick={userPopover.handleOpen}
         ref={userPopover.anchorRef}
-        src="/assets/avatar.png"
+        src="/broken-image.jpg"
         sx={{ cursor: "pointer", m: 2 }}
       />
 
@@ -81,7 +81,6 @@ export function SideNav(): React.JSX.Element {
         onClose={userPopover.handleClose}
         open={userPopover.open}
       />
-      {/* <Divider sx={{ borderColor: "var(--mui-palette-neutral-700)" }} /> */}
     </Box>
   );
 }

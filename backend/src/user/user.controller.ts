@@ -21,10 +21,8 @@ export class UserController {
   async getMe(@Req() req: SessionRequest) {
     const user = req.session.user;
     if (!user) {
-      console.log('user', user);
       throw new Error('No user is currently authenticated');
     }
-    console.log('user', user);
     return this.userService.getMe(user);
   }
 

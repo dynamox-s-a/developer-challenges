@@ -29,7 +29,7 @@ export function UserPopover({
   const router = useRouter();
   const dispatch = useAppDispatch();
   
-  const { user, error } = useAppSelector((state) => state.auth);
+  const { user } = useAppSelector((state) => state.auth);
   
   const [isLoggingOut, setIsLoggingOut] = React.useState(false);
   const [logoutError, setLogoutError] = React.useState<string | null>(null);
@@ -63,9 +63,6 @@ export function UserPopover({
       slotProps={{ paper: { sx: { width: "240px", marginLeft: 2 } } }}
     >
       <Box sx={{ p: "16px 20px" }}>
-        <Typography variant="subtitle1">
-          {user?.name || "Unknown User"}
-        </Typography>
         <Typography color="text.secondary" variant="body2">
           {user?.email || ""}
         </Typography>
