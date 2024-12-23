@@ -93,6 +93,15 @@ export const MachineCard = () => {
           {machineTypeError?.visible && (<FormHelperText>Por favor, selecione o tipo de máquina.</FormHelperText>)}
         </FormControl>
         <div>
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={submitDisabled}
+            >
+            {idMachine ? 'Confirmar' : 'Cadastrar'}
+          </Button>
+        </div>
+        <div>
           <FlexVertical style={{ gap: 16 }}>
             <Divider />
             <Typography variant="h6" gutterBottom>
@@ -109,7 +118,11 @@ export const MachineCard = () => {
             </div>
             <Table
               dataSource={points}
-              columns={['ID', 'Nome', 'Qtde. Sensores']}
+              columns={[
+                { label: 'ID', key: 'id' },
+                { label: 'Nome', key: 'name' },
+                { label: 'Qtde. Sensores', key: 'totalSensors' }
+              ]}
               actionColumn={(pointId: number, item) => {
                 return (
                   <>
@@ -136,30 +149,21 @@ export const MachineCard = () => {
           </FlexVertical>
         </div>
         <div>
-          <Button
-            type="submit"
-            variant="contained"
-            disabled={submitDisabled}
-            sx={{ marginRight: 1 }}
-          >
-            {idMachine ? 'Confirmar' : 'Cadastrar'}
-          </Button>
           {idMachine && (
             <Button
               variant="contained"
               color="error"
-              sx={{ marginLeft: 1 }}
+              sx={{ marginRight: 1 }}
               disabled={points.length > 0}
               onClick={onDeleteMachine}
             >
               Excluir Máquina
             </Button>
           )}
-        </div>
-        <div>
           <Button
             variant="contained"
             onClick={() => navigate('/home')}
+            sx={{ marginLeft: 1 }}
           >
             Voltar
           </Button>

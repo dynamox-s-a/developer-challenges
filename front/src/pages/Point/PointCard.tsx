@@ -68,6 +68,15 @@ export const PointCard = () => {
           />
         </FormControl>
         <div>
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={submitDisabled}
+          >
+            {idPoint ? 'Confirmar' : 'Cadastrar'}
+          </Button>
+        </div>
+        <div>
           <FlexVertical style={{ gap: 16 }}>
             <Divider />
             <Typography variant="h6" gutterBottom>
@@ -84,7 +93,10 @@ export const PointCard = () => {
             </div>
             <Table
               dataSource={sensors}
-              columns={['ID', 'Nome']}
+              columns={[
+                { label: 'ID', key: 'id' },
+                { label: 'Nome', key: 'type' }
+              ]}
               actionColumn={(sensorId: number, item) => {
                 return (
                   <IconButton
@@ -102,30 +114,21 @@ export const PointCard = () => {
           </FlexVertical>
         </div>
         <div>
-          <Button
-            type="submit"
-            variant="contained"
-            disabled={submitDisabled}
-            sx={{ marginRight: 1 }}
-          >
-            {idPoint ? 'Confirmar' : 'Cadastrar'}
-          </Button>
           {idPoint && (
             <Button
               variant="contained"
               color="error"
-              sx={{ marginLeft: 1 }}
+              sx={{ marginRight: 1 }}
               disabled={sensors.length > 0}
               onClick={onDeletePoint}
             >
               Excluir Ponto
             </Button>
           )}
-        </div>
-        <div>
           <Button
             variant="contained"
             onClick={() => navigate(`/machines/edit/${machineId}`)}
+            sx={{ marginLeft: 1 }}
           >
             Voltar
           </Button>

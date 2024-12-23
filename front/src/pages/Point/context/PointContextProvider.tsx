@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { PointProps, PointWithSensors } from '../types'
 import { InputErrorControlType } from '../../User/types'
 import axios, { AxiosError } from 'axios'
-import { MachineReduxState, PointReduxState, setPoint as setReduxPoint } from '../../../redux'
+import { MachineReduxState, PointReduxState, setPoint as setReduxPoint, setMachine as setReduxMachine } from '../../../redux'
 import { useDispatch, useSelector } from 'react-redux'
 import { SensorProps } from '../../Sensor/types'
 
@@ -35,8 +35,9 @@ export function PointContextProvider ({ children }: { children: ReactNode }) {
         const resp: { data: PointWithSensors[] } = await axios.get(`http://localhost:3000/point/${pointId}`)
         const foundedPoint = resp.data[0]
         if (foundedPoint) {
-          const { sensors, ...rest } = foundedPoint
+          const { sensors, machine_id, ...rest } = foundedPoint
           dispatch(setReduxPoint(rest))
+          dispatch(setReduxMachine({ id: machine_id }))
           setPoint(rest)
           setSensors(sensors ?? [])
         }

@@ -50,7 +50,13 @@ export const HomeContent = () => {
                 </div>
                 <Table
                   dataSource={machines}
-                  columns={['ID', 'Nome', 'Tipo', 'Qtde. Pontos', 'Qtde. Sensores']}
+                  columns={[
+                    { label: 'ID', key: 'id' },
+                    { label: 'Nome', key: 'name' },
+                    { label: 'Tipo', key: 'type' },
+                    { label: 'Qtde. Pontos', key: 'totalpoints' },
+                    { label: 'Qtde. Sensores', key: 'totalsensors' }
+                  ]}
                   actionColumn={(machineId: number, machine) => {
                     return (
                       <>
@@ -80,7 +86,13 @@ export const HomeContent = () => {
                 </Typography>
                 <Table
                   dataSource={points}
-                  columns={['ID', 'Nome', 'Máquina Vinculada', 'Qtde. Sensores']}
+                  columns={[
+                    { label: 'ID', key: 'point_id' },
+                    { label: 'Nome', key: 'point_name' },
+                    { label: 'Nome Máquina', key: 'machine_name' },
+                    { label: 'Tipo Máquina', key: 'machine_type' },
+                    { label: 'Sensores', key: 'sensors' }
+                  ]}
                   actionColumn={(pointId: number, item) => {
                     return (
                       <>

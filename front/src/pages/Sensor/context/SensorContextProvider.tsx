@@ -42,9 +42,7 @@ export function SensorContextProvider ({ children }: { children: ReactNode }) {
         message: 'Sensor cadastrado com sucesso!',
         type: 'success'
       })
-      setTimeout(() => {
-        navigate(`/points/edit/${pointId}`)
-      }, 2500)
+      navigate(`/points/edit/${pointId}`)
     } catch (error) {
       const err = error as AxiosError<{ error: { detail: string } }>
       setOpenSnackbar({
