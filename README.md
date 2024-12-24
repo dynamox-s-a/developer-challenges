@@ -1,48 +1,143 @@
-# Dynamox Developer Challenges
+# Full-Stack Challenge Solution for Dynamox
 
-## About Dynamox
+Welcome to my solution for the Dynamox Full-Stack Challenge! This project demonstrates a modern web application architecture using **Next.js** for the frontend, **NestJS** for the backend, and **Prisma** with **PostgreSQL** for database management.
 
-[Dynamox](https://dynamox.net/) is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications. 
+## Tech Stack
 
-With our proficiency in signal processing for vibration and acoustics, we deliver advanced and precise monitoring systems. We are committed to optimizing operational efficiency and facilitating proactive maintenance through our innovative technology and integrated solutions.
+- Frontend: Next.js
+- Backend: NestJS
+- Database: PostgreSQL
+- ORM: Prisma
+- Containerization: Docker
 
-## Positions
+## Prerequisites
 
-We are actively seeking a versatile Full Stack Developer with a strong emphasis on front-end development to join our team. Your primary responsibility will be enhancing our Corporate Channels—our Website, Blog, Support Portal, Salesforce integration, and our asset condition monitoring platform, [DynaPredict](https://dynamox.net/en/dynapredict). You will become an essential part of one of our dedicated development teams, where your front-end expertise will drive our projects to new heights.
+Before you begin, ensure you have the following installed on your machine:
 
-However, while your main focus will be on front-end tasks, we also expect you to navigate backend development as and when necessary. You won't be alone in this; you will have the full support of our team to guide you through. This opportunity to learn and grow across different aspects of development will foster a dynamic and engaging work environment.
+- [Node.js](https://nodejs.org/) (v14 or higher)
+- [npm](https://www.npmjs.com/) (comes with Node.js)
+- [Docker](https://www.docker.com/)
+- [Git](https://git-scm.com/)
 
-We value flexibility and collaboration, hence we provide opportunities for you to lend your skills to other teams when required. Join us on this exciting journey as we revolutionize our digital platforms. Currently we are particularly interested in individuals who can identify with one of the following role descriptions:
+## Getting Started
 
-### Junior Software Developer
+Follow these steps to get the application running on your local machine:
 
-With limited experience, assists in coding, testing, and stabilizing systems under supervision. Communicates with immediate team members and solves straightforward problems with guidance. Should display a willingness to learn and grow professionally. This is an individual contributor role.
+### 1. Clone the Repository
 
-### Mid-level Software Developer
+```bash
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+```
 
-With a certain level of proven experience, contributes to software development, solves moderate problems, and starts handling ambiguous situations with minimal guidance. Communicates with the broader team and engages in code reviews and documentation. This role also includes mentorship of junior engineers and a commitment to continuous learning. This is an individual contributor role.
+### 2. Set Up the Database
 
-### Senior-level Software Developer
+First, start the PostgreSQL container using Docker:
 
-With vast experience, enhances software development, leading complex system development and ambiguous situation handling. Tackles intricate problems and mentors junior and mid-level engineers. Champions coding standards, project strategy, and technology adoption. Communicates across teams, influencing technical and non-technical stakeholders. This individual contributor role blends technical expertise with leadership, focusing on innovation, mentorship, and strategic contributions to the development process.
+```bash
+docker run --name postgres \
+  -e POSTGRES_USER=admin \
+  -e POSTGRES_PASSWORD=admin \
+  -e POSTGRES_DB=mydb \
+  -p 5432:5432 \
+  -d postgres:latest
+```
 
-## Challenges
+This command creates a PostgreSQL container with the following configuration:
+- Database name: mydb
+- Username: admin
+- Password: admin
+- Port: 5432 (accessible locally)
 
-- [ ] [01 - Dynamox Full-Stack Developer Challenge](./full-stack-challenge.md)
-- [ ] [02 - Dynamox Front-end Developer Challenge](./front-end-challenge.md)
+### 3. Backend Setup (NestJS)
 
-## Ready to Begin the Challenges?
+Navigate to the backend directory and install dependencies:
 
-1. [ ] Fork this repository to your own Github account.
-1. [ ] Create a new branch using your first name and last name. For example: `caroline-oliveira`.
-1. [ ] After completing the challenge, create a pull request to this repository (https://github.com/dynamox-s-a/js-ts-full-stack-test), aimed at the main branch.
-1. [ ] We will receive a notification about your pull request, review your solution, and get in touch with you.
+```bash
+cd backend
+npm install
 
-## Frequently Asked Questions
+# Generate Prisma client
+npx prisma generate
 
-1. Is it necessary to fork the project?
-  **Yes, this allows us to see how much time you spent on the challenge.**
+# Run database migrations
+npx prisma migrate dev
 
-</br>
+# Start the backend server in development mode
+npm run start:dev
+```
 
-**Good luck! We look forward to reviewing your submission.** 🚀
+The backend server will be running at http://localhost:3001
+
+To view and manage your database using Prisma Studio:
+```bash
+npx prisma studio
+```
+This will open Prisma Studio at http://localhost:5555
+
+### 4. Frontend Setup (Next.js)
+
+Open a new terminal window, navigate to the frontend directory, and install dependencies:
+
+```bash
+cd frontend
+npm install
+
+# Start the frontend development server
+npm run dev
+```
+
+The frontend application will be running at http://localhost:3000
+
+## Project Structure
+
+```
+project-root/
+├── frontend/          # Next.js frontend application
+├── backend/           # NestJS backend application
+└── docker/            # Docker configuration files
+```
+
+## Environment Variables
+
+Make sure to set up the following environment variables:
+
+### Backend (.env)
+```
+DATABASE_URL="postgresql://admin:admin@localhost:5432/mydb"
+PORT=3001
+```
+
+### Frontend (.env.local)
+```
+NEXT_PUBLIC_API_URL=http://localhost:3001
+```
+
+## Available Scripts
+
+### Backend
+- `npm run start:dev` - Start the development server
+- `npm run build` - Build the application
+
+### Frontend
+- `npm run dev` - Start the development server
+- `npm run start` - Start the production server
+- `npm run lint` - Run linting
+
+## Database Management
+
+- Access Prisma Studio: `npx prisma studio`
+- Generate Prisma Client: `npx prisma generate`
+- Run Migrations: `npx prisma migrate dev`
+
+## Troubleshooting
+
+1. **Database Connection Issues**
+   - Ensure Docker is running
+   - Verify PostgreSQL container is active: `docker ps`
+   - Check container logs: `docker logs postgres`
+
+2. **Port Conflicts**
+   - Make sure ports 3000, 3001, and 5432 are available
+   - To check running containers: `docker ps`
+   - To stop the PostgreSQL container: `docker stop postgres`
