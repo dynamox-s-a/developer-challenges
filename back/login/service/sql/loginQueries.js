@@ -1,0 +1,1 @@
+exports.validateUserToLoginQuery = 'SELECT id, email, password FROM usuarios.usuario WHERE email = $1';
