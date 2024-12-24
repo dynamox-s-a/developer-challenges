@@ -44,6 +44,7 @@ docker run --name postgres \
 ```
 
 This command creates a PostgreSQL container with the following configuration:
+
 - Database name: mydb
 - Username: admin
 - Password: admin
@@ -70,9 +71,11 @@ npm run start:dev
 The backend server will be running at http://localhost:3001
 
 To view and manage your database using Prisma Studio:
+
 ```bash
 npx prisma studio
 ```
+
 This will open Prisma Studio at http://localhost:5555
 
 ### 4. Frontend Setup (Next.js)
@@ -103,12 +106,14 @@ project-root/
 Make sure to set up the following environment variables:
 
 ### Backend (.env)
+
 ```
 DATABASE_URL="postgresql://admin:admin@localhost:5432/mydb"
 PORT=3001
 ```
 
 ### Frontend (.env.local)
+
 ```
 NEXT_PUBLIC_API_URL=http://localhost:3001
 ```
@@ -116,10 +121,12 @@ NEXT_PUBLIC_API_URL=http://localhost:3001
 ## Available Scripts
 
 ### Backend
+
 - `npm run start:dev` - Start the development server
 - `npm run build` - Build the application
 
 ### Frontend
+
 - `npm run dev` - Start the development server
 - `npm run start` - Start the production server
 - `npm run lint` - Run linting
@@ -133,6 +140,7 @@ NEXT_PUBLIC_API_URL=http://localhost:3001
 ## Troubleshooting
 
 1. **Database Connection Issues**
+
    - Ensure Docker is running
    - Verify PostgreSQL container is active: `docker ps`
    - Check container logs: `docker logs postgres`
@@ -141,3 +149,8 @@ NEXT_PUBLIC_API_URL=http://localhost:3001
    - Make sure ports 3000, 3001, and 5432 are available
    - To check running containers: `docker ps`
    - To stop the PostgreSQL container: `docker stop postgres`
+   
+
+Well, this is the last commit before sending my PR for review. Although I know that many things in the project could have been improved, I am satisfied with the final result. I had never had experience using Nest, Prisma, and Docker before, so it was super challenging and I learned a lot during this journey.
+
+I believe there are many improvements that could have been made to the project, both on the Front End and the Back End. Unfortunately, I didn’t have time to deploy the application, something I would have loved to do, but I ended up focusing on other aspects. I hope you have a good experience reviewing this project.
