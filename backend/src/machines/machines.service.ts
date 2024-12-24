@@ -12,7 +12,10 @@ import { UpdateMachineDto } from './update-machine-dto';
 export class MachinesService {
   constructor(private prisma: PrismaService) {}
 
-  // Fetch all machines from the database
+  /**
+   * Fetches all machines from the database along with their monitoring points and sensors.
+   * @returns {Promise<Machine[]>} A list of machines with their monitoring points and sensors.
+   */
   async getMachines() {
     return this.prisma.machine.findMany({
       include: {
@@ -25,6 +28,11 @@ export class MachinesService {
     });
   }
 
+  /**
+   * Creates a new machine in the database.
+   * @param {CreateMachineDto} createMachineDto - The data required to create a new machine.
+   * @returns {Promise<Machine>} The created machine.
+   */
   async createMachine(createMachineDto: CreateMachineDto) {
     return this.prisma.machine.create({
       data: {
@@ -34,6 +42,11 @@ export class MachinesService {
     });
   }
 
+  /**
+   * Updates an existing machine in the database.
+   * @param {string} machineId - The ID of the machine to update.
+   * @returns {Promise<Machine>} The updated machine.
+   */
   async updateMachine(machineId: string, updateMachineDto: UpdateMachineDto) {
     const machine = await this.prisma.machine.findUnique({
       where: { id: machineId },
@@ -54,15 +67,24 @@ export class MachinesService {
     return updatedMachine;
   }
 
+  /**
+   * Fetches all sensors from the database.
+   * @returns {Promise<Sensor[]>} A list of sensors.
+   */
   async getSensors() {
     return this.prisma.sensor.findMany();
   }
 
+  /**
+   * Adds a monitoring point to a specific machine.
+   * @param {string} machineId - The ID of the machine to add the monitoring point to.
+   * @param {AddMonitoringPointsDto} addMonitoringPointDto - The data for the monitoring point to add.
+   * @returns {Promise<MonitoringPoint>} The newly added monitoring point.
+   */
   async addMonitoringPoints(
     machineId: string,
     addMonitoringPointDto: AddMonitoringPointsDto,
   ) {
-    // Check if the machine exists
     const machine = await this.prisma.machine.findUnique({
       where: { id: machineId },
     });
@@ -81,12 +103,10 @@ export class MachinesService {
 
     const validSensorModels = ['TcAg', 'TcAs', 'HF+'];
 
-    // If the sensor model is invalid, throw an error
     if (!validSensorModels.includes(addMonitoringPointDto.sensorModel)) {
       throw new BadRequestException('Invalid sensor model');
     }
 
-    // If the machine type is 'Pump', TcAg and TcAs sensors are not allowed
     if (
       machine.type === 'Pump' &&
       ['TcAg', 'TcAs'].includes(addMonitoringPointDto.sensorModel)
@@ -96,7 +116,6 @@ export class MachinesService {
       );
     }
 
-    // Create the monitoring point and associate it with the machine and sensor
     const monitoringPoint = await this.prisma.monitoringPoint.create({
       data: {
         name: addMonitoringPointDto.name,
@@ -112,6 +131,12 @@ export class MachinesService {
     return monitoringPoint;
   }
 
+  /**
+   * Deletes a machine from the database along with its associated monitoring points.
+   * @param {string} machineId - The ID of the machine to delete.
+   * @returns {Promise<{ message: string }>} A confirmation message indicating the machine and its
+   * monitoring points have been deleted.
+   */
   async deleteMachine(machineId: string) {
     const machine = await this.prisma.machine.findUnique({
       where: { id: machineId },
@@ -132,7 +157,12 @@ export class MachinesService {
     return { message: 'Machine and its monitoring points have been deleted' };
   }
 
-  // Delete a monitoring point by its ID
+  /**
+   * Deletes a specific monitoring point from a machine.
+   * @param {string} machineId - The ID of the machine that the monitoring point belongs to.
+   * @param {string} monitoringPointId - The ID of the monitoring point to delete.
+   * @returns {Promise<{ message: string }>} A confirmation message indicating the monitoring point has been deleted.
+   */
   async deleteMonitoringPoint(machineId: string, monitoringPointId: string) {
     const machine = await this.prisma.machine.findUnique({
       where: { id: machineId },

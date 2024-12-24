@@ -6,7 +6,6 @@ import {
   IsEnum,
 } from 'class-validator';
 
-/** Machine type representing a piece of equipment. */
 export class CreateMachineDto {
   @IsString()
   @IsNotEmpty()
