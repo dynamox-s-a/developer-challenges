@@ -85,7 +85,7 @@ const MonitoringPointsList = () => {
    * Handles the change in the current page of the table.
    * @param {number} newPage The new page number.
    */
-  const handleChangePage = (newPage: number) => {
+  const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
@@ -134,7 +134,7 @@ const MonitoringPointsList = () => {
       ).unwrap();
       showNotification(NOTIFICATION_MESSAGES.DELETE_MP_SUCCESS, "success");
     } catch (error) {
-      showNotification(NOTIFICATION_MESSAGES.DELETE_ERROR, "error");
+      showNotification(NOTIFICATION_MESSAGES.OPERATION_ERROR, "error");
     }
   };
 

@@ -24,6 +24,7 @@ export const MACHINE_TYPES = {
  */
 export const NOTIFICATION_MESSAGES = {
   CREATE_SUCCESS: "Machine successfully created",
+  CREATE_MP_SUCCESS: "Monitoring Point successfully created",
   UPDATE_SUCCESS: "Machine successfully updated",
   DELETE_SUCCESS: "Machine successfully deleted",
   OPERATION_ERROR: "An error occurred during the operation",
