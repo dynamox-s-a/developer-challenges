@@ -149,7 +149,16 @@ NEXT_PUBLIC_API_URL=http://localhost:3001
    - Make sure ports 3000, 3001, and 5432 are available
    - To check running containers: `docker ps`
    - To stop the PostgreSQL container: `docker stop postgres`
-   
+Some improvements I would like to make to the project:
+   1. Implement cookie persistence on page refresh
+   2. Improve the layout for creating machines and monitoring points
+   3. Enhance error handling (this was left a bit aside due to time constraints)
+   4. Improve the application’s typing
+   5. Strengthen backend validations, especially during user creation
+   6. Reuse duplicated components
+   7. Add end-to-end (e2e) tests
+   8. Deploy the application
+   9. Use Nx to manage the entire application
 
 Well, this is the last commit before sending my PR for review. Although I know that many things in the project could have been improved, I am satisfied with the final result. I had never had experience using Nest, Prisma, and Docker before, so it was super challenging and I learned a lot during this journey.
 
