@@ -63,12 +63,13 @@ export function SignUpForm(): React.JSX.Element {
           password: values.password,
         };
         await dispatch(createUser(user)).unwrap();
+        router.replace(paths.auth.signIn);
       } catch (error: any) {
       } finally {
         setIsPending(false);
       }
     },
-    [router, setError],
+    [router, setError, router],
   );
   return (
     <Stack spacing={3}>
