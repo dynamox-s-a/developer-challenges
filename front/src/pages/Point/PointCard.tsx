@@ -73,7 +73,7 @@ export const PointCard = () => {
             variant="contained"
             disabled={submitDisabled}
           >
-            {idPoint ? 'Confirmar' : 'Cadastrar'}
+            {idPoint ? 'Alterar' : 'Cadastrar'}
           </Button>
         </div>
         <div>

@@ -98,7 +98,7 @@ export const MachineCard = () => {
             variant="contained"
             disabled={submitDisabled}
             >
-            {idMachine ? 'Confirmar' : 'Cadastrar'}
+            {idMachine ? 'Alterar' : 'Cadastrar'}
           </Button>
         </div>
         <div>

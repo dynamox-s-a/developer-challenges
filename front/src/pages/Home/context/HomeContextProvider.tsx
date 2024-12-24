@@ -65,7 +65,8 @@ export function HomeContextProvider ({ children }: { children: ReactNode }) {
       message: 'Máquina excluída com sucesso',
       type: 'success'
     })
-  }, [])
+    getMachinesList()
+  }, [getMachinesList])
 
   const onEditPoint = useCallback((pointId?: number) => {
     navigate(`/points/edit/${pointId}`)
@@ -78,7 +79,8 @@ export function HomeContextProvider ({ children }: { children: ReactNode }) {
       message: 'Ponto excluído com sucesso',
       type: 'success'
     })
-  }, [])
+    getPointsList()
+  }, [getPointsList])
 
   const handleCloseSnackbar = useCallback(() => setOpenSnackbar({ visible: false, message: '' }), [])
 

@@ -35,9 +35,9 @@ export function PointContextProvider ({ children }: { children: ReactNode }) {
         const resp: { data: PointWithSensors[] } = await axios.get(`http://localhost:3000/point/${pointId}`)
         const foundedPoint = resp.data[0]
         if (foundedPoint) {
-          const { sensors, machine_id, ...rest } = foundedPoint
+          const { sensors, machine_id, machine_type, ...rest } = foundedPoint
           dispatch(setReduxPoint(rest))
-          dispatch(setReduxMachine({ id: machine_id }))
+          dispatch(setReduxMachine({ id: machine_id, type: machine_type }))
           setPoint(rest)
           setSensors(sensors ?? [])
         }

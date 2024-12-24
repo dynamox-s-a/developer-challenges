@@ -10,6 +10,7 @@ export type PointProps = {
 
 export interface PointWithSensors extends PointProps {
   sensors: SensorProps[]
+  machine_type: string
 }
 
 export type PointContextType = {
