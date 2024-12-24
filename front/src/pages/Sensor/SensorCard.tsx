@@ -71,7 +71,7 @@ export const SensorCard = () => {
             disabled={submitDisabled}
             sx={{ marginRight: 1 }}
           >
-            Confirmar
+            Cadastrar
           </Button>
         </div>
         <div>
