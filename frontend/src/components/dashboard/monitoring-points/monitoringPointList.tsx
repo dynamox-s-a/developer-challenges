@@ -9,7 +9,6 @@ import {
   TableRow,
   IconButton,
   Card,
-  CardHeader,
   Divider,
   Tooltip,
   Typography,
@@ -22,8 +21,14 @@ import { Trash } from "@phosphor-icons/react";
 import { useAppDispatch, useAppSelector } from "@/types/hooks";
 import { deleteMonitoringPointThunk } from "@/redux/machines/thunks";
 import { useNotification } from "@/hooks/use-notifications";
-import { NOTIFICATION_DURATION, NOTIFICATION_MESSAGES } from "@/constants/machines";
+import {
+  NOTIFICATION_DURATION,
+  NOTIFICATION_MESSAGES,
+} from "@/constants/machines";
 
+/**
+ * Type representing a monitoring point.
+ */
 type MonitoringPoint = {
   id?: string;
   machineId: string;
@@ -34,14 +39,22 @@ type MonitoringPoint = {
   sensor: { name: string };
 };
 
+/**
+ * Type representing the keys of the MonitoringPoint type.
+ */
 type MonitoringPointKey = keyof MonitoringPoint;
 
+/**
+ * Component displaying a list of monitoring points in a table with sorting, pagination, and delete functionality.
+ * @returns {JSX.Element} The rendered component.
+ */
 const MonitoringPointsList = () => {
   const dispatch = useAppDispatch();
   const machines = useAppSelector((state) => state.machines.machines);
   const { notification, showNotification, hideNotification } =
     useNotification();
 
+  // Flatten the monitoring points data from the machines state
   const monitoringPoints = machines.flatMap((machine) =>
     machine.monitoringPoints?.map((mp) => ({
       ...mp,
@@ -52,21 +65,34 @@ const MonitoringPointsList = () => {
     })),
   );
 
+  // State for table pagination and sorting
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [order, setOrder] = useState<"asc" | "desc">("asc");
   const [orderBy, setOrderBy] = useState<MonitoringPointKey>("name");
 
+  /**
+   * Handles sorting of the table columns.
+   * @param {MonitoringPointKey} property The property to sort by.
+   */
   const handleRequestSort = (property: MonitoringPointKey) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  /**
+   * Handles the change in the current page of the table.
+   * @param {number} newPage The new page number.
+   */
+  const handleChangePage = (newPage: number) => {
     setPage(newPage);
   };
 
+  /**
+   * Handles the change in the number of rows per page for pagination.
+   * @param {React.ChangeEvent<HTMLInputElement>} event The event that triggered the rows per page change.
+   */
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -74,6 +100,10 @@ const MonitoringPointsList = () => {
     setPage(0);
   };
 
+  /**
+   * Sorts the monitoring points by the selected column and order.
+   * @returns {MonitoringPoint[]} The sorted array of monitoring points.
+   */
   const sortedMonitoringPoints = [...monitoringPoints]
     .filter((point) => point !== undefined)
     .sort((a, b) => {
@@ -89,6 +119,11 @@ const MonitoringPointsList = () => {
       return 0;
     });
 
+  /**
+   * Handles the deletion of a monitoring point.
+   * @param {string} machineId The ID of the machine.
+   * @param {string} monitoringPointId The ID of the monitoring point to delete.
+   */
   const handleDeleteMonitoringPoint = async (
     machineId: string,
     monitoringPointId: string,
@@ -105,16 +140,8 @@ const MonitoringPointsList = () => {
 
   return (
     <>
-      <Card variant="outlined" sx={{ flex: 1, boxShadow: 3 }}>
-        <CardHeader
-          title="Monitoring Points"
-          sx={{
-            fontWeight: 600,
-            fontSize: "1.5rem",
-          }}
-        />
-        <Divider />
-        <Box sx={{ overflowX: "auto", minHeight: 200 }}>
+      <Card variant="outlined">
+        <Box sx={{}}>
           {monitoringPoints.length > 0 ? (
             <>
               <TableContainer>
@@ -194,6 +221,7 @@ const MonitoringPointsList = () => {
                   </TableBody>
                 </Table>
               </TableContainer>
+              <Divider />
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
@@ -203,7 +231,6 @@ const MonitoringPointsList = () => {
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 sx={{
-                  marginTop: "1rem",
                   display: "flex",
                   justifyContent: "flex-end",
                 }}

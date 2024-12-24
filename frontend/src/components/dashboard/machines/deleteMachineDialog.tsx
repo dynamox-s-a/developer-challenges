@@ -16,6 +16,9 @@ interface DeleteMachineDialogProps {
   onDelete: () => void;
 }
 
+/**
+ * DeleteMachineDialog is a modal dialog that asks the user to confirm the deletion of a machine.
+ */
 const DeleteMachineDialog: React.FC<DeleteMachineDialogProps> = ({
   open,
   onClose,

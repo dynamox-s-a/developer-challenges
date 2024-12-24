@@ -87,7 +87,6 @@ export function SideNav(): React.JSX.Element {
 
 /**
  * Renders a list of navigation items.
- * @param {Object} params - The parameters object.
  * @param {NavItemConfig[]} [params.items=[]] - An optional array of `NavItemConfig` objects that define the navigation items.
  * @param {string} params.pathname - The current pathname used to determine if a `NavItem` is active.
  * @returns {React.JSX.Element} The JSX element representing the navigation items as a list.
@@ -119,7 +118,6 @@ function renderNavItems({
 
 /**
  * NavItem component representing an individual navigation item with icon and title.
- * @param {NavItemProps} props - The properties for the NavItem component.
  * @param {boolean} props.disabled - If the navigation item is disabled.
  * @param {boolean} props.external - If the navigation item is an external link.
  * @param {string} props.href - The link for the navigation item.

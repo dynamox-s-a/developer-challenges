@@ -99,7 +99,6 @@ export function MobileNav({
 
 /**
  * Renders a list of navigation items inside the mobile nav.
- * @param {Object} params - The params for rendering nav items.
  * @param {NavItemConfig[]} [params.items=[]] - List of navigation items.
  * @param {string} params.pathname - The current path for determining active state.
  * @returns {React.JSX.Element} The list of rendered navigation items.

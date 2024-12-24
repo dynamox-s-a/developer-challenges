@@ -9,6 +9,7 @@ import {
   Typography,
   Snackbar,
   Alert,
+  Card,
 } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -35,7 +36,6 @@ type MachineFormValues = z.infer<typeof machineSchema>;
 
 /**
  * Props for the MachineForm component
- * @interface MachineFormProps
  * @property {Machine | null} [existingMachine] - An optional machine object to edit, if available.
  * @property {() => void} [onClose] - Optional callback function to close the form dialog.
  * @property {(success: boolean) => void} [onSubmitComplete] - Optional callback for handling submission completion.
@@ -98,85 +98,85 @@ const MachineForm: React.FC<MachineFormProps> = ({
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-      <Typography
-        variant="h6"
-        mb={2}
-        display={existingMachine ? "block" : "none"}
-      >
-        Update machine
-      </Typography>
+    <Card variant="outlined" sx={{ p: 2 }}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Typography variant="h6" mb={2}>
+          {existingMachine ? "Update Machine" : "Create Machine"}
+        </Typography>
 
-      <Controller
-        name="name"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Machine Name"
-            fullWidth
-            error={!!errors.name}
-            helperText={errors.name?.message}
-            margin="normal"
-          />
-        )}
-      />
+        <Controller
+          name="name"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Machine Name"
+              fullWidth
+              error={!!errors.name}
+              helperText={errors.name?.message}
+              margin="normal"
+            />
+          )}
+        />
 
-      <Controller
-        name="type"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Machine Type"
-            select
-            fullWidth
-            error={!!errors.type}
-            helperText={errors.type?.message}
-            margin="normal"
-          >
-            <MenuItem value="Pump">Pump</MenuItem>
-            <MenuItem value="Fan">Fan</MenuItem>
-          </TextField>
-        )}
-      />
+        <Controller
+          name="type"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Machine Type"
+              select
+              fullWidth
+              error={!!errors.type}
+              helperText={errors.type?.message}
+              margin="normal"
+            >
+              <MenuItem value="Pump">Pump</MenuItem>
+              <MenuItem value="Fan">Fan</MenuItem>
+            </TextField>
+          )}
+        />
 
-      <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1, mt: 2 }}>
-        {existingMachine && (
+        <Box
+          sx={{ display: "flex", justifyContent: "flex-end", gap: 1, mt: 2 }}
+        >
+          {existingMachine && (
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={onClose}
+              sx={{ flex: 1 }}
+            >
+              Cancel
+            </Button>
+          )}
           <Button
-            variant="outlined"
-            color="secondary"
-            onClick={onClose}
+            variant="contained"
+            color="primary"
+            type="submit"
             sx={{ flex: 1 }}
+            disabled={!isValid}
           >
-            Cancel
+            {existingMachine ? "Update" : "Add"}
           </Button>
-        )}
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-          sx={{ flex: 1 }}
-          disabled={!isValid}
-        >
-          {existingMachine ? "Update" : "Add"}
-        </Button>
-      </Box>
+        </Box>
 
-      <Snackbar
-        open={notification.open}
-        autoHideDuration={NOTIFICATION_DURATION}
-        onClose={hideNotification}
-      >
-        <Alert
+        <Snackbar
+          open={notification.open}
+          autoHideDuration={NOTIFICATION_DURATION}
           onClose={hideNotification}
-          severity={notification.severity}
-          sx={{ width: "100%" }}
         >
-          {notification.message}
-        </Alert>
-      </Snackbar>
-    </Box>
+          <Alert
+            onClose={hideNotification}
+            severity={notification.severity}
+            sx={{ width: "100%" }}
+          >
+            {notification.message}
+          </Alert>
+        </Snackbar>
+      </form>
+    </Card>
   );
 };
 

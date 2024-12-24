@@ -9,8 +9,6 @@ export interface NoSsrProps {
   fallback?: React.ReactNode;
 }
 
-// https://github.com/mui/material-ui/blob/master/packages/mui-base/src/NoSsr/NoSsr.tsx
-// without prop-types
 export function NoSsr(props: NoSsrProps): React.JSX.Element {
   const { children, defer = false, fallback = null } = props;
   const [mountedState, setMountedState] = React.useState(false);

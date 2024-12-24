@@ -21,6 +21,9 @@ export interface UserPopoverProps {
   open: boolean;
 }
 
+/**
+ * UserPopover is a component that renders a popover with user information and a sign-out option.
+ */
 export function UserPopover({
   anchorEl,
   onClose,
@@ -34,6 +37,9 @@ export function UserPopover({
   const [isLoggingOut, setIsLoggingOut] = React.useState(false);
   const [logoutError, setLogoutError] = React.useState<string | null>(null);
 
+  /**
+   * Handles the sign-out process by dispatching the logout action.
+   */
   const handleSignOut = React.useCallback(async (): Promise<void> => {
     try {
       setIsLoggingOut(true);

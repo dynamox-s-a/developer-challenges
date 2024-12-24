@@ -20,7 +20,6 @@ export const httpClient = async <T>(
 
   const response = await fetch(url, options);
 
-  // Handle empty responses
   const contentType = response.headers.get("content-type");
   const responseData = contentType?.includes("application/json")
     ? await response.json()

@@ -1,11 +1,16 @@
 "use client";
 
 import * as React from "react";
-
-import type { User } from "@/types/user";
-import { authClient } from "@/lib/auth/client";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 import { logger } from "@/lib/default-logger";
+import type { User } from "@/types/user";
+import { useAppDispatch } from "@/types/hooks";
+import { getMe } from "@/redux/user/thunks";
 
+/**
+ * Defines the shape of the UserContext value.
+ */
 export interface UserContextValue {
   user: User | null;
   error: string | null;
@@ -13,6 +18,10 @@ export interface UserContextValue {
   checkSession?: () => Promise<void>;
 }
 
+/**
+ * UserContext provides the current user, error, loading state, 
+ * and the function to check session state.
+ */
 export const UserContext = React.createContext<UserContextValue | undefined>(
   undefined,
 );
@@ -21,64 +30,44 @@ export interface UserProviderProps {
   children: React.ReactNode;
 }
 
+/**
+ * Provides the user, error, and loading state to the components that consume the UserContext.
+ * @param {UserProviderProps} props - The props for the UserProvider component
+ * @returns {React.JSX.Element} - A JSX element that wraps the child components with the UserContext provider
+ */
 export function UserProvider({
   children,
 }: UserProviderProps): React.JSX.Element {
-  const [state, setState] = React.useState<{
-    user: User | null;
-    error: string | null;
-    isLoading: boolean;
-  }>({
-    user: null,
-    error: null,
-    isLoading: true,
-  });
+  const dispatch = useAppDispatch();
+  const { user, error, isLoading } = useSelector((state: RootState) => state.auth);
 
+  /**
+   * Dispatches the `getMe` action to fetch the current user from the backend.
+   * @returns {Promise<void>} - A promise that resolves when the user is fetched
+   */
   const checkSession = React.useCallback(async (): Promise<void> => {
     try {
-      const { data, error } = await authClient.getUser();
-
-      if (error) {
-        logger.error(error);
-        setState((prev) => ({
-          ...prev,
-          user: null,
-          error: "Something went wrong",
-          isLoading: false,
-        }));
-        return;
-      }
-
-      setState((prev) => ({
-        ...prev,
-        user: data ?? null,
-        error: null,
-        isLoading: false,
-      }));
+      await dispatch(getMe()); 
     } catch (err) {
       logger.error(err);
-      setState((prev) => ({
-        ...prev,
-        user: null,
-        error: "Something went wrong",
-        isLoading: false,
-      }));
     }
-  }, []);
+  }, [dispatch]);
 
   React.useEffect(() => {
     checkSession().catch((err: unknown) => {
       logger.error(err);
-      // noop
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- Expected
-  }, []);
+  }, [checkSession]);
 
   return (
-    <UserContext.Provider value={{ ...state, checkSession }}>
+    <UserContext.Provider value={{ user, error, isLoading, checkSession }}>
       {children}
     </UserContext.Provider>
   );
 }
 
+/**
+ * UserConsumer is a wrapper for `UserContext.Consumer` 
+ * that allows child components to consume the context value.
+ */
 export const UserConsumer = UserContext.Consumer;

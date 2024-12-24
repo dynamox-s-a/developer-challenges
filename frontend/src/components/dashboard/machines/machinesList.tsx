@@ -21,14 +21,12 @@ import {
   Alert,
   Snackbar,
   debounce,
+  Card,
 } from "@mui/material";
 import { Pencil, Trash } from "@phosphor-icons/react/dist/ssr";
 import { useAppDispatch, useAppSelector } from "@/types/hooks";
 import { Machine, FilterState, ModalState } from "@/types/machines";
-import {
-  MACHINE_TYPES,
-  NOTIFICATION_MESSAGES,
-} from "@/constants/machines";
+import { MACHINE_TYPES, NOTIFICATION_MESSAGES } from "@/constants/machines";
 import UpdateMachineDialog from "./updateMachineDialog";
 import DeleteMachineDialog from "./deleteMachineDialog";
 import { deleteMachineThunk, fetchMachines } from "@/redux/machines/thunks";
@@ -213,7 +211,12 @@ const MachinesList: React.FC = () => {
   );
 
   return (
-    <Box component="section" aria-label="Machines management">
+    <Card
+      variant="outlined"
+      sx={{ p: 2 }}
+      component="section"
+      aria-label="Machines management"
+    >
       {renderToolbar()}
 
       <Box sx={{ overflowX: "auto", maxHeight: "600px" }}>
@@ -268,7 +271,7 @@ const MachinesList: React.FC = () => {
           </Alert>
         </Snackbar>
       </Box>
-    </Box>
+    </Card>
   );
 };
 

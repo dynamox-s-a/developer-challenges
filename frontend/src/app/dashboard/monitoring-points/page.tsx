@@ -1,10 +1,10 @@
 import React from "react";
-import { Box, Card } from "@mui/material";
 import MonitoringPointForm from "@/components/dashboard/monitoring-points/monitoringPointForm";
 import MonitoringPointsList from "@/components/dashboard/monitoring-points/monitoringPointList";
 import { MainNav } from "@/components/dashboard/layout/main-nav";
 import { config } from "@/config";
 import { Metadata } from "next";
+import Grid from "@mui/material/Unstable_Grid2";
 
 export const metadata = {
   title: `Machines | Dashboard | ${config.site.name}`,
@@ -14,21 +14,15 @@ export default function MonitoringPointsPage() {
   return (
     <>
       <MainNav title="Monitoring Points" />
-      <Box
-        component="main"
-        sx={{
-          p: 4,
-          display: "flex",
-          flexDirection: { xs: "column", lg: "row" },
-          gap: 3,
-        }}
-      >
-        <Card sx={{ p: 3, boxShadow: 1 }}>
+      <Grid container spacing={3} sx={{ p: 4 }}>
+        <Grid lg={4} xs={12}>
           <MonitoringPointForm />
-        </Card>
+        </Grid>
 
-        <MonitoringPointsList />
-      </Box>
+        <Grid lg={8} xs={12}>
+          <MonitoringPointsList />
+        </Grid>
+      </Grid>
     </>
   );
 }

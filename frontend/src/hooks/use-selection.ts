@@ -1,5 +1,8 @@
 import * as React from "react";
 
+/**
+ * Interface defining the selection-related functions and state.
+ */
 export interface Selection<T = string> {
   deselectAll: () => void;
   deselectOne: (key: T) => void;
@@ -10,7 +13,9 @@ export interface Selection<T = string> {
   selectedAll: boolean;
 }
 
-// IMPORTANT: To prevent infinite loop, `keys` argument must be memoized with React.useMemo hook.
+/**
+ * A custom hook to manage selection state, including selecting and deselecting items.
+ */
 export function useSelection<T = string>(keys: T[] = []): Selection<T> {
   const [selected, setSelected] = React.useState<Set<T>>(new Set());
 

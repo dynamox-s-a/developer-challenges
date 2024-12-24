@@ -1,12 +1,14 @@
-import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UserService } from './user.service';
-import { User } from '@prisma/client';
-
-interface SessionRequest extends Request {
-  session: {
-    user: User;
-  };
-}
+import { Request } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -18,10 +20,10 @@ export class UserController {
    * @returns The currently authenticated user.
    */
   @Get('me')
-  async getMe(@Req() req: SessionRequest) {
+  async getMe(@Req() req: Request) {
     const user = req.session.user;
     if (!user) {
-      throw new Error('No user is currently authenticated');
+      throw new UnauthorizedException('No user is currently authenticated');
     }
     return this.userService.getMe(user);
   }

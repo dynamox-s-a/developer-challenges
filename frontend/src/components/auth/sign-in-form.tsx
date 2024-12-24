@@ -45,6 +45,10 @@ export function SignInForm(): React.JSX.Element {
     formState: { errors },
   } = useForm<Values>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
   /**

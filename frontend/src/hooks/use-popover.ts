@@ -1,5 +1,8 @@
 import * as React from "react";
 
+/**
+ * Type definition for the controller object returned by `usePopover`.
+ */
 interface PopoverController<T> {
   anchorRef: React.MutableRefObject<T | null>;
   handleOpen: () => void;
@@ -8,6 +11,10 @@ interface PopoverController<T> {
   open: boolean;
 }
 
+/**
+ * A custom hook to manage the state of a popover element.
+ * @returns {PopoverController<T>} An object containing:
+ */
 export function usePopover<T = HTMLElement>(): PopoverController<T> {
   const anchorRef = React.useRef<T>(null);
   const [open, setOpen] = React.useState<boolean>(false);

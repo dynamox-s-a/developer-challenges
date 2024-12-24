@@ -11,7 +11,6 @@ const DEFAULT_WIDTH = 40;
 
 /**
  * Logo component that displays an image of the logo with customizable height and width.
- * @param {Object} props - The properties for the Logo component.
  * @param {number} [props.height=DEFAULT_HEIGHT] - The height of the logo.
  * @param {number} [props.width=DEFAULT_WIDTH] - The width of the logo.
  * @returns {React.JSX.Element} - The rendered Logo component.

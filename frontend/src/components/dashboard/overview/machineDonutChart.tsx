@@ -6,7 +6,6 @@ import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Stack from "@mui/material/Stack";
 import { useTheme } from "@mui/material/styles";
-import type { SxProps } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import type { Icon } from "@phosphor-icons/react/dist/lib/types";
 import { Desktop as DesktopIcon } from "@phosphor-icons/react/dist/ssr/Desktop";
@@ -15,29 +14,35 @@ import { Phone as PhoneIcon } from "@phosphor-icons/react/dist/ssr/Phone";
 import type { ApexOptions } from "apexcharts";
 
 import { Chart } from "@/components/core/chart";
+import { useAppSelector } from "@/types/hooks";
 
 const iconMapping = {
-  Desktop: DesktopIcon,
-  Tablet: DeviceTabletIcon,
-  Phone: PhoneIcon,
+  pump: DesktopIcon,
+  fan: DeviceTabletIcon,
 } as Record<string, Icon>;
 
-export interface TrafficProps {
-  chartSeries: number[];
-  labels: string[];
-  sx?: SxProps;
-}
+/**
+ * A component that visualizes the distribution of machine types in a donut chart.
+ */
+export function MachineDonutChart(): React.JSX.Element {
+  const { machines } = useAppSelector((state) => state.machines);
 
-export function Traffic({
-  chartSeries,
-  labels,
-  sx,
-}: TrafficProps): React.JSX.Element {
+  const machineCounts = machines.reduce(
+    (acc, machine) => {
+      if (machine.type === "Pump") acc.Pump++;
+      if (machine.type === "Fan") acc.Fan++;
+      return acc;
+    },
+    { Pump: 0, Fan: 0 },
+  );
+
+  const chartSeries = [machineCounts.Pump, machineCounts.Fan];
+  const labels = ["Pump", "Fan"];
   const chartOptions = useChartOptions(labels);
 
   return (
-    <Card sx={sx}>
-      <CardHeader title="Traffic source" />
+    <Card sx={{ height: "100%" }}>
+      <CardHeader title="Machine Type" />
       <CardContent>
         <Stack spacing={2}>
           <Chart
@@ -54,14 +59,14 @@ export function Traffic({
           >
             {chartSeries.map((item, index) => {
               const label = labels[index];
-              const Icon = iconMapping[label];
+              const Icon = iconMapping[label.toLowerCase()];
 
               return (
                 <Stack key={label} spacing={1} sx={{ alignItems: "center" }}>
                   {Icon ? <Icon fontSize="var(--icon-fontSize-lg)" /> : null}
                   <Typography variant="h6">{label}</Typography>
                   <Typography color="text.secondary" variant="subtitle2">
-                    {item}%
+                    {item}
                   </Typography>
                 </Stack>
               );
@@ -73,16 +78,17 @@ export function Traffic({
   );
 }
 
+/**
+ * Hook to generate chart options for the MachineDonutChart component.
+ * @param {string[]} labels - The labels for each slice in the donut chart.
+ * @returns {ApexOptions} The configuration object for the chart.
+ */
 function useChartOptions(labels: string[]): ApexOptions {
   const theme = useTheme();
 
   return {
     chart: { background: "transparent" },
-    colors: [
-      theme.palette.primary.main,
-      theme.palette.success.main,
-      theme.palette.warning.main,
-    ],
+    colors: [theme.palette.primary.main, theme.palette.success.main],
     dataLabels: { enabled: false },
     labels,
     legend: { show: false },

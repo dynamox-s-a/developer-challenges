@@ -3,7 +3,6 @@ import * as React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Box,
   Button,
   FormControl,
   FormHelperText,
@@ -13,6 +12,7 @@ import {
   Stack,
   TextField,
   CircularProgress,
+  Card,
 } from "@mui/material";
 import { z } from "zod";
 import { useAppDispatch, useAppSelector } from "@/types/hooks";
@@ -27,6 +27,10 @@ const monitoringPointSchema = z.object({
 
 type MonitoringPointFormValues = z.infer<typeof monitoringPointSchema>;
 
+/**
+ * Component for adding a new monitoring point to a machine.
+ * @returns {JSX.Element} The rendered form for adding a monitoring point.
+ */
 const MonitoringPointForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const { machines, isLoading, sensors } = useAppSelector(
@@ -54,6 +58,7 @@ const MonitoringPointForm: React.FC = () => {
     (machine) => machine.id === selectedMachineId,
   );
 
+  // Filter sensors based on the selected machine type
   const filteredSensors = React.useMemo(() => {
     if (selectedMachine?.type === "Pump") {
       return sensors.filter((sensor) => sensor.name === "HF+");
@@ -61,14 +66,15 @@ const MonitoringPointForm: React.FC = () => {
     return sensors;
   }, [selectedMachine, sensors]);
 
-  // Fetch machines on component mount
+  // Fetch sensors on component mount
   React.useEffect(() => {
     dispatch(fetchSensors());
   }, [dispatch]);
 
   /**
-   * Handles form submission, dispatches action to add monitoring point to a machine
-   * @param data - The form data
+   * Handles form submission by dispatching the action to add the monitoring point
+   * to the selected machine.
+   * @param {MonitoringPointFormValues} data - The form data to be submitted.
    */
   const onSubmit = (data: MonitoringPointFormValues) => {
     const selectedSensor = sensors.find(
@@ -97,7 +103,7 @@ const MonitoringPointForm: React.FC = () => {
   };
 
   return (
-    <Box sx={{ minWidth: "300px" }}>
+    <Card variant="outlined" sx={{ p: 2 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={3}>
           <Controller
@@ -176,7 +182,7 @@ const MonitoringPointForm: React.FC = () => {
           </Stack>
         </Stack>
       </form>
-    </Box>
+    </Card>
   );
 };
 

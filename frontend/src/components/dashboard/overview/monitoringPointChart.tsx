@@ -14,30 +14,42 @@ import { ArrowRight as ArrowRightIcon } from "@phosphor-icons/react/dist/ssr/Arr
 import type { ApexOptions } from "apexcharts";
 
 import { Chart } from "@/components/core/chart";
+import { useAppSelector } from "@/types/hooks";
 
-export interface SalesProps {
-  chartSeries: { name: string; data: number[] }[];
-  sx?: SxProps;
-}
-
-export function Sales({ chartSeries, sx }: SalesProps): React.JSX.Element {
+/**
+ * A component that visualizes the number of monitoring points associated with each machine.
+ */
+export function MonitoringPointsChart(): React.JSX.Element {
   const chartOptions = useChartOptions();
+  const machines = useAppSelector((state) => state.machines.machines);
+
+  const chartSeries = React.useMemo(() => {
+    if (!machines || machines.length === 0) return [];
+
+    return [
+      {
+        name: "Monitoring Points Count",
+        data: machines.map((machine) => ({
+          x: machine.name,
+          y: machine.monitoringPoints?.length ?? 0,
+        })),
+      },
+    ];
+  }, [machines]);
 
   return (
-    <Card sx={sx}>
+    <Card sx={{ height: "100%" }}>
       <CardHeader
         action={
           <Button
             color="inherit"
             size="small"
-            startIcon={
-              <ArrowClockwiseIcon fontSize="var(--icon-fontSize-md)" />
-            }
+            startIcon={<ArrowClockwiseIcon fontSize="var(--icon-fontSize-md)" />}
           >
             Sync
           </Button>
         }
-        title="Sales"
+        title="Monitoring Points by Machine"
       />
       <CardContent>
         <Chart
@@ -62,6 +74,10 @@ export function Sales({ chartSeries, sx }: SalesProps): React.JSX.Element {
   );
 }
 
+/**
+ * Hook to generate chart options for the MonitoringPointsChart component.
+ * @returns {ApexOptions} The configuration object for the chart.
+ */
 function useChartOptions(): ApexOptions {
   const theme = useTheme();
 
@@ -90,25 +106,12 @@ function useChartOptions(): ApexOptions {
     xaxis: {
       axisBorder: { color: theme.palette.divider, show: true },
       axisTicks: { color: theme.palette.divider, show: true },
-      categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ],
+      categories: [],
       labels: { offsetY: 5, style: { colors: theme.palette.text.secondary } },
     },
     yaxis: {
       labels: {
-        formatter: (value) => (value > 0 ? `${value}K` : `${value}`),
+        formatter: (value) => value.toString(),
         offsetX: -10,
         style: { colors: theme.palette.text.secondary },
       },
