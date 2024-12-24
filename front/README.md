@@ -1,0 +1,1 @@
+Precisa rodar o docker-compose.yml que esta na pasta "back" e o node na porta 3000
