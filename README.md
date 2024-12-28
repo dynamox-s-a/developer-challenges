@@ -14,8 +14,8 @@ Welcome to my solution for the Dynamox Full-Stack Challenge! This project demons
 
 Before you begin, ensure you have the following installed on your machine:
 
-- [Node.js](https://nodejs.org/) (v14 or higher)
-- [npm](https://www.npmjs.com/) (comes with Node.js)
+- [Node.js](https://nodejs.org/)
+- [npm](https://www.npmjs.com/)
 - [Docker](https://www.docker.com/)
 - [Git](https://git-scm.com/)
 
@@ -23,142 +23,181 @@ Before you begin, ensure you have the following installed on your machine:
 
 Follow these steps to get the application running on your local machine:
 
-### 1. Clone the Repository
+### 1. Setup Docker
 
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
-```
+# Navigate to backend directory
+cd backend
 
-### 2. Set Up the Database
+# Install dependencies
+npm install
 
-First, start the PostgreSQL container using Docker:
-
-```bash
-docker run --name postgres \
-  -e POSTGRES_USER=admin \
-  -e POSTGRES_PASSWORD=admin \
+# Start PostgreSQL container
+ docker run --name postgres-db \ 
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres \
   -e POSTGRES_DB=mydb \
   -p 5432:5432 \
   -d postgres:latest
+
+# Verify container is running
+docker ps
 ```
 
-This command creates a PostgreSQL container with the following configuration:
+Create a `.env` file in the backend folder with the following content:
 
-- Database name: mydb
-- Username: admin
-- Password: admin
-- Port: 5432 (accessible locally)
+```env
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/mydb"
+PORT=3001
+SESSION_SECRET="dynapredict"
+NODE_ENV=development
+```
 
-### 3. Backend Setup (NestJS)
-
-Navigate to the backend directory and install dependencies:
+### 2. Setup Prisma
 
 ```bash
-cd backend
-npm install
-
 # Generate Prisma client
 npx prisma generate
 
 # Run database migrations
 npx prisma migrate dev
 
-# Start the backend server in development mode
-npm run start:dev
-```
-
-The backend server will be running at http://localhost:3001
-
-To view and manage your database using Prisma Studio:
-
-```bash
+# Launch Prisma Studio in browser
 npx prisma studio
 ```
 
-This will open Prisma Studio at http://localhost:5555
-
-### 4. Frontend Setup (Next.js)
-
-Open a new terminal window, navigate to the frontend directory, and install dependencies:
+### 3. Run Backend
 
 ```bash
-cd frontend
-npm install
+# Ensure you're in the backend directory
+cd backend
 
-# Start the frontend development server
+# Start the development server
+npm run start:dev
+```
+
+### 4. Run Frontend
+
+```bash
+# Navigate to frontend directory
+cd frontend
+
+# Create frontend .env file
+echo "NEXT_PUBLIC_API_URL=http://localhost:3001" > .env
+
+# Start the development server
 npm run dev
 ```
 
-The frontend application will be running at http://localhost:3000
+### 5. Seed Database
 
-## Project Structure
-
-```
-project-root/
-├── frontend/          # Next.js frontend application
-├── backend/           # NestJS backend application
-└── docker/            # Docker configuration files
+```bash
+# Populate database with initial data
+npx prisma db seed
 ```
 
-## Environment Variables
+## Additional Information
 
-Make sure to set up the following environment variables:
+The application should now be running with:
 
-### Backend (.env)
+- Frontend: http://localhost:3000
+- Backend: http://localhost:3001
+- Prisma Studio: http://localhost:5555
 
-```
-DATABASE_URL="postgresql://admin:admin@localhost:5432/mydb"
-PORT=3001
-```
-
-### Frontend (.env.local)
-
-```
-NEXT_PUBLIC_API_URL=http://localhost:3001
-```
-
-## Available Scripts
-
-### Backend
-
-- `npm run start:dev` - Start the development server
-- `npm run build` - Build the application
-
-### Frontend
-
-- `npm run dev` - Start the development server
-- `npm run start` - Start the production server
-- `npm run lint` - Run linting
-
-## Database Management
-
-- Access Prisma Studio: `npx prisma studio`
-- Generate Prisma Client: `npx prisma generate`
-- Run Migrations: `npx prisma migrate dev`
+Make sure all services are running properly before accessing the application.
 
 ## Troubleshooting
 
-1. **Database Connection Issues**
+### Docker Issues
 
-   - Ensure Docker is running
-   - Verify PostgreSQL container is active: `docker ps`
-   - Check container logs: `docker logs postgres`
+1. **Port 5432 Already in Use**
 
-2. **Port Conflicts**
-   - Make sure ports 3000, 3001, and 5432 are available
-   - To check running containers: `docker ps`
-   - To stop the PostgreSQL container: `docker stop postgres`
-Some improvements I would like to make to the project:
-   1. Implement cookie persistence on page refresh
-   2. Improve the layout for creating machines and monitoring points
-   3. Enhance error handling (this was left a bit aside due to time constraints)
-   4. Improve the application’s typing
-   5. Strengthen backend validations, especially during user creation
-   6. Reuse duplicated components
-   7. Add end-to-end (e2e) tests
-   8. Deploy the application
-   9. Use Nx to manage the entire application
+   ```bash
+   # Check what's using the port
+   sudo lsof -i :5432
+
+   # Stop existing PostgreSQL service if running
+   sudo service postgresql stop
+   ```
+
+2. **Container Won't Start**
+
+   ```bash
+   # Stop existing container
+   docker stop postgres-db
+
+   # Remove existing container
+   docker rm postgres-db
+
+   # Check container logs
+   docker logs postgres-db
+   ```
+
+### Database Connection Issues
+
+1. **Prisma Can't Connect to Database**
+
+   - Verify PostgreSQL container is running: `docker ps`
+   - Check DATABASE_URL in .env file
+   - Try connecting using psql:
+     ```bash
+     psql postgresql://postgres:postgres@localhost:5432/mydb
+     ```
+     
+### Backend Issues
+
+1. **TypeScript Compilation Errors**
+
+   ```bash
+   # Clear dist folder
+   rm -rf dist
+
+   # Rebuild
+   npm run build
+   ```
+
+2. **Session Errors**
+   - Verify SESSION_SECRET in .env
+   - Clear browser cookies and localStorage
+   - Restart the backend server
+
+### Frontend Issues
+
+1. **API Connection Errors**
+
+   - Verify backend is running
+   - Check NEXT_PUBLIC_API_URL in frontend .env
+   - Ensure no CORS issues in browser console
+
+
+### Common Solutions
+
+- **General Reset Process**
+  ```bash
+  # Stop all services
+  docker stop postgres-db
+
+  # Remove container
+  docker rm postgres-db
+
+  # Clean install dependencies
+  npm clean-install
+
+  # Restart setup process from step 1
+  ```
+
+- **Verify Ports**
+  - Frontend: 3000
+  - Backend: 3001
+  - Database: 5432
+  - Prisma Studio: 5555
+
+If you continue to experience issues, please:
+
+1. Check the console logs in both frontend and backend
+2. Verify all environment variables are correctly set
+3. Ensure all required services are running
+4. Check for any conflicting processes on required ports
 
 Well, this is the last commit before sending my PR for review. Although I know that many things in the project could have been improved, I am satisfied with the final result. I had never had experience using Nest, Prisma, and Docker before, so it was super challenging and I learned a lot during this journey.
 
