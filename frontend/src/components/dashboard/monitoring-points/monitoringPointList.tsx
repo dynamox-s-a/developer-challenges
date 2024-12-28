@@ -50,9 +50,15 @@ type MonitoringPointKey = keyof MonitoringPoint;
  */
 const MonitoringPointsList = () => {
   const dispatch = useAppDispatch();
-  const machines = useAppSelector((state) => state.machines.machines);
+  const { machines, sensors } = useAppSelector((state) => state.machines);
   const { notification, showNotification, hideNotification } =
     useNotification();
+
+  // Get sensor name from sensors array
+  const getSensorName = (sensorId: string) => {
+    const sensor = sensors.find((s) => s.id === sensorId);
+    return sensor ? sensor.name : sensorId;
+  };
 
   // Flatten the monitoring points data from the machines state
   const monitoringPoints = machines.flatMap((machine) =>
@@ -61,9 +67,10 @@ const MonitoringPointsList = () => {
       machineId: machine.id,
       machineName: machine.name,
       machineType: machine.type,
-      sensorName: mp.sensor?.name,
+      sensorName: getSensorName(mp.sensorId),
     })),
   );
+
 
   // State for table pagination and sorting
   const [page, setPage] = useState(0);
@@ -202,8 +209,8 @@ const MonitoringPointsList = () => {
                                 color="error"
                                 onClick={() =>
                                   handleDeleteMonitoringPoint(
-                                    mp.machineId,
-                                    mp.id,
+                                    mp.machineId!,
+                                    mp.id!,
                                   )
                                 }
                                 sx={{
