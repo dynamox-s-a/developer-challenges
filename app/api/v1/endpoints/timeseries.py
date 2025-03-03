@@ -4,6 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.exceptions import TimeSeriesNotFoundError, TimeSeriesAlreadyExistsError
 from app.db.session import get_db
 from app.schemas.timeseries import (
+    PredictRequest,
+    PredictOut,
     TimeSeriesCreate,
     TimeSeriesOut,
     TimeSeriesDetailOut,
@@ -68,3 +70,17 @@ async def delete_series(series_id: str, service: TimeSeriesService = Depends(get
         return await service.delete(series_id)
     except TimeSeriesNotFoundError as e:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail=str(e))
+
+
+@router.post("/{series_id}/predict", response_model=PredictOut)
+async def predict(
+    series_id: str,
+    body: PredictRequest,
+    service: TimeSeriesService = Depends(get_service),
+):
+    try:
+        return await service.predict(series_id, body)
+    except TimeSeriesNotFoundError as e:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail=str(e))
+    except ValueError as e:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e))

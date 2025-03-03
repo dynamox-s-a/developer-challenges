@@ -10,10 +10,13 @@ from app.schemas.timeseries import (
     TimeSeriesDetailOut,
     DataPointOut,
     MetricsOut,
+    PredictRequest,
+    PredictOut,
     SeriesCountOut,
     DeleteOut,
     PaginatedTimeSeriesOut,
 )
+from app.services.prediction_service import PredictionService
 
 
 class TimeSeriesService:
@@ -46,6 +49,14 @@ class TimeSeriesService:
 
         points = await self._repo.get_data_points(series_id)
         return _compute_metrics(series, points)
+
+    async def predict(self, series_id: str, req: PredictRequest) -> PredictOut:
+        series = await self._repo.get_by_id(series_id)
+        if not series:
+            raise TimeSeriesNotFoundError(series_id)
+
+        points = await self._repo.get_data_points(series_id)
+        return PredictionService.predict(series, points, steps=req.steps, method=req.method)
 
     async def list_series(self, page: int, page_size: int) -> PaginatedTimeSeriesOut:
         offset = (page - 1) * page_size
