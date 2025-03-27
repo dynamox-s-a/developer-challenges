@@ -144,5 +144,8 @@ In general we will be looking for the following:
 * Is it necessary to fork the project?
   **Yes, this allows us to see how much time you spent on the challenge.**
 
+* Can I use create-react-app to complete the challenge?
+  **No, create-react-app is not acceptable for this challenge.**
+
 * If I have more questions, who can I contact?
   **Please reach out to <adriano.junior@dynamox.net> (Fullstack dev).**
