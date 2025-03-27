@@ -35,20 +35,16 @@ In today's digital landscape, a well-crafted landing page is crucial for busines
 2 - Technical Requirements
 1. [ ] Use TypeScript.
 1. [ ] Use React.
-1. [ ] Use Next.js for building the app. [Check out](https://nextjs.org/docs/getting-started) to get started.
 1. [ ] Implement comprehensive SEO best practices:
    - Meta tags optimization
    - Semantic HTML structure
    - Social media meta tags
-1. [ ] Use Material UI 6 for styling with custom theme configuration.
 
 
 3 - Bonus
-1. [ ] Add unit tests with Vitest. [Check out](https://vitest.dev/guide/) to get started.
-1. [ ] Add e2e tests with Cypress. [Check out](https://learn.cypress.io/) to get started.
 1. [ ] Deploy your application to a cloud provider and provide a link for the running app.
-1. [ ] Achieve 95+ score on Lighthouse (Desktop). 
-1. [ ] Add smooth animations and micro-interactions.
+2. [ ] Achieve 95+ score on Lighthouse (Desktop). 
+3. [ ] Add smooth animations and micro-interactions.
 
 
 ---
@@ -56,64 +52,74 @@ In today's digital landscape, a well-crafted landing page is crucial for busines
 ## Challenge 2: Event Management System 🎟️
 
 ### Overview
-In this challenge, you will develop a comprehensive event management system with role-based access control. The system should allow administrators to manage events while providing a good user experience for readers to view event information.
+In this challenge, you will develop a comprehensive event management system with role-based access control. The system should allow administrators to manage events while providing a streamlined experience for readers to view event information.
+
+### Authentication and User Roles
+
+#### Pre-configured Users
+The system should have two pre-configured users in the JSON Server database:
+1. Admin User
+   - Email: admin@events.com
+   - Password: admin123
+   - Role: admin
+
+2. Reader User
+   - Email: reader@events.com
+   - Password: reader123
+   - Role: reader
 
 ### Functional Requirements and User Stories
 
-Event management systems require careful consideration of user roles, data management, and user experience. Your challenge is to create a system that handles these aspects effectively while maintaining high performance and security standards.
-
-1 - User Stories
-
 #### Authentication & Authorization
-1. [ ] As a user, I want to authenticate using fixed email and password with fake JWT.
-1. [ ] As a user, I want to logout of the system.
-1. [ ] As a user, I want to be redirected to appropriate pages based on my role.
+1. [ ] As a user, I want to authenticate using the pre-configured email and password
+   - [ ] Implement fake JWT token generation
+   - [ ] Store token in localStorage
+   - [ ] Include token in API requests headers
+2. [ ] As a user, I want to logout of the system
+   - [ ] Clear stored token
+   - [ ] Redirect to login page
+3. [ ] As a user, I want to be redirected based on my role
+   - Admin -> Admin Dashboard
+   - Reader -> Events List
 
-#### Admin Features
-1. [ ] As an admin, I want to create new events with detailed information:
-   - Event name
-   - Date and time
-   - Location
-   - Description
-   - Category
-   - Capacity
-1. [ ] As an admin, I want to edit existing event details.
-1. [ ] As an admin, I want to delete events when necessary.
-1. [ ] As an admin, I want to view a dashboard with event statistics.
+#### Admin Features (Role: admin)
+1. [ ] As an admin, I want to create new events with the following information:
+   - [ ] Event name (required)
+   - [ ] Date and time (required, must be future date)
+   - [ ] Location (required)
+   - [ ] Description (required, min 50 characters)
+   - [ ] Category (required, select from: Conference, Workshop, Webinar, Networking, Other)
+   - [ ] Capacity (required, minimum 1)
+   - [ ] Image URL (optional)
+   - [ ] Featured event flag (optional)
+   - [ ] Registration deadline (optional)
+   - [ ] Event status (Draft/Published)
+2. [ ] As an admin, I want to edit existing event details
+3. [ ] As an admin, I want to delete events
+4. [ ] As an admin, I want to view events
 
-#### Reader Features
-1. [ ] As a reader, I want to view a list of all upcoming events.
-1. [ ] As a reader, I want to search and filter events.
-1. [ ] As a reader, I want to view detailed information about specific events.
-1. [ ] As a reader, I want to sort events by date, name, or category.
+#### Reader Features (Role: reader)
+1. [ ] As a reader, I want to view events
+2. [ ] As a reader, I want to search and filter events
+3. [ ] As a reader, I want to sort events by:
+   - [ ] Date
+   - [ ] Name
 
-2 - Technical Requirements
-1. [ ] Use Next.js with TypeScript for the frontend.
-1. [ ] Implement state management using Redux Toolkit:
-   - Proper action creators
-   - Type-safe reducers
-   - Middleware configuration
-1. [ ] Create a mock REST API using JSON Server:
-   - Define proper data models
-   - Implement CRUD operations
-   - Add data validation
-1. [ ] Use Material UI 6 for creating a responsive and modern UI.
-1. [ ] Implement comprehensive role-based access control:
-   - Route protection
-   - Component-level access control
-   - API endpoint protection
-1. [ ] Add proper error handling and loading states:
-   - Loading skeletons
-   - Error messages
-   - Fallback UI
-1. [ ] Ensure responsive design for all screen sizes.
+### Technical Requirements
+1. [ ] Use TypeScript.
+1. [ ] Use React.
+2. [ ] Use Next.js [Check out](https://nextjs.org/docs/getting-started) to get started.
+3. [ ] Implement state management using Redux Toolkit:
+4. [ ] Create a mock REST API using JSON Server:
+5. [ ] Use Material UI 6 for styling with custom theme configuration.
+6. [ ] Ensure responsive design for all screen sizes.
 
-3 - Bonus
-1. [ ] Add unit tests for critical functionalities.
+### Bonus
+1. [ ] Add unit tests with Jest. [Check out](https://jestjs.io/docs/getting-started) to get started.
+1. [ ] Add e2e tests with Cypress. [Check out](https://docs.cypress.io/guides/getting-started/installing-cypress) to get started.
 1. [ ] Implement role-based route protection using HOCs or middleware.
-1. [ ] Deploy to Vercel with environment configuration.
-
-We encourage using our frontend stack tooling to make the challenge resemble our everyday tasks.
+1. [ ] Deploy your application to a cloud provider and provide a link for the running app.
+1. [ ] Add Storybook documentation for UI components.
 
 ## Evaluation Criteria
 
@@ -121,16 +127,12 @@ Each one of the items above will be evaluated as "Not Implemented", "Implemented
 
 In general we will be looking for the following:
 1. [ ] Anyone should be able to follow the instructions and run the application.
-1. [ ] Code quality, organization, and readability.
 1. [ ] Front-end code is successfully integrated with a fake REST API.
-1. [ ] Proper use of React, Next.js, and Material UI.
-1. [ ] State management implementation with Redux Toolkit.
-1. [ ] Authentication and role-based access control.
-1. [ ] Application layout is responsive.
-1. [ ] Performance optimization and SEO practices.
-1. [ ] Testing coverage and quality.
+1. [ ] Stories were implemented according to the functional requirements.
 1. [ ] Problem-solving skills and ability to handle ambiguity.
+1. [ ] Code quality, readability, and maintainability.
 1. [ ] Code is well-organized and documented.
+1. [ ] Application layout is responsive.
 
 ## Ready to Begin the Challenges?
 
