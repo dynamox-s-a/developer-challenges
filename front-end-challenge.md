@@ -89,11 +89,6 @@ The system should have two pre-configured users in the JSON Server database:
    - [ ] Location (required)
    - [ ] Description (required, min 50 characters)
    - [ ] Category (required, select from: Conference, Workshop, Webinar, Networking, Other)
-   - [ ] Capacity (required, minimum 1)
-   - [ ] Image URL (optional)
-   - [ ] Featured event flag (optional)
-   - [ ] Registration deadline (optional)
-   - [ ] Event status (Draft/Published)
 2. [ ] As an admin, I want to edit existing event details
 3. [ ] As an admin, I want to delete events
 4. [ ] As an admin, I want to view events
