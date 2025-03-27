@@ -25,17 +25,17 @@ In today's digital landscape, a well-crafted landing page is crucial for busines
 
 1 - User Stories
 1. [ ] As a user, I want to view a landing page that follows the provided [Figma design](https://www.figma.com/design/nN7CabevxBoFEoje0XZJ84/Test---Frontend---2025?node-id=365-20626&t=17l4SwF33pbLEndT-1).
-1. [ ] As a user, I want the page to be fully responsive on all devices.
-1. [ ] As a user, I want the page to load quickly with optimized images and assets.
-1. [ ] As a user, I want to be able to change the images in the first section carousel by clicking on the respective image.
-1. [ ] As a user, I want to click on the buttons with label "+ Leia mais" and be redirected to https://dynamox.net/blog.
-1. [ ] As a user, in the footer, I want to click on the respective social media icons, text links and be redirected to the listed links on the Figma design.
+2. [ ] As a user, I want the page to be fully responsive on all devices.
+3. [ ] As a user, I want the page to load quickly with optimized images and assets.
+4. [ ] As a user, I want to be able to change the images in the first section carousel by clicking on the respective image.
+5. [ ] As a user, I want to click on the buttons with label "+ Leia mais" and be redirected to https://dynamox.net/blog.
+6. [ ] As a user, in the footer, I want to click on the respective social media icons, text links and be redirected to the listed links on the Figma design.
 
 
 2 - Technical Requirements
 1. [ ] Use TypeScript.
-1. [ ] Use React.
-1. [ ] Implement comprehensive SEO best practices:
+2. [ ] Use React.
+3. [ ] Implement comprehensive SEO best practices:
    - Meta tags optimization
    - Semantic HTML structure
    - Social media meta tags
@@ -75,10 +75,9 @@ The system should have two pre-configured users in the JSON Server database:
    - [ ] Implement fake JWT token generation
    - [ ] Store token in localStorage
    - [ ] Include token in API requests headers
-2. [ ] As a user, I want to logout of the system
-   - [ ] Clear stored token
-   - [ ] Redirect to login page
-3. [ ] As a user, I want to be redirected based on my role
+2. [ ] As a user, I want to only access protected routes if I am authenticated
+3. [ ] As a user, I want to logout of the system
+4. [ ] As a user, I want to be redirected based on my role
    - Admin -> Admin Dashboard
    - Reader -> Events List
 
@@ -111,10 +110,10 @@ The system should have two pre-configured users in the JSON Server database:
 
 ### Bonus
 1. [ ] Add unit tests with Jest. [Check out](https://jestjs.io/docs/getting-started) to get started.
-1. [ ] Add e2e tests with Cypress. [Check out](https://docs.cypress.io/guides/getting-started/installing-cypress) to get started.
-1. [ ] Implement role-based route protection using HOCs or middleware.
-1. [ ] Deploy your application to a cloud provider and provide a link for the running app.
-1. [ ] Add Storybook documentation for UI components.
+2. [ ] Add e2e tests with Cypress. [Check out](https://docs.cypress.io/guides/getting-started/installing-cypress) to get started.
+3. [ ] Implement role-based route protection using HOCs or middleware.
+4. [ ] Deploy your application to a cloud provider and provide a link for the running app.
+5. [ ] Add Storybook documentation for UI components.
 
 ## Evaluation Criteria
 
@@ -122,12 +121,12 @@ Each one of the items above will be evaluated as "Not Implemented", "Implemented
 
 In general we will be looking for the following:
 1. [ ] Anyone should be able to follow the instructions and run the application.
-1. [ ] Front-end code is successfully integrated with a fake REST API.
-1. [ ] Stories were implemented according to the functional requirements.
-1. [ ] Problem-solving skills and ability to handle ambiguity.
-1. [ ] Code quality, readability, and maintainability.
-1. [ ] Code is well-organized and documented.
-1. [ ] Application layout is responsive.
+2. [ ] Front-end code is successfully integrated with a fake REST API.
+3. [ ] Stories were implemented according to the functional requirements.
+4. [ ] Problem-solving skills and ability to handle ambiguity.
+5. [ ] Code quality, readability, and maintainability.
+6. [ ] Code is well-organized and documented.
+7. [ ] Application layout is responsive.
 
 ## Ready to Begin the Challenges?
 
