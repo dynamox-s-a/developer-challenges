@@ -57,7 +57,7 @@ In this challenge, you will develop a comprehensive event management system with
 ### Authentication and User Roles
 
 #### Pre-configured Users
-The system should have two pre-configured users in the JSON Server database:
+The system should have two pre-configured users in the [json-server](https://www.npmjs.com/package/json-server) database:
 1. Admin User
    - Email: admin@events.com
    - Password: admin123
@@ -71,13 +71,13 @@ The system should have two pre-configured users in the JSON Server database:
 ### Functional Requirements and User Stories
 
 #### Authentication & Authorization
-1. [ ] As a user, I want to authenticate using the pre-configured email and password
-   - [ ] Implement fake JWT token generation
-   - [ ] Store token in localStorage
-   - [ ] Include token in API requests headers
-2. [ ] As a user, I want to only access protected routes if I am authenticated
-3. [ ] As a user, I want to logout of the system
-4. [ ] As a user, I want to be redirected based on my role
+1. [ ] As a user, I want to authenticate using the pre-configured email and password:
+   - [ ] Implement fake JWT token generation.
+   - [ ] Store token in localStorage.
+   - [ ] Include token in API requests headers.
+2. [ ] As a user, I want to only access protected routes if I am authenticated.
+3. [ ] As a user, I want to logout of the system.
+4. [ ] As a user, I want to be redirected based on my role:
    - Admin -> Admin Dashboard
    - Reader -> Events List
 
@@ -88,23 +88,22 @@ The system should have two pre-configured users in the JSON Server database:
    - [ ] Location (required)
    - [ ] Description (required, min 50 characters)
    - [ ] Category (required, select from: Conference, Workshop, Webinar, Networking, Other)
-2. [ ] As an admin, I want to edit existing event details
-3. [ ] As an admin, I want to delete events
-4. [ ] As an admin, I want to view events
+2. [ ] As an admin, I want to edit existing event details.
+3. [ ] As an admin, I want to delete events.
+4. [ ] As an admin, I want to view events.
 
 #### Reader Features (Role: reader)
-1. [ ] As a reader, I want to view events
-2. [ ] As a reader, I want to search and filter events
+1. [ ] As a reader, I want to view events.
+2. [ ] As a reader, I want to search and filter events.
 3. [ ] As a reader, I want to sort events by:
    - [ ] Date
    - [ ] Name
-
 ### Technical Requirements
 1. [ ] Use TypeScript.
 1. [ ] Use React.
 2. [ ] Use Next.js [Check out](https://nextjs.org/docs/getting-started) to get started.
-3. [ ] Implement state management using Redux Toolkit:
-4. [ ] Create a mock REST API using JSON Server:
+3. [ ] Implement state management using Redux Toolkit.
+4. [ ] Create a mock REST API using [json-server](https://www.npmjs.com/package/json-server).
 5. [ ] Use Material UI 6 for styling with custom theme configuration.
 6. [ ] Ensure responsive design for all screen sizes.
 
