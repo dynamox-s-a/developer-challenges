@@ -98,6 +98,7 @@ The system should have two pre-configured users in the [json-server](https://www
 3. [ ] As a reader, I want to sort events by:
    - [ ] Date
    - [ ] Name
+  
 ### Technical Requirements
 1. [ ] Use TypeScript.
 1. [ ] Use React.
