@@ -27,7 +27,7 @@ Use the figma as a reference to build an interface and develop the following use
 
 1. [ ] As an user I want to view 3 time-series charts of the following metrics: *acceleration, velocity and temperature*. Each time series should have a horizontal axis for the time and a vertical axis for the metric magnitude.
 
-1. [ ] As an user I want that the data that will populate these charts should be fetched each time I access the route */data*. Use the data available in [Responses](./response.json) as a mock and use a package like [json-server](https://www.npmjs.com/package/json-server) to build an REST API.
+1. [ ] As an user I want that the data that will populate these charts should be fetched each time I access the route */data*. Use the data available in [Responses](./response-challenge-v2.json) as a mock and use a package like [json-server](https://www.npmjs.com/package/json-server) to build an REST API.
 
 1. [ ] As an user I want to hover over a point of a chart and see a vertical crosshair marking equivalent timestamps in all time-series charts, with a tooltip describing that point. [Check out](https://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/demo/synchronized-charts) to view a sample of this feature.
 
