@@ -94,8 +94,9 @@ The system should have two pre-configured users in the [json-server](https://www
 
 #### Reader Features (Role: reader)
 1. [ ] As a reader, I want to view events.
-2. [ ] As a reader, I want to search and filter events.
-3. [ ] As a reader, I want to sort events by:
+2. [ ] As a reader, I want to view past events separately from upcoming events.
+3. [ ] As a reader, I want to search and filter events.
+4. [ ] As a reader, I want to sort events by:
    - [ ] Date
    - [ ] Name
   
