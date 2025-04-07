@@ -48,7 +48,7 @@ export class MachinesService {
     }
 
     return this.sensorsService.create({
-      model: data.model,
+      model: data.model as 'TcAg' | 'TcAs' | 'HF_Plus',
       monitoringPointId: data.monitoringPointId,
     });
   }
