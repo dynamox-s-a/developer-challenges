@@ -43,7 +43,7 @@ const machineSlice = createSlice({
       })
       .addCase(createMachine.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.machines.push(action.payload); // adiciona a nova máquina na lista
+        state.machines.push(action.payload);
       })
       .addCase(createMachine.rejected, (state, action) => {
         state.status = "failed";
