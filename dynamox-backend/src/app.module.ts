@@ -3,8 +3,9 @@ import { AuthModule } from './auth/auth.module';
 import { MachinesModule } from './machines/machines.module';
 import { SensorsModule } from './sensors/sensors.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { MonitoringPointModule } from './monitoring-point/monitoring-point.module';
 
 @Module({
-  imports: [AuthModule, MachinesModule, SensorsModule, PrismaModule],  
+  imports: [AuthModule, MachinesModule, SensorsModule, PrismaModule, MonitoringPointModule],  
 })
 export class AppModule {}
