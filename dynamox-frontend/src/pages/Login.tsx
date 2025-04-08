@@ -16,8 +16,6 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log("📤 Enviando login:", email, password);
-
     const result = await dispatch(login({ email, password }));
 
     if (login.fulfilled.match(result)) {
