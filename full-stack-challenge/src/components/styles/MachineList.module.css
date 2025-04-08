@@ -1,0 +1,58 @@
+.container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.inputContainer {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tableContainer {
+  margin-top: 20px;
+}
+
+.monitoringPointContainer {
+  margin-left: 20px;
+  font-weight: bold;
+}
+
+.actionsContainer {
+  display: flex;
+  gap: 10px;
+}
+
+.formContainer {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.logoutButton {
+  margin-top: 20px;
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.addButton {
+  background-color: #007bff;
+  color: #fff;
+  transition: background-color 0.3s;
+  border-radius: 4px;
+}
+
+.addButton:hover {
+  background-color: #0056b3;
+  color: #fff;
+}
