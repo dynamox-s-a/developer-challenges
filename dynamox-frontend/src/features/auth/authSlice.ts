@@ -36,6 +36,7 @@ const authSlice = createSlice({
       state.token = null;
       state.status = "idle";
       state.error = null;
+      localStorage.removeItem("token");
     },
   },
   extraReducers: (builder) => {
@@ -45,9 +46,9 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(login.fulfilled, (state, action: PayloadAction<string>) => {
-        console.log("🔐 Token recebido:", action.payload);
         state.token = action.payload;
         state.status = "succeeded";
+        localStorage.setItem("token", action.payload);
       })
       .addCase(login.rejected, (state, action) => {
         state.status = "failed";
