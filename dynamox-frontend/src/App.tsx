@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Login from "./pages/Login";
 import MachinePage from "./pages/MachinePage";
 import { PrivateRoute } from "./routes/PrivateRoute";
-import SensorPage from "./pages/SensorPage";
+import SensorPage from "./pages/MonitoringPoint";
 
 function App() {
   return (

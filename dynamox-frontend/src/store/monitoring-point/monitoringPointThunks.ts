@@ -8,7 +8,7 @@ export const fetchMonitoringPoints = createAsyncThunk<
   { rejectValue: string }
 >("monitoringPoints/fetchAll", async (_, thunkAPI) => {
   try {
-    const response = await axios.get("/api/monitoring-point");
+    const response = await axios.get("http://localhost:3000/monitoring-points");
     return response.data;
   } catch (error: any) {
     return thunkAPI.rejectWithValue(
