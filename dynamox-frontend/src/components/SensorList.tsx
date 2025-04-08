@@ -20,8 +20,6 @@ const SensorList = () => {
   const { sensors, status } = useSelector((state: RootState) => state.sensors);
   const [editingSensor, setEditingSensor] = useState<Sensor | null>(null);
 
-  if (status === "loading") return <p>Carregando sensores...</p>;
-
   useEffect(() => {
     dispatch(fetchSensors());
   }, [dispatch]);
@@ -38,6 +36,8 @@ const SensorList = () => {
     setEditingSensor(null);
   };
 
+  if (status === "loading") return <p>Carregando sensores...</p>;
+
   return (
     <>
       <SensorForm editingSensor={editingSensor!} onFinishEdit={handleFinishEdit} />
@@ -46,8 +46,9 @@ const SensorList = () => {
           <TableHead>
             <TableRow>
               <TableCell>Nome</TableCell>
-              <TableCell>Tipo</TableCell>
-              <TableCell>ID Máquina</TableCell>
+              <TableCell>Modelo</TableCell>
+              <TableCell>Ponto de Monitoramento</TableCell>
+              <TableCell>Máquina</TableCell>
               <TableCell align="right">Ações</TableCell>
             </TableRow>
           </TableHead>
@@ -55,8 +56,9 @@ const SensorList = () => {
             {sensors.map((sensor) => (
               <TableRow key={sensor.id}>
                 <TableCell>{sensor.name}</TableCell>
-                <TableCell>{sensor.type}</TableCell>
-                <TableCell>{sensor.machineId}</TableCell>
+                <TableCell>{sensor.model}</TableCell>
+                <TableCell>{sensor.monitoringPoint?.machine?.name || "-"}</TableCell>
+                <TableCell>{sensor.monitoringPoint?.name || "-"}</TableCell>
                 <TableCell align="right">
                   <Button
                     variant="outlined"
