@@ -36,7 +36,7 @@ export class MachinesController {
     return this.machinesService.create(data);
   }
 
-  @Post(':id/sensors')
+  @Post('machines')
   async addSensor(
     @Param('id') machineId: string,
     @Body() dto: AssignSensorDto,
