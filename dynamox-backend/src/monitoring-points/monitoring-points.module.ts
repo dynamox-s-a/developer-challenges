@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { MonitoringPointService } from './monitoring-point.service';
-import { MonitoringPointController } from './monitoring-point.controller';
+import { MonitoringPointService } from './monitoring-points.service';
+import { MonitoringPointController } from './monitoring-points.controller';
 import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({

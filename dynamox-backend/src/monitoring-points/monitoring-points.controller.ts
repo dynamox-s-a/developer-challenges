@@ -1,11 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { MonitoringPointService } from './monitoring-point.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
+import { MonitoringPointService } from './monitoring-points.service';
 import { CreateMonitoringPointDto } from './dto/create-monitoring-point.dto';
 import { UpdateMonitoringPointDto } from './dto/update-monitoring-point.dto';
 
-@Controller('monitoring-point')
+@Controller('monitoring-points')
 export class MonitoringPointController {
-  constructor(private readonly monitoringPointService: MonitoringPointService) {}
+  constructor(
+    private readonly monitoringPointService: MonitoringPointService,
+  ) {}
 
   @Post()
   create(@Body() createMonitoringPointDto: CreateMonitoringPointDto) {
@@ -13,8 +24,13 @@ export class MonitoringPointController {
   }
 
   @Get()
-  findAll() {
-    return this.monitoringPointService.findAll();
+  findAll(
+    @Query('page') page = 1,
+    @Query('limit') limit = 5,
+    @Query('sortBy') sortBy = 'name',
+    @Query('order') order: 'asc' | 'desc' = 'asc',
+  ) {
+    return this.monitoringPointService.findAll(+page, +limit, sortBy, order);
   }
 
   @Get(':id')
@@ -23,7 +39,10 @@ export class MonitoringPointController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMonitoringPointDto: UpdateMonitoringPointDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateMonitoringPointDto: UpdateMonitoringPointDto,
+  ) {
     return this.monitoringPointService.update(+id, updateMonitoringPointDto);
   }
 
