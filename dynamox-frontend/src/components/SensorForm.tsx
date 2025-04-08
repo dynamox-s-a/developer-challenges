@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { AppDispatch, useAppSelector, useAppDispatch } from "../store";
+import { useAppSelector, useAppDispatch } from "../store";
 import { createSensor, updateSensor } from "../store/sensors/sensorThunks";
-import { Sensor } from "../store/sensors/sensorTypes";
+import { Sensor, CreateSensorDTO } from "../store/sensors/sensorTypes";
 import {
   TextField,
   Button,
@@ -25,7 +24,7 @@ export const MonitoringPointSelect = ({
   value,
   onChange,
 }: {
-  value: string;
+  value: number | "";
   onChange: (e: any) => void;
 }) => {
   const dispatch = useAppDispatch();
@@ -44,49 +43,56 @@ export const MonitoringPointSelect = ({
         onChange={onChange}
         disabled={loading}
       >
-        {monitoringPoints.map((point: any) => (
-          <MenuItem key={point.id} value={point.id}>
-            {point.name}
-          </MenuItem>
-        ))}
+        {Array.isArray(monitoringPoints) &&
+          monitoringPoints.map((point: any) => (
+            <MenuItem key={point.id} value={point.id}>
+              {point.name}
+            </MenuItem>
+          ))}
       </Select>
     </FormControl>
   );
 };
 
 const SensorForm = ({ editingSensor, onFinishEdit }: SensorFormProps) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const [model, setModel] = useState<Sensor["model"]>(editingSensor?.model || "TcAg");
-  const [monitoringPointId, setMonitoringPointId] = useState<number>(
-    editingSensor?.monitoringPointId || 0
+  const [monitoringPointId, setMonitoringPointId] = useState<number | null>(
+    editingSensor?.monitoringPointId ?? null
   );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const sensorData = {
+    if (!monitoringPointId) {
+      alert("Selecione um ponto de monitoramento");
+      return;
+    }
+
+    const sensorData: CreateSensorDTO = {
       name: editingSensor?.name || "Sensor Padrão",
       model,
       monitoringPointId,
       machineId: editingSensor?.machineId || 1,
     };
 
-    const action = editingSensor
-      ? updateSensor({ ...sensorData, id: editingSensor.id })
-      : createSensor(sensorData);
-
-    dispatch(action)
-      .unwrap()
-      .then(() => {
-        if (editingSensor) {
+    if (editingSensor) {
+      dispatch(updateSensor({ ...sensorData, id: editingSensor.id }))
+        .unwrap()
+        .then(() => {
           onFinishEdit?.();
-        } else {
+        })
+        .catch(console.error);
+    } else {
+      dispatch(createSensor(sensorData))
+        .unwrap()
+        .then(() => {
           setModel("TcAg");
-          setMonitoringPointId(0);
-        }
-      })
-      .catch(console.error);
+          setMonitoringPointId(null);
+        })
+        .catch(console.error);
+    }
   };
 
   return (
@@ -113,7 +119,7 @@ const SensorForm = ({ editingSensor, onFinishEdit }: SensorFormProps) => {
         </TextField>
 
         <MonitoringPointSelect
-          value={monitoringPointId.toString()}
+          value={monitoringPointId ?? ""}
           onChange={(e) => setMonitoringPointId(Number(e.target.value))}
         />
 
