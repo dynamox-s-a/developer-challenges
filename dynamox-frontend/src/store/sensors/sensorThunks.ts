@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../index";
-import { Sensor } from "./sensorTypes";
+import { CreateSensorDTO, UpdateSensorDTO } from "./sensorTypes";
 
 export const fetchSensors = createAsyncThunk("sensors/fetchSensors", async (_, thunkAPI) => {
   try {
@@ -22,7 +22,7 @@ export const fetchSensors = createAsyncThunk("sensors/fetchSensors", async (_, t
 
 export const createSensor = createAsyncThunk(
   "sensors/createSensor",
-  async (data: Omit<Sensor, "id">, thunkAPI) => {
+  async (data: CreateSensorDTO, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
       const token = state.auth.token;
@@ -42,7 +42,7 @@ export const createSensor = createAsyncThunk(
 
 export const updateSensor = createAsyncThunk(
   "sensors/updateSensor",
-  async (data: Sensor, thunkAPI) => {
+  async (data: UpdateSensorDTO, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
       const token = state.auth.token;
