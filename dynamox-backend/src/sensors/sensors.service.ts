@@ -14,7 +14,9 @@ export class SensorsService {
   async create(data: CreateSensorDto): Promise<Sensor> {
     const monitoringPoint = await this.prisma.monitoringPoint.findUnique({
       where: { id: data.monitoringPointId },
-      include: { machine: true },
+      include: {
+        machine: true,
+      },
     });
 
     if (!monitoringPoint) {
