@@ -5,15 +5,10 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Machine, Prisma } from '@prisma/client';
-import { AssignSensorDto } from '../sensors/dto/assign-sensor.dto';
-import { SensorsService } from '../sensors/sensors.service';
 
 @Injectable()
 export class MachinesService {
-  constructor(
-    private prisma: PrismaService,
-    private sensorsService: SensorsService,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
   private isValidMachineType(
     machineType: 'Pump' | 'Fan',
@@ -24,33 +19,6 @@ export class MachinesService {
       Fan: [],
     };
     return !invalidCombinations[machineType]?.includes(sensorModel);
-  }
-
-  async assignSensor(data: AssignSensorDto & { machineId: string }) {
-    const machine = await this.prisma.machine.findUnique({
-      where: { id: data.machineId },
-    });
-
-    if (!machine) {
-      throw new NotFoundException('Máquina não encontrada');
-    }
-
-    if (machine.type === 'Pump' && ['TcAg', 'TcAs'].includes(data.model)) {
-      throw new BadRequestException(
-        `Sensores do tipo ${data.model} não podem ser associados a bombas`,
-      );
-    }
-
-    if (!this.isValidMachineType(machine.type as 'Pump' | 'Fan', data.model)) {
-      throw new BadRequestException(
-        `Sensor ${data.model} não pode ser associado a máquinas do tipo ${machine.type}`,
-      );
-    }
-
-    return this.sensorsService.create({
-      model: data.model as 'TcAg' | 'TcAs' | 'HF_Plus',
-      monitoringPointId: data.monitoringPointId,
-    });
   }
 
   async create(data: Prisma.MachineCreateInput): Promise<Machine> {

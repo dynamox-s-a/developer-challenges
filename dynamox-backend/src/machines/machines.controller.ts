@@ -13,7 +13,6 @@ import { MachinesService } from './machines.service';
 import { Machine } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Request as ExpressRequest } from 'express';
-import { AssignSensorDto } from '../sensors/dto/assign-sensor.dto';
 import { PrismaService } from '../prisma/prisma.service';
 
 interface AuthenticatedRequest extends ExpressRequest {
@@ -34,17 +33,6 @@ export class MachinesController {
   @Post()
   async create(@Body() data: { name: string; type: string }): Promise<Machine> {
     return this.machinesService.create(data);
-  }
-
-  @Post('machines')
-  async addSensor(
-    @Param('id') machineId: string,
-    @Body() dto: AssignSensorDto,
-  ) {
-    return this.machinesService.assignSensor({
-      ...dto,
-      machineId,
-    });
   }
 
   @Get()
