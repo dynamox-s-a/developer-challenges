@@ -5,7 +5,11 @@ import { createMonitoringPoint } from "../store/monitoring-point/monitoringPoint
 import { fetchMachines } from "../store/machines/machineThunks";
 import { Machine } from "../store/machines/machineTypes";
 
-const sensorOptions = ["TcAg", "TcAs", "HF+"];
+const sensorOptions = [
+  { value: "TcAg", label: "TcAg" },
+  { value: "TcAs", label: "TcAs" },
+  { value: "HF_Plus", label: "HF+" },
+];
 
 const MonitoringPointForm = () => {
   const dispatch = useAppDispatch();
@@ -87,8 +91,8 @@ const MonitoringPointForm = () => {
         margin="normal"
       >
         {sensorOptions.map((option) => (
-          <MenuItem key={option} value={option}>
-            {option}
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
           </MenuItem>
         ))}
       </TextField>

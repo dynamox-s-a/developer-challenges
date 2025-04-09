@@ -31,7 +31,7 @@ export class MonitoringPointService {
       data: {
         name,
         machineId,
-        sensors: {
+        sensor: {
           create: {
             model: sensorModel,
           },
@@ -39,7 +39,7 @@ export class MonitoringPointService {
       },
       include: {
         machine: true,
-        sensors: true,
+        sensor: true,
       },
     });
 
@@ -60,7 +60,7 @@ export class MonitoringPointService {
       },
       include: {
         machine: true,
-        sensors: true,
+        sensor: true,
       },
     });
   }

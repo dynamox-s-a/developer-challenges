@@ -8,7 +8,14 @@ export interface MonitoringPoint {
     name: string;
     type: string;
   };
-  sensor: {    
+  sensor: {
     model: string;
   };
+}
+
+export interface UpdateMonitoringPointDTO {
+  id: string;
+  name: string;
+  machineId: string;
+  sensorModel: string;
 }

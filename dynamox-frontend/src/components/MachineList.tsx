@@ -14,8 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
-import { fetchMachines, deleteMachine } from "../store/machines/machineThunks";
-import { updateMachine } from "../store/machines/machineThunks";
+import { fetchMachines, deleteMachine, updateMachine } from "../store/machines/machineThunks";
 import { Machine } from "../store/machines/machineTypes";
 
 const MachineList = () => {

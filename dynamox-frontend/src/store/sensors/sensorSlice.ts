@@ -3,14 +3,14 @@ import { fetchSensors, createSensor, updateSensor, deleteSensor } from "./sensor
 import { Sensor } from "./sensorTypes";
 
 interface SensorState {
-  sensors: Sensor[];
+  items: Sensor[];
   status: "idle" | "loading" | "succeeded" | "failed";
   loading: boolean;
   error: string | null;
 }
 
 const initialState: SensorState = {
-  sensors: [],
+  items: [],
   status: "idle",
   loading: false,
   error: null,
@@ -30,7 +30,7 @@ const sensorSlice = createSlice({
       .addCase(fetchSensors.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.loading = false;
-        state.sensors = action.payload;
+        state.items = action.payload;
       })
       .addCase(fetchSensors.rejected, (state, action) => {
         state.status = "failed";
@@ -46,7 +46,7 @@ const sensorSlice = createSlice({
       .addCase(createSensor.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.loading = false;
-        state.sensors.push(action.payload);
+        state.items.push(action.payload);
       })
       .addCase(createSensor.rejected, (state, action) => {
         state.status = "failed";
@@ -57,16 +57,16 @@ const sensorSlice = createSlice({
       .addCase(updateSensor.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.loading = false;
-        const index = state.sensors.findIndex((s) => s.id === action.payload.id);
+        const index = state.items.findIndex((s) => s.id === action.payload.id);
         if (index !== -1) {
-          state.sensors[index] = action.payload;
+          state.items[index] = action.payload;
         }
       })
 
       .addCase(deleteSensor.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.loading = false;
-        state.sensors = state.sensors.filter((s) => s.id !== action.payload);
+        state.items = state.items.filter((s) => s.id !== action.payload);
       });
   },
 });
