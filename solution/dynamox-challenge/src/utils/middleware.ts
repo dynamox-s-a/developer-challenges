@@ -1,7 +1,9 @@
 import { Middleware } from 'redux';
 
-
 export const authMiddleware: Middleware = store => next => async (action: any) => {
+  // Deixa a action original seguir o fluxo normalmente
+  const result = next(action);
+
   if (action.type === 'LOGIN_REQUEST') {
     const { username, password } = action.payload;
 
@@ -19,5 +21,5 @@ export const authMiddleware: Middleware = store => next => async (action: any) =
     }
   }
 
-  return next(action);
+  return result;
 };
