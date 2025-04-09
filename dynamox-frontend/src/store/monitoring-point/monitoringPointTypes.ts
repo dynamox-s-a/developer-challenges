@@ -6,10 +6,9 @@ export interface MonitoringPoint {
   machine: {
     id: string;
     name: string;
-    type: "Pump" | "Fan";
+    type: string;
   };
-  sensor: {
-    id: string;
-    model: "TcAg" | "TcAs" | "HF+";
+  sensor: {    
+    model: string;
   };
 }
