@@ -4,10 +4,10 @@ import { Dispatch } from 'redux';
 const API_UTL = 'http://localhost:3001';
 
 // Usuário
-export const getUser = (username: string) => {
+export const getUser = (email: string) => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await fetch(`${API_UTL}/users/${username}`);
+      const response = await fetch(`${API_UTL}/users/${email}`);
       const data = await response.json();
       dispatch({ type: 'GET_USER', payload: data });
     } catch (error) {

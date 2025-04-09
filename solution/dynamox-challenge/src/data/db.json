@@ -1,40 +1,57 @@
 {
   "users": [
-    { "id": 1, "email": "admin@dynamox.com", "password": "123456" },
-    { "id": 2, "email": "jo@dynamox.com", "password": "abcdef" }
+    {
+      "id": 1,
+      "email": "admin@dynamox.com",
+      "username": "Administrator",
+      "password": "admin123",
+      "role": "admin",
+      "access": ["machine1", "machine2", "sensor1", "sensor2"]
+    },
+    {
+      "id": 2,
+      "email": "user1@dynamox.com",
+      "username": "Usuário 1",
+      "password": "user123",
+      "role": "user",
+      "access": ["machine3", "sensor3"]
+    }
   ],
   "machines": [
     {
-      "id": 1,
-      "name": "Bomba A",
-      "type": "Pump"
+      "id": "machine1",
+      "name": "Máquina 1",
+      "type": "Pump",
+      "sensors": ["sensor1", "sensor2"]
     },
     {
-      "id": 2,
-      "name": "Ventilador B",
-      "type": "Fan"
+      "id": "machine2",
+      "name": "Máquina 2",
+      "type": "Fan",
+      "sensors": ["sensor1", "sensor3"]
+    },
+    {
+      "id": "machine3",
+      "name": "Máquina 3",
+      "type": "Pump",
+      "sensors": ["sensor3"]
     }
   ],
-  "monitoringPoints": [
+  "sensors": [
     {
-      "id": 1,
-      "machineId": 1,
-      "name": "Ponto 1",
-      "sensor": {
-        "id": "123",
-        "name": "Sensor A",
-        "model": "HF+"
-      }
+      "id": "sensor1",
+      "name": "Sensor 1",
+      "model": "TcAg"
     },
     {
-      "id": 2,
-      "machineId": 2,
-      "name": "Ponto 2",
-      "sensor": {
-        "id": "456",
-        "name": "Sensor B",
-        "model": "TcAs"
-      }
+      "id": "sensor2",
+      "name": "Sensor 2",
+      "model": "TcAs"
+    },
+    {
+      "id": "sensor3",
+      "name": "Sensor 3",
+      "model": "HF+"
     }
   ]
 }

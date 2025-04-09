@@ -1,37 +1,37 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../redux/store'
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../redux/reducers';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
 
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const error = useSelector((state: RootState) => state.error);
   const isLoading = useSelector((state: RootState) => state.isLoading);
-  const isLoggedIn = useSelector((state: RootState) => state.isLoggedIn);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    dispatch({ type: 'LOGIN_REQUEST', payload: { username, password } });
-  }
+  const isLoggedIn = useSelector((state: RootState) => state.isLoggedIn); 
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate('/dashboard');
+      navigate('/dashboard'); 
     }
   }, [isLoggedIn, navigate]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    dispatch({ type: 'LOGIN_REQUEST', payload: { email, password } });
+  };
 
   return (
     <form onSubmit={handleSubmit}>
       <input
-        type="text"
-        placeholder="Usuário"
-        value={username}
-        onChange={e => setUsername(e.target.value)}
+        type="email"
+        placeholder="E-mail"
+        value={email}
+        onChange={e => setEmail(e.target.value)}
       />
       <input
         type="password"
