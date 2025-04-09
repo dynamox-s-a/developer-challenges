@@ -6,7 +6,7 @@
       "username": "Administrator",
       "password": "admin123",
       "role": "admin",
-      "access": ["machine1", "machine2", "sensor1", "sensor2"]
+      "machines": ["machine1", "machine2"]
     },
     {
       "id": 2,
@@ -14,7 +14,7 @@
       "username": "Usuário 1",
       "password": "user123",
       "role": "user",
-      "access": ["machine3", "sensor3"]
+      "access": ["machine3"]
     }
   ],
   "machines": [

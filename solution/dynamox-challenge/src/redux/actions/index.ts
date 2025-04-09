@@ -1,5 +1,6 @@
 // Definição das actions
 import { Dispatch } from 'redux';
+import { Machine } from '../../types';
 
 const API_UTL = 'http://localhost:3001';
 
@@ -17,17 +18,23 @@ export const getUser = (email: string) => {
 }
 
 // Máquinas
-export const fetchMachines = (id: number) => {
+export const fetchMachines = (access: Machine[]) => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await fetch(`${API_UTL}/machines/${id}`);
-      const data = await response.json();
-      dispatch({ type: 'GET_MACHINES', payload: data });
+      const machinesPromises = access.map(async (machineId) => {
+        const response = await fetch(`${API_UTL}/machines/${machineId}`);
+        const data = await response.json();
+        return data; 
+      });
+
+      const machines = await Promise.all(machinesPromises);
+      dispatch({ type: 'GET_MACHINES', payload: machines });
     } catch (error) {
       console.error('Error fetching machines:', error);
     }
   };
-}
+};
+
 
 // Sensores
 export const fetchSensor = (id: string) => {

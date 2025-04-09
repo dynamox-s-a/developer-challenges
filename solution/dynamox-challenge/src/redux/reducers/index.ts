@@ -18,6 +18,7 @@ const INITIAL_STATE: RootState = {
 
 type Action =
   | { type: "GET_USER"; payload: { username: string; role: string, machines: Machine[], sensors: Sensor[] } }
+  | { type: "GET_MACHINES"; payload: Machine[] }
   | { type: "LOGIN_ERROR"; payload: string }
   | { type: "LOGIN_REQUEST"; payload: { username: string; password: string } }
   | { type: "LOGOUT" };
@@ -33,8 +34,12 @@ export const rootReducer = (state = INITIAL_STATE, action: Action): RootState =>
         isLoading: false,
         error: null,
         machines: action.payload.machines, 
-        sensors: action.payload.sensors, 
       };
+    case "GET_MACHINES": 
+      return {
+        ...state,
+        machines: action.payload, 
+    };
     case "LOGIN_ERROR":
       return {
         ...state,
