@@ -1,0 +1,35 @@
+### this file is used to test the auth endpoints
+
+### Signup
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+    "email": "teste1@email.com",
+    "password": "123456"
+}
+
+### Signin
+POST http://localhost:3000/auth/signin
+Content-Type: application/json
+
+{
+    "email": "teste1@email.com",
+    "password": "123456"
+}
+
+### Get me
+GET http://localhost:3000/users/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdGUxQGVtYWlsLmNvbSIsImlhdCI6MTczODg1MTE1NSwiZXhwIjoxNzM4ODUyMDU1fQ.IzXm8LM3gWsAY13tHKup9qosx1EH4TrWKEHimyLS7BM
+
+### Update user
+PATCH http://localhost:3000/users
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdGUxQGVtYWlsLmNvbSIsImlhdCI6MTczODg1MTE1NSwiZXhwIjoxNzM4ODUyMDU1fQ.IzXm8LM3gWsAY13tHKup9qosx1EH4TrWKEHimyLS7BM
+
+{
+    "email": "updatedemail@email.com"
+}
+
+### Find all users
+GET http://localhost:3000/users/all
