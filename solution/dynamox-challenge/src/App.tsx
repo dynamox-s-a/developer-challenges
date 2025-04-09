@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import PrivateRoute from './routes/PrivateRoute';
+import MachineForm from './components/MachineForm';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route path="/new-machine" element={<MachineForm />} />
       </Routes>
     </Router>
   );
