@@ -32,4 +32,4 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsI
 }
 
 ### Find all users
-GET http://localhost:3000/users/all
+GET http://localhost:3000/auth/all

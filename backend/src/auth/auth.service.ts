@@ -50,23 +50,10 @@ export class AuthService {
     return this.signToken(user.id, user.email);
   }
 
-  // async logOut(userId: number) {
-  //   const user = await this.prisma.user.findUnique({
-  //     where: {
-  //       id: userId,
-  //     },
-  //   });
-  //   if (!user) throw new Error('User not found');
-  //   await this.prisma.user.update({
-  //     where: {
-  //       id: userId,
-  //     },
-  //     data: {
-  //       hash: null,
-  //     },
-  //   });
-  //   return { message: 'Logged out successfully' };
-  // }
+  async findAllUsers() {
+    const users = await this.prisma.user.findMany();
+    return users;
+  }
 
   async signToken(userId: number, email: string) {
     const payload = {

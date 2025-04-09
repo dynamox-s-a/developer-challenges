@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,6 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum MachineType {
+  Pump
+  Fan
+}
+
+enum SensorModel {
+  TcAg
+  TcAs
+  HFPlus
+}
+
 model User {
   id       Int    @id @default(autoincrement())
   email    String @unique
@@ -20,16 +25,24 @@ model User {
 }
 
 model Machine {
-  id    Int    @id @default(autoincrement())
-  name  String
-  type  String // "Pump" or "Fan"
-  sensors Sensor[]
+  id        Int                @id @default(autoincrement())
+  name      String
+  type      MachineType
+  points    MonitoringPoint[]
+  createdAt DateTime           @default(now())
+}
+
+model MonitoringPoint {
+  id        Int      @id @default(autoincrement())
+  name      String
+  machine   Machine  @relation(fields: [machineId], references: [id])
+  machineId Int
+  sensor    Sensor?
 }
 
 model Sensor {
-  id              Int    @id @default(autoincrement())
-  model           String // "TcAg", "TcAs", "HF+"
-  monitoringPoint String
-  machineId       Int
-  machine         Machine @relation(fields: [machineId], references: [id])
+  id                Int              @id @default(autoincrement())
+  model             SensorModel
+  monitoringPoint   MonitoringPoint  @relation(fields: [monitoringPointId], references: [id])
+  monitoringPointId Int              @unique
 }

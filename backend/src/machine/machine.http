@@ -1,0 +1,31 @@
+### Create machine
+POST http://localhost:3000/machines
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidGVzdGUxQGVtYWlsLmNvbSIsImlhdCI6MTc0NDIyMDQ4MiwiZXhwIjoxNzQ0MjI0MDgyfQ.v0JIcm-003f5jl7ZHWyF3ZIrVZdeqqDiyvclxOvg-wE
+
+{
+  "name": "Compressor A",
+  "type": "Pump"  
+}
+
+### Get all machines
+GET http://localhost:3000/machines
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidGVzdGUxQGVtYWlsLmNvbSIsImlhdCI6MTc0NDIyMDQ4MiwiZXhwIjoxNzQ0MjI0MDgyfQ.v0JIcm-003f5jl7ZHWyF3ZIrVZdeqqDiyvclxOvg-wE
+
+### Get machine by ID
+GET http://localhost:3000/machines/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidGVzdGUxQGVtYWlsLmNvbSIsImlhdCI6MTc0NDIyMDQ4MiwiZXhwIjoxNzQ0MjI0MDgyfQ.v0JIcm-003f5jl7ZHWyF3ZIrVZdeqqDiyvclxOvg-wE
+
+### Update machine
+PUT http://localhost:3000/machines/1
+Content-Type: application/json
+Authorization: Bearer <YOUR_JWT_TOKEN>
+
+{
+  "name": "Compressor A - Atualizado",
+  "type": "Fan"
+}
+
+### Delete machine
+DELETE http://localhost:3000/machines/1
+Authorization: Bearer <YOUR_JWT_TOKEN>

@@ -1,7 +1,17 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { GetUser } from '../auth/decorator';
+import { User } from '@prisma/client';
+
 
 @Controller('auth')
 export class AuthController {
@@ -41,5 +51,18 @@ export class AuthController {
   @Post('signin')
   signIn(@Body() dto: AuthDto) {
     return this.authService.signIn(dto);
+  }
+
+  @Get('me')
+  getMe(@GetUser() user: User) {
+    return user;
+  }
+
+  @Get('all')
+  @ApiOperation({ summary: 'Get all users' })
+  @ApiResponse({ status: 200, description: 'All users' })
+  @ApiResponse({ status: 403, description: 'Forbidden' })
+  findAllUsers() {
+    return this.authService.findAllUsers();
   }
 }
