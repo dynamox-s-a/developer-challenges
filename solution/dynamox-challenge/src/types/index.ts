@@ -30,5 +30,4 @@ export interface MonitoringPoint {
   sensor: Sensor
 }
 
-
 // define os tipos de dados 

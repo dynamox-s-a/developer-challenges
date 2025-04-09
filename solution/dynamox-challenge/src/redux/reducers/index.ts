@@ -1,6 +1,6 @@
 import { AuthState, Machine, Sensor } from "../../types"
 
-interface RootState extends AuthState {
+export interface RootState extends AuthState {
   machine: Machine | null;
   sensor: Sensor | null;
 }
@@ -17,8 +17,9 @@ const INITIAL_STATE: RootState = {
 type Action =
   | { type: "GET_USER"; payload: string }
   | { type: "GET_MACHINE"; payload: Machine }
-  | { type: "GET_SENSOR"; payload: Sensor };
-
+  | { type: "GET_SENSOR"; payload: Sensor }
+  | { type: "LOGIN_REQUEST"; payload: { username: string; password: string } }
+  | { type: "LOGIN_ERROR"; payload: string };
 
   export const rootReducer = (state = INITIAL_STATE, action: Action): RootState => {
     switch (action.type) {
