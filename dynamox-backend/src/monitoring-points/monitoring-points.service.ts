@@ -65,15 +65,15 @@ export class MonitoringPointService {
     });
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} monitoringPoint`;
   }
 
-  update(id: number, updateMonitoringPointDto: UpdateMonitoringPointDto) {
+  update(id: string, updateMonitoringPointDto: UpdateMonitoringPointDto) {
     return `This action updates a #${id} monitoringPoint`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} monitoringPoint`;
   }
 }

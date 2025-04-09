@@ -62,7 +62,7 @@ export const updateMachine = createAsyncThunk(
 
 export const deleteMachine = createAsyncThunk(
   "machines/deleteMachine",
-  async (id: number, thunkAPI) => {
+  async (id: string, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
       const token = state.auth.token;

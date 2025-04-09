@@ -16,3 +16,29 @@ export const fetchMonitoringPoints = createAsyncThunk<
     );
   }
 });
+
+interface CreateMonitoringPointInput {
+  name: string;
+  machineId: string;
+  sensorModel: string;
+}
+
+export const createMonitoringPoint = createAsyncThunk<
+  MonitoringPoint,
+  CreateMonitoringPointInput,
+  { rejectValue: string }
+>("monitoringPoints/create", async (data, thunkAPI) => {
+  try {
+    const response = await axios.post("http://localhost:3000/monitoring-points", data);
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(
+      error.response?.data?.message || "Erro ao criar ponto de monitoramento"
+    );
+  }
+});
+interface CreateMonitoringPointInput {
+  name: string;
+  machineId: string;
+  sensorModel: string;
+}

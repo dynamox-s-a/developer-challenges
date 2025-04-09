@@ -16,19 +16,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
 import { fetchMachines, deleteMachine } from "../store/machines/machineThunks";
 import { updateMachine } from "../store/machines/machineThunks";
+import { Machine } from "../store/machines/machineTypes";
 
 const MachineList = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { machines, status, error } = useSelector((state: RootState) => state.machines);
+  const { items: machines, status, error } = useSelector((state: RootState) => state.machines);
 
-  const startEdit = (machine: any) => {
+  const startEdit = (machine: Machine) => {
     setEditId(machine.id);
     setEditedName(machine.name);
     setEditedType(machine.type);
   };
 
-  const [editId, setEditId] = useState<number | null>(null);
+  const [editId, setEditId] = useState<string | null>(null);
   const [editedName, setEditedName] = useState("");
   const [editedType, setEditedType] = useState<"Pump" | "Fan">("Pump");
 
@@ -55,7 +56,7 @@ const MachineList = () => {
   if (status === "loading") return <p>Carregando...</p>;
   if (status === "failed") return <p>Erro: {error}</p>;
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     if (window.confirm("Deseja realmente excluir esta máquina?")) {
       dispatch(deleteMachine(id));
     }
@@ -72,7 +73,7 @@ const MachineList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {machines.map((machine) => (
+          {machines?.map((machine: Machine) => (
             <TableRow key={machine.id}>
               <TableCell>
                 {editId === machine.id ? (

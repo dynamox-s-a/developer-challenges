@@ -19,19 +19,13 @@ const Login = () => {
     const result = await dispatch(login({ email, password }));
 
     if (login.fulfilled.match(result)) {
-      navigate("/machines");
+      navigate("/monitoring-points");
     }
 
     if (login.rejected.match(result)) {
       console.error("Login falhou:", result);
     }
-  };
-
-  useEffect(() => {
-    if (auth.token) {
-      navigate("/machines");
-    }
-  }, [auth.token, navigate]);
+  };  
 
   return (
     <Container maxWidth="sm">

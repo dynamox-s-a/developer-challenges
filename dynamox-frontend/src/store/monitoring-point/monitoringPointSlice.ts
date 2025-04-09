@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchMonitoringPoints } from "./monitoringPointThunks";
 import { MonitoringPoint } from "./monitoringPointTypes";
+import { createMonitoringPoint } from "./monitoringPointThunks";
 
 interface MonitoringPointState {
   items: MonitoringPoint[];
@@ -32,6 +33,13 @@ const monitoringPointSlice = createSlice({
       })
       .addCase(fetchMonitoringPoints.rejected, (state, action) => {
         state.status = "failed";
+        state.error = action.payload ?? "Erro desconhecido";
+      })
+
+      .addCase(createMonitoringPoint.fulfilled, (state, action) => {
+        state.items.push(action.payload);
+      })
+      .addCase(createMonitoringPoint.rejected, (state, action) => {
         state.error = action.payload ?? "Erro desconhecido";
       });
   },

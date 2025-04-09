@@ -62,7 +62,7 @@ export const updateSensor = createAsyncThunk(
 
 export const deleteSensor = createAsyncThunk(
   "sensors/deleteSensor",
-  async (id: number, thunkAPI) => {
+  async (id: string, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
       const token = state.auth.token;

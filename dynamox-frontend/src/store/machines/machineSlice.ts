@@ -5,17 +5,19 @@ import { deleteMachine } from "./machineThunks";
 import { updateMachine } from "./machineThunks";
 
 interface MachineState {
-  machines: Machine[];
+  items: Machine[];
   status: "idle" | "loading" | "succeeded" | "failed";
   loading: boolean;
   error: string | null;
+  selectedId: string | null;
 }
 
 const initialState: MachineState = {
-  machines: [],
+  items: [],
   status: "idle",
   loading: false,
   error: null,
+  selectedId: null,
 };
 
 const machineSlice = createSlice({
@@ -30,7 +32,7 @@ const machineSlice = createSlice({
       })
       .addCase(fetchMachines.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.machines = action.payload;
+        state.items = action.payload;
       })
       .addCase(fetchMachines.rejected, (state, action) => {
         state.status = "failed";
@@ -43,7 +45,7 @@ const machineSlice = createSlice({
       })
       .addCase(createMachine.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.machines.push(action.payload);
+        state.items.push(action.payload);
       })
       .addCase(createMachine.rejected, (state, action) => {
         state.status = "failed";
@@ -51,9 +53,9 @@ const machineSlice = createSlice({
       })
       .addCase(updateMachine.fulfilled, (state, action) => {
         const updated = action.payload;
-        const index = state.machines.findIndex((m) => m.id === updated.id);
+        const index = state.items.findIndex((m) => m.id === updated.id);
         if (index !== -1) {
-          state.machines[index] = updated;
+          state.items[index] = updated;
         }
       })
       .addCase(updateMachine.rejected, (state, action) => {
@@ -61,7 +63,7 @@ const machineSlice = createSlice({
         state.error = action.payload as string;
       })
       .addCase(deleteMachine.fulfilled, (state, action) => {
-        state.machines = state.machines.filter((machine) => machine.id !== action.payload);
+        state.items = state.items.filter((machine) => machine.id !== action.payload);
       })
       .addCase(deleteMachine.rejected, (state, action) => {
         state.status = "failed";

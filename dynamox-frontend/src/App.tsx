@@ -2,14 +2,22 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Login from "./pages/Login";
 import MachinePage from "./pages/MachinePage";
 import { PrivateRoute } from "./routes/PrivateRoute";
-import SensorPage from "./pages/MonitoringPoint";
+import { PublicRoute } from "./routes/PublicRoute";
+import MonitoringPointPage from "./pages/MonitoringPointPage";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
         <Route
           path="/machines"
           element={
@@ -19,10 +27,10 @@ function App() {
           }
         />
         <Route
-          path="/sensors"
+          path="/monitoring-points"
           element={
             <PrivateRoute>
-              <SensorPage />
+              <MonitoringPointPage />
             </PrivateRoute>
           }
         />
