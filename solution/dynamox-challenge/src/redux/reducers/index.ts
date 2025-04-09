@@ -1,4 +1,5 @@
-import { AuthState, Machine, Sensor } from "../../types"
+// src/redux/reducers.ts
+import { AuthState, Machine, Sensor } from "../../types";
 
 export interface RootState extends AuthState {
   machine: Machine | null;
@@ -12,26 +13,18 @@ const INITIAL_STATE: RootState = {
   isLoggedIn: false,
   machine: null,
   sensor: null,
-}
+};
 
 type Action =
-  | { type: "LOGIN_REQUEST"; payload: { username: string; password: string } }
   | { type: "GET_USER"; payload: string }
-  | { type: "LOGIN_ERROR"; payload: string }
   | { type: "GET_MACHINE"; payload: Machine }
-  | { type: "GET_SENSOR"; payload: Sensor };
+  | { type: "GET_SENSOR"; payload: Sensor }
+  | { type: "LOGIN_REQUEST"; payload: { username: string; password: string } }
+  | { type: "LOGIN_ERROR"; payload: string }
+  | { type: "LOGOUT" }; // Aqui está a action genérica de logout
 
-export const rootReducer = (
-  state = INITIAL_STATE,
-  action: Action
-): RootState => {
+export const rootReducer = (state = INITIAL_STATE, action: Action): RootState => {
   switch (action.type) {
-    case "LOGIN_REQUEST":
-      return {
-        ...state,
-        isLoading: true,
-        error: null,
-      };
     case "GET_USER":
       return {
         ...state,
@@ -39,14 +32,6 @@ export const rootReducer = (
         isLoggedIn: true,
         isLoading: false,
         error: null,
-      };
-    case "LOGIN_ERROR":
-      return {
-        ...state,
-        isLoading: false,
-        error: action.payload,
-        isLoggedIn: false,
-        user: null,
       };
     case "GET_MACHINE":
       return {
@@ -62,6 +47,8 @@ export const rootReducer = (
         isLoading: false,
         error: null,
       };
+    case "LOGOUT":
+      return INITIAL_STATE; 
     default:
       return state;
   }
