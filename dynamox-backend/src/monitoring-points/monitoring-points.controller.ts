@@ -35,7 +35,7 @@ export class MonitoringPointController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.monitoringPointService.findOne(+id);
+    return this.monitoringPointService.findOne(id);
   }
 
   @Patch(':id')
@@ -43,11 +43,11 @@ export class MonitoringPointController {
     @Param('id') id: string,
     @Body() updateMonitoringPointDto: UpdateMonitoringPointDto,
   ) {
-    return this.monitoringPointService.update(+id, updateMonitoringPointDto);
+    return this.monitoringPointService.update(id, updateMonitoringPointDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.monitoringPointService.remove(+id);
+    return this.monitoringPointService.remove(id);
   }
 }

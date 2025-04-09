@@ -33,11 +33,13 @@ model Sensor {
 }
 
 model MonitoringPoint {
-  id        String     @id @default(uuid())
+  id        String  @id @default(uuid())
   name      String
+  machine   Machine @relation(fields: [machineId], references: [id])
   machineId String
-  machine   Machine    @relation(fields: [machineId], references: [id])
-  sensors   Sensor[]   
+
+  sensor     Sensor?
+  sensorId   String? @unique
 }
 
 model Machine {
