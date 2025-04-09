@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Container, Box, TextField, Button, Typography, Paper } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { login } from "../features/auth/authSlice";
@@ -25,7 +25,7 @@ const Login = () => {
     if (login.rejected.match(result)) {
       console.error("Login falhou:", result);
     }
-  };  
+  };
 
   return (
     <Container maxWidth="sm">

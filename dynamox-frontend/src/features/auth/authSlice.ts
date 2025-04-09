@@ -16,7 +16,6 @@ const initialState: AuthState = {
 export const login = createAsyncThunk(
   "auth/login",
   async (credentials: { email: string; password: string }, thunkAPI) => {
-    console.log("🎯 createAsyncThunk LOGIN chamado com:", credentials);
     try {
       const response = await axios.post("http://localhost:3000/auth/login", credentials);
       console.log("✅ Resposta da API:", response.data);

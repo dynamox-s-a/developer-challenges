@@ -4,6 +4,7 @@ import MachinePage from "./pages/MachinePage";
 import { PrivateRoute } from "./routes/PrivateRoute";
 import { PublicRoute } from "./routes/PublicRoute";
 import MonitoringPointPage from "./pages/MonitoringPointPage";
+import Layout from "./components/Layout";
 
 function App() {
   return (
@@ -22,7 +23,9 @@ function App() {
           path="/machines"
           element={
             <PrivateRoute>
-              <MachinePage />
+              <Layout>
+                <MachinePage />
+              </Layout>
             </PrivateRoute>
           }
         />
@@ -30,7 +33,9 @@ function App() {
           path="/monitoring-points"
           element={
             <PrivateRoute>
-              <MonitoringPointPage />
+              <Layout>
+                <MonitoringPointPage />
+              </Layout>
             </PrivateRoute>
           }
         />

@@ -6,6 +6,11 @@
     "baseUrl": "src",
     "paths": {
       "@/*": ["*"]
-    }
+    },
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx"
   }
 }
