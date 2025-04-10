@@ -4,10 +4,15 @@ import { fetchMonitoringPoints } from "../store/monitoring-point/monitoringPoint
 import MonitoringPointTable from "../components/MonitoringPointTable";
 import MonitoringPointForm from "../components/MonitoringPointForm";
 import { CircularProgress, Typography, Box } from "@mui/material";
+import { fetchSensors } from "../store/sensors/sensorThunks";
 
 const MonitoringPointPage = () => {
   const dispatch = useAppDispatch();
   const { items, status, error } = useAppSelector((state) => state.monitoringPoints);
+
+  useEffect(() => {
+    dispatch(fetchSensors());
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchMonitoringPoints());

@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { MonitoringPoint, UpdateMonitoringPointDTO } from "./monitoringPointTypes";
 import { RootState } from "../index";
-import { toDbModel, fromDbModel } from "../sensors/sensorModelUtils";
+import { toDbModel, fromDbModel } from "../../utils/sensorModelUtils";
 
 export const fetchMonitoringPoints = createAsyncThunk<
   MonitoringPoint[],

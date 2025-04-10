@@ -1,14 +1,4 @@
-export interface Machine {
-  id: string;
-  name: string;
-  type: string;
-}
-
-export interface MonitoringPoint {
-  id: string;
-  name: string;
-  machine: Machine;
-}
+import { MonitoringPoint } from "../monitoring-point/monitoringPointTypes";
 
 export type SensorModelType = "TcAg" | "TcAs" | "HF_Plus";
 export type DisplaySensorModel = "TcAg" | "TcAs" | "HF+";
@@ -32,4 +22,3 @@ export interface Sensor {
 
 export type CreateSensorDTO = Omit<Sensor, "id" | "monitoringPoint">;
 export type UpdateSensorDTO = Partial<CreateSensorDTO> & { id: string };
-export type SensorModel = string;

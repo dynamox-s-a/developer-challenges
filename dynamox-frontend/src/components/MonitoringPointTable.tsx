@@ -78,8 +78,8 @@ const MonitoringPointTable = ({ points }: Props) => {
           bValue = b.machine?.type;
           break;
         case "sensor.model":
-          aValue = a.sensor?.model;
-          bValue = b.sensor?.model;
+          aValue = a.sensorModel;
+          bValue = b.sensorModel;
           break;
       }
 
@@ -101,7 +101,7 @@ const MonitoringPointTable = ({ points }: Props) => {
     setEditId(point.id);
     setEditedName(point.name);
     setEditedMachineId(point.machineId);
-    setEditedSensorModel(point.sensor?.model || "");
+    setEditedSensorModel(point.sensorModel || "");
   };
 
   const cancelEdit = () => {
@@ -233,10 +233,10 @@ const MonitoringPointTable = ({ points }: Props) => {
                       </MenuItem>
                     ))}
                   </Select>
-                ) : point.sensor?.model === "HF_Plus" ? (
+                ) : point.sensorModel === "HF_Plus" ? (
                   "HF+"
                 ) : (
-                  point.sensor?.model
+                  point.sensorModel
                 )}
               </TableCell>
               <TableCell align="right">
