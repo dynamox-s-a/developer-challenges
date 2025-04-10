@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateMonitoringPointDto } from './dto/create-monitoring-point.dto';
 import { UpdateMonitoringPointDto } from './dto/update-monitoring-point.dto';
 import { PrismaService } from '../prisma/prisma.service';
@@ -31,6 +35,7 @@ export class MonitoringPointService {
       data: {
         name,
         machineId,
+        sensorModel,
         sensor: {
           create: {
             model: sensorModel,
@@ -69,8 +74,58 @@ export class MonitoringPointService {
     return `This action returns a #${id} monitoringPoint`;
   }
 
-  update(id: string, updateMonitoringPointDto: UpdateMonitoringPointDto) {
-    return `This action updates a #${id} monitoringPoint`;
+  async update(id: string, data: UpdateMonitoringPointDto) {
+    const existingMonitoringPoint =
+      await this.prisma.monitoringPoint.findUnique({
+        where: { id },
+        include: { sensor: true, machine: true },
+      });
+
+    if (!existingMonitoringPoint) {
+      throw new NotFoundException('Monitoring point not found');
+    }
+
+    if (
+      data.sensorModel &&
+      ['TcAg', 'TcAs'].includes(data.sensorModel) &&
+      existingMonitoringPoint.machine.type === 'Pump'
+    ) {
+      throw new BadRequestException(
+        'Sensores TcAg e TcAs não podem ser associados a máquinas do tipo Pump',
+      );
+    }
+
+    const updatedMonitoringPoint = await this.prisma.monitoringPoint.update({
+      where: { id },
+      data: {
+        name: data.name,
+        machineId: data.machineId,
+      },
+      include: {
+        machine: true,
+        sensor: true,
+      },
+    });
+
+    if (data.sensorModel) {
+      if (existingMonitoringPoint.sensor) {
+        await this.prisma.sensor.update({
+          where: { id: existingMonitoringPoint.sensor.id },
+          data: {
+            model: data.sensorModel,
+          },
+        });
+      } else {
+        await this.prisma.sensor.create({
+          data: {
+            model: data.sensorModel,
+            monitoringPointId: id,
+          },
+        });
+      }
+    }
+
+    return updatedMonitoringPoint;
   }
 
   remove(id: string) {

@@ -1,3 +1,5 @@
+import { SensorModelType } from "../sensors/sensorTypes";
+
 export interface MonitoringPoint {
   id: string;
   name: string;
@@ -8,9 +10,7 @@ export interface MonitoringPoint {
     name: string;
     type: string;
   };
-  sensor: {
-    model: string;
-  };
+  sensorModel: SensorModelType;
 }
 
 export interface UpdateMonitoringPointDTO {

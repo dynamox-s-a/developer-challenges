@@ -33,7 +33,7 @@ export const createMachine = createAsyncThunk(
         },
       });
 
-      return response.data; // nova máquina criada
+      return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue("Erro ao criar máquina");
     }

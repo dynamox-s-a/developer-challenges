@@ -47,6 +47,8 @@ const MonitoringPointTable = ({ points }: Props) => {
   const [editId, setEditId] = useState<string | null>(null);
   const [editedName, setEditedName] = useState("");
 
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
   const handleSort = (property: typeof orderBy) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -123,9 +125,16 @@ const MonitoringPointTable = ({ points }: Props) => {
     }
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (window.confirm("Deseja realmente excluir este ponto de monitoramento?")) {
-      dispatch(deleteMonitoringPoint(id));
+      setDeletingId(id);
+      try {
+        await dispatch(deleteMonitoringPoint(id)).unwrap();
+      } catch (err) {
+        console.error("Falha ao excluir:", err);
+      } finally {
+        setDeletingId(null);
+      }
     }
   };
 
@@ -255,8 +264,9 @@ const MonitoringPointTable = ({ points }: Props) => {
                       size="small"
                       color="error"
                       onClick={() => handleDelete(point.id)}
+                      disabled={deletingId === point.id}
                     >
-                      Excluir
+                      {deletingId === point.id ? "Excluindo..." : "Excluir"}
                     </Button>
                   </>
                 )}

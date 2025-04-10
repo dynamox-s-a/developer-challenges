@@ -1,30 +1,65 @@
 import { Box, Button, MenuItem, TextField, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { createMonitoringPoint } from "../store/monitoring-point/monitoringPointThunks";
+import {
+  createMonitoringPoint,
+  updateMonitoringPoint,
+} from "../store/monitoring-point/monitoringPointThunks";
 import { fetchMachines } from "../store/machines/machineThunks";
+import { fetchSensors } from "../store/sensors/sensorThunks";
 import { Machine } from "../store/machines/machineTypes";
+import {
+  SensorModelType,
+  DisplaySensorModel,
+  toDisplayModel,
+  toInternalModel,
+} from "../store/sensors/sensorTypes";
 
-const sensorOptions = [
-  { value: "TcAg", label: "TcAg" },
-  { value: "TcAs", label: "TcAs" },
-  { value: "HF_Plus", label: "HF+" },
-];
+interface MonitoringPointFormProps {
+  initialData?: {
+    id: string;
+    name: string;
+    machineId: string;
+    sensorModel: SensorModelType;
+  };
+  onSuccess?: () => void;
+}
 
-const MonitoringPointForm = () => {
+const MonitoringPointForm: React.FC<MonitoringPointFormProps> = ({ initialData, onSuccess }) => {
   const dispatch = useAppDispatch();
+
   const machines = useAppSelector((state) => state.machines.items);
   const machineStatus = useAppSelector((state) => state.machines.status);
-  const [name, setName] = useState("");
-  const [machineId, setMachineId] = useState("");
-  const [sensorModel, setSensorModel] = useState("");
+
+  const sensorModels = useAppSelector((state) => state.sensors.items);
+  const sensorStatus = useAppSelector((state) => state.sensors.status);
+
+  const [name, setName] = useState(initialData?.name || "");
+  const [machineId, setMachineId] = useState(initialData?.machineId || "");
+  const [sensorModel, setSensorModel] = useState<SensorModelType>(
+    initialData?.sensorModel || "TcAg"
+  );
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (initialData) {
+      setName(initialData.name);
+      setMachineId(initialData.machineId);
+      setSensorModel(initialData.sensorModel);
+    }
+  }, [initialData]);
 
   useEffect(() => {
     if (machineStatus === "idle") {
       dispatch(fetchMachines());
     }
   }, [dispatch, machineStatus]);
+
+  useEffect(() => {
+    if (sensorStatus === "idle") {
+      dispatch(fetchSensors());
+    }
+  }, [dispatch, sensorStatus]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,21 +77,39 @@ const MonitoringPointForm = () => {
       return;
     }
 
-    const result = await dispatch(createMonitoringPoint({ name, machineId, sensorModel }));
+    if (initialData) {
+      const result = await dispatch(
+        updateMonitoringPoint({
+          id: initialData.id,
+          name,
+          machineId,
+          sensorModel,
+        })
+      );
 
-    if (createMonitoringPoint.rejected.match(result)) {
-      setError(result.payload || "Erro ao criar ponto.");
+      if (updateMonitoringPoint.rejected.match(result)) {
+        setError(result.payload || "Erro ao atualizar ponto.");
+      } else {
+        onSuccess?.();
+      }
     } else {
-      setName("");
-      setMachineId("");
-      setSensorModel("");
+      const result = await dispatch(createMonitoringPoint({ name, machineId, sensorModel }));
+
+      if (createMonitoringPoint.rejected.match(result)) {
+        setError(result.payload || "Erro ao criar ponto.");
+      } else {
+        setName("");
+        setMachineId("");
+        setSensorModel("TcAg");
+        onSuccess?.();
+      }
     }
   };
 
   return (
     <Box component="form" onSubmit={handleSubmit} mb={4}>
       <Typography variant="h6" gutterBottom>
-        Novo Ponto de Monitoramento
+        {initialData ? "Editar Ponto de Monitoramento" : "Novo Ponto de Monitoramento"}
       </Typography>
 
       <TextField
@@ -84,15 +137,15 @@ const MonitoringPointForm = () => {
 
       <TextField
         select
-        label="Sensor"
-        value={sensorModel}
-        onChange={(e) => setSensorModel(e.target.value)}
+        label="Modelo do Sensor"
+        value={toDisplayModel(sensorModel)}
+        onChange={(e) => setSensorModel(toInternalModel(e.target.value as DisplaySensorModel))}
         fullWidth
         margin="normal"
       >
-        {sensorOptions.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
+        {sensorModels.map((model) => (
+          <MenuItem key={model} value={toDisplayModel(model)}>
+            {toDisplayModel(model)}
           </MenuItem>
         ))}
       </TextField>
@@ -100,7 +153,7 @@ const MonitoringPointForm = () => {
       {error && <Typography color="error">{error}</Typography>}
 
       <Button type="submit" variant="contained" sx={{ mt: 2 }}>
-        Criar Ponto
+        {initialData ? "Atualizar Ponto" : "Criar Ponto"}
       </Button>
     </Box>
   );

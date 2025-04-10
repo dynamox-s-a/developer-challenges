@@ -28,22 +28,22 @@ enum SensorModel {
 model Sensor {
   id                String           @id @default(uuid())
   model             SensorModel
-  monitoringPoint   MonitoringPoint  @relation(fields: [monitoringPointId], references: [id])
-  monitoringPointId String           @unique // <- garante 1 sensor por ponto
+  monitoringPointId String?          @unique
+  monitoringPoint   MonitoringPoint? @relation("SensorToMonitoringPoint", fields: [monitoringPointId], references: [id])
 }
 
 model MonitoringPoint {
-  id        String   @id @default(uuid())
-  name      String
-  machine   Machine  @relation(fields: [machineId], references: [id])
-  machineId String
-
-  sensor    Sensor?
+  id          String      @id @default(uuid())
+  name        String
+  machineId   String
+  machine     Machine     @relation(fields: [machineId], references: [id])
+  sensorModel SensorModel
+  sensor      Sensor?     @relation("SensorToMonitoringPoint")
 }
 
 model Machine {
-  id        String             @id @default(uuid())
-  name      String
-  type      String
-  points    MonitoringPoint[]
+  id     String            @id @default(uuid())
+  name   String
+  type   String
+  points MonitoringPoint[]
 }

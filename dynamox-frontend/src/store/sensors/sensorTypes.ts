@@ -10,10 +10,21 @@ export interface MonitoringPoint {
   machine: Machine;
 }
 
+export type SensorModelType = "TcAg" | "TcAs" | "HF_Plus";
+export type DisplaySensorModel = "TcAg" | "TcAs" | "HF+";
+
+export const toDisplayModel = (model: SensorModelType): DisplaySensorModel => {
+  return model === "HF_Plus" ? "HF+" : model;
+};
+
+export const toInternalModel = (display: DisplaySensorModel): SensorModelType => {
+  return display === "HF+" ? "HF_Plus" : display;
+};
+
 export interface Sensor {
   id: string;
   name: string;
-  model: "TcAg" | "TcAs" | "HF_Plus";
+  model: SensorModelType;
   monitoringPointId: string;
   monitoringPoint: MonitoringPoint;
   machineId: string;
@@ -21,3 +32,4 @@ export interface Sensor {
 
 export type CreateSensorDTO = Omit<Sensor, "id" | "monitoringPoint">;
 export type UpdateSensorDTO = Partial<CreateSensorDTO> & { id: string };
+export type SensorModel = string;

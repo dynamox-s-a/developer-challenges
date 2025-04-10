@@ -1,18 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchSensors, createSensor, updateSensor, deleteSensor } from "./sensorThunks";
-import { Sensor } from "./sensorTypes";
+import { fetchSensors } from "./sensorThunks";
+import { SensorModelType } from "./sensorTypes";
 
 interface SensorState {
-  items: Sensor[];
+  items: SensorModelType[];
   status: "idle" | "loading" | "succeeded" | "failed";
-  loading: boolean;
   error: string | null;
 }
 
 const initialState: SensorState = {
   items: [],
   status: "idle",
-  loading: false,
   error: null,
 };
 
@@ -24,49 +22,15 @@ const sensorSlice = createSlice({
     builder
       .addCase(fetchSensors.pending, (state) => {
         state.status = "loading";
-        state.loading = true;
         state.error = null;
       })
       .addCase(fetchSensors.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.loading = false;
         state.items = action.payload;
       })
       .addCase(fetchSensors.rejected, (state, action) => {
         state.status = "failed";
-        state.loading = false;
         state.error = action.payload as string;
-      })
-
-      .addCase(createSensor.pending, (state) => {
-        state.status = "loading";
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(createSensor.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.loading = false;
-        state.items.push(action.payload);
-      })
-      .addCase(createSensor.rejected, (state, action) => {
-        state.status = "failed";
-        state.loading = false;
-        state.error = action.payload as string;
-      })
-
-      .addCase(updateSensor.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.loading = false;
-        const index = state.items.findIndex((s) => s.id === action.payload.id);
-        if (index !== -1) {
-          state.items[index] = action.payload;
-        }
-      })
-
-      .addCase(deleteSensor.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.loading = false;
-        state.items = state.items.filter((s) => s.id !== action.payload);
       });
   },
 });
