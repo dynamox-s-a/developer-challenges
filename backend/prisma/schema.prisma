@@ -32,17 +32,18 @@ model Machine {
   createdAt DateTime           @default(now())
 }
 
+model Sensor {
+  id                Int              @id @default(autoincrement())
+  model             SensorModel
+  monitoringPoint   MonitoringPoint  @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
+  monitoringPointId Int              @unique
+}
+
 model MonitoringPoint {
   id        Int      @id @default(autoincrement())
   name      String
-  machine   Machine  @relation(fields: [machineId], references: [id])
+  machine   Machine  @relation(fields: [machineId], references: [id], onDelete: Cascade)
   machineId Int
   sensor    Sensor?
 }
 
-model Sensor {
-  id                Int              @id @default(autoincrement())
-  model             SensorModel
-  monitoringPoint   MonitoringPoint  @relation(fields: [monitoringPointId], references: [id])
-  monitoringPointId Int              @unique
-}

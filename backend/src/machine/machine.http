@@ -10,7 +10,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsI
 
 ### Get all machines
 GET http://localhost:3000/machines
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidGVzdGUxQGVtYWlsLmNvbSIsImlhdCI6MTc0NDIyMDQ4MiwiZXhwIjoxNzQ0MjI0MDgyfQ.v0JIcm-003f5jl7ZHWyF3ZIrVZdeqqDiyvclxOvg-wE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwLCJlbWFpbCI6InRlc3RlQGVtYWlsLmNvbSIsImlhdCI6MTc0NDI4ODExMiwiZXhwIjoxNzQ0MjkxNzEyfQ.vhLURkUMs3umhsHl-1FDIVUMrLiL7EJPVzGqbQhyBRM
 
 ### Get machine by ID
 GET http://localhost:3000/machines/1
@@ -28,4 +28,4 @@ Authorization: Bearer <YOUR_JWT_TOKEN>
 
 ### Delete machine
 DELETE http://localhost:3000/machines/1
-Authorization: Bearer <YOUR_JWT_TOKEN>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwLCJlbWFpbCI6InRlc3RlQGVtYWlsLmNvbSIsImlhdCI6MTc0NDI4ODExMiwiZXhwIjoxNzQ0MjkxNzEyfQ.vhLURkUMs3umhsHl-1FDIVUMrLiL7EJPVzGqbQhyBRM

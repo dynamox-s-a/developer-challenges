@@ -25,6 +25,11 @@ export class MachineService {
   async deleteMachine(id: number) {
     const existing = await this.prisma.machine.findUnique({ where: { id } });
     if (!existing) throw new NotFoundException('Machine not found');
+
+    await this.prisma.monitoringPoint.deleteMany({
+      where: { machineId: id },
+    });
+
     return this.prisma.machine.delete({
       where: { id },
     });
