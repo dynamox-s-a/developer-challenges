@@ -1,54 +1,61 @@
-# React + TypeScript + Vite
+# Frontend Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este é um projeto frontend desenvolvido com React, TypeScript e Vite. Ele utiliza diversas bibliotecas modernas para gerenciamento de estado, roteamento e estilização.
 
-Currently, two official plugins are available:
+## Estrutura do Projeto
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+A estrutura do projeto é organizada da seguinte forma:
 
-## Expanding the ESLint configuration
+- **src/**: Contém o código-fonte principal do projeto.
+  - **assets/**: Arquivos estáticos e imagens.
+  - **components/**: Componentes reutilizáveis da aplicação.
+  - **contexts/**: Contextos React para gerenciamento de estado global.
+  - **pages/**: Páginas principais da aplicação.
+  - **services/**: Serviços para comunicação com APIs.
+  - **store/**: Configuração do Redux e slices para gerenciamento de estado.
+  - **styles/**: Estilos globais e temas.
+- **public/**: Arquivos públicos acessíveis diretamente.
+- **cypress/**: Configurações e testes E2E com Cypress.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Scripts Disponíveis
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+No diretório do projeto, você pode executar os seguintes comandos:
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- `npm run dev`: Inicia o servidor de desenvolvimento.
+- `npm run build`: Compila o projeto para produção.
+- `npm run lint`: Executa o linter para verificar problemas no código.
+- `npm run preview`: Visualiza a build de produção localmente.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Tecnologias Utilizadas
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+- **React**: Biblioteca para construção de interfaces de usuário.
+- **TypeScript**: Superset do JavaScript para tipagem estática.
+- **Vite**: Ferramenta de build e desenvolvimento rápida.
+- **Redux Toolkit**: Gerenciamento de estado global.
+- **React Query**: Gerenciamento de dados assíncronos.
+- **Material UI**: Biblioteca de componentes para estilização.
+- **Cypress**: Testes end-to-end.
+
+## Como Rodar o Projeto
+
+1. Clone o repositório:
+   ```bash
+   git clone <url-do-repositorio>
+   ```
+2. Instale as dependências:
+   ```bash
+   npm install
+   ```
+3. Inicie o servidor de desenvolvimento:
+   ```bash
+   npm run dev
+   ```
+4. Acesse o projeto no navegador em `http://localhost:5173`.
+
+## Contribuição
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.
+
+## Licença
+
+Este projeto está licenciado sob a licença MIT.

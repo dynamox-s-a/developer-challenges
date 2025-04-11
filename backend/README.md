@@ -1,99 +1,179 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Backend Developer Challenge
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este projeto é um backend desenvolvido com NestJS e Prisma, utilizando PostgreSQL como banco de dados. Abaixo estão as instruções para configurar, rodar e testar o projeto, bem como a documentação dos endpoints disponíveis.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Pré-requisitos
 
-## Description
+Certifique-se de ter as seguintes ferramentas instaladas em sua máquina:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- [Node.js](https://nodejs.org/) (versão 16 ou superior)
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
-## Project setup
+## Configuração do Ambiente
 
-```bash
-$ npm install
-```
+1. Clone o repositório:
 
-## Compile and run the project
+   ```bash
+   git clone <URL_DO_REPOSITORIO>
+   cd backend
+   ```
 
-```bash
-# development
-$ npm run start
+2. Instale as dependências do projeto:
 
-# watch mode
-$ npm run start:dev
+   ```bash
+   npm install
+   ```
 
-# production mode
-$ npm run start:prod
-```
+3. Configure as variáveis de ambiente:
 
-## Run tests
+   Crie um arquivo `.env` na raiz do projeto com o seguinte conteúdo:
 
-```bash
-# unit tests
-$ npm run test
+   ```env
+   DATABASE_URL=postgresql://postgres:123@localhost:5434/nest
+   JWT_SECRET=<sua_chave_secreta>
+   ```
 
-# e2e tests
-$ npm run test:e2e
+   **Nota:** Para este projeto, a imagem Docker já nos fornece o nome do usuário (`postgres`), a senha (`123`) e o nome do banco de dados (`nest`) para serem utilizados na string de conexão.
 
-# test coverage
-$ npm run test:cov
-```
+## Rodando o Banco de Dados
 
-## Deployment
+1. Inicie o banco de dados com Docker Compose:
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+   ```bash
+   docker-compose up -d
+   ```
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+2. Execute as migrações do Prisma para criar as tabelas no banco de dados:
 
-```bash
-$ npm install -g mau
-$ mau deploy
-```
+   ```bash
+   npx prisma migrate dev
+   ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+3. (Opcional) Acesse o banco de dados com o Prisma Studio:
 
-## Resources
+   ```bash
+   npx prisma studio
+   ```
 
-Check out a few resources that may come in handy when working with NestJS:
+## Rodando o Projeto
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+1. Inicie o servidor de desenvolvimento:
 
-## Support
+   ```bash
+   npm run start:dev
+   ```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+2. O servidor estará disponível em `http://localhost:3000`.
 
-## Stay in touch
+## Rodando os Testes
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+1. Execute os testes unitários:
 
-## License
+   ```bash
+   npm run test
+   ```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+2. Execute os testes de integração:
+
+   ```bash
+   npm run test:e2e
+   ```
+
+## Endpoints Disponíveis
+
+### Autenticação
+
+- **POST /auth/login**
+  - Descrição: Realiza o login de um usuário.
+  - Corpo da requisição:
+    ```json
+    {
+      "email": "string",
+      "password": "string"
+    }
+    ```
+
+- **POST /auth/signup**
+  - Descrição: Registra um novo usuário.
+  - Corpo da requisição:
+    ```json
+    {
+      "email": "string",
+      "password": "string"
+    }
+    ```
+
+### Máquinas
+
+- **GET /machine**
+  - Descrição: Lista todas as máquinas.
+
+- **POST /machine**
+  - Descrição: Cria uma nova máquina.
+  - Corpo da requisição:
+    ```json
+    {
+      "name": "string",
+      "type": "Pump | Fan"
+    }
+    ```
+
+- **PATCH /machine/:id**
+  - Descrição: Atualiza uma máquina existente.
+  - Corpo da requisição:
+    ```json
+    {
+      "name": "string",
+      "type": "Pump | Fan"
+    }
+    ```
+
+- **DELETE /machine/:id**
+  - Descrição: Remove uma máquina.
+
+### Pontos de Monitoramento
+
+- **GET /monitoring-point**
+  - Descrição: Lista todos os pontos de monitoramento.
+
+- **POST /monitoring-point**
+  - Descrição: Cria um novo ponto de monitoramento.
+  - Corpo da requisição:
+    ```json
+    {
+      "name": "string",
+      "machineId": "number"
+    }
+    ```
+
+- **PATCH /monitoring-point/:id**
+  - Descrição: Atualiza um ponto de monitoramento existente.
+  - Corpo da requisição:
+    ```json
+    {
+      "name": "string",
+      "machineId": "number"
+    }
+    ```
+
+- **DELETE /monitoring-point/:id**
+  - Descrição: Remove um ponto de monitoramento.
+
+### Sensores
+
+- **GET /sensor**
+  - Descrição: Lista todos os sensores.
+
+- **POST /sensor**
+  - Descrição: Cria um novo sensor.
+  - Corpo da requisição:
+    ```json
+    {
+      "model": "TcAg | TcAs | HFPlus",
+      "monitoringPointId": "number"
+    }
+    ```
+
+- **DELETE /sensor/:id**
+  - Descrição: Remove um sensor.
