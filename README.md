@@ -1,50 +1,120 @@
-# Dynamox Developer Challenges
+# 🚀 DynaPredict - Full Stack Challenge
 
-## About Dynamox
+Solução para o desafio full stack da Dynamox, para monitoramento de máquinas e sensores.
 
-[Dynamox](https://dynamox.net/) is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications. 
+A aplicação foi desenvolvida, separando **frontend** e **backend** em dois projetos distintos. O projeto cobre autenticação, gerenciamento de máquinas, sensores e pontos de monitoramento, conforme os requisitos propostos.
 
-With our proficiency in signal processing for vibration and acoustics, we deliver advanced and precise monitoring systems. We are committed to optimizing operational efficiency and facilitating proactive maintenance through our innovative technology and integrated solutions.
+---
 
-## Positions
+## 📁 Estrutura do Projeto
 
-We are looking for developers who are passionate about learning, growing, and contributing to our team. You will play a key role in our development efforts, working on a variety of projects and collaborating with different teams to build and improve our solutions.
+```
+graphql
+CopiarEditar
+.
+├── dynamox-frontend   # Aplicação React + Redux Toolkit + Material UI
+└── dynamox-backend    # API REST com NestJS + Prisma + PostgreSQL
 
-We value flexibility and collaboration, hence we provide opportunities for you to lend your skills to other teams when required. Join us on this exciting journey as we revolutionize our digital platforms. Currently we are particularly interested in individuals who can identify with one of the following role descriptions:
+```
 
-### Junior Software Developer
+---
 
-With limited experience, assists in coding, testing, and stabilizing systems under supervision. Communicates with immediate team members and solves straightforward problems with guidance. Should display a willingness to learn and grow professionally. This is an individual contributor role.
+## ⚙️ Tecnologias Utilizadas
 
-### Mid-level Software Developer
+### 🖥️ Frontend (`dynamox-frontend`)
 
-With a certain level of proven experience, contributes to software development, solves moderate problems, and starts handling ambiguous situations with minimal guidance. Communicates with the broader team and engages in code reviews and documentation. This role also includes mentorship of junior engineers and a commitment to continuous learning. This is an individual contributor role.
+- [React](https://reactjs.org/) com [Vite](https://vitejs.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Material UI 5](https://mui.com/)
+- Redux Toolkit com `createAsyncThunk`
+- Requisições autenticadas via `axios` com token JWT
 
-### Senior-level Software Developer
+### 🔧 Backend (`dynamox-backend`)
 
-With vast experience, enhances software development, leading complex system development and ambiguous situation handling. Tackles intricate problems and mentors junior and mid-level engineers. Champions coding standards, project strategy, and technology adoption. Communicates across teams, influencing technical and non-technical stakeholders. This individual contributor role blends technical expertise with leadership, focusing on innovation, mentorship, and strategic contributions to the development process.
+- [NestJS](https://nestjs.com/)
+- [Prisma ORM](https://www.prisma.io/) com [PostgreSQL](https://www.postgresql.org/)
+- Validações customizadas para regras de negócio
+- Organização em módulos (`machines`, `sensors`, `monitoring-points`, `auth`)
+- CRUD completo com DTOs, services e controllers
 
-## Challenges Full-Stack
+---
 
-- [ ] [01 - Dynamox Full-Stack Developer Challenge](./full-stack-challenge.md)
-  
-## Challenges Front-End
+## 📌 Funcionalidades implementadas
 
-- [ ] [01 - Dynamox Front-end Developer Challenge V1](./front-end-challenge-v1.md)
-- [ ] [02 - Dynamox Front-end Developer Challenge V2](./front-end-challenge-v2.md)
+- **Login:** Usuário fixo com email e senha definidos no backend.
+- **Sensor Models:** São fixos, conforme especificado: "TcAg", "TcAs", "HF+".
+- **Paginação:** Lista de pontos de monitoramento exibe até 5 por página, conforme exigido.
+- **Ordenação:** Feita no frontend com base nos dados já paginados.
+- **Regras de Negócio:** Sensores "TcAg" e "TcAs" são bloqueados em máquinas tipo "Pump", tanto no frontend quanto backend.
+- **Token:** Armazenado em memória com Redux, persistido localmente.
+- **Layout:** Utilizado Material UI com grid system responsivo
 
-## Ready to Begin the Challenges?
+---
 
-1. [ ] Fork this repository to your own Github account.
-1. [ ] Create a new branch using your first name and last name. For example: `caroline-oliveira`.
-1. [ ] After completing the challenge, create a pull request to this repository (https://github.com/dynamox-s-a/js-ts-full-stack-test), aimed at the main branch.
-1. [ ] We will receive a notification about your pull request, review your solution, and get in touch with you.
+## ▶️ Como Rodar o Projeto
 
-## Frequently Asked Questions
+### Pré-requisitos
 
-1. Is it necessary to fork the project?
-  **Yes, this allows us to see how much time you spent on the challenge.**
+- Node.js (>= 18)
+- Yarn ou npm
+- PostgreSQL (ou Docker)
 
-</br>
+### Backend
 
-**Good luck! We look forward to reviewing your submission.** 🚀
+```bash
+cd dynamox-backend
+cp .env.example .env
+# configure as variáveis, especialmente a DATABASE_URL
+npm install
+npm prisma migrate dev
+npm run start
+
+```
+
+### Frontend
+
+```bash
+cd dynamox-frontend
+npm install
+npm run dev
+
+```
+
+---
+
+## 🧪 Testes
+
+- `Jest` no backend
+
+---
+
+## 🌐 Deploy
+
+> AWS
+
+A aplicação backend (`dynamox-backend`) foi implantada utilizando o serviço **Elastic Beanstalk** da AWS.
+
+### Serviços utilizados:
+
+- **Elastic Beanstalk:** Gerenciamento da infraestrutura de aplicação com provisionamento automático de EC2, Load Balancer, Auto Scaling e logs integrados.
+- **Amazon EC2:** Instância criada automaticamente para hospedar o backend.
+- **Amazon S3:** Utilizado pelo Beanstalk para o front-end.
+
+http://dynamox-frontend.s3-website-us-east-1.amazonaws.com
+
+### Etapas realizadas:
+
+- Instalação e configuração da AWS CLI e EB CLI.
+- Criação do ambiente com `eb init` e `eb create`.
+- Deploy da aplicação com `eb deploy`.
+- Configuração de variáveis de ambiente diretamente no ambiente do Beanstalk com `eb setenv`.
+
+A aplicação está sendo servida via Load Balancer com rota pública fornecida pela AWS.
+
+---
+
+## 📞 Contato
+
+Se quiser trocar uma ideia sobre o projeto ou meu processo de desenvolvimento:
+
+**LinkedIn:** www.linkedin.com/in/karina-peresg
