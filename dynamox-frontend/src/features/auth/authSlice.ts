@@ -17,7 +17,10 @@ export const login = createAsyncThunk(
   "auth/login",
   async (credentials: { email: string; password: string }, thunkAPI) => {
     try {
-      const response = await axios.post("http://localhost:3000/auth/login", credentials);
+      const response = await axios.post(
+        "http://dynapredict.us-east-1.elasticbeanstalk.com/auth/login",
+        credentials
+      );
       console.log("✅ Resposta da API:", response.data);
       return response.data.access_token;
     } catch (error: any) {

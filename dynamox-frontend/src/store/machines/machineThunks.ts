@@ -8,7 +8,7 @@ export const fetchMachines = createAsyncThunk("machines/fetchMachines", async (_
     const state = thunkAPI.getState() as RootState;
     const token = state.auth.token;
 
-    const response = await axios.get("http://localhost:3000/machines", {
+    const response = await axios.get("http://dynapredict.us-east-1.elasticbeanstalk.com/machines", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -27,11 +27,15 @@ export const createMachine = createAsyncThunk(
       const state = thunkAPI.getState() as RootState;
       const token = state.auth.token;
 
-      const response = await axios.post("http://localhost:3000/machines", data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        "http://dynapredict.us-east-1.elasticbeanstalk.com/machines",
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       return response.data;
     } catch (error: any) {
@@ -47,11 +51,15 @@ export const updateMachine = createAsyncThunk(
       const state = thunkAPI.getState() as RootState;
       const token = state.auth.token;
 
-      const response = await axios.put(`http://localhost:3000/machines/${data.id}`, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.put(
+        `http://dynapredict.us-east-1.elasticbeanstalk.com/machines/${data.id}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       return response.data;
     } catch (error) {
@@ -67,7 +75,7 @@ export const deleteMachine = createAsyncThunk(
       const state = thunkAPI.getState() as RootState;
       const token = state.auth.token;
 
-      await axios.delete(`http://localhost:3000/machines/${id}`, {
+      await axios.delete(`http://dynapredict.us-east-1.elasticbeanstalk.com/machines/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

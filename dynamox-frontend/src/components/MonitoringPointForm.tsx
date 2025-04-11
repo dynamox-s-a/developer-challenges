@@ -139,7 +139,10 @@ const MonitoringPointForm: React.FC<MonitoringPointFormProps> = ({ initialData, 
         select
         label="Modelo do Sensor"
         value={toDisplayModel(sensorModel)}
-        onChange={(e) => setSensorModel(toInternalModel(e.target.value as DisplaySensorModel))}
+        onChange={(e) => {
+          setSensorModel(toInternalModel(e.target.value as DisplaySensorModel));
+          console.log(sensorModel);
+        }}
         fullWidth
         margin="normal"
       >

@@ -10,7 +10,9 @@ export const fetchMonitoringPoints = createAsyncThunk<
   { rejectValue: string }
 >("monitoringPoints/fetchAll", async (_, thunkAPI) => {
   try {
-    const response = await axios.get("http://localhost:3000/monitoring-points");
+    const response = await axios.get(
+      "http://dynapredict.us-east-1.elasticbeanstalk.com/monitoring-points"
+    );
     return response.data.map((point: MonitoringPoint) => ({
       ...point,
       sensorModel: fromDbModel(point.sensorModel),
@@ -38,7 +40,10 @@ export const createMonitoringPoint = createAsyncThunk<
       ...data,
       sensorModel: toDbModel(data.sensorModel),
     };
-    const response = await axios.post("http://localhost:3000/monitoring-points", payload);
+    const response = await axios.post(
+      "http://dynapredict.us-east-1.elasticbeanstalk.com/monitoring-points",
+      payload
+    );
     return {
       ...response.data,
       sensorModel: fromDbModel(response.data.sensorModel),
@@ -65,7 +70,7 @@ export const updateMonitoringPoint = createAsyncThunk<
     };
 
     const response = await axios.put(
-      `http://localhost:3000/monitoring-points/${data.id}`,
+      `http://dynapredict.us-east-1.elasticbeanstalk.com/monitoring-points/${data.id}`,
       payload,
       {
         headers: {
@@ -90,11 +95,14 @@ export const deleteMonitoringPoint = createAsyncThunk<string, string, { rejectVa
       const state = thunkAPI.getState() as RootState;
       const token = state.auth.token;
 
-      await axios.delete(`http://localhost:3000/monitoring-points/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.delete(
+        `http://dynapredict.us-east-1.elasticbeanstalk.com/monitoring-points/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       return id;
     } catch (error) {

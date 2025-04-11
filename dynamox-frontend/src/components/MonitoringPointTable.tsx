@@ -228,8 +228,8 @@ const MonitoringPointTable = ({ points }: Props) => {
                     fullWidth
                   >
                     {sensors.map((sensor) => (
-                      <MenuItem key={sensor.id} value={sensor.model}>
-                        {sensor.model}
+                      <MenuItem key={sensor} value={sensor}>
+                        {sensor}
                       </MenuItem>
                     ))}
                   </Select>

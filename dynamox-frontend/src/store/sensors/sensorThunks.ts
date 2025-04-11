@@ -10,9 +10,12 @@ export const fetchSensors = createAsyncThunk<SensorModelType[]>(
       const state = thunkAPI.getState() as RootState;
       const token = state.auth.token;
 
-      const response = await axios.get("http://localhost:3000/sensor-models", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        "http://dynapredict.us-east-1.elasticbeanstalk.com/sensor-models",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       return response.data as SensorModelType[];
     } catch (error) {
