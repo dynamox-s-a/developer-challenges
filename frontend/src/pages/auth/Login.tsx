@@ -91,8 +91,11 @@ export default function Login() {
               {loading ? <CircularProgress size={24} /> : "Entrar"}
             </Button>
             <Box sx={{ textAlign: "center", mt: 2 }}>
-              <Typography variant="body2">
-                Não possui uma conta?{" "}
+              <Typography
+                variant="body2"
+                sx={{ display: "flex", gap: "4px", justifyContent: "center" }}
+              >
+                Não possui uma conta?
                 <Link to="/auth/register" style={{ color: "primary" }}>
                   Cadastre-se
                 </Link>

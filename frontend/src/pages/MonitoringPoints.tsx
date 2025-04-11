@@ -3,19 +3,11 @@ import {
   Box,
   Typography,
   Button,
-  IconButton,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Paper,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField,
   FormControl,
   InputLabel,
   Select,
@@ -23,8 +15,6 @@ import {
   SelectChangeEvent,
   CircularProgress,
   Tooltip,
-  TablePagination,
-  TableSortLabel,
 } from "@mui/material";
 import { Plus, Edit, Trash, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
@@ -41,6 +31,10 @@ import {
   SensorModel,
   updateMonitoringPoint,
 } from "../services/api";
+import MonitoringPointDialog from "../components/MonitoringPointDialog";
+import MonitoringPointTable from "../components/MonitoringPointTable";
+import AddSensorDialog from "../components/AddSensorDialog";
+import DeleteMonitoringPointDialog from "../components/DeleteMonitoringPointDialog";
 
 export default function MonitoringPoints() {
   const [monitoringPoints, setMonitoringPoints] = useState<MonitoringPoint[]>(
@@ -259,10 +253,6 @@ export default function MonitoringPoints() {
     setOrderBy(property);
   };
 
-  const createSortHandler = (property: string) => () => {
-    handleRequestSort(property);
-  };
-
   return (
     <Box>
       <Box
@@ -295,191 +285,31 @@ export default function MonitoringPoints() {
         </Paper>
       )}
 
-      <TableContainer component={Paper} elevation={1}>
-        <Table sx={{ minWidth: 650 }}>
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                <TableSortLabel
-                  active={orderBy === "id"}
-                  direction={orderBy === "id" ? order : "asc"}
-                  onClick={createSortHandler("id")}
-                >
-                  ID
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={orderBy === "name"}
-                  direction={orderBy === "name" ? order : "asc"}
-                  onClick={createSortHandler("name")}
-                >
-                  Nome do ponto
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={orderBy === "machine.name"}
-                  direction={orderBy === "machine.name" ? order : "asc"}
-                  onClick={createSortHandler("machine.name")}
-                >
-                  Nome da máquina
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={orderBy === "machine.type"}
-                  direction={orderBy === "machine.type" ? order : "asc"}
-                  onClick={createSortHandler("machine.type")}
-                >
-                  Tipo da máquina
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={orderBy === "sensor.model"}
-                  direction={orderBy === "sensor.model" ? order : "asc"}
-                  onClick={createSortHandler("sensor.model")}
-                >
-                  Modelo do sensor
-                </TableSortLabel>
-              </TableCell>
-              <TableCell align="right">Ações</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {loading ? (
-              <TableRow>
-                <TableCell colSpan={6} align="center" sx={{ py: 3 }}>
-                  <CircularProgress size={30} />
-                </TableCell>
-              </TableRow>
-            ) : monitoringPoints.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={6} align="center" sx={{ py: 3 }}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: 1,
-                    }}
-                  >
-                    <AlertCircle size={24} />
-                    <Typography>
-                      Nenhum ponto de monitoramento encontrado
-                    </Typography>
-                  </Box>
-                </TableCell>
-              </TableRow>
-            ) : (
-              monitoringPoints.map((point) => (
-                <TableRow key={point.id}>
-                  <TableCell>{point.id}</TableCell>
-                  <TableCell>{point.name}</TableCell>
-                  <TableCell>{point.machine?.name}</TableCell>
-                  <TableCell>{point.machine?.type}</TableCell>
-                  <TableCell>
-                    {point.sensor ? point.sensor.model : "No Sensor"}
-                  </TableCell>
-                  <TableCell align="right">
-                    {!point.sensor && (
-                      <Tooltip title="Adicionar">
-                        <IconButton
-                          color="success"
-                          onClick={() => handleOpenSensorDialog(point)}
-                        >
-                          <Plus size={18} />
-                        </IconButton>
-                      </Tooltip>
-                    )}
-                    <Tooltip title="Editar">
-                      <IconButton
-                        color="primary"
-                        onClick={() => handleOpenDialog(point)}
-                      >
-                        <Edit size={18} />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Deletar">
-                      <IconButton
-                        color="error"
-                        onClick={() => handleOpenDeleteDialog(point)}
-                      >
-                        <Trash size={18} />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={100}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </TableContainer>
+      <MonitoringPointTable
+        monitoringPoints={monitoringPoints}
+        loading={loading}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        orderBy={orderBy}
+        order={order}
+        totalCount={100} 
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        onRequestSort={handleRequestSort}
+        onAddSensor={handleOpenSensorDialog}
+        onEdit={handleOpenDialog}
+        onDelete={handleOpenDeleteDialog}
+      />
 
-      <Dialog
+      <MonitoringPointDialog
         open={openDialog}
         onClose={handleCloseDialog}
-        maxWidth="sm"
-        fullWidth
-      >
-        <DialogTitle>
-          {currentPoint ? "Edit Monitoring Point" : "Add New Monitoring Point"}
-        </DialogTitle>
-        <DialogContent>
-          <Box sx={{ mt: 2 }}>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              name="name"
-              label="Nome do Ponto"
-              type="text"
-              fullWidth
-              variant="outlined"
-              value={pointFormData.name}
-              onChange={handlePointFormChange}
-              required
-            />
-            <FormControl fullWidth margin="dense">
-              <InputLabel id="machine-label">Máquina</InputLabel>
-              <Select
-                labelId="machine-label"
-                id="machineId"
-                name="machineId"
-                value={pointFormData.machineId || ""}
-                label="Machine"
-                onChange={handleMachineSelectChange}
-              >
-                {machines.map((machine) => (
-                  <MenuItem key={machine.id} value={machine.id}>
-                    {machine.name} ({machine.type})
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancelar</Button>
-          <Button
-            onClick={handlePointSubmit}
-            variant="contained"
-            disabled={!pointFormData.name || !pointFormData.machineId}
-          >
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
+        onSubmit={handlePointSubmit}
+        formData={pointFormData}
+        machines={machines}
+        onFormChange={handlePointFormChange}
+        onMachineChange={handleMachineSelectChange}
+      />
 
       <Dialog
         open={openSensorDialog}
@@ -553,7 +383,7 @@ export default function MonitoringPoints() {
         <DialogContent>
           <Typography>
             Você tem certeza que deseja deletar o ponto de monitoramento "
-            {currentPoint?.name}"? This action cannot be undone.
+            {currentPoint?.name}"? 
           </Typography>
         </DialogContent>
         <DialogActions>

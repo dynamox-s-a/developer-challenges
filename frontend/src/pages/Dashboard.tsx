@@ -1,14 +1,5 @@
 import { useEffect } from "react";
-import {
-  Box,
-  Typography,
-  Paper,
-  Container,
-  Grid as MuiGrid,
-  Card,
-  CardContent,
-  CircularProgress,
-} from "@mui/material";
+import { Box, Typography, Container, Grid as MuiGrid } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../store";
 import {
@@ -23,6 +14,10 @@ import {
 } from "../store/slices/monitoringPointsSlice";
 import { getMachines, getMonitoringPoints } from "../services/api";
 import { useAuth } from "../contexts/AuthContext";
+import LoadingScreen from "../components/LoadingScreen";
+import ErrorAlert from "../components/ErrorAlert";
+import OverviewCard from "../components/OverviewCard";
+import ProgressBar from "../components/ProgressBar";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -70,18 +65,7 @@ export default function Dashboard() {
   }, [dispatch]);
 
   if (loading) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
+    return <LoadingScreen />;
   }
 
   const machineCount = machines.length;
@@ -104,18 +88,7 @@ export default function Dashboard() {
         Bem vindo de volta
       </Typography>
 
-      {error && (
-        <Paper
-          sx={{
-            p: 2,
-            mb: 3,
-            bgcolor: "error.light",
-            color: "error.contrastText",
-          }}
-        >
-          <Typography>{error}</Typography>
-        </Paper>
-      )}
+      {error && <ErrorAlert message={error} />}
 
       <Box sx={{ mb: 4 }}>
         <Typography variant="h6" gutterBottom>
@@ -124,114 +97,63 @@ export default function Dashboard() {
 
         <MuiGrid container spacing={3}>
           <MuiGrid item xs={12} md={6} lg={3}>
-            <Card sx={{ bgcolor: "primary.light" }}>
-              <CardContent>
-                <Typography variant="h5" component="div">
-                  {machineCount}
-                </Typography>
-                <Typography color="text.secondary" gutterBottom>
-                  Máquinas
-                </Typography>
-              </CardContent>
-            </Card>
+            <OverviewCard
+              title="Máquinas"
+              value={machineCount}
+              color="primary.light"
+            />
           </MuiGrid>
 
           <MuiGrid item xs={12} md={6} lg={3}>
-            <Card sx={{ bgcolor: "success.light" }}>
-              <CardContent>
-                <Typography variant="h5" component="div">
-                  {monitoringPointCount}
-                </Typography>
-                <Typography color="text.secondary" gutterBottom>
-                  Pontos de Monitoramento
-                </Typography>
-              </CardContent>
-            </Card>
+            <OverviewCard
+              title="Pontos de Monitoramento"
+              value={monitoringPointCount}
+              color="success.light"
+            />
           </MuiGrid>
 
           <MuiGrid item xs={12} md={6} lg={3}>
-            <Card sx={{ bgcolor: "warning.light" }}>
-              <CardContent>
-                <Typography variant="h5" component="div">
-                  {pointsWithSensors}
-                </Typography>
-                <Typography color="text.secondary" gutterBottom>
-                  Pontos com Sensores
-                </Typography>
-              </CardContent>
-            </Card>
+            <OverviewCard
+              title="Pontos com Sensores"
+              value={pointsWithSensors}
+              color="warning.light"
+            />
           </MuiGrid>
         </MuiGrid>
       </Box>
 
       <MuiGrid container spacing={4}>
         <MuiGrid item xs={12} md={6}>
-          <Paper sx={{ p: 3, height: "100%" }}>
+          <Box sx={{ p: 3, height: "100%" }}>
             <Typography variant="h6" gutterBottom>
               Tipos de Máquinas
             </Typography>
             <Box
               sx={{ mt: 2, display: "flex", flexDirection: "column", gap: 2 }}
             >
-              <Box>
-                <Typography variant="body2" gutterBottom>
-                  Pumps
-                </Typography>
-                <Box
-                  sx={{
-                    height: 10,
-                    bgcolor: "background.default",
-                    borderRadius: 1,
-                    overflow: "hidden",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      height: "100%",
-                      width: `${machineCount ? (pumpCount / machineCount) * 100 : 0}%`,
-                      bgcolor: "primary.main",
-                    }}
-                  />
-                </Box>
-                <Typography variant="subtitle2" sx={{ mt: 0.5 }}>
-                  {pumpCount} (
-                  {machineCount > 0
+              <ProgressBar
+                label="Pumps"
+                value={pumpCount}
+                percentage={
+                  machineCount > 0
                     ? Math.round((pumpCount / machineCount) * 100)
-                    : 0}
-                  %)
-                </Typography>
-              </Box>
+                    : 0
+                }
+                color="primary.main"
+              />
 
-              <Box>
-                <Typography variant="body2" gutterBottom>
-                  Fans
-                </Typography>
-                <Box
-                  sx={{
-                    height: 10,
-                    bgcolor: "background.default",
-                    borderRadius: 1,
-                    overflow: "hidden",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      height: "100%",
-                      width: `${machineCount ? (fanCount / machineCount) * 100 : 0}%`,
-                      bgcolor: "secondary.main",
-                    }}
-                  />
-                </Box>
-                <Typography variant="subtitle2" sx={{ mt: 0.5 }}>
-                  {fanCount} (
-                  {machineCount > 0
+              <ProgressBar
+                label="Fans"
+                value={fanCount}
+                percentage={
+                  machineCount > 0
                     ? Math.round((fanCount / machineCount) * 100)
-                    : 0}
-                  %)
-                </Typography>
-              </Box>
+                    : 0
+                }
+                color="secondary.main"
+              />
             </Box>
-          </Paper>
+          </Box>
         </MuiGrid>
       </MuiGrid>
     </Container>

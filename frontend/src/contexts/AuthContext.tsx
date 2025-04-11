@@ -73,7 +73,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       setLoading(true);
       const response = await signIn(email, password);
-      console.log("Login response:", response);
 
       handleAuthResponse(response);
 

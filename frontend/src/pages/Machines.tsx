@@ -3,28 +3,8 @@ import {
   Box,
   Typography,
   Button,
-  IconButton,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  SelectChangeEvent,
-  CircularProgress,
-  Tooltip,
 } from "@mui/material";
-import { Plus, Edit, Trash, AlertCircle } from "lucide-react";
+import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import {
   getMachines,
@@ -34,6 +14,9 @@ import {
   Machine,
   MachineType,
 } from "../services/api";
+import MachineTable from "../components/MachineTable";
+import EditMachineDialog from "../components/EditMachineDialog";
+import DeleteMachineDialog from "../components/DeleteMachineDialog";
 
 export default function Machines() {
   const [machines, setMachines] = useState<Machine[]>([]);
@@ -165,147 +148,29 @@ export default function Machines() {
         </Button>
       </Box>
 
-      <TableContainer component={Paper} elevation={1}>
-        <Table sx={{ minWidth: 650 }}>
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Nome</TableCell>
-              <TableCell>Tipo</TableCell>
-              <TableCell>Criado em</TableCell>
-              <TableCell align="right">Ações</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {loading ? (
-              <TableRow>
-                <TableCell colSpan={5} align="center" sx={{ py: 3 }}>
-                  <CircularProgress size={30} />
-                </TableCell>
-              </TableRow>
-            ) : machines.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={5} align="center" sx={{ py: 3 }}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: 1,
-                    }}
-                  >
-                    <AlertCircle size={24} />
-                    <Typography>Nenhuma máquina encontrada</Typography>
-                  </Box>
-                </TableCell>
-              </TableRow>
-            ) : (
-              machines.map((machine) => (
-                <TableRow key={machine.id}>
-                  <TableCell>{machine.id}</TableCell>
-                  <TableCell>{machine.name}</TableCell>
-                  <TableCell>{machine.type}</TableCell>
-                  <TableCell>
-                    {new Date(machine.createdAt).toLocaleDateString()}
-                  </TableCell>
-                  <TableCell align="right">
-                    <Tooltip title="Editar">
-                      <IconButton
-                        color="primary"
-                        onClick={() => handleOpenDialog(machine)}
-                      >
-                        <Edit size={18} />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Deletar">
-                      <IconButton
-                        color="error"
-                        onClick={() => handleOpenDeleteDialog(machine)}
-                      >
-                        <Trash size={18} />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <MachineTable
+        machines={machines}
+        loading={loading}
+        onEdit={handleOpenDialog}
+        onDelete={handleOpenDeleteDialog}
+      />
 
-      <Dialog
+      <EditMachineDialog
         open={openDialog}
         onClose={handleCloseDialog}
-        maxWidth="sm"
-        fullWidth
-      >
-        <DialogTitle>
-          {currentMachine ? "Editar máquina" : "Adicionar máquina"}
-        </DialogTitle>
-        <DialogContent>
-          <Box sx={{ mt: 2 }}>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              name="name"
-              label="Nome"
-              type="text"
-              fullWidth
-              variant="outlined"
-              value={formData.name}
-              onChange={handleFormChange}
-              required
-            />
-            <FormControl fullWidth margin="dense">
-              <InputLabel id="type-label">Tipo da máquina</InputLabel>
-              <Select
-                labelId="type-label"
-                id="type"
-                name="type"
-                value={formData.type}
-                label="Machine Type"
-                onChange={handleSelectChange}
-              >
-                <MenuItem value={MachineType.Pump}>Pump</MenuItem>
-                <MenuItem value={MachineType.Fan}>Fan</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancelar</Button>
-          <Button
-            onClick={handleSubmit}
-            variant="contained"
-            disabled={!formData.name}
-          >
-            Salvar
-          </Button>
-        </DialogActions>
-      </Dialog>
+        onSubmit={handleSubmit}
+        formData={formData}
+        onFormChange={handleFormChange}
+        onSelectChange={handleSelectChange}
+        isEditing={!!currentMachine}
+      />
 
-      <Dialog
+      <DeleteMachineDialog
         open={openDeleteDialog}
         onClose={handleCloseDeleteDialog}
-        maxWidth="xs"
-        fullWidth
-      >
-        <DialogTitle>Delete Machine</DialogTitle>
-        <DialogContent>
-          <Typography>
-            Você tem certeza que deseja deletar a máquina "
-            {currentMachine?.name}
-            "?
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDeleteDialog}>Cancelar</Button>
-          <Button onClick={handleDelete} color="error" variant="contained">
-            Deletar
-          </Button>
-        </DialogActions>
-      </Dialog>
+        onDelete={handleDelete}
+        machineName={currentMachine?.name || null}
+      />
     </Box>
   );
 }

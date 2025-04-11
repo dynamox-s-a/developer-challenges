@@ -91,9 +91,12 @@ export default function Register() {
               {loading ? <CircularProgress size={24} /> : "Register"}
             </Button>
             <Box sx={{ textAlign: "center", mt: 2 }}>
-              <Typography variant="body2">
-                Já possui uma conta?{" "}
-                <Link to="/auth/login" style={{ color: "primary" }}>
+              <Typography
+                variant="body2"
+                sx={{ display: "flex", gap: "4px", justifyContent: "center" }}
+              >
+                Já possui uma conta?
+                <Link to="/auth/register" style={{ color: "primary" }}>
                   Entrar
                 </Link>
               </Typography>
