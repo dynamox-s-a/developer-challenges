@@ -88,6 +88,11 @@ npm run dev
 
 ---
 
+### Usuário padrão para login
+
+- **E-mail:** admin@dynamox.com
+- **Senha:** 123456
+
 ## 🌐 Deploy
 
 > AWS
