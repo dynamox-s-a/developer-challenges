@@ -1,0 +1,31 @@
+### Create monitoring point
+POST http://localhost:3000/monitoring-points
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidGVzdGUxQGVtYWlsLmNvbSIsImlhdCI6MTc0NDIyMDQ4MiwiZXhwIjoxNzQ0MjI0MDgyfQ.v0JIcm-003f5jl7ZHWyF3ZIrVZdeqqDiyvclxOvg-wE
+
+{
+  "name": "Ponto 1",
+  "machineId": 1
+}
+
+### Get all monitoring points
+GET http://localhost:3000/monitoring-points
+Authorization: Bearer <YOUR_JWT_TOKEN>
+
+### Get monitoring point by ID
+GET http://localhost:3000/monitoring-points/1
+Authorization: Bearer <YOUR_JWT_TOKEN>
+
+### Update monitoring point
+PUT http://localhost:3000/monitoring-points/1
+Content-Type: application/json
+Authorization: Bearer <YOUR_JWT_TOKEN>
+
+{
+  "name": "Ponto Atualizado",
+  "machineId": 1
+}
+
+### Delete monitoring point
+DELETE http://localhost:3000/monitoring-points/1
+Authorization: Bearer <YOUR_JWT_TOKEN>
