@@ -64,6 +64,25 @@ export const postMachine = (machine: Machine): ThunkAction<void, RootState, unkn
   };
 }
 
+export const deleteMachine = (machineId: string): ThunkAction<void, RootState, unknown, Action> => {
+  return async (dispatch: Dispatch<Action>) => {
+    try {
+      const response = await fetch(`${API_UTL}/machines/${machineId}`, {
+        method: 'DELETE',
+      });
+
+      const machineDelete = await response.json();
+
+      if (!response.ok) {
+        throw new Error('Failed to delete machine');
+      }
+
+      dispatch({ type: 'DELETE_MACHINE', payload: machineDelete });
+    } catch (error) {
+      console.error('Error deleting machine:', error);
+    }
+  }
+}
 
 // Sensores
 export const fetchSensor = (id: string) => {

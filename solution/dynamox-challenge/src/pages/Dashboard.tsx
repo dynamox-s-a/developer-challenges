@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { fetchMachines } from '../redux/actions';
+import { deleteMachine, fetchMachines } from '../redux/actions';
 import { RootState, AppDispatch } from '../redux/store'; 
 import { useNavigate } from 'react-router-dom';
 
@@ -28,6 +28,12 @@ export default function Dashboard() {
     navigate('/new-machine'); 
   };
 
+  const handleDelete = (machineId: string | undefined) => {
+    if (machineId !== undefined) {
+      dispatch(deleteMachine(machineId));
+    }
+  }
+
   return (
     <div>
       <h1>Bem-vindo ao Dashboard, {username}!</h1>
@@ -41,7 +47,7 @@ export default function Dashboard() {
             <div key={machine.id} className="machine-card">
               <h2>{machine.name}</h2>
               <p>Tipo: {machine.type}</p>
-              <button>Excluir</button>
+              <button onClick={ () => handleDelete(machine.id) }>Excluir</button>
             </div>
           ))
         ) : (
