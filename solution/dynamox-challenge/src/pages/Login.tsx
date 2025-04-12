@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/reducers';
 import { useNavigate } from 'react-router-dom';
+import { fetchMachines, loginUser } from '../redux/actions';
+import { AppDispatch } from '../redux/store';
 
 export default function Login() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate(); 
 
   const [email, setEmail] = useState('');
@@ -13,16 +15,20 @@ export default function Login() {
   const error = useSelector((state: RootState) => state.error);
   const isLoading = useSelector((state: RootState) => state.isLoading);
   const isLoggedIn = useSelector((state: RootState) => state.isLoggedIn); 
+  const userId = useSelector((state: RootState) => state.id);
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && userId != null) {
       navigate('/dashboard'); 
     }
   }, [isLoggedIn, navigate]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch({ type: 'LOGIN_REQUEST', payload: { email, password } });
+    if (email !== '' && password !== '') {
+      dispatch(loginUser(email, password));
+      dispatch(fetchMachines(userId));
+    }
   };
 
   return (

@@ -5,16 +5,14 @@
       "email": "admin@dynamox.com",
       "username": "Administrator",
       "password": "admin123",
-      "role": "admin",
-      "machines": ["machine1", "machine2"]
+      "role": "admin"
     },
     {
       "id": 2,
       "email": "user1@dynamox.com",
       "username": "Usuário 1",
       "password": "user123",
-      "role": "user",
-      "access": ["machine3"]
+      "role": "user"
     }
   ],
   "machines": [
@@ -22,36 +20,39 @@
       "id": "machine1",
       "name": "Máquina 1",
       "type": "Pump",
-      "sensors": ["sensor1", "sensor2"]
+      "userId": 1
     },
     {
       "id": "machine2",
       "name": "Máquina 2",
       "type": "Fan",
-      "sensors": ["sensor1", "sensor3"]
+      "userId": 1
     },
     {
       "id": "machine3",
       "name": "Máquina 3",
       "type": "Pump",
-      "sensors": ["sensor3"]
+      "userId": 2
     }
   ],
   "sensors": [
     {
       "id": "sensor1",
       "name": "Sensor 1",
-      "model": "TcAg"
+      "model": "TcAg",
+      "machineId": "machine1"
     },
     {
       "id": "sensor2",
       "name": "Sensor 2",
-      "model": "TcAs"
+      "model": "TcAs",
+      "machineId": "machine2"
     },
     {
       "id": "sensor3",
       "name": "Sensor 3",
-      "model": "HF+"
+      "model": "HF+",
+      "machineId": "machine3"
     }
   ]
 }

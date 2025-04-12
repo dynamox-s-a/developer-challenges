@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 export default function MachineForm() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [machineName, setMachineName] = useState('');
   const [machineType, setMachineType] = useState('');
   const [error, setError] = useState('');
@@ -13,14 +17,12 @@ export default function MachineForm() {
       return;
     }
 
-    console.log({
-      machineName,
-      machineType
-    });
+    dispatch({type: "POST_MACHINE", payload: { name: machineName, type: machineType }});
 
     setMachineName('');
     setMachineType('');
     setError('');
+    navigate('/dashboard');
   };
 
   return (

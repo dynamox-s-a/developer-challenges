@@ -1,14 +1,18 @@
 // Definição das actions
 import { Dispatch } from 'redux';
 import { Machine } from '../../types';
+import { Action } from '../reducers';
+import { ThunkAction } from 'redux-thunk';
+import { RootState } from '../store';
 
 const API_UTL = 'http://localhost:3001';
 
 // Usuário
-export const getUser = (email: string) => {
+export const loginUser = (email: string, password: string): ThunkAction<void, RootState, unknown, Action> => {
   return async (dispatch: Dispatch) => {
+    dispatch({ type: 'LOGIN_REQUEST', payload: { email, password } });
     try {
-      const response = await fetch(`${API_UTL}/users/${email}`);
+      const response = await fetch(`${API_UTL}/users?email=${email}&password=${password}`);
       const data = await response.json();
       dispatch({ type: 'GET_USER', payload: data });
     } catch (error) {
@@ -18,22 +22,44 @@ export const getUser = (email: string) => {
 }
 
 // Máquinas
-export const fetchMachines = (access: Machine[]) => {
-  return async (dispatch: Dispatch) => {
-    try {
-      const machinesPromises = access.map(async (machineId) => {
-        const response = await fetch(`${API_UTL}/machines/${machineId}`);
-        const data = await response.json();
-        return data; 
-      });
+export const fetchMachines = (
+  userId: number | null
+): ThunkAction<void, RootState, unknown, Action> => {
+  return async (dispatch: Dispatch<Action>) => {
+    if (userId === null) return;
 
-      const machines = await Promise.all(machinesPromises);
+    try {
+      const response = await fetch(`${API_UTL}/machines?userId=${userId}`);
+      const machines: Machine[] = await response.json();
       dispatch({ type: 'GET_MACHINES', payload: machines });
     } catch (error) {
       console.error('Error fetching machines:', error);
     }
   };
 };
+
+export const postMachine = (machine: Machine) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const response = await fetch(`${API_UTL}/machines`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: "teste1", ...machine}),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to add machine');
+      }
+
+      const data = await response.json();
+      dispatch({ type: 'POST_MACHINE', payload: data });
+    } catch (error) {
+      console.error('Error adding machine:', error);
+    }
+  };
+}
 
 
 // Sensores

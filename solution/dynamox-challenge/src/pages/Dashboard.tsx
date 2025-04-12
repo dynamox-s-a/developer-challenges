@@ -7,16 +7,18 @@ import { useNavigate } from 'react-router-dom';
 export default function Dashboard() {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>(); 
+  const userId = useSelector((state: RootState) => state.id);
   const username = useSelector((state: RootState) => state.user); 
-  const machines = useSelector((state: RootState) => state.machines);
   const isLoading = useSelector((state: RootState) => state.isLoading); 
   const error = useSelector((state: RootState) => state.error);
+  const machines = useSelector((state: RootState) => state.machines);
 
   useEffect(() => {
-    if (username) {
-      dispatch(fetchMachines(machines));
+    console.log('userId:', userId);
+    if (userId !== null) {
+      dispatch(fetchMachines(userId));
     }
-  }, [dispatch, username, machines]);
+  }, [dispatch, userId]);
 
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
@@ -34,11 +36,12 @@ export default function Dashboard() {
       {error && <p style={{ color: 'red' }}>Erro ao carregar as máquinas: {error}</p>}
 
       <div className="machine-cards">
-        {machines.length > 0 ? (
+        {machines ? (
           machines.map((machine) => (
             <div key={machine.id} className="machine-card">
               <h2>{machine.name}</h2>
               <p>Tipo: {machine.type}</p>
+              <button>Excluir</button>
             </div>
           ))
         ) : (

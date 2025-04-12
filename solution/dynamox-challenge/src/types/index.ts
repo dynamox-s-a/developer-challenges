@@ -1,5 +1,6 @@
 // Autenticação
 export interface AuthState {
+  id: number | null,
   user: string | null,
   isLoading: boolean,
   error: string | null,
@@ -11,22 +12,22 @@ export type SensorModel = "TcAg" | "TcAs" | "HF+";
 
 export interface Sensor {
   name: string,
-  id: string,
+  id?: string,
   model: SensorModel
 }
 
 export interface Machine {
   name: string,
-  id: number,
+  id?: string,
   type: "Pump" | "Fan",
-  sensors: Sensor[],
+  sensors?: Sensor[],
 }
 
 // Pontos de Monitoramento
 export interface MonitoringPoint {
-  id: number,
+  id?: string,
   name: string,
-  machineId: number,
+  machineId: string,
   sensor: Sensor
 }
 

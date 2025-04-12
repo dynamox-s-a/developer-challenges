@@ -5,7 +5,7 @@ import { authMiddleware } from '../../utils/middleware'
 const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authMiddleware),  // Garante que o redux-thunk e outros middlewares estejam sendo utilizados
+    getDefaultMiddleware().concat(authMiddleware),
 })
 
 export type RootState = ReturnType<typeof store.getState>;
