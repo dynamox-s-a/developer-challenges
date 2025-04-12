@@ -10,16 +10,19 @@ const API_UTL = 'http://localhost:3001';
 // Usuário
 export const loginUser = (email: string, password: string): ThunkAction<void, RootState, unknown, Action> => {
   return async (dispatch: Dispatch) => {
+    console.log('Dispatching LOGIN_REQUEST');
     dispatch({ type: 'LOGIN_REQUEST', payload: { email, password } });
+    
     try {
       const response = await fetch(`${API_UTL}/users?email=${email}&password=${password}`);
       const data = await response.json();
-      dispatch({ type: 'GET_USER', payload: data });
+      console.log('Dispatching GET_USER with data:', data[0]);
+      dispatch({ type: 'GET_USER', payload: data[0] });
     } catch (error) {
       console.error('Error fetching user:', error);
     }
   };
-}
+};
 
 // Máquinas
 export const fetchMachines = (
@@ -38,8 +41,8 @@ export const fetchMachines = (
   };
 };
 
-export const postMachine = (machine: Machine) => {
-  return async (dispatch: Dispatch) => {
+export const postMachine = (machine: Machine): ThunkAction<void, RootState, unknown, Action> => {
+  return async (dispatch: Dispatch<Action>) => {
     try {
       const response = await fetch(`${API_UTL}/machines`, {
         method: 'POST',

@@ -19,7 +19,8 @@ export interface Sensor {
 export interface Machine {
   name: string,
   id?: string,
-  type: "Pump" | "Fan",
+  type: string,
+  userId: number | null,
   sensors?: Sensor[],
 }
 

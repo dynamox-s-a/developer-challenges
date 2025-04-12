@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/reducers';
 import { useNavigate } from 'react-router-dom';
-import { fetchMachines, loginUser } from '../redux/actions';
+import { loginUser } from '../redux/actions';
 import { AppDispatch } from '../redux/store';
 
 export default function Login() {
@@ -18,7 +18,7 @@ export default function Login() {
   const userId = useSelector((state: RootState) => state.id);
 
   useEffect(() => {
-    if (isLoggedIn && userId != null) {
+    if (isLoggedIn && userId !== null) {
       navigate('/dashboard'); 
     }
   }, [isLoggedIn, navigate]);
@@ -27,7 +27,6 @@ export default function Login() {
     e.preventDefault();
     if (email !== '' && password !== '') {
       dispatch(loginUser(email, password));
-      dispatch(fetchMachines(userId));
     }
   };
 
