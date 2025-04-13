@@ -55,11 +55,13 @@ export const rootReducer = (state = INITIAL_STATE, action: Action): RootState =>
         ...state,
         machines: state.machines.filter(machine => machine.id !== action.payload.id),
       }
-    case "UPDATE_MACHINE":
-      return {
-        ...state,
-        machines: state.machines.map(machine => machine.id === action.payload.id ? action.payload : machine),
-      }
+      case "UPDATE_MACHINE":
+        return {
+          ...state,
+          machines: state.machines.map((m) =>
+            m.id === action.payload.id ? action.payload : m
+          ),
+        };
     case "LOGIN_ERROR":
       return {
         ...state,

@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { postMachine, updateMachine } from '../redux/actions';
 import { AppDispatch, RootState } from '../redux/store';
 
 type FormProps = {
   isEdit: boolean;
   machineId?: string;
+  onFinish?: () => void;
 }
 
 export default function Form(
-  {isEdit, machineId}: FormProps) {
+  {isEdit, machineId, onFinish}: FormProps) {
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [select, setSelect] = useState('');
   const [error, setError] = useState('');
@@ -36,23 +35,24 @@ export default function Form(
             type: select,
           };
           dispatch(updateMachine(updatedMachine));
+          onFinish?.()
         }
       }
+    } else if (!isEdit) {
+      if (select === "Pump" || select === "Fan") {
+        const newMachine = {
+          name: name,
+          type: select,
+          userId: Number(userId),
+        };
+        dispatch(postMachine(newMachine));
+        onFinish?.();
+      }
     }
-    if (select === "Pump" || select === "Fan") {
-      const newMachine = {
-        name: name,
-        type: select,
-        userId: Number(userId),
-      };
-      dispatch(postMachine(newMachine));
-    }
-
 
     setName('');
     setSelect('');
     setError('');
-    navigate('/dashboard');
   };
 
   useEffect(() => {

@@ -47,7 +47,11 @@ export default function Dashboard() {
               <button onClick={ () => handleDelete(machine.id) }>Excluir</button>
               <button onClick={() => setEditingMachineId(machine.id!)}>Editar</button>
               {editingMachineId === machine.id && (
-                <Form isEdit={true} machineId={machine.id} />
+                  <Form
+                    isEdit={true}
+                    machineId={machine.id}
+                    onFinish={() => setEditingMachineId(null)}
+                  />
               )}
             </div>
           ))
@@ -58,7 +62,7 @@ export default function Dashboard() {
       <button onClick={() => setShowForm(true)}>Nova máquina</button>
       {showForm && (
                 <div>
-                  <Form isEdit={false} />
+                  <Form isEdit={false} onFinish={() => setShowForm(false)}/>
                 </div>
       )}
     </div>

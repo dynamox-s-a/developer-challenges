@@ -4,7 +4,7 @@ import { Machine } from '../../types';
 import { Action } from '../reducers';
 import { ThunkAction } from 'redux-thunk';
 import { RootState } from '../store';
-
+import { v4 as uuidv4 } from 'uuid';
 const API_UTL = 'http://localhost:3001';
 
 // Usuário
@@ -44,12 +44,13 @@ export const fetchMachines = (
 export const postMachine = (machine: Machine): ThunkAction<void, RootState, unknown, Action> => {
   return async (dispatch: Dispatch<Action>) => {
     try {
+      const newId = uuidv4();
       const response = await fetch(`${API_UTL}/machines`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: "teste1", ...machine}),
+        body: JSON.stringify({id: newId, ...machine}),
       });
 
       if (!response.ok) {
@@ -98,8 +99,8 @@ export const updateMachine = (machine: Machine): ThunkAction<void, RootState, un
       if (!response.ok) {
         throw new Error('Failed to update machine');
       }
-
       const data = await response.json();
+      console.log(data);
       dispatch({ type: 'UPDATE_MACHINE', payload: data });
     } catch (error) {
       console.error('Error updating machine:', error);
