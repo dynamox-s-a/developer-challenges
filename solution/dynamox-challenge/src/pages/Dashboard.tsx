@@ -1,17 +1,18 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { deleteMachine, fetchMachines } from '../redux/actions';
 import { RootState, AppDispatch } from '../redux/store'; 
-import { useNavigate } from 'react-router-dom';
+import Form from '../components/Form';
 
 export default function Dashboard() {
-  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>(); 
   const userId = useSelector((state: RootState) => state.id);
   const username = useSelector((state: RootState) => state.user); 
   const isLoading = useSelector((state: RootState) => state.isLoading); 
   const error = useSelector((state: RootState) => state.error);
   const machines = useSelector((state: RootState) => state.machines);
+  const [showForm, setShowForm] = useState(false);
+  const [editingMachineId, setEditingMachineId] = useState<string | null>(null);
 
   useEffect(() => {
     console.log('userId:', userId);
@@ -22,10 +23,6 @@ export default function Dashboard() {
 
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
-  };
-
-  const handleNavigate = () => {
-    navigate('/new-machine'); 
   };
 
   const handleDelete = (machineId: string | undefined) => {
@@ -48,13 +45,22 @@ export default function Dashboard() {
               <h2>{machine.name}</h2>
               <p>Tipo: {machine.type}</p>
               <button onClick={ () => handleDelete(machine.id) }>Excluir</button>
+              <button onClick={() => setEditingMachineId(machine.id!)}>Editar</button>
+              {editingMachineId === machine.id && (
+                <Form isEdit={true} machineId={machine.id} />
+              )}
             </div>
           ))
         ) : (
           <p>Você não tem máquinas disponíveis.</p>
         )}
       </div>
-      <button onClick={ handleNavigate }>Nova máquina</button>
+      <button onClick={() => setShowForm(true)}>Nova máquina</button>
+      {showForm && (
+                <div>
+                  <Form isEdit={false} />
+                </div>
+      )}
     </div>
   );
 }

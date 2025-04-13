@@ -1,14 +1,14 @@
 {
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "email": "admin@dynamox.com",
       "username": "Administrator",
       "password": "admin123",
       "role": "admin"
     },
     {
-      "id": 2,
+      "id": "2",
       "email": "user1@dynamox.com",
       "username": "Usuário 1",
       "password": "user123",
@@ -33,6 +33,30 @@
       "name": "Máquina 3",
       "type": "Pump",
       "userId": 2
+    },
+    {
+      "id": "teste1",
+      "name": "Máquina 3",
+      "type": "Pump",
+      "userId": 1
+    },
+    {
+      "id": "machine1",
+      "name": "Máquina 3",
+      "type": "Pump",
+      "userId": 1
+    },
+    {
+      "id": "machine1",
+      "name": "Máquina 6",
+      "type": "Pump",
+      "userId": 1
+    },
+    {
+      "id": "teste1",
+      "name": "Máquina 6",
+      "type": "Pump",
+      "userId": 1
     }
   ],
   "sensors": [
