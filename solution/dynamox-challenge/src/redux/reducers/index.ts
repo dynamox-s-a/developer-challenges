@@ -22,6 +22,7 @@ export type Action =
   | { type: "GET_MACHINES"; payload: Machine[] }
   | {type: "POST_MACHINE"; payload: Machine}
   | { type: "DELETE_MACHINE"; payload: Machine }
+  | { type: "UPDATE_MACHINE"; payload: Machine }
   | { type: "LOGIN_ERROR"; payload: string }
   | { type: "LOGIN_REQUEST"; payload: { email: string; password: string } }
   | { type: "LOGOUT" }
@@ -53,6 +54,11 @@ export const rootReducer = (state = INITIAL_STATE, action: Action): RootState =>
       return {
         ...state,
         machines: state.machines.filter(machine => machine.id !== action.payload.id),
+      }
+    case "UPDATE_MACHINE":
+      return {
+        ...state,
+        machines: state.machines.map(machine => machine.id === action.payload.id ? action.payload : machine),
       }
     case "LOGIN_ERROR":
       return {

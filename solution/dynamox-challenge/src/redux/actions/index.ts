@@ -84,6 +84,29 @@ export const deleteMachine = (machineId: string): ThunkAction<void, RootState, u
   }
 }
 
+export const updateMachine = (machine: Machine): ThunkAction<void, RootState, unknown, Action> => {
+  return async (dispatch: Dispatch<Action>) => {
+    try {
+      const response = await fetch(`${API_UTL}/machines/${machine.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(machine),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update machine');
+      }
+
+      const data = await response.json();
+      dispatch({ type: 'UPDATE_MACHINE', payload: data });
+    } catch (error) {
+      console.error('Error updating machine:', error);
+    }
+  }
+}
+
 // Sensores
 export const fetchSensor = (id: string) => {
   return async (dispatch: Dispatch) => {

@@ -33,30 +33,6 @@
       "name": "Máquina 3",
       "type": "Pump",
       "userId": 2
-    },
-    {
-      "id": "teste1",
-      "name": "Máquina 3",
-      "type": "Pump",
-      "userId": 1
-    },
-    {
-      "id": "machine1",
-      "name": "Máquina 3",
-      "type": "Pump",
-      "userId": 1
-    },
-    {
-      "id": "machine1",
-      "name": "Máquina 6",
-      "type": "Pump",
-      "userId": 1
-    },
-    {
-      "id": "teste1",
-      "name": "Máquina 6",
-      "type": "Pump",
-      "userId": 1
     }
   ],
   "sensors": [

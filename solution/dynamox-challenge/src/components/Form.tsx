@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { postMachine } from '../redux/actions';
+import { postMachine, updateMachine } from '../redux/actions';
 import { AppDispatch, RootState } from '../redux/store';
 
 type FormProps = {
@@ -35,7 +35,7 @@ export default function Form(
             name: name,
             type: select,
           };
-          dispatch(postMachine(updatedMachine));
+          dispatch(updateMachine(updatedMachine));
         }
       }
     }
