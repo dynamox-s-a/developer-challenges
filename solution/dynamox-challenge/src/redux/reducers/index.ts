@@ -1,10 +1,10 @@
-import { AuthState, Machine, Sensor } from "../../types";
+import { AuthState, Machine, MonitoringPoint } from "../../types";
 import { Action } from "../../types";
 
 export interface RootState extends AuthState {
   role: string;
   machines: Machine[];
-  sensors: Sensor[]; 
+  monitoringPoints: MonitoringPoint[]; 
 }
 
 const INITIAL_STATE: RootState = {
@@ -15,7 +15,7 @@ const INITIAL_STATE: RootState = {
   isLoggedIn: false,
   role: '', 
   machines: [], 
-  sensors: [], 
+  monitoringPoints: [], 
 };
 
 export const rootReducer = (state = INITIAL_STATE, action: Action): RootState => {
@@ -52,7 +52,17 @@ export const rootReducer = (state = INITIAL_STATE, action: Action): RootState =>
           machines: state.machines.map((m) =>
             m.id === action.payload.id ? action.payload : m
           ),
-        };
+      };
+    case "POST_MONITORING_POINT":
+      return {
+        ...state,
+        monitoringPoints: [...state.monitoringPoints, action.payload]
+      }
+    case "GET_MONITORING_POINTS":
+      return {
+        ...state,
+        monitoringPoints: action.payload,
+      }
     case "LOGIN_ERROR":
       return {
         ...state,

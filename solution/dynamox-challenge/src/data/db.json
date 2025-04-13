@@ -52,5 +52,16 @@
       "model": "HF+"
     }
   ],
-  "monitoringPoints": []
+  "monitoringPoints": [
+    {
+      "id": "671d68e0-18a0-11f0-a063-d1434c386b06",
+      "machineId": "ad2a1300-1888-11f0-af90-37fdd56c15c1",
+      "name": "Teste 1"
+    },
+    {
+      "id": "80835510-18a0-11f0-a063-d1434c386b06",
+      "machineId": "ad2a1300-1888-11f0-af90-37fdd56c15c1",
+      "name": "Teste 2"
+    }
+  ]
 }

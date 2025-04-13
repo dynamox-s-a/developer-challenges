@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { postMachine, updateMachine } from '../redux/actions/machineActions';
 import { AppDispatch, RootState } from '../redux/store';
+import { postMonitoringPoint } from '../redux/actions/monitoringActions';
 
 type FormProps = {
   isEdit: boolean;
@@ -17,7 +18,8 @@ export default function Form(
   const [sensor, setSensor] = useState('');
   const [error, setError] = useState('');
   const [addSensor, setAddSensor] = useState(false);
-  const [addMonitoringPoint, setMonitoringPoint] = useState(false);
+  const [monitoringPoint, setMonitoringPoint] = useState(false);
+  const [monitoringName, setMonitoringName] = useState('');
   const userId = useSelector((state: RootState) => state.id);
   const machines = useSelector((state: RootState) => state.machines);
 
@@ -58,6 +60,16 @@ export default function Form(
     setError('');
   };
 
+  const handleSubmitMonitoring = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !select) {
+      setError('Todos os campos são obrigatórios.');
+      return;
+    }
+    dispatch(postMonitoringPoint(machineId!, {name: monitoringName}));
+    onFinish?.();
+  }
+
   useEffect(() => {
     if (isEdit) {
       if (machines) {
@@ -86,14 +98,16 @@ export default function Form(
         <option value="Pump">Pump</option>
         <option value="Fan">Fan</option>
       </select>
-      <button type="button" onClick={() => setMonitoringPoint(!addMonitoringPoint)}>Adicionar Monitoramento</button>
-      { addMonitoringPoint && (
+      <button type="button" onClick={() => setMonitoringPoint(!monitoringPoint)}>Adicionar Monitoramento</button>
+      { monitoringPoint && (
         <div>
           <input
             type="text"
             placeholder="Nome do Ponto de Monitoramento"
+            value={ monitoringName }
+            onChange={ (e) => setMonitoringName(e.target.value) }
           />
-          <button type="button">Adicionar</button>
+          <button type="button" onClick={ handleSubmitMonitoring }>Adicionar</button>
             <button type="button" onClick={() => setAddSensor(!addSensor)}>
             {addSensor ? 'Cancelar' : 'Adicionar Sensor'}</button>
             {addSensor && (

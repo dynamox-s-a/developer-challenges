@@ -25,9 +25,9 @@ export interface Machine {
 
 // Pontos de Monitoramento
 export interface MonitoringPoint {
-  id: string,
+  id?: string,
   name: string,
-  machineId: string,
+  machineId?: string,
   sensorId?: string
 }
 
@@ -37,6 +37,8 @@ export type Action =
   | {type: "POST_MACHINE"; payload: Machine}
   | { type: "DELETE_MACHINE"; payload: Machine }
   | { type: "UPDATE_MACHINE"; payload: Machine }
+  | { type: "POST_MONITORING_POINT"; payload: Machine }
+  | { type: "GET_MONITORING_POINTS"; payload: MonitoringPoint[] }
   | { type: "LOGIN_ERROR"; payload: string }
   | { type: "LOGIN_REQUEST"; payload: { email: string; password: string } }
   | { type: "LOGOUT" }

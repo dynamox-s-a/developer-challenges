@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { deleteMachine, getMachines } from '../redux/actions/machineActions';
 import { RootState, AppDispatch } from '../redux/store'; 
 import Form from '../components/Form';
+import { getMonitoringPoints } from '../redux/actions/monitoringActions';
 
 export default function Dashboard() {
   const dispatch = useDispatch<AppDispatch>(); 
@@ -11,13 +12,18 @@ export default function Dashboard() {
   const isLoading = useSelector((state: RootState) => state.isLoading); 
   const error = useSelector((state: RootState) => state.error);
   const machines = useSelector((state: RootState) => state.machines);
+  const monitoringPoints = useSelector((state: RootState) => state.monitoringPoints);
   const [showForm, setShowForm] = useState(false);
   const [editingMachineId, setEditingMachineId] = useState<string | null>(null);
 
   useEffect(() => {
     console.log('userId:', userId);
+    console.log('machines:', machines);
     if (userId !== null) {
       dispatch(getMachines(userId));
+    }
+    if (machines) {
+      dispatch(getMonitoringPoints(userId));
     }
   }, [dispatch, userId]);
 
@@ -52,6 +58,16 @@ export default function Dashboard() {
                     machineId={machine.id}
                     onFinish={() => setEditingMachineId(null)}
                   />
+              )}
+              { monitoringPoints.length > 0 && (
+                monitoringPoints.find((point) => point.machineId === machine.id) && (
+                  <div>
+                    <h3>Pontos de Monitoramento:</h3>
+                    {monitoringPoints.map((point) => (
+                      <p key={point.id}>{point.name}</p>
+                    ))}
+                  </div>
+                )
               )}
             </div>
           ))
