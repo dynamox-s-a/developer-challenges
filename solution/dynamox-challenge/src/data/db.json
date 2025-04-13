@@ -37,19 +37,9 @@
   ],
   "sensors": [
     {
-      "id": "7bb4a2e0-1888-11f0-af90-37fdd56c15c1",
-      "name": "Sensor 1",
-      "model": "TcAg"
-    },
-    {
-      "id": "8f9c7620-1888-11f0-af90-37fdd56c15c1",
-      "name": "Sensor 2",
-      "model": "TcAs"
-    },
-    {
-      "id": "9cf44b40-1888-11f0-af90-37fdd56c15c1",
-      "name": "Sensor 3",
-      "model": "HF+"
+      "id": "024efa90-18ab-11f0-8f3d-0b2dd90d5c91",
+      "model": "HF+",
+      "monitoringPointId": "671d68e0-18a0-11f0-a063-d1434c386b06"
     }
   ],
   "monitoringPoints": [
@@ -62,6 +52,11 @@
       "id": "80835510-18a0-11f0-a063-d1434c386b06",
       "machineId": "ad2a1300-1888-11f0-af90-37fdd56c15c1",
       "name": "Teste 2"
+    },
+    {
+      "id": "06b1fc00-18aa-11f0-8f3d-0b2dd90d5c91",
+      "machineId": "cf4686d0-1888-11f0-af90-37fdd56c15c1",
+      "name": "Teste 1"
     }
   ]
 }

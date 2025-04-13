@@ -1,10 +1,11 @@
 import { AuthState, Machine, MonitoringPoint } from "../../types";
-import { Action } from "../../types";
+import { Action, Sensor } from "../../types";
 
 export interface RootState extends AuthState {
   role: string;
   machines: Machine[];
   monitoringPoints: MonitoringPoint[]; 
+  sensors: Sensor[];
 }
 
 const INITIAL_STATE: RootState = {
@@ -16,6 +17,7 @@ const INITIAL_STATE: RootState = {
   role: '', 
   machines: [], 
   monitoringPoints: [], 
+  sensors: [],
 };
 
 export const rootReducer = (state = INITIAL_STATE, action: Action): RootState => {
@@ -62,6 +64,11 @@ export const rootReducer = (state = INITIAL_STATE, action: Action): RootState =>
       return {
         ...state,
         monitoringPoints: action.payload,
+      }
+    case "POST_SENSOR":
+      return {
+        ...state,
+        sensors: [...state.sensors, action.payload]
       }
     case "LOGIN_ERROR":
       return {

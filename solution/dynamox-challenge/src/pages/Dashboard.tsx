@@ -4,6 +4,7 @@ import { deleteMachine, getMachines } from '../redux/actions/machineActions';
 import { RootState, AppDispatch } from '../redux/store'; 
 import Form from '../components/Form';
 import { getMonitoringPoints } from '../redux/actions/monitoringActions';
+import SensorForm from '../components/SensorForm';
 
 export default function Dashboard() {
   const dispatch = useDispatch<AppDispatch>(); 
@@ -15,6 +16,7 @@ export default function Dashboard() {
   const monitoringPoints = useSelector((state: RootState) => state.monitoringPoints);
   const [showForm, setShowForm] = useState(false);
   const [editingMachineId, setEditingMachineId] = useState<string | null>(null);
+  const [activeSensorForm, setActiveSensorForm] = useState<string | null>(null);
 
   useEffect(() => {
     console.log('userId:', userId);
@@ -22,7 +24,7 @@ export default function Dashboard() {
     if (userId !== null) {
       dispatch(getMachines(userId));
     }
-    if (machines) {
+    if (machines !== null) {
       dispatch(getMonitoringPoints(userId));
     }
   }, [dispatch, userId]);
@@ -59,16 +61,28 @@ export default function Dashboard() {
                     onFinish={() => setEditingMachineId(null)}
                   />
               )}
-              { monitoringPoints.length > 0 && (
-                monitoringPoints.find((point) => point.machineId === machine.id) && (
-                  <div>
-                    <h3>Pontos de Monitoramento:</h3>
-                    {monitoringPoints.map((point) => (
-                      <p key={point.id}>{point.name}</p>
-                    ))}
-                  </div>
-                )
-              )}
+              {monitoringPoints.length > 0 && (
+  monitoringPoints.find((point) => point.machineId === machine.id) && (
+    <div>
+      <h3>Pontos de Monitoramento:</h3>
+      {monitoringPoints
+        .filter((point) => point.machineId === machine.id)
+        .map((point) => (
+          <div key={point.id} style={{ marginBottom: '10px' }}>
+            <p>{point.name}</p>
+            {activeSensorForm === point.id ? (
+              <SensorForm
+                monitoringPointId={point.id}
+                onClose={() => setActiveSensorForm(null)}
+              />
+            ) : (
+              <button onClick={() => setActiveSensorForm(point.id!)}>Adicionar Sensor</button>
+            )}
+          </div>
+        ))}
+    </div>
+  )
+)}
             </div>
           ))
         ) : (

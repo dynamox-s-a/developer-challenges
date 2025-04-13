@@ -48,3 +48,27 @@ export const getMonitoringPoints = (userId : number | null): ThunkAction<void, R
     }
   };
 }
+
+export const postSensor = (model: string, monitoringPointId: string): ThunkAction<void, RootState, unknown, Action> => {
+  return async (dispatch: Dispatch<Action>) => {
+    try {
+      const newId = uuidv1();
+      const response = await fetch(`${API_UTL}/sensors`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({id: newId, model: model, monitoringPointId: monitoringPointId}),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to add sensor');
+      }
+
+      const data = await response.json();
+      dispatch({ type: 'POST_SENSOR', payload: data });
+    } catch (error) {
+      console.error('Error adding sensor:', error);
+    }
+  };
+}
