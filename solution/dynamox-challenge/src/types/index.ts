@@ -25,10 +25,10 @@ export interface Machine {
 
 // Pontos de Monitoramento
 export interface MonitoringPoint {
-  id?: string,
+  id: string,
   name: string,
   machineId: string,
-  sensorId: string
+  sensorId?: string
 }
 
 export type Action =

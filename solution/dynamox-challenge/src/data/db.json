@@ -1,14 +1,14 @@
 {
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "email": "admin@dynamox.com",
       "username": "Administrator",
       "password": "admin123",
       "role": "admin"
     },
     {
-      "id": 2,
+      "id": "2",
       "email": "user1@dynamox.com",
       "username": "Usuário 1",
       "password": "user123",
@@ -51,5 +51,6 @@
       "name": "Sensor 3",
       "model": "HF+"
     }
-  ]
+  ],
+  "monitoringPoints": []
 }

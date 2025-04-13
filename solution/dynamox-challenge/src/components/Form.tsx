@@ -14,7 +14,10 @@ export default function Form(
   const dispatch = useDispatch<AppDispatch>();
   const [name, setName] = useState('');
   const [select, setSelect] = useState('');
+  const [sensor, setSensor] = useState('');
   const [error, setError] = useState('');
+  const [addSensor, setAddSensor] = useState(false);
+  const [addMonitoringPoint, setMonitoringPoint] = useState(false);
   const userId = useSelector((state: RootState) => state.id);
   const machines = useSelector((state: RootState) => state.machines);
 
@@ -82,7 +85,47 @@ export default function Form(
         <option value="">Selecione o Tipo</option>
         <option value="Pump">Pump</option>
         <option value="Fan">Fan</option>
-      </select>''
+      </select>
+      <button type="button" onClick={() => setMonitoringPoint(!addMonitoringPoint)}>Adicionar Monitoramento</button>
+      { addMonitoringPoint && (
+        <div>
+          <input
+            type="text"
+            placeholder="Nome do Ponto de Monitoramento"
+          />
+          <button type="button">Adicionar</button>
+            <button type="button" onClick={() => setAddSensor(!addSensor)}>
+            {addSensor ? 'Cancelar' : 'Adicionar Sensor'}</button>
+            {addSensor && (
+              <div>
+                <input
+                  type="text"
+                  placeholder="Nome do Sensor"
+                />
+                  {
+                    select !== "Pump" ? (
+                      <div>
+                      <select value={sensor}
+                        onChange={(e) => setSensor(e.target.value)}>
+                      <option>Selecione o Modelo</option>
+                      <option value="TcAg">TcAg</option>
+                      <option value="TcAs">TcAs</option>
+                      <option value="HF+">HF+</option>
+                      </select>
+                      </div>
+                    ) : (
+                      <div>
+                        <select value={sensor}
+                          onChange={(e) => setSensor(e.target.value)}>
+                        <option>Selecione o Modelo</option>
+                        <option value="HF+">HF+</option>
+                        </select>
+                        </div>)
+                  }
+              </div>
+            )}
+        </div>
+      )}
       <button type="submit">{ isEdit? 'Editar' : 'Adicionar máquina'}</button>
       {error && <p style={{ color: 'red', marginTop: '8px' }}>{error}</p>}
     </form>
