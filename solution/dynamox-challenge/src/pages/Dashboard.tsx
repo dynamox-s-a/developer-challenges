@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { deleteMachine, fetchMachines } from '../redux/actions';
+import { deleteMachine, getMachines } from '../redux/actions/machineActions';
 import { RootState, AppDispatch } from '../redux/store'; 
 import Form from '../components/Form';
 
@@ -17,7 +17,7 @@ export default function Dashboard() {
   useEffect(() => {
     console.log('userId:', userId);
     if (userId !== null) {
-      dispatch(fetchMachines(userId));
+      dispatch(getMachines(userId));
     }
   }, [dispatch, userId]);
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { postMachine, updateMachine } from '../redux/actions';
+import { postMachine, updateMachine } from '../redux/actions/machineActions';
 import { AppDispatch, RootState } from '../redux/store';
 
 type FormProps = {
@@ -82,7 +82,7 @@ export default function Form(
         <option value="">Selecione o Tipo</option>
         <option value="Pump">Pump</option>
         <option value="Fan">Fan</option>
-      </select>
+      </select>''
       <button type="submit">{ isEdit? 'Editar' : 'Adicionar máquina'}</button>
       {error && <p style={{ color: 'red', marginTop: '8px' }}>{error}</p>}
     </form>
