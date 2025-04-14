@@ -4,6 +4,7 @@ import { RootState } from '../redux/reducers';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../redux/actions/loginActions';
 import { AppDispatch } from '../redux/store';
+import { Button, FormControl, TextField } from "@mui/material";
 
 export default function Login() {
   const dispatch = useDispatch<AppDispatch>();
@@ -31,21 +32,26 @@ export default function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
+    <FormControl onSubmit={handleSubmit}>
+      <TextField
         type="email"
         placeholder="E-mail"
         value={email}
         onChange={e => setEmail(e.target.value)}
       />
-      <input
+      <TextField
         type="password"
         placeholder="Senha"
         value={password}
         onChange={e => setPassword(e.target.value)}
       />
-      <button type="submit" disabled={isLoading}>Entrar</button>
+      <Button
+      variant="text" 
+      type="submit"
+      color="primary"
+      onClick={handleSubmit}
+      disabled={isLoading}>Entrar</Button>
       {error && <p style={{ color: 'red', marginTop: '8px' }}>{error}</p>}
-    </form>
+    </FormControl>
   );
 }

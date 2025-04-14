@@ -6,6 +6,9 @@ import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import Form from './Form';
 import { postMonitoringPoint } from "../redux/actions/monitoringActions";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, Card, CardContent, Typography } from "@mui/material";
 
 type MachineCardProps = {
   machine: Machine;
@@ -38,12 +41,30 @@ export default function MachineCard({machine}: MachineCardProps) {
   }
 
   return (
-  <div key={machine.id} className="machine-card">
-  <h2>{machine.name}</h2>
-  <p>Type: {machine.type}</p>
-  <button onClick={() => handleDelete(machine.id)}>Delete</button>
-  <button onClick={() => setShowEditForm(true)}>Edit</button>
-  <button type="button" onClick={() => setMonitoringPoint(!monitoringPoint)}>Add Monitoring Point</button>
+  <Card sx={{ maxWidth: 365 }} key={machine.id} className="machine-card">
+  <CardContent>
+  <Typography gutterBottom variant="h5" component="div">
+          { machine.name}
+  </Typography>
+  <Typography gutterBottom variant="body2" component="div">Type: {machine.type}</Typography>
+  <Button
+  variant="text"
+  onClick={() => handleDelete(machine.id)}
+  color="error"
+  >
+    <DeleteIcon />
+  </Button>
+  <Button
+  onClick={() => setShowEditForm(true)}>
+    <EditIcon />
+    </Button>
+  <Button
+  type="button"
+  onClick={() => setMonitoringPoint(!monitoringPoint)}
+  variant="text"
+  >Add Monitoring Point
+  </Button>
+  </CardContent>
   { monitoringPoint && (
     <div>
       <input
@@ -66,6 +87,6 @@ export default function MachineCard({machine}: MachineCardProps) {
               <button onClick={handleCancelEditMachine}>Cancel</button>
             </>
   )}
-</div>
+</Card>
   )
 }

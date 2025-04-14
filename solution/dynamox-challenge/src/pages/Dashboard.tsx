@@ -9,6 +9,7 @@ import SensorForm from '../components/SensorForm';
 import { Sensor } from '../types';
 import MachineCard from '../components/MachineCard';
 import TablePagination from '@mui/material/TablePagination';
+import { Button } from '@mui/material';
 
 export default function Dashboard() {
   const dispatch = useDispatch<AppDispatch>();
@@ -177,14 +178,15 @@ export default function Dashboard() {
         rowsPerPageOptions={[]}
       />
       {/* Cards renderizando cada máquina */}
-      <div className="machine-info">
+      <div className="machine-info" style={
+        { display: 'flex', flexWrap: 'wrap', gap: '16px', margin: '16px' }}>
         {machines && machines.map((machine) => (
           <MachineCard key={machine.id} machine={machine} />
         ))}
       </div>
+      <Button onClick={() => setShowForm(true)} style={{ margin: '16px'}}>New Machine</Button>
 
       {/* Formulário para adicionar nova máquina */}
-      <button onClick={() => setShowForm(true)}>New Machine</button>
       {showForm && (
         <div>
           <Form isEdit={false} onFinish={() => setShowForm(false)} />
