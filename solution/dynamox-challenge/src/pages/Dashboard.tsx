@@ -1,11 +1,14 @@
+// Tela inicial com as informações sobre as máquinas e pontos de monitoramento
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { deleteMachine, getMachines } from '../redux/actions/machineActions';
+import { useEffect, useState, useMemo } from 'react';
+import { getMachines } from '../redux/actions/machineActions';
 import { RootState, AppDispatch } from '../redux/store';
 import Form from '../components/Form';
 import { getMonitoringPoints, getSensors } from '../redux/actions/monitoringActions';
 import SensorForm from '../components/SensorForm';
 import { Sensor } from '../types';
+import MachineCard from '../components/MachineCard';
+import TablePagination from '@mui/material/TablePagination';
 
 export default function Dashboard() {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,9 +19,17 @@ export default function Dashboard() {
   const machines = useSelector((state: RootState) => state.machines);
   const monitoringPoints = useSelector((state: RootState) => state.monitoringPoints);
   const [showForm, setShowForm] = useState(false);
-  const [editingMachineId, setEditingMachineId] = useState<string | null>(null);
   const [activeSensorForm, setActiveSensorForm] = useState<string | null>(null);
   const sensors = useSelector((state: RootState) => state.sensors);
+  const [page, setPage] = useState(0);
+
+  // Definindo o número de linhas por página
+  const rowsPerPage = 5;
+
+  // Função que muda de página
+  const handleChangePage = (_event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
 
   useEffect(() => {
     if (userId !== null) {
@@ -32,17 +43,6 @@ export default function Dashboard() {
     dispatch({ type: "LOGOUT" });
   };
 
-  const handleDelete = (machineId: string | undefined) => {
-    if (machineId !== undefined) {
-      dispatch(deleteMachine(machineId));
-    }
-  };
-
-
-  const handleCancelEditMachine = () => {
-    setEditingMachineId(null);
-  };
-
   const handleCancelSensorForm = () => {
     setActiveSensorForm(null);
   };
@@ -51,6 +51,27 @@ export default function Dashboard() {
     const sensor = sensors.filter((sensor) => sensor.monitoringPointId === monitoringPointId);
     return sensor ? sensor : null;
   }
+
+    // Gerando os dados já com mapeamento direto
+    const tableData = useMemo(() => {
+      if (!machines || machines.length === 0) return [];
+    
+      return machines.flatMap((machine) =>
+        monitoringPoints
+          .filter((point) => point.machineId === machine.id)
+          .map((point) => ({
+            id: point.id,
+            monitoringPointName: point.name,
+            machineName: machine.name,
+            machineType: machine.type,
+            sensors: getSensor(point.id!) || [],
+          }))
+      );
+    }, [machines, monitoringPoints, sensors]);
+  
+    // Slice para exibir apenas os itens da página atual
+    const paginatedData = tableData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  
 
   return (
     <div>
@@ -71,81 +92,65 @@ export default function Dashboard() {
           </tr>
         </thead>
         <tbody>
-          {machines ? (
-            machines.map((machine) =>
-              monitoringPoints
-                .filter((point) => point.machineId === machine.id)
-                .map((point) => {
-                  return (
-                    <tr key={point.id}>
-                      <td>{point.name}</td>
-                      <td>{machine.name}</td>
-                      <td>{machine.type}</td>
-                      <td>
-                        {
-                        getSensor(point.id!) !== null ? (
-                          getSensor(point.id!)?.map((sensor: Sensor, index: number, array) => (
-                            <div key={sensor.id}>
-                              {sensor.model}
-                              {index < array.length - 1 && ', '}
-                            </div>
-                          ))
-                        ) : (
-                          'Nenhum sensor vinculado'
-                        )}
-                      </td>
-                      <td>
-                        {activeSensorForm === point.id ? (
-                          <>
-                            <SensorForm
-                              monitoringPointId={point.id}
-                              onClose={handleCancelSensorForm}
-                            />
-                            <button onClick={handleCancelSensorForm}>Cancelar</button>
-                          </>
-                        ) : (
-                          <button onClick={() => setActiveSensorForm(point.id!)}>Adicionar Sensor</button>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })
-            )
+  {paginatedData.length > 0 ? (
+    paginatedData.map((item) => (
+      <tr key={item.id}>
+        <td>{item.monitoringPointName}</td>
+        <td>{item.machineName}</td>
+        <td>{item.machineType}</td>
+        <td>
+          {item.sensors.length > 0 ? (
+            item.sensors.map((sensor: Sensor, index: number, array) => (
+              <div key={sensor.id}>
+                {sensor.model}
+                {index < array.length - 1 && ', '}
+              </div>
+            ))
           ) : (
-            <tr>
-              <td colSpan={5}>Você não tem máquinas disponíveis.</td>
-            </tr>
+            'Nenhum sensor vinculado'
           )}
-        </tbody>
+        </td>
+        <td>
+          {activeSensorForm === item.id ? (
+            <SensorForm
+              monitoringPointId={item.id}
+              onClose={handleCancelSensorForm}
+            />
+          ) : (
+            <button onClick={() => setActiveSensorForm(item.id!)}>Adicionar Sensor</button>
+          )}
+        </td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan={5}>Você não tem máquinas disponíveis.</td>
+    </tr>
+  )}
+</tbody>
       </table>
+      <TablePagination
+  component="div"
+  count={tableData.length}
+  page={page}
+  onPageChange={handleChangePage}
+  rowsPerPage={rowsPerPage}
+  rowsPerPageOptions={[]}
+/>
 
-      {/* Formulário para editar ou adicionar nova máquina */}
+      {/* Cards renderizando cada máquina */}
+      <div className="machine-info">
+        {machines && machines.map((machine) => (
+          <MachineCard key={machine.id} machine={machine} />
+        ))}
+      </div>
+
+      {/* Formulário para adicionar nova máquina */}
+      <button onClick={() => setShowForm(true)}>Nova máquina</button>
       {showForm && (
         <div>
           <Form isEdit={false} onFinish={() => setShowForm(false)} />
         </div>
-      )}
-      <div className="machine-info">
-        {machines && machines.map((machine) => (
-          <div key={machine.id} className="machine-card">
-            <h2>{machine.name}</h2>
-            <p>Tipo: {machine.type}</p>
-            <button onClick={() => handleDelete(machine.id)}>Excluir Máquina</button>
-            <button onClick={() => setEditingMachineId(machine.id!)}>Editar</button>
-          </div>
-        ))}
-      </div>
-      {editingMachineId ? (
-        <>
-          <Form
-            isEdit={true}
-            machineId={editingMachineId}
-            onFinish={handleCancelEditMachine}
-          />
-          <button onClick={handleCancelEditMachine}>Cancelar</button>
-        </>
-      ) : (
-        <button onClick={() => setShowForm(true)}>Nova máquina</button>
       )}
     </div>
   );

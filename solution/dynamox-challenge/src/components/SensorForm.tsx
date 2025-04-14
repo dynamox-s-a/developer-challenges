@@ -1,3 +1,4 @@
+// Formulário para inserir um sensor
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { postSensor } from '../redux/actions/monitoringActions';
