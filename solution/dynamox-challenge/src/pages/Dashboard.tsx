@@ -9,7 +9,10 @@ import SensorForm from '../components/SensorForm';
 import { Sensor } from '../types';
 import MachineCard from '../components/MachineCard';
 import TablePagination from '@mui/material/TablePagination';
-import { Button } from '@mui/material';
+import { AppBar, Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@mui/material';
+import LogoutIcon from '@mui/icons-material/Logout';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 export default function Dashboard() {
   const dispatch = useDispatch<AppDispatch>();
@@ -54,7 +57,7 @@ export default function Dashboard() {
     return sensor ? sensor : null;
   }
 
-    // Gerando os dados já com mapeamento direto
+    // Gerando os dados já com mapeamento direto e aplicando a ordenação
     const tableData = useMemo(() => {
       if (!machines || machines.length === 0) return [];
     
@@ -105,40 +108,58 @@ export default function Dashboard() {
       { key: 'sensorModel', label: 'Sensor Model' },
     ];
   return (
-    <div>
-      <h1>Dashboard by {username}!</h1>
-      <button onClick={handleLogout}>Logout</button>
+    <div style={{ padding: '16px'}}>
+      <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="fixed">
+      <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Dashboard By {username}
+          </Typography>
+          <Button color="inherit" onClick={handleLogout}><LogoutIcon /></Button>
+        </Toolbar>
+      </AppBar>
+      </Box>
       {isLoading && <p>Carregando máquinas...</p>}
       {error && <p style={{ color: 'red' }}>Erro ao carregar as máquinas: {error}</p>}
 
       {/* Tabela */}
-      <table>
-      <thead>
-  <tr>
-    {columns.map((column) => (
-      <th
-        key={column.key}
-        onClick={() => handleSort(column.key)}
-        className="cursor-pointer hover:underline"
-      >
-        {column.label}
-        {sortConfig?.key === column.key && (
-          <span className="ml-1">
-            {sortConfig.direction === 'asc' ? '↑' : '↓'}
+      <TableContainer sx={{ marginTop: '60px', marginRight: '16px'}} component={ Paper }>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <TableHead>
+  <TableRow>
+    {columns.map((column) => {
+      const isActive = sortConfig?.key === column.key;
+      return (
+        <TableCell
+          key={column.key}
+          onClick={() => handleSort(column.key)}
+          sx={{ fontWeight: 'bold', cursor: 'pointer', userSelect: 'none' }}
+        >
+          {column.label}
+          <span style={{ marginLeft: '8px', verticalAlign: 'middle' }}>
+            {isActive ? (
+              sortConfig.direction === 'asc' ? (
+                <ArrowUpwardIcon fontSize="small" />
+              ) : (
+                <ArrowDownwardIcon fontSize="small" />
+              )
+            ) : (
+              <ArrowDownwardIcon fontSize="small" style={{ opacity: 0.3 }} />
+            )}
           </span>
-        )}
-      </th>
-    ))}
-  </tr>
-</thead>
-        <tbody>
+        </TableCell>
+      );
+    })}
+  </TableRow>
+</TableHead>
+        <TableBody>
   {paginatedData.length > 0 ? (
     paginatedData.map((item) => (
-      <tr key={item.id}>
-        <td>{item.monitoringPointName}</td>
-        <td>{item.machineName}</td>
-        <td>{item.machineType}</td>
-        <td>
+      <TableRow key={item.id}>
+        <TableCell>{item.monitoringPointName}</TableCell>
+        <TableCell>{item.machineName}</TableCell>
+        <TableCell>{item.machineType}</TableCell>
+        <TableCell>
           {item.sensors.length > 0 ? (
             item.sensors.map((sensor: Sensor, index: number, array) => (
               <div key={sensor.id}>
@@ -149,26 +170,27 @@ export default function Dashboard() {
           ) : (
             'Nenhum sensor vinculado'
           )}
-        </td>
-        <td>
+        </TableCell>
+        <TableCell>
           {activeSensorForm === item.id ? (
             <SensorForm
               monitoringPointId={item.id}
               onClose={handleCancelSensorForm}
             />
           ) : (
-            <button onClick={() => setActiveSensorForm(item.id!)}>Add Sensor</button>
+            <Button onClick={() => setActiveSensorForm(item.id!)}>Add Sensor</Button>
           )}
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     ))
   ) : (
     <tr>
-      <td colSpan={5}>Você não tem máquinas disponíveis.</td>
+      <TableCell colSpan={5}>Você não tem máquinas disponíveis.</TableCell>
     </tr>
   )}
-</tbody>
-      </table>
+</TableBody>
+</Table>
+      </TableContainer>
       <TablePagination
         component="div"
         count={tableData.length}
@@ -179,12 +201,12 @@ export default function Dashboard() {
       />
       {/* Cards renderizando cada máquina */}
       <div className="machine-info" style={
-        { display: 'flex', flexWrap: 'wrap', gap: '16px', margin: '16px' }}>
+        { display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
         {machines && machines.map((machine) => (
           <MachineCard key={machine.id} machine={machine} />
         ))}
       </div>
-      <Button onClick={() => setShowForm(true)} style={{ margin: '16px'}}>New Machine</Button>
+      <Button onClick={() => setShowForm(true)} style={{ marginTop: '16px'}}>New Machine</Button>
 
       {/* Formulário para adicionar nova máquina */}
       {showForm && (

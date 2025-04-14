@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { postMachine, updateMachine } from '../redux/actions/machineActions';
 import { AppDispatch, RootState } from '../redux/store';
-// import { postMonitoringPoint } from '../redux/actions/monitoringActions';
+import { Box, Button, FormControl, InputLabel, Select, MenuItem, TextField, Typography } from '@mui/material';
 
 type FormProps = {
   isEdit: boolean;
@@ -10,8 +10,7 @@ type FormProps = {
   onFinish?: () => void;
 }
 
-export default function Form(
-  {isEdit, machineId, onFinish}: FormProps) {
+export default function Form({ isEdit, machineId, onFinish }: FormProps) {
   const dispatch = useDispatch<AppDispatch>();
   const [name, setName] = useState('');
   const [select, setSelect] = useState('');
@@ -22,11 +21,12 @@ export default function Form(
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name || !select ) {
+    if (!name || !select) {
       setError('Todos os campos são obrigatórios.');
       return;
     }
-    if(isEdit) {
+
+    if (isEdit) {
       if (machines) {
         const machine = machines.find((machine) => machine.id === machineId);
         if (machine) {
@@ -36,10 +36,10 @@ export default function Form(
             type: select,
           };
           dispatch(updateMachine(updatedMachine));
-          onFinish?.()
+          onFinish?.();
         }
       }
-    } else if (!isEdit) {
+    } else {
       if (select === "Pump" || select === "Fan") {
         const newMachine = {
           name: name,
@@ -69,23 +69,54 @@ export default function Form(
   }, [isEdit, machines, machineId]);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder={"Nome da Máquina"}
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        maxWidth: 400,
+        margin: 'auto',
+        padding: 3,
+        borderRadius: 2,
+        boxShadow: 3
+      }}
+    >
+      <Typography variant="h6" component="h4">{isEdit ? 'Edit Machine' : 'Add Machine'}</Typography>
+
+      <TextField
+        label="Machine Name"
+        variant="outlined"
         value={name}
         onChange={(e) => setName(e.target.value)}
+        fullWidth
+        required
       />
-      <select
-        value={select}
-        onChange={(e) => setSelect(e.target.value)}
-      >
-        <option value="">Selecione o Tipo</option>
-        <option value="Pump">Pump</option>
-        <option value="Fan">Fan</option>
-      </select>
-      <button type="submit">{ isEdit? 'Edit' : 'Add Machine'}</button>
-      {error && <p style={{ color: 'red', marginTop: '8px' }}>{error}</p>}
-    </form>
+
+      <FormControl fullWidth required>
+        <InputLabel id="machine-type-label">Select Type</InputLabel>
+        <Select
+          labelId="machine-type-label"
+          id="machine-type"
+          value={select}
+          onChange={(e) => setSelect(e.target.value)}
+          label="Select Type"
+        >
+          <MenuItem value="">
+            Select Type
+          </MenuItem>
+          <MenuItem value="Pump">Pump</MenuItem>
+          <MenuItem value="Fan">Fan</MenuItem>
+        </Select>
+      </FormControl>
+      {error && <Typography color="error" variant="body2">{error}</Typography>}
+      <Box sx={{ display: 'flex', gap: 2, justifyContent: 'space-between' }}>
+        <Button variant="contained" color="primary" onClick={handleSubmit}>
+          {isEdit ? 'Save Changes' : 'Add Machine'}
+        </Button>
+        <Button variant="outlined" onClick={onFinish}>
+          Cancel
+        </Button>
+      </Box>
+    </Box>
   );
 }
