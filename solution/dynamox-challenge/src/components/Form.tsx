@@ -84,7 +84,7 @@ export default function Form(
         <option value="Pump">Pump</option>
         <option value="Fan">Fan</option>
       </select>
-      <button type="submit">{ isEdit? 'Editar' : 'Adicionar máquina'}</button>
+      <button type="submit">{ isEdit? 'Edit' : 'Add Machine'}</button>
       {error && <p style={{ color: 'red', marginTop: '8px' }}>{error}</p>}
     </form>
   );

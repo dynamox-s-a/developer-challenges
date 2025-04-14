@@ -22,6 +22,7 @@ export default function Dashboard() {
   const [activeSensorForm, setActiveSensorForm] = useState<string | null>(null);
   const sensors = useSelector((state: RootState) => state.sensors);
   const [page, setPage] = useState(0);
+  const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
 
   // Definindo o número de linhas por página
   const rowsPerPage = 5;
@@ -56,7 +57,7 @@ export default function Dashboard() {
     const tableData = useMemo(() => {
       if (!machines || machines.length === 0) return [];
     
-      return machines.flatMap((machine) =>
+      const data = machines.flatMap((machine) =>
         monitoringPoints
           .filter((point) => point.machineId === machine.id)
           .map((point) => ({
@@ -67,30 +68,68 @@ export default function Dashboard() {
             sensors: getSensor(point.id!) || [],
           }))
       );
-    }, [machines, monitoringPoints, sensors]);
+    
+      if (sortConfig) {
+        data.sort((a, b) => {
+          const aValue = a[sortConfig.key as keyof typeof a];
+          const bValue = b[sortConfig.key as keyof typeof b];
+    
+          if (typeof aValue === 'string' && typeof bValue === 'string') {
+            return sortConfig.direction === 'asc'
+              ? aValue.localeCompare(bValue)
+              : bValue.localeCompare(aValue);
+          }
+    
+          return 0;
+        });
+      }
+    
+      return data;
+    }, [machines, monitoringPoints, sensors, sortConfig]);
   
     // Slice para exibir apenas os itens da página atual
     const paginatedData = tableData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-  
-
+    const handleSort = (key: string) => {
+      setSortConfig((prev) => {
+        if (prev?.key === key) {
+          return { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' };
+        }
+        return { key, direction: 'asc' };
+      });
+    };
+    const columns = [
+      { key: 'machineName', label: 'Machine Name' },
+      { key: 'machineType', label: 'Machine Type' },
+      { key: 'monitoringPointName', label: 'Monitoring Point' },
+      { key: 'sensorModel', label: 'Sensor Model' },
+    ];
   return (
     <div>
-      <h1>Bem-vindo ao Dashboard, {username}!</h1>
+      <h1>Dashboard by {username}!</h1>
       <button onClick={handleLogout}>Logout</button>
       {isLoading && <p>Carregando máquinas...</p>}
       {error && <p style={{ color: 'red' }}>Erro ao carregar as máquinas: {error}</p>}
 
       {/* Tabela */}
       <table>
-        <thead>
-          <tr>
-            <th>Ponto de Monitoramento</th>
-            <th>Máquina</th>
-            <th>Tipo</th>
-            <th>Sensor</th>
-            <th>Ação</th>
-          </tr>
-        </thead>
+      <thead>
+  <tr>
+    {columns.map((column) => (
+      <th
+        key={column.key}
+        onClick={() => handleSort(column.key)}
+        className="cursor-pointer hover:underline"
+      >
+        {column.label}
+        {sortConfig?.key === column.key && (
+          <span className="ml-1">
+            {sortConfig.direction === 'asc' ? '↑' : '↓'}
+          </span>
+        )}
+      </th>
+    ))}
+  </tr>
+</thead>
         <tbody>
   {paginatedData.length > 0 ? (
     paginatedData.map((item) => (
@@ -117,7 +156,7 @@ export default function Dashboard() {
               onClose={handleCancelSensorForm}
             />
           ) : (
-            <button onClick={() => setActiveSensorForm(item.id!)}>Adicionar Sensor</button>
+            <button onClick={() => setActiveSensorForm(item.id!)}>Add Sensor</button>
           )}
         </td>
       </tr>
@@ -130,14 +169,13 @@ export default function Dashboard() {
 </tbody>
       </table>
       <TablePagination
-  component="div"
-  count={tableData.length}
-  page={page}
-  onPageChange={handleChangePage}
-  rowsPerPage={rowsPerPage}
-  rowsPerPageOptions={[]}
-/>
-
+        component="div"
+        count={tableData.length}
+        page={page}
+        onPageChange={handleChangePage}
+        rowsPerPage={rowsPerPage}
+        rowsPerPageOptions={[]}
+      />
       {/* Cards renderizando cada máquina */}
       <div className="machine-info">
         {machines && machines.map((machine) => (
@@ -146,7 +184,7 @@ export default function Dashboard() {
       </div>
 
       {/* Formulário para adicionar nova máquina */}
-      <button onClick={() => setShowForm(true)}>Nova máquina</button>
+      <button onClick={() => setShowForm(true)}>New Machine</button>
       {showForm && (
         <div>
           <Form isEdit={false} onFinish={() => setShowForm(false)} />

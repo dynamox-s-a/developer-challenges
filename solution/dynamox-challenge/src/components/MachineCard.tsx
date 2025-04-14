@@ -30,8 +30,8 @@ export default function MachineCard({machine}: MachineCardProps) {
   const handleSubmitMonitoring = (e: React.FormEvent) => {
       e.preventDefault();
       if (!monitoringName) {
-        setError('Todos os campos são obrigatórios.');
-        return;
+        setError('All fields are required.');
+        return error;
       }
       dispatch(postMonitoringPoint(machine.id!, {name: monitoringName}));
       setMonitoringPoint(false);
@@ -40,20 +40,20 @@ export default function MachineCard({machine}: MachineCardProps) {
   return (
   <div key={machine.id} className="machine-card">
   <h2>{machine.name}</h2>
-  <p>Tipo: {machine.type}</p>
-  <button onClick={() => handleDelete(machine.id)}>Excluir Máquina</button>
-  <button onClick={() => setShowEditForm(true)}>Editar</button>
-  <button type="button" onClick={() => setMonitoringPoint(!monitoringPoint)}>Adicionar Monitoramento</button>
+  <p>Type: {machine.type}</p>
+  <button onClick={() => handleDelete(machine.id)}>Delete</button>
+  <button onClick={() => setShowEditForm(true)}>Edit</button>
+  <button type="button" onClick={() => setMonitoringPoint(!monitoringPoint)}>Add Monitoring Point</button>
   { monitoringPoint && (
     <div>
       <input
                 type="text"
-                placeholder="Nome do Ponto de Monitoramento"
+                placeholder="Monitoring Point Name"
                 value={ monitoringName }
                 onChange={ (e) => setMonitoringName(e.target.value) }
               />
-              <button type="button" onClick={ handleSubmitMonitoring }>Adicionar</button>
-              <button type="button" onClick={ () => setMonitoringPoint(false) }>Cancelar</button>
+              <button type="button" onClick={ handleSubmitMonitoring }>Add</button>
+              <button type="button" onClick={ () => setMonitoringPoint(false) }>Cancel</button>
     </div>
   )}
   { showEditForm && (
@@ -63,7 +63,7 @@ export default function MachineCard({machine}: MachineCardProps) {
                 machineId={machine.id}
                 onFinish={handleCancelEditMachine}
                 />
-              <button onClick={handleCancelEditMachine}>Cancelar</button>
+              <button onClick={handleCancelEditMachine}>Cancel</button>
             </>
   )}
 </div>
