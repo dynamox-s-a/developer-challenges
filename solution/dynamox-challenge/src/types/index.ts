@@ -13,6 +13,7 @@ export interface Sensor {
   name: string,
   id: string,
   model: SensorModel
+  monitoringPointId: string
 }
 
 export interface Machine {
@@ -40,6 +41,7 @@ export type Action =
   | { type: "POST_MONITORING_POINT"; payload: Machine }
   | { type: "GET_MONITORING_POINTS"; payload: MonitoringPoint[] }
   | { type: "POST_SENSOR"; payload: Sensor }
+  | { type: "GET_SENSORS"; payload: Sensor[] }
   | { type: "LOGIN_ERROR"; payload: string }
   | { type: "LOGIN_REQUEST"; payload: { email: string; password: string } }
   | { type: "LOGOUT" }

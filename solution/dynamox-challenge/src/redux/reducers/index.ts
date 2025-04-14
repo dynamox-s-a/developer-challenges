@@ -70,6 +70,11 @@ export const rootReducer = (state = INITIAL_STATE, action: Action): RootState =>
         ...state,
         sensors: [...state.sensors, action.payload]
       }
+      case "GET_SENSORS":
+        return {
+          ...state,
+          sensors: action.payload
+        }
     case "LOGIN_ERROR":
       return {
         ...state,

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { postSensor } from '../redux/actions/monitoringActions';
 import { AppDispatch, RootState } from '../redux/store'; 
-import { Machine } from '../types';
+import { Machine, MonitoringPoint } from '../types';
 
 interface SensorFormProps {
   monitoringPointId: string;
@@ -13,8 +13,10 @@ export default function SensorForm ({ monitoringPointId, onClose }: SensorFormPr
   const [model, setModel] = useState('');
   const dispatch = useDispatch<AppDispatch>();
   const machines = useSelector((state: RootState) => state.machines);
-  const machine = machines.find((machine: Machine) => machine.id === monitoringPointId);
-  
+  const monitoringPoints = useSelector((state: RootState) => state.monitoringPoints);
+  const monitoringPoint = monitoringPoints.find((point: MonitoringPoint) => point.id === monitoringPointId);
+  const machine = machines.find((machine: Machine) => machine.id === monitoringPoint?.machineId);
+
   const handleSubmit = () => {
     if (model) {
       dispatch(postSensor(model, monitoringPointId));

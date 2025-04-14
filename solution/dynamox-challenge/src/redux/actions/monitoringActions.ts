@@ -1,6 +1,6 @@
 // Actions para o monitoramento de máquinas
 import { Dispatch } from 'redux';
-import { Action, MonitoringPoint } from '../../types';
+import { Action, MonitoringPoint, Sensor } from '../../types';
 import { ThunkAction } from 'redux-thunk';
 import { RootState } from '../store';
 import { v1 as uuidv1 } from 'uuid';
@@ -71,4 +71,27 @@ export const postSensor = (model: string, monitoringPointId: string): ThunkActio
       console.error('Error adding sensor:', error);
     }
   };
+};
+
+export const getSensors = (): ThunkAction<void, RootState, unknown, Action> => {
+  return async (dispatch: Dispatch<Action>) => {
+    try {
+      const response = await fetch(`${API_UTL}/sensors`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to add sensor');
+      }
+
+      const data: Sensor[] = await response.json();
+      dispatch({ type: 'GET_SENSORS', payload: data });
+      return data;
+    } catch (error) {
+      console.error('Error adding sensor:', error);
+    }
+  }
 }
