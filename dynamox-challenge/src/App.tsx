@@ -3,6 +3,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import PrivateRoute from './routes/PrivateRoute';
 // import MachineForm from './pages/Form';
+import './App.css';
 
 function App() {
   return (
@@ -17,14 +18,6 @@ function App() {
             </PrivateRoute>
           }
         />
-        {/* <Route 
-          path="/new-machine"
-          element={
-            <PrivateRoute>
-              <MachineForm />
-            </PrivateRoute>
-          }
-        /> */}
       </Routes>
     </Router>
   );

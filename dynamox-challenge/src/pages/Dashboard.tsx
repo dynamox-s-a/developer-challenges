@@ -108,14 +108,14 @@ export default function Dashboard() {
       { key: 'sensorModel', label: 'Sensor Model' },
     ];
   return (
-    <div style={{ padding: '16px'}}>
-      <Box sx={{ flexGrow: 1 }}>
+    <div>
+      <Box className="app-header" sx={{ flexGrow: 1 }}>
       <AppBar position="fixed">
       <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Dashboard By {username}
           </Typography>
-          <Button color="inherit" onClick={handleLogout}><LogoutIcon /></Button>
+          <Button className="logout-button" color="inherit" onClick={handleLogout}><LogoutIcon /></Button>
         </Toolbar>
       </AppBar>
       </Box>
@@ -123,7 +123,7 @@ export default function Dashboard() {
       {error && <p style={{ color: 'red' }}>Erro ao carregar as máquinas: {error}</p>}
 
       {/* Tabela */}
-      <TableContainer sx={{ marginTop: '60px', marginRight: '16px'}} component={ Paper }>
+      <TableContainer className="table-container" sx={{ marginTop: '60px', marginRight: '16px'}} component={ Paper }>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
       <TableHead>
   <TableRow>
@@ -200,8 +200,7 @@ export default function Dashboard() {
         rowsPerPageOptions={[]}
       />
       {/* Cards renderizando cada máquina */}
-      <div className="machine-info" style={
-        { display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+      <div className="card-list">
         {machines && machines.map((machine) => (
           <MachineCard key={machine.id} machine={machine} />
         ))}

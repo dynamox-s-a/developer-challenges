@@ -32,7 +32,7 @@ export default function Login() {
   };
 
   return (
-    <FormControl onSubmit={handleSubmit}>
+    <FormControl className="form-container" onSubmit={handleSubmit}>
       <TextField
         type="email"
         placeholder="E-mail"

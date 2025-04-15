@@ -70,6 +70,7 @@ export default function Form({ isEdit, machineId, onFinish }: FormProps) {
 
   return (
     <Box
+      className="form-container"
       sx={{
         display: 'flex',
         flexDirection: 'column',

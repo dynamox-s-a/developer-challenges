@@ -47,7 +47,7 @@ export default function MachineCard({ machine }: MachineCardProps) {
           {machine.name}
         </Typography>
         <Typography gutterBottom variant="body2" component="div">Type: {machine.type}</Typography>
-
+        <div className="button-row">
         <Button
           variant="text"
           onClick={() => handleDelete(machine.id)}
@@ -67,6 +67,7 @@ export default function MachineCard({ machine }: MachineCardProps) {
         >
           Add Monitoring Point
         </Button>
+        </div>
       </CardContent>
 
       {monitoringPoint && (
