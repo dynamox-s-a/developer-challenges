@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../redux/actions/loginActions';
 import { AppDispatch } from '../redux/store';
 import { Button, FormControl, TextField } from "@mui/material";
-import { ImageAspectRatio, ImageSharp } from '@mui/icons-material';
 
 export default function Login() {
   const dispatch = useDispatch<AppDispatch>();
