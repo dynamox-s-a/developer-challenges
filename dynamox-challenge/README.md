@@ -1,54 +1,84 @@
-# React + TypeScript + Vite
+# Controle de Máquinas e Sensores
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+É uma plataforma de monitoramento de condições de ativos e canais corporativos. Este projeto foi desenvolvido para atender ao desafio técnico da empresa Dynamox, com o objetivo de construir uma aplicação robusta e intuitiva, utilizando React e TypeScript.
 
-Currently, two official plugins are available:
+<details>
+  <summary> <strong> Desafios </strong></summary>
+  
+  O objetivo do desafio foi criar uma aplicação que inclua os seguintes recursos principais:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+  Autenticação de Usuários
 
-## Expanding the ESLint configuration
+  Gerenciamento de Máquinas
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+  Gerenciamento de Sensores
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+  Interface amigável e intuitiva para o usuário
+
+</details>
+
+<details>
+  <summary> <strong> Funcionalidades </strong></summary>
+  
+  1. Autenticação
+  2. Gerenciamento de Máquinas
+  3. Gerenciamento de Sensores
+  4. Interface de Usuário
+
+</details>
+<details>
+  <summary> <strong> Tecnologias usadas </strong></summary>
+  
+  Front-end:
+> Desenvolvido usando: React, TypeScript, Redux, Redux Thunk, CSS, Material UI
+
+Back-end:
+> Desenvolvido usando: Json-Server (para criar uma API mockada)
+
+</details>
+
+<details>
+  <summary> <strong> Como rodar o projeto </strong></summary>
+  
+  - Clone o projeto
+
+```bash
+  git clone git@github.com:joanamds/developer-challenges.git
+```
+- Clone o projeto
+
+```bash
+  git clone git@github.com:joanamds/developer-challenges.git
+```
+- Navegue até o diretório do projeto
+
+```bash
+  cd dynamox-challenge
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Instale as dependências
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+  npm install
 ```
+
+</details>
+<details>
+  <summary> <strong> 🚀 Executando a aplicação </strong></summary>
+  
+  Rode os seguinte comando na raíz do projeto:
+  
+  - Inicia o servidor JSON
+
+```bash
+  npm run api
+```
+
+- Roda o projeto no browser
+
+```bash
+  npm run dev
+```
+</details>
+
+
