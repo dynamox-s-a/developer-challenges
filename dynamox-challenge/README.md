@@ -80,16 +80,5 @@ Back-end:
   npm run dev
 ```
 </details>
-<details>
-  <summary> <strong> Usuário de teste </strong></summary>
-
-
-```bash
-  Email: admin@dynamox.com
-  Password: admin123
-```
-
-</details>
-
 
 
