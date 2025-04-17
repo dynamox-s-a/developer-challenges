@@ -1,39 +1,39 @@
-import React, { useState } from 'react';
-import { Box, Typography, TextField, MenuItem, Select, FormControl, InputLabel, Button, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { useState } from 'react';
+import { Box, Typography, TextField, MenuItem, Select, FormControl, InputLabel, Button } from '@mui/material';
+import { MachineTable } from '../../components/table/MachineTable';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
+import { addMachine, updateMachine } from '../../redux/machinesSlice';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function Machines() {
+  const dispatch = useDispatch();
+  const machines = useSelector((state: RootState) => state.machines.machines);
+
   const [name, setName] = useState('');
   const [type, setType] = useState('');
-  const [machines, setMachines] = useState<{ name: string; type: string }[]>([]);
-  const [editingIndex, setEditingIndex] = useState<number | null>(null); 
+  const [editingId, setEditingId] = useState<string | null>(null);
 
-  const AddMachine = () => {
-    if (name && type) {
-      setMachines([...machines, { name, type }]);
-      setName('');
-      setType('');
+  const handleAddOrUpdate = () => {
+    if (!name || !type) return;
+
+    if (editingId) {
+      dispatch(updateMachine({ id: editingId, name, type: type as 'Pump' | 'Fan' }));
+      setEditingId(null);
+    } else {
+      dispatch(addMachine({ id: uuidv4(), name, type: type as 'Pump' | 'Fan' }));
     }
+
+    setName('');
+    setType('');
   };
 
-  const DeleteMachine = (index: number) => {
-    const newMachines = machines.filter((_, i) => i !== index);
-    setMachines(newMachines);
-  };
-
-  const EditMachine = (index: number) => {
-    setEditingIndex(index); 
-    setName(machines[index].name);
-    setType(machines[index].type);
-  };
-
-  const SaveMachine = () => {
-    if (editingIndex !== null && name && type) {
-      const updatedMachines = [...machines];
-      updatedMachines[editingIndex] = { name, type }; 
-      setMachines(updatedMachines);
-      setEditingIndex(null); 
-      setName('');
-      setType('');
+  const handleEdit = (id: string) => {
+    const machine = machines.find((machine) => machine.id === id);
+    if (machine) {
+      setName(machine.name);
+      setType(machine.type);
+      setEditingId(machine.id);
     }
   };
 
@@ -73,53 +73,12 @@ export default function Machines() {
             <MenuItem value="Fan">Fan</MenuItem>
           </Select>
         </FormControl>
-        {editingIndex === null ? (
-          <Button variant="contained" onClick={AddMachine} fullWidth>
-            Add Machine
-          </Button>
-        ) : (
-          <Button variant="contained" onClick={SaveMachine} fullWidth>
-            Save Changes
-          </Button>
-        )}
+        <Button variant="contained" onClick={handleAddOrUpdate} fullWidth>
+          {editingId ? 'Save Changes' : 'Add Machine'}
+        </Button>
       </Box>
 
-      <Box sx={{ width: '100%', marginTop: 4 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Type</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {machines.map((machine, index) => (
-              <TableRow key={index}>
-                <TableCell>{machine.name}</TableCell>
-                <TableCell>{machine.type}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => EditMachine(index)}
-                    sx={{ marginRight: 1 }}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    color="error"
-                    onClick={() => DeleteMachine(index)}
-                  >
-                    Delete
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Box>
+      <MachineTable machines={machines} onEdit={handleEdit} />
     </Box>
   );
 }
