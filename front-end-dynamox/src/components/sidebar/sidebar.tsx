@@ -21,8 +21,8 @@ const drawerWidth = 240;
 const menuItems = [
   { text: "Home", icon: <HomeOutlinedIcon />, path: "/" },
   { text: "Machine Management", icon: <PrecisionManufacturingIcon />, path: "/machines" },
-  { text: "Sensors Management", icon: <SensorsIcon />, path: "/sensors" },
   { text: "Monitoring Points", icon: <LocationOnOutlinedIcon />, path: "/points" },
+  { text: "Sensors Management", icon: <SensorsIcon />, path: "/sensors" },
 ];
 
 export default function Sidebar() {

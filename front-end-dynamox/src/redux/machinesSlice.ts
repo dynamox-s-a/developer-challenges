@@ -1,37 +1,72 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { getMachines, createMachine, updateMachine, deleteMachine } from '../services/machineService';
 
 export interface Machine {
-  id: string;
+  _id: string;
   name: string;
   type: 'Pump' | 'Fan';
 }
 
-interface MachinesState {
+interface MachineState {
   machines: Machine[];
+  loading: boolean;
+  error: string | null;
 }
 
-const initialState: MachinesState = {
+const initialState: MachineState = {
   machines: [],
+  loading: false,
+  error: null,
 };
+
+export const fetchMachines = createAsyncThunk('machines/fetchAll', async () => {
+  const response = await getMachines();
+  return response.data;
+});
+
+export const addMachine = createAsyncThunk('machines/add', async (data: { name: string; type: string }) => {
+  const response = await createMachine(data);
+  return response.data;
+});
+
+export const editMachine = createAsyncThunk('machines/edit', async ({ id, data }: { id: string; data: { name: string; type: string } }) => {
+  const response = await updateMachine(id, data);
+  return response.data;
+});
+
+export const removeMachine = createAsyncThunk('machines/delete', async (id: string) => {
+  await deleteMachine(id);
+  return id;
+});
 
 const machinesSlice = createSlice({
   name: 'machines',
   initialState,
-  reducers: {
-    addMachine(state, action: PayloadAction<Machine>) {
-      state.machines.push(action.payload);
-    },
-    updateMachine(state, action: PayloadAction<Machine>) {
-      const index = state.machines.findIndex((machine) => machine.id === action.payload.id);
-      if (index !== -1) {
-        state.machines[index] = action.payload;
-      }
-    },
-    deleteMachine(state, action: PayloadAction<string>) {
-      state.machines = state.machines.filter((machine) => machine.id !== action.payload);
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchMachines.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchMachines.fulfilled, (state, action: PayloadAction<Machine[]>) => {
+        state.machines = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchMachines.rejected, (state, action) => {
+        state.error = action.error.message || 'Error fetching machines';
+        state.loading = false;
+      })
+      .addCase(addMachine.fulfilled, (state, action: PayloadAction<Machine>) => {
+        state.machines.push(action.payload);
+      })
+      .addCase(editMachine.fulfilled, (state, action: PayloadAction<Machine>) => {
+        const index = state.machines.findIndex((m) => m._id === action.payload._id);
+        if (index !== -1) state.machines[index] = action.payload;
+      })
+      .addCase(removeMachine.fulfilled, (state, action: PayloadAction<string>) => {
+        state.machines = state.machines.filter((m) => m._id !== action.payload);
+      });
   },
 });
 
-export const { addMachine, updateMachine, deleteMachine } = machinesSlice.actions;
 export default machinesSlice.reducer;

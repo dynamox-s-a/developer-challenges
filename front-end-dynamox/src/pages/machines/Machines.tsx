@@ -1,40 +1,60 @@
-import { useState } from 'react';
-import { Box, Typography, TextField, MenuItem, Select, FormControl, InputLabel, Button } from '@mui/material';
+import { useEffect, useState } from 'react';
+import {
+  Box,
+  Typography,
+  TextField,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  Button,
+  CircularProgress,
+} from '@mui/material';
 import { MachineTable } from '../../components/table/MachineTable';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
-import { addMachine, updateMachine } from '../../redux/machinesSlice';
-import { v4 as uuidv4 } from 'uuid';
+import { AppDispatch, RootState } from '../../redux/store';
+import {
+  fetchMachines,
+  addMachine,
+  editMachine,
+  removeMachine,
+  Machine,
+} from '../../redux/machinesSlice';
 
 export default function Machines() {
-  const dispatch = useDispatch();
-  const machines = useSelector((state: RootState) => state.machines.machines);
+  const dispatch = useDispatch<AppDispatch>();
+  const { machines, loading } = useSelector((state: RootState) => state.machines);
 
   const [name, setName] = useState('');
   const [type, setType] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
 
+  useEffect(() => {
+    dispatch(fetchMachines());
+  }, [dispatch]);
+
   const handleAddOrUpdate = () => {
     if (!name || !type) return;
 
     if (editingId) {
-      dispatch(updateMachine({ id: editingId, name, type: type as 'Pump' | 'Fan' }));
+      dispatch(editMachine({ id: editingId, data: { name, type } }));
       setEditingId(null);
     } else {
-      dispatch(addMachine({ id: uuidv4(), name, type: type as 'Pump' | 'Fan' }));
+      dispatch(addMachine({ name, type }));
     }
 
     setName('');
     setType('');
   };
 
-  const handleEdit = (id: string) => {
-    const machine = machines.find((machine) => machine.id === id);
-    if (machine) {
-      setName(machine.name);
-      setType(machine.type);
-      setEditingId(machine.id);
-    }
+  const handleEdit = (machine: Machine) => {
+    setName(machine.name);
+    setType(machine.type);
+    setEditingId(machine._id);
+  };
+
+  const handleDelete = (id: string) => {
+    dispatch(removeMachine(id));
   };
 
   return (
@@ -78,7 +98,11 @@ export default function Machines() {
         </Button>
       </Box>
 
-      <MachineTable machines={machines} onEdit={handleEdit} />
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <MachineTable machines={machines} onEdit={handleEdit} onDelete={handleDelete} />
+      )}
     </Box>
   );
 }

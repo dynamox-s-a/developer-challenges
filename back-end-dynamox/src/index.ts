@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { connectToDatabase } from './config/db';
 import authRoutes from './routes/authRoutes';
+import machinesRoutes from './routes/machines';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 connectToDatabase();
 
 app.use('/api/auth', authRoutes);
+app.use('/api/machines', machinesRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
