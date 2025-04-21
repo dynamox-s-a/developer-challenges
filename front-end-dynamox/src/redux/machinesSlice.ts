@@ -1,19 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { getMachines, createMachine, updateMachine, deleteMachine } from '../services/machineService';
+import { Machine, MachineState,  } from "../types/machines";
 
-export interface Machine {
-  _id: string;
-  name: string;
-  type: 'Pump' | 'Fan';
-}
-
-interface MachineState {
-  machines: Machine[];
-  loading: boolean;
-  error: string | null;
-}
-
-const initialState: MachineState = {
+export const initialState: MachineState = {
   machines: [],
   loading: false,
   error: null,

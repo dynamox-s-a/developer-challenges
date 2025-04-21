@@ -11,7 +11,6 @@ import {
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
 import SensorsIcon from "@mui/icons-material/Sensors";
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import { Link, useLocation } from "react-router-dom";
 
 import Header from "../header/header";
@@ -21,8 +20,7 @@ const drawerWidth = 240;
 const menuItems = [
   { text: "Home", icon: <HomeOutlinedIcon />, path: "/" },
   { text: "Machine Management", icon: <PrecisionManufacturingIcon />, path: "/machines" },
-  { text: "Monitoring Points", icon: <LocationOnOutlinedIcon />, path: "/points" },
-  { text: "Sensors Management", icon: <SensorsIcon />, path: "/sensors" },
+  { text: "Monitoring Points and Sensors Management", icon: <SensorsIcon />, path: "/points" },
 ];
 
 export default function Sidebar() {

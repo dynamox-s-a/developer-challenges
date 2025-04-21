@@ -1,14 +1,11 @@
 
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Box } from '@mui/material';
-
-
 import {PrivateRoute} from './routes/PrivateRoute';
 import Sidebar from './components/sidebar/sidebar';
 import Content from './components/content/content';
 import Home from './pages/home/Home';
 import Machines from './pages/machines/Machines';
-import Sensors from './pages/sensors/Sensors';
 import Points from './pages/points/Points';
 import Login from './pages/login/Login';
 
@@ -24,7 +21,6 @@ const location = useLocation();
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
           <Route path="/machines" element={<PrivateRoute><Machines /></PrivateRoute>} />
-          <Route path="/sensors" element={<PrivateRoute><Sensors /></PrivateRoute>} />
           <Route path="/points" element={<PrivateRoute><Points /></PrivateRoute>} />
         </Routes>
       </Content>
