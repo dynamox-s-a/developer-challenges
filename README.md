@@ -1,17 +1,7 @@
-<h1 align="center"> Dynamox Monitoring System </h1>
+<h1> Dynamox Monitoring System </h1>
 
+![Home Page](https://github.com/user-attachments/assets/19b9230d-4a64-4858-8d38-2c30ee6cfd94)
 
-![Home Page](Home.JPG)
-
-## Index
-
-* [Title and Cover Image](#Title-and-Cover-Image)
-* [Index](#Index)
-* [Project Description](#Project-Description)
-* [Application Features](#Application-Features)
-* [Project Access](#project-access)
-* [Technologies Used](#technologies-used)
-* [Conclusion](#conclusion)
 
 ## 📝Project Description
 
@@ -25,30 +15,29 @@ The acces is limited to the authorized users.
 
 - `Authentication to access private routes`
 
-![Login failed](Video_250422134149.gif)
-![Login success](Video_250422133950.gif)
+![Login failed](https://github.com/user-attachments/assets/57275b48-c962-41a6-852c-9791eec8994f)
+![Login success](https://github.com/user-attachments/assets/21778d38-9e56-45ac-bc38-b5f7ff4fdb0e)
 
 - `Create, edit and delete machines`  
 
-![Machine Management](Video_250422125039.gif)
-
+![Machine Management](https://github.com/user-attachments/assets/a6fac5a8-61fd-41cc-8ab7-c6626f55d973)
 
 - `Create monitoring points and sensors for an existing machine.`
 
-![Creating monitoring points](Video_250422132844.gif)
+![Creating monitoring points](https://github.com/user-attachments/assets/e910acee-1fa3-44b4-a452-ce822ac6e700)
+
 
 - `Prevent from setting up "TcAg" and "TcAs" sensors for machines of the type "Pump"`
-
-![Error in Pump machines](Video_250422133327.gif)
+  
+![Error in Pump machines](https://github.com/user-attachments/assets/2a9d7f52-a37a-48a8-a838-10a5611125e1)
 
 - `List all the monitoring points in a paginated list`
-
-![Monitoring points pages](Video_250422133536.gif)
-
+  
+![Monitoring points pages](https://github.com/user-attachments/assets/6559812e-697b-4227-9fe6-3a91c10eee1b)
 
 - `Sort the monitoring points list by any of its columns in ascending or descending order`
-
-![Monitoring points table](Video_250422132958.gif)
+  
+![Monitoring points table](https://github.com/user-attachments/assets/4556fc21-d1c7-4d84-bd83-9a8a1a661c72)
 
 ## ▶️ Project Access
 
