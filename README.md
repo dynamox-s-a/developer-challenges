@@ -40,10 +40,15 @@ The acces is limited to the authorized users.
 ![Monitoring points table](https://github.com/user-attachments/assets/4556fc21-d1c7-4d84-bd83-9a8a1a661c72)
 
 ## ▶️ Project Access
+- Live at https://developer-challenges-507u.onrender.com
+  - Email: admin@dynamox.com
+  - password: 123456
+
+Or...
 
 - Download the project repository, navigate to the folder via terminal and install the necessary dependencies with npm install.
 
-- Check that the node_modules folder has been created in the project root.
+- Check if the node_modules folder has been created in the project root.
 
 - Run the backend and frontend servers with the npm run dev
 
