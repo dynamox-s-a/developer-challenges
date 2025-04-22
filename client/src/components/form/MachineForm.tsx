@@ -9,7 +9,8 @@ import {
   } from "@mui/material";
   import { useEffect, useState } from "react";
   import { Machine } from "../../types/machines";
-  
+  import { SelectChangeEvent } from '@mui/material';
+
   interface Props {
     onSubmit: (data: { name: string; type: string }, id?: string) => void;
     editingMachine: Machine | null;
@@ -44,7 +45,7 @@ import {
         <TextField
           label="Machine Name"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setName(e.target.value)}
           fullWidth
           sx={{ marginBottom: 2 }}
         />
@@ -52,7 +53,7 @@ import {
           <InputLabel>Type</InputLabel>
           <Select
             value={type}
-            onChange={(e) => setType(e.target.value)}
+            onChange={(e: SelectChangeEvent<string>) => setType(e.target.value)}
             label="Type"
           >
             <MenuItem value="Pump">Pump</MenuItem>

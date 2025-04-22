@@ -11,7 +11,8 @@ import {
   import { useAppDispatch } from "../../redux/store";
   import { createPoint } from "../../redux/monitoringPointsSlice";
   import { Machine } from "../../types/monitoringPoint";
-  
+  import { SelectChangeEvent } from '@mui/material';
+
   interface Props {
     machines: Machine[];
   }
@@ -61,7 +62,7 @@ import {
           <Select
             value={selectedMachineId}
             label="Machine"
-            onChange={(e) => setSelectedMachineId(e.target.value)}
+            onChange={(e: SelectChangeEvent<string>) => setSelectedMachineId(e.target.value)}
           >
             {machines.map((m) => (
               <MenuItem key={m._id} value={m._id}>
@@ -74,7 +75,7 @@ import {
         <TextField
           label="Monitoring Point Name"
           value={pointName}
-          onChange={(e) => setPointName(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setPointName(e.target.value)}
         />
   
         <FormControl sx={{ minWidth: 120 }}>
@@ -82,7 +83,7 @@ import {
           <Select
             value={sensorModel}
             label="Sensor"
-            onChange={(e) => setSensorModel(e.target.value)}
+            onChange={(e: SelectChangeEvent<string>) => setSensorModel(e.target.value)}
           >
             <MenuItem value="TcAg">TcAg</MenuItem>
             <MenuItem value="TcAs">TcAs</MenuItem>
@@ -93,7 +94,7 @@ import {
         <TextField
           label="Serial Number"
           value={serialNumber}
-          onChange={(e) => setSerialNumber(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setSerialNumber(e.target.value)}
         />
   
         <Button variant="contained" onClick={handleCreate}>

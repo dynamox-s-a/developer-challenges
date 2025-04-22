@@ -46,7 +46,7 @@ export default function Login() {
               fullWidth
               label="Email"
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setEmail(event.target.value)}
             />
             <TextField
               margin="normal"
@@ -55,7 +55,7 @@ export default function Login() {
               label="Password"
               type="password"
               value={password}
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setPassword(event.target.value)}
             />
             {erro && (
               <Typography color="error" variant="body2">{erro}</Typography>
