@@ -4,6 +4,8 @@
     "module": "CommonJS",
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowJs": true, 
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,

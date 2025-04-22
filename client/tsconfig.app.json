@@ -15,8 +15,6 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["vite/client", "react"],
-
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
