@@ -20,7 +20,7 @@ app.use(express_1.default.json());
 app.use('/api/auth', authRoutes_1.default);
 app.use('/api/machines', machines_1.default);
 app.use('/api/monitoring-points', monitoringPoints_1.default);
-const clientBuildPath = path_1.default.join(__dirname, '..', '..', 'client', 'build');
+const clientBuildPath = path_1.default.join(__dirname, '..', '..', 'client', 'dist');
 app.use(express_1.default.static(clientBuildPath));
 app.get('*', (req, res) => {
     res.sendFile(path_1.default.join(clientBuildPath, 'index.html'));
