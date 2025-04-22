@@ -48,7 +48,7 @@ Or...
 
 - Download the project repository, navigate to the folder via terminal and install the necessary dependencies with npm install.
 
-- Check that the node_modules folder has been created in the project root.
+- Check if the node_modules folder has been created in the project root.
 
 - Run the backend and frontend servers with the npm run dev
 
