@@ -6,14 +6,7 @@ import {
     TableBody,
     TableSortLabel,
   } from "@mui/material";
-  import { MonitoringPoint } from "../../types/monitoringPoint";
-  
-  interface Props {
-    data: MonitoringPoint[];
-    sortBy: string;
-    order: "asc" | "desc";
-    onSortChange: (field: string) => void;
-  }
+  import { MonitoringPointTableProps } from "../../types/monitoringPoint";
   
   const columnMap: Record<string, string> = {
     "Machine Name": "machineId.name",
@@ -27,7 +20,7 @@ import {
     sortBy,
     order,
     onSortChange,
-  }: Props) {
+  }: MonitoringPointTableProps) {
     const headers = Object.keys(columnMap);
   
     return (

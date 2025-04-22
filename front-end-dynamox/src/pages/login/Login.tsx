@@ -22,7 +22,7 @@ export default function Login() {
     if (sucesso) {
       navigate('/');
     } else {
-      setErro('Email ou senha incorretos');
+      setErro('Wrong email or password');
     }
   }
 
@@ -52,7 +52,7 @@ export default function Login() {
               margin="normal"
               required
               fullWidth
-              label="Senha"
+              label="Password"
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
@@ -66,7 +66,7 @@ export default function Login() {
               variant="contained"
               sx={{ mt: 3 }}
             >
-              Entrar
+              Enter
             </Button>
           </Box>
         </Paper>

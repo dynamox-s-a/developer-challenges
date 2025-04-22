@@ -16,3 +16,29 @@ export interface MonitoringPoint {
   sensor: Sensor;
   machineId: Machine;
 }
+
+export interface MonitoringPointTableProps {
+  data: MonitoringPoint[];
+  sortBy: string;
+  order: "asc" | "desc";
+  onSortChange: (field: string) => void;
+}
+
+export interface MonitoringPointState {
+  points: MonitoringPoint[];
+  loading: boolean;
+  error: string | null;
+  total: number;
+  sortBy: string;
+  order: 'asc' | 'desc';
+  page: number;
+}
+
+export interface MonitoringPointInput {
+  machineId: string;
+  name: string;
+  sensor: {
+    model: "TcAg" | "TcAs" | "HF+";
+    serialNumber: string;
+  };
+}

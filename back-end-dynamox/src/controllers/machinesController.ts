@@ -1,24 +1,31 @@
 import { Request, Response } from 'express';
-import { Machine } from '../models/Machine';
+import MachinesService from '../services/machinesService';
 
 class MachinesController {
   static listAllMachines = async (req: Request, res: Response) => {
     try {
-      const machines = await Machine.find();
+      const machines = await MachinesService.getAllMachines();
       res.json(machines);
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to fetch machines' });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        res.status(500).json({ error: error.message || 'Failed to fetch machines' });
+      } else {
+        res.status(500).json({ error: 'An unknown error occurred' });
+      }
     }
   };
 
   static registerMachine = async (req: Request, res: Response) => {
     const { name, type } = req.body;
     try {
-      const newMachine = new Machine({ name, type });
-      await newMachine.save();
+      const newMachine = await MachinesService.createMachine(name, type);
       res.status(201).json(newMachine);
-    } catch (err) {
-      res.status(400).json({ error: 'Failed to create machine' });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        res.status(400).json({ error: error.message || 'Failed to create machine' });
+      } else {
+        res.status(400).json({ error: 'An unknown error occurred' });
+      }
     }
   };
 
@@ -26,27 +33,28 @@ class MachinesController {
     const { id } = req.params;
     const { name, type } = req.body;
     try {
-      const updatedMachine = await Machine.findByIdAndUpdate(
-        id,
-        { name, type },
-        { new: true }
-      );
-      if (!updatedMachine) {
-        return res.status(404).json({ error: 'Machine not found' });
-      }
+      const updatedMachine = await MachinesService.updateMachine(id, name, type);
       res.json(updatedMachine);
-    } catch {
-      res.status(400).json({ error: 'Failed to update machine' });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        res.status(400).json({ error: error.message || 'Failed to update machine' });
+      } else {
+        res.status(400).json({ error: 'An unknown error occurred' });
+      }
     }
   };
 
   static deleteMachine = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
-      await Machine.findByIdAndDelete(id);
+      await MachinesService.deleteMachine(id);
       res.status(204).end();
-    } catch {
-      res.status(400).json({ error: 'Failed to delete machine' });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        res.status(400).json({ error: error.message || 'Failed to delete machine' });
+      } else {
+        res.status(400).json({ error: 'An unknown error occurred' });
+      }
     }
   };
 }

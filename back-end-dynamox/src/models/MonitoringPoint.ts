@@ -12,7 +12,7 @@ const monitoringPointSchema = new mongoose.Schema({
     required: true
   },
   sensor: {
-    model: { type: String, required: true, enum: ['TcAg', 'TcAs', 'HF+'] },
+    model: { type: String, required: true, enum: VALID_SENSOR_MODELS },
     serialNumber: { type: String, required: true, unique: true },
   }
 });

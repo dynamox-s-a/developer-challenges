@@ -1,4 +1,3 @@
-/* ==== RESET CSS === */
 *,
 *::before,
 *::after {
@@ -51,12 +50,10 @@ button {
   cursor: pointer;
 }
 
-/* Remove a borda azul feia em botões no Firefox */
 button:focus {
   outline: none;
 }
 
-/* Faz o texto ser mais fácil de ler */
 body {
   text-rendering: optimizeSpeed;
 }

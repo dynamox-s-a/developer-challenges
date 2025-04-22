@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Box } from '@mui/material';
 import {PrivateRoute} from './routes/PrivateRoute';
