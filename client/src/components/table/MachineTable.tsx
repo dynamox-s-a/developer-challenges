@@ -28,7 +28,7 @@ export const MachineTable: React.FC<MachineTableProps> = ({ machines, onEdit, on
         </TableRow>
       </TableHead>
       <TableBody>
-        {machines.map((machine) => (
+        {machines.map((machine: Machine) => (
           <TableRow key={machine._id}>
             <TableCell>{machine.name}</TableCell>
             <TableCell>{machine.type}</TableCell>
