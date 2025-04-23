@@ -1,7 +1,7 @@
 import { Box } from '@mui/material'
-import { CMSSection } from '../components/section'
+import { CMSSection } from '../../components/section'
 
-import { CMS_DATA_SECTIONS } from '../constants/CMS_DATA'
+import { CMS_DATA_SECTIONS } from '../../constants/CMS_DATA'
 import { Helmet } from 'react-helmet-async'
 
 export function Home() {
