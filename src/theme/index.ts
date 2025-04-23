@@ -48,9 +48,14 @@ export const theme = createTheme({
     // },
   },
   typography: {
-    fontFamily: '"Inter", "Helvetica", "Arial", sans-serif',
+    fontFamily: '"Gilroy", "Inter", "Helvetica", "Arial", sans-serif',
     h1: {
       fontSize: '6rem',
+      // fontWeight: 700, // usa Gilroy-Bold
+    },
+    customTitle: {
+      fontSize: '2rem',
+      // fontWeight: 600, // usa Gilroy-SemiBold
     },
   },
 })

@@ -1,6 +1,7 @@
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import { Routes } from './routes'
 import { theme } from './theme'
+import './theme/fonts.css'
 
 // import './App.css'
 
