@@ -56,3 +56,41 @@ export const CMS_DATA_SECTIONS = [
     },
   },
 ]
+
+export const CMS_SOCIAL_MEDIA_DATA = {
+  linkedin: {
+    src: '/social-media-icons/linkedin.svg',
+    link: 'https://www.linkedin.com/company/dynamox/',
+    alt: 'Linkedin Logo',
+  },
+  instagram: {
+    src: '/social-media-icons/instagram.svg',
+    link: 'https://www.instagram.com/dynamox_s.a/',
+    alt: 'Instagram logo',
+  },
+  facebook: {
+    src: '/social-media-icons/facebook.svg',
+    link: 'https://www.facebook.com/dynamoxtech/',
+    alt: 'Facebook Logo',
+  },
+  youtube: {
+    src: '/social-media-icons/youtube.svg',
+    link: 'https://www.youtube.com/@DynamoxTech',
+    alt: 'Youtube Logo',
+  },
+}
+
+export const CMS_FOOTER_LINKS = [
+  {
+    id: 1,
+    name: 'Consentimento de Cookies',
+    link: '#',
+    description: 'Consentimento de Cookies',
+  },
+  {
+    id: 2,
+    name: 'Aviso de privacidade',
+    link: 'https://content.dynamox.net/wp-content/uploads/2024/09/AVISO-DE-PRIVACIDADE-UNIFICADO.pdf',
+    description: 'Aviso de Privacidade',
+  },
+]
