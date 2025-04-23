@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/machines';
+const API_URL = 'https://developer-challenges-507u.onrender.com/api/machines';
 
 export const getMachines = () => axios.get(API_URL);
 
