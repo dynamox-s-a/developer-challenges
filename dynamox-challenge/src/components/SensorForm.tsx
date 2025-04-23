@@ -31,24 +31,25 @@ export default function SensorForm({ monitoringPointId, onClose }: SensorFormPro
       <FormControl fullWidth>
         <InputLabel id="sensor-model-label">{machine && machine.type !== "Pump" ? "Selecione um modelo" : "Select a model"}</InputLabel>
         <Select
-          labelId="sensor-model-label"
-          id="sensor-model"
-          value={model}
-          onChange={(e) => setModel(e.target.value)}
-          label={machine && machine.type !== "Pump" ? "Selecione um modelo" : "Select a model"}
-        >
-          <MenuItem value="">
-            {machine && machine.type !== "Pump" ? "Selecione um modelo" : "Select a model"}
-          </MenuItem>
-          { machine && machine.type !== "Pump" && (
-          <>
-          <MenuItem value="HF+">HF+</MenuItem>
-          <MenuItem value="TcAg">TcAg</MenuItem>
-          <MenuItem value="TcAs">TcAs</MenuItem>
-          </>
-          )}
-          <MenuItem value="HF+">HF+</MenuItem>
-        </Select>
+  labelId="sensor-model-label"
+  id="sensor-model"
+  value={model}
+  onChange={(e) => setModel(e.target.value)}
+  label={machine && machine.type !== "Pump" ? "Selecione um modelo" : "Select a model"}
+>
+  <MenuItem value="">
+    {machine && machine.type !== "Pump" ? "Selecione um modelo" : "Select a model"}
+  </MenuItem>
+
+  {machine && machine.type !== "Pump"
+    ? [
+        <MenuItem key="HF+" value="HF+">HF+</MenuItem>,
+        <MenuItem key="TcAg" value="TcAg">TcAg</MenuItem>,
+        <MenuItem key="TcAs" value="TcAs">TcAs</MenuItem>
+      ]
+    : <MenuItem value="HF+">HF+</MenuItem>
+  }
+</Select>
       </FormControl>
       <Box sx={{ display: 'flex', gap: 2, justifyContent: 'space-between' }}>
         <Button variant="contained" color="primary" onClick={handleSubmit} disabled={!model}>Add</Button>

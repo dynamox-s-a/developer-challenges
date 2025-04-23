@@ -62,6 +62,21 @@
       "id": "163cdee0-1988-11f0-bebc-858ec4c8f475",
       "model": "HF+",
       "monitoringPointId": "f7351a90-1986-11f0-9ad9-a301c23844ec"
+    },
+    {
+      "id": "5bfd0ff0-2071-11f0-a8a9-19c09b805e28",
+      "model": "TcAs",
+      "monitoringPointId": "d8e73af0-1986-11f0-9ad9-a301c23844ec"
+    },
+    {
+      "id": "5fcae0d0-2071-11f0-a8a9-19c09b805e28",
+      "model": "HF+",
+      "monitoringPointId": "d8e73af0-1986-11f0-9ad9-a301c23844ec"
+    },
+    {
+      "id": "b6ad0130-2071-11f0-a8a9-19c09b805e28",
+      "model": "HF+",
+      "monitoringPointId": "f7351a90-1986-11f0-9ad9-a301c23844ec"
     }
   ],
   "monitoringPoints": [
