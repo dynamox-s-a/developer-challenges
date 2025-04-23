@@ -1,0 +1,99 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "admin@dynamox.com",
+      "username": "Administrator",
+      "password": "admin123",
+      "role": "admin"
+    },
+    {
+      "id": "2",
+      "email": "user1@dynamox.com",
+      "username": "Usuário 1",
+      "password": "user123",
+      "role": "user"
+    }
+  ],
+  "machines": [
+    {
+      "id": "ad2a1300-1888-11f0-af90-37fdd56c15c1",
+      "name": "Máquina 1",
+      "type": "Pump",
+      "userId": 1
+    },
+    {
+      "id": "cf4686d0-1888-11f0-af90-37fdd56c15c1",
+      "name": "Máquina 2",
+      "type": "Fan",
+      "userId": 1
+    },
+    {
+      "id": "ee3b7be0-1888-11f0-af90-37fdd56c15c1",
+      "name": "Máquina 3",
+      "type": "Pump",
+      "userId": 2
+    },
+    {
+      "id": "c6ba5e20-1986-11f0-9ad9-a301c23844ec",
+      "name": "Máquina 3",
+      "type": "Fan",
+      "userId": 1
+    },
+    {
+      "id": "eb3e0df0-1986-11f0-9ad9-a301c23844ec",
+      "name": "Máquina 4",
+      "type": "Pump",
+      "userId": 1
+    }
+  ],
+  "sensors": [
+    {
+      "id": "024efa90-18ab-11f0-8f3d-0b2dd90d5c91",
+      "model": "HF+",
+      "monitoringPointId": "671d68e0-18a0-11f0-a063-d1434c386b06"
+    },
+    {
+      "id": "dd37d060-1986-11f0-9ad9-a301c23844ec",
+      "model": "TcAg",
+      "monitoringPointId": "d8e73af0-1986-11f0-9ad9-a301c23844ec"
+    },
+    {
+      "id": "163cdee0-1988-11f0-bebc-858ec4c8f475",
+      "model": "HF+",
+      "monitoringPointId": "f7351a90-1986-11f0-9ad9-a301c23844ec"
+    }
+  ],
+  "monitoringPoints": [
+    {
+      "id": "671d68e0-18a0-11f0-a063-d1434c386b06",
+      "machineId": "ad2a1300-1888-11f0-af90-37fdd56c15c1",
+      "name": "Teste 1"
+    },
+    {
+      "id": "80835510-18a0-11f0-a063-d1434c386b06",
+      "machineId": "ad2a1300-1888-11f0-af90-37fdd56c15c1",
+      "name": "Teste 2"
+    },
+    {
+      "id": "06b1fc00-18aa-11f0-8f3d-0b2dd90d5c91",
+      "machineId": "cf4686d0-1888-11f0-af90-37fdd56c15c1",
+      "name": "Teste 1"
+    },
+    {
+      "id": "d8e73af0-1986-11f0-9ad9-a301c23844ec",
+      "machineId": "c6ba5e20-1986-11f0-9ad9-a301c23844ec",
+      "name": "Point 1"
+    },
+    {
+      "id": "f7351a90-1986-11f0-9ad9-a301c23844ec",
+      "machineId": "eb3e0df0-1986-11f0-9ad9-a301c23844ec",
+      "name": "Point 1"
+    },
+    {
+      "id": "1da7aca0-1988-11f0-bebc-858ec4c8f475",
+      "machineId": "eb3e0df0-1986-11f0-9ad9-a301c23844ec",
+      "name": "Point 5"
+    }
+  ]
+}
