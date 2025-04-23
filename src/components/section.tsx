@@ -1,4 +1,4 @@
-import { Grid, Typography, Box, Link as MuiLink, Divider } from '@mui/material'
+import { Grid, Typography, Box, Divider } from '@mui/material'
 import { splitTitle } from '../utils/split-title'
 import type { CMSSection } from '../@types/types'
 import { CtaLink } from '../pages/home/components/cta-link'
