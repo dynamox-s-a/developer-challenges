@@ -1,20 +1,7 @@
 import { Grid, Typography, Box, Link as MuiLink, Divider } from '@mui/material'
 import { splitTitle } from '../utils/split-title'
-
-interface CMSSectionLink {
-  href: string
-  text: string
-}
-
-interface CMSSection {
-  id: number
-  image: string
-  sectionIcon: string
-  title: string
-  paragraph: string | null
-  topics: string[] | null
-  link: CMSSectionLink
-}
+import type { CMSSection } from '../@types/types'
+import { CtaLink } from '../pages/home/components/cta-link'
 
 interface CMSSectionProps {
   data: CMSSection
@@ -166,9 +153,7 @@ export function CMSSection({ data, index }: CMSSectionProps) {
             <Divider />
           </Box>
 
-          <MuiLink href={data.link.href} target="_blank" underline="hover" color="primary">
-            {data.link.text}
-          </MuiLink>
+          <CtaLink data={data.link} />
         </Box>
       </Grid>
     </>
