@@ -2,6 +2,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material'
 import { Routes } from './routes'
 import { theme } from './theme'
 import './theme/fonts.css'
+import { Helmet, HelmetProvider } from 'react-helmet-async'
 
 // import './App.css'
 
@@ -11,7 +12,10 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
 
-        <Routes />
+        <HelmetProvider>
+          <Helmet titleTemplate="%s | Dynamox" />
+          <Routes />
+        </HelmetProvider>
       </ThemeProvider>
     </>
   )
