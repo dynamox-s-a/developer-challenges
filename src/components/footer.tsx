@@ -76,6 +76,7 @@ export function Footer() {
 
             return (
               <MuiLink
+                key={link.id}
                 href={link.link}
                 target={'_blank'}
                 sx={{
@@ -98,6 +99,7 @@ export function Footer() {
 
                   {!isLastItem && (
                     <Box
+                      component={'span'}
                       sx={{
                         height: '4px',
                         width: '4px',
