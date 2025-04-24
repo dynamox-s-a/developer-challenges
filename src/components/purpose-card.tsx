@@ -118,7 +118,9 @@ export function PurposeCard({ data, index }: PurposeCardProps) {
             </Box>
 
             {data.paragraph && (
-              <Typography sx={{ fontSize: '24px', color: '#4B4B4B' }}>{data.paragraph}</Typography>
+              <Typography component={'h3'} sx={{ fontSize: '24px', color: '#4B4B4B' }}>
+                {data.paragraph}
+              </Typography>
             )}
 
             {data.topics && (
