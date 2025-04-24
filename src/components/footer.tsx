@@ -57,7 +57,9 @@ export function Footer() {
           color: theme.palette.background.default,
         }}
       >
-        <Typography sx={{ fontSize: '12px' }}>@2024 Dynamox. All Rights Reserved</Typography>
+        <Typography sx={{ fontSize: '12px', fontWeight: 500 }}>
+          @2024 Dynamox. All Rights Reserved
+        </Typography>
 
         <Box
           sx={{
@@ -88,6 +90,7 @@ export function Footer() {
                     flexDirection: 'row',
                     gap: '11px',
                     fontSize: '12px',
+                    fontWeight: 500,
                     color: theme.palette.background.default,
                   }}
                 >
