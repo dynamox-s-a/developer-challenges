@@ -3,6 +3,27 @@ import cardsIcon from '../../public/section-icons/cards.svg'
 import chatsIcon from '../../public/section-icons/chats.svg'
 import infiniteChats from '../../public/section-icons/infinite.svg'
 
+export const CMS_HISTORY_SECTION = [
+  {
+    id: 1,
+    title: 'Dynamox, por uma indústria mais segura e produtiva',
+    paragraph: [
+      {
+        id: 1,
+        text: 'Em um mundo em que há crescimento na oferta de sensores e hardwares é normal que a escolha entre diferentes produtos seja um processo trabalhoso. Afinal, pesquisas e comparações tornam-se necessárias para entender as melhores opções para as respectivas aplicações.',
+      },
+      {
+        id: 2,
+        text: 'Se essa escolha já parece complicada, ao acrescentarmos a questão da análise do software, a comparação se torna ainda mais complexa.',
+      },
+      {
+        id: 3,
+        text: 'Uma forma de simplificar este processo é basear os critérios de análise em um sistema de referência.  Esse manifesto é a consolidação da visão Dynamox: ser referência em tecnologias eficientes e eficazes para monitoramento, manutenção e performance de ativos.',
+      },
+    ],
+  },
+]
+
 export const CMS_DATA_SECTIONS = [
   {
     id: 1,
