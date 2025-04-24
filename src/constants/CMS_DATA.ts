@@ -3,6 +3,12 @@ import cardsIcon from '../../public/section-icons/cards.svg'
 import chatsIcon from '../../public/section-icons/chats.svg'
 import infiniteChats from '../../public/section-icons/infinite.svg'
 
+export const CMS_CAROUSEL_IMAGES = [
+  { id: 1, src: '/carousel-images/engineers_1.png' },
+  { id: 2, src: '/carousel-images/engineers_2.png' },
+  { id: 3, src: '/carousel-images/engineers_3.png' },
+]
+
 export const CMS_HISTORY_SECTION = [
   {
     id: 1,
