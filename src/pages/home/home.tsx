@@ -1,7 +1,8 @@
-import { Box, useTheme } from '@mui/material'
+import { Container, useTheme } from '@mui/material'
 
 import { Helmet } from 'react-helmet-async'
 import { PurposeSection } from '../../components/purpose-section'
+import { HistorySection } from '../../components/paragraph-section'
 
 export function Home() {
   const theme = useTheme()
@@ -10,20 +11,23 @@ export function Home() {
     <>
       <Helmet title="Home" />
 
-      <Box
+      <Container
+        maxWidth={false}
         sx={{
+          maxWidth: '1348px',
+          width: '100%',
+          px: 2,
+          mx: 'auto',
+          gap: { xs: '40px', lg: '120px' },
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '100%',
           background: theme.palette.background.default,
         }}
       >
-        <div>teste</div>
+        <HistorySection />
 
         <PurposeSection />
-      </Box>
+      </Container>
     </>
   )
 }
