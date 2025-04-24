@@ -18,7 +18,7 @@ export function HistorySection() {
             }}
           >
             <Box component="aside" sx={{ width: '100%' }}>
-              <Typography variant="h3" sx={{ fontWeight: 600 }}>
+              <Typography sx={{ fontWeight: 600, fontSize: { xs: '40px', lg: '48px' } }}>
                 <span style={{ color: '#333333' }}>{firstWord}</span>{' '}
                 <span style={{ color: '#757575' }}>{rest}</span>
               </Typography>
@@ -29,7 +29,7 @@ export function HistorySection() {
                 <Typography
                   key={p.id}
                   sx={{
-                    fontSize: '20px',
+                    fontSize: { xs: '16px', lg: '20px' },
                     lineHeight: '32px',
                     marginBottom: '24px',
                   }}
