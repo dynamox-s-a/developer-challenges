@@ -1,21 +1,20 @@
 import { Grid, Typography, Box, Divider } from '@mui/material'
 import { splitTitle } from '../utils/split-title'
-import type { CMSSection } from '../@types/types'
+import { PurposeCardData } from '../@types/types'
 import { CtaLink } from '../pages/home/components/cta-link'
 
-interface CMSSectionProps {
-  data: CMSSection
+interface PurposeCardProps {
+  data: PurposeCardData
   index: number
 }
 
-export function CMSSection({ data, index }: CMSSectionProps) {
+export function PurposeCard({ data, index }: PurposeCardProps) {
   const isEven = index % 2 === 0
   const { firstHalf, secondHalf } = splitTitle(data.title)
 
   return (
     <>
       <Grid
-        component={'section'}
         key={data.id}
         alignItems="center"
         sx={{

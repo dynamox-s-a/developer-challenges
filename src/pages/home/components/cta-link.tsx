@@ -1,8 +1,8 @@
 import { Link as MuiLink, Typography, useTheme } from '@mui/material'
-import { CMSSectionLink } from '../../../@types/types'
+import { PurposeCardLink } from '../../../@types/types'
 
 interface CtaLinkProps {
-  data: CMSSectionLink
+  data: PurposeCardLink
 }
 
 export function CtaLink({ data }: CtaLinkProps) {
