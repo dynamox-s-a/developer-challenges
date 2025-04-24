@@ -1,23 +1,20 @@
 import { CssBaseline, ThemeProvider } from '@mui/material'
+import { Helmet, HelmetProvider } from 'react-helmet-async'
 import { Routes } from './routes'
 import { theme } from './theme'
-import './theme/fonts.css'
-import { Helmet, HelmetProvider } from 'react-helmet-async'
-
-// import './App.css'
+import { Seo } from './seo'
 
 function App() {
   return (
-    <>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <HelmetProvider>
+        {/* Configuração dos meta tags padrão */}
+        <Seo />
 
-        <HelmetProvider>
-          <Helmet titleTemplate="%s | Dynamox" />
-          <Routes />
-        </HelmetProvider>
-      </ThemeProvider>
-    </>
+        <Routes />
+      </HelmetProvider>
+    </ThemeProvider>
   )
 }
 

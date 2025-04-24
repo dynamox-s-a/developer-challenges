@@ -29,16 +29,59 @@ export function Footer() {
           gap: '48px',
         }}
       >
-        <img src={dynamoxWhiteLogoFooter} alt={'Logomarca Dynamox branca no footer'} />
+        <a
+          href="/"
+          aria-label="Voltar para página inicial"
+          style={{ width: '167px', height: '70px' }}
+        >
+          <img
+            src={dynamoxWhiteLogoFooter}
+            alt="Dynamox - Soluções em monitoramento preditivo industrial"
+            width="167"
+            height="70"
+            loading="lazy"
+          />
+        </a>
 
-        <Box sx={{ display: 'flex', gap: '16px' }}>
-          {Object.entries(CMS_SOCIAL_MEDIA_DATA).map(([key, data]) => {
-            return (
-              <MuiLink key={key} href={data.link} target={'_blank'}>
-                <img src={data.src} />
-              </MuiLink>
-            )
-          })}
+        <Box
+          component="nav"
+          aria-label="Redes sociais da Dynamox"
+          sx={{
+            display: 'flex',
+            gap: '16px',
+            alignItems: 'center',
+          }}
+        >
+          {Object.entries(CMS_SOCIAL_MEDIA_DATA).map(([key, data]) => (
+            <MuiLink
+              key={key}
+              href={data.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${data.alt} da Dynamox`}
+              sx={{
+                display: 'inline-flex',
+                '&:hover': {
+                  transform: 'scale(1.1)',
+                  transition: 'transform 0.2s ease-in-out',
+                },
+              }}
+            >
+              <img
+                src={data.src}
+                alt={`Ícone do ${data.alt}`}
+                width={24}
+                height={24}
+                loading="lazy"
+                decoding="async"
+                style={{
+                  width: '24px',
+                  height: '24px',
+                  objectFit: 'contain',
+                }}
+              />
+            </MuiLink>
+          ))}
         </Box>
       </Box>
 
@@ -62,6 +105,8 @@ export function Footer() {
         </Typography>
 
         <Box
+          component="nav"
+          aria-label="Consentimento de Cookies e Aviso de privacidade Dynamox"
           sx={{
             display: 'flex',
             flexWrap: 'wrap',

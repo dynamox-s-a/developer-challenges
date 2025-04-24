@@ -1,0 +1,20 @@
+Checklist Final de SEO Técnico
+Meta tags básicas (title, description)
+
+Open Graph e Twitter Cards
+
+Estrutura semântica HTML5
+
+Atributos alt em imagens
+
+Dimensões explícitas para imagens
+
+Pré-carregamento de recursos críticos
+
+Canonical URL configurada
+
+Idioma definido (pt-BR)
+
+Meta viewport para mobile
+
+Schema.org pronto (opcional, mas recomendado)

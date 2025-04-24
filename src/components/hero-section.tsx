@@ -63,8 +63,11 @@ export function HeroSection() {
       >
         <img
           src="/dynamox-logo-wine.svg"
-          style={{ height: '64px', width: '152.33px' }}
-          alt="Dynamox logo cor vinho"
+          alt="Dynamox - Soluções para Indústria 4.0"
+          width="152"
+          height="64"
+          loading="eager"
+          fetchPriority="high"
         />
 
         <Box>
