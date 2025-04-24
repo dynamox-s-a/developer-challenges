@@ -40,7 +40,7 @@ export function HeroSection() {
           left: 0,
           width: '100%',
           height: '140%',
-          backgroundImage: 'url("/mask-texture.png")',
+          backgroundImage: 'url("/mask-texture.webp")',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
           backgroundSize: 'contain',

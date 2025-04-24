@@ -17,7 +17,13 @@ export function NotFound() {
       }}
     >
       <Box sx={{ width: '160px', marginBottom: '42px' }}>
-        <img src={DynamoxWineLogo} alt="" />
+        <img
+          src={DynamoxWineLogo}
+          alt="Dynamox - Soluções em monitoramento preditivo industrial"
+          loading="lazy"
+          width="152"
+          height="64"
+        />
       </Box>
 
       <Box sx={{ width: '70%', fontSize: '0.875rem', marginBottom: '16px' }}>

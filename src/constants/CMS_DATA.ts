@@ -4,9 +4,9 @@ import chatsIcon from '../../public/section-icons/chats.svg'
 import infiniteChats from '../../public/section-icons/infinite.svg'
 
 export const CMS_CAROUSEL_IMAGES = [
-  { id: 1, src: '/carousel-images/engineers_1.png' },
-  { id: 2, src: '/carousel-images/engineers_2.png' },
-  { id: 3, src: '/carousel-images/engineers_3.png' },
+  { id: 1, src: '/carousel-images/engineers_1.webp' },
+  { id: 2, src: '/carousel-images/engineers_2.webp' },
+  { id: 3, src: '/carousel-images/engineers_3.webp' },
 ]
 
 export const CMS_HISTORY_SECTION = [
@@ -33,7 +33,7 @@ export const CMS_HISTORY_SECTION = [
 export const CMS_DATA_SECTIONS = [
   {
     id: 1,
-    image: '/hotsite_1.png',
+    image: '/hotsite_1.webp',
     sectionIcon: lupaIcon,
     title: 'Uma solução que é referência',
     paragraph: null,
@@ -45,7 +45,7 @@ export const CMS_DATA_SECTIONS = [
   },
   {
     id: 2,
-    image: '/hotsite_2.jpg',
+    image: '/hotsite_2.webp',
     sectionIcon: cardsIcon,
     title: 'Uma solução que integra ',
     paragraph:
@@ -58,7 +58,7 @@ export const CMS_DATA_SECTIONS = [
   },
   {
     id: 3,
-    image: '/hotsite_3.jpg',
+    image: '/hotsite_3.webp',
     sectionIcon: chatsIcon,
     title: 'Uma solução que viabiliza a comunicação',
     paragraph:
@@ -71,7 +71,7 @@ export const CMS_DATA_SECTIONS = [
   },
   {
     id: 4,
-    image: '/hotsite_4.png',
+    image: '/hotsite_4.webp',
     sectionIcon: infiniteChats,
     title: 'Uma plataforma que se comunica de ponta a ponta',
     paragraph:

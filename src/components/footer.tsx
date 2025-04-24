@@ -36,9 +36,9 @@ export function Footer() {
         >
           <img
             src={dynamoxWhiteLogoFooter}
-            alt="Dynamox - Soluções em monitoramento preditivo industrial"
             width="167"
             height="70"
+            alt="Dynamox - Soluções em monitoramento preditivo industrial"
             loading="lazy"
           />
         </a>

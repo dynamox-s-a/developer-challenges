@@ -97,6 +97,7 @@ export function PurposeCard({ data, index }: PurposeCardProps) {
                 src={data.sectionIcon}
                 style={{ width: '52px', height: '52px' }}
                 alt={'ícones de engenharia'}
+                loading="lazy"
               />
 
               <Typography
