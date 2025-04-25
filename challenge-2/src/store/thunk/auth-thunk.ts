@@ -63,7 +63,7 @@ export const login = createAsyncThunk(
       )
 
       return { token: fakeToken, user }
-    } catch (error: any) {
+    } catch (error) {
       const errorMessage =
         error.message || 'Erro ao tentar fazer login. Verifique suas credenciais.'
       dispatch(loginUserFailure(errorMessage))
@@ -80,7 +80,7 @@ export const logout = createAsyncThunk('auth/logout', async (_, { rejectWithValu
     localStorage.removeItem('user')
     dispatch(logoutUserSuccess())
     return true
-  } catch (error: any) {
+  } catch (error) {
     const errorMessage = 'Erro ao tentar fazer logout.'
     dispatch(logoutUserFailure(errorMessage))
     return rejectWithValue(errorMessage)
