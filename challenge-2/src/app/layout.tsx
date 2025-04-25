@@ -1,11 +1,8 @@
+// app/layout.tsx
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono, Roboto } from 'next/font/google'
 import './globals.css'
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter'
-
-import { ThemeProvider } from '@mui/material'
-import { theme } from '@/theme'
-import { AuthProvider } from './contexts/auth-context'
+import ClientLayout from '@/layout/client-layout'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -37,11 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable}`}>
       <body>
-        <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>
-            <AuthProvider>{children}</AuthProvider>
-          </ThemeProvider>
-        </AppRouterCacheProvider>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   )
