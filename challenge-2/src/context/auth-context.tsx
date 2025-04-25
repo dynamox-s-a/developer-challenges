@@ -31,6 +31,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter()
   const pathname = usePathname()
   const [isInitialLoad, setIsInitialLoad] = useState(true)
+  const [isCheckingPermissions, setIsCheckingPermissions] = useState(true)
 
   useEffect(() => {
     const loadAuth = async () => {
@@ -43,6 +44,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     // Espera até que o carregamento inicial esteja completo
     if (isInitialLoad || isLoading) return
+
+    setIsCheckingPermissions(true)
 
     const isPublicRoute = Object.values(APP_ROUTES.public).includes(pathname)
     const isAdminRoute = pathname.startsWith(APP_ROUTES.admin)
@@ -71,18 +74,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       router.push(APP_ROUTES.private.home)
       return
     }
+
+    setIsCheckingPermissions(false)
   }, [isAuthenticated, pathname, isLoading, router, user?.role, isInitialLoad])
 
   return (
-    <AuthContext.Provider
-      value={{
-        token,
-        user,
-        isAuthenticated,
-        isLoading,
-      }}
-    >
-      {children}
+    <AuthContext.Provider value={{ token, user, isAuthenticated, isLoading }}>
+      {isCheckingPermissions ? <div>Carregando...</div> : children}
     </AuthContext.Provider>
   )
 }
