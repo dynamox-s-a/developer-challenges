@@ -5,6 +5,7 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter'
 
 import { ThemeProvider } from '@mui/material'
 import { theme } from '@/theme'
+import { AuthProvider } from './contexts/auth-context'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -37,7 +38,9 @@ export default function RootLayout({
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable}`}>
       <body>
         <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          <ThemeProvider theme={theme}>
+            <AuthProvider>{children}</AuthProvider>
+          </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
     </html>
