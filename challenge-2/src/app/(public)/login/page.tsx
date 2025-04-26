@@ -1,9 +1,10 @@
 'use client'
+
 import { useAppDispatch, useAppSelector } from '@/store/store'
 import { login } from '@/store/thunk/auth-thunk'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Box, Button, Container, FormControl, Input, InputLabel, Typography } from '@mui/material'
-import { Controller, useForm } from 'react-hook-form'
+import { Box, Button, Container, TextField, Typography } from '@mui/material'
+import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 const loginSchema = z.object({
@@ -18,7 +19,7 @@ export default function Login() {
   const dispatch = useAppDispatch()
 
   const {
-    control,
+    register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginSchemaType>({
@@ -34,82 +35,70 @@ export default function Login() {
   }
 
   return (
-    <>
-      <Container
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          mt: { xs: '64px', lg: '32px' },
-          gap: '48px',
-        }}
-      >
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-          <Typography component={'h1'} variant="h4">
-            Faça seu login
-          </Typography>
-        </Box>
+    <Container
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        mt: { xs: '64px', lg: '32px' },
+        gap: '48px',
+      }}
+    >
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+        <Typography component="h1" variant="h4">
+          Faça seu login
+        </Typography>
+      </Box>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            style={{
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            maxWidth: '400px',
+            gap: '32px',
+          }}
+        >
+          <TextField
+            label="Email"
+            type="email"
+            {...register('email')}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+            fullWidth
+          />
+
+          <TextField
+            label="Senha"
+            type="password"
+            {...register('password')}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+            fullWidth
+          />
+
+          <Box
+            sx={{
               display: 'flex',
               flexDirection: 'column',
-              width: '100%',
-              maxWidth: '400px',
-              gap: '32px',
+              justifyContent: 'center',
+              textAlign: 'center',
+              gap: '8px',
             }}
           >
-            <FormControl error={!!errors.email}>
-              <InputLabel htmlFor="email">Email</InputLabel>
-              <Controller
-                name="email"
-                control={control}
-                render={({ field }) => <Input {...field} id="email" type="email" />}
-              />
-              {errors.email && (
-                <Typography color="error" variant="body2">
-                  {errors.email.message}
-                </Typography>
-              )}
-            </FormControl>
+            <Button type="submit" variant="contained" disabled={isLoading}>
+              {isLoading ? 'Carregando...' : 'Entrar'}
+            </Button>
 
-            <FormControl error={!!errors.password}>
-              <InputLabel htmlFor="password">Senha</InputLabel>
-              <Controller
-                name="password"
-                control={control}
-                render={({ field }) => <Input {...field} id="password" type="password" />}
-              />
-              {errors.password && (
-                <Typography color="error" variant="body2">
-                  {errors.password.message}
-                </Typography>
-              )}
-            </FormControl>
-
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                textAlign: 'center',
-                gap: '8px',
-              }}
-            >
-              <Button type="submit" variant="contained" disabled={isLoading}>
-                {isLoading ? 'Carregando...' : 'Entrar'}
-              </Button>
-
-              {error && (
-                <Typography color="error" variant="body2">
-                  {error}
-                </Typography>
-              )}
-            </Box>
-          </form>
-        </Box>
-      </Container>
-    </>
+            {error && (
+              <Typography color="error" variant="body2">
+                {error}
+              </Typography>
+            )}
+          </Box>
+        </form>
+      </Box>
+    </Container>
   )
 }
