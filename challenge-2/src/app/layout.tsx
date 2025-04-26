@@ -1,8 +1,8 @@
-// app/layout.tsx
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono, Roboto } from 'next/font/google'
 import './globals.css'
-import ClientLayout from '@/layout/client-layout'
+import CombinedProviders from '@/providers/combined-providers'
+import { LayoutController } from '@/layout/layout-controller'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -34,7 +34,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable}`}>
       <body>
-        <ClientLayout>{children}</ClientLayout>
+        <CombinedProviders>
+          <LayoutController>{children}</LayoutController>
+        </CombinedProviders>
       </body>
     </html>
   )
