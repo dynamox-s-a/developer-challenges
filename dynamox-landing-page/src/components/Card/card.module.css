@@ -1,0 +1,127 @@
+.invert {
+  flex-direction: row-reverse;
+}
+
+.image {
+  width: 300px;
+  height: 230px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 10px;
+}
+
+.title {
+  font-size: 20px;
+  color: #333333;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-family: "Urbanist", sans-serif;
+  line-height: normal;
+}
+
+.title span {
+  color: #757575;
+}
+
+.description {
+  font-size: 14px;
+  color: #666666;
+}
+
+.list {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin-bottom: 12px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e0d8d4;
+}
+
+.list li {
+  font-size: 14px;
+  color: #555555;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  color: #7d2248;
+  text-decoration: none;
+  font-family: "Urbanist", sans-serif;
+}
+
+.link span {
+  font-size: 20px;
+  line-height: 0;
+}
+
+.card {
+  display: flex;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  padding: 20px;
+  gap: 20px;
+  align-items: center;
+  border: 1px solid #f3edea;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 32px 16px;
+}
+
+@media (max-width: 620px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding: 32px 16px;
+  }
+
+  .card {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: baseline;
+  }
+}
+
+@media (min-width: 620px) and (max-width: 764px) {
+  .card {
+    display: inline-flex;
+    flex-direction: column;
+    border-radius: 12px;
+    overflow: hidden;
+    padding: 20px;
+    gap: 20px;
+    align-items: center;
+    border: 1px solid #f3edea;
+    background-color: white;
+  }
+
+  .content {
+    width: 100%;
+  }
+
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    padding: 32px 16px;
+  }
+}
