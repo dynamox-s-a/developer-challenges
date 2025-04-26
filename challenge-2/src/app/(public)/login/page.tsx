@@ -1,4 +1,3 @@
-// components/Login.tsx
 'use client'
 import { useAppDispatch, useAppSelector } from '@/store/store'
 import { login } from '@/store/thunk/auth-thunk'
