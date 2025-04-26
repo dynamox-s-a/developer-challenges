@@ -5,8 +5,11 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useAppDispatch, useAppSelector } from '@/store/store'
 import { loadUserFromStorage } from '@/store/thunk/auth-thunk'
 
-const APP_ROUTES = {
-  admin: '/admin', // Adicionei explicitamente a rota de admin
+export const APP_ROUTES = {
+  admin: {
+    admin: '/admin',
+    dashboard: '/admin/dashboard',
+  },
   private: {
     home: '/',
     events: '/events/:id',
@@ -45,10 +48,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // Espera até que o carregamento inicial esteja completo
     if (isInitialLoad || isLoading) return
 
-    setIsCheckingPermissions(true)
+    // const isPublicRoute = Object.values(APP_ROUTES.public).includes(pathname)
 
-    const isPublicRoute = Object.values(APP_ROUTES.public).includes(pathname)
-    const isAdminRoute = pathname.startsWith(APP_ROUTES.admin)
+    const isLoginRoute = pathname === APP_ROUTES.public.login
+
+    const isAdminRoute = pathname.startsWith(APP_ROUTES.admin.admin)
+
     const isPrivateRoute = Object.values(APP_ROUTES.private).some((route) => {
       if (route.includes('/:')) {
         const baseRoute = route.split('/:')[0]
@@ -57,21 +62,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       return pathname === route
     })
 
-    // Se tentando acessar rota de admin sem ser admin
+    // Está na rota /admin - mas não está autenticado e não é adm
     if (isAdminRoute && (!isAuthenticated || user?.role !== 'admin')) {
       router.push(APP_ROUTES.private.home)
       return
     }
 
-    // Se tentando acessar rota privada sem estar autenticado
+    // Está na rota /privada - mas não está autenticado
     if (isPrivateRoute && !isAuthenticated) {
       router.push(APP_ROUTES.public.login)
       return
     }
 
-    // Se autenticado e tentando acessar rota pública (como login)
-    if (isPublicRoute && isAuthenticated) {
-      router.push(APP_ROUTES.private.home)
+    // Esta na rota /publica - mas esta autenticado
+    if (isLoginRoute && isAuthenticated) {
+      if (user?.role === 'admin') {
+        router.push(APP_ROUTES.admin.dashboard)
+      } else {
+        router.push(APP_ROUTES.private.home)
+      }
       return
     }
 
