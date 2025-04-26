@@ -1,0 +1,95 @@
+[1mdiff --git a/dynamox-landing-page/node_modules/.bin/acorn b/dynamox-landing-page/node_modules/.bin/acorn[m
+[1mdeleted file mode 120000[m
+[1mindex cf76760..0000000[m
+[1m--- a/dynamox-landing-page/node_modules/.bin/acorn[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-../acorn/bin/acorn[m
+\ No newline at end of file[m
+[1mdiff --git a/dynamox-landing-page/node_modules/.bin/browserslist b/dynamox-landing-page/node_modules/.bin/browserslist[m
+[1mdeleted file mode 120000[m
+[1mindex 3cd991b..0000000[m
+[1m--- a/dynamox-landing-page/node_modules/.bin/browserslist[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-../browserslist/cli.js[m
+\ No newline at end of file[m
+[1mdiff --git a/dynamox-landing-page/node_modules/.bin/esbuild b/dynamox-landing-page/node_modules/.bin/esbuild[m
+[1mdeleted file mode 120000[m
+[1mindex c83ac07..0000000[m
+[1m--- a/dynamox-landing-page/node_modules/.bin/esbuild[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-../esbuild/bin/esbuild[m
+\ No newline at end of file[m
+[1mdiff --git a/dynamox-landing-page/node_modules/.bin/eslint b/dynamox-landing-page/node_modules/.bin/eslint[m
+[1mdeleted file mode 120000[m
+[1mindex 810e4bc..0000000[m
+[1m--- a/dynamox-landing-page/node_modules/.bin/eslint[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-../eslint/bin/eslint.js[m
+\ No newline at end of file[m
+[1mdiff --git a/dynamox-landing-page/node_modules/.bin/js-yaml b/dynamox-landing-page/node_modules/.bin/js-yaml[m
+[1mdeleted file mode 120000[m
+[1mindex 9dbd010..0000000[m
+[1m--- a/dynamox-landing-page/node_modules/.bin/js-yaml[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-../js-yaml/bin/js-yaml.js[m
+\ No newline at end of file[m
+[1mdiff --git a/dynamox-landing-page/node_modules/.bin/jsesc b/dynamox-landing-page/node_modules/.bin/jsesc[m
+[1mdeleted file mode 120000[m
+[1mindex 7237604..0000000[m
+[1m--- a/dynamox-landing-page/node_modules/.bin/jsesc[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-../jsesc/bin/jsesc[m
+\ No newline at end of file[m
+[1mdiff --git a/dynamox-landing-page/node_modules/.bin/json5 b/dynamox-landing-page/node_modules/.bin/json5[m
+[1mdeleted file mode 120000[m
+[1mindex 217f379..0000000[m
+[1m--- a/dynamox-landing-page/node_modules/.bin/json5[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-../json5/lib/cli.js[m
+\ No newline at end of file[m
+[1mdiff --git a/dynamox-landing-page/node_modules/.bin/loose-envify b/dynamox-landing-page/node_modules/.bin/loose-envify[m
+[1mdeleted file mode 120000[m
+[1mindex ed9009c..0000000[m
+[1m--- a/dynamox-landing-page/node_modules/.bin/loose-envify[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-../loose-envify/cli.js[m
+\ No newline at end of file[m
+[1mdiff --git a/dynamox-landing-page/node_modules/.bin/nanoid b/dynamox-landing-page/node_modules/.bin/nanoid[m
+[1mdeleted file mode 120000[m
+[1mindex e2be547..0000000[m
+[1m--- a/dynamox-landing-page/node_modules/.bin/nanoid[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-../nanoid/bin/nanoid.cjs[m
+\ No newline at end of file[m
+[1mdiff --git a/dynamox-landing-page/node_modules/.bin/node-which b/dynamox-landing-page/node_modules/.bin/node-which[m
+[1mdeleted file mode 120000[m
+[1mindex 6f8415e..0000000[m
+[1m--- a/dynamox-landing-page/node_modules/.bin/node-which[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-../which/bin/node-which[m
+\ No newline at end of file[m
+[1mdiff --git a/dynamox-landing-page/node_modules/.bin/parser b/dynamox-landing-page/node_modules/.bin/parser[m
+[1mdeleted file mode 120000[m
+[1mindex ce7bf97..0000000[m
+[1m--- a/dynamox-landing-page/node_modules/.bin/parser[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-../@babel/parser/bin/babel-parser.js[m
+\ No newline at end of file[m
+[1mdiff --git a/dynamox-landing-page/node_modules/.bin/rollup b/dynamox-landing-page/node_modules/.bin/rollup[m
+[1mdeleted file mode 120000[m
+[1mindex 5939621..0000000[m
+[1m--- a/dynamox-landing-page/node_modules/.bin/rollup[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-../rol

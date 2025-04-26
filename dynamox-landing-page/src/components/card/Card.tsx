@@ -47,7 +47,23 @@ export const Card = ({
         )}
         {linkText && (
           <ButtonLink variante="card" href="https://dynamox.net/blog">
-            <span>+</span> {linkText}
+            <span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2v20M2 12h20"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+            {linkText}
           </ButtonLink>
         )}
       </div>
