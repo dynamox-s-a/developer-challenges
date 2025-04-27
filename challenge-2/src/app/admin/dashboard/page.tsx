@@ -3,10 +3,14 @@
 import { Box, Button, Container, Typography } from '@mui/material'
 import EventsTable from './events-table'
 import { useState } from 'react'
-import { AddEventModal } from './add-event-modal'
+import { EventModal } from './event-modal'
+import { useAppSelector } from '@/store/store'
 
 export default function AdminDashboard() {
+  const { events } = useAppSelector((state) => state.events)
   const [open, setOpen] = useState(false)
+
+  const hasEvents = events.length > 0
 
   return (
     <Container
@@ -34,22 +38,49 @@ export default function AdminDashboard() {
             justifyContent: 'end',
           }}
         >
-          <Button
-            onClick={() => setOpen(true)}
-            sx={{
-              textWrap: 'nowrap',
-              background: '#692746',
-              fontSize: '12px',
-              color: 'white',
-              maxWidth: '180px',
-            }}
-          >
-            Criar Evento
-          </Button>
+          {hasEvents && (
+            <Button
+              onClick={() => setOpen(true)}
+              sx={{
+                textWrap: 'nowrap',
+                background: '#692746',
+                fontSize: '12px',
+                color: 'white',
+                maxWidth: '180px',
+              }}
+            >
+              Criar Evento
+            </Button>
+          )}
 
-          <AddEventModal open={open} setOpen={setOpen} />
+          <EventModal open={open} setOpen={setOpen} mode="create" />
 
           <EventsTable />
+
+          <Box
+            sx={{
+              display: 'flexs',
+              width: '100%',
+              textAlign: 'center',
+            }}
+          >
+            {!hasEvents && (
+              <Button
+                onClick={() => setOpen(true)}
+                sx={{
+                  textWrap: 'nowrap',
+                  background: '#692746',
+                  fontSize: '18px',
+                  color: 'white',
+                  width: '300px',
+                  fontWeight: '400',
+                  textTransform: 'none',
+                }}
+              >
+                Criar evento
+              </Button>
+            )}
+          </Box>
         </Box>
       </Box>
     </Container>
