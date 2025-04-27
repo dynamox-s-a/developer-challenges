@@ -33,12 +33,28 @@ export const deleteEvent = createAsyncThunk(
   'events/deleteEvent',
   async (eventId: string, { rejectWithValue }) => {
     try {
-      const response = await clientAxios.delete(`/events/${eventId}`)
-      return response.data
+      await clientAxios.delete(`/events/${eventId}`)
+      return { id: eventId }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         return rejectWithValue(error.response?.data?.message || error.message)
       }
+      return rejectWithValue('Erro desconhecido ao deletar evento')
+    }
+  }
+)
+
+export const updateEvent = createAsyncThunk(
+  'events/updateEvent',
+  async (event: Event, { rejectWithValue }) => {
+    try {
+      const response = await clientAxios.patch(`/events/${event.id}`, event)
+      return response.data
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response?.data.message || error.message)
+      }
+      return rejectWithValue('Erro desconhecido ao atualizar o evento')
     }
   }
 )
