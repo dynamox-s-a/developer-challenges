@@ -7,15 +7,31 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import { useAppDispatch, useAppSelector } from '@/store/store'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { getEvents } from '@/store/thunk/event-thunk'
 import { Box, Button, Skeleton, Typography } from '@mui/material'
 import { SquarePen, Trash2 } from 'lucide-react'
 import { formatDate } from '@/utils/format-date'
+import { EventModal } from './event-modal'
+import { DeleteEventModal } from './delete-event-moda'
+import { Event } from '@/@types/event'
 
 export default function EventsTable() {
   const { events, isLoading } = useAppSelector((state) => state.events)
+  const [openEventModal, setOpenEventModal] = useState(false)
+  const [openDeleteModal, setOpenDeleteModal] = useState(false)
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const dispatch = useAppDispatch()
+
+  async function handleEditEvent(event: Event) {
+    setSelectedEvent(event)
+    setOpenEventModal(true)
+  }
+
+  async function handleDeleteEvent(event: Event) {
+    setSelectedEvent(event)
+    setOpenDeleteModal(true)
+  }
 
   useEffect(() => {
     dispatch(getEvents())
@@ -31,6 +47,23 @@ export default function EventsTable() {
 
   return (
     <>
+      {selectedEvent && (
+        <EventModal
+          open={openEventModal}
+          setOpen={setOpenEventModal}
+          selectedEvent={selectedEvent}
+          mode="edit"
+        />
+      )}
+
+      {selectedEvent && (
+        <DeleteEventModal
+          open={openDeleteModal}
+          setOpen={setOpenDeleteModal}
+          selectedEventId={selectedEvent?.id}
+        />
+      )}
+
       {isLoading ? (
         <Skeleton variant="rounded" width={'100%'} height={400} />
       ) : (
@@ -49,49 +82,59 @@ export default function EventsTable() {
             </TableHead>
 
             <TableBody>
-              {events.map((row) => (
-                <TableRow key={row.id}>
-                  {/* <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}> */}
-                  <TableCell component="th" scope="row">
-                    <Typography sx={{ fontSize: '12px', fontWeight: '600' }}>
-                      {row.event_name}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="right">
-                    <Box
-                      sx={{
-                        border: '1px solid #7e7e7e',
-                        borderRadius: '8px',
-                        padding: '4px 8px',
-                      }}
-                    >
-                      <Typography sx={{ fontSize: '12px', fontWeight: '500' }}>
-                        {row.category}
-                      </Typography>
-                    </Box>
-                  </TableCell>
-                  <TableCell align="left">
-                    <Typography sx={{ fontSize: '12px' }}>{formatDate(row.date_time)}</Typography>
-                  </TableCell>
-                  <TableCell align="left">
-                    <Typography sx={{ fontSize: '12px' }}>{row.location}</Typography>
-                  </TableCell>
-                  <TableCell align="left">
-                    <Typography sx={{ fontSize: '12px' }}>{row.description}</Typography>
-                  </TableCell>
+              {events.map((event) => {
+                console.log('event id na tabela', event.id)
 
-                  <TableCell>
-                    <Button sx={{ minWidth: '0px' }}>
-                      <SquarePen size={16} />
-                    </Button>
-                  </TableCell>
-                  <TableCell>
-                    <Button sx={{ minWidth: '0px' }}>
-                      <Trash2 size={16} />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+                return (
+                  <TableRow key={event.id}>
+                    {/* <TableRow key={event.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}> */}
+                    <TableCell component="th" scope="event">
+                      <Typography sx={{ fontSize: '12px', fontWeight: '600' }}>
+                        {event.event_name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Box
+                        sx={{
+                          border: '1px solid #7e7e7e',
+                          borderRadius: '8px',
+                          padding: '4px 8px',
+                          display: 'flex',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <Typography sx={{ fontSize: '12px', fontWeight: '500' }}>
+                          {event.category}
+                        </Typography>
+                      </Box>
+                    </TableCell>
+                    <TableCell align="left">
+                      <Typography sx={{ fontSize: '12px' }}>
+                        {formatDate(event.date_time)}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="left">
+                      <Typography sx={{ fontSize: '12px' }}>{event.location}</Typography>
+                    </TableCell>
+                    <TableCell align="left">
+                      <Typography sx={{ fontSize: '12px' }}>{event.description}</Typography>
+                    </TableCell>
+
+                    {/* BUTTONS */}
+                    <TableCell>
+                      <Button sx={{ minWidth: '0px' }} onClick={() => handleEditEvent(event)}>
+                        <SquarePen size={16} />
+                      </Button>
+                    </TableCell>
+
+                    <TableCell>
+                      <Button sx={{ minWidth: '0px' }} onClick={() => handleDeleteEvent(event)}>
+                        <Trash2 size={16} />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                )
+              })}
             </TableBody>
           </Table>
         </TableContainer>
