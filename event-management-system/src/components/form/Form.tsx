@@ -75,6 +75,12 @@ const Form = () => {
         onChange={(e) => setPassword(e.target.value)}
       />
 
+      {error && (
+        <Typography color="error" textAlign="center" sx={{ marginTop: 1 }}>
+          {error}
+        </Typography>
+      )}
+
       <FormControlLabel
         control={
           <Checkbox
@@ -98,12 +104,6 @@ const Form = () => {
           },
         }}
       />
-
-      {error && (
-        <Typography color="error" textAlign="center">
-          {error}
-        </Typography>
-      )}
 
       <Button isSubmitting={isSubmitting} />
     </Box>
