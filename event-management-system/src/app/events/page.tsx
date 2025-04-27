@@ -1,10 +1,9 @@
 "use client";
 
-import Form from "@/components/form/Form";
 import Image from "next/image";
 import styles from "./login.module.css";
 
-const Login = () => {
+const Events = () => {
   return (
     <div className={styles.loginContainer}>
       <Image
@@ -14,9 +13,9 @@ const Login = () => {
         height={80}
         className={styles.logo}
       />
-      <Form />
+      <p style={{ color: "white" }}>EVENTOS</p>
     </div>
   );
 };
 
-export default Login;
+export default Events;

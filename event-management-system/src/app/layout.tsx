@@ -1,9 +1,8 @@
-import "./globals.css";
+"use client";
 
-export const metadata = {
-  title: "Event Management System",
-  description: "Manage and track your events.",
-};
+import { ThemeProvider } from "@mui/material/styles";
+import "./globals.css";
+import theme from "@/theme/theme";
 
 export default function RootLayout({
   children,
@@ -13,9 +12,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <header></header>
-        <main>{children}</main>
-        <footer></footer>
+        <ThemeProvider theme={theme}>{children}</ThemeProvider>
       </body>
     </html>
   );
