@@ -1,19 +1,39 @@
 "use client";
 
-import Image from "next/image";
-import styles from "./login.module.css";
+import { useState, useEffect } from "react";
+import CardList from "@/components/card/CardList";
 
 const Events = () => {
+  const [events, setEvents] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch("/db.json");
+        const data = await response.json();
+        setEvents(data.events);
+      } catch (error) {
+        console.error("Erro ao buscar os eventos:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  if (loading) {
+    return <p>Loading events...</p>;
+  }
+
   return (
-    <div className={styles.loginContainer}>
-      <Image
-        src="/logo_Dynamox 2.png"
-        alt="Dynamox Logo"
-        width={180}
-        height={80}
-        className={styles.logo}
-      />
-      <p style={{ color: "white" }}>EVENTOS</p>
+    <div>
+      {events.length === 0 ? (
+        <p>No events found.</p>
+      ) : (
+        <CardList events={events} />
+      )}
     </div>
   );
 };

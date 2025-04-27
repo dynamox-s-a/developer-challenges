@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { TextField } from "@mui/material";
 
 interface InputProps {
@@ -22,6 +22,16 @@ const Input: React.FC<InputProps> = ({
   onChange,
   error,
 }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <TextField
       id={id}
@@ -33,6 +43,7 @@ const Input: React.FC<InputProps> = ({
       error={!!error}
       helperText={error}
       required
+      autoComplete="off"
       sx={{
         width: "300px",
         backgroundColor: "transparent",

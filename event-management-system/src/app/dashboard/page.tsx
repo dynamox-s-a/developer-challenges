@@ -12,6 +12,7 @@ const Events = () => {
         width={180}
         height={80}
         className={styles.logo}
+        priority
       />
       <p style={{ color: "white" }}>DASHBOARD</p>
     </div>

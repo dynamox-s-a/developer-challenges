@@ -13,6 +13,7 @@ const Login = () => {
         width={180}
         height={80}
         className={styles.logo}
+        priority
       />
       <Form />
     </div>

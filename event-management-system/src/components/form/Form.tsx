@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { Typography, Box, Checkbox, FormControlLabel } from "@mui/material";
@@ -14,6 +14,11 @@ const Form = () => {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,6 +49,10 @@ const Form = () => {
       setIsSubmitting(false);
     }
   };
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <Box
