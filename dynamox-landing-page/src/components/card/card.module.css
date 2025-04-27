@@ -25,7 +25,7 @@
 
 .title {
   font-size: 2rem;
-  color: #333333;
+  color: var(--cor-texto);
   font-weight: 600;
   margin-bottom: 8px;
   font-family: "Urbanist", sans-serif;
@@ -33,12 +33,12 @@
 }
 
 .title span {
-  color: #757575;
+  color: var(--cor-texto-span);
 }
 
 .description {
   font-size: 1rem;
-  color: #666666;
+  color: var(--cor-texto);
 }
 
 .list {
@@ -51,22 +51,7 @@
 
 .list li {
   font-size: 1rem;
-  color: #555555;
-}
-
-.link {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 14px;
-  color: #7d2248;
-  text-decoration: none;
-  font-family: "Urbanist", sans-serif;
-}
-
-.link span {
-  font-size: 20px;
-  line-height: 0;
+  color: var(--cor-texto);
 }
 
 .card {

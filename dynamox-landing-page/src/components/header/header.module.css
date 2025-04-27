@@ -23,13 +23,6 @@
   margin: 0 auto 1rem;
 }
 
-h1 {
-  font-size: 4rem;
-  font-weight: 400;
-  color: var(--cor-texto);
-  line-height: normal;
-}
-
 .title {
   color: var(--cor-primaria);
   font-weight: 700;
@@ -42,13 +35,4 @@ h1 {
   max-width: 800px;
   align-self: center;
   color: var(--cor-texto);
-}
-
-@media (max-width: 620px) {
-  h1 {
-    font-size: 2.8rem;
-  }
-}
-
-@media (min-width: 620px) and (max-width: 764px) {
 }
