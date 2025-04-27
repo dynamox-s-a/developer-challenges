@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Event } from '@/@types/event'
-import { createEvent, getEvents } from '../thunk/event-thunk'
+import { createEvent, deleteEvent, getEvents, updateEvent } from '../thunk/event-thunk'
 
 interface EventsState {
   events: Event[]
@@ -46,11 +46,41 @@ const eventsSlice = createSlice({
       })
       .addCase(getEvents.fulfilled, (state, action: PayloadAction<Event[]>) => {
         state.events = action.payload.sort(
-          (a, b) => new Date(b.date_time).getTime() - new Date(a.date_time).getTime()
+          (a, b) => new Date(a.date_time).getTime() - new Date(b.date_time).getTime()
         )
         state.isLoading = false
       })
       .addCase(getEvents.rejected, (state, action) => {
+        state.isLoading = false
+        state.error = action.payload as string
+      })
+
+      // DELETE EVENT
+      .addCase(deleteEvent.pending, (state) => {
+        state.isLoading = false
+        state.error = null
+      })
+      .addCase(deleteEvent.fulfilled, (state, action: PayloadAction<{ id: string }>) => {
+        state.events = state.events.filter((event) => event.id !== action.payload.id)
+        state.error = null
+      })
+      .addCase(deleteEvent.rejected, (state, action) => {
+        state.isLoading = false
+        state.error = action.payload as string
+      })
+
+      // UPDATE EVENT
+      .addCase(updateEvent.pending, (state) => {
+        state.isLoading = true
+        state.error = null
+      })
+      .addCase(updateEvent.fulfilled, (state, action: PayloadAction<Event>) => {
+        state.isLoading = false
+        state.events = state.events.map((event) =>
+          event.id === action.payload.id ? action.payload : event
+        )
+      })
+      .addCase(updateEvent.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload as string
       })
