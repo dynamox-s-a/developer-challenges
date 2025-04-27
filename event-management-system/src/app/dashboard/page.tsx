@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import styles from "./login.module.css";
+import styles from "../login/login.module.css";
 
 const Events = () => {
   return (

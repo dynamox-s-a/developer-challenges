@@ -2,17 +2,17 @@
 
 import { useState, useEffect } from "react";
 import CardList from "@/components/card/CardList";
+import { getEvents } from "../services/events";
 
 const Events = () => {
-  const [events, setEvents] = useState<any[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch("/db.json");
-        const data = await response.json();
-        setEvents(data.events);
+        const data = await getEvents();
+        setEvents(data);
       } catch (error) {
         console.error("Erro ao buscar os eventos:", error);
       } finally {

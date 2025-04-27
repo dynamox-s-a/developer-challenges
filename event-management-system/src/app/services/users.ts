@@ -1,0 +1,53 @@
+import axios from "axios";
+import { Roles } from "../types/Roles";
+
+const userApi = axios.create({
+  baseURL: "http://localhost:3001",
+});
+
+interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+interface LoginResponse {
+  token: string;
+  role: Roles;
+  userId: number;
+}
+
+export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
+  const response = await userApi.get("/users", {
+    params: {
+      email: payload.email,
+      password: payload.password,
+    },
+  });
+
+  const users = response.data;
+
+  if (users.length > 0) {
+    const user = users[0];
+    const fakeToken = `${btoa(user.email)}.${btoa(
+      user.password
+    )}.${Date.now()}`;
+
+    localStorage.setItem("token", fakeToken);
+    localStorage.setItem("role", user.role);
+    localStorage.setItem("userId", user.id.toString());
+
+    return {
+      token: fakeToken,
+      role: user.role,
+      userId: user.id,
+    };
+  } else {
+    throw new Error("Credenciais inválidas");
+  }
+};
+
+export const logout = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("role");
+  localStorage.removeItem("userId");
+};

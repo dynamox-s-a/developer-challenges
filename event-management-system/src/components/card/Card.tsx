@@ -61,8 +61,21 @@ const CardComponent = ({ event }: { event: any }) => {
         <CardActions sx={{ padding: "8px" }}>
           <Button
             size="small"
-            onClick={() => alert(`Details of ${event.name}`)}
-            sx={{ fontSize: 10 }}
+            sx={{
+              fontSize: 10,
+              color: "primary.main",
+              textTransform: "none",
+              justifyContent: "flex-start",
+              padding: 0,
+              height: "24px",
+              minWidth: "auto",
+              backgroundColor: "transparent",
+              textDecoration: "underline",
+              "&:hover": {
+                fontWeight: "bold",
+                backgroundColor: "transparent",
+              },
+            }}
           >
             Learn More
           </Button>

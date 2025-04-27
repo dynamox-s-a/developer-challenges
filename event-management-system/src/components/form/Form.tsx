@@ -1,8 +1,8 @@
 "use client";
 
+import { login } from "@/app/services/users";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import { Typography, Box, Checkbox, FormControlLabel } from "@mui/material";
 import Button from "../button/Button";
 import Input from "../input/Input";
@@ -26,25 +26,17 @@ const Form = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post("/api/login", { email, password });
-
-      const { user } = response.data;
+      const user = await login({ email, password });
 
       if (user.role === "admin") {
         router.push("/dashboard");
       } else if (user.role === "reader") {
         router.push("/events");
       } else {
-        setError("Função de usuário desconhecida.");
+        setError("Usuário não tem permissão de acesso.");
       }
     } catch (err) {
-      if (axios.isAxiosError(err) && err.response) {
-        if (err.response.status === 401) {
-          setError("Credenciais inválidas. Tente novamente.");
-        } else {
-          setError("Erro ao tentar fazer login. Tente novamente.");
-        }
-      }
+      if (err) setError("Credenciais inválidas. Tente novamente.");
     } finally {
       setIsSubmitting(false);
     }
