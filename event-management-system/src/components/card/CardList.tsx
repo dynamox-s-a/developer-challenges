@@ -1,22 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardComponent from "./Card";
 import Grid from "@mui/material/Grid";
 import Pagination from "@mui/material/Pagination";
 import Box from "@mui/material/Box";
 
-const CardList = ({ events }: { events: Array<any> }) => {
+const CardList = ({
+  events,
+  searchTerm,
+}: {
+  events: Array<any>;
+  searchTerm: string;
+}) => {
   const [page, setPage] = useState(1);
+  const [filteredEvents, setFilteredEvents] = useState<Array<any>>(events);
   const eventsPerPage = 12;
-
   const now = new Date();
 
-  const futureEvents = events
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setFilteredEvents(events);
+    } else {
+      const filtered = events.filter((event) =>
+        event.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredEvents(filtered);
+    }
+  }, [searchTerm, events]);
+
+  const futureEvents = filteredEvents
     .filter((event) => new Date(event.datetime) >= now)
     .sort(
       (a, b) => new Date(a.datetime).getTime() - new Date(b.datetime).getTime()
     );
 
-  const pastEvents = events
+  const pastEvents = filteredEvents
     .filter((event) => new Date(event.datetime) < now)
     .sort(
       (a, b) => new Date(b.datetime).getTime() - new Date(a.datetime).getTime()
@@ -52,41 +69,48 @@ const CardList = ({ events }: { events: Array<any> }) => {
         maxWidth: 1080,
         mx: "auto",
         padding: 2,
-        minHeight: "100vh",
         overflowY: "auto",
       }}
     >
-      <h1 style={{ color: "white", textAlign: "center" }}>EVENTOS</h1>
+      <div>
+        <h4
+          style={{
+            color: "white",
+            textAlign: "center",
+            marginTop: "40px",
+          }}
+        >
+          PRÓXIMOS EVENTOS
+        </h4>
+        <Grid container spacing={2} justifyContent={"center"}>
+          {currentFutureEvents.length > 0 ? (
+            currentFutureEvents.map((event) => (
+              <Grid item xs={12} sm={6} md={3} key={event.id}>
+                <CardComponent event={event} />
+              </Grid>
+            ))
+          ) : (
+            <p style={{ color: "white" }}>Nenhum evento futuro encontrado.</p>
+          )}
+        </Grid>
+      </div>
 
-      <h4 style={{ color: "white", marginTop: "32px", textAlign: "center" }}>
-        PRÓXIMOS EVENTOS
-      </h4>
-      <Grid container spacing={2} justifyContent={"center"}>
-        {currentFutureEvents.length > 0 ? (
-          currentFutureEvents.map((event) => (
-            <Grid item xs={12} sm={6} md={3} key={event.id}>
-              <CardComponent event={event} />
-            </Grid>
-          ))
-        ) : (
-          <p style={{ color: "white" }}>Nenhum evento futuro encontrado.</p>
-        )}
-      </Grid>
-
-      <h4 style={{ color: "white", marginTop: "48px", textAlign: "center" }}>
-        EVENTOS PASSADOS
-      </h4>
-      <Grid container spacing={2} justifyContent={"center"}>
-        {currentPastEvents.length > 0 ? (
-          currentPastEvents.map((event) => (
-            <Grid item xs={12} sm={6} md={3} key={event.id}>
-              <CardComponent event={event} />
-            </Grid>
-          ))
-        ) : (
-          <p style={{ color: "white" }}>Nenhum evento passado encontrado.</p>
-        )}
-      </Grid>
+      <div style={{ marginTop: "48px" }}>
+        <h4 style={{ color: "white", textAlign: "center" }}>
+          EVENTOS PASSADOS
+        </h4>
+        <Grid container spacing={2} justifyContent={"center"}>
+          {currentPastEvents.length > 0 ? (
+            currentPastEvents.map((event) => (
+              <Grid item xs={12} sm={6} md={3} key={event.id}>
+                <CardComponent event={event} />
+              </Grid>
+            ))
+          ) : (
+            <p style={{ color: "white" }}>Nenhum evento passado encontrado.</p>
+          )}
+        </Grid>
+      </div>
 
       {totalPages > 1 && (
         <Pagination
@@ -94,7 +118,11 @@ const CardList = ({ events }: { events: Array<any> }) => {
           page={page}
           onChange={handlePageChange}
           color="primary"
-          sx={{ marginTop: 3, display: "flex", justifyContent: "center" }}
+          sx={{
+            marginTop: 3,
+            display: "flex",
+            justifyContent: "center",
+          }}
         />
       )}
     </Box>

@@ -1,0 +1,6 @@
+.eventsContainer {
+  position: absolute;
+  top: 93px;
+  z-index: 10;
+  right: 64px;
+}

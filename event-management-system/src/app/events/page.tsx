@@ -2,11 +2,23 @@
 
 import { useState, useEffect } from "react";
 import CardList from "@/components/card/CardList";
+import Header from "../../components/header/Header";
 import { getEvents } from "../services/events";
+import styles from "./event.module.css";
+import { logout } from "../services/users";
+import { useRouter } from "next/navigation";
 
 const Events = () => {
+  const router = useRouter();
+
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleLogout = () => {
+    logout();
+    router.push("/login");
+  };
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -24,15 +36,20 @@ const Events = () => {
   }, []);
 
   if (loading) {
-    return <p>Loading events...</p>;
+    return <p style={{ color: "white" }}>Loading events...</p>;
   }
 
   return (
-    <div>
+    <div className={styles.eventsContainer}>
+      <Header
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        onLogout={handleLogout}
+      />
       {events.length === 0 ? (
         <p>No events found.</p>
       ) : (
-        <CardList events={events} />
+        <CardList events={events} searchTerm={searchTerm} />
       )}
     </div>
   );
