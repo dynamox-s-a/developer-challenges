@@ -1,4 +1,3 @@
-// src/components/Seo.tsx
 interface SeoProps {
   title?: string
   description?: string

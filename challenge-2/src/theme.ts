@@ -18,7 +18,6 @@ declare module '@mui/material/styles' {
   }
 }
 
-// Permite usar `<Typography variant="customTitle" />`
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
     customTitle: true

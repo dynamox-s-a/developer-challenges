@@ -1,4 +1,3 @@
-// store/auth/thunks.ts
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import {
