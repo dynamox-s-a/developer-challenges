@@ -13,5 +13,14 @@
       "role": "reader"
     }
   ],
-  "events": []
+  "events": [
+    {
+      "id": "ed2a",
+      "event_name": "Dynamox VibraEvent 2.0",
+      "date_time": "2026-10-15T10:10",
+      "location": "Avenida Jorge Lacera, 1907",
+      "description": "Não é exagero dizer que a indústria está passando por profundas e significativas transformações. Diversos setores caminham para obter mais competitividade em um mercado global cada vez mais exigente. O ano de 2024 apresentou grandes desafios para as indústrias e 2025 promete dobrar a aposta.  Quais são as tendências para a indústria este ano?",
+      "category": "Conferência"
+    }
+  ]
 }
