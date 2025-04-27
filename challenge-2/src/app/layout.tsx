@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Roboto } from 'next/font/google'
 import './globals.css'
 import CombinedProviders from '@/providers/combined-providers'
 import { LayoutController } from '@/layout/layout-controller'
+import { Toaster } from 'sonner'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -34,6 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable}`}>
       <body>
+        <Toaster richColors position="top-right" offset={{ top: '90px', right: '30px' }} />
         <CombinedProviders>
           <LayoutController>{children}</LayoutController>
         </CombinedProviders>
