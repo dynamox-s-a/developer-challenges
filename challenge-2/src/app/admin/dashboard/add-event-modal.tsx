@@ -5,7 +5,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Box, Button, MenuItem, Modal, TextField, Typography } from '@mui/material'
 import { X } from 'lucide-react'
 import { useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
 import { z } from 'zod'
 
 interface AddEventModal {
