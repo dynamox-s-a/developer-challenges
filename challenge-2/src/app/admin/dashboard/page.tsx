@@ -44,9 +44,10 @@ export default function AdminDashboard() {
               sx={{
                 textWrap: 'nowrap',
                 background: '#692746',
-                fontSize: '12px',
+                fontSize: '14px',
                 color: 'white',
                 maxWidth: '180px',
+                textTransform: 'none',
               }}
             >
               Criar Evento

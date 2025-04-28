@@ -39,7 +39,14 @@ export function AdminLayout({ children }: AdminLayoutProps) {
               justifyContent: 'center',
             }}
           >
-            <Typography sx={{ fontFamily: 'roboto', fontSize: '14px', alignSelf: 'baseline' }}>
+            <Typography
+              sx={{
+                fontFamily: 'roboto',
+                fontSize: '14px',
+                alignSelf: 'baseline',
+                textTransform: 'none',
+              }}
+            >
               Sair
             </Typography>{' '}
             <Power size={14} />
