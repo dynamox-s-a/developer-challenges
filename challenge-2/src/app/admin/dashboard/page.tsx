@@ -3,7 +3,7 @@
 import { Box, Button, Container, Typography } from '@mui/material'
 import EventsTable from './events-table'
 import { useState } from 'react'
-import { EventModal } from './event-modal'
+import { EventModal } from '../../../_components/event-modal'
 import { useAppSelector } from '@/store/store'
 
 export default function AdminDashboard() {
@@ -28,7 +28,8 @@ export default function AdminDashboard() {
           gap: '32px',
         }}
       >
-        <Typography variant="h3">Eventos</Typography>
+        <Typography variant="h3">ADM | Eventos</Typography>
+
         <Box
           sx={{
             display: 'flex',

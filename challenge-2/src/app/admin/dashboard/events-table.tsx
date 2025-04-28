@@ -12,24 +12,24 @@ import { getEvents } from '@/store/thunk/event-thunk'
 import { Box, Button, Skeleton, Typography } from '@mui/material'
 import { SquarePen, Trash2 } from 'lucide-react'
 import { formatDate } from '@/utils/format-date'
-import { EventModal } from './event-modal'
-import { DeleteEventModal } from './delete-event-moda'
+import { EventModal } from '../../../_components/event-modal'
+import { DeleteEventModal } from '../../../_components/delete-event-moda'
 import { Event } from '@/@types/event'
+import { setSelectedEvent } from '@/store/actions/event-actions'
 
 export default function EventsTable() {
-  const { events, isLoading } = useAppSelector((state) => state.events)
+  const { events, selectedEvent, isLoading } = useAppSelector((state) => state.events)
   const [openEventModal, setOpenEventModal] = useState(false)
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const dispatch = useAppDispatch()
 
   async function handleEditEvent(event: Event) {
-    setSelectedEvent(event)
+    dispatch(setSelectedEvent(event))
     setOpenEventModal(true)
   }
 
   async function handleDeleteEvent(event: Event) {
-    setSelectedEvent(event)
+    dispatch(setSelectedEvent(event))
     setOpenDeleteModal(true)
   }
 
