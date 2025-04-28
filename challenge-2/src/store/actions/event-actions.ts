@@ -4,12 +4,14 @@ import { createEvent, deleteEvent, getEvents, updateEvent } from '../thunk/event
 
 interface EventsState {
   events: Event[]
+  selectedEvent: Event | null
   isLoading: boolean
   error: string | null
 }
 
 const initialState: EventsState = {
   events: [],
+  selectedEvent: null,
   isLoading: false,
   error: null,
 }
@@ -21,6 +23,9 @@ const eventsSlice = createSlice({
     // reducers síncronos
     clearEventsError(state) {
       state.error = null
+    },
+    setSelectedEvent(state, action: PayloadAction<Event | null>) {
+      state.selectedEvent = action.payload
     },
   },
   extraReducers: (builder) => {
@@ -87,5 +92,5 @@ const eventsSlice = createSlice({
   },
 })
 
-export const { clearEventsError } = eventsSlice.actions
+export const { clearEventsError, setSelectedEvent } = eventsSlice.actions
 export default eventsSlice.reducer
