@@ -4,6 +4,10 @@ import { createEvent, deleteEvent, getEvents, updateEvent } from '../thunk/event
 
 interface EventsState {
   events: Event[]
+  filteredEvents: Event[]
+  filters: {
+    searchTerm: string
+  }
   selectedEvent: Event | null
   isLoading: boolean
   error: string | null
@@ -11,6 +15,10 @@ interface EventsState {
 
 const initialState: EventsState = {
   events: [],
+  filteredEvents: [],
+  filters: {
+    searchTerm: '',
+  },
   selectedEvent: null,
   isLoading: false,
   error: null,
@@ -26,6 +34,17 @@ const eventsSlice = createSlice({
     },
     setSelectedEvent(state, action: PayloadAction<Event | null>) {
       state.selectedEvent = action.payload
+    },
+    setSearchTerm(state, action: PayloadAction<string>) {
+      state.filters.searchTerm = action.payload.toLowerCase()
+      state.filteredEvents = state.events.filter((event) =>
+        event.event_name.toLowerCase().includes(state.filters.searchTerm)
+      )
+    },
+    filterEvents(state) {
+      state.filteredEvents = state.events.filter((event) =>
+        event.event_name.toLowerCase().includes(state.filters.searchTerm)
+      )
     },
   },
   extraReducers: (builder) => {
@@ -50,8 +69,13 @@ const eventsSlice = createSlice({
         state.error = null
       })
       .addCase(getEvents.fulfilled, (state, action: PayloadAction<Event[]>) => {
-        state.events = action.payload.sort(
-          (a, b) => new Date(a.date_time).getTime() - new Date(b.date_time).getTime()
+        const sortedEvents = action.payload.sort(
+          (a, b) => new Date(b.date_time).getTime() - new Date(a.date_time).getTime()
+        )
+        state.events = sortedEvents
+        // Filtra os eventos após carregar
+        state.filteredEvents = sortedEvents.filter((event) =>
+          event.event_name.toLowerCase().includes(state.filters.searchTerm)
         )
         state.isLoading = false
       })
@@ -92,5 +116,6 @@ const eventsSlice = createSlice({
   },
 })
 
-export const { clearEventsError, setSelectedEvent } = eventsSlice.actions
+export const { clearEventsError, setSelectedEvent, filterEvents, setSearchTerm } =
+  eventsSlice.actions
 export default eventsSlice.reducer
