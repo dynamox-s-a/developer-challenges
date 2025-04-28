@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import CardComponent from "./Card";
+import CardUserComponent from "./CardUserEvent";
 import Grid from "@mui/material/Grid";
 import Pagination from "@mui/material/Pagination";
 import Box from "@mui/material/Box";
 
-const CardList = ({
+const CardUserList = ({
   events,
   searchTerm,
 }: {
@@ -86,7 +86,7 @@ const CardList = ({
           {currentFutureEvents.length > 0 ? (
             currentFutureEvents.map((event) => (
               <Grid item xs={12} sm={6} md={3} key={event.id}>
-                <CardComponent event={event} />
+                <CardUserComponent event={event} />
               </Grid>
             ))
           ) : (
@@ -103,7 +103,7 @@ const CardList = ({
           {currentPastEvents.length > 0 ? (
             currentPastEvents.map((event) => (
               <Grid item xs={12} sm={6} md={3} key={event.id}>
-                <CardComponent event={event} />
+                <CardUserComponent event={event} />
               </Grid>
             ))
           ) : (
@@ -129,4 +129,4 @@ const CardList = ({
   );
 };
 
-export default CardList;
+export default CardUserList;

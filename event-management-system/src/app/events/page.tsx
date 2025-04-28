@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import CardList from "@/components/card/CardList";
+import CardList from "@/components/card/CardUserEventList";
 import Header from "../../components/header/Header";
 import { getEvents } from "../services/events";
 import styles from "./event.module.css";

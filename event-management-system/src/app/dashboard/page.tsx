@@ -1,20 +1,56 @@
 "use client";
 
-import Image from "next/image";
-import styles from "../login/login.module.css";
+import { useState, useEffect } from "react";
+import CardAdminEventList from "@/components/card/CardAdminEventList";
+import Header from "../../components/header/Header";
+import { getEvents } from "../services/events";
+import styles from "../events/event.module.css";
+import { logout } from "../services/users";
+import { useRouter } from "next/navigation";
 
 const Events = () => {
+  const router = useRouter();
+
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleLogout = () => {
+    logout();
+    router.push("/login");
+  };
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const data = await getEvents();
+        setEvents(data);
+      } catch (error) {
+        console.error("Erro ao buscar os eventos:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  if (loading) {
+    return <p style={{ color: "white" }}>Loading events...</p>;
+  }
+
   return (
-    <div className={styles.loginContainer}>
-      <Image
-        src="/logo_Dynamox 2.png"
-        alt="Dynamox Logo"
-        width={180}
-        height={80}
-        className={styles.logo}
-        priority
+    <div className={styles.eventsContainer}>
+      <Header
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        onLogout={handleLogout}
       />
-      <p style={{ color: "white" }}>DASHBOARD</p>
+      {events.length === 0 ? (
+        <p>No events found.</p>
+      ) : (
+        <CardAdminEventList events={events} searchTerm={searchTerm} />
+      )}
     </div>
   );
 };
