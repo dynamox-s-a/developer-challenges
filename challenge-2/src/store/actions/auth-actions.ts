@@ -4,6 +4,7 @@ interface User {
   id: number
   email: string
   role: string
+  isAdmin: string
 }
 
 interface AuthState {
@@ -12,6 +13,7 @@ interface AuthState {
   isAuthenticated: boolean
   isLoading: boolean
   error: string | null
+  isAdmin: boolean
 }
 
 const initialState: AuthState = {
@@ -20,6 +22,7 @@ const initialState: AuthState = {
   isAuthenticated: false,
   isLoading: false,
   error: null,
+  isAdmin: false,
 }
 const authSlice = createSlice({
   name: 'auth',
@@ -35,6 +38,7 @@ const authSlice = createSlice({
       state.isAuthenticated = true
       state.isLoading = false
       state.error = null
+      state.isAdmin = action.payload.user.role === 'admin' ? true : false
     },
     loginUserFailure(state: AuthState, action: PayloadAction<string>) {
       state.isLoading = false
