@@ -7,6 +7,7 @@ import { Box, Button, Card, CardActions, CardContent, CardMedia, Typography } fr
 import { PencilLineIcon, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { EventModal } from './event-modal'
+import { isEventPast } from '@/utils/check-event-date'
 
 interface EventCardProps {
   data: Event
@@ -19,6 +20,8 @@ export function EventCard({ data, randomImg }: EventCardProps) {
   const [openEventModal, setOpenEventModal] = useState(false)
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
   const dispatch = useAppDispatch()
+
+  const isPastEvent = isEventPast(data.date_time)
 
   async function handleEditEvent(event: Event) {
     dispatch(setSelectedEvent(event))
@@ -49,7 +52,9 @@ export function EventCard({ data, randomImg }: EventCardProps) {
         />
       )}
 
-      <Card sx={{ maxWidth: '100%', minWidth: '340px', border: 'none' }}>
+      <Card
+        sx={{ maxWidth: '100%', minWidth: '340px', border: 'none', opacity: isPastEvent ? 0.6 : 1 }}
+      >
         <CardMedia sx={{ height: 160 }} image={randomImg} title="green iguana" />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
