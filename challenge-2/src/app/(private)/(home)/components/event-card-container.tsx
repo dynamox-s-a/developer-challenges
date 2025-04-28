@@ -8,17 +8,18 @@ import { useEffect } from 'react'
 const urlImages = [
   'https://i0.wp.com/storage.googleapis.com/dyx-communications-mkt-public-assets/Blog/Imagens/maquina_de_papel02.jpeg?w=750&ssl=1',
   'https://i0.wp.com/content.dynamox.net/wp-content/uploads/2024/11/Case-de-Sucesso-Cal-Trevo-imagens-1-scaled.jpg?w=2250&ssl=1',
+  'https://dynamox.net/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fccorp-public-assets%2FInstitutional%2FSuccessHistory%2FFS%2Fgeneral.webp&w=3840&q=75',
 ]
 
 export function EventCardContainer() {
-  const { events, isLoading } = useAppSelector((state) => state.events)
+  const { filteredEvents, isLoading } = useAppSelector((state) => state.events)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     dispatch(getEvents())
   }, [dispatch])
 
-  if (events.length === 0) {
+  if (filteredEvents.length === 0) {
     return (
       <div style={{ display: 'flex', width: '100%', justifyContent: 'center', marginTop: '56px' }}>
         Desculpe, não encontramos nenhum evento.
@@ -47,7 +48,7 @@ export function EventCardContainer() {
           </>
         ) : (
           <>
-            {events.map((event) => {
+            {filteredEvents.map((event) => {
               return (
                 <EventCard key={event.id} data={event} randomImg={getRandomImageUrl(urlImages)} />
               )
