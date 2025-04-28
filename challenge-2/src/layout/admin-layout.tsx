@@ -105,7 +105,16 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         }}
       >
         <MenuItem onClick={handleMenuClose}>
-          <Typography sx={{ fontSize: '16px', fontWeight: 600 }}>Eventos da dynamox</Typography>
+          <Typography
+            sx={{
+              textAlign: 'center',
+              fontSize: '14px',
+              fontWeight: 600,
+              width: '100%',
+            }}
+          >
+            Admin Dashboard Dynamox
+          </Typography>
         </MenuItem>
 
         <MenuItem onClick={logoutApp}>
