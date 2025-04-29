@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import CardList from "@/components/card/CardUserEventList";
+import CardList from "@/components/card/CardReaderList";
 import Header from "../../components/header/Header";
 import { getEvents } from "../services/events";
 import { logout } from "../services/users";

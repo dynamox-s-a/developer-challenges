@@ -5,7 +5,7 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
-const CardUserComponent = ({ event }: { event: any }) => {
+const CardReader = ({ event }: { event: any }) => {
   const eventDate = new Date(event.datetime);
   const formattedDate = `${eventDate.toLocaleDateString("pt-BR")} - ${eventDate
     .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
@@ -85,4 +85,4 @@ const CardUserComponent = ({ event }: { event: any }) => {
   );
 };
 
-export default CardUserComponent;
+export default CardReader;

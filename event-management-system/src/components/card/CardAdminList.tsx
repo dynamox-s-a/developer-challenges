@@ -1,9 +1,17 @@
 import { useState, useEffect } from "react";
 import { Event, getEvents } from "../../app/services/events";
 import { Box, Typography, Button, Alert } from "@mui/material";
-import CardAdminEventTable from "./CardAdminEvent";
+import CardAdminEventTable from "./CardAdmin";
 
-const CardAdminEventList = () => {
+interface CardAdminListProps {
+  events: Event[];
+  searchTerm: string;
+}
+
+const CardAdminList = ({
+  events: initialEvents,
+  searchTerm,
+}: CardAdminListProps) => {
   const [events, setEvents] = useState<Event[]>([]);
   const [creating, setCreating] = useState(false);
   const [creationSuccess, setCreationSuccess] = useState(false);
@@ -19,8 +27,8 @@ const CardAdminEventList = () => {
   };
 
   useEffect(() => {
-    fetchEvents();
-  }, []);
+    setEvents(initialEvents);
+  }, [initialEvents]);
 
   const handleCreateNew = () => {
     if (creating) return;
@@ -42,6 +50,9 @@ const CardAdminEventList = () => {
     setCreating(false);
   };
 
+  const filteredEvents = events.filter((event) =>
+    event.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   return (
     <Box sx={{ maxWidth: 1200, mx: "auto", mt: 4, px: 2 }}>
       <Typography
@@ -50,13 +61,11 @@ const CardAdminEventList = () => {
       >
         EVENTOS CADASTRADOS
       </Typography>
-
       {creationSuccess && (
         <Alert severity="success" sx={{ marginBottom: 2 }}>
           Evento criado com sucesso!
         </Alert>
       )}
-
       <Box sx={{ textAlign: "center", mb: 2 }}>
         <Button
           onClick={handleCreateNew}
@@ -77,9 +86,9 @@ const CardAdminEventList = () => {
       <Box
         sx={{ borderRadius: 2, overflowX: "auto", padding: 2, color: "white" }}
       >
-        {events.length > 0 ? (
+        {filteredEvents.length > 0 ? (
           <CardAdminEventTable
-            events={events}
+            events={filteredEvents}
             onRefresh={fetchEvents}
             onDiscardNew={handleDiscardNew}
           />
@@ -91,4 +100,4 @@ const CardAdminEventList = () => {
   );
 };
 
-export default CardAdminEventList;
+export default CardAdminList;

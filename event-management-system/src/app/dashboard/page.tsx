@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import CardAdminEventList from "@/components/card/CardAdminEventList";
+import CardAdminEventList from "@/components/card/CardAdminList";
 import Header from "../../components/header/Header";
 import { getEvents } from "../services/events";
 import styles from "../dashboard/dashboard.module.css";

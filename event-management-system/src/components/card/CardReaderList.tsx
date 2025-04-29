@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import CardUserComponent from "./CardUserEvent";
+import CardUserComponent from "./CardReader";
 import Grid from "@mui/material/Grid";
 import Pagination from "@mui/material/Pagination";
 import Box from "@mui/material/Box";
 import SortBar from "../sortBar/SortBar";
 
-const CardUserList = ({
+const CardReaderList = ({
   events,
   searchTerm,
 }: {
@@ -56,7 +56,6 @@ const CardUserList = ({
   ) => {
     setPage(value);
   };
-
   const indexOfLastEvent = page * eventsPerPage;
   const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
 
@@ -68,7 +67,6 @@ const CardUserList = ({
     indexOfFirstEvent,
     indexOfLastEvent
   );
-
   const sortByName = () => {
     const sortedFuture = [...sortedFutureEvents].sort((a, b) =>
       a.name.localeCompare(b.name)
@@ -79,7 +77,6 @@ const CardUserList = ({
     setSortedFutureEvents(sortedFuture);
     setSortedPastEvents(sortedPast);
   };
-
   const sortByDate = () => {
     const sortedFuture = [...sortedFutureEvents].sort(
       (a, b) => new Date(a.datetime).getTime() - new Date(b.datetime).getTime()
@@ -90,7 +87,6 @@ const CardUserList = ({
     setSortedFutureEvents(sortedFuture);
     setSortedPastEvents(sortedPast);
   };
-
   const totalPages = Math.max(
     Math.ceil(sortedFutureEvents.length / eventsPerPage),
     Math.ceil(sortedPastEvents.length / eventsPerPage)
@@ -115,9 +111,9 @@ const CardUserList = ({
         >
           PRÓXIMOS EVENTOS
         </h4>
-
-        <SortBar sortByName={sortByName} sortByDate={sortByDate} />
-
+        {currentFutureEvents.length > 0 ? (
+          <SortBar sortByName={sortByName} sortByDate={sortByDate} />
+        ) : null}
         <Grid container spacing={2} justifyContent={"center"}>
           {currentFutureEvents.length > 0 ? (
             currentFutureEvents.map((event) => (
@@ -130,7 +126,6 @@ const CardUserList = ({
           )}
         </Grid>
       </div>
-
       <div style={{ marginTop: "48px" }}>
         <h4 style={{ color: "white", textAlign: "center" }}>
           EVENTOS PASSADOS
@@ -147,7 +142,6 @@ const CardUserList = ({
           )}
         </Grid>
       </div>
-
       {totalPages > 1 && (
         <Pagination
           count={totalPages}
@@ -165,4 +159,4 @@ const CardUserList = ({
   );
 };
 
-export default CardUserList;
+export default CardReaderList;

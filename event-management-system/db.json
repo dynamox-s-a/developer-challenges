@@ -15,22 +15,6 @@
   ],
   "events": [
     {
-      "name": "techtech",
-      "datetime": "2025-04-20T12:00",
-      "location": "Florianópolis",
-      "description": "An incredible conference gathering tech enthusiasts, startups, and innovators from around the globe. Networking and knowledge sharing at its best!",
-      "category": "Conference",
-      "id": "1"
-    },
-    {
-      "id": "2",
-      "name": "Frontend Workshop",
-      "datetime": "2025-04-15T14:00:00",
-      "location": "São Paulo",
-      "description": "Hands-on workshop focused on modern frontend technologies including React, Next.js, and state management using Redux Toolkit.",
-      "category": "Workshop"
-    },
-    {
       "id": "3",
       "name": "AI Innovations Webinar",
       "datetime": "2025-07-10T18:00:00",
