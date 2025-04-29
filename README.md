@@ -41,8 +41,7 @@
 > npm install
 
 3. Crie o arquivo .env e configure as variáveis com as informações abaixo:
-   NEXT_PUBLIC_API_URL=http://localhost:3333
-   JWT_SECRET=
+  > NEXT_PUBLIC_API_URL=http://localhost:3333
 
 4. Run JSON server
 
