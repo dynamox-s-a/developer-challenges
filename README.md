@@ -1,5 +1,5 @@
-## DEPLOY CHALLENGE-1 🚀 : https://dynamox-challenge-one.vercel.app/
-## DEPLOY CHALLENGE-2 🚀 : https://developer-challenges-2.vercel.app/
+### DEPLOY CHALLENGE-1 🚀 : https://dynamox-challenge-one.vercel.app/
+### DEPLOY CHALLENGE-2 🚀 : https://developer-challenges-2.vercel.app/
 
 # RUN APP ON DEV MODE
 
