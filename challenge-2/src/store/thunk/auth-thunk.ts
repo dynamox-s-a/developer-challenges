@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
 import {
   loginUserFailure,
   loginUserRequest,
@@ -8,6 +7,7 @@ import {
   logoutUserRequest,
   logoutUserSuccess,
 } from '../actions/auth-actions'
+import { clientAxios } from '@/lib/axios'
 
 export const login = createAsyncThunk(
   'auth/login',
@@ -18,7 +18,7 @@ export const login = createAsyncThunk(
     dispatch(loginUserRequest())
 
     try {
-      const response = await axios.get(`http://localhost:3333/users?email=${username}`)
+      const response = await clientAxios.get(`/users?email=${username}`)
       const users = response.data
 
       if (users.length === 0) {
