@@ -18,7 +18,7 @@ import { Event } from '@/@types/event'
 import { setSelectedEvent } from '@/store/actions/event-actions'
 
 export default function EventsTable() {
-  const { events, selectedEvent, isLoading } = useAppSelector((state) => state.events)
+  const { filteredEvents, selectedEvent, isLoading } = useAppSelector((state) => state.events)
   const [openEventModal, setOpenEventModal] = useState(false)
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
   const dispatch = useAppDispatch()
@@ -37,7 +37,7 @@ export default function EventsTable() {
     dispatch(getEvents())
   }, [dispatch])
 
-  if (events.length === 0) {
+  if (filteredEvents.length === 0) {
     return (
       <div style={{ display: 'flex', width: '100%', justifyContent: 'center', marginTop: '56px' }}>
         Desculpe, não encontramos nenhum evento.
@@ -82,9 +82,7 @@ export default function EventsTable() {
             </TableHead>
 
             <TableBody>
-              {events.map((event) => {
-                console.log('event id na tabela', event.id)
-
+              {filteredEvents.map((event) => {
                 return (
                   <TableRow key={event.id}>
                     {/* <TableRow key={event.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}> */}
