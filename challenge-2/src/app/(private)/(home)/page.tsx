@@ -12,12 +12,12 @@ export default function Home() {
           display: 'flex',
           flexDirection: 'column',
           gap: '8px',
-          marginTop: { xs: '40px', lg: '80px' },
+          my: { xs: '40px', lg: '80px' },
         }}
       >
         <Typography variant="h3">Eventos Dynamox</Typography>
 
-        <Box sx={{ display: 'flex', width: '100%', justifyContent: 'end', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', width: '100%', justifyContent: 'start', alignItems: 'center' }}>
           <EventFilters />
         </Box>
 
