@@ -5,6 +5,7 @@ import EventsTable from './events-table'
 import { useState } from 'react'
 import { EventModal } from '../../../_components/event-modal'
 import { useAppSelector } from '@/store/store'
+import { EventFilters } from '@/app/(private)/(home)/components/event-filters'
 
 export default function AdminDashboard() {
   const { events } = useAppSelector((state) => state.events)
@@ -54,6 +55,8 @@ export default function AdminDashboard() {
               Criar Evento
             </Button>
           )}
+
+          <EventFilters />
 
           <EventModal open={open} setOpen={setOpen} mode="create" />
 
