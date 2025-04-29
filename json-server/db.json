@@ -1,0 +1,66 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "admin@events.com",
+      "password": "admin123",
+      "role": "admin"
+    },
+    {
+      "id": "2",
+      "email": "reader@events.com",
+      "password": "reader123",
+      "role": "reader"
+    }
+  ],
+  "events": [
+    {
+      "id": "c96b",
+      "event_name": "Dynamox 2.0",
+      "date_time": "2026-10-10T10:10",
+      "location": "avenida jorge lacerda 1907",
+      "description": "avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, ",
+      "category": "Workshop"
+    },
+    {
+      "id": "c2a3",
+      "event_name": "Albace Event",
+      "date_time": "2023-10-10T10:10",
+      "location": "avenida jorge lacerda 1907",
+      "description": "avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, ",
+      "category": "Workshop"
+    },
+    {
+      "id": "c1a3",
+      "event_name": "VibraTech",
+      "date_time": "2021-10-10T10:10",
+      "location": "avenida jorge lacerda 1907",
+      "description": "avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, ",
+      "category": "Webinar"
+    },
+    {
+      "id": "x1a7",
+      "event_name": "MachineTech Event",
+      "date_time": "2027-10-10T10:10",
+      "location": "avenida jorge lacerda 1907",
+      "description": "avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, ",
+      "category": "Workshop"
+    },
+    {
+      "id": "h69z",
+      "event_name": "Evento de tecnologia",
+      "date_time": "2026-10-10T10:10",
+      "location": "avenida jorge lacerda 1907",
+      "description": "avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, ",
+      "category": "Workshop"
+    },
+    {
+      "id": "z39z",
+      "event_name": "Evento de tecnologia",
+      "date_time": "2026-10-10T10:10",
+      "location": "avenida jorge lacerda 1907",
+      "description": "avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, avenida jorge lacerda 1907, ",
+      "category": "Outro"
+    }
+  ]
+}
