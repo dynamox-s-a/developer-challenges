@@ -38,7 +38,7 @@ const Header: React.FC<HeaderProps> = ({
         zIndex: 2,
         marginBottom: 2,
         marginTop: 0,
-        maxWidth: "1080px",
+        maxWidth: "1112px",
         margin: "0 auto",
         height: "80px",
       }}

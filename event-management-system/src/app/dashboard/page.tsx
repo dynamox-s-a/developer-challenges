@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import CardAdminEventList from "@/components/card/CardAdminEventList";
 import Header from "../../components/header/Header";
 import { getEvents } from "../services/events";
-import styles from "../events/event.module.css";
+import styles from "../dashboard/dashboard.module.css";
 import { logout } from "../services/users";
 import { useRouter } from "next/navigation";
 
