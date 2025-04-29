@@ -5,7 +5,7 @@ import EventsTable from './events-table'
 import { useState } from 'react'
 import { EventModal } from '../../../_components/event-modal'
 import { useAppSelector } from '@/store/store'
-import { EventFilters } from '@/app/(private)/(home)/components/event-filters'
+import { AdminFilters } from './components/admin-filters'
 
 export default function AdminDashboard() {
   const { events } = useAppSelector((state) => state.events)
@@ -40,23 +40,33 @@ export default function AdminDashboard() {
             justifyContent: 'end',
           }}
         >
-          {hasEvents && (
-            <Button
-              onClick={() => setOpen(true)}
-              sx={{
-                textWrap: 'nowrap',
-                background: '#692746',
-                fontSize: '14px',
-                color: 'white',
-                maxWidth: '180px',
-                textTransform: 'none',
-              }}
-            >
-              Criar Evento
-            </Button>
-          )}
+          <Box
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+              width: '100%',
+              gap: '16px',
+            }}
+          >
+            {hasEvents && (
+              <Button
+                onClick={() => setOpen(true)}
+                sx={{
+                  textWrap: 'nowrap',
+                  background: '#692746',
+                  fontSize: '14px',
+                  color: 'white',
+                  maxWidth: '180px',
+                  textTransform: 'none',
+                }}
+              >
+                Criar Evento
+              </Button>
+            )}
 
-          <EventFilters />
+            <AdminFilters />
+          </Box>
 
           <EventModal open={open} setOpen={setOpen} mode="create" />
 
