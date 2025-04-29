@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/store/store'
 import { login } from '@/store/thunk/auth-thunk'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Box, Button, Container, TextField, Typography } from '@mui/material'
+import Image from 'next/image'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -44,6 +45,10 @@ export default function Login() {
       }}
     >
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+        <Box sx={{ mb: '80px' }}>
+          <Image src={'/dynamox-logo-wine.svg'} alt="" width={150} height={100} />
+        </Box>
+
         <Typography component="h1" variant="h4">
           Faça seu login
         </Typography>
@@ -99,6 +104,9 @@ export default function Login() {
           </Box>
         </form>
       </Box>
+      <Typography sx={{ fontSize: '13px', mt: '80px', textAlign: 'center', color: '#636363' }}>
+        Feito por @albanogabriel / Teste técnico @dynamox
+      </Typography>
     </Container>
   )
 }
