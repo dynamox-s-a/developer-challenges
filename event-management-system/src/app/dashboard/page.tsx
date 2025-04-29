@@ -7,8 +7,11 @@ import { getEvents } from "../services/events";
 import styles from "../dashboard/dashboard.module.css";
 import { logout } from "../services/users";
 import { useRouter } from "next/navigation";
+import { useAuthGuard } from "../hooks/useAuthGuard";
+import { ROLES } from "../constants/roles";
 
 const Events = () => {
+  useAuthGuard(ROLES.ADMIN);
   const router = useRouter();
 
   const [events, setEvents] = useState<Event[]>([]);

@@ -4,7 +4,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import Image from "next/image";
 import styles from "../../app/login/login.module.css";
-import EventGrid from "../sortBar/SortBar";
 
 interface HeaderProps {
   searchTerm: string;
@@ -80,7 +79,6 @@ const Header: React.FC<HeaderProps> = ({
           <ExitToAppIcon />
         </IconButton>
       </div>
-      <EventGrid />
     </Box>
   );
 };

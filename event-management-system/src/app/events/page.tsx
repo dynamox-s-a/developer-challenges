@@ -4,11 +4,14 @@ import { useState, useEffect } from "react";
 import CardList from "@/components/card/CardUserEventList";
 import Header from "../../components/header/Header";
 import { getEvents } from "../services/events";
-import styles from "./event.module.css";
 import { logout } from "../services/users";
 import { useRouter } from "next/navigation";
+import styles from "./event.module.css";
+import { useAuthGuard } from "../hooks/useAuthGuard";
+import { ROLES } from "../constants/roles";
 
 const Events = () => {
+  useAuthGuard(ROLES.READER);
   const router = useRouter();
 
   const [events, setEvents] = useState<Event[]>([]);

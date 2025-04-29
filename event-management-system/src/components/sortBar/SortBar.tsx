@@ -2,10 +2,9 @@
 
 import React from "react";
 import { Button, Box } from "@mui/material";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import styles from "./sortbar.module.css";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
-const EventGrid = ({
+const SortBar = ({
   sortByName,
   sortByDate,
 }: {
@@ -13,25 +12,23 @@ const EventGrid = ({
   sortByDate: () => void;
 }) => {
   return (
-    <Box className={styles.eventsContainer}>
+    <Box sx={{ display: "flex", justifyContent: "center" }}>
       <div
         style={{
           display: "flex",
           justifyContent: "flex-start",
-          marginBottom: 20,
           zIndex: 3,
         }}
       >
         <Button
           variant="contained"
           onClick={sortByName}
-          startIcon={<ArrowUpwardIcon />}
+          startIcon={<ArrowDownwardIcon />}
           sx={{
             backgroundColor: "transparent",
             color: "#fff",
             width: "100%",
             fontSize: "14px",
-            marginBottom: "16px",
             border: "none",
             boxShadow: "none",
             "&:hover": {
@@ -59,7 +56,7 @@ const EventGrid = ({
         <Button
           variant="contained"
           onClick={sortByDate}
-          startIcon={<ArrowUpwardIcon />}
+          startIcon={<ArrowDownwardIcon />}
           sx={{
             backgroundColor: "transparent",
             color: "#fff",
@@ -93,4 +90,4 @@ const EventGrid = ({
   );
 };
 
-export default EventGrid;
+export default SortBar;

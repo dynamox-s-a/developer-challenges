@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Typography, Box, Checkbox, FormControlLabel } from "@mui/material";
 import Button from "../button/Button";
 import Input from "../input/Input";
+import { ROLES } from "../../app/constants/roles";
 
 const Form = () => {
   const router = useRouter();
@@ -28,9 +29,9 @@ const Form = () => {
     try {
       const user = await login({ email, password });
 
-      if (user.role === "admin") {
+      if (user.role === ROLES.ADMIN) {
         router.push("/dashboard");
-      } else if (user.role === "reader") {
+      } else if (user.role === ROLES.READER) {
         router.push("/events");
       } else {
         setError("Usuário não tem permissão de acesso.");

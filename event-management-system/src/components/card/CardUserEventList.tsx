@@ -3,6 +3,7 @@ import CardUserComponent from "./CardUserEvent";
 import Grid from "@mui/material/Grid";
 import Pagination from "@mui/material/Pagination";
 import Box from "@mui/material/Box";
+import SortBar from "../sortBar/SortBar";
 
 const CardUserList = ({
   events,
@@ -13,6 +14,8 @@ const CardUserList = ({
 }) => {
   const [page, setPage] = useState(1);
   const [filteredEvents, setFilteredEvents] = useState<Array<any>>(events);
+  const [sortedFutureEvents, setSortedFutureEvents] = useState<Array<any>>([]);
+  const [sortedPastEvents, setSortedPastEvents] = useState<Array<any>>([]);
   const eventsPerPage = 12;
   const now = new Date();
 
@@ -25,19 +28,27 @@ const CardUserList = ({
       );
       setFilteredEvents(filtered);
     }
+    setPage(1);
   }, [searchTerm, events]);
 
-  const futureEvents = filteredEvents
-    .filter((event) => new Date(event.datetime) >= now)
-    .sort(
-      (a, b) => new Date(a.datetime).getTime() - new Date(b.datetime).getTime()
-    );
+  useEffect(() => {
+    const future = filteredEvents
+      .filter((event) => new Date(event.datetime) >= now)
+      .sort(
+        (a, b) =>
+          new Date(a.datetime).getTime() - new Date(b.datetime).getTime()
+      );
 
-  const pastEvents = filteredEvents
-    .filter((event) => new Date(event.datetime) < now)
-    .sort(
-      (a, b) => new Date(b.datetime).getTime() - new Date(a.datetime).getTime()
-    );
+    const past = filteredEvents
+      .filter((event) => new Date(event.datetime) < now)
+      .sort(
+        (a, b) =>
+          new Date(b.datetime).getTime() - new Date(a.datetime).getTime()
+      );
+
+    setSortedFutureEvents(future);
+    setSortedPastEvents(past);
+  }, [filteredEvents]);
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -49,18 +60,40 @@ const CardUserList = ({
   const indexOfLastEvent = page * eventsPerPage;
   const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
 
-  const currentFutureEvents = futureEvents.slice(
+  const currentFutureEvents = sortedFutureEvents.slice(
     indexOfFirstEvent,
     indexOfLastEvent
   );
-  const currentPastEvents = pastEvents.slice(
+  const currentPastEvents = sortedPastEvents.slice(
     indexOfFirstEvent,
     indexOfLastEvent
   );
 
+  const sortByName = () => {
+    const sortedFuture = [...sortedFutureEvents].sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+    const sortedPast = [...sortedPastEvents].sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+    setSortedFutureEvents(sortedFuture);
+    setSortedPastEvents(sortedPast);
+  };
+
+  const sortByDate = () => {
+    const sortedFuture = [...sortedFutureEvents].sort(
+      (a, b) => new Date(a.datetime).getTime() - new Date(b.datetime).getTime()
+    );
+    const sortedPast = [...sortedPastEvents].sort(
+      (a, b) => new Date(b.datetime).getTime() - new Date(a.datetime).getTime()
+    );
+    setSortedFutureEvents(sortedFuture);
+    setSortedPastEvents(sortedPast);
+  };
+
   const totalPages = Math.max(
-    Math.ceil(futureEvents.length / eventsPerPage),
-    Math.ceil(pastEvents.length / eventsPerPage)
+    Math.ceil(sortedFutureEvents.length / eventsPerPage),
+    Math.ceil(sortedPastEvents.length / eventsPerPage)
   );
 
   return (
@@ -82,6 +115,9 @@ const CardUserList = ({
         >
           PRÓXIMOS EVENTOS
         </h4>
+
+        <SortBar sortByName={sortByName} sortByDate={sortByDate} />
+
         <Grid container spacing={2} justifyContent={"center"}>
           {currentFutureEvents.length > 0 ? (
             currentFutureEvents.map((event) => (
