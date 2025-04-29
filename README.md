@@ -1,4 +1,7 @@
-# RUN APPLICATION
+DEPLOY CHALLENGE-1 🚀 : https://dynamox-challenge-one.vercel.app/
+DEPLOY CHALLENGE-2 🚀 : https://developer-challenges-2.vercel.app/
+
+# RUN APP ON DEV MODE
 
 ## Pré-requisitos:
 
@@ -16,8 +19,6 @@
 
 # CHALLENGE-1 (Vite + React) | Landing Page
 
-DEPLOY CHALLENGE-1 🚀 : https://developer-challenges-2.vercel.app/
-
 1. Entre na pasta do projeto
 
    > cd challenge-1
@@ -33,8 +34,6 @@ DEPLOY CHALLENGE-1 🚀 : https://developer-challenges-2.vercel.app/
 ---
 
 # CHALLENGE-2 (Next.js + JSON Server) | Admin dashboard
-
-DEPLOY CHALLENGE-2 🚀 : https://developer-challenges-2.vercel.app/
 
 1. Entre na pasta do projeto
 
