@@ -29,6 +29,20 @@ export const getEvents = createAsyncThunk('events/getEvents', async (_, { reject
   }
 })
 
+export const getEventsById = createAsyncThunk(
+  'events/getEventsById',
+  async (eventId: string, { rejectWithValue }) => {
+    try {
+      const response = await clientAxios.get(`/events/${eventId}`)
+      return response.data
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response?.data?.message || error.message)
+      }
+    }
+  }
+)
+
 export const deleteEvent = createAsyncThunk(
   'events/deleteEvent',
   async (eventId: string, { rejectWithValue }) => {
