@@ -4,7 +4,6 @@ interface User {
   id: number
   email: string
   role: string
-  isAdmin: string
 }
 
 interface AuthState {
