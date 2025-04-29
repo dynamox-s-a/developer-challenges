@@ -1,0 +1,52 @@
+# RUN APPLICATION
+
+## Pré-requisitos:
+
+- Node.js (versão 18 ou superior recomendada)
+- npm
+- pnpm ou yarn, se preferir outro gerenciador de pacotes
+
+## Faça o download do projeto:
+
+> clone repository
+
+## Entre na branch correta:
+
+> git checkout gabriel-albano
+
+# RUN - CHALLENGE-1 (Vite + React) | Landing Page Dynamox
+
+1. Entre na pasta do projeto
+
+   > cd challenge-1
+
+2. Instale as dependências do projeto
+
+   > npm install
+
+3. Run project
+
+   > npm run dev
+
+---
+
+# RUN - CHALLENGE-2 (Next.js + JSON Server)
+
+1. Entre na pasta do projeto
+
+> cd challenge-2
+
+2. Instale as dependências do projeto
+
+> npm install
+
+3. Crie o arquivo .env e configure as variáveis com as informações abaixo:
+   NEXT_PUBLIC_API_URL=http://localhost:3333
+   JWT_SECRET=
+
+4. Run JSON server
+
+> npm run json-server
+
+5. Run Project
+   > npm run dev
