@@ -14,7 +14,7 @@
 
 > git checkout gabriel-albano
 
-# RUN - CHALLENGE-1 (Vite + React) | Landing Page Dynamox
+# CHALLENGE-1 (Vite + React) | Landing Page
 
 1. Entre na pasta do projeto
 
@@ -30,7 +30,7 @@
 
 ---
 
-# RUN - CHALLENGE-2 (Next.js + JSON Server)
+# CHALLENGE-2 (Next.js + JSON Server) | Admin dashboard
 
 1. Entre na pasta do projeto
 
