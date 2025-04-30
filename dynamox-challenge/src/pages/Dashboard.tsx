@@ -156,9 +156,9 @@ export default function Dashboard() {
   {paginatedData.length > 0 ? (
     paginatedData.map((item) => (
       <TableRow key={item.id}>
-        <TableCell>{item.monitoringPointName}</TableCell>
         <TableCell>{item.machineName}</TableCell>
         <TableCell>{item.machineType}</TableCell>
+        <TableCell>{item.monitoringPointName}</TableCell>
         <TableCell>
           {item.sensors.length > 0 ? (
             item.sensors.map((sensor: Sensor, index: number, array) => (
