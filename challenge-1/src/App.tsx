@@ -1,17 +1,7 @@
-import { Hero } from './components/hero';
-import { Header } from './components/header';
-import { Intro } from './components/intro';
-import { Solutions } from './components/solutions';
+import { Home } from './pages/home';
 
 function App() {
-  return (
-    <>
-      <Header />
-      <Hero />
-      <Intro />
-      <Solutions />
-    </>
-  );
+  return <Home />;
 }
 
 export default App;

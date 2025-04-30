@@ -1,0 +1,78 @@
+.footer {
+  background-color: #4A2B4C;
+  color: white;
+  padding: 2rem 0;
+  width: 100%;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.logo {
+  height: 40px;
+  width: auto;
+}
+
+.socialLinks {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.socialLink {
+  transition: opacity 0.2s;
+}
+
+.socialLink:hover {
+  opacity: 0.8;
+}
+
+.socialLink img {
+  width: 24px;
+  height: 24px;
+}
+
+.bottomBar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1rem;
+}
+
+.links {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.links a {
+  color: white;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.links a:hover {
+  opacity: 0.8;
+}
+
+.separator {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 768px) {
+  .bottomBar {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+}
