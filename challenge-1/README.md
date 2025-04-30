@@ -1,54 +1,50 @@
-# React + TypeScript + Vite
+# Challenge 01 Landing Page
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a landing page developed with React and TypeScript. You can view the project at: [Landing Page Demo](https://renato-marinho.vercel.app/)
 
-Currently, two official plugins are available:
+## Technologies
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The project was developed using the following technologies:
 
-## Expanding the ESLint configuration
+- [React](https://react.dev/) (v19.0.0)
+- [TypeScript](https://www.typescriptlang.org/) (v5.7.2)
+- [Vite](https://vitejs.dev/) (v6.3.1)
+- [Framer Motion](https://www.framer.com/motion/) (v12.9.2)
+- [TailwindCSS](https://tailwindcss.com/) (v4.1.4)
+- [ESLint](https://eslint.org/) for code quality assurance
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Installation
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+To run the project locally, follow these steps:
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/renatomarinhofr/renato-marinho.git
+cd challenge-1
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Install dependencies:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm install
 ```
+
+3. Run the development server:
+
+```bash
+npm run dev
+```
+
+The project will be available at `http://localhost:5173`
+
+## Available Scripts
+
+- `npm run dev` - Starts the development server
+- `npm run build` - Creates the production build
+- `npm run lint` - Runs the linter to check code quality
+- `npm run preview` - Preview the production build locally
+
+## Deploy
+
+The project is hosted on [Vercel](https://vercel.com) and can be accessed at: [https://renato-marinho.vercel.app/](https://renato-marinho.vercel.app/)
