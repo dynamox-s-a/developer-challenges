@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Event, getEvents } from "../../app/services/events";
 import { Box, Typography, Button, Alert } from "@mui/material";
-import CardAdminEventTable from "./CardAdmin";
+import CardAdmin from "./CardAdmin";
 
 interface CardAdminListProps {
   events: Event[];
@@ -87,7 +87,7 @@ const CardAdminList = ({
         sx={{ borderRadius: 2, overflowX: "auto", padding: 2, color: "white" }}
       >
         {filteredEvents.length > 0 ? (
-          <CardAdminEventTable
+          <CardAdmin
             events={filteredEvents}
             onRefresh={fetchEvents}
             onDiscardNew={handleDiscardNew}

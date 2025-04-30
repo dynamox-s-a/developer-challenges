@@ -6,6 +6,10 @@ import {
   CardActions,
   TextField,
   Alert,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import EditIcon from "@mui/icons-material/Edit";
@@ -19,7 +23,6 @@ import {
   deleteEvent,
   postEvent,
 } from "../../app/services/events";
-
 import IconButton from "../button/IconButton";
 
 const primaryColor = "#692746";
@@ -48,6 +51,11 @@ const CardAdmin = ({ events, onRefresh, onDiscardNew }: Props) => {
 
   const isCreating = editingId === 0;
 
+  // Extrair categorias únicas
+  const categories = Array.from(
+    new Set(events.map((e) => e.category).filter(Boolean))
+  );
+
   const handleEdit = (event: Event) => {
     setEditingId(event.id!);
     setEditedEvent({ ...event });
@@ -68,6 +76,7 @@ const CardAdmin = ({ events, onRefresh, onDiscardNew }: Props) => {
       !editedEvent.name ||
       !editedEvent.location ||
       !editedEvent.datetime ||
+      !editedEvent.category ||
       !editedEvent.description ||
       editedEvent.description.length < 50
     ) {
@@ -154,25 +163,32 @@ const CardAdmin = ({ events, onRefresh, onDiscardNew }: Props) => {
             <Card key={event.id ?? "new"} variant="outlined">
               <CardContent>
                 {isEditing ? (
-                  <TextField
-                    value={editedEvent.category || ""}
-                    onChange={(e) => handleChange("category", e.target.value)}
-                    label="Categoria"
-                    fullWidth
-                    variant="standard"
-                    sx={{ mb: 1 }}
-                    InputProps={{
-                      sx: {
+                  <FormControl fullWidth variant="standard" sx={{ mb: 1 }}>
+                    <InputLabel sx={{ color: primaryColor }}>
+                      Categoria
+                    </InputLabel>
+                    <Select
+                      value={editedEvent.category || ""}
+                      onChange={(e) => handleChange("category", e.target.value)}
+                      label="Categoria"
+                      sx={{
                         "&:before": { borderBottomColor: primaryColor },
                         "&:after": { borderBottomColor: primaryColor },
-                      },
-                    }}
-                  />
+                      }}
+                    >
+                      {categories.map((category) => (
+                        <MenuItem key={category} value={category}>
+                          {category}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 ) : (
                   <Typography sx={{ color: "text.secondary", fontSize: 14 }}>
                     {event.category}
                   </Typography>
                 )}
+
                 {isEditing ? (
                   <TextField
                     value={editedEvent.name || ""}
@@ -193,6 +209,7 @@ const CardAdmin = ({ events, onRefresh, onDiscardNew }: Props) => {
                     {event.name}
                   </Typography>
                 )}
+
                 {isEditing ? (
                   <>
                     <TextField
@@ -234,6 +251,7 @@ const CardAdmin = ({ events, onRefresh, onDiscardNew }: Props) => {
                     })}
                   </Typography>
                 )}
+
                 {isEditing ? (
                   <TextField
                     value={editedEvent.description || ""}
