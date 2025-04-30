@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { CarouselSlide, DragInfo, CarouselConfig } from './types';
 
 const defaultConfig: CarouselConfig = {
@@ -25,6 +25,8 @@ export function useCarousel({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDesktop, setIsDesktop] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const autoPlayTimeoutRef = useRef<number>(0);
+  const resizeObserverRef = useRef<ResizeObserver | null>(null);
 
   const handlePrevSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
@@ -36,76 +38,105 @@ export function useCarousel({
 
   const handleDragStart = useCallback(() => {
     setIsPaused(true);
+    if (autoPlayTimeoutRef.current) {
+      window.clearTimeout(autoPlayTimeoutRef.current);
+    }
   }, []);
 
   const handleDragEnd = useCallback(
-    (_: unknown, info: DragInfo) => {
-      const dragDistance = info.offset.x;
-      const dragThreshold = 50;
+    (_event: unknown, info: DragInfo) => {
+      try {
+        const dragDistance = info.offset.x;
+        const dragThreshold = 50;
 
-      if (dragDistance > dragThreshold) {
-        handlePrevSlide();
-      } else if (dragDistance < -dragThreshold) {
-        handleNextSlide();
+        if (dragDistance > dragThreshold) {
+          handlePrevSlide();
+        } else if (dragDistance < -dragThreshold) {
+          handleNextSlide();
+        }
+
+        setIsPaused(false);
+      } catch (error) {
+        console.warn('Error handling drag end:', error);
+        setIsPaused(false);
       }
-
-      setTimeout(() => setIsPaused(false), 5000);
     },
-    [handlePrevSlide, handleNextSlide]
+    [handleNextSlide, handlePrevSlide]
   );
 
-  const calculateSlides = useCallback((): CarouselSlide[] => {
-    if (!isDesktop) {
-      const dimensions = window.innerWidth >= 768 ? config.tablet : config.mobile;
-      return [
-        {
-          index: currentIndex,
-          image: images[currentIndex],
-          x: 0,
-          width: dimensions.width,
-          height: dimensions.height,
-          opacity: 1,
-          zIndex: 1,
-        },
-      ];
-    }
-
-    return images
-      .map((image, index) => {
-        const position = (index - currentIndex + images.length) % images.length;
-        const normalizedPosition = position > 1 ? position - images.length : position;
-        const isCurrent = normalizedPosition === 0;
-
-        return {
-          index,
-          image,
-          x: normalizedPosition * config.desktop.offset,
-          width: isCurrent ? config.desktop.mainSlide.width : config.desktop.sideSlide.width,
-          height: isCurrent ? config.desktop.mainSlide.height : config.desktop.sideSlide.height,
-          opacity: isCurrent ? 1 : 0.9,
-          zIndex: isCurrent ? 2 : 1,
-        };
-      })
-      .sort((a, b) => a.zIndex - b.zIndex);
-  }, [currentIndex, isDesktop, images, config]);
-
   useEffect(() => {
-    const checkScreenSize = () => {
+    const handleResize = () => {
       setIsDesktop(window.innerWidth >= 1024);
     };
 
-    checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    return () => window.removeEventListener('resize', checkScreenSize);
+    handleResize();
+
+    resizeObserverRef.current = new ResizeObserver(handleResize);
+    resizeObserverRef.current.observe(document.body);
+
+    return () => {
+      if (resizeObserverRef.current) {
+        resizeObserverRef.current.disconnect();
+      }
+    };
   }, []);
 
   useEffect(() => {
     if (isPaused) return;
 
-    const interval = setInterval(handleNextSlide, autoPlayInterval);
+    const autoPlay = () => {
+      handleNextSlide();
+      autoPlayTimeoutRef.current = window.setTimeout(autoPlay, autoPlayInterval);
+    };
 
-    return () => clearInterval(interval);
-  }, [isPaused, autoPlayInterval, handleNextSlide]);
+    autoPlayTimeoutRef.current = window.setTimeout(autoPlay, autoPlayInterval);
+
+    return () => {
+      if (autoPlayTimeoutRef.current) {
+        window.clearTimeout(autoPlayTimeoutRef.current);
+      }
+    };
+  }, [autoPlayInterval, handleNextSlide, isPaused]);
+
+  const calculateSlides = useCallback((): CarouselSlide[] => {
+    try {
+      if (!isDesktop) {
+        const dimensions = window.innerWidth >= 768 ? config.tablet : config.mobile;
+        return [
+          {
+            index: currentIndex,
+            image: images[currentIndex],
+            x: 0,
+            width: dimensions.width,
+            height: dimensions.height,
+            opacity: 1,
+            zIndex: 1,
+          },
+        ];
+      }
+
+      return images
+        .map((image, index) => {
+          const position = (index - currentIndex + images.length) % images.length;
+          const normalizedPosition = position > 1 ? position - images.length : position;
+          const isCurrent = normalizedPosition === 0;
+
+          return {
+            index,
+            image,
+            x: normalizedPosition * config.desktop.offset,
+            width: isCurrent ? config.desktop.mainSlide.width : config.desktop.sideSlide.width,
+            height: isCurrent ? config.desktop.mainSlide.height : config.desktop.sideSlide.height,
+            opacity: isCurrent ? 1 : 0.9,
+            zIndex: isCurrent ? 2 : 1,
+          };
+        })
+        .sort((a, b) => a.zIndex - b.zIndex);
+    } catch (error) {
+      console.warn('Error generating slides:', error);
+      return [];
+    }
+  }, [currentIndex, isDesktop, images, config]);
 
   return {
     currentIndex,

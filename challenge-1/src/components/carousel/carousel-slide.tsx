@@ -48,7 +48,7 @@ export function CarouselSlide({
     >
       <img
         src={image}
-        alt={`Slide ${index + 1}`}
+        alt="slide de imagens"
         className="w-full h-full object-cover rounded-lg shadow-lg"
         draggable="false"
         loading="lazy"

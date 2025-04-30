@@ -1,5 +1,5 @@
 import { Header } from '../../components/header';
-import { Hero } from '../../components/hero';
+import { Hero } from '@/components/hero';
 import { Intro } from '../../components/intro';
 import { Solutions } from '../../components/solutions';
 import { Footer } from '../../components/footer';
