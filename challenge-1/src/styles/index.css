@@ -1,7 +1,12 @@
 @import './fonts.css';
 @import 'tailwindcss';
 
+@theme {
+  --color-primary: #692746;
+}
+
 :root {
+  max-width: 1516px;
   font-family: var(--font-poppins);
   line-height: 1.5;
   font-weight: 400;
@@ -16,8 +21,7 @@
 }
 
 body {
-  width: 100vw;
-  max-width: 1516px;
+  min-width: 100vw;
   min-height: 100vh;
   margin: 0;
 }
