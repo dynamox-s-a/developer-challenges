@@ -1,5 +1,0 @@
-import {
-  require_react_dom
-} from "./chunk-KBNVMJOC.js";
-import "./chunk-UBDIXFPO.js";
-export default require_react_dom();
