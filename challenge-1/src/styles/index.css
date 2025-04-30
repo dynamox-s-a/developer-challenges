@@ -4,10 +4,10 @@
 @theme {
   --color-primary: #692746;
   --color-gray-dy: #757575;
+  --color-main: #333333;
 }
 
 :root {
-  max-width: 1516px;
   font-family: var(--font-poppins);
   line-height: 1.5;
   font-weight: 400;
