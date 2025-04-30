@@ -11,7 +11,7 @@ export function CardSolution({
   const Content = () => (
     <div className="flex h-full flex-col justify-center gap-6">
       <div className="flex flex-col gap-4">
-        <img src={iconImage} alt="" className="w-12 h-12" />
+        <img src={iconImage} alt="" className="w-12 h-12" loading="lazy" />
         <h3 className="text-2xl md:text-3xl">{title}</h3>
       </div>
 
@@ -50,17 +50,13 @@ export function CardSolution({
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-white p-4 lg:p-8 rounded-[12px] shadow-md">
       {imagePosition === 'left' ? (
         <>
-          <div className="rounded-lg overflow-hidden shadow-lg">
-            <img src={mainImage} alt="" className="w-full h-full object-cover" />
-          </div>
+          <img src={mainImage} alt="" className="w-full rounded-lg" loading="lazy" />
           <Content />
         </>
       ) : (
         <>
           <Content />
-          <div className="rounded-lg overflow-hidden shadow-lg">
-            <img src={mainImage} alt="" className="w-full h-full object-cover" />
-          </div>
+          <img src={mainImage} alt="" className="w-full rounded-lg" loading="lazy" />
         </>
       )}
     </div>
