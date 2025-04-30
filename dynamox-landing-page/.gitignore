@@ -12,6 +12,16 @@ dist
 dist-ssr
 *.local
 
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
