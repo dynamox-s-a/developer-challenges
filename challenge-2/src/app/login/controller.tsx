@@ -7,9 +7,12 @@ import { authenticate } from "@/services/login/login-service";
 import { tokenStorage } from "@/services/login/token-service";
 import { type LoginSchema, loginSchema } from "./types";
 import LoginForm from "./view";
+import { useAppDispatch } from "@/store/hooks";
+import { setUser } from "@/store/auth/slice";
 
 function useLoginController() {
 	const router = useRouter();
+	const dispatch = useAppDispatch();
 	const form = useForm<LoginSchema>({
 		resolver: zodResolver(loginSchema),
 		mode: "onChange",
@@ -26,18 +29,20 @@ function useLoginController() {
 			form.clearErrors();
 
 			const user = await authenticate(data.email, data.senha);
+
 			if (!user) {
-				const errorMessage = "E-mail ou senha inválidos";
+				const errorMessage = "Usuário ou senha inválidos";
 				setLoginError(errorMessage);
 				form.setError("email", { type: "manual", message: errorMessage });
 				form.setError("senha", { type: "manual", message: errorMessage });
 				return;
 			}
 
-			tokenStorage.save(user.token);
-			localStorage.setItem("user", JSON.stringify(user));
+			const userData = { id: user.id, email: user.email, role: user.role };
+			tokenStorage.save(userData);
+			dispatch(setUser(userData));
 
-			router.push("/");
+			router.push("/events");
 		} catch (error) {
 			console.error("Erro ao fazer login:", error);
 			setLoginError("Erro ao fazer login. Tente novamente.");

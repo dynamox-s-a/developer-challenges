@@ -1,24 +1,42 @@
-import jwt from "jsonwebtoken";
 import type { TokenPayload } from "./types";
 
-const JWT_SECRET_ADMIN = "secret-admin-key-2025";
-const JWT_SECRET_READER = "secret-reader-key-2025";
+function generateFakeToken(payload: TokenPayload): string {
+	const header = btoa(JSON.stringify({ alg: "fake", typ: "JWT" }));
+	const payloadBase64 = btoa(JSON.stringify(payload));
+	const signature = btoa(`fake-signature-${new Date().getTime()}`);
 
-export function verifyToken(token: string): TokenPayload | null {
+	return `${header}.${payloadBase64}.${signature}`;
+}
+
+function saveUser(user: TokenPayload): void {
+	const token = generateFakeToken(user);
+	localStorage.setItem("token", token);
+	localStorage.setItem("user", JSON.stringify(user));
+}
+
+function getUser(): TokenPayload | null {
+	const user = localStorage.getItem("user");
+	if (!user) return null;
+
 	try {
-		try {
-			return jwt.verify(token, JWT_SECRET_ADMIN) as TokenPayload;
-		} catch {
-			return jwt.verify(token, JWT_SECRET_READER) as TokenPayload;
-		}
-	} catch (error) {
-		console.error("Erro ao verificar token:", error);
+		return JSON.parse(user) as TokenPayload;
+	} catch {
 		return null;
 	}
 }
 
+function getToken(): string | null {
+	return localStorage.getItem("token");
+}
+
+function removeUser(): void {
+	localStorage.removeItem("token");
+	localStorage.removeItem("user");
+}
+
 export const tokenStorage = {
-	save: (token: string) => localStorage.setItem("auth_token", token),
-	get: () => localStorage.getItem("auth_token"),
-	remove: () => localStorage.removeItem("auth_token"),
+	save: saveUser,
+	verifyToken: getUser,
+	getToken,
+	remove: removeUser,
 };

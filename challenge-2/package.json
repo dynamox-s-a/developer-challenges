@@ -14,12 +14,11 @@
 		"@hookform/resolvers": "^5.0.1",
 		"@mui/material": "^6.4.11",
 		"@reduxjs/toolkit": "^2.7.0",
-		"@types/jsonwebtoken": "^9.0.9",
-		"jsonwebtoken": "^9.0.2",
 		"next": "15.3.1",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
 		"react-hook-form": "^7.56.1",
+		"react-redux": "^9.2.0",
 		"zod": "^3.24.3"
 	},
 	"devDependencies": {
