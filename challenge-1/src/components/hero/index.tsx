@@ -20,8 +20,8 @@ export function Hero() {
       className="flex flex-col justify-center items-center bg-cover bg-no-repeat w-full mt-6 overflow-hidden"
       style={{ backgroundImage: `url(${background})` }}
     >
-      <div className="flex flex-col items-center gap-4 w-full max-w-[900px]">
-        <h1 className="text-4xl md:text-5xl font-bold text-center">
+      <div className="flex flex-col items-center gap-4 w-full max-w-[938px]">
+        <h1 className="text-4xl lg:text-6xl text-center">
           Juntos por uma indústria <br />
           <span className="text-primary inline-block">
             <AnimatePresence mode="wait">

@@ -1,6 +1,6 @@
 export function Intro() {
   return (
-    <section className="w-full max-w-[1200px] mx-auto py-16 lg:mt-36">
+    <section className="w-full max-w-[1348px] mx-auto py-16 lg:mt-36">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start px-8 lg:px-1">
         <h2 className="text-3xl md:text-5xl font-bold">
           Dynamox,{' '}
