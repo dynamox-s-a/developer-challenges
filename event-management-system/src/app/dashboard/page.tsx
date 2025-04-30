@@ -38,6 +38,10 @@ const Events = () => {
     fetchEvents();
   }, []);
 
+  useEffect(() => {
+    document.title = "Dashboard";
+  }, []);
+
   if (loading) {
     return <p style={{ color: "white" }}>Loading events...</p>;
   }

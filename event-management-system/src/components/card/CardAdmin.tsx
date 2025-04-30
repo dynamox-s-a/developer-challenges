@@ -87,6 +87,15 @@ const CardAdmin = ({ events, onRefresh, onDiscardNew }: Props) => {
       return;
     }
 
+    const eventDate = new Date(editedEvent.datetime!);
+    const now = new Date();
+
+    if (eventDate < now) {
+      setAlertMessage("A data do evento não pode ser no passado.");
+      setAlertSeverity("error");
+      return;
+    }
+
     try {
       if (isCreating) {
         await postEvent(editedEvent as Event);
