@@ -1,8 +1,10 @@
 import { useWordRotation } from '../../hooks/useWordRotation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { wordAnimation } from './animation';
-import { Carousel } from '../carousel';
+import { Suspense, lazy } from 'react';
 import background from '@/assets/background.png';
+
+const Carousel = lazy(() => import('../carousel').then(mod => ({ default: mod.Carousel })));
 
 export function Hero() {
   const rotatingWords = [
@@ -42,7 +44,11 @@ export function Hero() {
           soluções para indústria com produtos de qualidade e conexão de ponta a ponta.
         </p>
       </div>
-      <Carousel />
+      <Suspense fallback={
+        <div className="w-full h-[540px] lg:pt-36 bg-gray-100 animate-pulse" />
+      }>
+        <Carousel />
+      </Suspense>
     </section>
   );
 }

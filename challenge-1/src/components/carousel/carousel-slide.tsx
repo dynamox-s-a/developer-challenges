@@ -51,6 +51,8 @@ export function CarouselSlide({
         alt={`Slide ${index + 1}`}
         className="w-full h-full object-cover rounded-lg shadow-lg"
         draggable="false"
+        loading="lazy"
+        fetchPriority="high"
       />
     </motion.div>
   );

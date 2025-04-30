@@ -34,7 +34,14 @@ export function Footer() {
     <footer className="w-full max-w-[1468px] mx-auto bg-primary text-white py-8 rounded-2xl mb-8">
       <div className="max-w-7xl mx-auto px-4 flex flex-col items-center gap-8">
         <div className="flex gap-6 flex-col md:flex-row items-center md:items-end justify-between w-full">
-          <img src={logoFooter} alt="Dynamox logo" className="h-20 w-auto" />
+          <img
+            src={logoFooter}
+            alt="Dynamox logo"
+            width={188}
+            height={80}
+            className="h-20 w-auto"
+            loading="lazy"
+          />
 
           <div className="flex gap-6 items-center">
             {socialLinks.map((social) => (

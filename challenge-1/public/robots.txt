@@ -1,0 +1,9 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://dynamox.net/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 10
