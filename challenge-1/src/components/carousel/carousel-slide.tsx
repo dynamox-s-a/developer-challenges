@@ -17,23 +17,23 @@ export function CarouselSlide({
   zIndex,
   onDragStart,
   onDragEnd,
-  isDesktop
+  isDesktop,
 }: CarouselSlideProps) {
   return (
     <motion.div
       key={index}
       className="absolute top-1/2 left-1/2 cursor-grab active:cursor-grabbing"
-      style={{ 
+      style={{
         width,
         height,
         marginLeft: -(width / 2),
         marginTop: -(height / 2),
-        zIndex
+        zIndex,
       }}
       animate={{
         x,
         opacity,
-        scale: isDesktop ? (opacity === 1 ? 1 : 0.9) : 1
+        scale: isDesktop ? (opacity === 1 ? 1 : 0.9) : 1,
       }}
       drag="x"
       dragConstraints={{ left: 0, right: 0 }}
@@ -41,9 +41,9 @@ export function CarouselSlide({
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
       transition={{
-        type: "spring",
+        type: 'spring',
         stiffness: 200,
-        damping: 25
+        damping: 25,
       }}
     >
       <img

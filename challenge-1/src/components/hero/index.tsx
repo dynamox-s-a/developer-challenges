@@ -2,6 +2,7 @@ import { useWordRotation } from '../../hooks/useWordRotation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { wordAnimation } from './animation';
 import { Carousel } from '../carousel';
+import background from '@/assets/background.png';
 
 export function Hero() {
   const rotatingWords = [
@@ -15,8 +16,11 @@ export function Hero() {
   const currentWord = useWordRotation(rotatingWords);
 
   return (
-    <section className="flex flex-col justify-center items-center p-8">
-      <div className="flex flex-col items-center gap-4 max-w-[900px]">
+    <section
+      className="flex flex-col justify-center items-center bg-cover bg-no-repeat w-full mt-6 overflow-hidden"
+      style={{ backgroundImage: `url(${background})` }}
+    >
+      <div className="flex flex-col items-center gap-4 w-full max-w-[900px]">
         <h1 className="text-4xl md:text-5xl font-bold text-center">
           Juntos por uma indústria <br />
           <span className="text-primary inline-block">

@@ -82,7 +82,7 @@ export function useCarousel({
           x: normalizedPosition * config.desktop.offset,
           width: isCurrent ? config.desktop.mainSlide.width : config.desktop.sideSlide.width,
           height: isCurrent ? config.desktop.mainSlide.height : config.desktop.sideSlide.height,
-          opacity: isCurrent ? 1 : 0.6,
+          opacity: isCurrent ? 1 : 0.9,
           zIndex: isCurrent ? 2 : 1,
         };
       })
