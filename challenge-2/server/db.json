@@ -1,0 +1,18 @@
+{
+	"users": [
+		{
+			"id": 1,
+			"email": "admin@events.com",
+			"senha": "admin123",
+			"role": "admin",
+			"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBldmVudHMuY29tIiwicm9sZSI6ImFkbWluIn0.Hd0RZWs6SnELyxqkw7YYNnLHP0Rih8YzIEEHHBgDvFU"
+		},
+		{
+			"id": 2,
+			"email": "reader@events.com",
+			"senha": "reader123",
+			"role": "reader",
+			"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJyZWFkZXJAZXZlbnRzLmNvbSIsInJvbGUiOiJyZWFkZXIifQ.KYqDwYJ-tTpHWzNp4BrIq6WFmHUXNPOBQwGzPzE7Sxk"
+		}
+	]
+}
