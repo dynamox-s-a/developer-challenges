@@ -1,6 +1,6 @@
-import imageCarrousel1 from '@/assets/image-carrousel1.png';
-import imageCarrousel2 from '@/assets/image-carrousel2.png';
-import imageCarrousel3 from '@/assets/image-carrousel3.png';
+import imageCarrousel1 from '@/assets/image-carrousel1.webp';
+import imageCarrousel2 from '@/assets/image-carrousel2.webp';
+import imageCarrousel3 from '@/assets/image-carrousel3.webp';
 import { CarouselSlide } from './carousel-slide';
 import { useCarousel } from './useCarousel';
 
