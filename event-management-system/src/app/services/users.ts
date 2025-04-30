@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Roles } from "../types/Roles";
+import { ROLES } from "../constants/roles";
 
 const userApi = axios.create({
   baseURL: "http://localhost:3001",
@@ -12,7 +12,7 @@ interface LoginPayload {
 
 interface LoginResponse {
   token: string;
-  role: Roles;
+  role: (typeof ROLES)[keyof typeof ROLES];
   userId: number;
 }
 

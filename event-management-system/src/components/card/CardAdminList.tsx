@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Event, getEvents } from "../../app/services/events";
 import { Box, Typography, Button, Alert } from "@mui/material";
 import CardAdmin from "./CardAdmin";
+import SortBar from "../sortBar/SortBar";
 
 interface CardAdminListProps {
   events: Event[];
@@ -13,6 +14,7 @@ const CardAdminList = ({
   searchTerm,
 }: CardAdminListProps) => {
   const [events, setEvents] = useState<Event[]>([]);
+  const [sortedEvents, setSortedEvents] = useState<Event[]>([]);
   const [creating, setCreating] = useState(false);
   const [creationSuccess, setCreationSuccess] = useState(false);
 
@@ -29,6 +31,27 @@ const CardAdminList = ({
   useEffect(() => {
     setEvents(initialEvents);
   }, [initialEvents]);
+
+  useEffect(() => {
+    const filtered = events.filter((event) =>
+      event.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setSortedEvents(filtered);
+  }, [events, searchTerm]);
+
+  const sortByName = () => {
+    const sorted = [...sortedEvents].sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+    setSortedEvents(sorted);
+  };
+
+  const sortByDate = () => {
+    const sorted = [...sortedEvents].sort(
+      (a, b) => new Date(a.datetime).getTime() - new Date(b.datetime).getTime()
+    );
+    setSortedEvents(sorted);
+  };
 
   const handleCreateNew = () => {
     if (creating) return;
@@ -50,9 +73,6 @@ const CardAdminList = ({
     setCreating(false);
   };
 
-  const filteredEvents = events.filter((event) =>
-    event.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
   return (
     <Box sx={{ maxWidth: 1200, mx: "auto", mt: 4, px: 2 }}>
       <Typography
@@ -83,12 +103,16 @@ const CardAdminList = ({
         </Button>
       </Box>
 
+      {sortedEvents.length > 0 && (
+        <SortBar sortByName={sortByName} sortByDate={sortByDate} />
+      )}
+
       <Box
         sx={{ borderRadius: 2, overflowX: "auto", padding: 2, color: "white" }}
       >
-        {filteredEvents.length > 0 ? (
+        {sortedEvents.length > 0 ? (
           <CardAdmin
-            events={filteredEvents}
+            events={sortedEvents}
             onRefresh={fetchEvents}
             onDiscardNew={handleDiscardNew}
           />
