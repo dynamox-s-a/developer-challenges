@@ -29,12 +29,21 @@ export function CardEvent({ title, description, date, imageUrl }: CardEventProps
     validateImage();
   }, [imageUrl]);
   
+  const isPastEvent = new Date(date) < new Date();
+
   return (
     <Card sx={{ 
       height: '100%', 
       display: 'flex', 
       flexDirection: 'column',
-      bgcolor: 'background.paper'
+      bgcolor: 'background.paper',
+      opacity: isPastEvent ? 0.7 : 1,
+      transition: 'all 0.3s ease-in-out',
+      '&:hover': {
+        transform: 'scale(1.02)',
+        boxShadow: (theme) => theme.shadows[4],
+        cursor: 'pointer'
+      }
     }}>
       <CardMedia
         component="img"
