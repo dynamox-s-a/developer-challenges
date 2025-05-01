@@ -12,7 +12,10 @@ export const loginSchema = z.object({
 		.min(6, { message: "A senha deve ter pelo menos 6 caracteres" }),
 });
 
-export type LoginSchema = z.infer<typeof loginSchema>;
+export interface LoginSchema {
+	email: string;
+	senha: string;
+}
 
 export interface User {
 	id: number;
@@ -35,4 +38,5 @@ export interface LoginFormProps {
 	isSubmitting: boolean;
 	onSubmit: (data: LoginSchema) => Promise<void>;
 	loginError: string | null;
+	loading: boolean;
 }

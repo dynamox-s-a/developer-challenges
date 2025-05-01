@@ -1,18 +1,14 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { authenticate } from "@/services/login/login-service";
 import { tokenStorage } from "@/services/login/token-service";
 import { type LoginSchema, loginSchema } from "./types";
 import LoginForm from "./view";
-import { useAppDispatch } from "@/store/hooks";
-import { setUser } from "@/store/auth/slice";
+import { useLogin } from "@/services/login";
 
 function useLoginController() {
 	const router = useRouter();
-	const dispatch = useAppDispatch();
 	const form = useForm<LoginSchema>({
 		resolver: zodResolver(loginSchema),
 		mode: "onChange",
@@ -21,43 +17,37 @@ function useLoginController() {
 			senha: "",
 		},
 	});
-	const [loginError, setLoginError] = useState<string | null>(null);
 
-	async function onSubmit(data: LoginSchema) {
+	const { login, error: loginError, loading } = useLogin();
+
+	async function handleSubmit(data: LoginSchema) {
 		try {
-			setLoginError(null);
 			form.clearErrors();
 
-			const user = await authenticate(data.email, data.senha);
-
-			if (!user) {
-				const errorMessage = "Usuário ou senha inválidos";
-				setLoginError(errorMessage);
-				form.setError("email", { type: "manual", message: errorMessage });
-				form.setError("senha", { type: "manual", message: errorMessage });
-				return;
+			const result = await login(data.email, data.senha);
+			if (result.user) {
+				tokenStorage.save({
+					id: result.user.id,
+					email: result.user.email,
+					role: result.user.role,
+				});
+				router.push("/events");
 			}
-
-			const userData = { id: user.id, email: user.email, role: user.role };
-			tokenStorage.save(userData);
-			dispatch(setUser(userData));
-
-			router.push("/events");
 		} catch (error) {
-			console.error("Erro ao fazer login:", error);
-			setLoginError("Erro ao fazer login. Tente novamente.");
+			console.error(error);
 		}
 	}
 
 	return {
 		form,
 		loginError,
-		onSubmit,
+		loading,
+		onSubmit: handleSubmit,
 	};
 }
 
 export default function LoginController() {
-	const { form, loginError, onSubmit } = useLoginController();
+	const { form, loginError, onSubmit, loading } = useLoginController();
 
 	return (
 		<LoginForm
@@ -67,6 +57,7 @@ export default function LoginController() {
 			isSubmitting={form.formState.isSubmitting}
 			onSubmit={onSubmit}
 			loginError={loginError}
+			loading={loading}
 		/>
 	);
 }

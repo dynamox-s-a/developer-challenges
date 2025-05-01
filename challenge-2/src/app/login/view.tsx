@@ -1,4 +1,4 @@
-import { Button, Paper, TextField, Typography } from "@mui/material";
+import { Button, Paper, TextField, Typography, CircularProgress } from "@mui/material";
 import Image from "next/image";
 import type { LoginFormProps } from "./types";
 
@@ -9,6 +9,7 @@ export default function LoginForm({
 	isSubmitting,
 	onSubmit,
 	loginError,
+	loading,
 }: LoginFormProps) {
 	return (
 		<div className="min-h-screen flex flex-col md:flex-row items-center justify-center md:items-stretch md:justify-normal">
@@ -80,12 +81,22 @@ export default function LoginForm({
 							type="submit"
 							variant="contained"
 							fullWidth
-							disabled={isSubmitting}
+							disabled={isSubmitting || loading}
 							style={{
 								background: "var(--color-primary)",
+								position: "relative",
 							}}
 						>
-							Entrar
+							{loading ? (
+								<CircularProgress
+									size={24}
+									color="inherit"
+									thickness={4}
+									sx={{ color: "white" }}
+								/>
+							) : (
+								"Entrar"
+							)}
 						</Button>
 					</form>
 				</Paper>
