@@ -2,12 +2,12 @@ import { AppBar, Button, Container, IconButton, Toolbar } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import MenuIcon from "@mui/icons-material/Menu";
-import AddIcon from "@mui/icons-material/Add";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { usePathname } from "next/navigation";
 import type { HeaderActions, HeaderModel } from "./types";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 interface HeaderViewProps extends HeaderModel, HeaderActions {}
 
@@ -62,13 +62,13 @@ export function HeaderView({
 									<Button
 										variant="contained"
 										color="primary"
-										startIcon={<AddIcon />}
+										startIcon={<SettingsIcon />}
 										onClick={handleCreateEvent}
 										sx={{
 											backgroundColor: "var(--color-primary)",
 										}}
 									>
-										Criar Evento
+										Gerenciar Eventos
 									</Button>
 								</Link>
 							)}
@@ -120,8 +120,7 @@ export function HeaderView({
 										color: "var(--color-primary)",
 									}}
 								>
-									<AddIcon sx={{ mr: 1 }} />
-									Criar Evento
+									Gerenciar Eventos
 								</MenuItem>
 							</Link>
 						)}
