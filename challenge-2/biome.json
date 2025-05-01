@@ -23,6 +23,9 @@
 				"noUnusedVariables": "error",
 				"noUnusedImports": "error"
 			},
+			"suspicious": {
+				"noArrayIndexKey": "off"
+			},
 			"recommended": true
 		}
 	},

@@ -42,7 +42,14 @@ export function HeaderView({
 								</Button>
 							</Link>
 						)}
-						<Button variant="outlined" color="primary" onClick={handleLogout}>
+						<Button
+							variant="outlined"
+							style={{
+								borderColor: "var(--color-primary)",
+								color: "var(--color-primary)",
+							}}
+							onClick={handleLogout}
+						>
 							Sair
 						</Button>
 					</div>
