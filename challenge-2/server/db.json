@@ -1,90 +1,116 @@
 {
-	"users": [
-		{
-			"id": 1,
-			"email": "admin@events.com",
-			"senha": "admin123",
-			"role": "admin",
-			"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBldmVudHMuY29tIiwicm9sZSI6ImFkbWluIn0.Hd0RZWs6SnELyxqkw7YYNnLHP0Rih8YzIEEHHBgDvFU"
-		},
-		{
-			"id": 2,
-			"email": "reader@events.com",
-			"senha": "reader123",
-			"role": "reader",
-			"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJyZWFkZXJAZXZlbnRzLmNvbSIsInJvbGUiOiJyZWFkZXIifQ.KYqDwYJ-tTpHWzNp4BrIq6WFmHUXNPOBQwGzPzE7Sxk"
-		}
-	],
-	"events": [
-		{
-			"id": 1,
-			"title": "Webinar: Soluções Reais para Problemas Reais",
-			"description": "Webinar discutindo sistemas de monitoramento, desempenho de ativos e inteligência artificial.",
-			"date": "2025-04-29T00:00:00",
-			"imageUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee"
-		},
-		{
-			"id": 2,
-			"title": "Seminário Vibration Institute (SVI) 2025",
-			"description": "Seminário técnico focado em análise de vibração, com participação da Dynamox.",
-			"date": "2025-08-25T00:00:00",
-			"imageUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee"
-		},
-		{
-			"id": 3,
-			"title": "Participação na Intermach 2023",
-			"description": "Apresentação da solução DynaPredict na feira do setor metalmecânico.",
-			"date": "2023-07-01T00:00:00",
-			"imageUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee"
-		},
-		{
-			"id": 4,
-			"title": "Parceria com Metso Outotec",
-			"description": "Colaboração global para monitoramento de condições em mineração e agregados.",
-			"date": "2022-01-01T00:00:00",
-			"imageUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee"
-		},
-		{
-			"id": 5,
-			"title": "Aquisição da Enging",
-			"description": "Aquisição de empresa portuguesa, adicionando sensores de corrente e tensão ao portfólio.",
-			"date": "2023-01-01T00:00:00",
-			"imageUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee"
-		},
-		{
-			"id": 6,
-			"title": "Associamento ao Ibram",
-			"description": "Tornou-se associada do Instituto Brasileiro de Mineração, reforçando presença no setor.",
-			"date": "2023-01-01T00:00:00",
-			"imageUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee"
-		},
-		{
-			"id": 7,
-			"title": "Lançamento de nova geração de data loggers",
-			"description": "Lançamento de sensores com coleta de dados mais rápida, parte do DynaPredict.",
-			"date": "2022-10-10T00:00:00",
-			"imageUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee"
-		},
-		{
-			"id": 8,
-			"title": "Fundação da Dynamox",
-			"description": "Criação a partir da transformação da Sysmarine Ltda. ME, focada em manutenção.",
-			"date": "2015-02-24T00:00:00",
-			"imageUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee"
-		},
-		{
-			"id": 9,
-			"title": "Lançamento da solução DynaPredict",
-			"description": "Solução para monitoramento contínuo, destaque no portfólio de produtos.",
-			"date": "2017-01-01T00:00:00",
-			"imageUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee"
-		},
-		{
-			"id": 10,
-			"title": "Lançamento da solução DynaDetect",
-			"description": "Ferramenta de detecção de falhas com suporte de inteligência artificial.",
-			"date": "2017-01-01T00:00:00",
-			"imageUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee"
-		}
-	]
+  "users": [
+    {
+      "id": "1",
+      "email": "admin@events.com",
+      "senha": "admin123",
+      "role": "admin",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBldmVudHMuY29tIiwicm9sZSI6ImFkbWluIn0.Hd0RZWs6SnELyxqkw7YYNnLHP0Rih8YzIEEHHBgDvFU"
+    },
+    {
+      "id": "2",
+      "email": "reader@events.com",
+      "senha": "reader123",
+      "role": "reader",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJyZWFkZXJAZXZlbnRzLmNvbSIsInJvbGUiOiJyZWFkZXIifQ.KYqDwYJ-tTpHWzNp4BrIq6WFmHUXNPOBQwGzPzE7Sxk"
+    }
+  ],
+  "events": [
+    {
+      "id": "1",
+      "title": "Webinar: Soluções Reais para Problemas Reais",
+      "description": "Webinar discutindo sistemas de monitoramento, desempenho de ativos e inteligência artificial.",
+      "date": "2025-04-29T00:00:00",
+      "imageUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee"
+    },
+    {
+      "id": "2",
+      "title": "Seminário Vibration Institute (SVI) 2025",
+      "description": "Seminário técnico focado em análise de vibração, com participação da Dynamox.",
+      "date": "2025-08-25T00:00:00",
+      "imageUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee"
+    },
+    {
+      "id": "3",
+      "title": "Participação na Intermach 2023",
+      "description": "Apresentação da solução DynaPredict na feira do setor metalmecânico.",
+      "date": "2023-07-01T00:00:00",
+      "imageUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee"
+    },
+    {
+      "id": "4",
+      "title": "Parceria com Metso Outotec",
+      "description": "Colaboração global para monitoramento de condições em mineração e agregados.",
+      "date": "2022-01-01T00:00:00",
+      "imageUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee"
+    },
+    {
+      "id": "5",
+      "title": "Aquisição da Enging",
+      "description": "Aquisição de empresa portuguesa, adicionando sensores de corrente e tensão ao portfólio.",
+      "date": "2023-01-01T00:00:00",
+      "imageUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee"
+    },
+    {
+      "id": "6",
+      "title": "Associamento ao Ibram",
+      "description": "Tornou-se associada do Instituto Brasileiro de Mineração, reforçando presença no setor.",
+      "date": "2023-01-01T00:00:00",
+      "imageUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee"
+    },
+    {
+      "id": "7",
+      "title": "Lançamento de nova geração de data loggers",
+      "description": "Lançamento de sensores com coleta de dados mais rápida, parte do DynaPredict.",
+      "date": "2022-10-10T00:00:00",
+      "imageUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee"
+    },
+    {
+      "id": "8",
+      "title": "Fundação da Dynamox",
+      "description": "Criação a partir da transformação da Sysmarine Ltda. ME, focada em manutenção.",
+      "date": "2015-02-24T00:00:00",
+      "imageUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee"
+    },
+    {
+      "id": "9",
+      "title": "Lançamento da solução DynaPredict",
+      "description": "Solução para monitoramento contínuo, destaque no portfólio de produtos.",
+      "date": "2017-01-01T00:00:00",
+      "imageUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee"
+    },
+    {
+      "id": "10",
+      "title": "Lançamento da solução DynaDetect",
+      "description": "Ferramenta de detecção de falhas com suporte de inteligência artificial.",
+      "date": "2017-01-01T00:00:00",
+      "imageUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee"
+    },
+    {
+      "id": "a521",
+      "title": "novo evento",
+      "description": "novo evento testeeasdsdfdffdfdfdfsdfdsfdsftesteetesteetesteetesteetesteefff",
+      "date": "2025-05-23T00:44",
+      "location": "Fortaleza, Ceará",
+      "category": "Workshop"
+    },
+    {
+      "id": "dc4f",
+      "title": "novo eventoooooo",
+      "description": "sdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf",
+      "date": "2025-05-15T18:46",
+      "location": "Fortaleza, Ceará",
+      "category": "Webinar",
+      "imageUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee"
+    },
+    {
+      "id": "fa70",
+      "title": "nvoo evenot",
+      "description": "sakldfjsdklfklsdhfklsjdklfjlksdjflksdjfkljdsklsakldfjsdklfklsdhfklsjdklfjlksdjflksdjfkljdsklsakldfjsdklfklsdhfklsjdklfjlksdjflksdjfkljdsklsakldfjsdklfklsdhfklsjdklfjlksdjflksdjfkljdsklsakldfjsdklfklsdhfklsjdklfjlksdjflksdjfkljdskl",
+      "date": "2025-05-16T18:56",
+      "location": "Fortaleza, Ceará",
+      "category": "Conferência",
+      "imageUrl": "https://mariananardi.com.br/wp-content/uploads/2018/09/Gato-x-leao.jpg"
+    }
+  ]
 }

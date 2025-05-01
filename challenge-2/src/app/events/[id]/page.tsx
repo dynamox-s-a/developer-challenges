@@ -7,11 +7,13 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import CategoryIcon from '@mui/icons-material/Category';
 import CircularProgress from '@mui/material/CircularProgress';
-import Image from 'next/image';
 import { useSelector } from 'react-redux';
 import type { RootState } from '@/store';
 import { useEvents } from '@/services/events';
+import { alpha } from '@mui/material';
 
 interface EventDetailsProps {
   params: {
@@ -49,32 +51,90 @@ export default function EventDetails({ params }: EventDetailsProps) {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Paper elevation={2} sx={{ overflow: 'hidden' }}>
-        <Box sx={{ position: 'relative', width: '100%', height: '400px' }}>
-          <Image
-            src={event.imageUrl || '/fallback.jpg'}
-            alt={event.title}
-            fill
-            style={{ objectFit: 'cover' }}
-          />
-        </Box>
-        <Box sx={{ p: 4 }}>
-          <Typography variant="h4" component="h1" gutterBottom fontWeight="bold">
+      <Paper
+        elevation={0}
+        sx={{
+          position: 'relative',
+          overflow: 'hidden',
+          background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary) 100%)',
+          color: 'white',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'radial-gradient(circle at top right, rgba(255,255,255,0.1) 0%, transparent 60%)',
+            pointerEvents: 'none'
+          }
+        }}
+      >
+        <Box
+          sx={{
+            p: { xs: 3, md: 6 },
+            position: 'relative',
+            zIndex: 1,
+          }}
+        >
+          <Typography 
+            variant="h3" 
+            component="h1" 
+            sx={{ 
+              fontWeight: 700,
+              mb: 4,
+              fontSize: { xs: '2rem', md: '3rem' },
+              lineHeight: 1.2
+            }}
+          >
             {event.title}
           </Typography>
+
           <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center',
-            gap: 1,
-            color: 'text.secondary',
-            mb: 3
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row' },
+            gap: 3,
+            mb: 6,
+            '& .info-item': {
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              color: alpha('#fff', 0.9)
+            }
           }}>
-            <CalendarTodayIcon fontSize="small" />
-            <Typography variant="body1">
-              {format(new Date(event.date), "dd/MM/yyyy 'às' HH:mm'h'")}
-            </Typography>
+            <Box className="info-item">
+              <CalendarTodayIcon />
+              <Typography variant="h6" sx={{ fontWeight: 500 }}>
+                {format(new Date(event.date), "dd/MM/yyyy 'às' HH:mm'h'")}
+              </Typography>
+            </Box>
+            {event.location && (
+              <Box className="info-item">
+                <LocationOnIcon />
+                <Typography variant="h6" sx={{ fontWeight: 500 }}>
+                  {event.location}
+                </Typography>
+              </Box>
+            )}
+            {event.category && (
+              <Box className="info-item">
+                <CategoryIcon />
+                <Typography variant="h6" sx={{ fontWeight: 500 }}>
+                  {event.category}
+                </Typography>
+              </Box>
+            )}
           </Box>
-          <Typography variant="body1" color="text.secondary" sx={{ whiteSpace: 'pre-wrap' }}>
+
+          <Typography 
+            sx={{ 
+              fontSize: '1.1rem',
+              lineHeight: 1.8,
+              color: alpha('#fff', 0.9),
+              whiteSpace: 'pre-wrap',
+              maxWidth: '800px'
+            }}
+          >
             {event.description}
           </Typography>
         </Box>

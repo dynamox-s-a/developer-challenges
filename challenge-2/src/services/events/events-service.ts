@@ -7,6 +7,53 @@ export class EventsServiceImpl implements EventsService {
 		this.baseUrl = baseUrl;
 	}
 
+	private getAuthHeaders(): HeadersInit {
+		const token = localStorage.getItem("token");
+		return {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${token}`,
+		};
+	}
+
+	async createEvent(event: Omit<Event, "id">): Promise<Event> {
+		const response = await fetch(`${this.baseUrl}/events`, {
+			method: "POST",
+			headers: this.getAuthHeaders(),
+			body: JSON.stringify(event),
+		});
+
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+
+		return response.json();
+	}
+
+	async updateEvent(id: string, event: Partial<Event>): Promise<Event> {
+		const response = await fetch(`${this.baseUrl}/events/${id}`, {
+			method: "PATCH",
+			headers: this.getAuthHeaders(),
+			body: JSON.stringify(event),
+		});
+
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+
+		return response.json();
+	}
+
+	async deleteEvent(id: string): Promise<void> {
+		const response = await fetch(`${this.baseUrl}/events/${id}`, {
+			method: "DELETE",
+			headers: this.getAuthHeaders(),
+		});
+
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+	}
+
 	private buildQueryString(filters?: EventFilters): string {
 		if (!filters) return "";
 

@@ -1,105 +1,124 @@
-import { format } from 'date-fns';
-import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import Box from '@mui/material/Box';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { checkImageUrl } from '@/utils/image';
+import { format } from "date-fns";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import Box from "@mui/material/Box";
+import { useRouter } from "next/navigation";
+import { alpha, useTheme } from "@mui/material";
 
 interface CardEventProps {
-  id: number;
-  title: string;
-  description: string;
-  date: string;
-  imageUrl?: string;
+	id: number;
+	title: string;
+	description: string;
+	date: string;
 }
 
-export function CardEvent({ id, title, description, date, imageUrl }: CardEventProps) {
-  const router = useRouter();
-  const [validImageUrl, setValidImageUrl] = useState<string>('/fallback.jpg');
-  const formattedDate = format(new Date(date), "dd/MM/yyyy 'às' HH:mm'h'");
+export function CardEvent({ id, title, description, date }: CardEventProps) {
+	const router = useRouter();
+	const theme = useTheme();
+	const formattedDate = format(new Date(date), "dd/MM/yyyy 'às' HH:mm'h'");
+	const isPastEvent = new Date(date) < new Date();
 
-  useEffect(() => {
-    async function validateImage() {
-      if (imageUrl && await checkImageUrl(imageUrl)) {
-        setValidImageUrl(imageUrl);
-      }
-    }
+	return (
+		<Paper
+			onClick={() => router.push(`/events/${id}`)}
+			sx={{
+				height: 280,
+				display: "flex",
+				flexDirection: "column",
+				p: 3,
+				position: "relative",
+				overflow: "hidden",
+				opacity: isPastEvent ? 0.7 : 1,
+				background: "linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary) 100%)",
+				color: "white",
+				transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+				"&:hover": {
+					transform: "translateY(-4px)",
+					boxShadow: theme.shadows[8],
+					cursor: "pointer",
+					"& .arrow-icon": {
+						transform: "translateX(4px)",
+					},
+				},
+				"&::before": {
+					content: '""',
+					position: "absolute",
+					top: 0,
+					left: 0,
+					right: 0,
+					bottom: 0,
+					background: `radial-gradient(circle at top right, var(--color-primary) 0%, transparent 60%)
+          `,
+					pointerEvents: "none",
+				},
+			}}
+		>
+			<Box
+				sx={{
+					mb: 2,
+					display: "flex",
+					justifyContent: "space-between",
+					alignItems: "flex-start",
+				}}
+			>
+				<Typography
+					variant="h6"
+					component="h3"
+					sx={{
+						fontWeight: 700,
+						fontSize: "1.25rem",
+						display: "-webkit-box",
+						WebkitLineClamp: 2,
+						WebkitBoxOrient: "vertical",
+						overflow: "hidden",
+						lineHeight: 1.3,
+						height: 50,
+						mr: 2,
+					}}
+				>
+					{title}
+				</Typography>
+				<ArrowForwardIcon
+					className="arrow-icon"
+					sx={{
+						transition: "transform 0.2s ease-in-out",
+						color: alpha(theme.palette.common.white, 0.8),
+					}}
+				/>
+			</Box>
 
-    validateImage();
-  }, [imageUrl]);
-  
-  const isPastEvent = new Date(date) < new Date();
+			<Typography
+				sx={{
+					flex: "1 1 auto",
+					color: alpha(theme.palette.common.white, 0.9),
+					display: "-webkit-box",
+					WebkitLineClamp: 3,
+					WebkitBoxOrient: "vertical",
+					overflow: "hidden",
+					lineHeight: 1.6,
+					fontSize: "0.9rem",
+					minHeight: 120,
+				}}
+			>
+				{description}
+			</Typography>
 
-  return (
-    <Card 
-      onClick={() => router.push(`/events/${id}`)}
-      sx={{ 
-        height: '100%', 
-        display: 'flex', 
-        flexDirection: 'column',
-        bgcolor: 'background.paper',
-        opacity: isPastEvent ? 0.7 : 1,
-        transition: 'all 0.3s ease-in-out',
-        '&:hover': {
-          transform: 'scale(1.02)',
-          boxShadow: (theme) => theme.shadows[4],
-          cursor: 'pointer'
-        }
-      }}>
-      <CardMedia
-        component="img"
-        height="200"
-        image={validImageUrl}
-        alt={title}
-        sx={{ objectFit: 'cover' }}
-      />
-      <CardContent sx={{ 
-        flexGrow: 1, 
-        display: 'flex', 
-        flexDirection: 'column',
-        gap: 1
-      }}>
-        <Typography 
-          variant="h6" 
-          component="h3"
-          sx={{ 
-            fontWeight: 600,
-            display: '-webkit-box',
-            WebkitLineClamp: 1,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden'
-          }}
-        >
-          {title}
-        </Typography>
-        <Typography 
-          variant="body2" 
-          color="text.secondary"
-          sx={{ 
-            flexGrow: 1,
-            display: '-webkit-box',
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden'
-          }}
-        >
-          {description}
-        </Typography>
-        <Box sx={{ 
-          display: 'flex', 
-          alignItems: 'center',
-          gap: 1,
-          color: 'text.secondary',
-          mt: 'auto'
-        }}>
-          <CalendarTodayIcon fontSize="small" />
-          <Typography variant="body2">{formattedDate}</Typography>
-        </Box>
-      </CardContent>
-    </Card>
-  );
+			<Box
+				sx={{
+					display: "flex",
+					alignItems: "center",
+					gap: 1,
+					mt: 3,
+					color: alpha(theme.palette.common.white, 0.9),
+				}}
+			>
+				<CalendarTodayIcon fontSize="small" />
+				<Typography variant="body2" sx={{ fontWeight: 500 }}>
+					{formattedDate}
+				</Typography>
+			</Box>
+		</Paper>
+	);
 }

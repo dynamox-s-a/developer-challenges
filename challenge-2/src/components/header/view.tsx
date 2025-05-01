@@ -57,8 +57,8 @@ export function HeaderView({
 
 					{!isMobile && (
 						<div className="flex gap-4">
-							{user?.role === "admin" && pathname !== "/events/create" && (
-								<Link href="/events/create" passHref>
+							{user?.role === "admin" && pathname !== "/events/manage" && (
+								<Link href="/events/manage" passHref>
 									<Button
 										variant="contained"
 										color="primary"
@@ -108,9 +108,9 @@ export function HeaderView({
 							width: 200,
 						}}
 					>
-						{user?.role === "admin" && pathname !== "/events/create" && (
+						{user?.role === "admin" && pathname !== "/events/manage" && (
 							<Link
-								href="/events/create"
+								href="/events/manage"
 								passHref
 								style={{ textDecoration: "none", color: "inherit" }}
 							>

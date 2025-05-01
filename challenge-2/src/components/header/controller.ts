@@ -21,7 +21,7 @@ export function useHeaderController(): HeaderModel & HeaderActions {
 	};
 
 	const handleCreateEvent = () => {
-		router.push("/events/create");
+		router.push("/events/manage");
 	};
 
 	const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
