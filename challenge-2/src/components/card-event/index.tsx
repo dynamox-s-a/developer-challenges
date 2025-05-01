@@ -6,16 +6,19 @@ import Typography from '@mui/material/Typography';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import Box from '@mui/material/Box';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { checkImageUrl } from '@/utils/image';
 
 interface CardEventProps {
+  id: number;
   title: string;
   description: string;
   date: string;
   imageUrl?: string;
 }
 
-export function CardEvent({ title, description, date, imageUrl }: CardEventProps) {
+export function CardEvent({ id, title, description, date, imageUrl }: CardEventProps) {
+  const router = useRouter();
   const [validImageUrl, setValidImageUrl] = useState<string>('/fallback.jpg');
   const formattedDate = format(new Date(date), "dd/MM/yyyy 'às' HH:mm'h'");
 
@@ -32,19 +35,21 @@ export function CardEvent({ title, description, date, imageUrl }: CardEventProps
   const isPastEvent = new Date(date) < new Date();
 
   return (
-    <Card sx={{ 
-      height: '100%', 
-      display: 'flex', 
-      flexDirection: 'column',
-      bgcolor: 'background.paper',
-      opacity: isPastEvent ? 0.7 : 1,
-      transition: 'all 0.3s ease-in-out',
-      '&:hover': {
-        transform: 'scale(1.02)',
-        boxShadow: (theme) => theme.shadows[4],
-        cursor: 'pointer'
-      }
-    }}>
+    <Card 
+      onClick={() => router.push(`/events/${id}`)}
+      sx={{ 
+        height: '100%', 
+        display: 'flex', 
+        flexDirection: 'column',
+        bgcolor: 'background.paper',
+        opacity: isPastEvent ? 0.7 : 1,
+        transition: 'all 0.3s ease-in-out',
+        '&:hover': {
+          transform: 'scale(1.02)',
+          boxShadow: (theme) => theme.shadows[4],
+          cursor: 'pointer'
+        }
+      }}>
       <CardMedia
         component="img"
         height="200"

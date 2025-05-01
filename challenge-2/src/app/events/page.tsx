@@ -93,6 +93,7 @@ export default function EventsPage() {
 								: events.map((event) => (
 										<CardEvent
 											key={event.id}
+											id={event.id}
 											title={event.title}
 											description={event.description}
 											date={event.date}
