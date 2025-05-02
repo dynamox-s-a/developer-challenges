@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { alpha, useTheme } from "@mui/material";
 
 interface CardEventProps {
-	id: number;
+	id: string;
 	title: string;
 	description: string;
 	date: string;
@@ -31,7 +31,8 @@ export function CardEvent({ id, title, description, date }: CardEventProps) {
 				position: "relative",
 				overflow: "hidden",
 				opacity: isPastEvent ? 0.7 : 1,
-				background: "linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary) 100%)",
+				background:
+					"linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary) 100%)",
 				color: "white",
 				transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
 				"&:hover": {

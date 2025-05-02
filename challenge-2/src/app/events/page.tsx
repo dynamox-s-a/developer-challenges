@@ -97,7 +97,6 @@ export default function EventsPage() {
 											title={event.title}
 											description={event.description}
 											date={event.date}
-											imageUrl={event.imageUrl}
 										/>
 									))}
 						</Box>
