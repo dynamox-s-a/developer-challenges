@@ -83,7 +83,10 @@ export class EventsServiceImpl implements EventsService {
 	async getEvents(filters?: EventFilters): Promise<EventsState> {
 		try {
 			const queryString = this.buildQueryString(filters);
-			const response = await fetch(`${this.baseUrl}/events${queryString}`);
+			const response = await fetch(`${this.baseUrl}/events${queryString}`, {
+				method: 'GET',
+				headers: this.getAuthHeaders()
+			});
 
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);

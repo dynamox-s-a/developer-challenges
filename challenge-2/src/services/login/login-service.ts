@@ -12,7 +12,7 @@ export class LoginServiceImpl implements LoginService {
 				return {
 					user: null,
 					loading: false,
-					error: "Erro ao buscar usuário"
+					error: "Erro ao buscar usuário",
 				};
 			}
 
@@ -21,7 +21,7 @@ export class LoginServiceImpl implements LoginService {
 				return {
 					user: null,
 					loading: false,
-					error: "Usuário não encontrado"
+					error: "Usuário não encontrado",
 				};
 			}
 
@@ -30,21 +30,21 @@ export class LoginServiceImpl implements LoginService {
 				return {
 					user: null,
 					loading: false,
-					error: "Senha incorreta"
+					error: "Senha ou email incorretos",
 				};
 			}
 
 			return {
 				user,
 				loading: false,
-				error: null
+				error: null,
 			};
 		} catch (error) {
 			console.error("Erro na autenticação:", error);
 			return {
 				user: null,
 				loading: false,
-				error: "Erro na autenticação"
+				error: "Erro na autenticação",
 			};
 		}
 	}
