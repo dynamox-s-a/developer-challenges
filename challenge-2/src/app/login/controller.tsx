@@ -31,7 +31,12 @@ function useLoginController() {
 					email: result.user.email,
 					role: result.user.role,
 				});
-				router.push("/events");
+
+				if (result.user.role === "admin") {
+					router.push("/events/manage");
+				} else {
+					router.push("/events");
+				}
 			}
 		} catch (error) {
 			console.error(error);
