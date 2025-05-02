@@ -10,7 +10,7 @@ const eventsService: EventsService = new EventsServiceImpl();
 export function useEvents() {
 	const dispatch = useDispatch();
 	const { items, loading, error } = useSelector(
-		(state: RootState) => state.events
+		(state: RootState) => state.events,
 	);
 
 	const fetchEvents = useCallback(
@@ -22,7 +22,7 @@ export function useEvents() {
 				console.error("Error fetching events:", error);
 			}
 		},
-		[dispatch]
+		[dispatch],
 	);
 
 	useEffect(() => {

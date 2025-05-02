@@ -18,11 +18,11 @@ export function useLogin() {
 		setState((prev) => ({ ...prev, loading: true }));
 		const result = await loginService.authenticate(email, password);
 		setState(result);
-		
+
 		if (result.user) {
 			dispatch(setUser(result.user));
 		}
-		
+
 		return result;
 	};
 

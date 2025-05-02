@@ -1,5 +1,15 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+echo "🔍 Verificando lint..."
+npm run lint || {
+  echo "❌ Erro: Corrija os problemas de lint antes de commitar."
+  echo "💡 Tente executar: npm run format"
+  exit 1
+}
+
+echo "✅ Lint passou, executando testes..."
 npm test
+
+echo "🧪 Executando testes e2e..."
 npm run cypress:run

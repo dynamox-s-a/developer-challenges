@@ -1,4 +1,10 @@
-import { Button, Paper, TextField, Typography, CircularProgress } from "@mui/material";
+import {
+	Button,
+	Paper,
+	TextField,
+	Typography,
+	CircularProgress,
+} from "@mui/material";
 import Image from "next/image";
 import type { LoginFormProps } from "./types";
 

@@ -7,7 +7,10 @@ import EventTable from "./components/event-table";
 import EventFormModal from "./components/event-form-modal";
 import DeleteConfirmation from "./components/delete-confirmation";
 import Notification from "./components/notification";
-import { EventFilters, type EventFilters as EventFiltersType } from "./components/event-filters";
+import {
+	EventFilters,
+	type EventFilters as EventFiltersType,
+} from "./components/event-filters";
 import { useManageEvents } from "./controller";
 
 export default function ManageEventsPage() {
@@ -38,12 +41,17 @@ export default function ManageEventsPage() {
 			const matchesTitle = event.title
 				.toLowerCase()
 				.includes(filters.title.toLowerCase());
-			const matchesCategory = !filters.category || event.category === filters.category;
+			const matchesCategory =
+				!filters.category || event.category === filters.category;
 			const eventDate = new Date(event.date);
-			const matchesStartDate = !filters.startDate || eventDate >= new Date(filters.startDate);
-			const matchesEndDate = !filters.endDate || eventDate <= new Date(filters.endDate);
+			const matchesStartDate =
+				!filters.startDate || eventDate >= new Date(filters.startDate);
+			const matchesEndDate =
+				!filters.endDate || eventDate <= new Date(filters.endDate);
 
-			return matchesTitle && matchesCategory && matchesStartDate && matchesEndDate;
+			return (
+				matchesTitle && matchesCategory && matchesStartDate && matchesEndDate
+			);
 		});
 	}, [events, filters]);
 
@@ -65,7 +73,7 @@ export default function ManageEventsPage() {
 					onClick={() => onEdit(null)}
 					sx={{
 						backgroundColor: "var(--color-primary)",
-						width: { xs: "100%", sm: "auto" }
+						width: { xs: "100%", sm: "auto" },
 					}}
 				>
 					Novo Evento

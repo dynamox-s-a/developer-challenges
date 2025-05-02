@@ -84,8 +84,8 @@ export class EventsServiceImpl implements EventsService {
 		try {
 			const queryString = this.buildQueryString(filters);
 			const response = await fetch(`${this.baseUrl}/events${queryString}`, {
-				method: 'GET',
-				headers: this.getAuthHeaders()
+				method: "GET",
+				headers: this.getAuthHeaders(),
 			});
 
 			if (!response.ok) {

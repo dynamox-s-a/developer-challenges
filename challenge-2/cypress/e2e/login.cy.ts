@@ -23,10 +23,10 @@ describe("Login Page", () => {
 	});
 
 	it("should login successfully with valid credentials and redirect to /events/manage (ADMIN)", () => {
-		cy.loginAs('admin');
+		cy.loginAs("admin");
 	});
 
 	it("should login successfully with valid credentials and redirect to /events (READER)", () => {
-		cy.loginAs('reader');
+		cy.loginAs("reader");
 	});
 });

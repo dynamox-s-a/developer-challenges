@@ -5,18 +5,18 @@ import { useAppDispatch } from "@/store/hooks";
 import { setUser, setInitialized } from "@/store/auth/slice";
 
 export function AuthInitializer() {
-  const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const user = tokenStorage.verifyToken();
-    if (!user) {
-      tokenStorage.remove();
-      dispatch(setInitialized());
-      return;
-    }
+	useEffect(() => {
+		const user = tokenStorage.verifyToken();
+		if (!user) {
+			tokenStorage.remove();
+			dispatch(setInitialized());
+			return;
+		}
 
-    dispatch(setUser(user));
-  }, [dispatch]);
+		dispatch(setUser(user));
+	}, [dispatch]);
 
-  return null;
+	return null;
 }

@@ -4,16 +4,18 @@ import { useEffect } from "react";
 import { useAppSelector } from "@/store/hooks";
 
 export function AuthRedirect() {
-  const router = useRouter();
-  const { isAuthenticated, isInitialized } = useAppSelector((state) => state.auth);
+	const router = useRouter();
+	const { isAuthenticated, isInitialized } = useAppSelector(
+		(state) => state.auth,
+	);
 
-  useEffect(() => {
-    if (!isInitialized) return;
+	useEffect(() => {
+		if (!isInitialized) return;
 
-    if (isAuthenticated) {
-      router.replace("/events");
-    }
-  }, [router, isAuthenticated, isInitialized]);
+		if (isAuthenticated) {
+			router.replace("/events");
+		}
+	}, [router, isAuthenticated, isInitialized]);
 
-  return null;
+	return null;
 }

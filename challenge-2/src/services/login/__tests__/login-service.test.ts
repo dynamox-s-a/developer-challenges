@@ -1,101 +1,116 @@
-import { LoginServiceImpl } from '../login-service';
-import type { User } from '../types';
+import { LoginServiceImpl } from "../login-service";
+import type { User } from "../types";
 
-describe('LoginService', () => {
-  let loginService: LoginServiceImpl;
-  let fetchMock: jest.Mock;
+describe("LoginService", () => {
+	let loginService: LoginServiceImpl;
+	let fetchMock: jest.Mock;
 
-  beforeEach(() => {
-    fetchMock = jest.fn();
-    global.fetch = fetchMock;
-    loginService = new LoginServiceImpl();
-  });
+	beforeEach(() => {
+		fetchMock = jest.fn();
+		global.fetch = fetchMock;
+		loginService = new LoginServiceImpl();
+	});
 
-  it('should authenticate successfully with valid credentials', async () => {
-    const mockUser: User = {
-      id: 1,
-      email: 'admin@example.com',
-      senha: 'admin123',
-      role: 'admin'
-    };
+	it("should authenticate successfully with valid credentials", async () => {
+		const mockUser: User = {
+			id: 1,
+			email: "admin@example.com",
+			senha: "admin123",
+			role: "admin",
+		};
 
-    fetchMock.mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve([mockUser])
-    });
+		fetchMock.mockResolvedValueOnce({
+			ok: true,
+			json: () => Promise.resolve([mockUser]),
+		});
 
-    const result = await loginService.authenticate('admin@example.com', 'admin123');
+		const result = await loginService.authenticate(
+			"admin@example.com",
+			"admin123",
+		);
 
-    expect(result).toEqual({
-      user: mockUser,
-      loading: false,
-      error: null
-    });
-    expect(fetchMock).toHaveBeenCalledWith(
-      'http://localhost:3001/users?email=admin%40example.com'
-    );
-  });
+		expect(result).to.equal({
+			user: mockUser,
+			loading: false,
+			error: null,
+		});
+		expect(fetchMock).to.have.been.calledWith(
+			"http://localhost:3001/users?email=admin%40example.com",
+		);
+	});
 
-  it('should return error when user is not found', async () => {
-    fetchMock.mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve([])
-    });
+	it("should return error when user is not found", async () => {
+		fetchMock.mockResolvedValueOnce({
+			ok: true,
+			json: () => Promise.resolve([]),
+		});
 
-    const result = await loginService.authenticate('nonexistent@example.com', 'password');
+		const result = await loginService.authenticate(
+			"nonexistent@example.com",
+			"password",
+		);
 
-    expect(result).toEqual({
-      user: null,
-      loading: false,
-      error: 'Usuário não encontrado'
-    });
-  });
+		expect(result).to.equal({
+			user: null,
+			loading: false,
+			error: "Usuário não encontrado",
+		});
+	});
 
-  it('should return error when password is incorrect', async () => {
-    const mockUser: User = {
-      id: 1,
-      email: 'admin@example.com',
-      senha: 'correctpassword',
-      role: 'admin'
-    };
+	it("should return error when password is incorrect", async () => {
+		const mockUser: User = {
+			id: 1,
+			email: "admin@example.com",
+			senha: "correctpassword",
+			role: "admin",
+		};
 
-    fetchMock.mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve([mockUser])
-    });
+		fetchMock.mockResolvedValueOnce({
+			ok: true,
+			json: () => Promise.resolve([mockUser]),
+		});
 
-    const result = await loginService.authenticate('admin@example.com', 'wrongpassword');
+		const result = await loginService.authenticate(
+			"admin@example.com",
+			"wrongpassword",
+		);
 
-    expect(result).toEqual({
-      user: null,
-      loading: false,
-      error: 'Senha ou email incorretos'
-    });
-  });
+		expect(result).to.equal({
+			user: null,
+			loading: false,
+			error: "Senha ou email incorretos",
+		});
+	});
 
-  it('should handle API errors', async () => {
-    fetchMock.mockResolvedValueOnce({
-      ok: false
-    });
+	it("should handle API errors", async () => {
+		fetchMock.mockResolvedValueOnce({
+			ok: false,
+		});
 
-    const result = await loginService.authenticate('admin@example.com', 'admin123');
+		const result = await loginService.authenticate(
+			"admin@example.com",
+			"admin123",
+		);
 
-    expect(result).toEqual({
-      user: null,
-      loading: false,
-      error: 'Erro ao buscar usuário'
-    });
-  });
+		expect(result).to.equal({
+			user: null,
+			loading: false,
+			error: "Erro ao buscar usuário",
+		});
+	});
 
-  it('should handle network errors', async () => {
-    fetchMock.mockRejectedValueOnce(new Error('Network error'));
+	it("should handle network errors", async () => {
+		fetchMock.mockRejectedValueOnce(new Error("Network error"));
 
-    const result = await loginService.authenticate('admin@example.com', 'admin123');
+		const result = await loginService.authenticate(
+			"admin@example.com",
+			"admin123",
+		);
 
-    expect(result).toEqual({
-      user: null,
-      loading: false,
-      error: 'Erro na autenticação'
-    });
-  });
+		expect(result).to.equal({
+			user: null,
+			loading: false,
+			error: "Erro na autenticação",
+		});
+	});
 });
