@@ -41,14 +41,28 @@ export default function EventFormModal({
 	event,
 	title,
 }: EventFormModalProps) {
-	const defaultValues = useMemo(() => ({
-		title: "",
-		description: "",
-		date: "",
-		location: "",
-		category: "Outro" as EventCategory,
-		imageUrl: "",
-	}), []);
+	const formatDateToLocal = useMemo(() => {
+		return (date: Date) => {
+			const year = date.getFullYear();
+			const month = String(date.getMonth() + 1).padStart(2, "0");
+			const day = String(date.getDate()).padStart(2, "0");
+			const hours = String(date.getHours()).padStart(2, "0");
+			const minutes = String(date.getMinutes()).padStart(2, "0");
+			return `${year}-${month}-${day}T${hours}:${minutes}`;
+		};
+	}, []);
+
+	const defaultValues = useMemo(
+		() => ({
+			title: "",
+			description: "",
+			date: "",
+			location: "",
+			category: "Outro" as EventCategory,
+			imageUrl: "",
+		}),
+		[],
+	);
 
 	const {
 		register,
@@ -62,21 +76,14 @@ export default function EventFormModal({
 
 	useEffect(() => {
 		if (event) {
-			const date = new Date(event.date);
-			const formattedDate = date.toISOString().slice(0, 16); // Format: "YYYY-MM-DDThh:mm"
-
 			reset({
-				title: event.title,
-				description: event.description,
-				date: formattedDate,
-				location: event.location,
-				category: event.category,
-				imageUrl: event.imageUrl || "",
+				...event,
+				date: formatDateToLocal(new Date(event.date)),
 			});
 		} else {
 			reset(defaultValues);
 		}
-	}, [event, reset, defaultValues]);
+	}, [event, reset, defaultValues, formatDateToLocal]);
 
 	return (
 		<Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -90,6 +97,26 @@ export default function EventFormModal({
 							error={!!errors.title}
 							helperText={errors.title?.message}
 							fullWidth
+							sx={{
+								locale: "pt-BR",
+								"& .MuiOutlinedInput-root": {
+									"& fieldset": {
+										borderColor: "var(--color-primary)",
+									},
+									"&:hover fieldset": {
+										borderColor: "var(--color-primary)",
+									},
+									"&.Mui-focused fieldset": {
+										borderColor: "var(--color-primary)",
+									},
+								},
+								"& .MuiInputLabel-root": {
+									color: "var(--color-primary)",
+									"&.Mui-focused": {
+										color: "var(--color-primary)",
+									},
+								},
+							}}
 						/>
 						<TextField
 							label="Descrição"
@@ -105,20 +132,69 @@ export default function EventFormModal({
 							multiline
 							rows={4}
 							fullWidth
+							sx={{
+								"& .MuiOutlinedInput-root": {
+									"& fieldset": {
+										borderColor: "var(--color-primary)",
+									},
+									"&:hover fieldset": {
+										borderColor: "var(--color-primary)",
+									},
+									"&.Mui-focused fieldset": {
+										borderColor: "var(--color-primary)",
+									},
+								},
+								"& .MuiInputLabel-root": {
+									color: "var(--color-primary)",
+									"&.Mui-focused": {
+										color: "var(--color-primary)",
+									},
+								},
+							}}
 						/>
 						<TextField
 							label="Data e Hora"
 							type="datetime-local"
 							{...register("date", {
 								required: "Data é obrigatória",
-								validate: (value) =>
-									new Date(value) > new Date() ||
-									"A data do evento deve ser futura",
+								validate: (value) => {
+									const selectedDate = new Date(value);
+									const now = new Date();
+									now.setSeconds(0, 0);
+									return (
+										selectedDate >= now ||
+										"A data do evento não pode ser no passado"
+									);
+								},
 							})}
 							error={!!errors.date}
 							helperText={errors.date?.message}
-							InputLabelProps={{ shrink: true }}
+							inputProps={{
+								min: formatDateToLocal(new Date()),
+							}}
+							InputLabelProps={{
+								shrink: true,
+							}}
 							fullWidth
+							sx={{
+								"& .MuiOutlinedInput-root": {
+									"& fieldset": {
+										borderColor: "var(--color-primary)",
+									},
+									"&:hover fieldset": {
+										borderColor: "var(--color-primary)",
+									},
+									"&.Mui-focused fieldset": {
+										borderColor: "var(--color-primary)",
+									},
+								},
+								"& .MuiInputLabel-root": {
+									color: "var(--color-primary)",
+									"&.Mui-focused": {
+										color: "var(--color-primary)",
+									},
+								},
+							}}
 						/>
 						<TextField
 							label="Local"
@@ -126,15 +202,57 @@ export default function EventFormModal({
 							error={!!errors.location}
 							helperText={errors.location?.message}
 							fullWidth
+							sx={{
+								"& .MuiOutlinedInput-root": {
+									"& fieldset": {
+										borderColor: "var(--color-primary)",
+									},
+									"&:hover fieldset": {
+										borderColor: "var(--color-primary)",
+									},
+									"&.Mui-focused fieldset": {
+										borderColor: "var(--color-primary)",
+									},
+								},
+								"& .MuiInputLabel-root": {
+									color: "var(--color-primary)",
+									"&.Mui-focused": {
+										color: "var(--color-primary)",
+									},
+								},
+							}}
 						/>
 						<FormControl fullWidth error={!!errors.category}>
-							<InputLabel>Categoria</InputLabel>
+							<InputLabel
+								sx={{
+									color: "var(--color-primary)",
+									"&.Mui-focused": {
+										color: "var(--color-primary)",
+									},
+								}}
+							>
+								Categoria
+							</InputLabel>
 							<Controller
 								name="category"
 								control={control}
 								rules={{ required: "Categoria é obrigatória" }}
 								render={({ field }) => (
-									<Select {...field} label="Categoria">
+									<Select
+										{...field}
+										label="Categoria"
+										sx={{
+											"& .MuiOutlinedInput-notchedOutline": {
+												borderColor: "var(--color-primary)",
+											},
+											"&:hover .MuiOutlinedInput-notchedOutline": {
+												borderColor: "var(--color-primary)",
+											},
+											"&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+												borderColor: "var(--color-primary)",
+											},
+										}}
+									>
 										{eventCategories.map((category) => (
 											<MenuItem key={category} value={category}>
 												{category}
@@ -147,18 +265,24 @@ export default function EventFormModal({
 								<FormHelperText>{errors.category.message}</FormHelperText>
 							)}
 						</FormControl>
-						<TextField
-							label="URL da Imagem"
-							{...register("imageUrl")}
-							error={!!errors.imageUrl}
-							helperText={errors.imageUrl?.message}
-							fullWidth
-						/>
 					</div>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={onClose}>Cancelar</Button>
-					<Button type="submit" variant="contained" color="primary">
+					<Button
+						onClick={onClose}
+						sx={{
+							color: "var(--color-primary)",
+						}}
+					>
+						Cancelar
+					</Button>
+					<Button
+						type="submit"
+						variant="contained"
+						sx={{
+							backgroundColor: "var(--color-primary)",
+						}}
+					>
 						Salvar
 					</Button>
 				</DialogActions>
