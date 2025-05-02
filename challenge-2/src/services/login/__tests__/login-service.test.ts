@@ -29,12 +29,12 @@ describe("LoginService", () => {
 			"admin123",
 		);
 
-		expect(result).to.equal({
+		expect(result).toEqual({
 			user: mockUser,
 			loading: false,
 			error: null,
 		});
-		expect(fetchMock).to.have.been.calledWith(
+		expect(fetchMock).toHaveBeenCalledWith(
 			"http://localhost:3001/users?email=admin%40example.com",
 		);
 	});
@@ -50,7 +50,7 @@ describe("LoginService", () => {
 			"password",
 		);
 
-		expect(result).to.equal({
+		expect(result).toEqual({
 			user: null,
 			loading: false,
 			error: "Usuário não encontrado",
@@ -75,7 +75,7 @@ describe("LoginService", () => {
 			"wrongpassword",
 		);
 
-		expect(result).to.equal({
+		expect(result).toEqual({
 			user: null,
 			loading: false,
 			error: "Senha ou email incorretos",
@@ -92,7 +92,7 @@ describe("LoginService", () => {
 			"admin123",
 		);
 
-		expect(result).to.equal({
+		expect(result).toEqual({
 			user: null,
 			loading: false,
 			error: "Erro ao buscar usuário",
@@ -107,7 +107,7 @@ describe("LoginService", () => {
 			"admin123",
 		);
 
-		expect(result).to.equal({
+		expect(result).toEqual({
 			user: null,
 			loading: false,
 			error: "Erro na autenticação",
