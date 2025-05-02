@@ -15,14 +15,14 @@ interface CardEventProps {
 }
 
 export function CardEvent({ id, title, description, date }: CardEventProps) {
-	const router = useRouter();
+	const router = typeof window === "undefined" ? null : useRouter();
 	const theme = useTheme();
 	const formattedDate = format(new Date(date), "dd/MM/yyyy 'às' HH:mm'h'");
 	const isPastEvent = new Date(date) < new Date();
 
 	return (
 		<Paper
-			onClick={() => router.push(`/events/${id}`)}
+			onClick={() => router?.push(`/events/${id}`)}
 			sx={{
 				height: 280,
 				display: "flex",
