@@ -1,50 +1,113 @@
-# Dynamox Developer Challenges
+# Dynamox Developer Challenges - Solutions
 
-## About Dynamox
+This repository contains my solutions for the Dynamox Developer Challenges. Below you'll find details about each implemented project.
 
-[Dynamox](https://dynamox.net/) is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications. 
+## Challenge 1: Landing Page
 
-With our proficiency in signal processing for vibration and acoustics, we deliver advanced and precise monitoring systems. We are committed to optimizing operational efficiency and facilitating proactive maintenance through our innovative technology and integrated solutions.
+A modern and responsive landing page developed with React and TypeScript.
 
-## Positions
+🌐 **Demo:** [renato-marinho.vercel.app](https://renato-marinho.vercel.app/)
 
-We are looking for developers who are passionate about learning, growing, and contributing to our team. You will play a key role in our development efforts, working on a variety of projects and collaborating with different teams to build and improve our solutions.
+### Technologies Used
 
-We value flexibility and collaboration, hence we provide opportunities for you to lend your skills to other teams when required. Join us on this exciting journey as we revolutionize our digital platforms. Currently we are particularly interested in individuals who can identify with one of the following role descriptions:
+- React (v19.0.0)
+- TypeScript (v5.7.2)
+- Vite (v6.3.1)
+- Framer Motion (v12.9.2)
+- TailwindCSS (v4.1.4)
+- ESLint
 
-### Junior Software Developer
+### Key Features
 
-With limited experience, assists in coding, testing, and stabilizing systems under supervision. Communicates with immediate team members and solves straightforward problems with guidance. Should display a willingness to learn and grow professionally. This is an individual contributor role.
+- Modern UI design
+- Responsive layout
+- Smooth animations
+- TypeScript integration
+- Code quality assurance with ESLint
 
-### Mid-level Software Developer
+## Challenge 2: Events Management Platform
 
-With a certain level of proven experience, contributes to software development, solves moderate problems, and starts handling ambiguous situations with minimal guidance. Communicates with the broader team and engages in code reviews and documentation. This role also includes mentorship of junior engineers and a commitment to continuous learning. This is an individual contributor role.
+A platform for managing events with authentication and role-based access.
 
-### Senior-level Software Developer
+🌐 **Demo:** [renato-marinho-challenge-2.vercel.app](https://renato-marinho-challenge-2.vercel.app)
 
-With vast experience, enhances software development, leading complex system development and ambiguous situation handling. Tackles intricate problems and mentors junior and mid-level engineers. Champions coding standards, project strategy, and technology adoption. Communicates across teams, influencing technical and non-technical stakeholders. This individual contributor role blends technical expertise with leadership, focusing on innovation, mentorship, and strategic contributions to the development process.
+### Technologies Used
 
-## Challenges Full-Stack
+#### Frontend
+- Next.js 15
+- TypeScript
+- Redux Toolkit
+- Material UI
+- TailwindCSS
+- React Hook Form
+- Zod
 
-- [ ] [01 - Dynamox Full-Stack Developer Challenge](./full-stack-challenge.md)
-  
-## Challenges Front-End
+#### Testing
+- Cypress (E2E)
+- Jest (Unit Tests)
 
-- [ ] [01 - Dynamox Front-end Developer Challenge V1](./front-end-challenge-v1.md)
-- [ ] [02 - Dynamox Front-end Developer Challenge V2](./front-end-challenge-v2.md)
+#### Documentation & Quality
+- Storybook
+- Biome
+- Husky
 
-## Ready to Begin the Challenges?
+### Key Features
 
-1. [ ] Fork this repository to your own Github account.
-1. [ ] Create a new branch using your first name and last name. For example: `caroline-oliveira`.
-1. [ ] After completing the challenge, create a pull request to this repository (https://github.com/dynamox-s-a/js-ts-full-stack-test), aimed at the main branch.
-1. [ ] We will receive a notification about your pull request, review your solution, and get in touch with you.
+- User authentication
+- Role-based access (Admin/Reader)
+- Event management (CRUD operations)
+- Comprehensive test coverage
+- Component documentation
+- Mock API integration
 
-## Frequently Asked Questions
+### Authentication Credentials
 
-1. Is it necessary to fork the project?
-  **Yes, this allows us to see how much time you spent on the challenge.**
+**Admin Access:**
+- Email: admin@events.com
+- Password: admin123
 
-</br>
+**Reader Access:**
+- Email: reader@events.com
+- Password: reader123
 
-**Good luck! We look forward to reviewing your submission.** 🚀
+## Running the Projects Locally
+
+### Challenge 1: Landing Page
+
+```bash
+git clone https://github.com/renatomarinhofr/renato-marinho.git
+cd challenge-1
+npm install
+npm run dev
+```
+
+### Challenge 2: Events Platform
+
+```bash
+git clone https://github.com/renatomarinhofr/renato-marinho.git
+cd challenge-2
+npm install
+npm run dev # Start frontend and mock API
+```
+
+For Challenge 2's component documentation:
+```bash
+npm run storybook
+```
+
+## Testing
+
+Both projects include comprehensive testing setups. Challenge 2 features both E2E and unit tests:
+
+```bash
+npm run cypress # Open Cypress UI
+npm run cypress:run # Run tests headless
+npm run test # Run unit tests
+```
+
+## Deployment
+
+Both projects are deployed on Vercel:
+- Challenge 1: [renato-marinho.vercel.app](https://renato-marinho.vercel.app/)
+- Challenge 2: [renato-marinho-challenge-2.vercel.app](https://renato-marinho-challenge-2.vercel.app)
+
