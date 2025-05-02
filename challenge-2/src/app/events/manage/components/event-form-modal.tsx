@@ -97,6 +97,7 @@ export default function EventFormModal({
 							error={!!errors.title}
 							helperText={errors.title?.message}
 							fullWidth
+							data-testid="event-title"
 							sx={{
 								locale: "pt-BR",
 								"& .MuiOutlinedInput-root": {
@@ -131,6 +132,7 @@ export default function EventFormModal({
 							helperText={errors.description?.message}
 							multiline
 							rows={4}
+							data-testid="event-description"
 							fullWidth
 							sx={{
 								"& .MuiOutlinedInput-root": {
@@ -155,6 +157,7 @@ export default function EventFormModal({
 						<TextField
 							label="Data e Hora"
 							type="datetime-local"
+							data-testid="event-date"
 							{...register("date", {
 								required: "Data é obrigatória",
 								validate: (value) => {
@@ -202,6 +205,7 @@ export default function EventFormModal({
 							error={!!errors.location}
 							helperText={errors.location?.message}
 							fullWidth
+							data-testid="event-location"
 							sx={{
 								"& .MuiOutlinedInput-root": {
 									"& fieldset": {
@@ -224,6 +228,7 @@ export default function EventFormModal({
 						/>
 						<FormControl fullWidth error={!!errors.category}>
 							<InputLabel
+								data-testid="event-category"
 								sx={{
 									color: "var(--color-primary)",
 									"&.Mui-focused": {
@@ -254,7 +259,11 @@ export default function EventFormModal({
 										}}
 									>
 										{eventCategories.map((category) => (
-											<MenuItem key={category} value={category}>
+											<MenuItem
+												data-testid={`event-category-${category}`}
+												key={category}
+												value={category}
+											>
 												{category}
 											</MenuItem>
 										))}

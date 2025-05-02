@@ -91,6 +91,7 @@ export default function EventTable({
 					<TableBody>
 						{events.map((event) => (
 							<TableRow
+								data-testid="event-row"
 								key={event.id}
 								hover
 								onClick={(e) => {

@@ -146,6 +146,7 @@ export function EventFilters() {
 					</Select>
 				</FormControl>
 				<Button
+					data-testid="reset-filters-button"
 					variant="outlined"
 					size="small"
 					startIcon={<FilterAltOffIcon />}

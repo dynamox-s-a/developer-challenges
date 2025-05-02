@@ -52,6 +52,7 @@ export function EventFilters({ onFilterChange, filters }: EventFiltersProps) {
 					value={filters.title}
 					onChange={(e) => handleFilterChange("title", e.target.value)}
 					fullWidth
+					data-testid="event-title-filter"
 					size="small"
 					sx={{
 						"& .MuiOutlinedInput-root": {
