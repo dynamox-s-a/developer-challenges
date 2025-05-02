@@ -12,6 +12,6 @@ export interface EventFormData {
 export interface EventTableProps {
 	events: Event[];
 	loading: boolean;
-	onEdit: (event: Event) => void;
-	onDelete: (event: Event) => void;
+	onEdit: (event: Event | null) => void;
+	onDelete: (event: Event | null) => void;
 }

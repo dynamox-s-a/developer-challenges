@@ -43,7 +43,7 @@ export function useManageEvents() {
 		setIsModalOpen(true);
 	};
 
-	const handleDeleteEvent = (event: Event) => {
+	const handleDeleteEvent = (event: Event | null) => {
 		setDeleteConfirmation(event);
 	};
 
