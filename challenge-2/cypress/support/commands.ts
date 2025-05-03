@@ -1,6 +1,8 @@
 /// <reference types="cypress" />
 /// <reference types="@testing-library/cypress" />
 
+import "@testing-library/cypress";
+
 export type UserRole = "admin" | "reader";
 
 interface LoginConfig {
