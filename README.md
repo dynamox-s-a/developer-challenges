@@ -109,5 +109,5 @@ npm run test # Run unit tests
 
 Both projects are deployed on Vercel:
 - Challenge 1: [renato-marinho.vercel.app](https://renato-marinho.vercel.app/)
-- Challenge 2: [renato-marinho-challenge-2.vercel.app](https://renato-marinho-challenge-2.vercel.app)
+- Challenge 2: [https://renato-marinho-production.up.railway.app/login](https://renato-marinho-production.up.railway.app/login)
 
