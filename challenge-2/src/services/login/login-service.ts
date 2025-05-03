@@ -1,6 +1,6 @@
 import type { LoginService, LoginState, User } from "./types";
 
-const API_URL = "http://localhost:3001";
+const API_URL = process.env.NODE_BASE_URL || "http://localhost:3001";
 
 export class LoginServiceImpl implements LoginService {
 	async authenticate(email: string, password: string): Promise<LoginState> {

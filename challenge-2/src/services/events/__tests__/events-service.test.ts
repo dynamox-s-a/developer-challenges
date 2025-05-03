@@ -4,7 +4,7 @@ import type { Event, EventCategory } from "../types";
 describe("EventsService", () => {
 	let eventsService: EventsServiceImpl;
 	let fetchMock: jest.Mock;
-	const baseUrl = "http://localhost:3001";
+	const baseUrl = process.env.NODE_BASE_URL || "http://localhost:3001";
 
 	const mockEvent: Event = {
 		id: "1",
