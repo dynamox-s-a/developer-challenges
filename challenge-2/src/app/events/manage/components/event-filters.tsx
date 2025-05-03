@@ -54,25 +54,6 @@ export function EventFilters({ onFilterChange, filters }: EventFiltersProps) {
 					fullWidth
 					data-testid="event-title-filter"
 					size="small"
-					sx={{
-						"& .MuiOutlinedInput-root": {
-							"& fieldset": {
-								borderColor: "var(--color-primary)",
-							},
-							"&:hover fieldset": {
-								borderColor: "var(--color-primary)",
-							},
-							"&.Mui-focused fieldset": {
-								borderColor: "var(--color-primary)",
-							},
-						},
-						"& .MuiInputLabel-root": {
-							color: "var(--color-primary)",
-							"&.Mui-focused": {
-								color: "var(--color-primary)",
-							},
-						},
-					}}
 				/>
 				<TextField
 					select
@@ -81,25 +62,6 @@ export function EventFilters({ onFilterChange, filters }: EventFiltersProps) {
 					onChange={(e) => handleFilterChange("category", e.target.value)}
 					fullWidth
 					size="small"
-					sx={{
-						"& .MuiOutlinedInput-root": {
-							"& fieldset": {
-								borderColor: "var(--color-primary)",
-							},
-							"&:hover fieldset": {
-								borderColor: "var(--color-primary)",
-							},
-							"&.Mui-focused fieldset": {
-								borderColor: "var(--color-primary)",
-							},
-						},
-						"& .MuiInputLabel-root": {
-							color: "var(--color-primary)",
-							"&.Mui-focused": {
-								color: "var(--color-primary)",
-							},
-						},
-					}}
 				>
 					<MenuItem value="">Todas</MenuItem>
 					{(Object.values(EventCategory) as string[]).map((category) => (
@@ -118,25 +80,6 @@ export function EventFilters({ onFilterChange, filters }: EventFiltersProps) {
 					InputLabelProps={{
 						shrink: true,
 					}}
-					sx={{
-						"& .MuiOutlinedInput-root": {
-							"& fieldset": {
-								borderColor: "var(--color-primary)",
-							},
-							"&:hover fieldset": {
-								borderColor: "var(--color-primary)",
-							},
-							"&.Mui-focused fieldset": {
-								borderColor: "var(--color-primary)",
-							},
-						},
-						"& .MuiInputLabel-root": {
-							color: "var(--color-primary)",
-							"&.Mui-focused": {
-								color: "var(--color-primary)",
-							},
-						},
-					}}
 				/>
 				<TextField
 					label="Data final"
@@ -148,41 +91,13 @@ export function EventFilters({ onFilterChange, filters }: EventFiltersProps) {
 					InputLabelProps={{
 						shrink: true,
 					}}
-					sx={{
-						"& .MuiOutlinedInput-root": {
-							"& fieldset": {
-								borderColor: "var(--color-primary)",
-							},
-							"&:hover fieldset": {
-								borderColor: "var(--color-primary)",
-							},
-							"&.Mui-focused fieldset": {
-								borderColor: "var(--color-primary)",
-							},
-						},
-						"& .MuiInputLabel-root": {
-							color: "var(--color-primary)",
-							"&.Mui-focused": {
-								color: "var(--color-primary)",
-							},
-						},
-					}}
 				/>
 				<Button
 					variant="outlined"
 					startIcon={<FilterAltOffIcon />}
 					onClick={handleClearFilters}
 					size="small"
-					color="primary"
 					disabled={!hasActiveFilters}
-					sx={{
-						borderColor: "var(--color-primary)",
-						color: "var(--color-primary)",
-						"&:hover": {
-							borderColor: "var(--color-primary)",
-							backgroundColor: "rgba(var(--color-primary-rgb), 0.04)",
-						},
-					}}
 				>
 					Limpar Filtros
 				</Button>

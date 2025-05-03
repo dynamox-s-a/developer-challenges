@@ -2,16 +2,27 @@
 
 import { createTheme } from "@mui/material";
 
+// --color-primary: #692746;
+// --color-primary-50: #faeef2;
+// --color-primary-100: #eec6d5;
+// --color-primary-200: #e292b2;
+// --color-primary-300: #d45792;
+// --color-primary-400: #9d3e6b;
+// --color-primary-500: #391224;
+// --font-sans: var(--font-geist-sans);
+// --font-mono: var(--font-geist-mono);
+
 export const theme = createTheme({
+	cssVariables: true,
 	palette: {
 		primary: {
-			main: "var(--color-primary)",
-			"50": "var(--color-primary-50)",
-			"100": "var(--color-primary-100)",
-			"200": "var(--color-primary-200)",
-			"300": "var(--color-primary-300)",
-			"400": "var(--color-primary-400)",
-			"500": "var(--color-primary-500)",
+			main: "#692746",
+			"50": "#faeef2",
+			"100": "#eec6d5",
+			"200": "#e292b2",
+			"300": "#d45792",
+			"400": "#9d3e6b",
+			"500": "#391224",
 		},
 	},
 	components: {
@@ -20,19 +31,19 @@ export const theme = createTheme({
 				root: {
 					"& .MuiOutlinedInput-root": {
 						"& fieldset": {
-							borderColor: "var(--color-primary)",
+							borderColor: "#692746",
 						},
 						"&:hover fieldset": {
-							borderColor: "var(--color-primary)",
+							borderColor: "#692746",
 						},
 						"&.Mui-focused fieldset": {
-							borderColor: "var(--color-primary)",
+							borderColor: "#692746",
 						},
 					},
 					"& .MuiInputLabel-root": {
-						color: "var(--color-primary)",
+						color: "#692746",
 						"&.Mui-focused": {
-							color: "var(--color-primary)",
+							color: "#692746",
 						},
 					},
 				},
@@ -42,13 +53,13 @@ export const theme = createTheme({
 			styleOverrides: {
 				root: {
 					"& .MuiOutlinedInput-notchedOutline": {
-						borderColor: "var(--color-primary)",
+						borderColor: "#692746",
 					},
 					"&:hover .MuiOutlinedInput-notchedOutline": {
-						borderColor: "var(--color-primary)",
+						borderColor: "#692746",
 					},
 					"&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-						borderColor: "var(--color-primary)",
+						borderColor: "#692746",
 					},
 				},
 			},
@@ -56,9 +67,9 @@ export const theme = createTheme({
 		MuiInputLabel: {
 			styleOverrides: {
 				root: {
-					color: "var(--color-primary)",
+					color: "#692746",
 					"&.Mui-focused": {
-						color: "var(--color-primary)",
+						color: "#692746",
 					},
 				},
 			},
@@ -66,11 +77,11 @@ export const theme = createTheme({
 		MuiButton: {
 			styleOverrides: {
 				outlined: {
-					borderColor: "var(--color-primary)",
-					color: "var(--color-primary)",
+					borderColor: "#692746",
+					color: "#692746",
 					"&:hover": {
-						borderColor: "var(--color-primary)",
-						backgroundColor: "var(--color-primary-50)",
+						borderColor: "#692746",
+						backgroundColor: "#faeef2",
 					},
 				},
 			},

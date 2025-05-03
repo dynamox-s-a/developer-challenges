@@ -46,57 +46,16 @@ export function EventFilters() {
 						type: "search",
 					}}
 					fullWidth
-					color="primary"
-					sx={{
-						"& .MuiOutlinedInput-root": {
-							"& fieldset": {
-								borderColor: "var(--color-primary)",
-							},
-							"&:hover fieldset": {
-								borderColor: "var(--color-primary)",
-							},
-							"&.Mui-focused fieldset": {
-								borderColor: "var(--color-primary)",
-							},
-						},
-						"& .MuiInputLabel-root": {
-							color: "var(--color-primary)",
-							"&.Mui-focused": {
-								color: "var(--color-primary)",
-							},
-						},
-					}}
 				/>
 
 				<FormControl size="small" fullWidth>
-					<InputLabel
-						sx={{
-							color: "var(--color-primary)",
-							"&.Mui-focused": {
-								color: "var(--color-primary)",
-							},
-						}}
-					>
-						Período
-					</InputLabel>
+					<InputLabel>Período</InputLabel>
 					<Select
 						value={filters.period}
 						label="Período"
 						onChange={(e) =>
 							dispatch(setPeriod(e.target.value as "all" | "past" | "future"))
 						}
-						color="primary"
-						sx={{
-							"& .MuiOutlinedInput-notchedOutline": {
-								borderColor: "var(--color-primary)",
-							},
-							"&:hover .MuiOutlinedInput-notchedOutline": {
-								borderColor: "var(--color-primary)",
-							},
-							"&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-								borderColor: "var(--color-primary)",
-							},
-						}}
 					>
 						<MenuItem value="all">Todos os eventos</MenuItem>
 						<MenuItem value="future">Eventos futuros</MenuItem>
@@ -105,16 +64,7 @@ export function EventFilters() {
 				</FormControl>
 
 				<FormControl size="small" fullWidth>
-					<InputLabel
-						sx={{
-							color: "var(--color-primary)",
-							"&.Mui-focused": {
-								color: "var(--color-primary)",
-							},
-						}}
-					>
-						Ordenar por
-					</InputLabel>
+					<InputLabel>Ordenar por</InputLabel>
 					<Select
 						value={`${filters.sortBy}-${filters.order}`}
 						label="Ordenar por"
@@ -126,18 +76,6 @@ export function EventFilters() {
 							dispatch(setSort({ by, order }));
 						}}
 						IconComponent={SortIcon}
-						color="primary"
-						sx={{
-							"& .MuiOutlinedInput-notchedOutline": {
-								borderColor: "var(--color-primary)",
-							},
-							"&:hover .MuiOutlinedInput-notchedOutline": {
-								borderColor: "var(--color-primary)",
-							},
-							"&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-								borderColor: "var(--color-primary)",
-							},
-						}}
 					>
 						<MenuItem value="date-desc">Data (mais recente)</MenuItem>
 						<MenuItem value="date-asc">Data (mais antiga)</MenuItem>
@@ -158,11 +96,6 @@ export function EventFilters() {
 						filters.order === "desc"
 					}
 					fullWidth
-					color="primary"
-					sx={{
-						borderColor: "var(--color-primary)",
-						color: "var(--color-primary)",
-					}}
 				>
 					Limpar filtros
 				</Button>
