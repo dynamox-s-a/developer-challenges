@@ -3,7 +3,9 @@ import type { Event, EventFilters, EventsService, EventsState } from "./types";
 export class EventsServiceImpl implements EventsService {
 	private baseUrl: string;
 
-	constructor(baseUrl = process.env.NODE_BASE_URL || "http://localhost:3001") {
+	constructor(
+		baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3001",
+	) {
 		this.baseUrl = baseUrl;
 	}
 

@@ -35,7 +35,7 @@ describe("LoginService", () => {
 			error: null,
 		});
 		expect(fetchMock).toHaveBeenCalledWith(
-			`${process.env.NODE_BASE_URL || "http://localhost:3001"}/users?email=admin%40example.com`,
+			`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3001"}/users?email=admin%40example.com`,
 		);
 	});
 
