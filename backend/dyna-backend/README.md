@@ -103,5 +103,26 @@ Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 Comando para subir o Docker para essa aplicação:
 
 ```bash
-docker run --name my-postgres -e POSTGRES_PASSWORD=123456 -p 5432:5432 -d postgres
+docker run --name dyna-postgres -e POSTGRES_PASSWORD=123456 -p 5432:5432 -d postgres
 ```
+
+```bash
+PORT=5432
+DATABASE=postgres
+USER=postgres
+PASSWORD=123456
+```
+
+Informações para rodar as migrations:
+
+warn You already have a .gitignore file. Don't forget to add `.env` in it to not commit any private information.
+
+Next steps:
+1. Set the DATABASE_URL in the .env file to point to your existing database. If your database has no tables yet, read https://pris.ly/d/getting-started
+2. Set the provider of the datasource block in schema.prisma to match your database: postgresql, mysql, sqlite, sqlserver, mongodb or cockroachdb.
+3. Run prisma db pull to turn your database schema into a Prisma schema.
+4. Run prisma generate to generate the Prisma Client. You can then start querying your database.
+5. Tip: Explore how you can extend the ORM with scalable connection pooling, global caching, and real-time database events. Read: https://pris.ly/cli/beyond-orm
+
+More information in our documentation:
+https://pris.ly/d/getting-started
