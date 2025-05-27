@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js" 
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -8,53 +8,46 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  name String
-  email String @unique
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String @unique
   password String
 }
 
+enum Type {
+  PUMP
+  FAN
+}
+
+enum SensorType {
+  HFp
+  TcAs
+  TcAg
+}
+
+enum StatusMachine {
+  ON
+  OFF
+}
+
 model Machine {
-  id Int @id @default(autoincrement())
-  name String
-  tipo_id_typeOfMachine Int
-  status_id_machine Int
-  Pmonitoramento1_sensor Int
-  Pmonitoramento2_sensor Int
+  id                  Int           @id @default(autoincrement())
+  name                String
+  typeOfMachine       Type
+  statusMachine       StatusMachine 
 
-   typeOfMachine              TypeOfMachine @relation(fields: [tipo_id_typeOfMachine], references: [id])
-  statusMachine              StatusMachine @relation(fields: [status_id_machine], references: [id])
-  pontoMonitoramento1        Sensor        @relation("PontoMonitoramento1", fields: [Pmonitoramento1_sensor], references: [id])
-  pontoMonitoramento2        Sensor        @relation("PontoMonitoramento2", fields: [Pmonitoramento2_sensor], references: [id])
+  pointmonitoring1 SensorMonitoring? @relation("Monitoring1", fields: [pointmonitoring1_id], references: [id], onDelete: Cascade)
+  pointmonitoring2 SensorMonitoring? @relation("Monitoring2", fields: [pointmonitoring2_id], references: [id], onDelete: Cascade)
 
+  pointmonitoring1_id Int?
+  pointmonitoring2_id Int?
 }
 
-model TypeOfMachine {
-  id       Int       @id @default(autoincrement())
-  name     String
-  machines Machine[] 
-}
+model SensorMonitoring {
+  id         Int        @id @default(autoincrement())
+  name       String?
+  sensorType SensorType
 
-model StatusMachine {
-  id       Int       @id @default(autoincrement())
-  name     String
-  machines Machine[]
-}
-
-model Sensor {
-  id            Int           @id @default(autoincrement())
-  name          String
-  tipo_id_sensor Int
-
-  typeOfSensor  TypeOfSensor  @relation(fields: [tipo_id_sensor], references: [id])
-
-  // Relacionamentos inversos para os pontos de monitoramento
-  monitoramento1 Machine[] @relation("PontoMonitoramento1")
-  monitoramento2 Machine[] @relation("PontoMonitoramento2")
-}
-
-model TypeOfSensor {
-  id      Int      @id @default(autoincrement())
-  nome    String
-  sensors Sensor[]
+  machineMonitoring1 Machine[] @relation("Monitoring1")
+  machineMonitoring2 Machine[] @relation("Monitoring2")
 }

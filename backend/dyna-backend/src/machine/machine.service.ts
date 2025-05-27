@@ -1,26 +1,41 @@
 import { Injectable } from '@nestjs/common';
-import { CreateMachineDto } from './dto/create-machine.dto';
-import { UpdateMachineDto } from './dto/update-machine.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateMachinesDto } from './dto/machine';
+import { StatusMachine } from '@prisma/client';
 
 @Injectable()
 export class MachineService {
-  create(createMachineDto: CreateMachineDto) {
-    return 'This action adds a new machine';
+  constructor(private prismaService: PrismaService) { }
+
+  async create(data: CreateMachinesDto) {
+
+    const { name, typeOfMachine, statusMachine, pointmonitoring1, pointmonitoring2 } = data
+
+
+    const machine = await this.prismaService.machine.create({
+      data: {
+        name,
+        typeOfMachine,
+        statusMachine: statusMachine as StatusMachine,
+        pointmonitoring1: pointmonitoring1 ? { connect: { id: pointmonitoring1 } } : undefined,
+        pointmonitoring2: pointmonitoring2 ? { connect: { id: pointmonitoring2 } } : undefined,
+
+      }
+
+    });
+
+
+    return { message: "Registro criado com sucesso", machine };
+
   }
 
-  findAll() {
-    return `This action returns all machine`;
-  }
+  async delete(id: number) {
+    const deletedMachine = await this.prismaService.machine.delete({
+      where: {
+        id: id
+      }
+    })
 
-  findOne(id: number) {
-    return `This action returns a #${id} machine`;
-  }
-
-  update(id: number, updateMachineDto: UpdateMachineDto) {
-    return `This action updates a #${id} machine`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} machine`;
+    return { message: "Registro deletado com sucesso", deletedMachine };
   }
 }
