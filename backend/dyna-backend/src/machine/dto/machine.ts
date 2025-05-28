@@ -1,15 +1,19 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
-import { StatusMachine } from '@prisma/client';
+import { StatusMachine, SensorType } from '@prisma/client';
 
 export enum Type {
     PUMP = "PUMP",
     FAN = "FAN"
 }
 
-export enum SensorType {
-    HFp = "HFp",
-    TcAs = "TcAs",
-    TcAg = "TcAg"
+export class CreatePointOfMonitoringDTO {
+    @IsOptional()
+    @IsString()
+    name?: string;
+
+    @IsEnum(SensorType)
+    sensorType:SensorType
+
 }
 
 export class CreateMachinesDto {
@@ -22,21 +26,9 @@ export class CreateMachinesDto {
     @IsEnum(StatusMachine)
     statusMachine: StatusMachine;
 
-    @IsOptional()
-    @IsNumber()
-    pointmonitoring1?: number;
+    @IsOptional()    
+    pointmonitoring1?: CreatePointOfMonitoringDTO;
 
-    @IsOptional()
-    @IsNumber()
-    pointmonitoring2?: number;
+    @IsOptional()    
+    pointmonitoring2?: CreatePointOfMonitoringDTO;
 }
-
-export class CreatePMonitoring {
-    @IsOptional()
-    @IsString()
-    name?: string;
-
-    @IsEnum(SensorType)
-    sensorType: SensorType;
-}
-

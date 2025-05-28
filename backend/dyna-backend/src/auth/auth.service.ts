@@ -8,7 +8,9 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private prismaService: PrismaService, private jwtService: JwtService) { }
+  constructor(
+    private prismaService: PrismaService,
+    private jwtService: JwtService) { }
 
   create(createAuthDto: CreateAuthDto) {
     return 'This action adds a new auth';
@@ -54,11 +56,11 @@ export class AuthService {
     })
 
 
-    return {      
+    return {
       "Login for: ": user.name,
       "Token": acessToken
     };
-      
+
   }
 
   async signup(data: SignUpDTO) {
