@@ -1,8 +1,8 @@
 import { BadRequestException, HttpException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateMachinesDto, CreatePointOfMonitoringDTO } from './dto/machine';
-import { StatusMachine, Type, SensorType, Prisma } from '@prisma/client';
-import { UpdateMachinesDTO } from './dto/update-machine';
+import { CreateLinksDTO, CreateMachinesDto, CreatePointOfMonitoringDTO } from './dto/machine';
+import { StatusMachine, Type, SensorType } from '@prisma/client';
+import { UpdateMachinesDTO } from './dto/updates-partial';
 
 @Injectable()
 export class MachineService {
@@ -179,4 +179,74 @@ export class MachineService {
 
     return { message: "Sensor created", sensor };
   }
+
+  async linkMachineToSensor(id: number, LinksDTO: CreateLinksDTO) {
+    if (!id) throw new NotFoundException()
+
+    const machine = await this.prismaService.machine.findUnique({
+      where: {
+        id: id
+      }
+    })
+
+    if (!machine) throw new NotFoundException('Invalid Machine ID');
+
+    const dataUpdated: any = {};
+
+    if (LinksDTO.id_pointmonitoring1) {
+      const sensor1 = await this.prismaService.sensorMonitoring.findUnique({
+        where: { id: LinksDTO.id_pointmonitoring1 }
+      });
+
+      if (!sensor1) throw new NotFoundException('Sensor 1 not found');
+
+      this.valSensorCompatibility(machine.typeOfMachine, sensor1.sensorType);
+
+      dataUpdated.pointmonitoring1 = { connect: { id: LinksDTO.id_pointmonitoring1 } };
+
+    };
+
+    if (LinksDTO.id_pointmonitoring2) {
+      const sensor2 = await this.prismaService.sensorMonitoring.findUnique({
+        where: { id: LinksDTO.id_pointmonitoring2 }
+      });
+
+      if (!sensor2) throw new NotFoundException('Sensor 2 not found');
+
+      this.valSensorCompatibility(machine.typeOfMachine, sensor2.sensorType);
+
+      dataUpdated.pointmonitoring2 = { connect: { id: LinksDTO.id_pointmonitoring2 } };
+
+    };
+
+    const updatedMachine = await this.prismaService.machine.update({
+      where: { id },
+      data: dataUpdated,
+      include: {
+        pointmonitoring1: true,
+        pointmonitoring2: true,
+      },
+    });
+
+    return { message: 'Machine linked with sensors successfully', updatedMachine };
+
+  }
+
+  private valSensorCompatibility(typeOfMachine: Type, sensorType: SensorType) {
+    if (typeOfMachine === Type.PUMP) {
+      if (sensorType !== SensorType.HFp) {
+        throw new BadRequestException(`For PUMP, must have sensorType = HFp.`);
+      }
+    }
+
+    if (typeOfMachine === Type.FAN) {
+      const validSensors = [SensorType.TcAs, SensorType.TcAg];
+      if (!validSensors.includes(sensorType as any)) {
+        throw new BadRequestException(`For FAN, must have sensorType = TcAs or TcAg.`);
+      }
+    }
+  }
+
+
+
 }

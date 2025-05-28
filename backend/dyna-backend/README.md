@@ -145,16 +145,16 @@ You can use the following user stories as a guide to implement the application f
 
 3 - Monitoring Points and Sensors Management
 
-1. [ ] As a user, I want to create at least two monitoring points with arbitrary names for an existing machine, so that I can monitor the machine's performance.
+1. [x] As a user, I want to create at least two monitoring points with arbitrary names for an existing machine, so that I can monitor the machine's performance.
 1. [x] As a user, I want to associate a sensor to an existing monitoring point so that I can monitor the machine's performance. The sensor should have a unique ID, and the sensor model name should be one of ["TcAg", "TcAs", "HF+"].
-1. [ ] As a user, I want the system to prevent me from setting up "TcAg" and "TcAs" sensors for machines of the type "Pump".
+1. [x] As a user, I want the system to prevent me from setting up "TcAg" and "TcAs" sensors for machines of the type "Pump".
 1. [ ] As a user, I want to see all my monitoring points in a paginated list so that I can manage them. The list should display up to 5 monitoring points per page and should include the following information: "Machine Name", "Machine Type", "Monitoring Point Name", and "Sensor Model".
 1. [ ] As a user, I want to sort the monitoring points list by any of its columns in ascending or descending order, so that I can easily find the information I'm looking for.
 
 4 - Ambiguity Handling
 
-1. [ ] Make reasonable assumptions and design the application accordingly for any ambiguities in the challenge.
-1. [ ] Document your assumptions in the README file.
+1. [x] Make reasonable assumptions and design the application accordingly for any ambiguities in the challenge.
+1. [x] Document your assumptions in the README file.
 
 5 - Technical requirements
 

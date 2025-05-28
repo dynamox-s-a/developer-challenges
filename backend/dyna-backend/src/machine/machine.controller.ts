@@ -4,8 +4,8 @@ import { MachineService } from './machine.service';
 // import { UpdateMachineDto } from './dto/update-machine.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 //import { get } from 'http';
-import { CreateMachinesDto, CreatePointOfMonitoringDTO } from './dto/machine';
-import { UpdateMachinesDTO } from './dto/update-machine';
+import { CreateLinksDTO, CreateMachinesDto, CreatePointOfMonitoringDTO } from './dto/machine';
+import { UpdateMachinesDTO } from './dto/updates-partial';
 
 @Controller('machine')
 export class MachineController {
@@ -41,7 +41,7 @@ export class MachineController {
   //   return this.machineService.update(+id, updateMachineDto);
   // }
 
-  //  @UseGuards(AuthGuard)
+  //@UseGuards(AuthGuard)
   @Post('create')
   async create(@Body() body: CreateMachinesDto) {
     return await this.machineService.create(body);
@@ -58,6 +58,15 @@ export class MachineController {
   async deleteMachine(@Param('id', ParseIntPipe) id: number) {
     return await this.machineService.delete(id);
   }
+
+  //@UseGuards(AuthGuard)
+  @Patch('/link/:id')
+  async linkMachineToSensor(
+    @Param('id') id: string,
+    @Body() LinksDTO: CreateLinksDTO){
+      return await this.machineService.linkMachineToSensor(Number(id), LinksDTO)
+  }
+
 
   //@UseGuards(AuthGuard)
   @Patch('name/:id')

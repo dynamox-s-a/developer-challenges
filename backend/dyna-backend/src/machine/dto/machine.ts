@@ -32,3 +32,10 @@ export class CreateMachinesDto {
     @IsOptional()    
     pointmonitoring2?: CreatePointOfMonitoringDTO;
 }
+
+export class CreateLinksDTO{
+    @IsOptional()
+    id_pointmonitoring1?: number
+    @IsOptional()
+    id_pointmonitoring2?: number
+}
