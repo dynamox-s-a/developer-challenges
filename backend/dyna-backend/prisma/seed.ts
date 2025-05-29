@@ -7,6 +7,13 @@ const prisma = new PrismaClient();
 async function main() {
     console.log('🌱 Iniciando seed...');
 
+    // Verificar se já existe dados
+    const existingUser = await prisma.user.findFirst();
+    if (existingUser) {
+        console.log('✅ Banco já possui dados. Seed já foi executado anteriormente.');
+        return;
+    }
+
     // Criar usuário
     const cryptPass = await bcrypt.hash('123456', 10);
     await prisma.user.create({
