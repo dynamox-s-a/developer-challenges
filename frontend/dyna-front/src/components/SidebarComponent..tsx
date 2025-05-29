@@ -1,6 +1,4 @@
 import { AppBar, Box, CssBaseline, Drawer, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography } from "@mui/material";
-//import { useState } from "react";
-//import { FaReact } from "react-icons/fa";
 import { Link as RouterLink } from 'react-router-dom';
 
 export default function SidebarComponent() {
@@ -11,9 +9,10 @@ export default function SidebarComponent() {
         { text: 'Sobre', path: '/about' },
     ];
 
-    
-const drawerWidth = 240;
 
+    const drawerWidth = 240;
+    const colorBG = '#1976d2';
+    const colorFont = '#fff';
 
     return (
         <>
@@ -21,7 +20,11 @@ const drawerWidth = 240;
                 <CssBaseline />
 
                 {/* AppBar ajustado para deslocar a largura do Drawer */}
-                <AppBar position="fixed" sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}>
+                <AppBar position="fixed" sx={{
+                    width: `calc(100% - ${drawerWidth}px)`,
+                    ml: `${drawerWidth}px`,
+                    backgroundColor: colorBG
+                }}>
                     <Toolbar>
                         <Typography variant="h6" noWrap component="div">
                             Meu App
@@ -35,9 +38,14 @@ const drawerWidth = 240;
                     sx={{
                         width: drawerWidth,
                         flexShrink: 0,
-                        [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+                        [`& .MuiDrawer-paper`]: { width: drawerWidth, 
+                            boxSizing: 'border-box',
+                            backgroundColor: colorBG,
+                            color: colorFont
+                         },
                     }}
-                >
+                >   
+                {/**Maybe add uma logo aqui no lugar da Toolbar */}
                     <Toolbar />
                     <Box sx={{ overflow: 'auto' }}>
                         <List>
@@ -58,9 +66,6 @@ const drawerWidth = 240;
                     sx={{ flexGrow: 1, p: 3 }}
                 >
                     <Toolbar /> {/* Para compensar a altura do AppBar */}
-                    <Typography paragraph>
-                        Aqui vai o conteúdo da página!
-                    </Typography>
                 </Box>
             </Box>
 
