@@ -1,19 +1,14 @@
-import { Button, Typography, Box } from '@mui/material';
-import axios from 'axios';
+import {  Typography, Box } from '@mui/material';
 
 export default function HomePage() {
 
-    const handleClick = async () => {
-        const response = await axios.get('https://jsonplaceholder.typicode.com/todos/1');
-        alert(JSON.stringify(response.data));
-    };
-    
+
     return (
         <Box sx={{ mt: 2.5 }}>
             <Typography variant="h4">Página Inicial</Typography>
-            <Button variant="contained" color="primary" onClick={handleClick} sx={{ mt: 2 }}>
-                Fazer requisição com Axios
-            </Button>
+            <Typography variant="body1" sx={{ mt: 2 }}>
+                Esta é a página inicial do sistema. Você pode navegar para outras páginas usando o menu lateral.
+            </Typography>
         </Box>
     )
 }

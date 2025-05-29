@@ -1,12 +1,19 @@
-import { AppBar, Box, CssBaseline, Drawer, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, CssBaseline, Drawer, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography, Button } from "@mui/material";
 import { Link as RouterLink } from 'react-router-dom';
+import { LogoutOutlined } from '@mui/icons-material';
+import { useAuth } from '../contexts/AuthContext';
 
-export default function SidebarComponent() {    const menuItems = [
+export default function SidebarComponent() {
+    const { user, logout } = useAuth();
+    
+    const menuItems = [
         { text: 'Home', path: '/' },
         { text: 'Sobre', path: '/about' },
-        { text: 'Login', path: '/signin' },
     ];
 
+    const handleLogout = () => {
+        logout();
+    };
 
     const drawerWidth = 240;
     const colorBG = '#1976d2';
@@ -25,7 +32,7 @@ export default function SidebarComponent() {    const menuItems = [
                 }}>
                     <Toolbar>
                         <Typography variant="h6" noWrap component="div">
-                            Meu App
+                            Dyna System
                         </Typography>
                     </Toolbar>
                 </AppBar>
@@ -36,16 +43,31 @@ export default function SidebarComponent() {    const menuItems = [
                     sx={{
                         width: drawerWidth,
                         flexShrink: 0,
-                        [`& .MuiDrawer-paper`]: { width: drawerWidth, 
+                        [`& .MuiDrawer-paper`]: { 
+                            width: drawerWidth, 
                             boxSizing: 'border-box',
                             backgroundColor: colorBG,
-                            color: colorFont
-                         },
+                            color: colorFont,
+                            display: 'flex',
+                            flexDirection: 'column'
+                        },
                     }}
                 >   
-                {/**Maybe add uma logo aqui no lugar da Toolbar */}
+                    {/**Maybe add uma logo aqui no lugar da Toolbar */}
                     <Toolbar />
-                    <Box sx={{ overflow: 'auto' }}>
+                    
+                    {/* Informações do usuário */}
+                    <Box sx={{ p: 2, borderBottom: `1px solid ${colorFont}30` }}>
+                        <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                            Bem-vindo!
+                        </Typography>
+                        <Typography variant="body2" sx={{ opacity: 0.8 }}>
+                            {user?.name || 'Usuário'}
+                        </Typography>
+                    </Box>
+
+                    {/* Menu principal */}
+                    <Box sx={{ overflow: 'auto', flexGrow: 1 }}>
                         <List>
                             {menuItems.map((item) => (
                                 <ListItem key={item.text} disablePadding>
@@ -56,6 +78,26 @@ export default function SidebarComponent() {    const menuItems = [
                             ))}
                         </List>
                     </Box>
+
+                    {/* Botão de Logoff */}
+                    <Box sx={{ p: 2, mt: 'auto' }}>
+                        <Button
+                            fullWidth
+                            variant="outlined"
+                            startIcon={<LogoutOutlined />}
+                            onClick={handleLogout}
+                            sx={{
+                                color: colorFont,
+                                borderColor: colorFont,
+                                '&:hover': {
+                                    backgroundColor: `${colorFont}20`,
+                                    borderColor: colorFont,
+                                },
+                            }}
+                        >
+                            Sair
+                        </Button>
+                    </Box>
                 </Drawer>
 
                 {/* Conteúdo principal */}
@@ -65,9 +107,6 @@ export default function SidebarComponent() {    const menuItems = [
                 >
                     <Toolbar /> {/* Para compensar a altura do AppBar */}
                 </Box>
-            </Box>
-
-
-        </>
+            </Box>        </>
     )
 }

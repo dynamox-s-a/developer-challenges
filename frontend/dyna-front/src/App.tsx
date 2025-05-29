@@ -1,41 +1,65 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Container } from '@mui/material';
-//import HeaderComponent from './components/Header';
 import HomePage from './pages/Home';
 import AboutPage from './pages/About';
 import SidebarComponent from './components/SidebarComponent';
 import NewSignIn from './components/NewSignIn';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 
-function AppContent() {
-  const location = useLocation();
-  const isSignInPage = location.pathname === '/signin';
-
-  if (isSignInPage) {
-    return <NewSignIn />;
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated } = useAuth();
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/signin" replace />;
   }
 
   return (
     <>
       <SidebarComponent/>
       <Container>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />          
-        </Routes>
+        {children}
       </Container>
     </>
   );
 }
 
-function App() {
-  
+function AppContent() {
+  const { isAuthenticated } = useAuth();
+
   return (
-    <Router>
-      <Routes>
-        <Route path="/signin" element={<NewSignIn />} />
-        <Route path="/*" element={<AppContent />} />
-      </Routes>
-    </Router>
+    <Routes>
+      <Route 
+        path="/signin" 
+        element={isAuthenticated ? <Navigate to="/" replace /> : <NewSignIn />} 
+      />
+      <Route 
+        path="/" 
+        element={
+          <ProtectedRoute>
+            <HomePage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/about" 
+        element={
+          <ProtectedRoute>
+            <AboutPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </AuthProvider>
   )
 }
 
