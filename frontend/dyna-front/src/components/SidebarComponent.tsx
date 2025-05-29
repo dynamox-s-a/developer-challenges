@@ -5,7 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 
 export default function SidebarComponent() {
     const { user, logout } = useAuth();
-      const menuItems = [
+    const menuItems = [
         { text: 'Home', path: '/' },
         { text: 'Machine', path: '/about' },
         { text: 'Sensors', path: '/sensors' },
@@ -21,10 +21,8 @@ export default function SidebarComponent() {
 
     return (
         <>
-            <Box sx={{ display: 'flex' }}>
-                <CssBaseline />
+            <Box sx={{ display: 'flex' }}>                <CssBaseline />
 
-                {/* AppBar ajustado para deslocar a largura do Drawer */}
                 <AppBar position="fixed" sx={{
                     width: `calc(100% - ${drawerWidth}px)`,
                     ml: `${drawerWidth}px`,
@@ -34,39 +32,30 @@ export default function SidebarComponent() {
                         <Typography variant="h6" noWrap component="div">
                             Dyna System
                         </Typography>
-                    </Toolbar>
-                </AppBar>
+                    </Toolbar>                </AppBar>
 
-                {/* Sidebar Permanente */}
                 <Drawer
                     variant="permanent"
                     sx={{
                         width: drawerWidth,
                         flexShrink: 0,
-                        [`& .MuiDrawer-paper`]: { 
-                            width: drawerWidth, 
+                        [`& .MuiDrawer-paper`]: {
+                            width: drawerWidth,
                             boxSizing: 'border-box',
                             backgroundColor: colorBG,
                             color: colorFont,
                             display: 'flex',
                             flexDirection: 'column'
-                        },
-                    }}
-                >   
-                    {/**Maybe add uma logo aqui no lugar da Toolbar */}
-                    <Toolbar />
-                    
-                    {/* Informações do usuário */}
+                        },                    }}                >
+
                     <Box sx={{ p: 2, borderBottom: `1px solid ${colorFont}30` }}>
                         <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
                             Bem-vindo!
                         </Typography>
                         <Typography variant="body2" sx={{ opacity: 0.8 }}>
                             {user?.name || 'Usuário'}
-                        </Typography>
-                    </Box>
+                        </Typography>                    </Box>
 
-                    {/* Menu principal */}
                     <Box sx={{ overflow: 'auto', flexGrow: 1 }}>
                         <List>
                             {menuItems.map((item) => (
@@ -76,10 +65,8 @@ export default function SidebarComponent() {
                                     </ListItemButton>
                                 </ListItem>
                             ))}
-                        </List>
-                    </Box>
+                        </List>                    </Box>
 
-                    {/* Botão de Logoff */}
                     <Box sx={{ p: 2, mt: 'auto' }}>
                         <Button
                             fullWidth
@@ -97,15 +84,13 @@ export default function SidebarComponent() {
                         >
                             Sair
                         </Button>
-                    </Box>
-                </Drawer>
+                    </Box>                </Drawer>
 
-                {/* Conteúdo principal */}
                 <Box
                     component="main"
                     sx={{ flexGrow: 1, p: 3 }}
                 >
-                    <Toolbar /> {/* Para compensar a altura do AppBar */}
+                    <Toolbar />
                 </Box>
             </Box>        </>
     )

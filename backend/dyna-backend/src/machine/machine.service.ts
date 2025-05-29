@@ -193,7 +193,50 @@ export class MachineService {
       }
     });
 
+    
     return { message: "Sensor deletado com sucesso", deletedSensor };
+  }
+
+  async updateSensor(id: number, data: CreatePointOfMonitoringDTO) {
+    if (!id) {
+      throw new NotFoundException('ID é obrigatório');
+    }
+
+    const sensor = await this.prismaService.sensorMonitoring.findUnique({
+      where: { id }
+    });
+
+    if (!sensor) {
+      throw new NotFoundException('Sensor não encontrado');
+    }
+
+    // Validar se o tipo de sensor pode ser alterado
+    // Verificar se o sensor está vinculado a alguma máquina
+    const linkedMachines = await this.prismaService.machine.findMany({
+      where: {
+        OR: [
+          { pointmonitoring1_id: id },
+          { pointmonitoring2_id: id }
+        ]
+      }
+    });
+
+    // Se o sensor está vinculado e o tipo está sendo alterado, validar compatibilidade
+    if (linkedMachines.length > 0 && data.sensorType && data.sensorType !== sensor.sensorType) {
+      for (const machine of linkedMachines) {
+        this.valSensorCompatibility(machine.typeOfMachine, data.sensorType);
+      }
+    }
+
+    const updatedSensor = await this.prismaService.sensorMonitoring.update({
+      where: { id },
+      data: {
+        name: data.name !== undefined ? data.name : sensor.name,
+        sensorType: data.sensorType !== undefined ? data.sensorType : sensor.sensorType
+      }
+    });
+
+    return { message: "Sensor atualizado com sucesso", sensor: updatedSensor };
   }
 
   async createSensor(data: CreatePointOfMonitoringDTO) {

@@ -4,7 +4,6 @@ import App from './App.tsx'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 
-// Criar tema do Material-UI
 const muiTheme = createTheme({
   palette: {
     primary: {

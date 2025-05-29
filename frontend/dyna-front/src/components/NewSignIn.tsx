@@ -36,19 +36,16 @@ const NewSignIn: React.FC = () => {
     setLoading(true);
     setError(null);
 
-    try {
-      const response = await axios.post('http://localhost:3000/auth/login', {
+    try {      const response = await axios.post('http://localhost:3000/auth/login', {
         email,
         password,
       });
 
-      // Assumindo que a resposta tem o formato: { "Login for: ": "nome", "Token": "token" }
       const token = response.data.Token;
       const userName = response.data["Login for: "];
 
-      // Criar objeto user básico (pode ser melhorado obtendo mais dados do backend)
       const user = {
-        id: 1, // Você pode obter isso de outro endpoint se necessário
+        id: 1,
         name: userName,
         email: email,
       };
@@ -78,26 +75,20 @@ const NewSignIn: React.FC = () => {
             alignItems: 'center',
             justifyContent: 'center',
             py: 4,
-          }}
-        >
-          {/* Ícone no topo */}
+          }}        >
           <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
             <LockOutlined />
           </Avatar>
 
-          {/* Título centralizado */}
           <Typography component="h1" variant="h4" sx={{ mb: 3 }}>
             Sign In
           </Typography>
 
-          {/* Exibir erro se houver */}
           {error && (
             <Alert severity="error" sx={{ width: '100%', mb: 2 }}>
               {error}
-            </Alert>
-          )}
+            </Alert>          )}
 
-          {/* Formulário */}
           <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%' }}>
             <TextField
               margin="normal"
@@ -150,10 +141,8 @@ const NewSignIn: React.FC = () => {
                 <CircularProgress size={24} color="inherit" />
               ) : (
                 'Sign In'
-              )}
-            </Button>
+              )}            </Button>
 
-            {/* Links */}
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
               <Link href="#" variant="body2" sx={{ textDecoration: 'none' }}>
                 Forgot password?
@@ -161,10 +150,8 @@ const NewSignIn: React.FC = () => {
               <Link href="#" variant="body2" sx={{ textDecoration: 'none' }}>
                 Don't have an account? Sign Up
               </Link>
-            </Box>
-          </Box>
+            </Box>          </Box>
 
-          {/* Copyright */}
           <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 'auto' }}>
             {'Copyright © '}
             <Link color="inherit" href="#" sx={{ textDecoration: 'none' }}>

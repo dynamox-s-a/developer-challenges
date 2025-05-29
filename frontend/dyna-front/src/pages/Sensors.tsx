@@ -21,9 +21,10 @@ import {
     DialogContentText,
     DialogActions,
     Button,
-    Snackbar
+    Snackbar,
+    TextField
 } from '@mui/material';
-import { Visibility, Edit, Delete } from '@mui/icons-material';
+import { Edit, Delete } from '@mui/icons-material';
 import axios from 'axios';
 
 interface Sensor {
@@ -57,17 +58,18 @@ export default function SensorsPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [rowsPerPage, setRowsPerPage] = useState(5);    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [sensorToDelete, setSensorToDelete] = useState<Sensor | null>(null);
     const [deleting, setDeleting] = useState(false);
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarOpen, setSnackbarOpen] = useState(false);    const [snackbarMessage, setSnackbarMessage] = useState('');
+    
+    const [editDialogOpen, setEditDialogOpen] = useState(false);
+    const [sensorToEdit, setSensorToEdit] = useState<Sensor | null>(null);
+    const [editingName, setEditingName] = useState('');
+    const [updating, setUpdating] = useState(false);
 
-    const fetchSensors = async (currentPage: number, limit: number) => {
-        try {
+    const fetchSensors = async (currentPage: number, limit: number) => {        try {
             setLoading(true);
-            // Convertendo page de base-0 (Material-UI) para base-1 (backend)
             const apiPage = currentPage + 1;
             const response = await axios.get<ApiResponse>(
                 `http://localhost:3000/machine/sensors/paginated?page=${apiPage}&limit=${limit}`
@@ -110,10 +112,8 @@ export default function SensorsPage() {
             
             setSnackbarMessage('Sensor deletado com sucesso!');
             setSnackbarOpen(true);
-            setDeleteDialogOpen(false);
-            setSensorToDelete(null);
+            setDeleteDialogOpen(false);            setSensorToDelete(null);
             
-            // Recarregar a lista
             fetchSensors(page, rowsPerPage);
         } catch (err) {
             console.error('Erro ao deletar sensor:', err);
@@ -131,6 +131,42 @@ export default function SensorsPage() {
 
     const handleSnackbarClose = () => {
         setSnackbarOpen(false);
+    };
+
+    const handleEditClick = (sensor: Sensor) => {
+        setSensorToEdit(sensor);
+        setEditingName(sensor.name || '');
+        setEditDialogOpen(true);
+    };
+
+    const handleEditCancel = () => {
+        setEditDialogOpen(false);
+        setSensorToEdit(null);
+        setEditingName('');
+    };
+
+    const handleEditConfirm = async () => {
+        if (!sensorToEdit) return;
+
+        try {
+            setUpdating(true);            await axios.patch(`http://localhost:3000/machine/sensor/${sensorToEdit.id}`, {
+                name: editingName,
+                sensorType: sensorToEdit.sensorType
+            });
+            
+            setSnackbarMessage('Sensor atualizado com sucesso!');
+            setSnackbarOpen(true);
+            setEditDialogOpen(false);
+            setSensorToEdit(null);            setEditingName('');
+            
+            fetchSensors(page, rowsPerPage);
+        } catch (err) {
+            console.error('Erro ao atualizar sensor:', err);
+            setSnackbarMessage('Erro ao atualizar sensor');
+            setSnackbarOpen(true);
+        } finally {
+            setUpdating(false);
+        }
     };
 
     const getSensorTypeColor = (type: string): 'primary' | 'secondary' | 'success' | 'default' => {
@@ -213,15 +249,9 @@ export default function SensorsPage() {
                                         })
                                     ) : (
                                         <Typography variant="body2" color="text.secondary">-</Typography>
-                                    )}
-                                </TableCell>                                <TableCell align="center">
-                                    <Tooltip title="Visualizar">
-                                        <IconButton size="small" color="primary">
-                                            <Visibility />
-                                        </IconButton>
-                                    </Tooltip>
+                                    )}                                </TableCell>                                <TableCell align="center">
                                     <Tooltip title="Editar">
-                                        <IconButton size="small" color="secondary">
+                                        <IconButton size="small" color="secondary" onClick={() => handleEditClick(sensor)}>
                                             <Edit />
                                         </IconButton>
                                     </Tooltip>
@@ -292,6 +322,59 @@ export default function SensorsPage() {
                         variant="contained"
                     >
                         {deleting ? 'Excluindo...' : 'Excluir'}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* Modal de edição de sensor */}
+            <Dialog
+                open={editDialogOpen}
+                onClose={handleEditCancel}
+                aria-labelledby="edit-dialog-title"
+                maxWidth="sm"
+                fullWidth
+            >
+                <DialogTitle id="edit-dialog-title">
+                    Editar Sensor
+                </DialogTitle>
+                <DialogContent>
+                    <Box sx={{ pt: 2 }}>
+                        <TextField
+                            margin="dense"
+                            label="Tipo do Sensor"
+                            type="text"
+                            fullWidth
+                            variant="outlined"
+                            value={sensorToEdit?.sensorType || ''}
+                            disabled
+                            sx={{ mb: 2 }}
+                            helperText="O tipo do sensor não pode ser alterado"
+                        />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            label="Nome do Sensor"
+                            type="text"
+                            fullWidth
+                            variant="outlined"
+                            value={editingName}
+                            onChange={(e) => setEditingName(e.target.value)}
+                            disabled={updating}
+                            helperText="Insira o nome do sensor"
+                        />
+                    </Box>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleEditCancel} disabled={updating}>
+                        Cancelar
+                    </Button>
+                    <Button 
+                        onClick={handleEditConfirm} 
+                        color="primary" 
+                        disabled={updating}
+                        variant="contained"
+                    >
+                        {updating ? 'Salvando...' : 'Salvar'}
                     </Button>
                 </DialogActions>
             </Dialog>

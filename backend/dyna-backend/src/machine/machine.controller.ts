@@ -37,6 +37,12 @@ export class MachineController {
   }
 
   //@UseGuards(AuthGuard)
+  @Patch('sensor/:id')
+  async updateSensor(@Param('id', ParseIntPipe) id: number, @Body() body: CreatePointOfMonitoringDTO) {
+    return await this.machineService.updateSensor(id, body);
+  }
+
+  //@UseGuards(AuthGuard)
   @Patch('/link/:id')
   async linkMachineToSensor(
     @Param('id') id: string,
