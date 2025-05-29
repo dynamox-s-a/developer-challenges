@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     Typography,
     Box,
@@ -56,6 +56,12 @@ interface ApiResponse {
 }
 
 export default function SensorsPage() {
+    // Função para obter headers com token de autenticação
+    const getAuthHeaders = () => {
+        const token = localStorage.getItem('authToken');
+        return token ? { Authorization: `Bearer ${token}` } : {};
+    };
+
     const [sensors, setSensors] = useState<Sensor[]>([]);
     const [pagination, setPagination] = useState<PaginationData | null>(null);
     const [loading, setLoading] = useState(true);
@@ -69,14 +75,13 @@ export default function SensorsPage() {
     const [editDialogOpen, setEditDialogOpen] = useState(false);
     const [sensorToEdit, setSensorToEdit] = useState<Sensor | null>(null);
     const [editingName, setEditingName] = useState('');
-    const [updating, setUpdating] = useState(false);
-
-    const fetchSensors = async (currentPage: number, limit: number) => {
+    const [updating, setUpdating] = useState(false);    const fetchSensors = useCallback(async (currentPage: number, limit: number) => {
         try {
             setLoading(true);
             const apiPage = currentPage + 1;
             const response = await axios.get<ApiResponse>(
-                `http://localhost:3000/machine/sensors/paginated?page=${apiPage}&limit=${limit}`
+                `http://localhost:3000/machine/sensors/paginated?page=${apiPage}&limit=${limit}`,
+                { headers: getAuthHeaders() }
             );
 
             setSensors(response.data.data.sensors);
@@ -88,11 +93,11 @@ export default function SensorsPage() {
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
     useEffect(() => {
         fetchSensors(page, rowsPerPage);
-    }, [page, rowsPerPage]);
+    }, [page, rowsPerPage, fetchSensors]);
 
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
@@ -105,14 +110,14 @@ export default function SensorsPage() {
     const handleDeleteClick = (sensor: Sensor) => {
         setSensorToDelete(sensor);
         setDeleteDialogOpen(true);
-    };
-
-    const handleDeleteConfirm = async () => {
+    };    const handleDeleteConfirm = async () => {
         if (!sensorToDelete) return;
 
         try {
             setDeleting(true);
-            await axios.delete(`http://localhost:3000/machine/sensor/${sensorToDelete.id}`);
+            await axios.delete(`http://localhost:3000/machine/sensor/${sensorToDelete.id}`, {
+                headers: getAuthHeaders()
+            });
 
             setSnackbarMessage('Sensor deleted successfully!');
             setSnackbarOpen(true);
@@ -150,12 +155,13 @@ export default function SensorsPage() {
     };
 
     const handleEditConfirm = async () => {
-        if (!sensorToEdit) return;
-
-        try {
-            setUpdating(true); await axios.patch(`http://localhost:3000/machine/sensor/${sensorToEdit.id}`, {
+        if (!sensorToEdit) return;        try {
+            setUpdating(true); 
+            await axios.patch(`http://localhost:3000/machine/sensor/${sensorToEdit.id}`, {
                 name: editingName,
                 sensorType: sensorToEdit.sensorType
+            }, {
+                headers: getAuthHeaders()
             });
 
             setSnackbarMessage('Sensor updated successfully!');

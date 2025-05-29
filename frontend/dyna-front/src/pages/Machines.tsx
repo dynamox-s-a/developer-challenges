@@ -70,6 +70,12 @@ interface ApiResponse {
 }
 
 export default function Machines() {
+    // Função para obter headers com token de autenticação
+    const getAuthHeaders = () => {
+        const token = localStorage.getItem('authToken');
+        return token ? { Authorization: `Bearer ${token}` } : {};
+    };
+
     const [machines, setMachines] = useState<Machine[]>([]);
     const [pagination, setPagination] = useState<PaginationData | null>(null);
     const [loading, setLoading] = useState(true);
@@ -88,13 +94,12 @@ export default function Machines() {
     const [selectedSensor1, setSelectedSensor1] = useState<number | ''>('');
     const [selectedSensor2, setSelectedSensor2] = useState<number | ''>('');    const [updating, setUpdating] = useState(false);
     
-    const [showOnlyActive, setShowOnlyActive] = useState(false);
-
-    const fetchMachines = useCallback(async (currentPage: number, limit: number) => {        try {
+    const [showOnlyActive, setShowOnlyActive] = useState(false);    const fetchMachines = useCallback(async (currentPage: number, limit: number) => {        try {
             setLoading(true);
             const apiPage = currentPage + 1;
             const response = await axios.get<ApiResponse>(
-                `http://localhost:3000/machine/paginated?page=${apiPage}&limit=${limit}`
+                `http://localhost:3000/machine/paginated?page=${apiPage}&limit=${limit}`,
+                { headers: getAuthHeaders() }
             );
 
             let filteredMachines = response.data.data.machines;
@@ -112,21 +117,21 @@ export default function Machines() {
         } finally {
             setLoading(false);
         }
-    }, [showOnlyActive]);
-
-    const fetchAvailableSensors = async () => {
+    }, [showOnlyActive]);    const fetchAvailableSensors = useCallback(async () => {
         try {
-            const response = await axios.get('http://localhost:3000/machine/sensors');
+            const response = await axios.get('http://localhost:3000/machine/sensors', {
+                headers: getAuthHeaders()
+            });
             setAvailableSensors(response.data.sensors || []);
         } catch (err) {
             console.error('Erro ao carregar sensores:', err);
         }
-    };
+    }, []);
 
     useEffect(() => {
         fetchMachines(page, rowsPerPage);
         fetchAvailableSensors();
-    }, [page, rowsPerPage, fetchMachines]);
+    }, [page, rowsPerPage, fetchMachines, fetchAvailableSensors]);
 
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
@@ -141,16 +146,16 @@ export default function Machines() {
     const handleDeleteClick = (machine: Machine) => {
         setMachineToDelete(machine);
         setDeleteDialogOpen(true);
-    };
-
-    const handleDeleteConfirm = async () => {
+    };    const handleDeleteConfirm = async () => {
         if (!machineToDelete) return;
 
         try {
             setDeleting(true);
-            await axios.delete(`http://localhost:3000/machine/${machineToDelete.id}`);
+            await axios.delete(`http://localhost:3000/machine/${machineToDelete.id}`, {
+                headers: getAuthHeaders()
+            });
             
-            setSnackbarMessage('Machine deleted successfully!');            
+            setSnackbarMessage('Machine deleted successfully!');
             setSnackbarOpen(true);
             setDeleteDialogOpen(false);
             setMachineToDelete(null);
@@ -192,11 +197,12 @@ export default function Machines() {
     const handleEditConfirm = async () => {
         if (!machineToEdit) return;
 
-        try {
-            setUpdating(true);
+        try {            setUpdating(true);
               if (editingName !== machineToEdit.name) {
                 await axios.patch(`http://localhost:3000/machine/name/${machineToEdit.id}`, {
                     name: editingName
+                }, {
+                    headers: getAuthHeaders()
                 });
             }
 
@@ -207,6 +213,8 @@ export default function Machines() {
                 await axios.patch(`http://localhost:3000/machine/link/${machineToEdit.id}`, {
                     id_pointmonitoring1: selectedSensor1 || null,
                     id_pointmonitoring2: selectedSensor2 || null
+                }, {
+                    headers: getAuthHeaders()
                 });
             }
             
