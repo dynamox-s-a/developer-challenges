@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import {
     Typography,
@@ -15,7 +14,14 @@ import {
     CircularProgress,
     Alert,
     IconButton,
-    Tooltip
+    Tooltip,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
+    Button,
+    Snackbar
 } from '@mui/material';
 import { Visibility, Edit, Delete } from '@mui/icons-material';
 import axios from 'axios';
@@ -24,15 +30,6 @@ interface Sensor {
     id: number;
     name?: string;
     sensorType: string;
-}
-
-interface Machine {
-    id: number;
-    name: string;
-    typeOfMachine: string;
-    statusMachine: string;
-    pointmonitoring1?: Sensor;
-    pointmonitoring2?: Sensor;
     createdAt?: string;
     updatedAt?: string;
 }
@@ -49,31 +46,38 @@ interface PaginationData {
 interface ApiResponse {
     message: string;
     data: {
-        machines: Machine[];
+        sensors: Sensor[];
         pagination: PaginationData;
     };
 }
 
-export default function AboutPage() {
-    const [machines, setMachines] = useState<Machine[]>([]);
+export default function SensorsPage() {
+    const [sensors, setSensors] = useState<Sensor[]>([]);
     const [pagination, setPagination] = useState<PaginationData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [sensorToDelete, setSensorToDelete] = useState<Sensor | null>(null);
+    const [deleting, setDeleting] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
 
-    const fetchMachines = async (currentPage: number, limit: number) => {
+    const fetchSensors = async (currentPage: number, limit: number) => {
         try {
             setLoading(true);
+            // Convertendo page de base-0 (Material-UI) para base-1 (backend)
+            const apiPage = currentPage + 1;
             const response = await axios.get<ApiResponse>(
-                `http://localhost:3000/machine/paginated`
+                `http://localhost:3000/machine/sensors/paginated?page=${apiPage}&limit=${limit}`
             );
 
-            setMachines(response.data.data.machines);
+            setSensors(response.data.data.sensors);
             setPagination(response.data.data.pagination);
             setError(null);
         } catch (err) {
-            setError('Erro ao carregar as máquinas');
+            setError('Erro ao carregar os sensores');
             console.error('Erro:', err);
         } finally {
             setLoading(false);
@@ -81,37 +85,62 @@ export default function AboutPage() {
     };
 
     useEffect(() => {
-        fetchMachines(page, rowsPerPage);
+        fetchSensors(page, rowsPerPage);
     }, [page, rowsPerPage]);
 
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    };    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newRowsPerPage = parseInt(event.target.value, 10);
         setRowsPerPage(newRowsPerPage);
         setPage(0);
     };
-    const getStatusColor = (status: string): 'success' | 'warning' | 'error' | 'default' => {
-        switch (status) {
-            case 'RUNNING':
-                return 'success';
-            case 'ALERTING':
-                return 'warning';
-            case 'STOPPED':
-                return 'error';
-            default:
-                return 'default';
+
+    const handleDeleteClick = (sensor: Sensor) => {
+        setSensorToDelete(sensor);
+        setDeleteDialogOpen(true);
+    };
+
+    const handleDeleteConfirm = async () => {
+        if (!sensorToDelete) return;
+
+        try {
+            setDeleting(true);
+            await axios.delete(`http://localhost:3000/machine/sensor/${sensorToDelete.id}`);
+            
+            setSnackbarMessage('Sensor deletado com sucesso!');
+            setSnackbarOpen(true);
+            setDeleteDialogOpen(false);
+            setSensorToDelete(null);
+            
+            // Recarregar a lista
+            fetchSensors(page, rowsPerPage);
+        } catch (err) {
+            console.error('Erro ao deletar sensor:', err);
+            setSnackbarMessage('Erro ao deletar sensor');
+            setSnackbarOpen(true);
+        } finally {
+            setDeleting(false);
         }
     };
 
-    const getTypeColor = (type: string): 'primary' | 'secondary' | 'default' => {
+    const handleDeleteCancel = () => {
+        setDeleteDialogOpen(false);
+        setSensorToDelete(null);
+    };
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const getSensorTypeColor = (type: string): 'primary' | 'secondary' | 'success' | 'default' => {
         switch (type) {
-            case 'PUMP':
+            case 'HFp':
                 return 'primary';
-            case 'FAN':
+            case 'TcAs':
                 return 'secondary';
+            case 'TcAg':
+                return 'success';
             default:
                 return 'default';
         }
@@ -133,79 +162,59 @@ export default function AboutPage() {
         );
     }
 
-    console.log(machines)
-
     return (
         <Box sx={{ mt: 2.5 }}>
             <Typography variant="h4" sx={{ mb: 3 }}>
-                Lista de Máquinas
+                Lista de Sensores
             </Typography>
 
             <TableContainer component={Paper} sx={{ boxShadow: 3 }}>
-                <Table sx={{ minWidth: 650 }} aria-label="tabela de máquinas">
+                <Table sx={{ minWidth: 650 }} aria-label="tabela de sensores">
                     <TableHead>
                         <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
                             <TableCell><strong>ID</strong></TableCell>
                             <TableCell><strong>Nome</strong></TableCell>
-                            <TableCell><strong>Tipo</strong></TableCell>
-                            <TableCell><strong>Status</strong></TableCell>
-                            <TableCell><strong>Sensor 1</strong></TableCell>
-                            <TableCell><strong>Sensor 2</strong></TableCell>
+                            <TableCell><strong>Tipo de Sensor</strong></TableCell>
+                            <TableCell><strong>Data de Criação</strong></TableCell>
                             <TableCell align="center"><strong>Ações</strong></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {machines.map((machine) => (
+                        {sensors.map((sensor) => (
                             <TableRow
-                                key={machine.id}
+                                key={sensor.id}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:hover': { backgroundColor: '#f9f9f9' } }}
                             >
                                 <TableCell component="th" scope="row">
-                                    {machine.id}
+                                    {sensor.id}
                                 </TableCell>
-                                <TableCell>{machine.name}</TableCell>                <TableCell>
+                                <TableCell>
+                                    {sensor.name || (
+                                        <Typography variant="body2" color="text.secondary" fontStyle="italic">
+                                            Sem nome
+                                        </Typography>
+                                    )}
+                                </TableCell>
+                                <TableCell>
                                     <Chip
-                                        label={machine.typeOfMachine}
-                                        color={getTypeColor(machine.typeOfMachine)}
+                                        label={sensor.sensorType}
+                                        color={getSensorTypeColor(sensor.sensorType)}
                                         size="small"
                                     />
                                 </TableCell>
                                 <TableCell>
-                                    <Chip
-                                        label={machine.statusMachine}
-                                        color={getStatusColor(machine.statusMachine)}
-                                        size="small"
-                                    />
-                                </TableCell>
-                                <TableCell>
-                                    {machine.pointmonitoring1 ? (
-                                        <Box>
-                                            <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                                {machine.pointmonitoring1.name || 'Sem nome'}
-                                            </Typography>
-                                            <Typography variant="caption" color="text.secondary">
-                                                {machine.pointmonitoring1.sensorType}
-                                            </Typography>
-                                        </Box>
+                                    {sensor.createdAt ? (
+                                        new Date(sensor.createdAt).toLocaleDateString('pt-BR', {
+                                            day: '2-digit',
+                                            month: '2-digit',
+                                            year: 'numeric',
+                                            hour: '2-digit',
+                                            minute: '2-digit'
+                                        })
                                     ) : (
                                         <Typography variant="body2" color="text.secondary">-</Typography>
                                     )}
-                                </TableCell>
-                                <TableCell>
-                                    {machine.pointmonitoring2 ? (
-                                        <Box>
-                                            <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                                {machine.pointmonitoring2.name || 'Sem nome'}
-                                            </Typography>
-                                            <Typography variant="caption" color="text.secondary">
-                                                {machine.pointmonitoring2.sensorType}
-                                            </Typography>
-                                        </Box>
-                                    ) : (
-                                        <Typography variant="body2" color="text.secondary">-</Typography>
-                                    )}
-                                </TableCell>
-                                <TableCell align="center">
+                                </TableCell>                                <TableCell align="center">
                                     <Tooltip title="Visualizar">
                                         <IconButton size="small" color="primary">
                                             <Visibility />
@@ -217,7 +226,11 @@ export default function AboutPage() {
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Excluir">
-                                        <IconButton size="small" color="error">
+                                        <IconButton 
+                                            size="small" 
+                                            color="error"
+                                            onClick={() => handleDeleteClick(sensor)}
+                                        >
                                             <Delete />
                                         </IconButton>
                                     </Tooltip>
@@ -242,18 +255,54 @@ export default function AboutPage() {
                         }
                     />
                 )}
-            </TableContainer>
-
-            {pagination && (
+            </TableContainer>            {pagination && (
                 <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Typography variant="body2" color="text.secondary">
-                        Total: {pagination.totalItems} máquinas
+                        Total: {pagination.totalItems} sensores
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                         Página {pagination.currentPage} de {pagination.totalPages}
                     </Typography>
                 </Box>
             )}
+
+            {/* Modal de confirmação de delete */}
+            <Dialog
+                open={deleteDialogOpen}
+                onClose={handleDeleteCancel}
+                aria-labelledby="delete-dialog-title"
+            >
+                <DialogTitle id="delete-dialog-title">
+                    Confirmar Exclusão
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Tem certeza que deseja excluir o sensor "{sensorToDelete?.name || 'sem nome'}" (Tipo: {sensorToDelete?.sensorType})?
+                        Esta ação não pode ser desfeita.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDeleteCancel} disabled={deleting}>
+                        Cancelar
+                    </Button>
+                    <Button 
+                        onClick={handleDeleteConfirm} 
+                        color="error" 
+                        disabled={deleting}
+                        variant="contained"
+                    >
+                        {deleting ? 'Excluindo...' : 'Excluir'}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* Snackbar para feedback */}
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={4000}
+                onClose={handleSnackbarClose}
+                message={snackbarMessage}
+            />
         </Box>
     );
 }

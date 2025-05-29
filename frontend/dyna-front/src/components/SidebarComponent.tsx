@@ -5,10 +5,10 @@ import { useAuth } from '../contexts/AuthContext';
 
 export default function SidebarComponent() {
     const { user, logout } = useAuth();
-    
-    const menuItems = [
+      const menuItems = [
         { text: 'Home', path: '/' },
-        { text: 'Sobre', path: '/about' },
+        { text: 'Machine', path: '/about' },
+        { text: 'Sensors', path: '/sensors' },
     ];
 
     const handleLogout = () => {

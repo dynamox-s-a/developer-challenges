@@ -31,6 +31,12 @@ export class MachineController {
   }
 
   //@UseGuards(AuthGuard)
+  @Delete('sensor/:id')
+  async deleteSensor(@Param('id', ParseIntPipe) id: number) {
+    return await this.machineService.deleteSensor(id);
+  }
+
+  //@UseGuards(AuthGuard)
   @Patch('/link/:id')
   async linkMachineToSensor(
     @Param('id') id: string,

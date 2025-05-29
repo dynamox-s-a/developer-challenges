@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Container } from '@mui/material';
 import HomePage from './pages/Home';
-import AboutPage from './pages/About';
+import AboutPage from './pages/Machines';
+import SensorsPage from './pages/Sensors';
 import SidebarComponent from './components/SidebarComponent';
 import NewSignIn from './components/NewSignIn';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
@@ -45,6 +46,14 @@ function AppContent() {
         element={
           <ProtectedRoute>
             <AboutPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/sensors" 
+        element={
+          <ProtectedRoute>
+            <SensorsPage />
           </ProtectedRoute>
         } 
       />

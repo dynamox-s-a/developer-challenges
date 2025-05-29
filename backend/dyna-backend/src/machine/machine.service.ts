@@ -174,6 +174,28 @@ export class MachineService {
     return { message: "Registro deletado com sucesso", deletedMachine };
   }
 
+  async deleteSensor(id: number) {
+    if (!id) {
+      throw new NotFoundException('ID é obrigatório');
+    }
+
+    const sensor = await this.prismaService.sensorMonitoring.findUnique({
+      where: { id }
+    });
+
+    if (!sensor) {
+      throw new NotFoundException('Sensor não encontrado');
+    }
+
+    const deletedSensor = await this.prismaService.sensorMonitoring.delete({
+      where: {
+        id: id
+      }
+    });
+
+    return { message: "Sensor deletado com sucesso", deletedSensor };
+  }
+
   async createSensor(data: CreatePointOfMonitoringDTO) {
 
 
