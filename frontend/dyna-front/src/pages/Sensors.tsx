@@ -22,7 +22,8 @@ import {
     DialogActions,
     Button,
     Snackbar,
-    TextField
+    TextField,
+    Checkbox
 } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 import axios from 'axios';
@@ -33,6 +34,8 @@ interface Sensor {
     sensorType: string;
     createdAt?: string;
     updatedAt?: string;
+    isLinked?: boolean;
+    linkedMachines?: { id: number; name: string }[];
 }
 
 interface PaginationData {
@@ -58,17 +61,18 @@ export default function SensorsPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [rowsPerPage, setRowsPerPage] = useState(5); const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [sensorToDelete, setSensorToDelete] = useState<Sensor | null>(null);
     const [deleting, setDeleting] = useState(false);
-    const [snackbarOpen, setSnackbarOpen] = useState(false);    const [snackbarMessage, setSnackbarMessage] = useState('');
-    
+    const [snackbarOpen, setSnackbarOpen] = useState(false); const [snackbarMessage, setSnackbarMessage] = useState('');
+
     const [editDialogOpen, setEditDialogOpen] = useState(false);
     const [sensorToEdit, setSensorToEdit] = useState<Sensor | null>(null);
     const [editingName, setEditingName] = useState('');
     const [updating, setUpdating] = useState(false);
 
-    const fetchSensors = async (currentPage: number, limit: number) => {        try {
+    const fetchSensors = async (currentPage: number, limit: number) => {
+        try {
             setLoading(true);
             const apiPage = currentPage + 1;
             const response = await axios.get<ApiResponse>(
@@ -79,7 +83,7 @@ export default function SensorsPage() {
             setPagination(response.data.data.pagination);
             setError(null);
         } catch (err) {
-            setError('Erro ao carregar os sensores');
+            setError('Error loading sensors');
             console.error('Erro:', err);
         } finally {
             setLoading(false);
@@ -92,7 +96,7 @@ export default function SensorsPage() {
 
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
-    };    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    }; const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newRowsPerPage = parseInt(event.target.value, 10);
         setRowsPerPage(newRowsPerPage);
         setPage(0);
@@ -109,15 +113,15 @@ export default function SensorsPage() {
         try {
             setDeleting(true);
             await axios.delete(`http://localhost:3000/machine/sensor/${sensorToDelete.id}`);
-            
-            setSnackbarMessage('Sensor deletado com sucesso!');
+
+            setSnackbarMessage('Sensor deleted successfully!');
             setSnackbarOpen(true);
-            setDeleteDialogOpen(false);            setSensorToDelete(null);
-            
+            setDeleteDialogOpen(false); setSensorToDelete(null);
+
             fetchSensors(page, rowsPerPage);
         } catch (err) {
-            console.error('Erro ao deletar sensor:', err);
-            setSnackbarMessage('Erro ao deletar sensor');
+            console.error('Error deleting sensor:', err);
+            setSnackbarMessage('EError deleting sensor');
             setSnackbarOpen(true);
         } finally {
             setDeleting(false);
@@ -149,20 +153,20 @@ export default function SensorsPage() {
         if (!sensorToEdit) return;
 
         try {
-            setUpdating(true);            await axios.patch(`http://localhost:3000/machine/sensor/${sensorToEdit.id}`, {
+            setUpdating(true); await axios.patch(`http://localhost:3000/machine/sensor/${sensorToEdit.id}`, {
                 name: editingName,
                 sensorType: sensorToEdit.sensorType
             });
-            
-            setSnackbarMessage('Sensor atualizado com sucesso!');
+
+            setSnackbarMessage('Sensor updated successfully!');
             setSnackbarOpen(true);
             setEditDialogOpen(false);
-            setSensorToEdit(null);            setEditingName('');
-            
+            setSensorToEdit(null); setEditingName('');
+
             fetchSensors(page, rowsPerPage);
         } catch (err) {
-            console.error('Erro ao atualizar sensor:', err);
-            setSnackbarMessage('Erro ao atualizar sensor');
+            console.error('Error updating sensor:', err);
+            setSnackbarMessage('Error updating sensor');
             setSnackbarOpen(true);
         } finally {
             setUpdating(false);
@@ -201,19 +205,18 @@ export default function SensorsPage() {
     return (
         <Box sx={{ mt: 2.5 }}>
             <Typography variant="h4" sx={{ mb: 3 }}>
-                Lista de Sensores
+                Sensor's List
             </Typography>
 
             <TableContainer component={Paper} sx={{ boxShadow: 3 }}>
                 <Table sx={{ minWidth: 650 }} aria-label="tabela de sensores">
-                    <TableHead>
-                        <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-                            <TableCell><strong>ID</strong></TableCell>
-                            <TableCell><strong>Nome</strong></TableCell>
-                            <TableCell><strong>Tipo de Sensor</strong></TableCell>
-                            <TableCell><strong>Data de Criação</strong></TableCell>
-                            <TableCell align="center"><strong>Ações</strong></TableCell>
-                        </TableRow>
+                    <TableHead>                        <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
+                        <TableCell><strong>ID</strong></TableCell>
+                        <TableCell><strong>Name</strong></TableCell>
+                        <TableCell><strong>Type of Sensor</strong></TableCell>
+                        <TableCell align="center"><strong>Link</strong></TableCell>
+                        <TableCell align="center"><strong>Actions</strong></TableCell>
+                    </TableRow>
                     </TableHead>
                     <TableBody>
                         {sensors.map((sensor) => (
@@ -227,37 +230,33 @@ export default function SensorsPage() {
                                 <TableCell>
                                     {sensor.name || (
                                         <Typography variant="body2" color="text.secondary" fontStyle="italic">
-                                            Sem nome
+                                            Unnamed
                                         </Typography>
                                     )}
-                                </TableCell>
-                                <TableCell>
+                                </TableCell>                                <TableCell>
                                     <Chip
                                         label={sensor.sensorType}
                                         color={getSensorTypeColor(sensor.sensorType)}
                                         size="small"
                                     />
                                 </TableCell>
-                                <TableCell>
-                                    {sensor.createdAt ? (
-                                        new Date(sensor.createdAt).toLocaleDateString('pt-BR', {
-                                            day: '2-digit',
-                                            month: '2-digit',
-                                            year: 'numeric',
-                                            hour: '2-digit',
-                                            minute: '2-digit'
-                                        })
-                                    ) : (
-                                        <Typography variant="body2" color="text.secondary">-</Typography>
-                                    )}                                </TableCell>                                <TableCell align="center">
+                                <TableCell align="center">
+                                    <Tooltip title={sensor.isLinked ? `Linked to machines: ${sensor.linkedMachines?.map(m => m.name).join(', ')}` : 'Not linked'}>
+                                        <Checkbox
+                                            checked={sensor.isLinked || false}
+                                            disabled
+                                            color="primary"
+                                        />
+                                    </Tooltip>
+                                </TableCell><TableCell align="center">
                                     <Tooltip title="Editar">
                                         <IconButton size="small" color="secondary" onClick={() => handleEditClick(sensor)}>
                                             <Edit />
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Excluir">
-                                        <IconButton 
-                                            size="small" 
+                                        <IconButton
+                                            size="small"
                                             color="error"
                                             onClick={() => handleDeleteClick(sensor)}
                                         >
@@ -279,7 +278,7 @@ export default function SensorsPage() {
                         page={page}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
-                        labelRowsPerPage="Linhas por página:"
+                        labelRowsPerPage="Rows per page:"
                         labelDisplayedRows={({ from, to, count }) =>
                             `${from}-${to} de ${count !== -1 ? count : `mais de ${to}`}`
                         }
@@ -288,10 +287,10 @@ export default function SensorsPage() {
             </TableContainer>            {pagination && (
                 <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Typography variant="body2" color="text.secondary">
-                        Total: {pagination.totalItems} sensores
+                        Total: {pagination.totalItems} sensors
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        Página {pagination.currentPage} de {pagination.totalPages}
+                        Page {pagination.currentPage} of {pagination.totalPages}
                     </Typography>
                 </Box>
             )}
@@ -303,30 +302,30 @@ export default function SensorsPage() {
                 aria-labelledby="delete-dialog-title"
             >
                 <DialogTitle id="delete-dialog-title">
-                    Confirmar Exclusão
+                    Confirm Deletion
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Tem certeza que deseja excluir o sensor "{sensorToDelete?.name || 'sem nome'}" (Tipo: {sensorToDelete?.sensorType})?
-                        Esta ação não pode ser desfeita.
+                        Are you sure you want to delete the sensor? "{sensorToDelete?.name || 'Unnamed'}" (Type: {sensorToDelete?.sensorType})?
+                        This action cannot be undone.
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleDeleteCancel} disabled={deleting}>
-                        Cancelar
+                        Cancel
                     </Button>
-                    <Button 
-                        onClick={handleDeleteConfirm} 
-                        color="error" 
+                    <Button
+                        onClick={handleDeleteConfirm}
+                        color="error"
                         disabled={deleting}
                         variant="contained"
                     >
-                        {deleting ? 'Excluindo...' : 'Excluir'}
+                        {deleting ? 'Removing...' : 'Remove'}
                     </Button>
                 </DialogActions>
             </Dialog>
 
-            {/* Modal de edição de sensor */}
+            
             <Dialog
                 open={editDialogOpen}
                 onClose={handleEditCancel}
@@ -335,7 +334,7 @@ export default function SensorsPage() {
                 fullWidth
             >
                 <DialogTitle id="edit-dialog-title">
-                    Editar Sensor
+                    Edit Sensor
                 </DialogTitle>
                 <DialogContent>
                     <Box sx={{ pt: 2 }}>
@@ -348,7 +347,7 @@ export default function SensorsPage() {
                             value={sensorToEdit?.sensorType || ''}
                             disabled
                             sx={{ mb: 2 }}
-                            helperText="O tipo do sensor não pode ser alterado"
+                            helperText="Sensor type cannot be changed"
                         />
                         <TextField
                             autoFocus
@@ -360,7 +359,7 @@ export default function SensorsPage() {
                             value={editingName}
                             onChange={(e) => setEditingName(e.target.value)}
                             disabled={updating}
-                            helperText="Insira o nome do sensor"
+                            helperText="Enter sensor name (optional)"
                         />
                     </Box>
                 </DialogContent>
@@ -368,18 +367,17 @@ export default function SensorsPage() {
                     <Button onClick={handleEditCancel} disabled={updating}>
                         Cancelar
                     </Button>
-                    <Button 
-                        onClick={handleEditConfirm} 
-                        color="primary" 
+                    <Button
+                        onClick={handleEditConfirm}
+                        color="primary"
                         disabled={updating}
                         variant="contained"
                     >
-                        {updating ? 'Salvando...' : 'Salvar'}
+                        {updating ? 'Salving...' : 'Save'}
                     </Button>
                 </DialogActions>
             </Dialog>
 
-            {/* Snackbar para feedback */}
             <Snackbar
                 open={snackbarOpen}
                 autoHideDuration={4000}

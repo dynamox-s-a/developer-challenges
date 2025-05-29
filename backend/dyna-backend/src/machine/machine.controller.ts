@@ -12,37 +12,37 @@ import { PaginationDto } from './dto/pagination.dto';
 export class MachineController {
   constructor(private readonly machineService: MachineService) { }
 
-  //@UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Post('create')
   async create(@Body() body: CreateMachinesDto) {
     return await this.machineService.create(body);
   }
 
-  //@UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Post('create/sensor')
   async createSensor(@Body() body: CreatePointOfMonitoringDTO){
     return await this.machineService.createSensor(body);
   }
 
-  //@UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Delete(':id')
   async deleteMachine(@Param('id', ParseIntPipe) id: number) {
     return await this.machineService.delete(id);
   }
 
-  //@UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Delete('sensor/:id')
   async deleteSensor(@Param('id', ParseIntPipe) id: number) {
     return await this.machineService.deleteSensor(id);
   }
 
-  //@UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Patch('sensor/:id')
   async updateSensor(@Param('id', ParseIntPipe) id: number, @Body() body: CreatePointOfMonitoringDTO) {
     return await this.machineService.updateSensor(id, body);
   }
 
-  //@UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Patch('/link/:id')
   async linkMachineToSensor(
     @Param('id') id: string,
@@ -51,7 +51,7 @@ export class MachineController {
   }
 
 
-  //@UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Patch('name/:id')
   async updateName(
     @Param('id') id: string,
@@ -66,17 +66,19 @@ export class MachineController {
     return await this.machineService.updateType(Number(id), updateMachinesDTO);
   }
 
-  //@UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Get()
   async findAllMachines() {
     return await this.machineService.findAllMachines();
   }
 
-  //@UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Get('sensors')
   async findAllSensors() {
     return await this.machineService.findAllSensors();
-  }  //@UseGuards(AuthGuard)
+  }  
+
+  @UseGuards(AuthGuard)
   @Get('sensors/paginated')
   async findSensorsPaginated(@Query() paginationDto: PaginationDto) {
     const page = Number(paginationDto.page) || 1;
@@ -84,7 +86,7 @@ export class MachineController {
     return await this.machineService.findSensorsPaginated(page, limit);
   }
   
-  //@UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Get('paginated')
   async findMachinesPaginated(@Query() paginationDto: PaginationDto) {
     const page = Number(paginationDto.page) || 1;
@@ -92,13 +94,13 @@ export class MachineController {
     return await this.machineService.findMachinesPaginated(page, limit);
   }
 
-  //@UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Get('sensor/:id')
   async findSensorById(@Param('id', ParseIntPipe) id: number) {
     return await this.machineService.findSensorById(id);
   }
 
-  //@UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Get(':id')
   async findMachineById(@Param('id', ParseIntPipe) id: number) {
     return await this.machineService.findMachineById(id);

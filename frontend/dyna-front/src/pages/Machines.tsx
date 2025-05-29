@@ -107,7 +107,7 @@ export default function Machines() {
             setPagination(response.data.data.pagination);
             setError(null);
         } catch (err) {
-            setError('Erro ao carregar as máquinas');
+            setError('Erro on loading machines. Please try again later.');
             console.error('Erro:', err);
         } finally {
             setLoading(false);
@@ -150,14 +150,15 @@ export default function Machines() {
             setDeleting(true);
             await axios.delete(`http://localhost:3000/machine/${machineToDelete.id}`);
             
-            setSnackbarMessage('Máquina deletada com sucesso!');            setSnackbarOpen(true);
+            setSnackbarMessage('Machine deleted successfully!');            
+            setSnackbarOpen(true);
             setDeleteDialogOpen(false);
             setMachineToDelete(null);
             
             fetchMachines(page, rowsPerPage);
         } catch (err) {
-            console.error('Erro ao deletar máquina:', err);
-            setSnackbarMessage('Erro ao deletar máquina');
+            console.error('Error deleting machine:', err);
+            setSnackbarMessage('Error deleting machine');
             setSnackbarOpen(true);
         } finally {
             setDeleting(false);
@@ -209,7 +210,7 @@ export default function Machines() {
                 });
             }
             
-            setSnackbarMessage('Máquina atualizada com sucesso!');
+            setSnackbarMessage('Machine updated successfully!');
             setSnackbarOpen(true);
             setEditDialogOpen(false);
             setMachineToEdit(null);
@@ -218,8 +219,8 @@ export default function Machines() {
             
             fetchMachines(page, rowsPerPage);
         } catch (err) {
-            console.error('Erro ao atualizar máquina:', err);
-            setSnackbarMessage('Erro ao atualizar máquina');
+            console.error('Error updating machine:', err);
+            setSnackbarMessage('Error updating machine');
             setSnackbarOpen(true);
         } finally {
             setUpdating(false);
@@ -281,7 +282,7 @@ export default function Machines() {
         <Box sx={{ mt: 2.5 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
                 <Typography variant="h4">
-                    Lista de Máquinas
+                    Machine's List
                 </Typography>
                 <FormControlLabel
                     control={
@@ -291,7 +292,7 @@ export default function Machines() {
                             color="primary"
                         />
                     }
-                    label="Mostrar apenas máquinas ativas"
+                    label="Show only active machines"
                 />
             </Box>
 
@@ -300,12 +301,12 @@ export default function Machines() {
                     <TableHead>
                         <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
                             <TableCell><strong>ID</strong></TableCell>
-                            <TableCell><strong>Nome</strong></TableCell>
-                            <TableCell><strong>Tipo</strong></TableCell>
+                            <TableCell><strong>Name</strong></TableCell>
+                            <TableCell><strong>Type</strong></TableCell>
                             <TableCell><strong>Status</strong></TableCell>
                             <TableCell><strong>Sensor 1</strong></TableCell>
                             <TableCell><strong>Sensor 2</strong></TableCell>
-                            <TableCell align="center"><strong>Ações</strong></TableCell>
+                            <TableCell align="center"><strong>Actions</strong></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -390,7 +391,7 @@ export default function Machines() {
                         page={page}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
-                        labelRowsPerPage="Linhas por página:"
+                        labelRowsPerPage="Rows per page:"
                         labelDisplayedRows={({ from, to, count }) =>
                             `${from}-${to} de ${count !== -1 ? count : `mais de ${to}`}`
                         }
@@ -401,15 +402,14 @@ export default function Machines() {
             {pagination && (
                 <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Typography variant="body2" color="text.secondary">
-                        Total: {pagination.totalItems} máquinas
+                        Total: {pagination.totalItems} machines
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        Página {pagination.currentPage} de {pagination.totalPages}
+                        Pages {pagination.currentPage} of {pagination.totalPages}
                     </Typography>
                 </Box>
             )}
-
-            {/* Modal de confirmação de delete */}
+            
             <Dialog
                 open={deleteDialogOpen}
                 onClose={handleDeleteCancel}
@@ -420,13 +420,13 @@ export default function Machines() {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Tem certeza que deseja excluir a máquina "{machineToDelete?.name}"?
-                        Esta ação não pode ser desfeita.
+                        Are you sure you want to delete the machine "{machineToDelete?.name}"?
+                        This action cannot be undone.
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleDeleteCancel} disabled={deleting}>
-                        Cancelar
+                        Cancel
                     </Button>
                     <Button 
                         onClick={handleDeleteConfirm} 
@@ -434,12 +434,11 @@ export default function Machines() {
                         disabled={deleting}
                         variant="contained"
                     >
-                        {deleting ? 'Excluindo...' : 'Excluir'}
+                        {deleting ? 'Removing...' : 'Delete'}
                     </Button>
                 </DialogActions>
             </Dialog>
-
-            {/* Modal de edição de máquina */}
+            
             <Dialog
                 open={editDialogOpen}
                 onClose={handleEditCancel}
@@ -448,11 +447,11 @@ export default function Machines() {
                 fullWidth
             >
                 <DialogTitle id="edit-dialog-title">
-                    Editar Máquina
+                    Edit Machine
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText sx={{ mb: 2 }}>
-                        Edite as informações da máquina. O ID e tipo não podem ser alterados.
+                        Edit machine information. ID and type cannot be changed.
                     </DialogContentText>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
@@ -468,7 +467,7 @@ export default function Machines() {
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 disabled
-                                label="Tipo da Máquina"
+                                label="Type of Machine"
                                 value={machineToEdit?.typeOfMachine || ''}
                                 fullWidth
                                 variant="outlined"
@@ -477,7 +476,7 @@ export default function Machines() {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                label="Nome"
+                                label="Name"
                                 value={editingName}
                                 onChange={(e) => setEditingName(e.target.value)}
                                 fullWidth
@@ -495,7 +494,7 @@ export default function Machines() {
                                     label="Sensor 1"
                                 >
                                     <MenuItem value="">
-                                        <em>Nenhum sensor</em>
+                                        <em>No sensor</em>
                                     </MenuItem>
                                     {getCompatibleSensors(machineToEdit?.typeOfMachine || '').map((sensor) => (
                                         <MenuItem key={sensor.id} value={sensor.id}>
@@ -505,8 +504,8 @@ export default function Machines() {
                                 </Select>
                                 <FormHelperText>
                                     {machineToEdit?.typeOfMachine === 'PUMP' 
-                                        ? 'Apenas sensores HFp são compatíveis com bombas'
-                                        : 'Apenas sensores TcAs e TcAg são compatíveis com ventiladores'
+                                        ? 'Only HFp sensors are compatible with pumps'
+                                        : 'Only TcAs and TcAg sensors are compatible with FANs'
                                     }
                                 </FormHelperText>
                             </FormControl>
@@ -520,7 +519,7 @@ export default function Machines() {
                                     label="Sensor 2"
                                 >
                                     <MenuItem value="">
-                                        <em>Nenhum sensor</em>
+                                        <em>No sensor</em>
                                     </MenuItem>
                                     {getCompatibleSensors(machineToEdit?.typeOfMachine || '').map((sensor) => (
                                         <MenuItem key={sensor.id} value={sensor.id}>
@@ -530,8 +529,8 @@ export default function Machines() {
                                 </Select>
                                 <FormHelperText>
                                     {machineToEdit?.typeOfMachine === 'PUMP' 
-                                        ? 'Apenas sensores HFp são compatíveis com bombas'
-                                        : 'Apenas sensores TcAs e TcAg são compatíveis com ventiladores'
+                                        ? 'Only HFp sensors are compatible with pumps'
+                                        : 'Only TcAs and TcAg sensors are compatible with FANs'
                                     }
                                 </FormHelperText>
                             </FormControl>
@@ -540,7 +539,7 @@ export default function Machines() {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleEditCancel} disabled={updating}>
-                        Cancelar
+                        Cancel
                     </Button>
                     <Button 
                         onClick={handleEditConfirm} 
@@ -548,12 +547,11 @@ export default function Machines() {
                         disabled={updating || !editingName.trim()}
                         variant="contained"
                     >
-                        {updating ? 'Salvando...' : 'Salvar'}
+                        {updating ? 'Saving...' : 'SAVE'}
                     </Button>
                 </DialogActions>
             </Dialog>
-
-            {/* Snackbar para feedback */}
+            
             <Snackbar
                 open={snackbarOpen}
                 autoHideDuration={4000}

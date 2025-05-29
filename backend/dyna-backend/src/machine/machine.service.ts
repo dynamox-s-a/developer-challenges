@@ -193,7 +193,7 @@ export class MachineService {
       }
     });
 
-    
+
     return { message: "Sensor deletado com sucesso", deletedSensor };
   }
 
@@ -423,9 +423,7 @@ export class MachineService {
       throw new BadRequestException('Limite deve ser entre 1 e 100');
     }
 
-    const skip = (pageNum - 1) * limitNum;
-
-    const [sensors, total] = await Promise.all([
+    const skip = (pageNum - 1) * limitNum;    const [sensors, total] = await Promise.all([
       this.prismaService.sensorMonitoring.findMany({
         skip,
         take: limitNum
@@ -433,12 +431,34 @@ export class MachineService {
       this.prismaService.sensorMonitoring.count()
     ]);
 
-    const totalPages = Math.ceil(total / limitNum);
+    // Para cada sensor, verificar se está vinculado a alguma máquina
+    const sensorsWithLinkStatus = await Promise.all(
+      sensors.map(async (sensor) => {
+        const linkedMachines = await this.prismaService.machine.findMany({
+          where: {
+            OR: [
+              { pointmonitoring1_id: sensor.id },
+              { pointmonitoring2_id: sensor.id }
+            ]
+          },
+          select: {
+            id: true,
+            name: true
+          }
+        });
 
-    return {
+        return {
+          ...sensor,
+          isLinked: linkedMachines.length > 0,
+          linkedMachines: linkedMachines
+        };
+      })
+    );
+
+    const totalPages = Math.ceil(total / limitNum);    return {
       message: "Sensores paginados encontrados",
       data: {
-        sensors,
+        sensors: sensorsWithLinkStatus,
         pagination: {
           currentPage: pageNum,
           totalPages,
