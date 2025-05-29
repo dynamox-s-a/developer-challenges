@@ -1,9 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, ParseIntPipe, Query } from '@nestjs/common';
 import { MachineService } from './machine.service';
-// import { CreateMachineDto } from './dto/create-machine.dto';
-// import { UpdateMachineDto } from './dto/update-machine.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
-//import { get } from 'http';
 import { CreateLinksDTO, CreateMachinesDto, CreatePointOfMonitoringDTO } from './dto/machine.dto';
 import { UpdateMachinesDTO } from './dto/updates-partial.dto';
 import { PaginationDto } from './dto/pagination.dto';
