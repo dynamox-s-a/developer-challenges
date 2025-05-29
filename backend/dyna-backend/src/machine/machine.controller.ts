@@ -1,45 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, ParseIntPipe, Query } from '@nestjs/common';
 import { MachineService } from './machine.service';
 // import { CreateMachineDto } from './dto/create-machine.dto';
 // import { UpdateMachineDto } from './dto/update-machine.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 //import { get } from 'http';
-import { CreateLinksDTO, CreateMachinesDto, CreatePointOfMonitoringDTO } from './dto/machine';
-import { UpdateMachinesDTO } from './dto/updates-partial';
+import { CreateLinksDTO, CreateMachinesDto, CreatePointOfMonitoringDTO } from './dto/machine.dto';
+import { UpdateMachinesDTO } from './dto/updates-partial.dto';
+import { PaginationDto } from './dto/pagination.dto';
 
 @Controller('machine')
 export class MachineController {
   constructor(private readonly machineService: MachineService) { }
-
-  // @Post()
-  // create(@Body() createMachineDto: CreateMachineDto) {
-  //   return this.machineService.create(createMachineDto);
-  // }
-
-  // @Get()
-  // findAll() {
-  //   return this.machineService.findAll();
-  // }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.machineService.findOne(+id);
-  // }
-
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.machineService.remove(+id);
-  // }
-  //@UseGuards(AuthGuard)
-  // @Get()
-  // async getAll(@Request() request){
-  //   return request;
-  // }
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateMachineDto: UpdateMachineDto) {
-  //   return this.machineService.update(+id, updateMachineDto);
-  // }
 
   //@UseGuards(AuthGuard)
   @Post('create')
@@ -81,6 +52,44 @@ export class MachineController {
     @Param('id') id: string,
     @Body() updateMachinesDTO: UpdateMachinesDTO) {
     return await this.machineService.updateType(Number(id), updateMachinesDTO);
+  }
+
+  //@UseGuards(AuthGuard)
+  @Get()
+  async findAllMachines() {
+    return await this.machineService.findAllMachines();
+  }
+
+  //@UseGuards(AuthGuard)
+  @Get('sensors')
+  async findAllSensors() {
+    return await this.machineService.findAllSensors();
+  }  //@UseGuards(AuthGuard)
+  @Get('sensors/paginated')
+  async findSensorsPaginated(@Query() paginationDto: PaginationDto) {
+    const page = Number(paginationDto.page) || 1;
+    const limit = Number(paginationDto.limit) || 5;
+    return await this.machineService.findSensorsPaginated(page, limit);
+  }
+  
+  //@UseGuards(AuthGuard)
+  @Get('paginated')
+  async findMachinesPaginated(@Query() paginationDto: PaginationDto) {
+    const page = Number(paginationDto.page) || 1;
+    const limit = Number(paginationDto.limit) || 5;
+    return await this.machineService.findMachinesPaginated(page, limit);
+  }
+
+  //@UseGuards(AuthGuard)
+  @Get('sensor/:id')
+  async findSensorById(@Param('id', ParseIntPipe) id: number) {
+    return await this.machineService.findSensorById(id);
+  }
+
+  //@UseGuards(AuthGuard)
+  @Get(':id')
+  async findMachineById(@Param('id', ParseIntPipe) id: number) {
+    return await this.machineService.findMachineById(id);
   }
   
 }

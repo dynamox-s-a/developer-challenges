@@ -1,12 +1,10 @@
 import { AppBar, Box, CssBaseline, Drawer, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography } from "@mui/material";
 import { Link as RouterLink } from 'react-router-dom';
 
-export default function SidebarComponent() {
-
-
-    const menuItems = [
+export default function SidebarComponent() {    const menuItems = [
         { text: 'Home', path: '/' },
         { text: 'Sobre', path: '/about' },
+        { text: 'Login', path: '/signin' },
     ];
 
 

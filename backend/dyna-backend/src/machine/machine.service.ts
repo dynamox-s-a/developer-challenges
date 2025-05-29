@@ -1,8 +1,8 @@
 import { BadRequestException, HttpException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateLinksDTO, CreateMachinesDto, CreatePointOfMonitoringDTO } from './dto/machine';
+import { CreateLinksDTO, CreateMachinesDto, CreatePointOfMonitoringDTO } from './dto/machine.dto';
 import { StatusMachine, Type, SensorType } from '@prisma/client';
-import { UpdateMachinesDTO } from './dto/updates-partial';
+import { UpdateMachinesDTO } from './dto/updates-partial.dto';
 
 @Injectable()
 export class MachineService {
@@ -66,6 +66,8 @@ export class MachineService {
       where: { id },
       data: { name }
     });
+    
+    
 
     return { message: "Name changes", newMachineValues };
 
@@ -247,6 +249,141 @@ export class MachineService {
     }
   }
 
+  async findAllMachines() {
+    const machines = await this.prismaService.machine.findMany({
+      include: {
+        pointmonitoring1: true,
+        pointmonitoring2: true
+      }
+    });
 
+    return { message: "Máquinas encontradas", machines };
+  }
+
+  async findMachineById(id: number) {
+    if (!id) {
+      throw new NotFoundException('ID é obrigatório');
+    }
+
+    const machine = await this.prismaService.machine.findUnique({
+      where: { id },
+      include: {
+        pointmonitoring1: true,
+        pointmonitoring2: true
+      }
+    });
+
+    if (!machine) {
+      throw new NotFoundException('Máquina não encontrada');
+    }
+
+    return { message: "Máquina encontrada", machine };
+  }
+
+  async findAllSensors() {
+    const sensors = await this.prismaService.sensorMonitoring.findMany();
+
+    return { message: "Sensores encontrados", sensors };
+  }
+
+  async findSensorById(id: number) {
+    if (!id) {
+      throw new NotFoundException('ID é obrigatório');
+    }
+
+    const sensor = await this.prismaService.sensorMonitoring.findUnique({
+      where: { id }
+    });
+
+    if (!sensor) {
+      throw new NotFoundException('Sensor não encontrado');
+    }
+
+    return { message: "Sensor encontrado", sensor };
+  }
+  async findMachinesPaginated(page: number = 1, limit: number = 5) {
+    // Garantir que os valores sejam números
+    const pageNum = Number(page) || 1;
+    const limitNum = Number(limit) || 5;
+
+    if (pageNum < 1) {
+      throw new BadRequestException('Página deve ser maior que 0');
+    }
+
+    if (limitNum < 1 || limitNum > 100) {
+      throw new BadRequestException('Limite deve ser entre 1 e 100');
+    }
+
+    const skip = (pageNum - 1) * limitNum;
+
+    const [machines, total] = await Promise.all([
+      this.prismaService.machine.findMany({
+        skip,
+        take: limitNum,
+        include: {
+          pointmonitoring1: true,
+          pointmonitoring2: true
+        }
+      }),
+      this.prismaService.machine.count()
+    ]);
+
+    const totalPages = Math.ceil(total / limitNum);
+
+    return {
+      message: "Máquinas paginadas encontradas",
+      data: {
+        machines,
+        pagination: {
+          currentPage: pageNum,
+          totalPages,
+          totalItems: total,
+          itemsPerPage: limitNum,
+          hasNextPage: pageNum < totalPages,
+          hasPreviousPage: pageNum > 1
+        }
+      }
+    };
+  }
+  async findSensorsPaginated(page: number = 1, limit: number = 5) {
+    // Garantir que os valores sejam números
+    const pageNum = Number(page) || 1;
+    const limitNum = Number(limit) || 5;
+
+    if (pageNum < 1) {
+      throw new BadRequestException('Página deve ser maior que 0');
+    }
+
+    if (limitNum < 1 || limitNum > 100) {
+      throw new BadRequestException('Limite deve ser entre 1 e 100');
+    }
+
+    const skip = (pageNum - 1) * limitNum;
+
+    const [sensors, total] = await Promise.all([
+      this.prismaService.sensorMonitoring.findMany({
+        skip,
+        take: limitNum
+      }),
+      this.prismaService.sensorMonitoring.count()
+    ]);
+
+    const totalPages = Math.ceil(total / limitNum);
+
+    return {
+      message: "Sensores paginados encontrados",
+      data: {
+        sensors,
+        pagination: {
+          currentPage: pageNum,
+          totalPages,
+          totalItems: total,
+          itemsPerPage: limitNum,
+          hasNextPage: pageNum < totalPages,
+          hasPreviousPage: pageNum > 1
+        }
+      }
+    };
+  }
 
 }
