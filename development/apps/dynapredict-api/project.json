@@ -5,20 +5,7 @@
   "projectType": "application",
   "tags": [],
   "targets": {
-    "build": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "webpack-cli build",
-        "args": ["node-env=production"]
-      },
-      "configurations": {
-        "development": {
-          "args": ["node-env=development"]
-        }
-      }
-    },
     "serve": {
-      "continuous": true,
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "dependsOn": ["build"],
@@ -35,9 +22,14 @@
         }
       }
     },
-    "test": {
+    "docker-build": {
+      "dependsOn": ["build"],
+      "command": "docker build -f apps/dynapredict-api/Dockerfile . -t dynapredict-api"
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
       "options": {
-        "passWithNoTests": true
+        "commands": ["tsc --noEmit -p apps/dynapredict-api/tsconfig.json"]
       }
     }
   }

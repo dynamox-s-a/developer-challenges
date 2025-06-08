@@ -4,3 +4,4 @@ Step-by-step decision taking documentation and walktrough on the resolution of a
 
 First, Second and third Commits - Setting up raw backend, prisma and frontend;
 
+4th Commit - Added User Model and CRUD Users resources to the backend, configured prisma and eslint. Made first testing in jest

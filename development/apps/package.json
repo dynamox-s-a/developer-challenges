@@ -1,0 +1,13 @@
+{
+	"dependencies": {
+		"@nestjs/mapped-types": "^2.1.0",
+		"bcryptjs": "^3.0.2",
+		"class-transformer": "^0.5.1",
+		"class-transformer-storage": "^2.0.6",
+		"class-validator": "^0.14.2",
+		"eslint": "^9.28.0"
+	},
+	"devDependencies": {
+		"eslint-config-prettier": "^10.1.5"
+	}
+}
