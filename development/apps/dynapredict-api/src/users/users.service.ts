@@ -4,10 +4,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateUserDTO } from './dto/create-user.dto';
-import { User } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { PrismaService } from '../prisma/prisma.service';
-import { SignupResponse } from './user';
+import { GetUserResponse, SignupResponse } from './user';
 
 @Injectable()
 export class UsersService {
@@ -34,6 +33,7 @@ export class UsersService {
       select: {
         email: true,
         id: true,
+        name: true,
       },
     });
   }
@@ -46,13 +46,17 @@ export class UsersService {
     return await this.prisma.user.findMany();
   }
 
-  async findOne(id: number): Promise<User> {
+  async findOne(id: number): Promise<GetUserResponse> {
     try {
       return await this.prisma.user.findUniqueOrThrow({
         where: {
           id,
-        },
-      });
+        }, select: {
+        id: true,
+        name: true,
+        email: true,
+      }
+      },);
     } catch (error) {
       if (error.code === 'P2025') {
         throw new NotFoundException('User not found');

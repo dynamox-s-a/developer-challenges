@@ -22,6 +22,7 @@ module.exports = {
     },
   },
   rules: {
+    "eslint-comments/require-description": "off",
     '@typescript-eslint/no-unused-vars': [
       'error',
       {

@@ -52,6 +52,7 @@ describe('UserService', () => {
 
     it('should create a user', async () => {
       const dto: CreateUserDTO = {
+        name: 'foo',
         email: 'foo@bar.com',
         password: '123foobar',
       };

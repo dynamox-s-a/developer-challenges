@@ -1,5 +1,7 @@
 'use client';
 
+import axios from 'axios';
+
 import type { User } from '@/types/user';
 
 function generateToken(): string {
@@ -8,17 +10,8 @@ function generateToken(): string {
   return Array.from(arr, (v) => v.toString(16).padStart(2, '0')).join('');
 }
 
-const user = {
-  id: 'USR-000',
-  avatar: '/assets/avatar.png',
-  firstName: 'Sofia',
-  lastName: 'Rivers',
-  email: 'sofia@devias.io',
-} satisfies User;
-
 export interface SignUpParams {
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
   password: string;
 }
@@ -36,27 +29,53 @@ export interface ResetPasswordParams {
   email: string;
 }
 
+interface APIResponse {
+  error?: string;
+  message?: string;
+  data?: {
+    id?: number;
+    name?: string;
+    email?: string;
+  };
+}
+
 class AuthClient {
-  async signUp(_: SignUpParams): Promise<{ error?: string }> {
-    // Make API request
+  private apiUrl: string;
 
-    // We do not handle the API, so we'll just generate a token and store it in localStorage.
-    const token = generateToken();
-    localStorage.setItem('custom-auth-token', token);
-
-    return {};
+  constructor() {
+    if (!process.env.NEXT_PUBLIC_API_URL) {
+      throw new Error('API URL is not defined in environment variables.');
+    }
+    this.apiUrl = process.env.NEXT_PUBLIC_API_URL;
   }
 
-  async signInWithOAuth(_: SignInWithOAuthParams): Promise<{ error?: string }> {
-    return { error: 'Social authentication not implemented' };
+  async signUp(params: SignUpParams): Promise<{ success: boolean; error?: string }> {
+    try {
+      const response = await axios.post(`${this.apiUrl}/users`, params, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 201) {
+        const token = JSON.stringify(response.data);
+
+        localStorage.setItem('custom-auth-token', token);
+        return { success: true };
+      }
+      return { success: false, error: 'Unexpected response from server.' };
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const errorData = error.response.data as APIResponse;
+        return { success: false, error: errorData.error };
+      }
+      return { success: false, error: 'Sign up failed.' };
+    }
   }
 
   async signInWithPassword(params: SignInWithPasswordParams): Promise<{ error?: string }> {
     const { email, password } = params;
 
-    // Make API request
-
-    // We do not handle the API, so we'll check if the credentials match with the hardcoded ones.
     if (email !== 'sofia@devias.io' || password !== 'Secret1') {
       return { error: 'Invalid credentials' };
     }
@@ -75,17 +94,38 @@ class AuthClient {
     return { error: 'Update reset not implemented' };
   }
 
-  async getUser(): Promise<{ data?: User | null; error?: string }> {
-    // Make API request
+  /*eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access*/
 
-    // We do not handle the API, so just check if we have a token in localStorage.
+  async getUser(): Promise<{ data?: User | null; error?: string | number }> {
     const token = localStorage.getItem('custom-auth-token');
 
     if (!token) {
       return { data: null };
     }
 
-    return { data: user };
+    try {
+      const response = await axios.get(`${this.apiUrl}/users/${JSON.parse(token || '').id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 200) {
+        //eslint-disable-next-line
+        console.log(response.data);
+
+        return { data: { id: response.data.id, email: response.data.email, avatar: 'null', name: response.data.name } };
+      }
+      return { error: response.status, data: response.data };
+    } catch (error: unknown) {
+      localStorage.removeItem('custom-auth-token');
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const errorData = error.response.data as APIResponse;
+        
+        return { error: errorData.error, data: null };
+      }
+      return { error: 'Sign up failed.', data: null };
+    }
   }
 
   async signOut(): Promise<{ error?: string }> {
@@ -93,6 +133,32 @@ class AuthClient {
 
     return {};
   }
+
+  async DeleteUser(): Promise<{ error?: string | number; message?: string }> {
+    try {
+      const response = await axios.delete(`${this.apiUrl}/users/${(await this.getUser()).data?.id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 200) {
+        //eslint-disable-next-line
+        console.log(response.data);
+        localStorage.removeItem('custom-auth-token');
+        return { message: response.data };
+      }
+      return { error: response.status, message: response.data };
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const errorData = error.response.data as APIResponse;
+        return { error: errorData.error, message: errorData.message };
+      }
+      return { error: 'Sign up failed.' };
+    }
+  }
 }
+
+/*eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access*/
 
 export const authClient = new AuthClient();
