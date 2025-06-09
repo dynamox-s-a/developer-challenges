@@ -1,0 +1,60 @@
+{
+  "machines": [
+    {
+      "id": "1",
+      "name": "Bomba Principal",
+      "type": "Pump"
+    },
+    {
+      "id": "2",
+      "name": "Ventilador Industrial",
+      "type": "Fan"
+    },
+    {
+      "id": "6584",
+      "name": "Bomba 2",
+      "type": "Pump"
+    },
+    {
+      "id": "390b",
+      "name": "sdsd",
+      "type": "Fan"
+    },
+    {
+      "id": "6110",
+      "name": "adasdads",
+      "type": "Pump"
+    },
+    {
+      "id": "e0e9",
+      "name": "asdasd",
+      "type": "Pump"
+    }
+  ],
+  "monitoring-points": [
+    {
+      "id": "3",
+      "name": "Ponto B2",
+      "machineId": "2",
+      "sensorModel": "TcAs"
+    },
+    {
+      "id": "e5d0",
+      "name": "fddfg",
+      "machineId": "390b",
+      "sensorModel": "TcAg"
+    },
+    {
+      "id": "5722",
+      "name": "adad",
+      "machineId": "6110",
+      "sensorModel": "HF+"
+    },
+    {
+      "id": "c75c",
+      "name": "asdad",
+      "machineId": "e0e9",
+      "sensorModel": "HF+"
+    }
+  ]
+}

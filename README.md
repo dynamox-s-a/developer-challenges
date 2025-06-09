@@ -1,50 +1,173 @@
-# Dynamox Developer Challenges
+# Dynamox Admin Panel
 
-## About Dynamox
+Sistema de gerenciamento de máquinas e pontos de monitoramento desenvolvido com Next.js, TypeScript e Material UI 5.
 
-[Dynamox](https://dynamox.net/) is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications. 
+## Funcionalidades
 
-With our proficiency in signal processing for vibration and acoustics, we deliver advanced and precise monitoring systems. We are committed to optimizing operational efficiency and facilitating proactive maintenance through our innovative technology and integrated solutions.
+### ✅ Gerenciamento de Máquinas
+- Criar máquinas com nome e tipo (Pump ou Fan)
+- Editar máquinas existentes
+- Excluir máquinas
+- Listar todas as máquinas
 
-## Positions
+### ✅ Pontos de Monitoramento e Sensores
+- Criar pontos de monitoramento vinculados a máquinas
+- Associar sensores aos pontos (TcAg, TcAs, HF+)
+- **Regra de negócio**: Sensores TcAg e TcAs não permitidos para máquinas Pump
+- Tabela paginada (5 itens por página)
+- Ordenação por qualquer coluna (ascendente/descendente)
+- Excluir pontos de monitoramento
 
-We are looking for developers who are passionate about learning, growing, and contributing to our team. You will play a key role in our development efforts, working on a variety of projects and collaborating with different teams to build and improve our solutions.
+### ✅ Interface
+- Layout responsivo
+- Notificações de sucesso/erro
+- Confirmação antes de excluir
+- Design limpo e profissional
 
-We value flexibility and collaboration, hence we provide opportunities for you to lend your skills to other teams when required. Join us on this exciting journey as we revolutionize our digital platforms. Currently we are particularly interested in individuals who can identify with one of the following role descriptions:
+## Tecnologias
 
-### Junior Software Developer
+- **Next.js 14** - Framework React
+- **TypeScript** - Tipagem estática
+- **Material UI 5** - Biblioteca de componentes
+- **Axios** - Cliente HTTP
+- **json-server** - Mock API
 
-With limited experience, assists in coding, testing, and stabilizing systems under supervision. Communicates with immediate team members and solves straightforward problems with guidance. Should display a willingness to learn and grow professionally. This is an individual contributor role.
+## Como Executar
 
-### Mid-level Software Developer
+1. **Instalar dependências:**
+\`\`\`bash
+npm install
+\`\`\`
+ou
+\`\`\`bash
+yarn install
+\`\`\`
 
-With a certain level of proven experience, contributes to software development, solves moderate problems, and starts handling ambiguous situations with minimal guidance. Communicates with the broader team and engages in code reviews and documentation. This role also includes mentorship of junior engineers and a commitment to continuous learning. This is an individual contributor role.
+2. **Instalar json-server globalmente (se necessário):**
+\`\`\`bash
+npm install -g json-server
+\`\`\`
 
-### Senior-level Software Developer
+3. **Iniciar o json-server (backend mock):**
+\`\`\`bash
+npm run json-server
+\`\`\`
+Ou diretamente:
+\`\`\`bash
+npx json-server --watch db.json --port 3001
+\`\`\`
 
-With vast experience, enhances software development, leading complex system development and ambiguous situation handling. Tackles intricate problems and mentors junior and mid-level engineers. Champions coding standards, project strategy, and technology adoption. Communicates across teams, influencing technical and non-technical stakeholders. This individual contributor role blends technical expertise with leadership, focusing on innovation, mentorship, and strategic contributions to the development process.
+4. **Em outro terminal, iniciar a aplicação:**
+\`\`\`bash
+npm run dev
+\`\`\`
+Ou
+\`\`\`bash
+yarn dev
+\`\`\`
 
-## Challenges Full-Stack
+5. **Acessar:**
+- Aplicação: http://localhost:3000
+- API Mock: http://localhost:3001
+- Dados: http://localhost:3001/machines e http://localhost:3001/monitoring-points
 
-- [ ] [01 - Dynamox Full-Stack Developer Challenge](./full-stack-challenge.md)
-  
-## Challenges Front-End
+## Estrutura do Projeto
 
-- [ ] [01 - Dynamox Front-end Developer Challenge V1](./front-end-challenge-v1.md)
-- [ ] [02 - Dynamox Front-end Developer Challenge V2](./front-end-challenge-v2.md)
+\`\`\`
+├── app/                    # Páginas Next.js
+│   ├── layout.tsx         # Layout principal
+│   ├── page.tsx           # Página inicial
+│   └── globals.css        # Estilos globais
+├── components/            # Componentes React
+│   ├── MachineList.tsx    # Lista de máquinas
+│   ├── MonitoringPointDialog.tsx  # Dialog para criar pontos
+│   ├── MonitoringPointsTable.tsx  # Tabela de pontos
+│   └── SafeTableContainer.tsx     # Container seguro para tabelas
+├── services/             # Chamadas API
+│   └── api.ts            # Cliente HTTP
+├── types/                # Tipos TypeScript
+│   └── index.ts          # Definições de tipos
+├── lib/                  # Utilitários
+│   └── theme.ts          # Tema Material UI
+└── db.json              # Dados mock para json-server
+\`\`\`
 
-## Ready to Begin the Challenges?
+## Dados Iniciais
 
-1. [ ] Fork this repository to your own Github account.
-1. [ ] Create a new branch using your first name and last name. For example: `caroline-oliveira`.
-1. [ ] After completing the challenge, create a pull request to this repository (https://github.com/dynamox-s-a/js-ts-full-stack-test), aimed at the main branch.
-1. [ ] We will receive a notification about your pull request, review your solution, and get in touch with you.
+O arquivo `db.json` contém dados de exemplo:
 
-## Frequently Asked Questions
+### Máquinas
+- **Bomba Principal** (tipo: Pump)
+- **Ventilador Industrial** (tipo: Fan)
 
-1. Is it necessary to fork the project?
-  **Yes, this allows us to see how much time you spent on the challenge.**
+### Pontos de Monitoramento
+- **Ponto B2** vinculado ao Ventilador Industrial com sensor TcAs
 
-</br>
+## Endpoints da API
 
-**Good luck! We look forward to reviewing your submission.** 🚀
+O json-server cria automaticamente os seguintes endpoints:
+
+### Máquinas
+- `GET /machines` - Listar máquinas
+- `POST /machines` - Criar máquina
+- `PUT /machines/:id` - Atualizar máquina
+- `DELETE /machines/:id` - Excluir máquina
+
+### Pontos de Monitoramento
+- `GET /monitoring-points` - Listar pontos
+- `POST /monitoring-points` - Criar ponto
+- `DELETE /monitoring-points/:id` - Excluir ponto
+
+## Tipos de Dados
+
+### Machine
+\`\`\`typescript
+interface Machine {
+  id: string
+  name: string
+  type: "Pump" | "Fan"
+}
+\`\`\`
+
+### MonitoringPoint
+\`\`\`typescript
+interface MonitoringPoint {
+  id: string
+  name: string
+  machineId: string
+  sensorModel: "TcAg" | "TcAs" | "HF+"
+}
+\`\`\`
+
+## Regras de Negócio
+
+1. **Validação de Sensores**: Sensores TcAg e TcAs não podem ser associados a máquinas do tipo Pump
+2. **Paginação**: Tabela de pontos de monitoramento limitada a 5 registros por página
+3. **Ordenação**: Possível ordenar por qualquer coluna da tabela
+4. **Exclusão**: Confirmação obrigatória antes de excluir itens
+
+## Testando a API
+
+Você pode testar os endpoints diretamente:
+
+\`\`\`bash
+# Listar máquinas
+curl http://localhost:3001/machines
+
+# Listar pontos de monitoramento
+curl http://localhost:3001/monitoring-points
+
+# Criar nova máquina
+curl -X POST http://localhost:3001/machines \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Nova Máquina", "type": "Fan"}'
+\`\`\`
+
+## Características Técnicas
+
+- **Client-side apenas**: Todos os componentes são client-side
+- **Estado local**: Gerenciamento de estado com React hooks (useState/useEffect)
+- **Responsivo**: Layout adaptável para diferentes tamanhos de tela
+- **Feedback visual**: Loading states e notificações para melhor UX
+- **Validação**: Validações client-side para melhor experiência do usuário
+- **Tratamento de erros**: Notificações de erro para falhas na API
