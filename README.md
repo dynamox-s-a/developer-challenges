@@ -80,8 +80,6 @@ yarn dev
 │   └── api.ts
 ├── types/
 │   └── index.ts
-├── lib/
-│   └── theme.ts
 └── db.json
 ```
 
