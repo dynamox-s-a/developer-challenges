@@ -1,4 +1,4 @@
-# Dynamox Admin Panel
+## Dynamox Admin Panel
 
 Sistema de gerenciamento de máquinas e pontos de monitoramento desenvolvido com Next.js, TypeScript e Material UI 5.
 
