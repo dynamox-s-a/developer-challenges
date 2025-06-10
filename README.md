@@ -25,8 +25,7 @@ Nx was used to set up this repository.
 > 1. **Clone the Repository**
 >
 >    ```bash
->    git clone https://github.com/your-username/dynapredict.git
->    cd developer-challenges
+>    git clone https://github.com/j-fborges/developer-challenges.git
 >    git checkout joao-borges
 >    ```
 > 2. **Navigate to nx workspace and install Dependencies**
