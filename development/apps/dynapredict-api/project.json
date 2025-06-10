@@ -1,0 +1,36 @@
+{
+  "name": "dynapredict-api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/dynapredict-api/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "dynapredict-api:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "dynapredict-api:build:development"
+        },
+        "production": {
+          "buildTarget": "dynapredict-api:build:production"
+        }
+      }
+    },
+    "docker-build": {
+      "dependsOn": ["build"],
+      "command": "docker build -f apps/dynapredict-api/Dockerfile . -t dynapredict-api"
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["tsc --noEmit -p apps/dynapredict-api/tsconfig.json"]
+      }
+    }
+  }
+}

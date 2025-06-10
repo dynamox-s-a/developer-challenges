@@ -1,50 +1,143 @@
-# Dynamox Developer Challenges
+# Dynamox Developer Challenges - João Pedro Fernandes Borges
 
-## About Dynamox
+Here is my delivery for the challenge. I couldnt finish the project but I would like to continue on the selection process for the position.
+I managed to set up the back and front end with User and Machine flows and resources. I didnt had much time because of work demands.
+It was my first time dealing with NestJs and Prisma so I used the challenge as a learning opportunity.
+I based myself on the challenge delivery of João Vitor (https://github.com/jvkf/developer-challenges) because I found it the most well organized and complete,
+so I studied his documentation and tried to follow my own way of building the apps. Thank you for your time and attention!
 
-[Dynamox](https://dynamox.net/) is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications. 
+### 📋 Summary
 
-With our proficiency in signal processing for vibration and acoustics, we deliver advanced and precise monitoring systems. We are committed to optimizing operational efficiency and facilitating proactive maintenance through our innovative technology and integrated solutions.
+Nx was used to set up this repository.
 
-## Positions
+  - Built with **TypeScript**, **Nest.js**, **Prisma**, **PostgreSQL**, **Jest**.
 
-We are looking for developers who are passionate about learning, growing, and contributing to our team. You will play a key role in our development efforts, working on a variety of projects and collaborating with different teams to build and improve our solutions.
+- **Client**:
+  - Built with **Next.js**, **Redux Toolkit**, **Material-UI (MUI)**, **Devias Kit**, **React Hook Form** and **Zod**.
 
-We value flexibility and collaboration, hence we provide opportunities for you to lend your skills to other teams when required. Join us on this exciting journey as we revolutionize our digital platforms. Currently we are particularly interested in individuals who can identify with one of the following role descriptions:
+---
 
-### Junior Software Developer
+## Getting Started
 
-With limited experience, assists in coding, testing, and stabilizing systems under supervision. Communicates with immediate team members and solves straightforward problems with guidance. Should display a willingness to learn and grow professionally. This is an individual contributor role.
+> Make sure you have Git, Node.js and NPM available.
+> Follow these steps to set up the project locally:
+>
+> 1. **Clone the Repository**
+>
+>    ```bash
+>    git clone https://github.com/j-fborges/developer-challenges.git
+>    git checkout joao-borges
+>    ```
+> 2. **Navigate to nx workspace and install Dependencies**
+>
+>   ```bash
+>    cd ./development
+>    pnpm install
+>    ```
+>
+> 3. **Navigate to BE folder and install Dependencies** (PNPM)
+>
+>    ```bash
+>    cd ./development/apps/dynapredict-api
+>    pnpm install
+>    ```
+>
+> 4. **Navigate to FE folder and install Dependencies** (NPM)
+>
+>    ```bash
+>    cd ./development/apps/dynapredict-webapp
+>    npm install
+>    ```
+>
+> 5. **Create an `.env` file on /development/apps/dynapredict-api/prisma and on /development/apps/dynapredict-webapp**
+>
+>    In the prisma directory of the project (/development/apps/dynapredict-api/prisma), create an `.env` file and add a database_url for prisma to use:
+>
+>    ```env
+>    DATABASE_URL=your_database_url
+>    ```
+>
+>    In the root directory of the next project(/development/apps/dynapredict-webapp), create another `.env` file and add the following environment variables:
+>
+>    ```env
+>    NEXT_PUBLIC_API_URL="http://localhost:3000/api"
+>    ```
+>
+>    **Note:** The `NEXT_PUBLIC_API_URL` must point to the API's base URL, **including the `/api` path**.
+>
+> 6. **Setup Prisma and Run Development Commands** on (/development/apps/dynapredict-api)
+>
+>    Follow these steps to set up Prisma and prepare your local development environment:
+>
+>    1. **Generate Prisma Client** on (/development/apps/dynapredict-api)
+>
+>       ```bash
+>       npx prisma generate
+>       ```
+>
+>       This command generates the Prisma Client based on your schema, allowing you to interact with your database.
+>
+>    2. **Run Database Migrations** on (/development/apps/dynapredict-api)
+>
+>       ```bash
+>       npx prisma migrate dev
+>       ```
+>
+>       This will apply the database migrations and set up your development database.
+>
+> ### Running the API Application
+>
+> Use the following commands to interact with the API:
+>
+> - **Run the API Server Locally** on (/development/apps/dynapredict-api)
+>
+>   ```bash
+>   nx serve
+>   ```
+>
+> ### Running the client application
+>
+> Use the following commands to interact with the client application:
+>
+> - **Run the client application** (/development/apps/dynapredict-webapp)
+>
+>   ```bash
+>   npm run dev dynapredict-webapp
+>   ```
+>
 
-### Mid-level Software Developer
+<hr>
 
-With a certain level of proven experience, contributes to software development, solves moderate problems, and starts handling ambiguous situations with minimal guidance. Communicates with the broader team and engages in code reviews and documentation. This role also includes mentorship of junior engineers and a commitment to continuous learning. This is an individual contributor role.
+## Comments
 
-### Senior-level Software Developer
+Step-by-step decision taking documentation and walktrough on the resolution of a practical development test for a fullstack developer position at Dynamox, Florianópolis - Brasil
 
-With vast experience, enhances software development, leading complex system development and ambiguous situation handling. Tackles intricate problems and mentors junior and mid-level engineers. Champions coding standards, project strategy, and technology adoption. Communicates across teams, influencing technical and non-technical stakeholders. This individual contributor role blends technical expertise with leadership, focusing on innovation, mentorship, and strategic contributions to the development process.
+First, Second and third Commits - Setting up raw backend(NestJs and prisma), e2e structure and frontend (NextJs, ReactJs, Devias kit);
 
-## Challenges Full-Stack
+4th Commit - Added User Model and CRUD Users resources to the backend, configured prisma and eslint. Made first testing in jest
 
-- [ ] [01 - Dynamox Full-Stack Developer Challenge](./full-stack-challenge.md)
-  
-## Challenges Front-End
+5th Commit -  Set up of the user account sign up, current user query and deletion flow on the front-end, removed unneeded buttons and components cluttering the FE layout
 
-- [ ] [01 - Dynamox Front-end Developer Challenge V1](./front-end-challenge-v1.md)
-- [ ] [02 - Dynamox Front-end Developer Challenge V2](./front-end-challenge-v2.md)
+6th commit - Added Machine Model and CRUD Machines resources on BE, set up machine registration and redux query structure on FE
 
-## Ready to Begin the Challenges?
 
-1. [ ] Fork this repository to your own Github account.
-1. [ ] Create a new branch using your first name and last name. For example: `caroline-oliveira`.
-1. [ ] After completing the challenge, create a pull request to this repository (https://github.com/dynamox-s-a/js-ts-full-stack-test), aimed at the main branch.
-1. [ ] We will receive a notification about your pull request, review your solution, and get in touch with you.
+<hr>
 
-## Frequently Asked Questions
+### 🛠️ Tech Stack
 
-1. Is it necessary to fork the project?
-  **Yes, this allows us to see how much time you spent on the challenge.**
-
-</br>
-
-**Good luck! We look forward to reviewing your submission.** 🚀
+- **Frontend**:
+  - **TypeScript**
+  - **Next.js**
+  - **Redux**
+  - **Material-UI (MUI)**
+- **Backend**:
+  - **Node.js**
+  - **TypeScript**
+  - **Nest.js**
+  - **Prisma**
+  - **PostgreSQL**
+- **Tools & Utilities**:
+  - **Nx** for monorepo management
+  - **Jest** for testing
+  - **Docker** for containerization
+  - **GitHub Actions** for CI/CD pipelines
