@@ -13,5 +13,19 @@ model User {
   email            String            @unique
   password         String
   createdAt        DateTime          @default(now())
+  machines         Machine[]
 }
 
+model Machine {
+  id               Int               @id @default(autoincrement())
+  name             String
+  type             MachineType
+  createdAt        DateTime          @default(now())
+  userId           Int
+  user             User              @relation(fields: [userId], references: [id])
+}
+
+enum MachineType {
+  Fan
+  Pump
+}

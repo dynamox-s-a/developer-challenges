@@ -35,6 +35,7 @@ describe('User Controller', () => {
       const createUserDto: CreateUserDTO = {
         email: 'testuser@example.com',
         password: 'securePassword123',
+        name: 'foo'
       };
 
       const result = {
@@ -52,6 +53,7 @@ describe('User Controller', () => {
       const createUserDto: CreateUserDTO = {
         email: 'testuser@example.com',
         password: 'securePassword123',
+        name: "bar"
       };
 
       service.create.mockRejectedValue(new Error('User creation failed'));
