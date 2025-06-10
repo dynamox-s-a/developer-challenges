@@ -1,50 +1,152 @@
-# Dynamox Developer Challenges
+# 🛠️ Dynamox Admin Panel
 
-## About Dynamox
+Sistema de gerenciamento de máquinas e pontos de monitoramento desenvolvido com **Next.js**, **TypeScript** e **Material UI 5**.
 
-[Dynamox](https://dynamox.net/) is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications. 
+## ✨ Funcionalidades
 
-With our proficiency in signal processing for vibration and acoustics, we deliver advanced and precise monitoring systems. We are committed to optimizing operational efficiency and facilitating proactive maintenance through our innovative technology and integrated solutions.
+### ✅ Gerenciamento de Máquinas
+- Criar máquinas com nome e tipo (Pump ou Fan)
+- Editar e excluir máquinas existentes
+- Listar todas as máquinas cadastradas
 
-## Positions
+### ✅ Pontos de Monitoramento e Sensores
+- Criar pontos de monitoramento vinculados a uma máquina
+- Associar sensores aos pontos (TcAg, TcAs, HF+)
+- **Regra de negócio:** Sensores TcAg e TcAs **não são permitidos** em máquinas do tipo **Pump**
+- Listagem paginada (5 itens por página)
+- Ordenação por qualquer coluna (ascendente e descendente)
+- Exclusão de pontos com confirmação
 
-We are looking for developers who are passionate about learning, growing, and contributing to our team. You will play a key role in our development efforts, working on a variety of projects and collaborating with different teams to build and improve our solutions.
+### ✅ Interface e Experiência do Usuário
+- Layout responsivo
+- Notificações de sucesso e erro
+- Confirmação antes de exclusões
+- Visual moderno e limpo com Material UI
 
-We value flexibility and collaboration, hence we provide opportunities for you to lend your skills to other teams when required. Join us on this exciting journey as we revolutionize our digital platforms. Currently we are particularly interested in individuals who can identify with one of the following role descriptions:
+## 🧰 Tecnologias Utilizadas
 
-### Junior Software Developer
+- **Next.js 14** – Framework React para SSR/SPA
+- **TypeScript** – Tipagem estática
+- **Material UI 5** – Componentes visuais
+- **Axios** – Cliente HTTP
+- **json-server** – API mock
 
-With limited experience, assists in coding, testing, and stabilizing systems under supervision. Communicates with immediate team members and solves straightforward problems with guidance. Should display a willingness to learn and grow professionally. This is an individual contributor role.
+## ▶️ Como Executar
 
-### Mid-level Software Developer
+1. **Instale as dependências:**
+```bash
+npm install
+# ou
+yarn install
+```
 
-With a certain level of proven experience, contributes to software development, solves moderate problems, and starts handling ambiguous situations with minimal guidance. Communicates with the broader team and engages in code reviews and documentation. This role also includes mentorship of junior engineers and a commitment to continuous learning. This is an individual contributor role.
+2. **Instale o json-server (se necessário):**
+```bash
+npm install -g json-server
+```
 
-### Senior-level Software Developer
+3. **Inicie o json-server (API mock):**
+```bash
+npm run json-server
+# ou diretamente
+npx json-server --watch db.json --port 3001
+```
 
-With vast experience, enhances software development, leading complex system development and ambiguous situation handling. Tackles intricate problems and mentors junior and mid-level engineers. Champions coding standards, project strategy, and technology adoption. Communicates across teams, influencing technical and non-technical stakeholders. This individual contributor role blends technical expertise with leadership, focusing on innovation, mentorship, and strategic contributions to the development process.
+4. **Em outro terminal, inicie a aplicação:**
+```bash
+npm run dev
+# ou
+yarn dev
+```
 
-## Challenges Full-Stack
+5. **Acesse:**
+- Aplicação: [http://localhost:3000](http://localhost:3000)
+- API: [http://localhost:3001](http://localhost:3001)
+- Endpoints: `/machines` e `/monitoring-points`
 
-- [ ] [01 - Dynamox Full-Stack Developer Challenge](./full-stack-challenge.md)
-  
-## Challenges Front-End
+## 📁 Estrutura do Projeto
 
-- [ ] [01 - Dynamox Front-end Developer Challenge V1](./front-end-challenge-v1.md)
-- [ ] [02 - Dynamox Front-end Developer Challenge V2](./front-end-challenge-v2.md)
+```
+├── app/
+│   ├── layout.tsx
+│   ├── page.tsx
+│   └── globals.css
+├── components/
+│   ├── MachineList.tsx
+│   ├── MonitoringPointDialog.tsx
+│   ├── MonitoringPointsTable.tsx
+│   └── SafeTableContainer.tsx
+├── services/
+│   └── api.ts
+├── types/
+│   └── index.ts
+└── db.json
+```
 
-## Ready to Begin the Challenges?
+## 🧪 Dados Iniciais
 
-1. [ ] Fork this repository to your own Github account.
-1. [ ] Create a new branch using your first name and last name. For example: `caroline-oliveira`.
-1. [ ] After completing the challenge, create a pull request to this repository (https://github.com/dynamox-s-a/js-ts-full-stack-test), aimed at the main branch.
-1. [ ] We will receive a notification about your pull request, review your solution, and get in touch with you.
+O arquivo `db.json` já contém dados de exemplo:
 
-## Frequently Asked Questions
+- **Máquinas**
+  - *Bomba Principal* (Pump)
+  - *Ventilador Industrial* (Fan)
+- **Ponto de Monitoramento**
+  - *Ponto B2* (vinculado ao Ventilador com sensor TcAs)
 
-1. Is it necessary to fork the project?
-  **Yes, this allows us to see how much time you spent on the challenge.**
+## 🌐 Endpoints Disponíveis
 
-</br>
+### Máquinas
+- `GET /machines`
+- `POST /machines`
+- `PUT /machines/:id`
+- `DELETE /machines/:id`
 
-**Good luck! We look forward to reviewing your submission.** 🚀
+### Pontos de Monitoramento
+- `GET /monitoring-points`
+- `POST /monitoring-points`
+- `DELETE /monitoring-points/:id`
+
+## 📦 Tipos
+
+### `Machine`
+```ts
+interface Machine {
+  id: string;
+  name: string;
+  type: "Pump" | "Fan";
+}
+```
+
+### `MonitoringPoint`
+```ts
+interface MonitoringPoint {
+  id: string;
+  name: string;
+  machineId: string;
+  sensorModel: "TcAg" | "TcAs" | "HF+";
+}
+```
+
+## 📋 Regras de Negócio
+
+1. **Validação de Sensores**: TcAg e TcAs não podem ser usados em máquinas do tipo Pump  
+2. **Paginação**: Tabela limitada a 5 itens por página  
+3. **Ordenação**: Ordenação por qualquer coluna da tabela  
+4. **Confirmação**: Exclusão de itens exige confirmação do usuário
+
+## 🧪 Testando a API Manualmente
+
+```bash
+curl http://localhost:3001/machines
+curl http://localhost:3001/monitoring-points
+curl -X POST http://localhost:3001/machines -H "Content-Type: application/json" -d '{"name": "Nova Máquina", "type": "Fan"}'
+```
+
+## 🛠️ Características Técnicas
+
+- **Client-side**: Todos os componentes são renderizados no cliente
+- **Gerenciamento de Estado**: React hooks (useState/useEffect)
+- **Responsivo**: Adaptado para múltiplos dispositivos
+- **UX**: Feedback visual com estados de loading e alertas
+- **Validação**: Regras aplicadas no front-end
+- **Erros**: Tratamento e exibição amigável de falhas
