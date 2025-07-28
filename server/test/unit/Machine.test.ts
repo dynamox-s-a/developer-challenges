@@ -9,7 +9,7 @@ import { MachineType, SensorType } from "../../src/domain/types";
 
 describe("MachineFactory", () => {
     test("should create a pump machine", () => {
-        const pumpMachine = MachineFactory.create("pump1", MachineType.PUMP);
+        const pumpMachine = MachineFactory.create("userId", "pump1", MachineType.PUMP);
         expect(pumpMachine.id).toBeDefined();
         expect(pumpMachine.name).toBe("pump1");
         expect(pumpMachine.type).toBe(MachineType.PUMP);
@@ -17,7 +17,7 @@ describe("MachineFactory", () => {
     });
 
     test("should create a fan machine", () => {
-        const fanMachine = MachineFactory.create("fan1", MachineType.FAN);
+        const fanMachine = MachineFactory.create("userId", "fan1", MachineType.FAN);
         expect(fanMachine.id).toBeDefined();
         expect(fanMachine.name).toBe("fan1");
         expect(fanMachine.type).toBe(MachineType.FAN);
@@ -25,12 +25,12 @@ describe("MachineFactory", () => {
     });
 
     test("should throw error for empty name", () => {
-        expect(() => MachineFactory.create("", MachineType.PUMP)).toThrow("Machine name cannot be empty");
-        expect(() => MachineFactory.create("   ", MachineType.FAN)).toThrow("Machine name cannot be empty");
+        expect(() => MachineFactory.create("userId", "", MachineType.PUMP)).toThrow("Machine name cannot be empty");
+        expect(() => MachineFactory.create("userId", "   ", MachineType.FAN)).toThrow("Machine name cannot be empty");
     });
 
     test("should throw error for invalid machine type", () => {
-        expect(() => MachineFactory.create("test", "invalid" as MachineType)).toThrow("Invalid machine type");
+        expect(() => MachineFactory.create("userId", "username", "invalid" as MachineType)).toThrow("Invalid machine type");
     });
 
     test("should get supported types", () => {
@@ -41,7 +41,7 @@ describe("MachineFactory", () => {
 
 describe("PumpMachine", () => {
     test("should create pump machine with monitoring points", () => {
-        const pump = PumpMachine.create("test-pump", MachineType.PUMP);
+        const pump = PumpMachine.create("userId", "test-pump", MachineType.PUMP);
         const monitoringPoint = PumpMonitoringPoint.create("pressure-sensor", SensorType.HFPlus);
         pump.addMonitoringPoint(monitoringPoint);
         expect(pump.getMonitoringPoints()).toHaveLength(1);
@@ -49,7 +49,7 @@ describe("PumpMachine", () => {
     });
 
     test("should remove monitoring point", () => {
-        const pump = PumpMachine.create("test-pump", MachineType.PUMP);
+        const pump = PumpMachine.create("userId", "test-pump", MachineType.PUMP);
         const monitoringPoint = PumpMonitoringPoint.create("pressure-sensor", SensorType.HFPlus);
         pump.addMonitoringPoint(monitoringPoint);
         const removed = pump.removeMonitoringPoint(monitoringPoint.sensorId);
@@ -58,13 +58,13 @@ describe("PumpMachine", () => {
     });
 
     test("should return false when removing non-existent monitoring point", () => {
-        const pump = PumpMachine.create("test-pump", MachineType.PUMP);
+        const pump = PumpMachine.create("userId", "test-pump", MachineType.PUMP);
         const removed = pump.removeMonitoringPoint("non-existent-id");
         expect(removed).toBe(false);
     });
 
     test("should only accept HFPlus sensors for monitoring points", () => {
-        const pump = PumpMachine.create("test-pump", MachineType.PUMP);
+        const pump = PumpMachine.create("userId", "test-pump", MachineType.PUMP);
         const validPoint = PumpMonitoringPoint.create("pressure-sensor", SensorType.HFPlus);
         pump.addMonitoringPoint(validPoint);
         expect(pump.getMonitoringPoints()).toHaveLength(1);
@@ -73,7 +73,7 @@ describe("PumpMachine", () => {
 
 describe("FanMachine", () => {
     test("should create fan machine with monitoring points", () => {
-        const fan = FanMachine.create("test-fan", MachineType.FAN);
+        const fan = FanMachine.create("userId", "test-fan", MachineType.FAN);
         const monitoringPoint = FanMonitoringPoint.create("temp-sensor", SensorType.TcAg);
         fan.addMonitoringPoint(monitoringPoint);
         expect(fan.getMonitoringPoints()).toHaveLength(1);
@@ -81,7 +81,7 @@ describe("FanMachine", () => {
     });
 
     test("should remove monitoring point", () => {
-        const fan = FanMachine.create("test-fan", MachineType.FAN);
+        const fan = FanMachine.create("userId", "test-fan", MachineType.FAN);
         const monitoringPoint = FanMonitoringPoint.create("temp-sensor", SensorType.TcAg);
         fan.addMonitoringPoint(monitoringPoint);
         const removed = fan.removeMonitoringPoint(monitoringPoint.sensorId);
@@ -126,26 +126,26 @@ describe("Monitoring Points", () => {
 
 describe("Machine Properties", () => {
     test("should update machine name", () => {
-        const machine = MachineFactory.create("old-name", MachineType.PUMP);
+        const machine = MachineFactory.create("userId", "old-name", MachineType.PUMP);
         machine.name = "new-name";
         expect(machine.name).toBe("new-name");
     });
 
     test("should throw error for empty machine name", () => {
-        const machine = MachineFactory.create("test", MachineType.PUMP);
+        const machine = MachineFactory.create("userId", "test", MachineType.PUMP);
         expect(() => machine.name = "").toThrow("Name cannot be empty");
         expect(() => machine.name = "   ").toThrow("Name cannot be empty");
     });
 
     test("should update machine type", () => {
-        const machine = MachineFactory.create("test", MachineType.PUMP);
+        const machine = MachineFactory.create("userId", "test", MachineType.PUMP);
         machine.type = MachineType.FAN;
         expect(machine.type).toBe(MachineType.FAN);
     });
 
     test("should generate unique IDs", () => {
-        const machine1 = MachineFactory.create("test1", MachineType.PUMP);
-        const machine2 = MachineFactory.create("test2", MachineType.FAN);
+        const machine1 = MachineFactory.create("userId", "test1", MachineType.PUMP);
+        const machine2 = MachineFactory.create("userId", "test2", MachineType.FAN);
         expect(machine1.id).not.toBe(machine2.id);
     });
 });
