@@ -5,12 +5,12 @@ import { PumpMonitoringPoint } from "./PumpMonitoringPoint.js";
 export class PumpMachine extends BaseMachine {
     private monitoringPoints: PumpMonitoringPoint[] = [];
 
-    private constructor(id: string, name: string, type: MachineType) {
-        super(id, name, type);
+    private constructor(userId: string, id: string, name: string, type: MachineType) {
+        super(userId, id, name, type);
     }
 
-    static create(name: string, type: MachineType): PumpMachine {
-        return new PumpMachine(this.generateId(), name, type);
+    static create(userId: string, name: string, type: MachineType): PumpMachine {
+        return new PumpMachine(userId, this.generateId(), name, type);
     }
 
     addMonitoringPoint(point: PumpMonitoringPoint): void {

@@ -4,16 +4,16 @@ import { PumpMachine } from "./PumpMachine.js";
 import { FanMachine } from "./FanMachine.js";
 
 export class MachineFactory {
-    private static readonly machineCreators: Record<MachineType, (name: string, type: MachineType) => BaseMachine> = {
-        [MachineType.PUMP]: (name: string, type: MachineType) => PumpMachine.create(name, type),
-        [MachineType.FAN]: (name: string, type: MachineType) => FanMachine.create(name, type),
+    private static readonly machineCreators: Record<MachineType, (userId: string, name: string, type: MachineType) => BaseMachine> = {
+        [MachineType.PUMP]: (userId: string, name: string, type: MachineType) => PumpMachine.create(userId, name, type),
+        [MachineType.FAN]: (userId: string, name: string, type: MachineType) => FanMachine.create(userId, name, type),
     };
 
     private constructor() {
         // Prevent instantiation
     }
 
-    static create(name: string, type: MachineType): BaseMachine {
+    static create(userId: string, name: string, type: MachineType): BaseMachine {
         if (!name || name.trim() === "") {
             throw new Error("Machine name cannot be empty");
         }
@@ -23,7 +23,7 @@ export class MachineFactory {
             throw new Error(`Invalid machine type: ${type}. Supported types: ${Object.values(MachineType).join(", ")}`);
         }
 
-        return creator(name.trim(), type);
+        return creator(userId, name.trim(), type);
     }
 
     static getSupportedTypes(): MachineType[] {

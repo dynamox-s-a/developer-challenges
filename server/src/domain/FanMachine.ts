@@ -5,12 +5,12 @@ import { FanMonitoringPoint } from "./FanMonitoringPoint.js";
 export class FanMachine extends BaseMachine {
     private monitoringPoints: FanMonitoringPoint[] = [];
 
-    private constructor(id: string, name: string, type: MachineType) {
-        super(id, name, type);
+    private constructor(userId: string, id: string, name: string, type: MachineType) {
+        super(userId, id, name, type);
     }
 
-    static create(name: string, type: MachineType): FanMachine {
-        return new FanMachine(this.generateId(), name, type);
+    static create(userId: string, name: string, type: MachineType): FanMachine {
+        return new FanMachine(userId, this.generateId(), name, type);
     }
 
     addMonitoringPoint(point: FanMonitoringPoint): void {
