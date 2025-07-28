@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
-import { MachineRepositoryMemory } from "../../src/repository/MachineRepository";
+import { MachineRepositoryMemory } from "../../src/repository/MachineRepositoryMemory";
 import { MachineFactory } from "../../src/domain/MachineFactory";
-import { MachineDTO, MachineType } from "../../src/domain/types";
+import { MachineDTO, MachineType } from "../../src/types/types";
 
 describe("MachineRepository", () => {
     test("should save a machine", () => {

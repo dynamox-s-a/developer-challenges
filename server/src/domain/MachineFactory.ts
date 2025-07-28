@@ -1,4 +1,4 @@
-import { MachineType } from "./types.js";
+import { MachineType } from "../types/types.js";
 import { BaseMachine } from "./BaseMachine.js";
 import { PumpMachine } from "./PumpMachine.js";
 import { FanMachine } from "./FanMachine.js";

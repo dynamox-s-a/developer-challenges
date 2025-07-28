@@ -1,4 +1,4 @@
-import { FanMonitoringSensorType, SensorType } from "./types.js";
+import { FanMonitoringSensorType, SensorType } from "../types/types.js";
 import { BaseMonitoringPoint } from "./BaseMonitoringPoint.js";
 
 export class FanMonitoringPoint extends BaseMonitoringPoint {

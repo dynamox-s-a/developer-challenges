@@ -4,7 +4,7 @@ import { FanMachine } from "../../src/domain/FanMachine";
 import { FanMonitoringPoint } from "../../src/domain/FanMonitoringPoint";
 import { PumpMachine } from "../../src/domain/PumpMachine";
 import { PumpMonitoringPoint } from "../../src/domain/PumpMonitoringPoint";
-import { MachineType, SensorType } from "../../src/domain/types";
+import { MachineType, SensorType } from "../../src/types/types";
 
 
 describe("MachineFactory", () => {

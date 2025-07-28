@@ -1,4 +1,4 @@
-import { PumpMonitoringSensorType } from "./types.js";
+import { PumpMonitoringSensorType } from "../types/types.js";
 import { BaseMonitoringPoint } from "./BaseMonitoringPoint.js";
 
 export class PumpMonitoringPoint extends BaseMonitoringPoint {

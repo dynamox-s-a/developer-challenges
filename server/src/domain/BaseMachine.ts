@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { MachineType, MachineBase, MachineDTO } from "./types.js";
+import { MachineType, MachineBase, MachineDTO } from "../types/types.js";
 
 export abstract class BaseMachine implements MachineBase {
     protected readonly _userId: string;

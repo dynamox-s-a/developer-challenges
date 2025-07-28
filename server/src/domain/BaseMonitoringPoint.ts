@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { SensorType, MonitoringPoint } from "./types.js";
+import { SensorType, MonitoringPoint } from "../types/types.js";
 
 export abstract class BaseMonitoringPoint implements MonitoringPoint {
     protected _name: string;
