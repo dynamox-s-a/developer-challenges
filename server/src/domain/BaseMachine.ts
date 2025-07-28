@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { MachineType, MachineBase } from "./types.js";
+import { MachineType, MachineBase, MachineDTO } from "./types.js";
 
 export abstract class BaseMachine implements MachineBase {
     protected readonly _userId: string;
@@ -16,6 +16,10 @@ export abstract class BaseMachine implements MachineBase {
 
     static create(userId: string, name: string, type: MachineType): BaseMachine {
         throw new Error("create method must be implemented by subclasses");
+    }
+
+    get userId(): string {
+        return this._userId;
     }
 
     get id(): string {
@@ -45,11 +49,13 @@ export abstract class BaseMachine implements MachineBase {
         return uuidv4();
     }
 
-    public toJSON(): MachineBase {
+    public toJSON(): MachineDTO {
         return {
+            userId: this._userId,
             id: this.id,
             name: this.name,
             type: this.type,
+            monitoringPoints: [],
         };
     }
 } 

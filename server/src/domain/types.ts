@@ -17,6 +17,7 @@ export type PumpMonitoringSensorType = typeof SensorType.HFPlus;
 export type FanMonitoringSensorType = typeof SensorType.TcAg | typeof SensorType.TcAs;
 
 export interface MachineBase {
+    userId: string;
     id: string;
     name: string;
     type: MachineType;
@@ -26,4 +27,12 @@ export interface MonitoringPoint {
     name: string;
     sensorType: SensorType;
     sensorId: string;
-} 
+}
+
+export interface MachineDTO {
+    userId: string;
+    id: string;
+    name: string;
+    type: MachineType;
+    monitoringPoints: MonitoringPoint[];
+}
