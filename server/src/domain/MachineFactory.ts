@@ -14,6 +14,10 @@ export class MachineFactory {
     }
 
     static create(userId: string, name: string, type: MachineType): BaseMachine {
+        if (!userId || userId.trim() === "") {
+            throw new Error("User ID cannot be empty");
+        }
+
         if (!name || name.trim() === "") {
             throw new Error("Machine name cannot be empty");
         }
@@ -23,7 +27,7 @@ export class MachineFactory {
             throw new Error(`Invalid machine type: ${type}. Supported types: ${Object.values(MachineType).join(", ")}`);
         }
 
-        return creator(userId, name.trim(), type);
+        return creator(userId.trim(), name.trim(), type);
     }
 
     static getSupportedTypes(): MachineType[] {
