@@ -1,20 +1,29 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Machine Management API with Express.js and JWT authentication",
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/main.ts",
     "build": "tsc",
     "start": "node dist/main.js",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:api": "node test-express.js"
   },
-  "keywords": [],
+  "keywords": [
+    "express",
+    "typescript",
+    "jwt",
+    "api",
+    "machines"
+  ],
   "author": "",
   "license": "ISC",
   "type": "module",
   "devDependencies": {
     "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.6",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.3",
@@ -25,6 +34,7 @@
     "biome": "^0.3.3",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "uuid": "^11.1.0"
   }
 }
