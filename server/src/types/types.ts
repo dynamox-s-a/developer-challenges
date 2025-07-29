@@ -36,3 +36,9 @@ export interface MachineDTO {
     type: MachineType;
     monitoringPoints: MonitoringPoint[];
 }
+
+export interface AuthenticatedRequest extends Request {
+    user?: {
+        id: string;
+    };
+}
