@@ -47,9 +47,9 @@ const machines = [
     name: 'Cooling Beta',
     type: 'fan',
     monitoringPoints: [
-      { id: 'USR-009-001', monitoringPointName: 'Temperature', sensorType: 'TcAg', machineName: 'USR-009' },
-      { id: 'USR-009-002', monitoringPointName: 'Humidity', sensorType: 'TcAS', machineName: 'USR-009' },
-      { id: 'USR-009-003', monitoringPointName: 'Pressure', sensorType: 'HF+', machineName: 'USR-009' },
+      { id: 'USR-009-001', monitoringPointName: 'Temperature', sensorType: 'TcAg' },
+      { id: 'USR-009-002', monitoringPointName: 'Humidity', sensorType: 'TcAS' },
+      { id: 'USR-009-003', monitoringPointName: 'Pressure', sensorType: 'HF+' },
     ],
   },
   {
@@ -57,11 +57,11 @@ const machines = [
     name: 'Industrial Gamma',
     type: 'pump',
     monitoringPoints: [
-      { id: 'USR-008-004', monitoringPointName: 'Temperature', sensorType: 'TcAg', machineName: 'USR-008' },
-      { id: 'USR-008-005', monitoringPointName: 'Humidity', sensorType: 'TcAS', machineName: 'USR-008' },
-      { id: 'USR-008-006', monitoringPointName: 'Pressure', sensorType: 'HF+', machineName: 'USR-008' },
-      { id: 'USR-008-007', monitoringPointName: 'Level', sensorType: 'HF+', machineName: 'USR-008' },
-      { id: 'USR-008-008', monitoringPointName: 'Flow', sensorType: 'HF+', machineName: 'USR-008' },
+      { id: 'USR-008-004', monitoringPointName: 'Temperature', sensorType: 'TcAg' },
+      { id: 'USR-008-005', monitoringPointName: 'Humidity', sensorType: 'TcAS' },
+      { id: 'USR-008-006', monitoringPointName: 'Pressure', sensorType: 'HF+' },
+      { id: 'USR-008-007', monitoringPointName: 'Level', sensorType: 'HF+' },
+      { id: 'USR-008-008', monitoringPointName: 'Flow', sensorType: 'HF+' },
     ],
   },
 ];
@@ -77,7 +77,10 @@ export default function Page(): React.JSX.Element {
   const [orderBy, setOrderBy] = React.useState<keyof MonitoringPoint>('id');
   const [order, setOrder] = React.useState<Order>('asc');
 
-  const monitoringPoints = machines.flatMap((m) => m.monitoringPoints);
+  const monitoringPoints = machines.flatMap((m) => m.monitoringPoints.map(point => ({
+    ...point,
+    machineName: m.name
+  })));
 
   const sorted = stableSort(monitoringPoints, getComparator(order, orderBy));
 
@@ -115,8 +118,8 @@ export default function Page(): React.JSX.Element {
                     onClick={() => handleSort(key)}
                   >
                     {({
-                      id: 'ID',
-                      monitoringPointName: 'Monitoring Point Name', 
+                      id: 'Point ID',
+                      monitoringPointName: 'Point Name', 
                       sensorType: 'Sensor Type',
                       machineName: 'Machine Name'
                     }[key] || key)}
