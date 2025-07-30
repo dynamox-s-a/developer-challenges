@@ -16,7 +16,7 @@ import { IntegrationCard } from '@/components/dashboard/integrations/integration
 import type { Integration } from '@/components/dashboard/integrations/integrations-card';
 import { CompaniesFilters } from '@/components/dashboard/integrations/integrations-filters';
 
-export const metadata = { title: `Integrations | Dashboard | ${config.site.name}` } satisfies Metadata;
+export const metadata = { title: `Monitoring Points | Dashboard | ${config.site.name}` } satisfies Metadata;
 
 const integrations = [
   {
@@ -74,7 +74,7 @@ export default function Page(): React.JSX.Element {
     <Stack spacing={3}>
       <Stack direction="row" spacing={3}>
         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
-          <Typography variant="h4">Integrations</Typography>
+          <Typography variant="h4">Monitoring Points</Typography>
           <Stack sx={{ alignItems: 'center' }} direction="row" spacing={1}>
             <Button color="inherit" startIcon={<UploadIcon fontSize="var(--icon-fontSize-md)" />}>
               Import
