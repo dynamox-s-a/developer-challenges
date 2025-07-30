@@ -13,7 +13,7 @@ import { DownloadIcon } from '@phosphor-icons/react/dist/ssr/Download';
 import { MachineTable } from '@/components/dashboard/customer/machine-table';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store';
-import { fetchMachines } from '@/store/features/machinesSlice';
+import { addMachine, deleteMachine, fetchMachines } from '@/store/features/machinesSlice';
 
 export default function PageClient() {
   const dispatch = useDispatch<AppDispatch>();
@@ -24,10 +24,25 @@ export default function PageClient() {
   const paginatedMachines = machines.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   const [open, setOpen] = useState(false);
+  const [name, setName] = useState('');
+  const [type, setType] = useState('pump');
 
   useEffect(() => {
     dispatch(fetchMachines());
   }, [dispatch]);
+  
+  const handleAddMachine = () => {
+    setOpen(false);
+    const newMachine = {
+      id: `USR-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
+      name,
+      type,
+    };
+    dispatch(addMachine(newMachine));
+    setOpen(false);
+    setName('');
+    setType('pump');
+  };
 
   return (
     <Stack spacing={3}>
@@ -55,15 +70,16 @@ export default function PageClient() {
             <Typography variant="h6">Name</Typography>
             <TextField
               fullWidth
-              // label="Machine Name"
               autoFocus
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
             <Typography variant="h6">Type</Typography>
             <Select
               fullWidth
-              // defaultValue="pump"
               label="Type"
-              // displayEmpty
+              value={type}
+              onChange={(e) => setType(e.target.value)}
             >
               <MenuItem value="pump">Pump</MenuItem>
               <MenuItem value="fan">Fan</MenuItem>
@@ -72,7 +88,7 @@ export default function PageClient() {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button onClick={() => setOpen(false)} variant="contained">Save</Button>
+          <Button onClick={handleAddMachine} variant="contained">Save</Button>
         </DialogActions>
       </Dialog>
     </Stack>

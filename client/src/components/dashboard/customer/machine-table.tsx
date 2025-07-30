@@ -12,6 +12,9 @@ import {
   MenuItem,
   Container,
 } from '@mui/material';
+import { deleteMachine } from '@/store/features/machinesSlice';
+import { AppDispatch } from '@/store';
+import { useDispatch } from 'react-redux';
 
 export interface Machine {
   id: string;
@@ -22,7 +25,8 @@ export interface Machine {
 export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine[] }) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editedName, setEditedName] = useState('');
-
+  const dispatch = useDispatch<AppDispatch>();
+  
   const handleStartEdit = (machine: Machine) => {
     setEditingId(machine.id);
     setEditedName(machine.name);
@@ -37,6 +41,11 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
     setEditingId(null);
     setEditedName('');
   };
+
+  const handleDeleteMachine = (id: string) => {
+    dispatch(deleteMachine(id));
+  };
+  
 
   return (
     <>
@@ -83,9 +92,7 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
             </Select>
                 <Container sx={{ minWidth: '200px' }}>
                 </Container>
-            <Button variant="contained" color="error" onClick={() => {
-              // Handle delete
-            }}>
+            <Button variant="contained" color="error" onClick={() => handleDeleteMachine(machine.id)}>
               Delete
             </Button>
           </CardContent>

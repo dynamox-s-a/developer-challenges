@@ -40,6 +40,9 @@ const machinesSlice = createSlice({
         addMachine: (state, action: PayloadAction<Machine>) => {
             state.list.unshift(action.payload);
         },
+        deleteMachine: (state, action: PayloadAction<string>) => {
+            state.list = state.list.filter((machine) => machine.id !== action.payload);
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -58,5 +61,5 @@ const machinesSlice = createSlice({
     },
 });
 
-export const { addMachine } = machinesSlice.actions;
+export const { addMachine, deleteMachine } = machinesSlice.actions;
 export default machinesSlice.reducer;
