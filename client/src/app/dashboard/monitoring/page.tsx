@@ -1,113 +1,142 @@
+'use client';
+
 import * as React from 'react';
 import type { Metadata } from 'next';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { DownloadIcon } from '@phosphor-icons/react/dist/ssr/Download';
 import { PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
-import { UploadIcon } from '@phosphor-icons/react/dist/ssr/Upload';
-import dayjs from 'dayjs';
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableSortLabel,
+} from '@mui/material';
 
-import { config } from '@/config';
-import { IntegrationCard } from '@/components/dashboard/integrations/integrations-card';
-import type { Integration } from '@/components/dashboard/integrations/integrations-card';
-import { CompaniesFilters } from '@/components/dashboard/integrations/integrations-filters';
 
-export const metadata = { title: `Monitoring Points | Dashboard | ${config.site.name}` } satisfies Metadata;
+type Order = 'asc' | 'desc';
 
-const integrations = [
+function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+  if (b[orderBy] < a[orderBy]) return -1;
+  if (b[orderBy] > a[orderBy]) return 1;
+  return 0;
+}
+
+function getComparator<Key extends keyof any>(
+  order: Order,
+  orderBy: Key
+): (a: { [key in Key]: any }, b: { [key in Key]: any }) => number {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
+  return [...array].sort(comparator);
+}
+
+const machines = [
+  { id: 'USR-010', name: 'Pump Alpha Romeo', type: 'pump', monitoringPoints: [] },
   {
-    id: 'INTEG-006',
-    title: 'Dropbox',
-    description: 'Dropbox is a file hosting service that offers cloud storage, file synchronization, a personal cloud.',
-    logo: '/assets/logo-dropbox.png',
-    installs: 594,
-    updatedAt: dayjs().subtract(12, 'minute').toDate(),
+    id: 'USR-009',
+    name: 'Cooling Beta',
+    type: 'fan',
+    monitoringPoints: [
+      { id: 'USR-009-001', monitoringPointName: 'Temperature', sensorType: 'TcAg', machineName: 'USR-009' },
+      { id: 'USR-009-002', monitoringPointName: 'Humidity', sensorType: 'TcAS', machineName: 'USR-009' },
+      { id: 'USR-009-003', monitoringPointName: 'Pressure', sensorType: 'HF+', machineName: 'USR-009' },
+    ],
   },
   {
-    id: 'INTEG-005',
-    title: 'Medium Corporation',
-    description: 'Medium is an online publishing platform developed by Evan Williams, and launched in August 2012.',
-    logo: '/assets/logo-medium.png',
-    installs: 625,
-    updatedAt: dayjs().subtract(43, 'minute').subtract(1, 'hour').toDate(),
+    id: 'USR-008',
+    name: 'Industrial Gamma',
+    type: 'pump',
+    monitoringPoints: [
+      { id: 'USR-008-004', monitoringPointName: 'Temperature', sensorType: 'TcAg', machineName: 'USR-008' },
+      { id: 'USR-008-005', monitoringPointName: 'Humidity', sensorType: 'TcAS', machineName: 'USR-008' },
+      { id: 'USR-008-006', monitoringPointName: 'Pressure', sensorType: 'HF+', machineName: 'USR-008' },
+      { id: 'USR-008-007', monitoringPointName: 'Level', sensorType: 'HF+', machineName: 'USR-008' },
+      { id: 'USR-008-008', monitoringPointName: 'Flow', sensorType: 'HF+', machineName: 'USR-008' },
+    ],
   },
-  {
-    id: 'INTEG-004',
-    title: 'Slack',
-    description: 'Slack is a cloud-based set of team collaboration tools and services, founded by Stewart Butterfield.',
-    logo: '/assets/logo-slack.png',
-    installs: 857,
-    updatedAt: dayjs().subtract(50, 'minute').subtract(3, 'hour').toDate(),
-  },
-  {
-    id: 'INTEG-003',
-    title: 'Lyft',
-    description: 'Lyft is an on-demand transportation company based in San Francisco, California.',
-    logo: '/assets/logo-lyft.png',
-    installs: 406,
-    updatedAt: dayjs().subtract(7, 'minute').subtract(4, 'hour').subtract(1, 'day').toDate(),
-  },
-  {
-    id: 'INTEG-002',
-    title: 'GitHub',
-    description: 'GitHub is a web-based hosting service for version control of code using Git.',
-    logo: '/assets/logo-github.png',
-    installs: 835,
-    updatedAt: dayjs().subtract(31, 'minute').subtract(4, 'hour').subtract(5, 'day').toDate(),
-  },
-  {
-    id: 'INTEG-001',
-    title: 'Squarespace',
-    description: 'Squarespace provides software as a service for website building and hosting. Headquartered in NYC.',
-    logo: '/assets/logo-squarespace.png',
-    installs: 435,
-    updatedAt: dayjs().subtract(25, 'minute').subtract(6, 'hour').subtract(6, 'day').toDate(),
-  },
-] satisfies Integration[];
+];
+
+type MonitoringPoint = {
+  id: string;
+  monitoringPointName: string;
+  sensorType: string;
+  machineName: string;
+};
 
 export default function Page(): React.JSX.Element {
+  const [orderBy, setOrderBy] = React.useState<keyof MonitoringPoint>('id');
+  const [order, setOrder] = React.useState<Order>('asc');
+
+  const monitoringPoints = machines.flatMap((m) => m.monitoringPoints);
+
+  const sorted = stableSort(monitoringPoints, getComparator(order, orderBy));
+
+  const handleSort = (property: keyof MonitoringPoint) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+
   return (
     <Stack spacing={3}>
       <Stack direction="row" spacing={3}>
         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
           <Typography variant="h4">Monitoring Points</Typography>
-          <Stack sx={{ alignItems: 'center' }} direction="row" spacing={1}>
-            <Button color="inherit" startIcon={<UploadIcon fontSize="var(--icon-fontSize-md)" />}>
-              Import
-            </Button>
-            <Button color="inherit" startIcon={<DownloadIcon fontSize="var(--icon-fontSize-md)" />}>
-              Export
-            </Button>
-          </Stack>
         </Stack>
         <div>
-          <Button startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />} variant="contained">
+          <Button
+            startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
+            variant="contained"
+          >
             Add
           </Button>
         </div>
       </Stack>
-      <CompaniesFilters />
-      <Grid container spacing={3}>
-        {integrations.map((integration) => (
-          <Grid
-            key={integration.id}
-            size={{
-              lg: 4,
-              md: 6,
-              xs: 12,
-            }}
-          >
-            <IntegrationCard integration={integration} />
-          </Grid>
-        ))}
-      </Grid>
-      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Pagination count={3} size="small" />
-      </Box>
+
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              {(['id', 'monitoringPointName', 'sensorType', 'machineName'] as (keyof MonitoringPoint)[]).map((key) => (
+                <TableCell key={key}>
+                  <TableSortLabel
+                    active={orderBy === key}
+                    direction={orderBy === key ? order : 'asc'}
+                    onClick={() => handleSort(key)}
+                  >
+                    {({
+                      id: 'ID',
+                      monitoringPointName: 'Monitoring Point Name', 
+                      sensorType: 'Sensor Type',
+                      machineName: 'Machine Name'
+                    }[key] || key)}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {sorted.map((point) => (
+              <TableRow key={point.id}>
+                <TableCell>{point.id}</TableCell>
+                <TableCell>{point.monitoringPointName}</TableCell>
+                <TableCell>{point.sensorType}</TableCell>
+                <TableCell>{point.machineName}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Stack>
   );
 }

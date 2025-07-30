@@ -5,7 +5,22 @@ export interface Machine {
     id: string;
     name: string;
     type: string;
+    monitoringPoints: MonitoringPoint[];
 }
+
+export interface MonitoringPoint {
+    id: string;
+    monitoringPointName: string;
+    sensorType: SensorType;
+}
+
+export const sensorTypes = {
+    TcAg: 'TcAg',
+    TcAS: 'TcAS',
+    HF: 'HF+',
+} as const;
+
+export type SensorType = typeof sensorTypes[keyof typeof sensorTypes];
 
 interface MachinesState {
     list: Machine[];
@@ -25,9 +40,23 @@ export const fetchMachines = createAsyncThunk<Machine[]>(
 
 const initialState: MachinesState = {
     list: [
-        { id: 'USR-010', name: 'Pump Alpha Romeo', type: 'pump' },
-        { id: 'USR-009', name: 'Cooling Beta', type: 'fan' },
-        { id: 'USR-008', name: 'Industrial Gamma', type: 'pump' },
+        { id: 'USR-010', name: 'Pump Alpha Romeo', type: 'pump', monitoringPoints: [] },
+        {
+            id: 'USR-009', name: 'Cooling Beta', type: 'fan', monitoringPoints: [
+                { id: 'USR-009-001', monitoringPointName: 'Temperature', sensorType: 'TcAg' },
+                { id: 'USR-009-002', monitoringPointName: 'Humidity', sensorType: 'TcAS' },
+                { id: 'USR-009-003', monitoringPointName: 'Pressure', sensorType: 'HF+' },
+            ]
+        },
+        {
+            id: 'USR-008', name: 'Industrial Gamma', type: 'pump', monitoringPoints: [
+                { id: 'USR-008-004', monitoringPointName: 'Temperature', sensorType: 'TcAg' },
+                { id: 'USR-008-005', monitoringPointName: 'Humidity', sensorType: 'TcAS' },
+                { id: 'USR-008-006', monitoringPointName: 'Pressure', sensorType: 'HF+' },
+                { id: 'USR-008-007', monitoringPointName: 'Level', sensorType: 'HF+' },
+                { id: 'USR-008-008', monitoringPointName: 'Flow', sensorType: 'HF+' },
+            ]
+        },
     ],
     loading: false,
     error: null,
