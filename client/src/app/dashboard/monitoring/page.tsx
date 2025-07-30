@@ -24,6 +24,18 @@ import { MonitoringPointsTable, type MonitoringPoint } from '@/components/dashbo
 
 type Order = 'asc' | 'desc';
 
+// Sensor type configurations
+const SENSOR_CONFIGS = {
+  pump: [
+    { value: 'HF+', label: 'Pressure/Level/Flow (HF+)' }
+  ],
+  fan: [
+    { value: 'TcAg', label: 'Temperature (TcAg)' },
+    { value: 'TcAS', label: 'Humidity (TcAS)' },
+    { value: 'HF+', label: 'Pressure/Level/Flow (HF+)' }
+  ]
+} as const;
+
 export default function Page(): React.JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
   const { list: machines, loading, error } = useSelector((state: RootState) => state.machines);
@@ -66,6 +78,17 @@ export default function Page(): React.JSX.Element {
     setOpen(false);
   };
 
+  const handleMachineChange = (machineId: string) => {
+    setSelectedMachineId(machineId);
+    // Reset sensor type when machine changes
+    setSensorType('');
+  };
+
+  // Get the selected machine to determine available sensor types
+  const selectedMachine = machines.find(machine => machine.id === selectedMachineId);
+  const machineType = selectedMachine?.type as keyof typeof SENSOR_CONFIGS;
+  const availableSensors = machineType ? SENSOR_CONFIGS[machineType] : [];
+
   return (
     <Stack spacing={3}>
       <Stack direction="row" spacing={3}>
@@ -99,7 +122,7 @@ export default function Page(): React.JSX.Element {
               <Select
                 value={selectedMachineId}
                 label="Machine Name"
-                onChange={(e) => setSelectedMachineId(e.target.value)}
+                onChange={(e) => handleMachineChange(e.target.value as string)}
               >
                 {machines.map((machine) => (
                   <MenuItem key={machine.id} value={machine.id}>
@@ -121,11 +144,14 @@ export default function Page(): React.JSX.Element {
               <Select
                 value={sensorType}
                 label="Sensor Type"
-                onChange={(e) => setSensorType(e.target.value)}
+                onChange={(e) => setSensorType(e.target.value as string)}
+                disabled={!selectedMachineId}
               >
-                <MenuItem value="TcAg">Temperature (TcAg)</MenuItem>
-                <MenuItem value="TcAS">Humidity (TcAS)</MenuItem>
-                <MenuItem value="HF+">Pressure/Level/Flow (HF+)</MenuItem>
+                {availableSensors.map((sensor) => (
+                  <MenuItem key={sensor.value} value={sensor.value}>
+                    {sensor.label}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
             
