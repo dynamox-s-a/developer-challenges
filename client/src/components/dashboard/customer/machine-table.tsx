@@ -36,12 +36,12 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
   const handleUpdateName = (machineId: string, machineType: string) => {
     setEditingId(null);
     dispatch(updateMachine({ id: machineId, name: editedName }));
-    showMessage('Machine updated', 'info');
+    showMessage('Machine name updated', 'info');
   };
 
   const handleUpdateType = (machineId: string, machineType: string) => {
     dispatch(updateMachine({ id: machineId, type: machineType as 'pump' | 'fan' }));
-    showMessage('Machine updated', 'info');
+    showMessage('Machine type updated', 'info');
   };
 
   const handleCancel = () => {
