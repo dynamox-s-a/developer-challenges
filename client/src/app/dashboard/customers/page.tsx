@@ -1,88 +1,77 @@
-import * as React from 'react';
-import type { Metadata } from 'next';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import { DownloadIcon } from '@phosphor-icons/react/dist/ssr/Download';
+// 📁 page-client.tsx (Client Component — can use hooks, MUI dialogs, etc.)
+'use client';
+
+import { useState } from 'react';
+import {
+  Stack, Button, Typography, Dialog, DialogTitle,
+  DialogContent, DialogActions, TextField,
+  Select,
+  MenuItem
+} from '@mui/material';
 import { PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { UploadIcon } from '@phosphor-icons/react/dist/ssr/Upload';
-import dayjs from 'dayjs';
-
-import { config } from '@/config';
-import { CustomersFilters } from '@/components/dashboard/customer/customers-filters';
-import { CustomersTable } from '@/components/dashboard/customer/customers-table';
-import type { Customer } from '@/components/dashboard/customer/customers-table';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import { Table } from '@phosphor-icons/react';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
+import { DownloadIcon } from '@phosphor-icons/react/dist/ssr/Download';
 import { MachineTable } from '@/components/dashboard/customer/machine-table';
 
-export const metadata = { title: `Customers | Dashboard | ${config.site.name}` } satisfies Metadata;
-
 const machines = [
-  {
-    id: 'USR-010',
-    name: 'Pump Station Alpha',
-    type: 'pump'
-  },
-  {
-    id: 'USR-009',
-    name: 'Cooling Fan Beta',
-    type: 'fan'
-  },
-  {
-    id: 'USR-008',
-    name: 'Industrial Pump Gamma',
-    type: 'pump'
-  },
-] satisfies Customer[];
+  { id: 'USR-010', name: 'Pump Station Alpha', type: 'pump' },
+  { id: 'USR-009', name: 'Cooling Fan Beta', type: 'fan' },
+  { id: 'USR-008', name: 'Industrial Pump Gamma', type: 'pump' },
+];
 
-export default function Page(): React.JSX.Element {
+export default function PageClient() {
   const page = 0;
   const rowsPerPage = 5;
+  const paginatedMachines = machines.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
-  const paginatedMachines = applyPagination(machines, page, rowsPerPage);
+  const [open, setOpen] = useState(false);
 
   return (
     <Stack spacing={3}>
       <Stack direction="row" spacing={3}>
         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
           <Typography variant="h4">Customers</Typography>
-          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-            <Button color="inherit" startIcon={<UploadIcon fontSize="var(--icon-fontSize-md)" />}>
-              Import
-            </Button>
-            <Button color="inherit" startIcon={<DownloadIcon fontSize="var(--icon-fontSize-md)" />}>
-              Export
-            </Button>
+          <Stack direction="row" spacing={1}>
+            <Button color="inherit" startIcon={<UploadIcon />}>Import</Button>
+            <Button color="inherit" startIcon={<DownloadIcon />}>Export</Button>
           </Stack>
         </Stack>
         <div>
-          <Button startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />} variant="contained">
+          <Button startIcon={<PlusIcon />} variant="contained" onClick={() => setOpen(true)}>
             Add
           </Button>
         </div>
       </Stack>
-      {/* <CustomersFilters />
-      <CustomersTable
-        count={paginatedCustomers.length}
-        page={page}
-        rows={paginatedCustomers}
-        rowsPerPage={rowsPerPage}
-      /> */}
-         {/* make a machine card with name and type, and allow user to edit name on click */}
-        <MachineTable paginatedMachines={paginatedMachines} />
 
+      <MachineTable paginatedMachines={paginatedMachines} />
+
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>Add New Machine</DialogTitle>
+        <DialogContent>
+          <Stack spacing={2} sx={{ mt: 2, minWidth: 300 }}>
+            <Typography variant="h6">Name</Typography>
+            <TextField
+              fullWidth
+              // label="Machine Name"
+              autoFocus
+            />
+            <Typography variant="h6">Type</Typography>
+            <Select
+              fullWidth
+              // defaultValue="pump"
+              label="Type"
+              // displayEmpty
+            >
+              <MenuItem value="pump">Pump</MenuItem>
+              <MenuItem value="fan">Fan</MenuItem>
+            </Select>
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>Cancel</Button>
+          <Button onClick={() => setOpen(false)} variant="contained">Save</Button>
+        </DialogActions>
+      </Dialog>
     </Stack>
   );
-}
-
-function applyPagination(rows: Customer[], page: number, rowsPerPage: number): Customer[] {
-  return rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 }
