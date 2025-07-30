@@ -30,7 +30,7 @@ export default function PageClient() {
     <Stack spacing={3}>
       <Stack direction="row" spacing={3}>
         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
-          <Typography variant="h4">Customers</Typography>
+          <Typography variant="h4">Machines</Typography>
           <Stack direction="row" spacing={1}>
             <Button color="inherit" startIcon={<UploadIcon />}>Import</Button>
             <Button color="inherit" startIcon={<DownloadIcon />}>Export</Button>
