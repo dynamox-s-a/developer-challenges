@@ -14,9 +14,9 @@ import { DownloadIcon } from '@phosphor-icons/react/dist/ssr/Download';
 import { MachineTable } from '@/components/dashboard/customer/machine-table';
 
 const machines = [
-  { id: 'USR-010', name: 'Pump Station Alpha', type: 'pump' },
-  { id: 'USR-009', name: 'Cooling Fan Beta', type: 'fan' },
-  { id: 'USR-008', name: 'Industrial Pump Gamma', type: 'pump' },
+  { id: 'USR-010', name: 'Pump Alpha', type: 'pump' },
+  { id: 'USR-009', name: 'Cooling Beta', type: 'fan' },
+  { id: 'USR-008', name: 'Industrial Gamma', type: 'pump' },
 ];
 
 export default function PageClient() {

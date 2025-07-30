@@ -10,6 +10,7 @@ import {
   Stack,
   Select,
   MenuItem,
+  Container,
 } from '@mui/material';
 
 export interface Machine {
@@ -48,7 +49,6 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
             justifyContent: 'space-between',
             gap: 4
           }}>
-            <Stack direction="row" alignItems="center" spacing={1} sx={{ minWidth: '200px' }}>
               {editingId === machine.id ? (
                 <TextField
                   size="small"
@@ -70,7 +70,6 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
                   {machine.name}
                 </Typography>
               )}
-            </Stack>
             <Select
               size="small"
               value={machine.type}
@@ -82,6 +81,8 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
               <MenuItem value="pump">Pump</MenuItem>
               <MenuItem value="fan">Fan</MenuItem>
             </Select>
+                <Container sx={{ minWidth: '200px' }}>
+                </Container>
             <Button variant="contained" color="error" onClick={() => {
               // Handle delete
             }}>
