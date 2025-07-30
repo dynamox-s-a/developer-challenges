@@ -25,6 +25,11 @@ import {
   FormControl,
   InputLabel,
 } from '@mui/material';
+import { AppDispatch, RootState } from '@/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { addMonitoringPoint, fetchMachines, SensorType } from '@/store/features/machinesSlice';
+import { AnyAction } from '@reduxjs/toolkit';
+import { useEffect } from 'react';
 
 
 type Order = 'asc' | 'desc';
@@ -48,32 +53,6 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
   return [...array].sort(comparator);
 }
 
-const machines = [
-  { id: 'USR-010', name: 'Pump Alpha Romeo', type: 'pump', monitoringPoints: [] },
-  {
-    id: 'USR-009',
-    name: 'Cooling Beta',
-    type: 'fan',
-    monitoringPoints: [
-      { id: 'USR-009-001', monitoringPointName: 'Temperature', sensorType: 'TcAg' },
-      { id: 'USR-009-002', monitoringPointName: 'Humidity', sensorType: 'TcAS' },
-      { id: 'USR-009-003', monitoringPointName: 'Pressure', sensorType: 'HF+' },
-    ],
-  },
-  {
-    id: 'USR-008',
-    name: 'Industrial Gamma',
-    type: 'pump',
-    monitoringPoints: [
-      { id: 'USR-008-004', monitoringPointName: 'Temperature', sensorType: 'TcAg' },
-      { id: 'USR-008-005', monitoringPointName: 'Humidity', sensorType: 'TcAS' },
-      { id: 'USR-008-006', monitoringPointName: 'Pressure', sensorType: 'HF+' },
-      { id: 'USR-008-007', monitoringPointName: 'Level', sensorType: 'HF+' },
-      { id: 'USR-008-008', monitoringPointName: 'Flow', sensorType: 'HF+' },
-    ],
-  },
-];
-
 type MonitoringPoint = {
   id: string;
   monitoringPointName: string;
@@ -82,12 +61,18 @@ type MonitoringPoint = {
 };
 
 export default function Page(): React.JSX.Element {
+  const dispatch = useDispatch<AppDispatch>();
+  const { list: machines, loading, error } = useSelector((state: RootState) => state.machines);
   const [orderBy, setOrderBy] = React.useState<keyof MonitoringPoint>('id');
   const [order, setOrder] = React.useState<Order>('asc');
   const [open, setOpen] = React.useState(false);
   const [selectedMachineId, setSelectedMachineId] = React.useState<string>('');
   const [monitoringPointName, setMonitoringPointName] = React.useState<string>('');
   const [sensorType, setSensorType] = React.useState<string>('');
+
+  useEffect(() => {
+    dispatch(fetchMachines());
+  }, [dispatch]);
 
   const monitoringPoints = machines.flatMap((m) => m.monitoringPoints.map(point => ({
     ...point,
@@ -104,13 +89,7 @@ export default function Page(): React.JSX.Element {
   };
 
   const handleAddMonitoringPoint = () => {
-    // Here you would typically save the monitoring point
-    console.log('Adding monitoring point:', {
-      machineId: selectedMachineId,
-      monitoringPointName,
-      sensorType
-    });
-    
+    dispatch(addMonitoringPoint({ machineId: selectedMachineId, monitoringPoint: { id: '', monitoringPointName, sensorType: sensorType as SensorType } }));
     // Reset form
     setSelectedMachineId('');
     setMonitoringPointName('');

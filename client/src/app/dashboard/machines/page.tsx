@@ -37,6 +37,7 @@ export default function PageClient() {
       id: `USR-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
       name,
       type,
+      monitoringPoints: [],
     };
     dispatch(addMachine(newMachine));
     setOpen(false);
