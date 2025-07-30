@@ -15,6 +15,7 @@ import {
 import { deleteMachine } from '@/store/features/machinesSlice';
 import { AppDispatch } from '@/store';
 import { useDispatch } from 'react-redux';
+import { useSnackbar } from '@/providers/SnackProvider';
 
 export interface Machine {
   id: string;
@@ -26,14 +27,13 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editedName, setEditedName] = useState('');
   const dispatch = useDispatch<AppDispatch>();
-  
+  const { showMessage } = useSnackbar();
   const handleStartEdit = (machine: Machine) => {
     setEditingId(machine.id);
     setEditedName(machine.name);
   };
 
   const handleSave = (machineId: string) => {
-    console.log(`Save ${machineId} with new name: ${editedName}`);
     setEditingId(null);
   };
 
@@ -44,6 +44,7 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
 
   const handleDeleteMachine = (id: string) => {
     dispatch(deleteMachine(id));
+    showMessage('Machine deleted', 'info');
   };
   
 

@@ -14,8 +14,10 @@ import { MachineTable } from '@/components/dashboard/customer/machine-table';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store';
 import { addMachine, deleteMachine, fetchMachines } from '@/store/features/machinesSlice';
+import { useSnackbar } from '@/providers/SnackProvider';
 
 export default function PageClient() {
+  const { showMessage } = useSnackbar();
   const dispatch = useDispatch<AppDispatch>();
   const { list: machines, loading, error } = useSelector((state: RootState) => state.machines);
 
@@ -32,7 +34,6 @@ export default function PageClient() {
   }, [dispatch]);
   
   const handleAddMachine = () => {
-    setOpen(false);
     const newMachine = {
       id: `USR-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
       name,
@@ -40,6 +41,7 @@ export default function PageClient() {
       monitoringPoints: [],
     };
     dispatch(addMachine(newMachine));
+    showMessage('Machine updated successfully', 'success');
     setOpen(false);
     setName('');
     setType('pump');

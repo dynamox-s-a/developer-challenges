@@ -9,6 +9,7 @@ import { LocalizationProvider } from '@/components/core/localization-provider';
 import { ThemeProvider } from '@/components/core/theme-provider/theme-provider';
 import { store } from '@/store';
 import { Provider } from 'react-redux';
+import { SnackbarProvider } from '@/providers/SnackProvider';
 
 
 interface LayoutProps {
@@ -17,12 +18,14 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps): React.JSX.Element {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
         <Provider store={store}>
         <LocalizationProvider>
           <UserProvider>
-            <ThemeProvider>{children}</ThemeProvider>
+            <ThemeProvider>
+              <SnackbarProvider>{children}</SnackbarProvider>
+            </ThemeProvider>
           </UserProvider>
         </LocalizationProvider>
         </Provider>
