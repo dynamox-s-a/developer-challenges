@@ -56,7 +56,7 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            gap: 4
+            gap: 2
           }}>
               {editingId === machine.id ? (
                 <TextField

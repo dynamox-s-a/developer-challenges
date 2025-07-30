@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import type { Metadata } from 'next';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -12,15 +11,7 @@ import {
   DialogContent,
   DialogTitle,
   MenuItem,
-  Paper,
   Select,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TableSortLabel,
   TextField,
   FormControl,
   InputLabel,
@@ -28,37 +19,10 @@ import {
 import { AppDispatch, RootState } from '@/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { addMonitoringPoint, fetchMachines, SensorType } from '@/store/features/machinesSlice';
-import { AnyAction } from '@reduxjs/toolkit';
 import { useEffect } from 'react';
-
+import { MonitoringPointsTable, type MonitoringPoint } from '@/components/dashboard/monitoring/monitoring-points-table';
 
 type Order = 'asc' | 'desc';
-
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) return -1;
-  if (b[orderBy] > a[orderBy]) return 1;
-  return 0;
-}
-
-function getComparator<Key extends keyof any>(
-  order: Order,
-  orderBy: Key
-): (a: { [key in Key]: any }, b: { [key in Key]: any }) => number {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
-  return [...array].sort(comparator);
-}
-
-type MonitoringPoint = {
-  id: string;
-  monitoringPointName: string;
-  sensorType: string;
-  machineName: string;
-};
 
 export default function Page(): React.JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
@@ -79,8 +43,6 @@ export default function Page(): React.JSX.Element {
     machineName: m.name,
     machineType: m.type
   })));
-
-  const sorted = stableSort(monitoringPoints, getComparator(order, orderBy));
 
   const handleSort = (property: keyof MonitoringPoint) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -121,41 +83,12 @@ export default function Page(): React.JSX.Element {
         </div>
       </Stack>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              {(['machineName', 'machineType', 'monitoringPointName', 'sensorType'] as (keyof MonitoringPoint)[]).map((key) => (
-                <TableCell key={key}>
-                  <TableSortLabel
-                    active={orderBy === key}
-                    direction={orderBy === key ? order : 'asc'}
-                    onClick={() => handleSort(key)}
-                  >
-                    {({
-                      id: 'Point ID',
-                      monitoringPointName: 'Monitoring Point Name', 
-                      sensorType: 'Sensor Type',
-                      machineName: 'Machine Name',
-                      machineType: 'Machine Type'
-                    }[key] || key)}
-                  </TableSortLabel>
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {sorted.map((point) => (
-              <TableRow key={point.id}>
-                <TableCell>{point.machineName}</TableCell>
-                <TableCell>{point.machineType}</TableCell>
-                <TableCell>{point.monitoringPointName}</TableCell>
-                <TableCell>{point.sensorType}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <MonitoringPointsTable
+        monitoringPoints={monitoringPoints}
+        orderBy={orderBy}
+        order={order}
+        onSort={handleSort}
+      />
       
       <Dialog open={open} onClose={handleCloseDialog}>
         <DialogTitle>Add Monitoring Point</DialogTitle>
