@@ -79,7 +79,8 @@ export default function Page(): React.JSX.Element {
 
   const monitoringPoints = machines.flatMap((m) => m.monitoringPoints.map(point => ({
     ...point,
-    machineName: m.name
+    machineName: m.name,
+    machineType: m.type
   })));
 
   const sorted = stableSort(monitoringPoints, getComparator(order, orderBy));
@@ -110,7 +111,7 @@ export default function Page(): React.JSX.Element {
         <Table>
           <TableHead>
             <TableRow>
-              {(['id', 'monitoringPointName', 'sensorType', 'machineName'] as (keyof MonitoringPoint)[]).map((key) => (
+              {(['machineName', 'machineType', 'monitoringPointName', 'sensorType'] as (keyof MonitoringPoint)[]).map((key) => (
                 <TableCell key={key}>
                   <TableSortLabel
                     active={orderBy === key}
@@ -119,9 +120,10 @@ export default function Page(): React.JSX.Element {
                   >
                     {({
                       id: 'Point ID',
-                      monitoringPointName: 'Point Name', 
+                      monitoringPointName: 'Monitoring Point Name', 
                       sensorType: 'Sensor Type',
-                      machineName: 'Machine Name'
+                      machineName: 'Machine Name',
+                      machineType: 'Machine Type'
                     }[key] || key)}
                   </TableSortLabel>
                 </TableCell>
@@ -131,10 +133,10 @@ export default function Page(): React.JSX.Element {
           <TableBody>
             {sorted.map((point) => (
               <TableRow key={point.id}>
-                <TableCell>{point.id}</TableCell>
+                <TableCell>{point.machineName}</TableCell>
+                <TableCell>{point.machineType}</TableCell>
                 <TableCell>{point.monitoringPointName}</TableCell>
                 <TableCell>{point.sensorType}</TableCell>
-                <TableCell>{point.machineName}</TableCell>
               </TableRow>
             ))}
           </TableBody>
