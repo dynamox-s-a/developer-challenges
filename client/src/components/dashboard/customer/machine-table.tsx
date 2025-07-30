@@ -12,7 +12,7 @@ import {
   MenuItem,
   Container,
 } from '@mui/material';
-import { deleteMachine } from '@/store/features/machinesSlice';
+import { deleteMachine, updateMachine } from '@/store/features/machinesSlice';
 import { AppDispatch } from '@/store';
 import { useDispatch } from 'react-redux';
 import { useSnackbar } from '@/providers/SnackProvider';
@@ -33,8 +33,15 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
     setEditedName(machine.name);
   };
 
-  const handleSave = (machineId: string) => {
+  const handleUpdateName = (machineId: string, machineType: string) => {
     setEditingId(null);
+    dispatch(updateMachine({ id: machineId, name: editedName }));
+    showMessage('Machine updated', 'info');
+  };
+
+  const handleUpdateType = (machineId: string, machineType: string) => {
+    dispatch(updateMachine({ id: machineId, type: machineType as 'pump' | 'fan' }));
+    showMessage('Machine updated', 'info');
   };
 
   const handleCancel = () => {
@@ -64,9 +71,9 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
                   size="small"
                   value={editedName}
                   onChange={(e) => setEditedName(e.target.value)}
-                  onBlur={() => handleSave(machine.id)}
+                  onBlur={() => handleUpdateName(machine.id, machine.type)}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter') handleSave(machine.id);
+                    if (e.key === 'Enter') handleUpdateName(machine.id, machine.type);
                     if (e.key === 'Escape') handleCancel();
                   }}
                   autoFocus
@@ -84,8 +91,7 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
               size="small"
               value={machine.type}
               onChange={(e) => {
-                // Handle type change
-                console.log(`Changed type to ${e.target.value}`);
+                handleUpdateType(machine.id, e.target.value as 'pump' | 'fan');
               }}
             >
               <MenuItem value="pump">Pump</MenuItem>

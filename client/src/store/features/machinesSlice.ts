@@ -78,6 +78,13 @@ const machinesSlice = createSlice({
                 machine.monitoringPoints.push(action.payload.monitoringPoint);
             }
         },
+        updateMachine: (state, action: PayloadAction<{ id: string; name?: string; type?: 'pump' | 'fan' }>) => {
+            const machine = state.list.find((machine) => machine.id === action.payload.id);
+            if (machine) {
+                if (action.payload.name) machine.name = action.payload.name;
+                if (action.payload.type) machine.type = action.payload.type;
+            }
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -96,5 +103,5 @@ const machinesSlice = createSlice({
     },
 });
 
-export const { addMachine, deleteMachine, addMonitoringPoint } = machinesSlice.actions;
+export const { addMachine, deleteMachine, addMonitoringPoint, updateMachine } = machinesSlice.actions;
 export default machinesSlice.reducer;
