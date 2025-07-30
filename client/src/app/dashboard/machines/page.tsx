@@ -1,7 +1,6 @@
-// 📁 page-client.tsx (Client Component — can use hooks, MUI dialogs, etc.)
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Stack, Button, Typography, Dialog, DialogTitle,
   DialogContent, DialogActions, TextField,
@@ -12,19 +11,23 @@ import { PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { UploadIcon } from '@phosphor-icons/react/dist/ssr/Upload';
 import { DownloadIcon } from '@phosphor-icons/react/dist/ssr/Download';
 import { MachineTable } from '@/components/dashboard/customer/machine-table';
-
-const machines = [
-  { id: 'USR-010', name: 'Pump Alpha', type: 'pump' },
-  { id: 'USR-009', name: 'Cooling Beta', type: 'fan' },
-  { id: 'USR-008', name: 'Industrial Gamma', type: 'pump' },
-];
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/store';
+import { fetchMachines } from '@/store/features/machinesSlice';
 
 export default function PageClient() {
+  const dispatch = useDispatch<AppDispatch>();
+  const { list: machines, loading, error } = useSelector((state: RootState) => state.machines);
+
   const page = 0;
   const rowsPerPage = 5;
   const paginatedMachines = machines.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    dispatch(fetchMachines());
+  }, [dispatch]);
 
   return (
     <Stack spacing={3}>
