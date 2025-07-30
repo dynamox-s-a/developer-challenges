@@ -8,7 +8,12 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  MenuItem,
   Paper,
+  Select,
   Table,
   TableBody,
   TableCell,
@@ -16,6 +21,9 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
+  TextField,
+  FormControl,
+  InputLabel,
 } from '@mui/material';
 
 
@@ -76,6 +84,10 @@ type MonitoringPoint = {
 export default function Page(): React.JSX.Element {
   const [orderBy, setOrderBy] = React.useState<keyof MonitoringPoint>('id');
   const [order, setOrder] = React.useState<Order>('asc');
+  const [open, setOpen] = React.useState(false);
+  const [selectedMachineId, setSelectedMachineId] = React.useState<string>('');
+  const [monitoringPointName, setMonitoringPointName] = React.useState<string>('');
+  const [sensorType, setSensorType] = React.useState<string>('');
 
   const monitoringPoints = machines.flatMap((m) => m.monitoringPoints.map(point => ({
     ...point,
@@ -91,6 +103,28 @@ export default function Page(): React.JSX.Element {
     setOrderBy(property);
   };
 
+  const handleAddMonitoringPoint = () => {
+    // Here you would typically save the monitoring point
+    console.log('Adding monitoring point:', {
+      machineId: selectedMachineId,
+      monitoringPointName,
+      sensorType
+    });
+    
+    // Reset form
+    setSelectedMachineId('');
+    setMonitoringPointName('');
+    setSensorType('');
+    setOpen(false);
+  };
+
+  const handleCloseDialog = () => {
+    setSelectedMachineId('');
+    setMonitoringPointName('');
+    setSensorType('');
+    setOpen(false);
+  };
+
   return (
     <Stack spacing={3}>
       <Stack direction="row" spacing={3}>
@@ -101,6 +135,7 @@ export default function Page(): React.JSX.Element {
           <Button
             startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
             variant="contained"
+            onClick={() => setOpen(true)}
           >
             Add
           </Button>
@@ -142,6 +177,61 @@ export default function Page(): React.JSX.Element {
           </TableBody>
         </Table>
       </TableContainer>
+      
+      <Dialog open={open} onClose={handleCloseDialog}>
+        <DialogTitle>Add Monitoring Point</DialogTitle>
+        <DialogContent>
+          <Stack spacing={3} sx={{ mt: 2, minWidth: 400 }}>
+            <FormControl fullWidth>
+              <InputLabel>Machine Name</InputLabel>
+              <Select
+                value={selectedMachineId}
+                label="Machine Name"
+                onChange={(e) => setSelectedMachineId(e.target.value)}
+              >
+                {machines.map((machine) => (
+                  <MenuItem key={machine.id} value={machine.id}>
+                    {machine.name} ({machine.type})
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            
+            <TextField
+              fullWidth
+              label="Monitoring Point Name"
+              value={monitoringPointName}
+              onChange={(e) => setMonitoringPointName(e.target.value)}
+            />
+            
+            <FormControl fullWidth>
+              <InputLabel>Sensor Type</InputLabel>
+              <Select
+                value={sensorType}
+                label="Sensor Type"
+                onChange={(e) => setSensorType(e.target.value)}
+              >
+                <MenuItem value="TcAg">Temperature (TcAg)</MenuItem>
+                <MenuItem value="TcAS">Humidity (TcAS)</MenuItem>
+                <MenuItem value="HF+">Pressure/Level/Flow (HF+)</MenuItem>
+              </Select>
+            </FormControl>
+            
+            <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+              <Button 
+                variant="contained" 
+                onClick={handleAddMonitoringPoint}
+                disabled={!selectedMachineId || !monitoringPointName || !sensorType}
+              >
+                Add Monitoring Point
+              </Button>
+              <Button variant="outlined" onClick={handleCloseDialog}>
+                Cancel
+              </Button>
+            </Stack>
+          </Stack>
+        </DialogContent>
+      </Dialog>
     </Stack>
   );
 }
