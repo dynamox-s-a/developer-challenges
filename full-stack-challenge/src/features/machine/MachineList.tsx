@@ -29,35 +29,35 @@ export default function MachineList({ onSelect }: Props) {
     return (
         <Box>
         <Typography variant="h6" gutterBottom>
-          Registered machines
+            Registered Machines
         </Typography>
         <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Type</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
+            <TableHead>
+                    <TableRow>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Type</TableCell>
+                        <TableCell>Actions</TableCell>
+                    </TableRow>
+            </TableHead>
   
-          <TableBody>
-            {machines.map((machine: Machine) => (
-              <TableRow key={machine.id}>
-                <TableCell>{machine.name}</TableCell>
-                <TableCell>{machine.type}</TableCell>
-                <TableCell>
-                  <IconButton onClick={() => onSelect(machine)}>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton onClick={() => handleDelete(machine.id)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+            <TableBody>
+                {machines.map((machine: Machine) => (
+                <TableRow key={machine.id}>
+                    <TableCell>{machine.name}</TableCell>
+                    <TableCell>{machine.type}</TableCell>
+                    <TableCell>
+                    <IconButton onClick={() => onSelect(machine)}>
+                        <EditIcon />
+                    </IconButton>
+                    <IconButton onClick={() => handleDelete(machine.id)}>
+                        <DeleteIcon />
+                    </IconButton>
+                    </TableCell>
+                </TableRow>
+                ))}
+            </TableBody>
         </Table>
-      </Box>
+        </Box>
     );
 }        
  
