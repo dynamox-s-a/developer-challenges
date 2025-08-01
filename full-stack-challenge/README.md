@@ -1,69 +1,43 @@
-# React + TypeScript + Vite
+# Full Stack Challenge
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## O que foi implementado
 
-Currently, two official plugins are available:
+### 1. Gerenciamento de Máquinas
+- Adição, edição e exclusão de máquinas.
+- Validação para evitar nomes duplicados de máquinas.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 2. Monitoramento e Sensores
+- Criação da funcionalidade de pontos de monitoramento para máquinas.
+- Cada ponto possui:
+  - `name` (nome do ponto de monitoramento)
+  - Associação a uma máquina existente 
+  - Sensor associado, com modelo entre ["TcAg", "TcAs", "HF+"]
+- Regras de negócio aplicadas:
+  - Sensores "TcAg" e "TcAs" **não podem** ser associados a máquinas do tipo "Pump".
+- Formulário para adicionar pontos e sensores com validação.
+- Listagem paginada e ordenável dos pontos de monitoramento exibindo:
+  - Nome da Máquina
+  - Tipo da Máquina
+  - Nome do Ponto
+  - Modelo do Sensor
 
-## Expanding the ESLint configuration
+### 3. Integração no Dashboard
+- Dashboard contendo:
+  - Formulário e lista de máquinas
+  - Formulário e lista de pontos de monitoramento com sensores
+- Controle do estado de edição para máquinas (adição e edição no mesmo formulário).
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Como rodar o projeto
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+1. Instale as dependências:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. Rode o projeto
+```bash
+npm run dev
 ```
+3. Acesse [http://localhost:5173](http://localhost:5173) no navegador.
