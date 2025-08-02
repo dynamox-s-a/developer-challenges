@@ -27,21 +27,9 @@ describe("should test service API endpoints", () => {
 
     it("should login a user and set a cookie with a token", async () => {
         // First ensure user is registered
-        await fetch("http://localhost:3000/api/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ email: "login@test.com", password: "test" })
-        });
+        await createUser("login@test.com", "test");
         // Now test login
-        const response = await fetch("http://localhost:3000/api/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ email: "login@test.com", password: "test" })
-        });
+        const response = await loginUser("login@test.com", "test");
         expect(response.status).toBe(200);
         // Check that the token cookie is set
         const setCookieHeader = response.headers.get("Set-Cookie");
@@ -61,21 +49,9 @@ describe("should test service API endpoints", () => {
 
     it("should create a machine for a user", async () => {
         // First ensure user is registered
-        await fetch("http://localhost:3000/api/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ email: "list@test.com", password: "test" })
-        });
+        await createUser("list@test.com", "test");
         // login to get a token
-        const loginResponse = await fetch("http://localhost:3000/api/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ email: "list@test.com", password: "test" })
-        });
+        const loginResponse = await loginUser("list@test.com", "test");
         const token = loginResponse.headers.get("Set-Cookie")?.split("token=")[1];
         expect(token).toBeDefined();
         // // create a machine
@@ -105,4 +81,36 @@ describe("should test service API endpoints", () => {
         expect(machines[0].name).toBe("Machine 1");
         expect(machines[0].type).toBe(MachineType.FAN);
     });
+
+    it("should create a monitoring point for a machine", async () => {
+        // First ensure user is registered
+        await createUser("list@test.com", "test");
+        // login to get a token
+        const loginResponse = await loginUser("list@test.com", "test");
+        const token = loginResponse.headers.get("Set-Cookie")?.split("token=")[1];
+        expect(token).toBeDefined();
+
+        // create a machine
+    });
 });
+
+function createUser(email: string, password: string) {
+    return fetch("http://localhost:3000/api/register", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+    });
+}
+
+function loginUser(email: string, password: string) {
+    return fetch("http://localhost:3000/api/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+    });
+}
+
