@@ -3,24 +3,25 @@ import { MachineDTO } from "../types/types.js";
 export class MachineRepositoryMemory {
     private machines: MachineDTO[] = [];
 
-    save(machine: MachineDTO): void {
+    async save(machine: MachineDTO): Promise<string> {
         this.machines.push(machine);
+        return machine.id;
     }
 
-    getByUserId(userId: string): MachineDTO[] {
+    async getByUserId(userId: string): Promise<MachineDTO[]> {
         return this.machines.filter(machine => machine.userId === userId);
     }
 
-    getById(id: string): MachineDTO | null {
+    async getById(id: string): Promise<MachineDTO | null> {
         return this.machines.find(machine => machine.id === id) || null;
     }
 
-    delete(id: string): void {
+    async delete(id: string): Promise<void> {
         this.machines = this.machines.filter(machine => machine.id !== id);
     }
 
     // for testing purposes ONLY
-    clear(): void {
+    async clear(): Promise<void> {
         this.machines = [];
     }
 }

@@ -6,19 +6,24 @@ const JWT_SECRET = process.env.JWT_SECRET as jwt.Secret;
 interface AuthenticatedRequest extends Request {
     user?: {
         id: string;
+        email: string;
     };
 }
 
 export function authMiddleware(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        return res.status(401).json({ error: "Missing or invalid Authorization header" });
+    const token = req.cookies.token;
+    console.log("🚀 ~ file: authMiddleware.ts:15 ~ token:", token)
+    if (!token) {
+        return res.status(401).json({ error: "Missing or invalid token" });
     }
-    const token = authHeader.replace("Bearer ", "");
     try {
-        const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+        const decoded = jwt.verify(token, JWT_SECRET) as {
+            email: string; userId: string
+        };
+        console.log("🚀 ~ file: authMiddleware.ts:21 ~ decoded:", decoded)
         req.user = {
             id: decoded.userId,
+            email: decoded.email,
         };
         next();
     } catch (_err) {
