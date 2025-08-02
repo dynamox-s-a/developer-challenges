@@ -114,5 +114,5 @@ const machinesSlice = createSlice({
     },
 });
 
-export const { addMachine, deleteMachine, addMonitoringPoint, updateMachine } = machinesSlice.actions;
+export const { addMachine, deleteMachine, updateMachine } = machinesSlice.actions;
 export default machinesSlice.reducer;

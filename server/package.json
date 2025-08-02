@@ -9,7 +9,8 @@
     "start": "node dist/main.js",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:api": "node test-express.js"
+    "test:api": "node test-express.js",
+    "generate-demo": "tsx scripts/GenerateDemoUser.ts"
   },
   "keywords": [
     "express",

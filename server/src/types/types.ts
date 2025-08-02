@@ -6,9 +6,9 @@ export const MachineType = {
 export type MachineType = (typeof MachineType)[keyof typeof MachineType];
 
 export const SensorType = {
-    TcAg: "temperature",
-    TcAs: "humidity",
-    HFPlus: "pressure",
+    TcAg: "TcAg",
+    TcAs: "TcAs",
+    HFPlus: "HF+",
 } as const;
 
 export type SensorType = (typeof SensorType)[keyof typeof SensorType];

@@ -15,7 +15,8 @@ import {
 } from '@mui/material';
 import { AppDispatch } from '@/store';
 import { useDispatch } from 'react-redux';
-import { addMonitoringPoint, SensorType, type Machine } from '@/store/features/machinesSlice';
+import { type Machine } from '@/store/features/machinesSlice';
+import { createMonitoringPoint } from '@/store/features/monitoringPointsSlice';
 
 // Sensor type configurations
 const SENSOR_CONFIGS = {
@@ -24,7 +25,7 @@ const SENSOR_CONFIGS = {
   ],
   fan: [
     { value: 'TcAg', label: 'Temperature (TcAg)' },
-    { value: 'TcAS', label: 'Humidity (TcAS)' },
+    { value: 'TcAs', label: 'Humidity (TcAs)' },
     { value: 'HF+', label: 'Pressure/Level/Flow (HF+)' }
   ]
 } as const;
@@ -52,14 +53,7 @@ export function AddMonitoringPointDialog({
   };
 
   const handleAddMonitoringPoint = () => {
-    dispatch(addMonitoringPoint({ 
-      machineId: selectedMachineId, 
-      monitoringPoint: { 
-        id: crypto.randomUUID(), 
-        monitoringPointName, 
-        sensorType: sensorType as SensorType 
-      } 
-    }));
+    dispatch(createMonitoringPoint({ name: monitoringPointName, sensorType, machineId: selectedMachineId }));
     setSelectedMachineId('');
     setMonitoringPointName('');
     setSensorType('');

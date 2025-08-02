@@ -33,7 +33,7 @@ export const fetchMonitoringPoints = createAsyncThunk<MonitoringPoint[]>(
             headers: {
                 "Content-Type": "application/json",
             },
-            credentials: 'include', // Include cookies for authentication
+            credentials: 'include',
         });
         if (!response.ok) throw new Error('Failed to fetch monitoring points');
         return await response.json();
@@ -53,15 +53,16 @@ export const createMonitoringPoint = createAsyncThunk<
             serverSensorType = 'TcAg';
         } else if (sensorType === 'TcAs' || sensorType === 'humidity') {
             serverSensorType = 'TcAs';
+        } else if (sensorType === 'HFPlus' || sensorType === 'pressure') {
+            serverSensorType = 'HFPlus';
         }
-
         const response = await fetch(`${SERVER_BASE_URL}/api/monitoring-points`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({ name, sensorType: serverSensorType, machineId }),
-            credentials: 'include', // Include cookies for authentication
+            credentials: 'include',
         });
         if (!response.ok) throw new Error('Failed to create monitoring point');
         return await response.json();
@@ -77,7 +78,7 @@ export const deleteMonitoringPointBySensorId = createAsyncThunk<
     async (sensorId) => {
         const response = await fetch(`${SERVER_BASE_URL}/api/monitoring-points/sensor-id/${sensorId}`, {
             method: 'DELETE',
-            credentials: 'include', // Include cookies for authentication
+            credentials: 'include',
         });
         if (!response.ok) throw new Error('Failed to delete monitoring point');
         return { sensorId };
@@ -93,7 +94,7 @@ export const deleteMonitoringPointsByMachineId = createAsyncThunk<
     async (machineId) => {
         const response = await fetch(`${SERVER_BASE_URL}/api/monitoring-points/machine-id/${machineId}`, {
             method: 'DELETE',
-            credentials: 'include', // Include cookies for authentication
+            credentials: 'include',
         });
         if (!response.ok) throw new Error('Failed to delete monitoring points');
         return { machineId };
