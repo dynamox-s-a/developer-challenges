@@ -16,7 +16,8 @@ import {
   DialogContent,
   DialogActions,
 } from '@mui/material';
-import { deleteMachineAsync, updateMachine } from '@/store/features/machinesSlice';
+import { deleteMachineAsync, updateMachine, updateMachineTypeAsync } from '@/store/features/machinesSlice';
+import { removeMonitoringPointsByMachineId } from '@/store/features/monitoringPointsSlice';
 import { AppDispatch } from '@/store';
 import { useDispatch } from 'react-redux';
 import { useSnackbar } from '@/providers/SnackProvider';
@@ -37,6 +38,7 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
   const [editedName, setEditedName] = useState('');
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [updatingTypeId, setUpdatingTypeId] = useState<string | null>(null);
   const [pendingTypeChange, setPendingTypeChange] = useState<{
     machineId: string;
     newType: 'pump' | 'fan';
@@ -68,13 +70,25 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
     }
   };
 
-  const handleConfirmTypeChange = () => {
+  const handleConfirmTypeChange = async () => {
     if (pendingTypeChange) {
-      dispatch(updateMachine({ 
-        id: pendingTypeChange.machineId, 
-        type: pendingTypeChange.newType 
-      }));
-      showMessage(`Machine type updated to ${pendingTypeChange.newType}. All monitoring points have been removed.`, 'warning');
+      setUpdatingTypeId(pendingTypeChange.machineId);
+      try {
+        // Update machine type on server (this also deletes monitoring points on server)
+        await dispatch(updateMachineTypeAsync({
+          id: pendingTypeChange.machineId,
+          type: pendingTypeChange.newType
+        })).unwrap();
+        // Update client state by removing monitoring points for this machine
+        // (Server already deleted them, so we just update local state)
+        dispatch(removeMonitoringPointsByMachineId(pendingTypeChange.machineId));
+        showMessage(`Machine type updated to ${pendingTypeChange.newType}. All monitoring points have been removed.`, 'warning');
+      } catch (error) {
+        showMessage('Failed to update machine type', 'error');
+        console.error('Error updating machine type:', error);
+      } finally {
+        setUpdatingTypeId(null);
+      }
     }
     setConfirmDialogOpen(false);
     setPendingTypeChange(null);
@@ -93,7 +107,11 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
   const handleDeleteMachine = async (id: string) => {
     setDeletingId(id);
     try {
+      // Delete the machine on the server (this also deletes monitoring points on server)
       await dispatch(deleteMachineAsync(id)).unwrap();
+      // Update client state by removing monitoring points for this machine
+      // (Server already deleted them, so we just update local state)
+      dispatch(removeMonitoringPointsByMachineId(id));
       showMessage('Machine and all associated monitoring points have been removed.', 'success');
     } catch (error) {
       showMessage('Failed to delete machine', 'error');
@@ -102,7 +120,6 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
       setDeletingId(null);
     }
   };
-  
 
   return (
     <>
@@ -142,10 +159,16 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
               onChange={(e) => {
                 handleUpdateType(machine.id, e.target.value);
               }}
+              disabled={updatingTypeId === machine.id}
             >
               <MenuItem value="pump">Pump</MenuItem>
               <MenuItem value="fan">Fan</MenuItem>
             </Select>
+            {updatingTypeId === machine.id && (
+              <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
+                Updating...
+              </Typography>
+            )}
                 <Container sx={{ minWidth: '200px' }}>
                 </Container>
             <Button 
@@ -174,9 +197,16 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCancelTypeChange}>Cancel</Button>
-          <Button onClick={handleConfirmTypeChange} variant="contained" color="warning">
-            Confirm Change
+          <Button onClick={handleCancelTypeChange} disabled={updatingTypeId !== null}>
+            Cancel
+          </Button>
+          <Button 
+            onClick={handleConfirmTypeChange} 
+            variant="contained" 
+            color="warning"
+            disabled={updatingTypeId !== null}
+          >
+            {updatingTypeId !== null ? 'Updating...' : 'Confirm Change'}
           </Button>
         </DialogActions>
       </Dialog>

@@ -23,7 +23,6 @@ export default function PageClient() {
 
   const page = 0;
   const rowsPerPage = 5;
-  console.log("🚀 ~ PageClient ~ machines:", machines)
   const paginatedMachines = machines.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   const [open, setOpen] = useState(false);

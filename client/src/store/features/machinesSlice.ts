@@ -79,6 +79,26 @@ export const deleteMachineAsync = createAsyncThunk<
     }
 );
 
+export const updateMachineTypeAsync = createAsyncThunk<
+    { machine: Machine },
+    { id: string; type: 'pump' | 'fan' }
+>(
+    'machines/updateMachineType',
+    async ({ id, type }) => {
+        const response = await fetch(`${SERVER_BASE_URL}/api/machines/${id}/type`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ type }),
+            credentials: 'include',
+        });
+        if (!response.ok) throw new Error('Failed to update machine type');
+        const data = await response.json();
+        return { machine: data.machine };
+    }
+);
+
 const initialState: MachinesState = {
     list: [
         { id: 'USR-010', name: 'Pump Alpha Romeo', type: 'pump', monitoringPoints: [] },
@@ -169,6 +189,23 @@ const machinesSlice = createSlice({
                 state.list = state.list.filter(machine => machine.id !== action.payload.id);
             })
             .addCase(deleteMachineAsync.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message || 'Unknown error';
+            })
+            // Update machine type
+            .addCase(updateMachineTypeAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateMachineTypeAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                const machine = state.list.find(m => m.id === action.payload.machine.id);
+                if (machine) {
+                    machine.type = action.payload.machine.type;
+                    machine.monitoringPoints = []; // Clear monitoring points
+                }
+            })
+            .addCase(updateMachineTypeAsync.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message || 'Unknown error';
             });

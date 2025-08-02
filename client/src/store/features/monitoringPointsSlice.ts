@@ -114,6 +114,9 @@ const monitoringPointsSlice = createSlice({
         clearError: (state) => {
             state.error = null;
         },
+        removeMonitoringPointsByMachineId: (state, action: PayloadAction<string>) => {
+            state.list = state.list.filter(point => point.machineId !== action.payload);
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -173,5 +176,5 @@ const monitoringPointsSlice = createSlice({
     },
 });
 
-export const { clearError } = monitoringPointsSlice.actions;
+export const { clearError, removeMonitoringPointsByMachineId } = monitoringPointsSlice.actions;
 export default monitoringPointsSlice.reducer;
