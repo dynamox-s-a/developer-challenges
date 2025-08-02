@@ -1,4 +1,4 @@
-import { MachineDTO, MonitoringPointDTO } from "../types/types.js";
+import { MachineDTO, MachineType, MonitoringPointDTO } from "../types/types.js";
 
 export class MachineRepositoryMemory {
     private machines: MachineDTO[] = [];
@@ -18,6 +18,11 @@ export class MachineRepositoryMemory {
 
     async delete(id: string): Promise<void> {
         this.machines = this.machines.filter(machine => machine.id !== id);
+    }
+
+    async updateType(id: string, type: MachineType): Promise<void> {
+        const machine = this.machines.find(machine => machine.id === id);
+        if (machine) machine.type = type;
     }
 
     // for testing purposes ONLY
