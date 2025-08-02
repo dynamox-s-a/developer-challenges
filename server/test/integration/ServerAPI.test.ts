@@ -119,13 +119,7 @@ describe("should test service API endpoints", () => {
         expect(saveMonitoringPointResponse.status).toBe(201);
         const monitoringPoint = await saveMonitoringPointResponse.json();
         expect(monitoringPoint.id).toBeDefined();
-        const deleteMonitoringPointResponse = await fetch(`http://localhost:3000/api/monitoring-points/sensor-id/${monitoringPoint.id}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                "Cookie": `token=${token}`
-            }
-        });
+        const deleteMonitoringPointResponse = await deleteMonitoringPointBySensorId(token!, monitoringPoint.id);
         expect(deleteMonitoringPointResponse.status).toBe(200);
         const getMonitoringPointsResponse = await getMonitoringPoints(token!);
         expect(getMonitoringPointsResponse.status).toBe(200);
@@ -147,13 +141,7 @@ describe("should test service API endpoints", () => {
         expect(saveMonitoringPointResponse.status).toBe(201);
         const monitoringPoint = await saveMonitoringPointResponse.json();
         expect(monitoringPoint.id).toBeDefined();
-        const deleteMonitoringPointResponse = await fetch(`http://localhost:3000/api/monitoring-points/machine-id/${machine.id}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                "Cookie": `token=${token}`
-            }
-        });
+        const deleteMonitoringPointResponse = await deleteMonitoringPointsByMachineId(token!, machine.id);
         expect(deleteMonitoringPointResponse.status).toBe(200);
         const getMonitoringPointsResponse = await getMonitoringPoints(token!);
         expect(getMonitoringPointsResponse.status).toBe(200);
@@ -206,6 +194,26 @@ function createMonitoringPoint(token: string, name: string, sensorType: SensorTy
 
 function getMonitoringPoints(token: string) {
     return fetch("http://localhost:3000/api/monitoring-points", {
+        headers: {
+            "Content-Type": "application/json",
+            "Cookie": `token=${token}`
+        }
+    });
+}
+
+function deleteMonitoringPointBySensorId(token: string, sensorId: string) {
+    return fetch(`http://localhost:3000/api/monitoring-points/sensor-id/${sensorId}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Cookie": `token=${token}`
+        }
+    });
+}
+
+function deleteMonitoringPointsByMachineId(token: string, machineId: string) {
+    return fetch(`http://localhost:3000/api/monitoring-points/machine-id/${machineId}`, {
+        method: "DELETE",
         headers: {
             "Content-Type": "application/json",
             "Cookie": `token=${token}`
