@@ -24,6 +24,8 @@ export interface MachineBase {
 }
 
 export interface MonitoringPoint {
+    userId: string;
+    machineId: string;
     name: string;
     sensorType: SensorType;
     sensorId: string;
@@ -35,6 +37,14 @@ export interface MachineDTO {
     name: string;
     type: MachineType;
     monitoringPoints: MonitoringPoint[];
+}
+
+export interface MonitoringPointDTO {
+    userId: string;
+    machineId: string;
+    name: string;
+    sensorType: SensorType;
+    sensorId: string;
 }
 
 export interface AuthenticatedRequest extends Request {

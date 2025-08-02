@@ -87,6 +87,40 @@ app.post("/api/monitoring-points", authMiddleware, async (req: AuthenticatedRequ
     res.status(201).json({ id: monitoringPointId });
 });
 
+// protected endpoint -> delete a monitoring point by sensorId
+app.delete("/api/monitoring-points/sensor-id/:sensorId", authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
+    const userId = req.user?.id;
+    if (!userId) return res.status(401).json({ error: "User not authenticated" });
+    const { sensorId } = req.params;
+    try {
+        const monitoringPoints = await monitoringPointRepository.getByUserId(userId);
+        const monitoringPointToDelete = monitoringPoints.find(point => point.sensorId === sensorId);
+        if (!monitoringPointToDelete) return res.status(404).json({ error: "Monitoring point not found" });
+        await monitoringPointRepository.deleteBySensorId(sensorId);
+        res.status(200).json({ message: "Monitoring point deleted" });
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error";
+        res.status(400).json({ error: message });
+    }
+});
+
+// protected endpoint -> delete all monitoring points by machineId
+app.delete("/api/monitoring-points/machine-id/:machineId", authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
+    const userId = req.user?.id;
+    if (!userId) return res.status(401).json({ error: "User not authenticated" });
+    const { machineId } = req.params;
+    try {
+        const monitoringPoints = await monitoringPointRepository.getByUserId(userId);
+        const monitoringPointToDelete = monitoringPoints.find(point => point.machineId === machineId);
+        if (!monitoringPointToDelete) return res.status(404).json({ error: "Monitoring points not found" });
+        await monitoringPointRepository.deleteByMachineId(machineId);
+        res.status(200).json({ message: "Monitoring points deleted" });
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error";
+        res.status(400).json({ error: message });
+    }
+});
+
 app.post("/api/login", async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;

@@ -16,8 +16,14 @@ export class MonitoringPointRepositoryMemory {
         return this.monitoringPoints.filter(monitoringPoint => monitoringPoint.userId === userId);
     }
 
-    async delete(id: string): Promise<void> {
-        this.monitoringPoints = this.monitoringPoints.filter(monitoringPoint => monitoringPoint.machineId !== id);
+    // deletes all monitoring points related to a machineId
+    async deleteByMachineId(machineId: string): Promise<void> {
+        this.monitoringPoints = this.monitoringPoints.filter(monitoringPoint => monitoringPoint.machineId !== machineId);
+    }
+
+    // deletes a single monitoring point related to a sensorId
+    async deleteBySensorId(sensorId: string): Promise<void> {
+        this.monitoringPoints = this.monitoringPoints.filter(monitoringPoint => monitoringPoint.sensorId !== sensorId);
     }
 
     // for testing purposes ONLY

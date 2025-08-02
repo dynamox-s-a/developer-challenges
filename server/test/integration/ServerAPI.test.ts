@@ -95,12 +95,7 @@ describe("should test service API endpoints", () => {
         // create a monitoring point
         const saveMonitoringPointResponse = await createMonitoringPoint(token!, "Monitoring Point 1", SensorType.TcAg, machine.id);
         expect(saveMonitoringPointResponse.status).toBe(201);
-        const getMonitoringPointsResponse = await fetch("http://localhost:3000/api/monitoring-points", {
-            headers: {
-                "Content-Type": "application/json",
-                "Cookie": `token=${token}`
-            }
-        });
+        const getMonitoringPointsResponse = await getMonitoringPoints(token!);
         expect(getMonitoringPointsResponse.status).toBe(200);
         const monitoringPoints = await getMonitoringPointsResponse.json();
         expect(monitoringPoints.length).toBe(1);
@@ -108,6 +103,62 @@ describe("should test service API endpoints", () => {
         expect(monitoringPoints[0].name).toBe("Monitoring Point 1");
         expect(monitoringPoints[0].sensorType).toBe(SensorType.TcAg);
         expect(monitoringPoints[0].sensorId).toBeDefined();
+    });
+
+    it("should delete a monitoring point by sensorId", async () => {
+        // First ensure user is registered
+        await createUser("list@test.com", "test");
+        // login to get a token
+        const loginResponse = await loginUser("list@test.com", "test");
+        const token = loginResponse.headers.get("Set-Cookie")?.split("token=")[1];
+        const machineResponse = await createMachine(token!, "Machine 1", MachineType.FAN);
+        expect(machineResponse.status).toBe(201);
+        const machine = await machineResponse.json();
+        expect(machine.id).toBeDefined();
+        const saveMonitoringPointResponse = await createMonitoringPoint(token!, "Monitoring Point 1", SensorType.TcAg, machine.id);
+        expect(saveMonitoringPointResponse.status).toBe(201);
+        const monitoringPoint = await saveMonitoringPointResponse.json();
+        expect(monitoringPoint.id).toBeDefined();
+        const deleteMonitoringPointResponse = await fetch(`http://localhost:3000/api/monitoring-points/sensor-id/${monitoringPoint.id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Cookie": `token=${token}`
+            }
+        });
+        expect(deleteMonitoringPointResponse.status).toBe(200);
+        const getMonitoringPointsResponse = await getMonitoringPoints(token!);
+        expect(getMonitoringPointsResponse.status).toBe(200);
+        const monitoringPoints = await getMonitoringPointsResponse.json();
+        expect(monitoringPoints.length).toBe(0);
+    });
+
+    it("should delete all monitoring points by machineId", async () => {
+        // First ensure user is registered
+        await createUser("list@test.com", "test");
+        // login to get a token
+        const loginResponse = await loginUser("list@test.com", "test");
+        const token = loginResponse.headers.get("Set-Cookie")?.split("token=")[1];
+        const machineResponse = await createMachine(token!, "Machine 1", MachineType.FAN);
+        expect(machineResponse.status).toBe(201);
+        const machine = await machineResponse.json();
+        expect(machine.id).toBeDefined();
+        const saveMonitoringPointResponse = await createMonitoringPoint(token!, "Monitoring Point 1", SensorType.TcAg, machine.id);
+        expect(saveMonitoringPointResponse.status).toBe(201);
+        const monitoringPoint = await saveMonitoringPointResponse.json();
+        expect(monitoringPoint.id).toBeDefined();
+        const deleteMonitoringPointResponse = await fetch(`http://localhost:3000/api/monitoring-points/machine-id/${machine.id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Cookie": `token=${token}`
+            }
+        });
+        expect(deleteMonitoringPointResponse.status).toBe(200);
+        const getMonitoringPointsResponse = await getMonitoringPoints(token!);
+        expect(getMonitoringPointsResponse.status).toBe(200);
+        const monitoringPoints = await getMonitoringPointsResponse.json();
+        expect(monitoringPoints.length).toBe(0);
     });
 });
 
@@ -150,5 +201,14 @@ function createMonitoringPoint(token: string, name: string, sensorType: SensorTy
             "Cookie": `token=${token}`
         },
         body: JSON.stringify({ name, sensorType, machineId })
+    });
+}
+
+function getMonitoringPoints(token: string) {
+    return fetch("http://localhost:3000/api/monitoring-points", {
+        headers: {
+            "Content-Type": "application/json",
+            "Cookie": `token=${token}`
+        }
     });
 }

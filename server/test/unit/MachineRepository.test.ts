@@ -4,30 +4,34 @@ import { MachineFactory } from "../../src/domain/MachineFactory";
 import { MachineDTO, MachineType } from "../../src/types/types";
 
 describe("MachineRepository", () => {
-    test("should save a machine", () => {
+    test("should save a machine", async () => {
         const repository = new MachineRepositoryMemory();
-        const machine = MachineFactory.create("test", "test", MachineType.PUMP);
-        repository.save(machine.toJSON() as MachineDTO);
-        expect(repository.getByUserId("test")).toHaveLength(1);
-        expect(repository.getById(machine.id)).toEqual(machine.toJSON());
+        const machine = MachineFactory.create("userId", "test", MachineType.PUMP);
+        await repository.save(machine.toJSON() as MachineDTO);
+        const machines = await repository.getByUserId("userId");
+        expect(machines).toHaveLength(1);
+        expect(machines[0]).toEqual(machine.toJSON());
     });
 
-    test("should get a machine by user id", () => {
+    test("should get a machine by user id", async () => {
         const repository = new MachineRepositoryMemory();
-        const machine = MachineFactory.create("test", "test", MachineType.PUMP);
-        repository.save(machine.toJSON() as MachineDTO);
-        expect(repository.getByUserId("test")).toHaveLength(1);
-        expect(repository.getById(machine.id)).toEqual(machine.toJSON());
+        const machine = MachineFactory.create("userId", "test", MachineType.PUMP);
+        await repository.save(machine.toJSON() as MachineDTO);
+        const machines = await repository.getByUserId("userId");
+        expect(machines).toHaveLength(1);
+        expect(machines[0]).toEqual(machine.toJSON());
     });
 
-    test("should delete a machine", () => {
+    test("should delete a machine", async () => {
         const repository = new MachineRepositoryMemory();
-        const machine = MachineFactory.create("test", "test", MachineType.PUMP);
-        repository.save(machine.toJSON() as MachineDTO);
-        expect(repository.getByUserId("test")).toHaveLength(1);
-        repository.delete(machine.id);
-        expect(repository.getByUserId("test")).toHaveLength(0);
-        expect(repository.getById(machine.id)).toBeNull();
+        const machine = MachineFactory.create("userId", "test", MachineType.PUMP);
+        await repository.save(machine.toJSON() as MachineDTO);
+        const machines = await repository.getByUserId("userId");
+        expect(machines).toHaveLength(1);
+        await repository.delete(machine.id);
+        const machinesAfterDelete = await repository.getByUserId("userId");
+        expect(machinesAfterDelete).toHaveLength(0);
+        expect(await repository.getById(machine.id)).toBeNull();
     });
 });
 

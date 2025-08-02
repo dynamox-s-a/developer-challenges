@@ -42,7 +42,7 @@ describe("MachineFactory", () => {
 describe("PumpMachine", () => {
     test("should create pump machine with monitoring points", () => {
         const pump = PumpMachine.create("userId", "test-pump", MachineType.PUMP);
-        const monitoringPoint = PumpMonitoringPoint.create("pressure-sensor", SensorType.HFPlus);
+        const monitoringPoint = PumpMonitoringPoint.create("userId", "machineId", "pressure-sensor", SensorType.HFPlus);
         pump.addMonitoringPoint(monitoringPoint);
         expect(pump.getMonitoringPoints()).toHaveLength(1);
         expect(pump.getMonitoringPoint(monitoringPoint.sensorId)).toBeDefined();
@@ -50,7 +50,7 @@ describe("PumpMachine", () => {
 
     test("should remove monitoring point", () => {
         const pump = PumpMachine.create("userId", "test-pump", MachineType.PUMP);
-        const monitoringPoint = PumpMonitoringPoint.create("pressure-sensor", SensorType.HFPlus);
+        const monitoringPoint = PumpMonitoringPoint.create("userId", "machineId", "pressure-sensor", SensorType.HFPlus);
         pump.addMonitoringPoint(monitoringPoint);
         const removed = pump.removeMonitoringPoint(monitoringPoint.sensorId);
         expect(removed).toBe(true);
@@ -65,7 +65,7 @@ describe("PumpMachine", () => {
 
     test("should only accept HFPlus sensors for monitoring points", () => {
         const pump = PumpMachine.create("userId", "test-pump", MachineType.PUMP);
-        const validPoint = PumpMonitoringPoint.create("pressure-sensor", SensorType.HFPlus);
+        const validPoint = PumpMonitoringPoint.create("userId", "machineId", "pressure-sensor", SensorType.HFPlus);
         pump.addMonitoringPoint(validPoint);
         expect(pump.getMonitoringPoints()).toHaveLength(1);
     });
@@ -74,7 +74,7 @@ describe("PumpMachine", () => {
 describe("FanMachine", () => {
     test("should create fan machine with monitoring points", () => {
         const fan = FanMachine.create("userId", "test-fan", MachineType.FAN);
-        const monitoringPoint = FanMonitoringPoint.create("temp-sensor", SensorType.TcAg);
+        const monitoringPoint = FanMonitoringPoint.create("userId", "machineId", "temp-sensor", SensorType.TcAg);
         fan.addMonitoringPoint(monitoringPoint);
         expect(fan.getMonitoringPoints()).toHaveLength(1);
         expect(fan.getMonitoringPoint(monitoringPoint.sensorId)).toBeDefined();
@@ -82,7 +82,7 @@ describe("FanMachine", () => {
 
     test("should remove monitoring point", () => {
         const fan = FanMachine.create("userId", "test-fan", MachineType.FAN);
-        const monitoringPoint = FanMonitoringPoint.create("temp-sensor", SensorType.TcAg);
+        const monitoringPoint = FanMonitoringPoint.create("userId", "machineId", "temp-sensor", SensorType.TcAg);
         fan.addMonitoringPoint(monitoringPoint);
         const removed = fan.removeMonitoringPoint(monitoringPoint.sensorId);
         expect(removed).toBe(true);
@@ -92,33 +92,33 @@ describe("FanMachine", () => {
 
 describe("Monitoring Points", () => {
     test("should create pump monitoring point", () => {
-        const point = PumpMonitoringPoint.create("pressure-sensor", SensorType.HFPlus);
+        const point = PumpMonitoringPoint.create("userId", "machineId", "pressure-sensor", SensorType.HFPlus);
         expect(point.name).toBe("pressure-sensor");
         expect(point.sensorType).toBe(SensorType.HFPlus);
         expect(point.sensorId).toBeDefined();
     });
 
     test("should create fan monitoring point", () => {
-        const point = FanMonitoringPoint.create("temp-sensor", SensorType.TcAg);
+        const point = FanMonitoringPoint.create("userId", "machineId", "temp-sensor", SensorType.TcAg);
         expect(point.name).toBe("temp-sensor");
         expect(point.sensorType).toBe(SensorType.TcAg);
         expect(point.sensorId).toBeDefined();
     });
 
     test("should throw error for empty monitoring point name", () => {
-        const point = PumpMonitoringPoint.create("test", SensorType.HFPlus);
+        const point = PumpMonitoringPoint.create("userId", "machineId", "pressure-sensor", SensorType.HFPlus);
         expect(() => point.name = "").toThrow("Name cannot be empty");
         expect(() => point.name = "   ").toThrow("Name cannot be empty");
     });
 
     test("should only allow HFPlus sensors for pump monitoring points", () => {
-        const validPoint = PumpMonitoringPoint.create("pressure-sensor", SensorType.HFPlus);
+        const validPoint = PumpMonitoringPoint.create("userId", "machineId", "pressure-sensor", SensorType.HFPlus);
         expect(validPoint.sensorType).toBe(SensorType.HFPlus);
     });
 
     test("should only allow TcAg and TcAs sensors for fan monitoring points", () => {
-        const tempPoint = FanMonitoringPoint.create("temp-sensor", SensorType.TcAg);
-        const humidityPoint = FanMonitoringPoint.create("humidity-sensor", SensorType.TcAs);
+        const tempPoint = FanMonitoringPoint.create("userId", "machineId", "temp-sensor", SensorType.TcAg);
+        const humidityPoint = FanMonitoringPoint.create("userId", "machineId", "humidity-sensor", SensorType.TcAs);
         expect(tempPoint.sensorType).toBe(SensorType.TcAg);
         expect(humidityPoint.sensorType).toBe(SensorType.TcAs);
     });
