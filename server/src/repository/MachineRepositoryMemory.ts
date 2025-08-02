@@ -18,4 +18,9 @@ export class MachineRepositoryMemory {
     delete(id: string): void {
         this.machines = this.machines.filter(machine => machine.id !== id);
     }
+
+    // for testing purposes ONLY
+    clear(): void {
+        this.machines = [];
+    }
 }

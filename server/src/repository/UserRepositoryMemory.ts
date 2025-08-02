@@ -14,6 +14,11 @@ export default class UserRepositoryMemory {
     async create(user: User): Promise<void> {
         this.users.push(user);
     }
+
+    // for testing purposes ONLY
+    async clear(): Promise<void> {
+        this.users = [];
+    }
 }
 
 export class User {

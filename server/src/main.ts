@@ -89,6 +89,13 @@ app.post("/api/register", async (req: Request, res: Response) => {
     }
 });
 
+// for testing purposes ONLY. Never expose this endpoint in production.
+app.get("/api/clear", (_req: Request, res: Response) => {
+    userRepository.clear();
+    machineRepository.clear();
+    res.status(200).json({ message: "Database cleared" });
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

@@ -1,6 +1,11 @@
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 
 describe("Server API", () => {
+    beforeEach(async () => {
+        // clear service databases before each test
+        await fetch("http://localhost:3000/api/clear");
+    });
+
     it("should register a user", async () => {
         const response = await fetch("http://localhost:3000/api/register", {
             method: "POST",
