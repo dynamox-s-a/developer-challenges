@@ -367,15 +367,20 @@ PORT=3000
 - **Fan**: Industrial fans with specific sensor compatibility
 
 ### Sensor Types
-- **TcAg**: Temperature sensors (compatible with pumps)
-- **TcAs**: Humidity sensors (compatible with fans)
-- **HFPlus**: Pressure sensors (compatible with pumps)
+- **TcAg**: Temperature sensors (compatible with fan machines only, **forbidden** for pump machines)
+- **TcAs**: Humidity sensors (compatible with fan machines only, **forbidden** for pump machines)
+- **HFPlus**: Pressure sensors (compatible with pump machines only)
 
 ### Business Rules
 1. **Machine Type Change**: When a machine type is changed, all associated monitoring points are automatically deleted
-2. **Sensor Compatibility**: Different machine types support different sensor types
+2. **Sensor Compatibility**: Strict validation ensures only compatible sensor types can be added to machines:
+   - **Pump machines**: Can ONLY have HFPlus (pressure) sensors
+   - **Pump machines FORBIDDEN**: TcAg and TcAs sensors are explicitly forbidden for pump machines
+   - **Fan machines**: Can have TcAg (temperature) and TcAs (humidity) sensors
+   - **Invalid combinations** return detailed error messages explaining compatibility requirements
 3. **User Isolation**: Users can only access their own machines and monitoring points
 4. **Cascade Deletion**: Deleting a machine removes all its monitoring points
+5. **Validation on Creation**: Monitoring points are validated for compatibility before creation
 
 ## Authentication
 

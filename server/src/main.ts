@@ -104,7 +104,15 @@ app.put("/api/machines/:id/type", authMiddleware, async (req: AuthenticatedReque
             return res.status(400).json({ error: "Valid machine type (pump or fan) is required" });
         }
         await updateMachineType.execute(userId, id, type);
-        res.status(200).json({ message: "Machine type updated successfully. All monitoring points have been removed." });
+        // Get the updated machine to return to client
+        const updatedMachine = await machineRepository.getById(id);
+        if (!updatedMachine) {
+            return res.status(404).json({ error: "Machine not found after update" });
+        }
+        res.status(200).json({
+            message: "Machine type updated successfully. All monitoring points have been removed.",
+            machine: updatedMachine
+        });
     } catch (error) {
         const message = error instanceof Error ? error.message : "Unknown error";
         res.status(500).json({ error: message });
