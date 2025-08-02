@@ -9,6 +9,10 @@ import { MachineRepositoryMemory } from "./repository/MachineRepositoryMemory.js
 import { MonitoringPointRepositoryMemory } from "./repository/MonitoringPointRepositoryMemory.js";
 import { PumpMonitoringPoint } from "./domain/PumpMonitoringPoint.js";
 import { FanMonitoringPoint } from "./domain/FanMonitoringPoint.js";
+import SaveNewMachine from "./useCase/SaveNewMachine.js";
+import UpdateMachineType from "./useCase/UpdateMachineType.js";
+import DeleteMachine from "./useCase/DeleteMachine.js";
+import SaveNewMonitoringPoint from "./useCase/SaveNewMonitoringPoint.js";
 
 export interface AuthenticatedRequest extends Request {
     user?: {
@@ -35,6 +39,11 @@ const userRepository = new UserRepositoryMemory();
 const authService = new AuthService(userRepository);
 const machineRepository = new MachineRepositoryMemory();
 const monitoringPointRepository = new MonitoringPointRepositoryMemory();
+// Initialize use cases with dependencies
+const saveNewMachine = new SaveNewMachine(machineRepository);
+const updateMachineType = new UpdateMachineType(machineRepository, monitoringPointRepository);
+const deleteMachine = new DeleteMachine(machineRepository, monitoringPointRepository);
+const saveNewMonitoringPoint = new SaveNewMonitoringPoint(machineRepository, monitoringPointRepository);
 
 // protected endpoint
 app.post("/api/machines", authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
@@ -47,8 +56,7 @@ app.post("/api/machines", authMiddleware, async (req: AuthenticatedRequest, res:
         }
         const userId = req.user?.id;
         if (!userId) return res.status(401).json({ error: "User not authenticated" });
-        const machine = MachineFactory.create(userId, name, type);
-        const machineId = await machineRepository.save(machine.toJSON());
+        const machineId = await saveNewMachine.execute(userId, name, type);
         res.status(201).json({ id: machineId });
     } catch (error) {
         const message = error instanceof Error ? error.message : "Unknown error";
@@ -74,21 +82,9 @@ app.delete("/api/machines/:id", authMiddleware, async (req: AuthenticatedRequest
     try {
         const userId = req.user?.id;
         if (!userId) return res.status(401).json({ error: "User not authenticated" });
-
         const { id } = req.params;
         if (!id) return res.status(400).json({ error: "Machine ID is required" });
-
-        // Check if machine exists and belongs to user
-        const machines = await machineRepository.getByUserId(userId);
-        const machine = machines.find(m => m.id === id);
-        if (!machine) return res.status(404).json({ error: "Machine not found" });
-
-        // Delete all monitoring points associated with this machine first
-        await monitoringPointRepository.deleteByMachineId(id);
-
-        // Delete the machine
-        await machineRepository.delete(id);
-
+        await deleteMachine.execute(userId, id);
         res.status(200).json({ message: "Machine deleted successfully" });
     } catch (error) {
         const message = error instanceof Error ? error.message : "Unknown error";
@@ -101,30 +97,14 @@ app.put("/api/machines/:id/type", authMiddleware, async (req: AuthenticatedReque
     try {
         const userId = req.user?.id;
         if (!userId) return res.status(401).json({ error: "User not authenticated" });
-
         const { id } = req.params;
         const { type } = req.body;
-
         if (!id) return res.status(400).json({ error: "Machine ID is required" });
         if (!type || !["pump", "fan"].includes(type)) {
             return res.status(400).json({ error: "Valid machine type (pump or fan) is required" });
         }
-
-        // Check if machine exists and belongs to user
-        const machines = await machineRepository.getByUserId(userId);
-        const machine = machines.find(m => m.id === id);
-        if (!machine) return res.status(404).json({ error: "Machine not found" });
-
-        // Update machine type
-        await machineRepository.updateType(id, type);
-
-        // Delete all monitoring points associated with this machine (type change requires sensor reset)
-        await monitoringPointRepository.deleteByMachineId(id);
-
-        res.status(200).json({
-            message: "Machine type updated successfully. All monitoring points have been removed.",
-            machine
-        });
+        await updateMachineType.execute(userId, id, type);
+        res.status(200).json({ message: "Machine type updated successfully. All monitoring points have been removed." });
     } catch (error) {
         const message = error instanceof Error ? error.message : "Unknown error";
         res.status(500).json({ error: message });
@@ -142,27 +122,16 @@ app.post("/api/monitoring-points", authMiddleware, async (req: AuthenticatedRequ
     const userId = req.user?.id;
     if (!userId) return res.status(401).json({ error: "User not authenticated" });
     const { name, sensorType, machineId } = req.body;
-    console.log("🚀 ~ file: main.ts:83 ~ sensorType:", sensorType)
     if (!name || !sensorType || !machineId) {
         return res.status(400).json({ error: "Name, sensorType and machineId are required" });
     }
-    // create a monitoring point according to the sensor type
-    let monitoringPoint: MonitoringPoint;
-    switch (sensorType) {
-        case SensorType.TcAg:
-            monitoringPoint = PumpMonitoringPoint.create(userId, machineId, name, sensorType);
-            break;
-        case SensorType.TcAs:
-            monitoringPoint = FanMonitoringPoint.create(userId, machineId, name, sensorType);
-            break;
-        case SensorType.HFPlus:
-            monitoringPoint = PumpMonitoringPoint.create(userId, machineId, name, sensorType);
-            break;
-        default:
-            return res.status(400).json({ error: "Invalid sensor type" });
+    try {
+        const monitoringPointId = await saveNewMonitoringPoint.execute(userId, machineId, name, sensorType);
+        res.status(201).json({ id: monitoringPointId });
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error";
+        res.status(400).json({ error: message });
     }
-    const monitoringPointId = await monitoringPointRepository.save(monitoringPoint);
-    res.status(201).json({ id: monitoringPointId });
 });
 
 // protected endpoint -> delete a monitoring point by sensorId
