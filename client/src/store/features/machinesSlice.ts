@@ -82,7 +82,11 @@ const machinesSlice = createSlice({
             const machine = state.list.find((machine) => machine.id === action.payload.id);
             if (machine) {
                 if (action.payload.name) machine.name = action.payload.name;
-                if (action.payload.type) machine.type = action.payload.type;
+                if (action.payload.type) {
+                    machine.type = action.payload.type;
+                    // Clear monitoring points when machine type changes since different types have different sensor types
+                    machine.monitoringPoints = [];
+                }
             }
         },
     },

@@ -11,6 +11,10 @@ import {
   Select,
   MenuItem,
   Container,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 import { deleteMachine, updateMachine } from '@/store/features/machinesSlice';
 import { AppDispatch } from '@/store';
@@ -21,11 +25,22 @@ export interface Machine {
   id: string;
   name: string;
   type: 'pump' | 'fan';
+  monitoringPoints?: Array<{
+    id: string;
+    monitoringPointName: string;
+    sensorType: string;
+  }>;
 }
 
 export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine[] }) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editedName, setEditedName] = useState('');
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [pendingTypeChange, setPendingTypeChange] = useState<{
+    machineId: string;
+    newType: 'pump' | 'fan';
+    machineName: string;
+  } | null>(null);
   const dispatch = useDispatch<AppDispatch>();
   const { showMessage } = useSnackbar();
   const handleStartEdit = (machine: Machine) => {
@@ -39,9 +54,34 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
     showMessage('Machine name updated', 'info');
   };
 
-  const handleUpdateType = (machineId: string, machineType: string) => {
-    dispatch(updateMachine({ id: machineId, type: machineType as 'pump' | 'fan' }));
-    showMessage('Machine type updated', 'info');
+  const handleUpdateType = (machineId: string, newType: string) => {
+    const machine = paginatedMachines.find(m => m.id === machineId);
+    if (machine && machine.type !== newType) {
+      // Show confirmation dialog before changing type
+      setPendingTypeChange({
+        machineId,
+        newType: newType as 'pump' | 'fan',
+        machineName: machine.name
+      });
+      setConfirmDialogOpen(true);
+    }
+  };
+
+  const handleConfirmTypeChange = () => {
+    if (pendingTypeChange) {
+      dispatch(updateMachine({ 
+        id: pendingTypeChange.machineId, 
+        type: pendingTypeChange.newType 
+      }));
+      showMessage(`Machine type updated to ${pendingTypeChange.newType}. All monitoring points have been removed.`, 'warning');
+    }
+    setConfirmDialogOpen(false);
+    setPendingTypeChange(null);
+  };
+
+  const handleCancelTypeChange = () => {
+    setConfirmDialogOpen(false);
+    setPendingTypeChange(null);
   };
 
   const handleCancel = () => {
@@ -51,7 +91,7 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
 
   const handleDeleteMachine = (id: string) => {
     dispatch(deleteMachine(id));
-    showMessage('Machine deleted', 'info');
+    showMessage('Machine and all associated monitoring points have been removed.', 'info');
   };
   
 
@@ -91,7 +131,7 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
               size="small"
               value={machine.type}
               onChange={(e) => {
-                handleUpdateType(machine.id, e.target.value as 'pump' | 'fan');
+                handleUpdateType(machine.id, e.target.value);
               }}
             >
               <MenuItem value="pump">Pump</MenuItem>
@@ -105,6 +145,27 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
           </CardContent>
         </Card>
       ))}
+
+      {/* Confirmation Dialog for Machine Type Change */}
+      <Dialog open={confirmDialogOpen} onClose={handleCancelTypeChange}>
+        <DialogTitle>Confirm Machine Type Change</DialogTitle>
+        <DialogContent>
+          <Typography variant="body1" sx={{ mb: 2 }}>
+            Are you sure you want to change the machine type for "{pendingTypeChange?.machineName}" 
+            to {pendingTypeChange?.newType}?
+          </Typography>
+          <Typography variant="body2" color="warning.main" sx={{ fontWeight: 'bold' }}>
+            ⚠️ Warning: This action will delete all monitoring points associated with this machine, 
+            as different machine types have specific sensor types available.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelTypeChange}>Cancel</Button>
+          <Button onClick={handleConfirmTypeChange} variant="contained" color="warning">
+            Confirm Change
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
