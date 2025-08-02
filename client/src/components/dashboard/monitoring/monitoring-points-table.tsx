@@ -37,8 +37,10 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
 
 export interface MonitoringPoint {
   id: string;
-  monitoringPointName: string;
+  name: string;
   sensorType: string;
+  sensorId: string;
+  machineId: string;
   machineName: string;
   machineType: string;
 }
@@ -79,7 +81,7 @@ export function MonitoringPointsTable({
   const columns = [
     { key: 'machineName' as keyof MonitoringPoint, label: 'Machine Name' },
     { key: 'machineType' as keyof MonitoringPoint, label: 'Machine Type' },
-    { key: 'monitoringPointName' as keyof MonitoringPoint, label: 'Monitoring Point Name' },
+    { key: 'name' as keyof MonitoringPoint, label: 'Monitoring Point Name' },
     { key: 'sensorType' as keyof MonitoringPoint, label: 'Sensor Type' },
   ];
 
@@ -107,7 +109,7 @@ export function MonitoringPointsTable({
               <TableRow key={point.id}>
                 <TableCell>{point.machineName}</TableCell>
                 <TableCell>{point.machineType}</TableCell>
-                <TableCell>{point.monitoringPointName}</TableCell>
+                <TableCell>{point.name}</TableCell>
                 <TableCell>{point.sensorType}</TableCell>
               </TableRow>
             ))}
