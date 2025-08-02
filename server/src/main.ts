@@ -179,7 +179,6 @@ app.delete("/api/monitoring-points/machine-id/:machineId", authMiddleware, async
 app.post("/api/login", async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
-
         if (!email || !password) {
             return res.status(400).json({
                 error: "Email and password are required"
@@ -221,7 +220,6 @@ app.get("/api/me", authMiddleware, async (req: AuthenticatedRequest, res: Respon
         const userId = req.user?.id;
         if (!userId) return res.status(401).json({ error: "User not authenticated" });
         const user = await userRepository.findById(userId);
-        console.log("🚀 ~ file: main.ts:179 ~ user:", user)
         if (!user) return res.status(404).json({ error: "User not found" });
         const userData = {
             id: user.id,
@@ -230,7 +228,6 @@ app.get("/api/me", authMiddleware, async (req: AuthenticatedRequest, res: Respon
             lastName: user.lastName,
             avatar: "/assets/avatar.png"
         }
-        console.log("🚀 ~ file: main.ts:181 ~ userData:", userData)
         res.status(200).json(userData);
     } catch (error) {
         const message = error instanceof Error ? error.message : "Unknown error";
@@ -248,6 +245,7 @@ app.post("/api/logout", (req: Request, res: Response) => {
 app.get("/api/clear", (_req: Request, res: Response) => {
     userRepository.clear();
     machineRepository.clear();
+    monitoringPointRepository.clear();
     res.status(200).json({ message: "Database cleared" });
 });
 
