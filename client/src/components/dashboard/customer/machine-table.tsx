@@ -16,7 +16,7 @@ import {
   DialogContent,
   DialogActions,
 } from '@mui/material';
-import { deleteMachine, updateMachine } from '@/store/features/machinesSlice';
+import { deleteMachineAsync, updateMachine } from '@/store/features/machinesSlice';
 import { AppDispatch } from '@/store';
 import { useDispatch } from 'react-redux';
 import { useSnackbar } from '@/providers/SnackProvider';
@@ -36,6 +36,7 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editedName, setEditedName] = useState('');
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [pendingTypeChange, setPendingTypeChange] = useState<{
     machineId: string;
     newType: 'pump' | 'fan';
@@ -89,9 +90,17 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
     setEditedName('');
   };
 
-  const handleDeleteMachine = (id: string) => {
-    dispatch(deleteMachine(id));
-    showMessage('Machine and all associated monitoring points have been removed.', 'info');
+  const handleDeleteMachine = async (id: string) => {
+    setDeletingId(id);
+    try {
+      await dispatch(deleteMachineAsync(id)).unwrap();
+      showMessage('Machine and all associated monitoring points have been removed.', 'success');
+    } catch (error) {
+      showMessage('Failed to delete machine', 'error');
+      console.error('Error deleting machine:', error);
+    } finally {
+      setDeletingId(null);
+    }
   };
   
 
@@ -139,8 +148,13 @@ export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine
             </Select>
                 <Container sx={{ minWidth: '200px' }}>
                 </Container>
-            <Button variant="contained" color="error" onClick={() => handleDeleteMachine(machine.id)}>
-              Delete
+            <Button 
+              variant="contained" 
+              color="error" 
+              onClick={() => handleDeleteMachine(machine.id)}
+              disabled={deletingId === machine.id}
+            >
+              {deletingId === machine.id ? 'Deleting...' : 'Delete'}
             </Button>
           </CardContent>
         </Card>

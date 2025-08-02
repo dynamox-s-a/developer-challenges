@@ -6,7 +6,7 @@ const SERVER_BASE_URL = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
 export interface Machine {
     id: string;
     name: string;
-    type: string;
+    type: 'pump' | 'fan';
     monitoringPoints: MonitoringPoint[];
 }
 
@@ -42,6 +42,40 @@ export const fetchMachines = createAsyncThunk<Machine[]>(
         });
         if (!response.ok) throw new Error('Failed to fetch machines');
         return await response.json();
+    }
+);
+
+export const createMachine = createAsyncThunk<
+    { id: string },
+    { name: string; type: 'pump' | 'fan' }
+>(
+    'machines/createMachine',
+    async ({ name, type }) => {
+        const response = await fetch(`${SERVER_BASE_URL}/api/machines`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ name, type }),
+            credentials: 'include',
+        });
+        if (!response.ok) throw new Error('Failed to create machine');
+        return await response.json();
+    }
+);
+
+export const deleteMachineAsync = createAsyncThunk<
+    { id: string },
+    string
+>(
+    'machines/deleteMachine',
+    async (machineId) => {
+        const response = await fetch(`${SERVER_BASE_URL}/api/machines/${machineId}`, {
+            method: 'DELETE',
+            credentials: 'include',
+        });
+        if (!response.ok) throw new Error('Failed to delete machine');
+        return { id: machineId };
     }
 );
 
@@ -96,6 +130,7 @@ const machinesSlice = createSlice({
                 }
             }
         },
+
     },
     extraReducers: (builder) => {
         builder
@@ -110,9 +145,35 @@ const machinesSlice = createSlice({
             .addCase(fetchMachines.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message || 'Unknown error';
+            })
+            .addCase(createMachine.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(createMachine.fulfilled, (state, action) => {
+                state.loading = false;
+                // After successful creation, refetch machines to get the updated list
+                // The server returns { id } but we need the full machine data
+            })
+            .addCase(createMachine.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message || 'Unknown error';
+            })
+            // Delete machine
+            .addCase(deleteMachineAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(deleteMachineAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                state.list = state.list.filter(machine => machine.id !== action.payload.id);
+            })
+            .addCase(deleteMachineAsync.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message || 'Unknown error';
             });
-    },
+    }
 });
 
-export const { addMachine, deleteMachine, updateMachine } = machinesSlice.actions;
+export const { addMachine, deleteMachine, updateMachine, addMonitoringPoint } = machinesSlice.actions;
 export default machinesSlice.reducer;

@@ -13,7 +13,7 @@ import { DownloadIcon } from '@phosphor-icons/react/dist/ssr/Download';
 import { MachineTable } from '@/components/dashboard/customer/machine-table';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store';
-import { addMachine, deleteMachine, fetchMachines } from '@/store/features/machinesSlice';
+import { addMachine, deleteMachineAsync, fetchMachines, createMachine } from '@/store/features/machinesSlice';
 import { useSnackbar } from '@/providers/SnackProvider';
 
 export default function PageClient() {
@@ -28,24 +28,34 @@ export default function PageClient() {
 
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
-  const [type, setType] = useState('pump');
+  const [type, setType] = useState<'pump' | 'fan'>('pump');
+  const [creating, setCreating] = useState(false);
 
   useEffect(() => {
     dispatch(fetchMachines());
   }, [dispatch]);
   
-  const handleAddMachine = () => {
-    const newMachine = {
-      id: `USR-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
-      name,
-      type,
-      monitoringPoints: [],
-    };
-    dispatch(addMachine(newMachine));
-    showMessage('Machine updated successfully', 'success');
-    setOpen(false);
-    setName('');
-    setType('pump');
+  const handleAddMachine = async () => {
+    if (!name.trim()) {
+      showMessage('Please enter a machine name', 'error');
+      return;
+    }
+    
+    setCreating(true);
+    try {
+      await dispatch(createMachine({ name, type })).unwrap();
+      showMessage('Machine created successfully', 'success');
+      setOpen(false);
+      setName('');
+      setType('pump');
+      // Refetch machines to get the updated list
+      dispatch(fetchMachines());
+    } catch (error) {
+      showMessage('Failed to create machine', 'error');
+      console.error('Error creating machine:', error);
+    } finally {
+      setCreating(false);
+    }
   };
 
   return (
@@ -83,7 +93,7 @@ export default function PageClient() {
               fullWidth
               label="Type"
               value={type}
-              onChange={(e) => setType(e.target.value)}
+              onChange={(e) => setType(e.target.value as 'pump' | 'fan')}
             >
               <MenuItem value="pump">Pump</MenuItem>
               <MenuItem value="fan">Fan</MenuItem>
@@ -91,8 +101,14 @@ export default function PageClient() {
           </Stack>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button onClick={handleAddMachine} variant="contained">Save</Button>
+          <Button onClick={() => setOpen(false)} disabled={creating}>Cancel</Button>
+          <Button 
+            onClick={handleAddMachine} 
+            variant="contained" 
+            disabled={creating || !name.trim()}
+          >
+            {creating ? 'Creating...' : 'Save'}
+          </Button>
         </DialogActions>
       </Dialog>
     </Stack>
