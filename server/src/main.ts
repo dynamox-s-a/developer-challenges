@@ -21,7 +21,7 @@ const authService = new AuthService(userRepository);
 const machineRepository = new MachineRepositoryMemory();
 
 // protected endpoint
-app.post("/api/machines", authMiddleware, (req: AuthenticatedRequest, res: Response) => {
+app.post("/api/machines", authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
     try {
         const { name, type } = req.body;
         if (!name || !type) {
@@ -32,8 +32,8 @@ app.post("/api/machines", authMiddleware, (req: AuthenticatedRequest, res: Respo
         const userId = req.user?.id;
         if (!userId) return res.status(401).json({ error: "User not authenticated" });
         const machine = MachineFactory.create(userId, name, type);
-        machineRepository.save(machine.toJSON());
-        res.status(201).json(machine.toJSON());
+        const machineId = await machineRepository.save(machine.toJSON());
+        res.status(201).json({ id: machineId });
     } catch (error) {
         const message = error instanceof Error ? error.message : "Unknown error";
         res.status(400).json({ error: message });
@@ -41,14 +41,12 @@ app.post("/api/machines", authMiddleware, (req: AuthenticatedRequest, res: Respo
 });
 
 // protected endpoint
-app.get("/api/machines", authMiddleware, (req: AuthenticatedRequest, res: Response) => {
+app.get("/api/machines", authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
     try {
         const userId = req.user?.id;
         if (!userId) return res.status(401).json({ error: "User not authenticated" });
-        res.json({
-            message: "Get user machines endpoint - implementation pending",
-            userId
-        });
+        const machines = await machineRepository.getByUserId(userId);
+        res.json(machines);
     } catch (error) {
         const message = error instanceof Error ? error.message : "Unknown error";
         res.status(500).json({ error: message });
