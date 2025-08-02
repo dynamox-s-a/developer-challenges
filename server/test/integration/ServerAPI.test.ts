@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { MachineType } from "../../src/domain";
+import { MachineType, SensorType } from "../../src/domain";
 
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET as jwt.Secret;
@@ -88,9 +88,26 @@ describe("should test service API endpoints", () => {
         // login to get a token
         const loginResponse = await loginUser("list@test.com", "test");
         const token = loginResponse.headers.get("Set-Cookie")?.split("token=")[1];
-        expect(token).toBeDefined();
-
-        // create a machine
+        const machineResponse = await createMachine(token!, "Machine 1", MachineType.FAN);
+        expect(machineResponse.status).toBe(201);
+        const machine = await machineResponse.json();
+        expect(machine.id).toBeDefined();
+        // create a monitoring point
+        const saveMonitoringPointResponse = await createMonitoringPoint(token!, "Monitoring Point 1", SensorType.TcAg, machine.id);
+        expect(saveMonitoringPointResponse.status).toBe(201);
+        const getMonitoringPointsResponse = await fetch("http://localhost:3000/api/monitoring-points", {
+            headers: {
+                "Content-Type": "application/json",
+                "Cookie": `token=${token}`
+            }
+        });
+        expect(getMonitoringPointsResponse.status).toBe(200);
+        const monitoringPoints = await getMonitoringPointsResponse.json();
+        expect(monitoringPoints.length).toBe(1);
+        expect(monitoringPoints[0].machineId).toBe(machine.id);
+        expect(monitoringPoints[0].name).toBe("Monitoring Point 1");
+        expect(monitoringPoints[0].sensorType).toBe(SensorType.TcAg);
+        expect(monitoringPoints[0].sensorId).toBeDefined();
     });
 });
 
@@ -114,3 +131,24 @@ function loginUser(email: string, password: string) {
     });
 }
 
+function createMachine(token: string, name: string, type: MachineType) {
+    return fetch("http://localhost:3000/api/machines", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Cookie": `token=${token}`
+        },
+        body: JSON.stringify({ name, type })
+    });
+}
+
+function createMonitoringPoint(token: string, name: string, sensorType: SensorType, machineId: string) {
+    return fetch("http://localhost:3000/api/monitoring-points", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Cookie": `token=${token}`
+        },
+        body: JSON.stringify({ name, sensorType, machineId })
+    });
+}

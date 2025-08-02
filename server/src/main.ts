@@ -1,10 +1,13 @@
 import express, { Request, Response } from "express";
 import { MachineFactory } from "./domain/MachineFactory.js";
-import { MachineType } from "./types/types.js";
+import { MachineType, MonitoringPoint, SensorType } from "./types/types.js";
 import { authMiddleware } from "./middleware/authMiddleware.js";
 import UserRepositoryMemory from "./repository/UserRepositoryMemory.js";
 import { AuthService } from "./service/AuthService.js";
 import { MachineRepositoryMemory } from "./repository/MachineRepositoryMemory.js";
+import { MonitoringPointRepositoryMemory } from "./repository/MonitoringPointRepositoryMemory.js";
+import { PumpMonitoringPoint } from "./domain/PumpMonitoringPoint.js";
+import { FanMonitoringPoint } from "./domain/FanMonitoringPoint.js";
 
 export interface AuthenticatedRequest extends Request {
     user?: {
@@ -19,6 +22,7 @@ app.use(express.json());
 const userRepository = new UserRepositoryMemory();
 const authService = new AuthService(userRepository);
 const machineRepository = new MachineRepositoryMemory();
+const monitoringPointRepository = new MonitoringPointRepositoryMemory();
 
 // protected endpoint
 app.post("/api/machines", authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
@@ -51,6 +55,36 @@ app.get("/api/machines", authMiddleware, async (req: AuthenticatedRequest, res: 
         const message = error instanceof Error ? error.message : "Unknown error";
         res.status(500).json({ error: message });
     }
+});
+
+app.get("/api/monitoring-points", authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
+    const userId = req.user?.id;
+    if (!userId) return res.status(401).json({ error: "User not authenticated" });
+    const monitoringPoints = await monitoringPointRepository.getByUserId(userId);
+    res.status(200).json(monitoringPoints);
+});
+
+app.post("/api/monitoring-points", authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
+    const userId = req.user?.id;
+    if (!userId) return res.status(401).json({ error: "User not authenticated" });
+    const { name, sensorType, machineId } = req.body;
+    if (!name || !sensorType || !machineId) {
+        return res.status(400).json({ error: "Name, sensorType and machineId are required" });
+    }
+    // create a monitoring point according to the sensor type
+    let monitoringPoint: MonitoringPoint;
+    switch (sensorType) {
+        case SensorType.TcAg:
+            monitoringPoint = PumpMonitoringPoint.create(userId, machineId, name, sensorType);
+            break;
+        case SensorType.TcAs:
+            monitoringPoint = FanMonitoringPoint.create(userId, machineId, name, sensorType);
+            break;
+        default:
+            return res.status(400).json({ error: "Invalid sensor type" });
+    }
+    const monitoringPointId = await monitoringPointRepository.save(monitoringPoint);
+    res.status(201).json({ id: monitoringPointId });
 });
 
 app.post("/api/login", async (req: Request, res: Response) => {

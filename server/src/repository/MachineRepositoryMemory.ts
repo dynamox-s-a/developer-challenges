@@ -1,4 +1,4 @@
-import { MachineDTO } from "../types/types.js";
+import { MachineDTO, MonitoringPointDTO } from "../types/types.js";
 
 export class MachineRepositoryMemory {
     private machines: MachineDTO[] = [];
