@@ -1,6 +1,6 @@
 import UserRepositoryMemory, { User } from "../repository/UserRepositoryMemory";
 import jwt from "jsonwebtoken";
-const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 
 dotenv.config();

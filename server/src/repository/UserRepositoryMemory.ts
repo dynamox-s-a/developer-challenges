@@ -1,7 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
 
 export default class UserRepositoryMemory {
-    private users: User[] = [];
+    private users: User[] = [{
+        id: "1",
+        email: "sofia@devias.io",
+        passwordHash: "Secret1"
+    }];
 
     async findByEmail(email: string): Promise<User | undefined> {
         return this.users.find(user => user.email === email);
