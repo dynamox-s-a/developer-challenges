@@ -23,7 +23,9 @@ app.use(cors({
     origin: process.env.CLIENT_URL || "http://localhost:3001",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"]
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
+    exposedHeaders: ["Set-Cookie"],
+    optionsSuccessStatus: 200 // For legacy browser support
 }));
 
 app.use(express.json());
@@ -67,6 +69,68 @@ app.get("/api/machines", authMiddleware, async (req: AuthenticatedRequest, res: 
     }
 });
 
+// protected endpoint - delete a machine
+app.delete("/api/machines/:id", authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
+    try {
+        const userId = req.user?.id;
+        if (!userId) return res.status(401).json({ error: "User not authenticated" });
+
+        const { id } = req.params;
+        if (!id) return res.status(400).json({ error: "Machine ID is required" });
+
+        // Check if machine exists and belongs to user
+        const machines = await machineRepository.getByUserId(userId);
+        const machine = machines.find(m => m.id === id);
+        if (!machine) return res.status(404).json({ error: "Machine not found" });
+
+        // Delete all monitoring points associated with this machine first
+        await monitoringPointRepository.deleteByMachineId(id);
+
+        // Delete the machine
+        await machineRepository.delete(id);
+
+        res.status(200).json({ message: "Machine deleted successfully" });
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error";
+        res.status(500).json({ error: message });
+    }
+});
+
+// protected endpoint - update machine type (and delete monitoring points)
+app.put("/api/machines/:id/type", authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
+    try {
+        const userId = req.user?.id;
+        if (!userId) return res.status(401).json({ error: "User not authenticated" });
+
+        const { id } = req.params;
+        const { type } = req.body;
+
+        if (!id) return res.status(400).json({ error: "Machine ID is required" });
+        if (!type || !["pump", "fan"].includes(type)) {
+            return res.status(400).json({ error: "Valid machine type (pump or fan) is required" });
+        }
+
+        // Check if machine exists and belongs to user
+        const machines = await machineRepository.getByUserId(userId);
+        const machine = machines.find(m => m.id === id);
+        if (!machine) return res.status(404).json({ error: "Machine not found" });
+
+        // Update machine type
+        await machineRepository.updateType(id, type);
+
+        // Delete all monitoring points associated with this machine (type change requires sensor reset)
+        await monitoringPointRepository.deleteByMachineId(id);
+
+        res.status(200).json({
+            message: "Machine type updated successfully. All monitoring points have been removed.",
+            machine
+        });
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error";
+        res.status(500).json({ error: message });
+    }
+});
+
 app.get("/api/monitoring-points", authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
     const userId = req.user?.id;
     if (!userId) return res.status(401).json({ error: "User not authenticated" });
@@ -78,6 +142,7 @@ app.post("/api/monitoring-points", authMiddleware, async (req: AuthenticatedRequ
     const userId = req.user?.id;
     if (!userId) return res.status(401).json({ error: "User not authenticated" });
     const { name, sensorType, machineId } = req.body;
+    console.log("🚀 ~ file: main.ts:83 ~ sensorType:", sensorType)
     if (!name || !sensorType || !machineId) {
         return res.status(400).json({ error: "Name, sensorType and machineId are required" });
     }
@@ -89,6 +154,9 @@ app.post("/api/monitoring-points", authMiddleware, async (req: AuthenticatedRequ
             break;
         case SensorType.TcAs:
             monitoringPoint = FanMonitoringPoint.create(userId, machineId, name, sensorType);
+            break;
+        case SensorType.HFPlus:
+            monitoringPoint = PumpMonitoringPoint.create(userId, machineId, name, sensorType);
             break;
         default:
             return res.status(400).json({ error: "Invalid sensor type" });
