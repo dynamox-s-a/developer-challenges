@@ -17,12 +17,12 @@ export class AuthService {
         this.userRepository = userRepository;
     }
 
-    async register(email: string, password: string): Promise<void> {
+    async register(email: string, password: string, firstName: string, lastName: string): Promise<void> {
         const existingUser = await this.userRepository.findByEmail(email);
         if (existingUser) throw new Error("User already exists");
         const passwordHash = await bcrypt.hash(password, 10);
         try {
-            const user = new User(email, passwordHash);
+            const user = new User(email, passwordHash, firstName, lastName);
             await this.userRepository.create(user);
         } catch (error) {
             throw new Error("Failed to register user");
@@ -34,7 +34,7 @@ export class AuthService {
         if (!user) throw new Error("Invalid credentials");
         const isValid = await bcrypt.compare(password, user.passwordHash);
         if (!isValid) throw new Error("Invalid credentials");
-        const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, { expiresIn: "1h" });
+        const token = jwt.sign({ userId: user.id, email: user.email, firstName: user.firstName, lastName: user.lastName }, JWT_SECRET, { expiresIn: "1h" });
         return { token };
     }
 }

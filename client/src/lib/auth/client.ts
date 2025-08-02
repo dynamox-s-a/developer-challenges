@@ -2,19 +2,7 @@
 
 import type { User } from '@/types/user';
 
-function generateToken(): string {
-  const arr = new Uint8Array(12);
-  globalThis.crypto.getRandomValues(arr);
-  return Array.from(arr, (v) => v.toString(16).padStart(2, '0')).join('');
-}
-
-const user = {
-  id: 'USR-000',
-  avatar: '/assets/avatar.png',
-  firstName: 'Sofia',
-  lastName: 'Rivers',
-  email: 'sofia@devias.io',
-} satisfies User;
+const SERVER_BASE_URL = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
 
 export interface SignUpParams {
   firstName: string;
@@ -37,14 +25,28 @@ export interface ResetPasswordParams {
 }
 
 class AuthClient {
-  async signUp(_: SignUpParams): Promise<{ error?: string }> {
-    // Make API request
+  async signUp(params: SignUpParams): Promise<{ error?: string }> {
+    const { email, password, firstName, lastName } = params;
+    try {
+      const response = await fetch(`${SERVER_BASE_URL}/api/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password, firstName, lastName }),
+        credentials: 'include', // Include cookies in the request
+      });
 
-    // We do not handle the API, so we'll just generate a token and store it in localStorage.
-    const token = generateToken();
-    localStorage.setItem('custom-auth-token', token);
+      const data = await response.json();
 
-    return {};
+      if (!response.ok) {
+        return { error: data.error || 'Registration failed' };
+      }
+
+      return {};
+    } catch (error) {
+      return { error: 'Network error. Please try again.' };
+    }
   }
 
   async signInWithOAuth(_: SignInWithOAuthParams): Promise<{ error?: string }> {
@@ -53,18 +55,27 @@ class AuthClient {
 
   async signInWithPassword(params: SignInWithPasswordParams): Promise<{ error?: string }> {
     const { email, password } = params;
+    try {
+      const response = await fetch(`${SERVER_BASE_URL}/api/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+        credentials: 'include', // Include cookies in the request
+      });
 
-    // Make API request
+      const data = await response.json();
 
-    // We do not handle the API, so we'll check if the credentials match with the hardcoded ones.
-    if (email !== 'sofia@devias.io' || password !== 'Secret1') {
-      return { error: 'Invalid credentials' };
+      if (!response.ok) {
+        return { error: data.error || 'Login failed' };
+      }
+
+      // Cookie is automatically set by the browser when credentials: 'include' is used
+      return {};
+    } catch (error) {
+      return { error: 'Network error. Please try again.' };
     }
-
-    const token = generateToken();
-    localStorage.setItem('custom-auth-token', token);
-
-    return {};
   }
 
   async resetPassword(_: ResetPasswordParams): Promise<{ error?: string }> {
@@ -76,22 +87,41 @@ class AuthClient {
   }
 
   async getUser(): Promise<{ data?: User | null; error?: string }> {
-    // Make API request
-
-    // We do not handle the API, so just check if we have a token in localStorage.
-    const token = localStorage.getItem('custom-auth-token');
-
-    if (!token) {
-      return { data: null };
+    try {
+      const response = await fetch(`${SERVER_BASE_URL}/api/me`, {
+        method: 'GET',
+        credentials: 'include', // Include cookies in the request
+      });
+      if (!response.ok) {
+        if (response.status === 401) {
+          return { data: null }; // User not authenticated
+        }
+        const data = await response.json();
+        return { error: data.error || 'Failed to get user' };
+      }
+      const userData = await response.json();
+      return { data: userData };
+    } catch (error) {
+      return { error: 'Network error. Please try again.' };
     }
-
-    return { data: user };
   }
 
   async signOut(): Promise<{ error?: string }> {
-    localStorage.removeItem('custom-auth-token');
+    try {
+      const response = await fetch(`${SERVER_BASE_URL}/api/logout`, {
+        method: 'POST',
+        credentials: 'include', // Include cookies in the request
+      });
 
-    return {};
+      if (!response.ok) {
+        const data = await response.json();
+        return { error: data.error || 'Logout failed' };
+      }
+
+      return {};
+    } catch (error) {
+      return { error: 'Network error. Please try again.' };
+    }
   }
 }
 

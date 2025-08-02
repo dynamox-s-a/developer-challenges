@@ -32,8 +32,10 @@
     "vitest": "^3.2.4"
   },
   "dependencies": {
+    "@types/cors": "^2.8.19",
     "bcrypt": "^6.0.0",
     "biome": "^0.3.3",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",

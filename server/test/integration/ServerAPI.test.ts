@@ -18,7 +18,7 @@ describe("should test service API endpoints", () => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ email: "test@test.com", password: "test" })
+            body: JSON.stringify({ email: "test@test.com", password: "test", firstName: "Sofia", lastName: "Rivers" })
         });
         expect(response.status).toBe(201);
         const result = await response.json();
@@ -27,7 +27,7 @@ describe("should test service API endpoints", () => {
 
     it("should login a user and set a cookie with a token", async () => {
         // First ensure user is registered
-        await createUser("login@test.com", "test");
+        await createUser("login@test.com", "test", "Sofia", "Rivers");
         // Now test login
         const response = await loginUser("login@test.com", "test");
         expect(response.status).toBe(200);
@@ -49,7 +49,7 @@ describe("should test service API endpoints", () => {
 
     it("should create a machine for a user", async () => {
         // First ensure user is registered
-        await createUser("list@test.com", "test");
+        await createUser("list@test.com", "test", "Sofia", "Rivers");
         // login to get a token
         const loginResponse = await loginUser("list@test.com", "test");
         const token = loginResponse.headers.get("Set-Cookie")?.split("token=")[1];
@@ -84,7 +84,7 @@ describe("should test service API endpoints", () => {
 
     it("should create a monitoring point for a machine", async () => {
         // First ensure user is registered
-        await createUser("list@test.com", "test");
+        await createUser("list@test.com", "test", "Sofia", "Rivers");
         // login to get a token
         const loginResponse = await loginUser("list@test.com", "test");
         const token = loginResponse.headers.get("Set-Cookie")?.split("token=")[1];
@@ -107,7 +107,7 @@ describe("should test service API endpoints", () => {
 
     it("should delete a monitoring point by sensorId", async () => {
         // First ensure user is registered
-        await createUser("list@test.com", "test");
+        await createUser("list@test.com", "test", "Sofia", "Rivers");
         // login to get a token
         const loginResponse = await loginUser("list@test.com", "test");
         const token = loginResponse.headers.get("Set-Cookie")?.split("token=")[1];
@@ -129,7 +129,7 @@ describe("should test service API endpoints", () => {
 
     it("should delete all monitoring points by machineId", async () => {
         // First ensure user is registered
-        await createUser("list@test.com", "test");
+        await createUser("list@test.com", "test", "Sofia", "Rivers");
         // login to get a token
         const loginResponse = await loginUser("list@test.com", "test");
         const token = loginResponse.headers.get("Set-Cookie")?.split("token=")[1];
@@ -148,15 +148,30 @@ describe("should test service API endpoints", () => {
         const monitoringPoints = await getMonitoringPointsResponse.json();
         expect(monitoringPoints.length).toBe(0);
     });
+
+    it("should get the current user", async () => {
+        // First ensure user is registered
+        await createUser("john@test.com", "test", "John", "Doe");
+        // login to get a token
+        const loginResponse = await loginUser("john@test.com", "test");
+        const token = loginResponse.headers.get("Set-Cookie")?.split("token=")[1];
+        const getUserResponse = await getUser(token!);
+        expect(getUserResponse.status).toBe(200);
+        const user = await getUserResponse.json();
+        expect(user.id).toBeDefined();
+        expect(user.email).toBe("john@test.com");
+        expect(user.firstName).toBe("John");
+        expect(user.lastName).toBe("Doe");
+    });
 });
 
-function createUser(email: string, password: string) {
+function createUser(email: string, password: string, firstName: string, lastName: string) {
     return fetch("http://localhost:3000/api/register", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password, firstName, lastName })
     });
 }
 
@@ -214,6 +229,15 @@ function deleteMonitoringPointBySensorId(token: string, sensorId: string) {
 function deleteMonitoringPointsByMachineId(token: string, machineId: string) {
     return fetch(`http://localhost:3000/api/monitoring-points/machine-id/${machineId}`, {
         method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Cookie": `token=${token}`
+        }
+    });
+}
+
+function getUser(token: string) {
+    return fetch("http://localhost:3000/api/me", {
         headers: {
             "Content-Type": "application/json",
             "Cookie": `token=${token}`

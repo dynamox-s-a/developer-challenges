@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import cors from "cors";
 import { MachineFactory } from "./domain/MachineFactory.js";
 import { MachineType, MonitoringPoint, SensorType } from "./types/types.js";
 import { authMiddleware } from "./middleware/authMiddleware.js";
@@ -16,6 +17,15 @@ export interface AuthenticatedRequest extends Request {
 }
 
 const app = express();
+
+// CORS configuration for cookie-based authentication
+app.use(cors({
+    origin: process.env.CLIENT_URL || "http://localhost:3001",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 app.use(express.json());
 
 // Create shared instances
@@ -131,7 +141,12 @@ app.post("/api/login", async (req: Request, res: Response) => {
             });
         }
         const token = await authService.login(email, password);
-        res.cookie("token", token.token, { httpOnly: true, secure: true, maxAge: 3600000 });
+        res.cookie("token", token.token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 3600000
+        });
         res.status(200).json({ message: "Login successful" });
     } catch (error) {
         const message = error instanceof Error ? error.message : "Unknown error";
@@ -141,18 +156,47 @@ app.post("/api/login", async (req: Request, res: Response) => {
 
 app.post("/api/register", async (req: Request, res: Response) => {
     try {
-        const { email, password } = req.body;
-        if (!email || !password) {
+        const { email, password, firstName, lastName } = req.body;
+        if (!email || !password || !firstName || !lastName) {
             return res.status(400).json({
-                error: "Email and password are required"
+                error: "Email, password, firstName and lastName are required"
             });
         }
-        await authService.register(email, password);
+        await authService.register(email, password, firstName, lastName);
         res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
         const message = error instanceof Error ? error.message : "Unknown error";
         res.status(400).json({ error: message });
     }
+});
+
+// Get current user endpoint (protected)
+app.get("/api/me", authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
+    try {
+        const userId = req.user?.id;
+        if (!userId) return res.status(401).json({ error: "User not authenticated" });
+        const user = await userRepository.findById(userId);
+        console.log("🚀 ~ file: main.ts:179 ~ user:", user)
+        if (!user) return res.status(404).json({ error: "User not found" });
+        const userData = {
+            id: user.id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            avatar: "/assets/avatar.png"
+        }
+        console.log("🚀 ~ file: main.ts:181 ~ userData:", userData)
+        res.status(200).json(userData);
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown error";
+        res.status(500).json({ error: message });
+    }
+});
+
+// Logout endpoint
+app.post("/api/logout", (req: Request, res: Response) => {
+    res.clearCookie("token");
+    res.status(200).json({ message: "Logout successful" });
 });
 
 // for testing purposes ONLY. Never expose this endpoint in production.
