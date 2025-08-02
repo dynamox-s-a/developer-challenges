@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { MachineType, SensorType } from "../../src/domain";
+import { createUser, loginUser, createMachine, createMonitoringPoint, getMonitoringPoints, deleteMonitoringPointBySensorId, deleteMonitoringPointsByMachineId, getUser } from "../../scripts/Utils";
 
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET as jwt.Secret;
@@ -164,83 +165,3 @@ describe("should test service API endpoints", () => {
         expect(user.lastName).toBe("Doe");
     });
 });
-
-function createUser(email: string, password: string, firstName: string, lastName: string) {
-    return fetch("http://localhost:3000/api/register", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email, password, firstName, lastName })
-    });
-}
-
-function loginUser(email: string, password: string) {
-    return fetch("http://localhost:3000/api/login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email, password })
-    });
-}
-
-function createMachine(token: string, name: string, type: MachineType) {
-    return fetch("http://localhost:3000/api/machines", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Cookie": `token=${token}`
-        },
-        body: JSON.stringify({ name, type })
-    });
-}
-
-function createMonitoringPoint(token: string, name: string, sensorType: SensorType, machineId: string) {
-    return fetch("http://localhost:3000/api/monitoring-points", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Cookie": `token=${token}`
-        },
-        body: JSON.stringify({ name, sensorType, machineId })
-    });
-}
-
-function getMonitoringPoints(token: string) {
-    return fetch("http://localhost:3000/api/monitoring-points", {
-        headers: {
-            "Content-Type": "application/json",
-            "Cookie": `token=${token}`
-        }
-    });
-}
-
-function deleteMonitoringPointBySensorId(token: string, sensorId: string) {
-    return fetch(`http://localhost:3000/api/monitoring-points/sensor-id/${sensorId}`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            "Cookie": `token=${token}`
-        }
-    });
-}
-
-function deleteMonitoringPointsByMachineId(token: string, machineId: string) {
-    return fetch(`http://localhost:3000/api/monitoring-points/machine-id/${machineId}`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            "Cookie": `token=${token}`
-        }
-    });
-}
-
-function getUser(token: string) {
-    return fetch("http://localhost:3000/api/me", {
-        headers: {
-            "Content-Type": "application/json",
-            "Cookie": `token=${token}`
-        }
-    });
-}

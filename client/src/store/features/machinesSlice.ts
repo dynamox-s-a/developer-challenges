@@ -1,6 +1,8 @@
 // store/features/machinesSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
+const SERVER_BASE_URL = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
+
 export interface Machine {
     id: string;
     name: string;
@@ -32,7 +34,12 @@ interface MachinesState {
 export const fetchMachines = createAsyncThunk<Machine[]>(
     'machines/fetchMachines',
     async () => {
-        const response = await fetch('/api/machines');
+        const response = await fetch(`${SERVER_BASE_URL}/api/machines`, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            credentials: 'include', // Include cookies for authentication
+        });
         if (!response.ok) throw new Error('Failed to fetch machines');
         return await response.json();
     }
