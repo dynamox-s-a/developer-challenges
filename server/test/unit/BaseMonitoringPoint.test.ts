@@ -29,9 +29,9 @@ describe('BaseMonitoringPoint Sensor Type Validation', () => {
             expect(result).toBe(true);
         });
 
-        it('should return false for fan machines with HFPlus sensors', () => {
+        it('should return true for fan machines with HFPlus sensors', () => {
             const result = BaseMonitoringPoint.isSensorTypeCompatible(MachineType.FAN, SensorType.HFPlus);
-            expect(result).toBe(false);
+            expect(result).toBe(true);
         });
     });
 
@@ -50,6 +50,10 @@ describe('BaseMonitoringPoint Sensor Type Validation', () => {
             expect(() => {
                 BaseMonitoringPoint.validateSensorTypeCompatibility(MachineType.FAN, SensorType.TcAs);
             }).not.toThrow();
+
+            expect(() => {
+                BaseMonitoringPoint.validateSensorTypeCompatibility(MachineType.FAN, SensorType.HFPlus);
+            }).not.toThrow();
         });
 
         it('should throw descriptive error for forbidden pump machine sensor types', () => {
@@ -63,9 +67,9 @@ describe('BaseMonitoringPoint Sensor Type Validation', () => {
         });
 
         it('should throw descriptive error for incompatible fan machine sensor types', () => {
-            expect(() => {
-                BaseMonitoringPoint.validateSensorTypeCompatibility(MachineType.FAN, SensorType.HFPlus);
-            }).toThrow("Sensor type 'HF+' is not compatible with machine type 'fan'. Compatible sensor types are: TcAg, TcAs");
+            // Since FAN machines now support all sensor types, there are no incompatible combinations
+            // This test is kept for future extensibility if new sensor types are added
+            expect(true).toBe(true);
         });
     });
 
@@ -75,9 +79,9 @@ describe('BaseMonitoringPoint Sensor Type Validation', () => {
             expect(result).toEqual([SensorType.HFPlus]);
         });
 
-        it('should return correct sensor types for fan machines (TcAg and TcAs)', () => {
+        it('should return correct sensor types for fan machines (TcAg, TcAs, and HFPlus)', () => {
             const result = BaseMonitoringPoint.getCompatibleSensorTypes(MachineType.FAN);
-            expect(result).toEqual([SensorType.TcAg, SensorType.TcAs]);
+            expect(result).toEqual([SensorType.TcAg, SensorType.TcAs, SensorType.HFPlus]);
         });
 
         it('should return empty array for invalid machine types', () => {

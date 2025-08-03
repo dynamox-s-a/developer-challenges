@@ -15,7 +15,7 @@ export const SensorType = {
 
 export type SensorType = (typeof SensorType)[keyof typeof SensorType];
 export type PumpMonitoringSensorType = typeof SensorType.HFPlus;
-export type FanMonitoringSensorType = typeof SensorType.TcAg | typeof SensorType.TcAs;
+export type FanMonitoringSensorType = typeof SensorType.TcAg | typeof SensorType.TcAs | typeof SensorType.HFPlus;
 
 export interface MachineBase {
     userId: string;

@@ -62,8 +62,8 @@ export abstract class BaseMonitoringPoint implements MonitoringPoint {
                 // TcAg and TcAs sensors are forbidden for pump machines
                 return sensorType === SensorType.HFPlus;
             case MachineType.FAN:
-                // Fan machines support TcAg and TcAs sensors
-                return sensorType === SensorType.TcAg || sensorType === SensorType.TcAs;
+                // Fan machines support TcAg, TcAs, and HFPlus sensors
+                return sensorType === SensorType.TcAg || sensorType === SensorType.TcAs || sensorType === SensorType.HFPlus;
             default:
                 return false;
         }
@@ -95,7 +95,7 @@ export abstract class BaseMonitoringPoint implements MonitoringPoint {
             case MachineType.PUMP:
                 return [SensorType.HFPlus];
             case MachineType.FAN:
-                return [SensorType.TcAg, SensorType.TcAs];
+                return [SensorType.TcAg, SensorType.TcAs, SensorType.HFPlus];
             default:
                 return [];
         }
