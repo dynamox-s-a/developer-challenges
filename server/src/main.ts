@@ -1,24 +1,15 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
-import { MachineFactory } from "./domain/MachineFactory.js";
-import { MachineType, MonitoringPoint, SensorType } from "./types/types.js";
+import { AuthenticatedRequest } from "./types/types.js";
 import { authMiddleware } from "./middleware/authMiddleware.js";
 import UserRepositoryMemory from "./repository/UserRepositoryMemory.js";
 import { AuthService } from "./service/AuthService.js";
 import { MachineRepositoryMemory } from "./repository/MachineRepositoryMemory.js";
 import { MonitoringPointRepositoryMemory } from "./repository/MonitoringPointRepositoryMemory.js";
-import { PumpMonitoringPoint } from "./domain/PumpMonitoringPoint.js";
-import { FanMonitoringPoint } from "./domain/FanMonitoringPoint.js";
 import SaveNewMachine from "./useCase/SaveNewMachine.js";
 import UpdateMachineType from "./useCase/UpdateMachineType.js";
 import DeleteMachine from "./useCase/DeleteMachine.js";
 import SaveNewMonitoringPoint from "./useCase/SaveNewMonitoringPoint.js";
-
-export interface AuthenticatedRequest extends Request {
-    user?: {
-        id: string;
-    };
-}
 
 const app = express();
 
@@ -246,7 +237,7 @@ app.get("/api/clear", (_req: Request, res: Response) => {
     userRepository.clear();
     machineRepository.clear();
     monitoringPointRepository.clear();
-    res.status(200).json({ message: "Database cleared" });
+    res.status(200).json({ message: "Repositories cleared" });
 });
 
 const PORT = process.env.PORT || 3000;

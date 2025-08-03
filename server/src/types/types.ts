@@ -1,3 +1,5 @@
+import { Request } from "express";
+
 export const MachineType = {
     PUMP: "pump",
     FAN: "fan",
@@ -12,7 +14,6 @@ export const SensorType = {
 } as const;
 
 export type SensorType = (typeof SensorType)[keyof typeof SensorType];
-
 export type PumpMonitoringSensorType = typeof SensorType.HFPlus;
 export type FanMonitoringSensorType = typeof SensorType.TcAg | typeof SensorType.TcAs;
 
