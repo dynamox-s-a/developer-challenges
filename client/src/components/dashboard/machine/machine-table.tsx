@@ -1,0 +1,197 @@
+'use client'
+
+import { useState } from 'react';
+import {
+  Button,
+  Card,
+  CardContent,
+  Typography,
+  TextField,
+  Stack,
+  Select,
+  MenuItem,
+  Container,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@mui/material';
+import { deleteMachineAsync, updateMachine, updateMachineTypeAsync } from '@/store/features/machinesSlice';
+import { removeMonitoringPointsByMachineId } from '@/store/features/monitoringPointsSlice';
+import { AppDispatch } from '@/store';
+import { useDispatch } from 'react-redux';
+import { useSnackbar } from '@/providers/SnackProvider';
+import { EditMachineTypeDialogue } from './edit-machine-type-dialogue';
+
+export interface Machine {
+  id: string;
+  name: string;
+  type: 'pump' | 'fan';
+  monitoringPoints?: Array<{
+    id: string;
+    monitoringPointName: string;
+    sensorType: string;
+  }>;
+}
+
+export function MachineTable({ paginatedMachines }: { paginatedMachines: Machine[] }) {
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editedName, setEditedName] = useState('');
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [updatingTypeId, setUpdatingTypeId] = useState<string | null>(null);
+  const [pendingTypeChange, setPendingTypeChange] = useState<{
+    machineId: string;
+    newType: 'pump' | 'fan';
+    machineName: string;
+  } | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const { showMessage } = useSnackbar();
+  const handleStartEdit = (machine: Machine) => {
+    setEditingId(machine.id);
+    setEditedName(machine.name);
+  };
+
+  const handleUpdateName = (machineId: string, machineType: string) => {
+    setEditingId(null);
+    dispatch(updateMachine({ id: machineId, name: editedName }));
+    showMessage('Machine name updated', 'info');
+  };
+
+  const handleUpdateType = (machineId: string, newType: string) => {
+    const machine = paginatedMachines.find(m => m.id === machineId);
+    if (machine && machine.type !== newType) {
+      // Show confirmation dialog before changing type
+      setPendingTypeChange({
+        machineId,
+        newType: newType as 'pump' | 'fan',
+        machineName: machine.name
+      });
+      setConfirmDialogOpen(true);
+    }
+  };
+
+  const handleConfirmTypeChange = async () => {
+    if (pendingTypeChange) {
+      setUpdatingTypeId(pendingTypeChange.machineId);
+      try {
+        // Update machine type on server (this also deletes monitoring points on server)
+        await dispatch(updateMachineTypeAsync({
+          id: pendingTypeChange.machineId,
+          type: pendingTypeChange.newType
+        })).unwrap();
+        // Update client state by removing monitoring points for this machine
+        // (Server already deleted them, so we just update local state)
+        dispatch(removeMonitoringPointsByMachineId(pendingTypeChange.machineId));
+        showMessage(`Machine type updated to ${pendingTypeChange.newType}. All monitoring points have been removed.`, 'warning');
+      } catch (error) {
+        showMessage('Failed to update machine type', 'error');
+        console.error('Error updating machine type:', error);
+      } finally {
+        setUpdatingTypeId(null);
+      }
+    }
+    setConfirmDialogOpen(false);
+    setPendingTypeChange(null);
+  };
+
+  const handleCancelTypeChange = () => {
+    setConfirmDialogOpen(false);
+    setPendingTypeChange(null);
+  };
+
+  const handleCancel = () => {
+    setEditingId(null);
+    setEditedName('');
+  };
+
+  const handleDeleteMachine = async (id: string) => {
+    setDeletingId(id);
+    try {
+      // Delete the machine on the server (this also deletes monitoring points on server)
+      await dispatch(deleteMachineAsync(id)).unwrap();
+      // Update client state by removing monitoring points for this machine
+      // (Server already deleted them, so we just update local state)
+      dispatch(removeMonitoringPointsByMachineId(id));
+      showMessage('Machine and all associated monitoring points have been removed.', 'success');
+    } catch (error) {
+      showMessage('Failed to delete machine', 'error');
+      console.error('Error deleting machine:', error);
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
+  return (
+    <>
+      {paginatedMachines.map((machine) => (
+        <Card key={machine.id} sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+          <CardContent sx={{
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 2
+          }}>
+              {editingId === machine.id ? (
+                <TextField
+                  size="small"
+                  value={editedName}
+                  onChange={(e) => setEditedName(e.target.value)}
+                  onBlur={() => handleUpdateName(machine.id, machine.type)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleUpdateName(machine.id, machine.type);
+                    if (e.key === 'Escape') handleCancel();
+                  }}
+                  autoFocus
+                />
+              ) : (
+                <Typography
+                  variant="h6"
+                  onClick={() => handleStartEdit(machine)}
+                  sx={{ cursor: 'pointer' }}
+                >
+                  {machine.name}
+                </Typography>
+              )}
+            <Select
+              size="small"
+              value={machine.type}
+              onChange={(e) => {
+                handleUpdateType(machine.id, e.target.value);
+              }}
+              disabled={updatingTypeId === machine.id}
+            >
+              <MenuItem value="pump">Pump</MenuItem>
+              <MenuItem value="fan">Fan</MenuItem>
+            </Select>
+            {updatingTypeId === machine.id && (
+              <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
+                Updating...
+              </Typography>
+            )}
+                <Container sx={{ minWidth: '200px' }}>
+                </Container>
+            <Button 
+              variant="contained" 
+              color="error" 
+              onClick={() => handleDeleteMachine(machine.id)}
+              disabled={deletingId === machine.id}
+            >
+              {deletingId === machine.id ? 'Deleting...' : 'Delete'}
+            </Button>
+          </CardContent>
+        </Card>
+      ))}
+
+      {/* Confirmation Dialog for Machine Type Change */}
+      <EditMachineTypeDialogue
+        confirmDialogOpen={confirmDialogOpen}
+        handleCancelTypeChange={handleCancelTypeChange}
+        handleConfirmTypeChange={handleConfirmTypeChange}
+        updatingTypeId={updatingTypeId}
+        pendingTypeChange={pendingTypeChange}
+      />
+    </>
+  );
+}
