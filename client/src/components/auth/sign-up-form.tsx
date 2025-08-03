@@ -21,6 +21,7 @@ import { z as zod } from 'zod';
 import { paths } from '@/paths';
 import { authClient } from '@/lib/auth/client';
 import { useUser } from '@/hooks/use-user';
+import { useSnackbar } from '@/providers/SnackProvider';
 
 const schema = zod.object({
   firstName: zod.string().min(1, { message: 'First name is required' }),
@@ -35,6 +36,7 @@ type Values = zod.infer<typeof schema>;
 const defaultValues = { firstName: '', lastName: '', email: '', password: '', terms: false } satisfies Values;
 
 export function SignUpForm(): React.JSX.Element {
+  const { showMessage } = useSnackbar();
   const router = useRouter();
 
   const { checkSession } = useUser();
@@ -56,12 +58,14 @@ export function SignUpForm(): React.JSX.Element {
 
       if (error) {
         setError('root', { type: 'server', message: error });
+        showMessage(error, 'error');
         setIsPending(false);
         return;
       }
 
       // Refresh the auth state
       await checkSession?.();
+      showMessage('User created successfully', 'success');
 
       // UserProvider, for this case, will not refresh the router
       // After refresh, GuestGuard will handle the redirect
@@ -150,7 +154,7 @@ export function SignUpForm(): React.JSX.Element {
           </Button>
         </Stack>
       </form>
-      <Alert color="warning">Created users are not persisted</Alert>
+      <Alert color="warning">Created users are persisted in memory only. They will be lost after server restart.</Alert>
     </Stack>
   );
 }
