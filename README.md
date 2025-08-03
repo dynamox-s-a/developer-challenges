@@ -401,14 +401,14 @@ PORT=3000
 ### Sensor Types
 - **TcAg**: Temperature sensors (compatible with fan machines only, **forbidden** for pump machines)
 - **TcAs**: Humidity sensors (compatible with fan machines only, **forbidden** for pump machines)
-- **HFPlus**: Pressure sensors (compatible with pump machines only)
+- **HFPlus**: Pressure sensors
 
 ### Business Rules
 1. **Machine Type Change**: When a machine type is changed, all associated monitoring points are automatically deleted
 2. **Sensor Compatibility**: Strict validation ensures only compatible sensor types can be added to machines:
    - **Pump machines**: Can ONLY have HFPlus (pressure) sensors
    - **Pump machines FORBIDDEN**: TcAg and TcAs sensors are explicitly forbidden for pump machines
-   - **Fan machines**: Can have TcAg (temperature) and TcAs (humidity) sensors
+   - **Fan machines**: Can have TcAg (temperature), TcAs (humidity) and HF+ sensors
    - **Invalid combinations** return detailed error messages explaining compatibility requirements
 3. **User Isolation**: Users can only access their own machines and monitoring points
 4. **Cascade Deletion**: Deleting a machine removes all its monitoring points
@@ -430,19 +430,3 @@ cd server
 npm run test
 ```
 
-## Production Deployment
-
-1. **Build the client:**
-   ```bash
-   cd client
-   npm run build
-   ```
-
-2. **Build the server:**
-   ```bash
-   cd server
-   npm run build
-   ```
-
-3. **Set production environment variables**
-4. **Deploy both applications to your hosting platform**
