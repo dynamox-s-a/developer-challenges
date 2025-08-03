@@ -1,6 +1,18 @@
 # Machine Management System
 
-A full-stack machine and monitoring points management application built with Next.js, Express.js, and TypeScript.
+A full-stack machine and monitoring points management application built with Next.js, Express.js, and TypeScript. The frontend uses the suggested Devias Kit. I've added two new pages: Machines and Monitoring Points which can be accesses via side-menu.
+
+## My assumptions given requirements specs:
+- Whenever a machine type is updated, all its related monitoring points must be deleted. This avoids creating invalid state with machines set invalid sensor types.
+- Machines and Monitoring points must have a internal UUID. This allows keeping reference of entities as users change its properties.
+- State validation in frontend improves user experience (feedbacks with toasts, invalid forms, etc) but the server is the business rules guard. That's why server validates incoming state by instancing domain objects with it (machines of certain type, monitoring points, etc).
+- For reading purposes it's enough to simply fetch data from database (in the sense of CQRS).
+
+## Known limitations:
+- Persistence layer is currenly in-memory only. But having clear repository modules makes it simple to implement it. One could create an interface from current repositories and implement them as required for a SQL stack.
+- The interface between server and client is very manual as it is, and because of that, very error prone. Improving this would be a huge quality-of-life improvement.
+- Frontend works, but it could improve in its design. Also, current implementation fetches all user data at the same time. If a user has too many machines and monitoring points, a proper server-side pagination handling would improve performance.  
+
 
 ## Features
 
