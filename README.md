@@ -27,6 +27,7 @@ With vast experience, enhances software development, leading complex system deve
 ## Challenges Full-Stack
 
 - [ ] [01 - Dynamox Full-Stack Developer Challenge](./full-stack-challenge.md)
+- [ ] [02 - Dynamox Full-Stack C# React Developer Challenge](./full-stack-csharp-react-challenge.md) 
   
 ## Challenges Front-End
 
