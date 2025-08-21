@@ -1,0 +1,86 @@
+/* estilos gerais da página de cadastro */
+.cadastro-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+
+/* estilo do formulário */
+.cadastro-form {
+  background-color: #ffffff;
+  padding: 40px 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cadastro-form h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.cadastro-form input {
+  padding: 12px 15px;
+  margin-bottom: 18px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.2s ease;
+}
+
+.cadastro-form input:focus {
+  outline: none;
+  border-color: #0066cc;
+  box-shadow: 0 0 5px #0066cc;
+}
+
+.cadastro-form button {
+  background-color: #0066cc;
+  color: white;
+  font-size: 18px;
+  padding: 12px 0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cadastro-form button:disabled {
+  background-color: #88aaff;
+  cursor: not-allowed;
+}
+
+.cadastro-form button:hover:not(:disabled) {
+  background-color: #004f9a;
+}
+
+.error {
+  color: #cc0000;
+  font-weight: 600;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.voltar-login {
+  margin-top: 20px;
+  color: #0066cc;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.voltar-login:hover {
+  color: #004f9a;
+  text-decoration: underline;
+}
