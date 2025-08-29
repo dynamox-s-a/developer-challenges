@@ -1,0 +1,6 @@
+@FullStackDevelopmentChallenge.Api_HostAddress = http://localhost:5011
+
+GET {{FullStackDevelopmentChallenge.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Controllers\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\FullStackDevelopmentChallenge.Application\FullStackDevelopmentChallenge.Application.csproj" />
+	  <ProjectReference Include="..\FullStackDevelopmentChallenge.Communication\FullStackDevelopmentChallenge.Communication.csproj" />
+	  <ProjectReference Include="..\FullStackDevelopmentChallenge.Exceptions\FullStackDevelopmentChallenge.Exceptions.csproj" />
+	  <ProjectReference Include="..\FullStackDevelopmentChallenge.Infrastructure\FullStackDevelopmentChallenge.Infrastructure.csproj" />
+	</ItemGroup>
+
+
+</Project>
