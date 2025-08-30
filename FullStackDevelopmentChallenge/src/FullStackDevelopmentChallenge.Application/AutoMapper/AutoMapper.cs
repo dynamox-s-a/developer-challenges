@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FullStackDevelopmentChallenge.Application.UseCases.Machines.GetById;
 using FullStackDevelopmentChallenge.Communication.Requests;
 using FullStackDevelopmentChallenge.Communication.Responses;
 using FullStackDevelopmentChallenge.Domain.Entities;
@@ -19,5 +20,9 @@ public class AutoMapping : Profile
     private void EntityToResponse()
     {
         CreateMap<Machine, CreateMachineResponse>();
+        CreateMap<Machine, GetAllMachinesResponse>();
+        CreateMap<Machine, GetMachineResponse>()
+            .ForMember(dest => dest.MachineType, opt => opt.MapFrom(src => src.MachineType.TypeName));
+
     }
 }
