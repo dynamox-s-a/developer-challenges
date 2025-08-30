@@ -1,3 +1,4 @@
+using FullStackDevelopmentChallenge.Api.Middleware;
 using FullStackDevelopmentChallenge.Application;
 using FullStackDevelopmentChallenge.Infrastructure;
 
@@ -26,6 +27,11 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+
+app.UseMiddleware<ExceptionMiddleware>();
+
+
 app.MapControllers();
 
 app.Run();
+public partial class Program { }
