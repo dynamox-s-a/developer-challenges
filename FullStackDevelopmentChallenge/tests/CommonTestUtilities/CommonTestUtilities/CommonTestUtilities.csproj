@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\src\FullStackDevelopmentChallenge.Communication\FullStackDevelopmentChallenge.Communication.csproj" />
+		<ProjectReference Include="..\..\..\src\FullStackDevelopmentChallenge.Domain\FullStackDevelopmentChallenge.Domain.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="13.0.1" />
+		<PackageReference Include="Bogus" Version="35.5.1" />
+		<PackageReference Include="Moq" Version="4.20.70" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Mapper\" />
+	  <Folder Include="Repositories\" />
+	</ItemGroup>
+
+
+</Project>
