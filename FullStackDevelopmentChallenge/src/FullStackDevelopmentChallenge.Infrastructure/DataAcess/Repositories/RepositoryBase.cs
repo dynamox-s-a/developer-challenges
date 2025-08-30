@@ -19,13 +19,24 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
         await _dbSet.AddAsync(entity);
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
     {
-        return await _dbSet.AsNoTracking().ToListAsync();
-    }
+        IQueryable<T> query = _dbSet.AsNoTracking();
 
-    public async Task<T> GetByIdAsync(Guid id)
+        foreach (var include in includes)
+        {
+            query = query.Include(include);
+        }
+
+        return await query.ToListAsync();
+    }
+    public async Task<T> GetByIdAsync(Guid id, params Expression<Func<T, object>>[] includes)
     {
-        return await _dbSet.FindAsync(id);
+        IQueryable<T> query = _dbSet.AsNoTracking();
+
+        foreach (var include in includes)
+            query = query.Include(include);
+
+        return await query.FirstOrDefaultAsync(e => EF.Property<Guid>(e, "Id") == id);
     }
 }
