@@ -1,7 +1,37 @@
+# Visual Studio
 .vs/
+*.suo
+*.user
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Build output
 bin/
 obj/
-*.user
-*.suo
-**/appsettings.Development.json
+dist/
+dist-ssr/
 
+# Configurações sensíveis
+**/appsettings.Development.json
+*.local
+**.gitignore 
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Node modules
+node_modules/
+
+# Editor directories
+.vscode/
+!.vscode/extensions.json
+.idea/
+.DS_Store
