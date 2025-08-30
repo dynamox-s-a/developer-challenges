@@ -11,10 +11,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Controllers\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <ProjectReference Include="..\FullStackDevelopmentChallenge.Application\FullStackDevelopmentChallenge.Application.csproj" />
 	  <ProjectReference Include="..\FullStackDevelopmentChallenge.Communication\FullStackDevelopmentChallenge.Communication.csproj" />
 	  <ProjectReference Include="..\FullStackDevelopmentChallenge.Exceptions\FullStackDevelopmentChallenge.Exceptions.csproj" />
