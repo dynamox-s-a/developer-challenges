@@ -1,15 +1,13 @@
 ﻿using FullStackDevelopmentChallenge.Domain.Entities;
 using FullStackDevelopmentChallenge.Domain.Repositories.Specific;
 using FullStackDevelopmentChallenge.Infraestructure.DataAccess;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace FullStackDevelopmentChallenge.Infrastructure.DataAcess.Repositories.Entities;
 public class MachineRepository : RepositoryBase<Machine>, IMachineRepository
 {
+    protected override Expression<Func<Machine, object>>[] DefaultIncludes =>
+        new Expression<Func<Machine, object>>[] { m => m.MachineType };
     public MachineRepository(FullStackDevelopmentChallengeDbContext context) : base(context)
     {
     }

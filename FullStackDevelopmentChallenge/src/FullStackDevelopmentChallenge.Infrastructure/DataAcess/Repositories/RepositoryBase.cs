@@ -1,4 +1,5 @@
-﻿using FullStackDevelopmentChallenge.Domain.Repositories;
+﻿using FullStackDevelopmentChallenge.Domain.Entities;
+using FullStackDevelopmentChallenge.Domain.Repositories;
 using FullStackDevelopmentChallenge.Infraestructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -19,22 +20,24 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
         await _dbSet.AddAsync(entity);
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
+    protected virtual Expression<Func<T, object>>[] DefaultIncludes => Array.Empty<Expression<Func<T, object>>>();
+
+    public async Task<IEnumerable<T>> GetAllAsync()
     {
         IQueryable<T> query = _dbSet.AsNoTracking();
 
-        foreach (var include in includes)
-        {
+        // Inclui automaticamente as propriedades definidas no DefaultIncludes
+        foreach (var include in DefaultIncludes)
             query = query.Include(include);
-        }
 
         return await query.ToListAsync();
     }
-    public async Task<T> GetByIdAsync(Guid id, params Expression<Func<T, object>>[] includes)
+
+    public async Task<T?> GetByIdAsync(Guid id)
     {
         IQueryable<T> query = _dbSet.AsNoTracking();
 
-        foreach (var include in includes)
+        foreach (var include in DefaultIncludes)
             query = query.Include(include);
 
         return await query.FirstOrDefaultAsync(e => EF.Property<Guid>(e, "Id") == id);

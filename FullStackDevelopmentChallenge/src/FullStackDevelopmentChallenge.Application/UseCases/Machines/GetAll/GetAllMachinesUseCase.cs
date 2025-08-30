@@ -16,7 +16,7 @@ public class GetAllMachinesUseCase : IGetAllMachinesUseCase
 
     public async Task<GetAllMachinesResponse> GetAllMachines()
     {
-        var result = await _machineRepository.GetAllAsync(m => m.MachineType);
+        var result = await _machineRepository.GetAllAsync();
 
         return new GetAllMachinesResponse
         {

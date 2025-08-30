@@ -18,7 +18,7 @@ public class GetByIdMachineUseCase : IGetByIdMachineUseCase
 
     public async Task<GetMachineResponse> GetById(Guid id)
     {
-        var machine = await _machineRepository.GetByIdAsync(id, m => m.MachineType);
+        var machine = await _machineRepository.GetByIdAsync(id);
 
         if (machine is null)
         {
