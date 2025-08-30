@@ -1,0 +1,23 @@
+﻿using AutoMapper;
+using FullStackDevelopmentChallenge.Communication.Requests;
+using FullStackDevelopmentChallenge.Communication.Responses;
+using FullStackDevelopmentChallenge.Domain.Entities;
+
+namespace FullStackDevelopmentChallenge.Application.AutoMapper;
+public class AutoMapping : Profile
+{
+    public AutoMapping()
+    {
+        RequestToEntity();
+        EntityToResponse();
+    }
+    private void RequestToEntity()
+    {
+        CreateMap<CreateMachineRequest, Machine>()
+       .ForMember(dest => dest.Id, opt => opt.Ignore());
+    }
+    private void EntityToResponse()
+    {
+        CreateMap<Machine, CreateMachineResponse>();
+    }
+}
