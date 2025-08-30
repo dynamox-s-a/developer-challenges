@@ -11,7 +11,7 @@ public partial class Machine
 
     public string SerialNumber { get; set; } = null!;
 
-    public string Description { get; set; } = null!;
+    public string? Description { get; set; }
 
     public Guid MachineTypeId { get; set; }
 
