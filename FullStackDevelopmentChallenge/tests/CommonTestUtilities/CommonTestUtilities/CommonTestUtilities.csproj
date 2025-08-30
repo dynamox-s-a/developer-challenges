@@ -7,6 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\src\FullStackDevelopmentChallenge.Application\FullStackDevelopmentChallenge.Application.csproj" />
 		<ProjectReference Include="..\..\..\src\FullStackDevelopmentChallenge.Communication\FullStackDevelopmentChallenge.Communication.csproj" />
 		<ProjectReference Include="..\..\..\src\FullStackDevelopmentChallenge.Domain\FullStackDevelopmentChallenge.Domain.csproj" />
 	</ItemGroup>
@@ -15,11 +16,6 @@
 		<PackageReference Include="AutoMapper" Version="13.0.1" />
 		<PackageReference Include="Bogus" Version="35.5.1" />
 		<PackageReference Include="Moq" Version="4.20.70" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Mapper\" />
-	  <Folder Include="Repositories\" />
 	</ItemGroup>
 
 
