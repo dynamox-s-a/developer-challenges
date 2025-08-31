@@ -1,0 +1,17 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.userosscache
+appsettings*.json
+*.db
+.DS_Store
+Thumbs.db
+node_modules/
+dist/
+dist-ssr/
+*.local
+.env
+.env.*
+*.log
