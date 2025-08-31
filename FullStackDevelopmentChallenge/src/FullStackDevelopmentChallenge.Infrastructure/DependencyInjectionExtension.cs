@@ -3,6 +3,7 @@ using FullStackDevelopmentChallenge.Domain.Repositories.Specific;
 using FullStackDevelopmentChallenge.Infraestructure.DataAccess;
 using FullStackDevelopmentChallenge.Infrastructure.DataAcess;
 using FullStackDevelopmentChallenge.Infrastructure.DataAcess.Repositories.Entities;
+using FullStackDevelopmentChallenge.Infrastructure.DataAcess.Repositories.Specific;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +30,7 @@ public static class DependencyInjectionExtension
     private static void AddRepositories(IServiceCollection services)
     {
         services.AddScoped<IMachineRepository, MachineRepository>();
+        services.AddScoped<IMachineTypeRepository, MachineTypeRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }
