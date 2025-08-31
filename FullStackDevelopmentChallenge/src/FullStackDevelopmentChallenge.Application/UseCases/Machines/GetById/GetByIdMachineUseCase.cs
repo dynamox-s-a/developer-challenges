@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using FullStackDevelopmentChallenge.Communication.Responses;
+using FullStackDevelopmentChallenge.Communication.Responses.Machines;
 using FullStackDevelopmentChallenge.Domain.Repositories.Specific;
 using FullStackDevelopmentChallenge.Exceptions;
 using FullStackDevelopmentChallenge.Exceptions.ExeceptionsBase;

@@ -1,4 +1,4 @@
-﻿namespace FullStackDevelopmentChallenge.Communication.Responses;
+﻿namespace FullStackDevelopmentChallenge.Communication.Responses.Machines;
 public class GetMachineResponse
 {
     public Guid Id { get; set; }

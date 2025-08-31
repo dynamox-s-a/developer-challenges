@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FullStackDevelopmentChallenge.Communication.Requests;
-using FullStackDevelopmentChallenge.Communication.Responses;
+using FullStackDevelopmentChallenge.Communication.Responses.Machines;
 using FullStackDevelopmentChallenge.Domain.Entities;
 using FullStackDevelopmentChallenge.Domain.Repositories;
 using FullStackDevelopmentChallenge.Domain.Repositories.Specific;

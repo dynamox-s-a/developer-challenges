@@ -1,5 +1,5 @@
 ﻿using FullStackDevelopmentChallenge.Communication.Requests;
-using FullStackDevelopmentChallenge.Communication.Responses;
+using FullStackDevelopmentChallenge.Communication.Responses.Machines;
 using System;
 using System.Collections.Generic;
 using System.Linq;
