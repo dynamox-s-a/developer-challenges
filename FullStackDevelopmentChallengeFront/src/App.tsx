@@ -1,17 +1,15 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-import CreateMachine from "./pages/CreateMachine/CreateMachine";
 import MainLayout from "./layouts/MainLayout";
+import { AppRoutes } from './router/app.routes';
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <MainLayout>
-        <Routes>
-          <Route path="/" element={<CreateMachine />} />
-        </Routes>
+        <AppRoutes />
       </MainLayout>
-    </Router>
+    </BrowserRouter>
   );
 }
 
