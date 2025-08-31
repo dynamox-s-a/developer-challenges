@@ -3,7 +3,7 @@ using FullStackDevelopmentChallenge.Application.UseCases.Machines.GetAll;
 using FullStackDevelopmentChallenge.Application.UseCases.Machines.GetById;
 using FullStackDevelopmentChallenge.Communication.Requests;
 using FullStackDevelopmentChallenge.Communication.Responses;
-using Microsoft.AspNetCore.Http;
+using FullStackDevelopmentChallenge.Communication.Responses.Machines;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FullStackDevelopmentChallenge.Api.Controllers;
