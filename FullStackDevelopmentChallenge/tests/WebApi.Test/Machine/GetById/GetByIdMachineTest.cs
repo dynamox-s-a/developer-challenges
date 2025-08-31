@@ -38,7 +38,7 @@ public class GetByIdMachineTest : FullStackDevelopmentChallengeClassFixture
     }
 
     [Fact]
-    public async Task Error_Expense_Not_Found()
+    public async Task Error_Machine_Not_Found()
     {
         var machineIdNotFound = Guid.NewGuid();
         var result = await RequestGet(requestUri: $"{METHOD}/{machineIdNotFound}");

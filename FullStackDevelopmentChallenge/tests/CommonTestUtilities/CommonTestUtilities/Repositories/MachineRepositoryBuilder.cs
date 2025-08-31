@@ -25,11 +25,6 @@ public class MachineRepositoryBuilder
         }
         return this;
     }
-    public MachineRepositoryBuilder GetByIdAny(List<Machine> machines)
-    {
-        _repository.Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
-                   .ReturnsAsync((Guid id) => machines.FirstOrDefault(m => m.Id == id));
-        return this;
-    }
+
     public IMachineRepository Build() => _repository.Object;
 }
