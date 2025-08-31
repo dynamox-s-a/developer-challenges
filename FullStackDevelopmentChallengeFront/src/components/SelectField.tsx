@@ -1,7 +1,12 @@
 import React, { forwardRef } from "react";
 
+type Option = {
+  value: string | number;
+  label: string;
+};
+
 type SelectFieldProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
-  options: string[];
+  options: Option[];
 };
 
 const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(
@@ -13,10 +18,10 @@ const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(
                    focus:outline-none focus:ring-2 focus:ring-blue-400"
         {...props}
       >
-        <option value="">Selecione um tipo</option>
+        <option value="">Select...</option>
         {options.map((opt) => (
-          <option key={opt} value={opt}>
-            {opt}
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
           </option>
         ))}
       </select>

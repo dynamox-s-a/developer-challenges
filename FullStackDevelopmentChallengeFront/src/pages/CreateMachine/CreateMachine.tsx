@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { PageTitle } from "../../layouts/PageTitle";
 import { FormWrapper } from "./style";
-import { createMachine } from "../../services/machineServices";
+import { createMachine } from "../../services/machineService";
 import MachineForm from "../../features/create/MachineForm";
 import type { CreateMachineRequest } from "../../types/CreateMachineRequest";
 import { z } from "zod";
@@ -17,11 +17,11 @@ const CreateMachine: React.FC = () => {
     setLoading(true);
     try {
       await createMachine(data as CreateMachineRequest);
-      alert(`Máquina ${data.name} criada com sucesso!`);
+      alert(`Machine ${data.name} created with success!`);
       reset(); 
     } catch (error) {
-      console.error("Erro ao criar máquina:", error);
-      alert("Erro ao criar máquina. Verifique o console.");
+      console.error("Error to create the machine:", error);
+      alert("Error to create the machine. Verify the terminal.");
     } finally {
       setLoading(false);
     }
