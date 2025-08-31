@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import CreateMachine from "../pages/CreateMachine/CreateMachine";
-import { MachineList } from "../pages/List/ListMachine";
-import { MachineDetail } from '../pages/GetById/MachineDetails';
+import { MachineList } from "../pages/ListMachine";
+import { MachineDetail } from '../pages/MachineDetails';
 
 export function AppRoutes() {
   return (
