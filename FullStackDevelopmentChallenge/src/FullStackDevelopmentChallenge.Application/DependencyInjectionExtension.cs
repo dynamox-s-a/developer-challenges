@@ -2,6 +2,7 @@
 using FullStackDevelopmentChallenge.Application.UseCases.Machines.Created;
 using FullStackDevelopmentChallenge.Application.UseCases.Machines.GetAll;
 using FullStackDevelopmentChallenge.Application.UseCases.Machines.GetById;
+using FullStackDevelopmentChallenge.Application.UseCases.MachineTypes;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FullStackDevelopmentChallenge.Application;
@@ -21,6 +22,7 @@ public static class DependencyInjectionExtension
     {
         services.AddScoped<ICreateMachineUseCase, CreateMachineUseCase>();
         services.AddScoped<IGetAllMachinesUseCase, GetAllMachinesUseCase>();
+        services.AddScoped<IGetAllMachineTypeUseCase, GetAllMachineTypeUseCase>();
         services.AddScoped<IGetByIdMachineUseCase, GetByIdMachineUseCase>();
     }
 }
