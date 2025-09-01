@@ -1,69 +1,90 @@
-# React + TypeScript + Vite
+# 🚀 Frontend - React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este é o frontend do projeto, desenvolvido em **React + TypeScript** utilizando o **Vite** como bundler.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Get Started
 
-## Expanding the ESLint configuration
+1. Verifique os **pré-requisitos**.  
+2. **Clone o repositório**.  
+3. **Configure o arquivo `.env`**.  
+4. **Instale as dependências**.  
+5. Rode o comando `npm run dev` e comece a desenvolver 🚀.  
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 📦 Pré-requisitos
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- Node.js **27.7.0**  
+- npm  
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## 📥 Clonando o Repositório
+
+```bash
+git clone https://github.com/Rickccastro/developer-challenges.git
+
+Entrando na pasta do projeto
+cd developer-challenges/FullStackDevelopmentChallengeFront
+
+````
+
+---
+
+## ⚙️ Configuração de Ambiente
+
+Crie um arquivo `.env` na raiz do projeto e adicione a variável:
+
+```env
+VITE_API_URL=https://localhost:7024
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Essa URL será usada pelo frontend como base para as chamadas da API.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## ▶️ Rodando o Projeto
+
+Instale as dependências e inicie o servidor de desenvolvimento:
+
+```bash
+npm install
+npm run dev
+```
+
+A aplicação ficará disponível em:
+👉 [http://localhost:5173](http://localhost:5173)
+
+---
+
+## 🛠️ Build para Produção
+
+Para gerar os arquivos otimizados:
+
+```bash
+npm run build
+```
+
+Os arquivos finais serão criados na pasta `dist/`.
+
+---
+
+## 🌐 Variáveis de Ambiente em Produção
+
+No ambiente de produção, configure o `.env` com a URL real da API:
+
+```env
+VITE_API_URL=https://api.suaaplicacao.com
+```
+
+---
+
+## 📖 Tecnologias Utilizadas
+
+* ⚛️ React
+* 🟦 TypeScript
+* ⚡ Vite
+
 ```
