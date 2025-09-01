@@ -1,62 +1,75 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using backend.Data;
+using backend.Repositories;
+using backend.Services;
+using backend.Middleware;
+using backend.Extensions;
 
+// Cria o construtor da aplicação web
 var builder = WebApplication.CreateBuilder(args);
 
-// Adiciona serviços ao contêiner
+// Adiciona os controladores da API
 builder.Services.AddControllers();
 
-// Configuração do CORS para permitir requisições do frontend
+// Configuração do CORS para permitir requisições de diferentes origens
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend",
-        builder => builder
-            .WithOrigins("http://localhost:3000") // URL do seu frontend
-            .AllowAnyMethod()
-            .AllowAnyHeader());
-});
-
-// Configuração do DbContext com SQL Server
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// Configuração do Swagger
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo 
-    { 
-        Title = "DynaPredict API", 
-        Version = "v1",
-        Description = "API para gerenciamento de máquinas industriais"
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader()
+               .WithExposedHeaders("Content-Disposition");
     });
 
-    // Habilita comentários XML
-    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    c.IncludeXmlComments(xmlPath);
+    options.AddPolicy("ProductionCorsPolicy", builder =>
+    {
+        builder.WithOrigins("http://localhost:3000", "http://localhost:5173")
+               .AllowAnyMethod()
+               .AllowAnyHeader()
+               .AllowCredentials()
+               .WithExposedHeaders("Content-Disposition");
+    });
 });
 
+// Configuração do DbContext para usar SQL Server
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") 
+        ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.")));
+
+// Configuração do Swagger para documentação da API
+builder.Services.AddSwaggerDocumentation();
+
+// DI: Repository & Services
+builder.Services.AddScoped<IMachineRepository, MachineRepository>();
+builder.Services.AddScoped<IMachineService, MachineService>();
+
+// Constrói a aplicação
 var app = builder.Build();
 
-// Configura o pipeline de requisições HTTP
+// Habilita o Swagger em desenvolvimento
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c => {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "DynaPredict API v1");
-        c.RoutePrefix = "swagger"; // Acesse em /swagger
-    });
+    app.UseSwaggerDocumentation();
 }
 
+// Habilita o redirecionamento para HTTPS
 app.UseHttpsRedirection();
-app.UseCors("AllowFrontend");
+
+// Habilita o CORS
+app.UseCors();
+
+// Adiciona o middleware de tratamento de erros personalizado
+app.UseMiddleware<ErrorHandlingMiddleware>();
+
+// Habilita a autorização
 app.UseAuthorization();
+
+// Mapeia os controladores
 app.MapControllers();
 
-// Aplica as migrações pendentes
+// Inicia a aplicação
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;

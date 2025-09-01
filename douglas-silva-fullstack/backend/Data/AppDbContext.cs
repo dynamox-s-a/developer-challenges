@@ -1,43 +1,52 @@
 using Microsoft.EntityFrameworkCore;
 using backend.Models;
+using System;
 
 namespace backend.Data
 {
+    /// <summary>
+    /// Representa o contexto do banco de dados da aplicação
+    /// </summary>
     public class AppDbContext : DbContext
     {
+        /// <summary>
+        /// Inicializa uma nova instância do contexto do banco de dados
+        /// </summary>
+        /// <param name="options">Opções de configuração do contexto</param>
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
     
-        // Tabela de máquinas no banco de dados
+        /// <summary>
+        /// Conjunto de entidades de máquinas no banco de dados
+        /// </summary>
         public DbSet<Machine> Machines { get; set; }
 
+        /// <summary>
+        /// Configura o modelo de dados usando Fluent API
+        /// </summary>
+        /// <param name="modelBuilder">Construtor de modelo para o contexto</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configurações adicionais do modelo
             modelBuilder.Entity<Machine>(entity =>
             {
-                // Define o nome da tabela
                 entity.ToTable("Machines");
 
-                // Configura a chave primária
                 entity.HasKey(m => m.Id);
 
-                // Configura o campo Name
                 entity.Property(m => m.Name)
                     .IsRequired()
                     .HasMaxLength(100);
 
-                // Configura o campo SerialNumber como único
                 entity.HasIndex(m => m.SerialNumber)
                     .IsUnique();
 
-                // Configura o campo Type para ser armazenado como string
                 entity.Property(m => m.Type)
-                    .HasConversion<string>()
-                    .HasMaxLength(20);
+                    .IsRequired()
+                    .HasConversion(
+                        v => v.ToString(),
+                        v => (MachineType)Enum.Parse(typeof(MachineType), v));
 
-                // Configura os valores padrão
                 entity.Property(m => m.CreatedAt)
                     .HasDefaultValueSql("GETUTCDATE()");
             });
