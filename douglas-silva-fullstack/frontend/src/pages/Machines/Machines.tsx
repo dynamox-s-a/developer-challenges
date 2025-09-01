@@ -18,6 +18,8 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import type { Machine } from '../../services/api';
 import { MachineService } from '../../services/api';
 
@@ -33,9 +35,10 @@ const Machines = () => {
       const data = await MachineService.getAll();
       setMachines(data);
       setError(null);
-    } catch (err) {
-      setError('Erro ao carregar as máquinas. Tente novamente mais tarde.');
-      console.error('Error fetching machines:', err);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Erro ao carregar as máquinas. Tente novamente mais tarde.';
+      setError(message);
+      console.error('Error fetching machines:', error);
     } finally {
       setLoading(false);
     }
@@ -45,11 +48,30 @@ const Machines = () => {
     fetchMachines();
   }, []);
 
-  // Sem ações de edição/remoção por enquanto, pois o backend não expõe PUT/DELETE.
+  const handleDelete = async (id: number) => {
+    const confirmed = window.confirm("Tem certeza que deseja excluir esta máquina?");
+    if (!confirmed) return;
+    try {
+      await MachineService.delete(id);
+      await fetchMachines();
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Falha ao excluir. Tente novamente.';
+      setError(message);
+    }
+  };
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return 'Nunca';
     return new Date(dateString).toLocaleDateString('pt-BR');
+  };
+
+  // Mapeia os valores do enum MachineType do backend
+  const typeLabels = ["Prensa", "Torno", "Fresadora", "Cortadora", "Furadeira", "Outro"];
+  
+  const labelForType = (t?: number) => {
+    if (typeof t !== 'number') return '—';
+    // Garante que o índice está dentro dos limites do array
+    return typeLabels[t] || `Tipo ${t}`;
   };
 
   if (loading) {
@@ -104,7 +126,7 @@ const Machines = () => {
                     <TableCell>{machine.id}</TableCell>
                     <TableCell>{machine.name}</TableCell>
                     <TableCell>{machine.serialNumber}</TableCell>
-                    <TableCell>{machine.type}</TableCell>
+                    <TableCell>{labelForType(machine.type)}</TableCell>
                     <TableCell>{formatDate(machine.createdAt)}</TableCell>
                     <TableCell align="right">
                       <Tooltip title="Detalhes">
@@ -113,6 +135,23 @@ const Machines = () => {
                           onClick={() => navigate(`/machines/${machine.id}`)}
                         >
                           <VisibilityIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Editar">
+                        <IconButton
+                          size="small"
+                          onClick={() => navigate(`/machines/${machine.id}/edit`)}
+                        >
+                          <EditIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Excluir">
+                        <IconButton
+                          size="small"
+                          color="error"
+                          onClick={() => handleDelete(machine.id)}
+                        >
+                          <DeleteIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
                     </TableCell>

@@ -10,18 +10,21 @@ import {
   Chip,
   Button,
   Stack,
+  Tooltip,
+  IconButton,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import EditIcon from "@mui/icons-material/Edit";
 import type { Machine } from "../../services/api";
 import { MachineService } from "../../services/api";
 
-const labelForType: Record<Machine["type"], string> = {
-  Press: "Prensa",
-  Lathe: "Torno",
-  MillingMachine: "Fresadora",
-  Cutter: "Cortadora",
-  Drill: "Furadeira",
-  Other: "Outro",
+// Mapeia os valores do enum MachineType do backend
+const typeLabels = ["Prensa", "Torno", "Fresadora", "Cortadora", "Furadeira", "Outro"] as const;
+
+const labelForType = (t?: number) => {
+  if (typeof t !== 'number') return '—';
+  // Garante que o índice está dentro dos limites do array
+  return typeLabels[t] || `Tipo ${t}`;
 };
 
 export default function MachineDetails() {
@@ -72,8 +75,19 @@ export default function MachineDetails() {
         <Button variant="outlined" startIcon={<ArrowBackIcon />} onClick={() => navigate("/machines")}>Voltar</Button>
       </Stack>
 
-      <Paper sx={{ p: 3 }}>
-        <Typography variant="h6" gutterBottom>Informações Gerais</Typography>
+      <Paper sx={{ p: 3, position: 'relative' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <Typography variant="h6">Informações Gerais</Typography>
+          <Tooltip title="Editar máquina">
+            <IconButton 
+              color="primary" 
+              onClick={() => navigate(`/machines/${id}/edit`)}
+              aria-label="editar máquina"
+            >
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
+        </Box>
         <Divider sx={{ mb: 2 }} />
 
         <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" }, gap: 2 }}>
@@ -89,7 +103,7 @@ export default function MachineDetails() {
 
           <Box>
             <Typography variant="subtitle2" color="text.secondary">Tipo</Typography>
-            <Chip label={labelForType[machine.type]} color="primary" variant="outlined" />
+            <Chip label={labelForType(machine.type)} color="primary" variant="outlined" />
           </Box>
 
           <Box>
