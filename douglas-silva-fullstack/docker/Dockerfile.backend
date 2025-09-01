@@ -1,0 +1,32 @@
+# Estágio de build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Copia os arquivos do projeto e restaura as dependências
+COPY ["backend/DynaPredict.csproj", "backend/"]
+RUN dotnet restore "backend/DynaPredict.csproj"
+
+# Copia todo o código e publica a aplicação
+COPY . .
+WORKDIR "/src/backend"
+RUN dotnet publish "DynaPredict.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+# Estágio de runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+WORKDIR /app
+
+# Instala ferramentas de diagnóstico
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    procps \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copia os arquivos publicados
+COPY --from=build /app/publish .
+
+# Expõe as portas HTTP e HTTPS
+EXPOSE 80
+EXPOSE 443
+
+# Define o comando de inicialização
+ENTRYPOINT ["dotnet", "DynaPredict.dll"]

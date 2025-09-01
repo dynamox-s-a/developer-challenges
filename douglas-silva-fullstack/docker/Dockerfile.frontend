@@ -1,0 +1,33 @@
+# Estágio de build
+FROM node:18-alpine AS build
+
+# Define o diretório de trabalho
+WORKDIR /app
+
+# Copia os arquivos de definição de dependências
+COPY package*.json ./
+COPY yarn.lock* ./
+
+# Instala as dependências
+RUN npm install
+
+# Copia o código-fonte
+COPY . .
+
+# Constrói a aplicação
+RUN npm run build
+
+# Estágio de produção
+FROM nginx:alpine
+
+# Copia a build para o diretório do nginx
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Copia a configuração personalizada do nginx
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expõe a porta 80
+EXPOSE 80
+
+# Inicia o servidor nginx
+CMD ["nginx", "-g", "daemon off;"]
