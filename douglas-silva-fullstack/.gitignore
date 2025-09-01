@@ -1,17 +1,25 @@
+# Build
 bin/
 obj/
 .vs/
 *.user
 *.suo
 *.userosscache
+
+# Configurações sensíveis
 appsettings*.json
 *.db
+
+# Arquivos do sistema
 .DS_Store
 Thumbs.db
+
+# Dependências
 node_modules/
 dist/
 dist-ssr/
-*.local
+
+# Variáveis de ambiente
 .env
 .env.*
 *.log
