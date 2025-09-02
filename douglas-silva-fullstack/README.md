@@ -9,270 +9,124 @@
   [![Docker](https://img.shields.io/badge/Docker-20.10-2496ED?logo=docker)](https://www.docker.com/)
 </div>
 
-## 📋 Visão Geral
+## 📋 Sobre o Projeto
 
-O **DynaPredict** é um sistema completo para gerenciamento de máquinas industriais, desenvolvido com uma arquitetura moderna que inclui:
+O **DynaPredict** é uma aplicação web para gerenciamento de máquinas industriais, desenvolvida com uma arquitetura moderna que inclui:
 
 - **Backend**: API RESTful em ASP.NET Core 8.0
-- **Frontend**: Aplicação React 18 com TypeScript
+- **Frontend**: Aplicação React com TypeScript
 - **Banco de Dados**: SQL Server 2022
-- **Documentação**: Swagger/OpenAPI
 - **Containerização**: Docker e Docker Compose
 
-## 🚀 Guia de Início Rápido
+## 🚀 Como Executar o Projeto
 
 ### Pré-requisitos
 
-Certifique-se de ter instalado em sua máquina:
-
-- [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) ou superior
-- [Node.js 18.x](https://nodejs.org/) ou superior
+- [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [Node.js 18.x](https://nodejs.org/)
 - [Git](https://git-scm.com/)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (opcional, para execução com Docker)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop) (opcional, para execução com containers)
+- [SQL Server 2019+](https://www.microsoft.com/pt-br/sql-server/sql-server-downloads) (opcional, se não for usar Docker)
 
-### 🐳 Executando com Docker (Recomendado)
+### Configuração Inicial
 
-A forma mais fácil de executar o projeto é usando o Docker Compose:
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/Douglas-SiIva/developer-challenges.git
+   cd douglas-silva-fullstack
+   ```
 
-```bash
-# Clone o repositório
-git clone https://github.com/seu-usuario/douglas-silva-fullstack.git
-cd douglas-silva-fullstack
+2. Crie um arquivo `appsettings.Development.json` na pasta `backend` baseado no exemplo fornecido:
+   ```bash
+   cd backend
+   copy appsettings.Development.example appsettings.Development.json
+   ```
 
-# Inicie os contêineres
-docker-compose up --build
-```
+   Atualize a string de conexão no arquivo `appsettings.Development.json` conforme necessário.
 
-Após a execução, os serviços estarão disponíveis em:
-- Frontend: http://localhost:3000
-- Backend (API): http://localhost:5000
-- Documentação da API: http://localhost:5000/swagger
-- SQL Server Management Studio: localhost,1433 (sa/dockerSqlServer123!)
+### Executando com Docker (Recomendado)
 
-### 🛠️ Execução Manual
+1. Navegue até a raiz do projeto
+2. Execute o comando:
+   ```bash
+   docker compose up --build
+   ```
 
-#### 1. Configuração do Banco de Dados
+   Isso irá:
+   - Construir as imagens do backend e frontend
+   - Iniciar os containers do SQL Server, backend e frontend
+   - Configurar automaticamente o banco de dados
 
-1. Instale o SQL Server 2022 ou superior
-2. Crie um banco de dados chamado `DynaPredictDb`
-3. Atualize a connection string em `backend/appsettings.Development.json`
+3. Acesse a aplicação:
+   - **Frontend**: http://localhost:5173
+   - **Backend (API)**: http://localhost:5000
+   - **Documentação Swagger**: http://localhost:5000/swagger
 
-#### 2. Backend
+### Executando Localmente (Sem Docker)
 
-```bash
-# Navegue até a pasta do backend
-cd backend
+#### Backend
 
-# Restaure os pacotes
-dotnet restore
+1. Navegue até a pasta do backend:
+   ```bash
+   cd backend
+   ```
 
-# Execute as migrações do banco de dados
-dotnet ef database update
+2. Restaure os pacotes e execute as migrações:
+   ```bash
+   dotnet restore
+   dotnet ef database update
+   ```
 
-# Inicie o servidor
-dotnet run
-```
+3. Inicie o servidor de desenvolvimento:
+   ```bash
+   dotnet run
+   ```
 
-A API estará disponível em: https://localhost:5001
+   O servidor estará disponível em: http://localhost:5000
 
-#### 3. Frontend
+#### Frontend
 
-```bash
-# Navegue até a pasta do frontend
-cd frontend
+1. Navegue até a pasta do frontend:
+   ```bash
+   cd frontend
+   ```
 
-# Instale as dependências
-npm install
+2. Instale as dependências:
+   ```bash
+   npm install
+   ```
 
-# Inicie o servidor de desenvolvimento
-npm run dev
-```
+3. Inicie o servidor de desenvolvimento:
+   ```bash
+   npm run dev
+   ```
 
-O frontend estará disponível em: http://localhost:5173
+   O frontend estará disponível em: http://localhost:5173
 
-### 🔧 Variáveis de Ambiente
+## 🛠 Tecnologias Utilizadas
 
-Crie um arquivo `.env` na raiz do projeto frontend com as seguintes variáveis:
+- **Backend**: .NET 8, Entity Framework Core, Swagger
+- **Frontend**: React 18, TypeScript, Vite
+- **Banco de Dados**: SQL Server 2022
+- **Ferramentas**: Docker, Git
 
-```env
-VITE_API_BASE_URL=http://localhost:5000
-```
+## 📚 Documentação
 
-## 🏗 Estrutura do Projeto
-
-```
-.
-├── backend/                     # API .NET Core 8.0
-│   ├── Controllers/            # Controladores da API
-│   ├── Data/                   # Contexto do banco de dados
-│   ├── Extensions/             # Extensões para serviços
-│   ├── Filters/                # Filtros da API
-│   ├── Middleware/             # Middlewares personalizados
-│   ├── Migrations/             # Migrações do Entity Framework
-│   ├── Models/                 # Modelos de domínio e DTOs
-│   ├── Repositories/           # Implementações do padrão Repository
-│   ├── Services/               # Lógica de negócios
-│   ├── appsettings.json        # Configurações da aplicação
-│   └── Program.cs              # Ponto de entrada da aplicação
-│
-├── frontend/                   # Aplicação React 18
-│   ├── public/                 # Arquivos estáticos
-│   └── src/
-│       ├── components/         # Componentes reutilizáveis
-│       ├── hooks/              # Custom hooks
-│       ├── pages/              # Páginas da aplicação
-│       │   └── Machines/       # Páginas de gerenciamento de máquinas
-│       ├── services/           # Serviços de API
-│       ├── types/              # Tipos TypeScript
-│       ├── App.tsx             # Componente raiz
-│       └── main.tsx            # Ponto de entrada
-│
-├── docker/                     # Configurações do Docker
-│   ├── sql/                   # Scripts SQL para inicialização
-│   └── Dockerfile.backend     # Dockerfile para o backend
-│   └── Dockerfile.frontend    # Dockerfile para o frontend
-│
-├── .github/                   # Configurações do GitHub
-│   └── workflows/             # GitHub Actions
-│
-├── .vscode/                   # Configurações do VS Code
-├── .editorconfig              # Configurações de estilo de código
-├── .gitignore                 # Arquivos ignorados pelo Git
-├── docker-compose.yml         # Configuração do Docker Compose
-├── README.md                  # Este arquivo
-└── LICENSE                   # Licença do projeto
-```
-
-## 📚 Documentação da API
-
-A documentação interativa da API está disponível através do Swagger UI quando o backend estiver em execução:
-
-- **URL da Documentação**: http://localhost:5000/swagger
+A documentação da API está disponível através do Swagger:
+- **Swagger UI**: http://localhost:5000/swagger
 - **Especificação OpenAPI**: http://localhost:5000/swagger/v1/swagger.json
 
-### Recursos da Documentação
+## 🤝 Como Contribuir
 
-- **Endpoints** completos com descrições detalhadas
-- **Modelos de requisição/resposta** com exemplos
-- **Códigos de status HTTP** e possíveis respostas de erro
-- **Parâmetros de consulta** e cabeçalhos suportados
-- **Autenticação** (quando implementada)
-- **Filtros e ordenação** de resultados
-- **Paginação** de listagens
-
-### Tipos de Dados
-
-A API utiliza os seguintes formatos de dados:
-
-- **JSON** para requisições e respostas
-- **ISO 8601** para datas e horas (ex: `2023-10-01T14:30:00Z`)
-- **UTC** como fuso horário padrão
-
-## 🛠 Desenvolvimento
-
-### Configuração do Ambiente
-
-1. **Backend**
-   - .NET 8.0 SDK
-   - SQL Server 2019+ ou Docker
-   - Visual Studio 2022 ou VS Code com extensão C#
-
-2. **Frontend**
-   - Node.js 18.x
-   - npm 9.x ou Yarn 1.22.x
-   - VS Code com extensões para React e TypeScript
-
-### Convenções de Código
-
-- **Backend**: [Diretrizes de Codificação da Microsoft](https://docs.microsoft.com/pt-br/dotnet/csharp/fundamentals/coding-style/coding-conventions)
-- **Frontend**: [Guia de Estilo do Airbnb](https://github.com/airbnb/javascript)
-- **Mensagens de Commit**: [Conventional Commits](https://www.conventionalcommits.org/)
-
-### Testes
-
-```bash
-# Executar testes do backend
-cd backend
-dotnet test
-
-# Executar testes do frontend
-cd frontend
-npm test
-```
-
-## 🤝 Contribuição
-
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas alterações (`git commit -m 'Add some AmazingFeature'`)
-4. Faça o push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
+1. Faça um Fork do projeto
+2. Crie uma Branch para sua Feature
+3. Adicione suas mudanças
+4. Envie um Pull Request
 
 ## 📄 Licença
 
 Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
 
-## 🙏 Agradecimentos
-
-- [.NET](https://dotnet.microsoft.com/)
-- [React](https://reactjs.org/)
-- [Material-UI](https://mui.com/)
-- [SQL Server](https://www.microsoft.com/sql-server/)
-- [Docker](https://www.docker.com/)
-
-## 🧪 Testes
-
-Para executar os testes unitários:
-
-```bash
-cd backend
-dotnet test
-```
-
-## 🐳 Executando com Docker
-
-1. **Construa as imagens**
-   ```bash
-   docker-compose build
-   ```
-
-2. **Inicie os containers**
-   ```bash
-   docker-compose up -d
-   ```
-
-3. **Acesse a aplicação**
-   - Frontend: http://localhost:3000
-   - API: http://localhost:5000
-   - Swagger: http://localhost:5000/swagger
-
-## 📝 Licença
-
-Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
 ## ✉️ Contato
 
-Seu Nome - seu.email@exemplo.com
-
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/seu-linkedin
-     - `VITE_API_BASE_URL=http://localhost:5010/api`
-   - Rodar: `npm run dev`
-
-## Suposições
-- Tipos de máquina fixos em `MachineType` (enum): Press, Lathe, MillingMachine, etc.
-- Ordem/drag da árvore visual não é persistida; apenas renomes e nós extras via localStorage.
-
-## Boas práticas implementadas
-- Camadas Repository/Service no backend
-- Middleware global de erros com payload `{ traceId, message, status }`
-- Swagger + XML docs nos endpoints
-- Frontend com validação, axios interceptor e baseURL via `.env`
-
-## Próximos passos sugeridos
-- Paginação e filtros nos endpoints de listagem
-- Testes (unitários/integrados) no backend e frontend
-- Docker Compose (API + SQL Server + Frontend)
-- Tratamento global de erros mais detalhado (mapear domain exceptions)
+Seu Nome - [@seu-usuario](https://github.com/seu-usuario) - seu.email@exemplo.com
