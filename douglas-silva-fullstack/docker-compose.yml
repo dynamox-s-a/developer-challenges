@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -22,27 +20,36 @@ services:
       context: .
       dockerfile: docker/Dockerfile.backend
     ports:
-      - "5000:80"  # Porta da API
-      - "5010:5010" # Porta do Swagger
+      - "5000:80"   # API
+      - "5010:80"   # Swagger UI
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=db;Database=DynaPredictDb;User=sa;Password=dockerSqlServer123!;TrustServerCertificate=True;
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Server=db;Database=backend;User=sa;Password=dockerSqlServer123!;TrustServerCertificate=True;
     depends_on:
       db:
         condition: service_healthy
     restart: unless-stopped
+    networks:
+      - app-network
 
   frontend:
     build:
-      context: ./frontend
-      dockerfile: ../docker/Dockerfile.frontend
+      context: .
+      dockerfile: docker/Dockerfile.frontend
     ports:
-      - "5173:80"  # Porta do frontend
+      - "5173:80"
     environment:
       - VITE_API_BASE_URL=http://localhost:5000
     depends_on:
       - backend
     restart: unless-stopped
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
   sql_data:
