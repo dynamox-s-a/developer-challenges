@@ -18,21 +18,21 @@ public static class SwaggerServiceExtensions
         {
             c.SwaggerDoc("v1", new OpenApiInfo 
             { 
-                Title = "DynaPredict API", 
+                Title = "Machine Management API", 
                 Version = "v1.0.0",
                 Description = "API RESTful para gerenciamento de máquinas industriais. Fornece operações CRUD completas para gerenciar o cadastro de máquinas, incluindo seus tipos, números de série e informações adicionais.",
                 Contact = new OpenApiContact
                 {
-                    Name = "Suporte DynaPredict",
-                    Email = "suporte@dynapredict.com",
-                    Url = new Uri("https://dynapredict.com/suporte")
+                    Name = "Suporte Técnico",
+                    Email = "suporte@example.com",
+                    Url = new Uri("https://example.com/suporte")
                 },
                 License = new OpenApiLicense
                 {
                     Name = "Licença de Uso",
-                    Url = new Uri("https://dynapredict.com/licenca")
+                    Url = new Uri("https://example.com/licenca")
                 },
-                TermsOfService = new Uri("https://dynapredict.com/termos-de-uso")
+                TermsOfService = new Uri("https://example.com/termos-de-uso")
             });
 
             // Inclui comentários XML na documentação
@@ -98,9 +98,9 @@ public static class SwaggerServiceExtensions
         // Habilita o middleware para servir a UI do Swagger
         app.UseSwaggerUI(c =>
         {
-            c.SwaggerEndpoint("/swagger/v1/swagger.json", "DynaPredict API V1");
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "Machine Management API V1");
             c.RoutePrefix = "swagger";
-            c.DocumentTitle = "DynaPredict API Documentation";
+            c.DocumentTitle = "Machine Management API Documentation";
             
             // Personaliza a UI do Swagger
             c.DefaultModelsExpandDepth(-1); // Esconde os schemas por padrão
