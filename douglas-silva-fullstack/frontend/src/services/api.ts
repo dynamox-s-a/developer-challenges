@@ -5,7 +5,7 @@ import axios from "axios";
  * A URL base é obtida da variável de ambiente VITE_API_BASE_URL ou usa o valor padrão
  */
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:5010/api",
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:80/api",
   headers: {
     "Content-Type": "application/json",
   },
@@ -66,7 +66,9 @@ export const MachineService = {
    * @param machine - Dados da máquina a ser criada (sem ID e timestamps)
    * @returns Promise com a máquina criada
    */
-  async create(machine: Omit<Machine, "id" | "createdAt" | "updatedAt">): Promise<Machine> {
+  async create(
+    machine: Omit<Machine, "id" | "createdAt" | "updatedAt">
+  ): Promise<Machine> {
     const response = await api.post<Machine>("/machines", machine);
     return response.data;
   },
@@ -82,7 +84,10 @@ export const MachineService = {
     // Garante que o tipo seja um número para compatibilidade com o backend
     const payload = {
       ...machine,
-      type: typeof machine.type === 'string' ? parseInt(machine.type, 10) : machine.type
+      type:
+        typeof machine.type === "string"
+          ? parseInt(machine.type, 10)
+          : machine.type,
     };
     const response = await api.put<Machine>(`/machines/${id}`, payload);
     return response.data;

@@ -87,6 +87,9 @@ namespace backend.Services
         /// <param name="id">ID da máquina a ser removida</param>
         /// <param name="ct">Token de cancelamento</param>
         /// <returns>True se a máquina foi removida, False caso contrário</returns>
-        public async Task<bool> DeleteAsync(int id, CancellationToken ct = default) => _repo.DeleteAsync(id, ct);
+        public async Task<bool> DeleteAsync(int id, CancellationToken ct = default) 
+        {
+            return await _repo.DeleteAsync(id, ct);
+        }
     }
 }
