@@ -1,0 +1,17 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Database=backend;User Id=sa;Password=your_strong_password;TrustServerCertificate=True;"
+  },
+  "JwtSettings": {
+    "SecretKey": "your_super_secret_key_at_least_32_characters_long",
+    "Issuer": "DynaPredict",
+    "Audience": "DynaPredictUsers",
+    "ExpirationInMinutes": 60
+  }
+}
