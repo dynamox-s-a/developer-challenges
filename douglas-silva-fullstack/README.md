@@ -1,132 +1,105 @@
-<div align="center">
-  <h1>DynaPredict</h1>
-  <p>Sistema de Gerenciamento de Máquinas Industriais</p>
-  
-  [![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
-  [![React](https://img.shields.io/badge/React-18.2-61DAFB?logo=react)](https://reactjs.org/)
-  [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?logo=typescript)](https://www.typescriptlang.org/)
-  [![SQL Server](https://img.shields.io/badge/SQL_Server-2022-CC2927?logo=microsoft-sql-server)](https://www.microsoft.com/sql-server/)
-  [![Docker](https://img.shields.io/badge/Docker-20.10-2496ED?logo=docker)](https://www.docker.com/)
-</div>
+# DynaPredict - Sistema de Gerenciamento de Ativos Industriais
 
-## 📋 Sobre o Projeto
+## Visão Geral
 
-O **DynaPredict** é uma aplicação web para gerenciamento de máquinas industriais, desenvolvida com uma arquitetura moderna que inclui:
+O DynaPredict é uma solução completa para gestão de ativos industriais, fornecendo uma visão unificada de máquinas, equipamentos e suas relações hierárquicas. A aplicação oferece uma interface intuitiva para visualização em árvore dos ativos, permitindo um gerenciamento eficiente do parque industrial.
 
-- **Backend**: API RESTful em ASP.NET Core 8.0
-- **Frontend**: Aplicação React com TypeScript
-- **Banco de Dados**: SQL Server 2022
-- **Containerização**: Docker e Docker Compose
+## 📋 Requisitos Técnicos
 
-## 🚀 Como Executar o Projeto
+- **Sistema Operacional**: Windows 10/11, macOS ou Linux
+- **Backend**: .NET 8.0 SDK
+- **Frontend**: Node.js 18.x
+- **Banco de Dados**: SQL Server 2019 ou superior
+- **Gerenciador de Pacotes**: npm ou Yarn
+- **Git**: Para controle de versão
 
-### Pré-requisitos
+## 🚀 Início Rápido
 
+### 1. Configuração do Ambiente
+
+Certifique-se de ter instalado:
 - [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 - [Node.js 18.x](https://nodejs.org/)
+- [SQL Server 2019+](https://www.microsoft.com/sql-server/sql-server-downloads)
 - [Git](https://git-scm.com/)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop) (opcional, para execução com containers)
-- [SQL Server 2019+](https://www.microsoft.com/pt-br/sql-server/sql-server-downloads) (opcional, se não for usar Docker)
 
-### Configuração Inicial
+### 2. Configuração do Projeto
 
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/Douglas-SiIva/developer-challenges.git
-   cd douglas-silva-fullstack
-   ```
+```bash
+# Clonar o repositório
+git clone https://github.com/Douglas-SiIva/developer-challenges.git
+cd douglas-silva-fullstack
 
-2. Crie um arquivo `appsettings.Development.json` na pasta `backend` baseado no exemplo fornecido:
-   ```bash
-   cd backend
-   copy appsettings.Development.example appsettings.Development.json
-   ```
+# Configurar o backend
+cd backend
+cp appsettings.Development.example appsettings.Development.json
+```
 
-   Atualize a string de conexão no arquivo `appsettings.Development.json` conforme necessário.
+Edite o arquivo `appsettings.Development.json` com suas credenciais do SQL Server:
 
-### Executando com Docker (Recomendado)
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=seu_servidor;Database=DynaPredictDB;User Id=seu_usuario;Password=sua_senha;TrustServerCertificate=True;"
+  }
+}
+```
 
-1. Navegue até a raiz do projeto
-2. Execute o comando:
-   ```bash
-   docker compose up --build
-   ```
-
-   Isso irá:
-   - Construir as imagens do backend e frontend
-   - Iniciar os containers do SQL Server, backend e frontend
-   - Configurar automaticamente o banco de dados
-
-3. Acesse a aplicação:
-   - **Frontend**: http://localhost:5173
-   - **Backend (API)**: http://localhost:5000
-   - **Documentação Swagger**: http://localhost:5000/swagger
-
-### Executando Localmente (Sem Docker)
+### 3. Executando a Aplicação
 
 #### Backend
 
-1. Navegue até a pasta do backend:
-   ```bash
-   cd backend
-   ```
+```bash
+cd backend
+dotnet restore
+dotnet ef database update
+dotnet run
+```
 
-2. Restaure os pacotes e execute as migrações:
-   ```bash
-   dotnet restore
-   dotnet ef database update
-   ```
-
-3. Inicie o servidor de desenvolvimento:
-   ```bash
-   dotnet run
-   ```
-
-   O servidor estará disponível em: http://localhost:5000
+O servidor estará disponível em: http://localhost:5000
 
 #### Frontend
 
-1. Navegue até a pasta do frontend:
-   ```bash
-   cd frontend
-   ```
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-2. Instale as dependências:
-   ```bash
-   npm install
-   ```
+Acesse a aplicação em: http://localhost:5173
 
-3. Inicie o servidor de desenvolvimento:
-   ```bash
-   npm run dev
-   ```
+## 🔍 Documentação da API
 
-   O frontend estará disponível em: http://localhost:5173
+A API segue o padrão REST e está documentada com Swagger:
 
-## 🛠 Tecnologias Utilizadas
+- **Documentação Interativa**: http://localhost/swagger
+- **Acesso direto à UI do Swagger**: http://localhost/swagger/index.html
+- **Especificação OpenAPI**: http://localhost/swagger/v1/swagger.json
 
-- **Backend**: .NET 8, Entity Framework Core, Swagger
-- **Frontend**: React 18, TypeScript, Vite
-- **Banco de Dados**: SQL Server 2022
-- **Ferramentas**: Docker, Git
+### Principais Endpoints
 
-## 📚 Documentação
+- `GET /api/machines` - Lista todas as máquinas
+- `GET /api/machines/{id}` - Obtém detalhes de uma máquina específica
+- `POST /api/machines` - Cria uma nova máquina
+- `PUT /api/machines/{id}` - Atualiza uma máquina existente
+- `DELETE /api/machines/{id}` - Remove uma máquina
 
-A documentação da API está disponível através do Swagger:
-- **Swagger UI**: http://localhost:5000/swagger
-- **Especificação OpenAPI**: http://localhost:5000/swagger/v1/swagger.json
+## 🛠 Estrutura do Projeto
 
-## 🤝 Como Contribuir
-
-1. Faça um Fork do projeto
-2. Crie uma Branch para sua Feature
-3. Adicione suas mudanças
-4. Envie um Pull Request
+```
+douglas-silva-fullstack/
+├── backend/             # API .NET Core
+│   ├── Controllers/     # Controladores da API
+│   ├── Data/            # Configuração do banco de dados
+│   └── Models/          # Modelos de dados
+└── frontend/            # Aplicação React
+    ├── src/
+    │   ├── components/  # Componentes reutilizáveis
+    │   ├── pages/       # Páginas da aplicação
+    │   └── services/    # Serviços de API
+    └── public/          # Arquivos estáticos
+```
 
 ## 📄 Licença
 
-Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
-
-## ✉️ Contato
-
-Seu Nome - [@seu-usuario](https://github.com/seu-usuario) - seu.email@exemplo.com
+Este projeto está licenciado sob os termos da licença MIT. Consulte o arquivo [LICENSE](LICENSE) para obter mais informações.

@@ -12,6 +12,17 @@ export default defineConfig(({ mode }) => {
       global: {},
     },
     plugins: [react()],
+    server: {
+      proxy: {
+        '/api': {
+          target: 'http://localhost:5000', // Porta padrão para .NET
+          changeOrigin: true,
+          secure: false,
+          rewrite: (path) => path.replace(/^\/api/, '/api')
+        }
+      },
+      port: 5173
+    },
     resolve: {
       alias: {
         "@components": path.resolve(__dirname, "./src/components"),

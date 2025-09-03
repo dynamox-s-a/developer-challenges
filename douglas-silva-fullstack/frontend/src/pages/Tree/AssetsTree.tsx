@@ -77,25 +77,27 @@ export default function AssetsTree() {
   ): TreeItem[] => {
     // Garante que as máquinas estejam sempre na ordem correta
     const sortedMachines = [...machines].sort((a, b) => a.id - b.id);
-    
+
     const children: ApiNode[] = sortedMachines.map((m) => ({
       machineId: m.id,
       title: renames[m.id] ?? m.name, // Usa o nome renomeado se existir, senão usa o nome original
       sn: m.serialNumber,
       children: extras.byMachineId[m.id] ?? [],
     }));
-    
+
     const root: ApiNode = {
       title: "Máquinas",
       expanded: true,
       children: [...children, ...(extras.root ?? [])],
     };
-    
+
     return [root];
   };
 
-
-  const handleOpenMenu = (event: React.MouseEvent<HTMLElement>, path: number[]) => {
+  const handleOpenMenu = (
+    event: React.MouseEvent<HTMLElement>,
+    path: number[]
+  ) => {
     event.preventDefault();
     event.stopPropagation();
     setMenuAnchor(event.currentTarget);
@@ -111,17 +113,17 @@ export default function AssetsTree() {
 
   const handleRename = async () => {
     if (!menuPath) return;
-    
+
     const node = getNodeAtPath(treeData, menuPath);
     if (!node) return;
-    
+
     const currentName = node.title as string;
     const typed = window.prompt("Novo nome", currentName);
     if (typed === null) return; // Usuário cancelou
-    
+
     const newTitle = typed.trim();
     if (!newTitle || newTitle === currentName) return; // Nada mudou
-    
+
     // Se for uma máquina real, atualiza no servidor
     if (node.machineId) {
       try {
@@ -134,52 +136,58 @@ export default function AssetsTree() {
         }
       } catch (error) {
         console.error("Erro ao renomear máquina:", error);
-        alert(`Erro ao renomear: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
+        alert(
+          `Erro ao renomear: ${
+            error instanceof Error ? error.message : "Erro desconhecido"
+          }`
+        );
         return;
       }
-    } 
+    }
     // Se for um nó personalizado, salva localmente
     else if (node.custom) {
       const extras = loadExtras();
       const path = menuPath;
-      
+
       // Nó raiz personalizado
       if (path.length === 1) {
         // Não permitir renomear o nó raiz principal
         return;
       }
-      
+
       // Nó personalizado no nível raiz
       if (path.length === 2) {
-        const idx = (extras.root ?? []).findIndex(n => n.title === currentName);
+        const idx = (extras.root ?? []).findIndex(
+          (n) => n.title === currentName
+        );
         if (idx >= 0) {
           extras.root = [...(extras.root || [])];
           extras.root[idx] = { ...extras.root[idx], title: newTitle };
           saveExtras(extras);
         }
-      } 
+      }
       // Nó personalizado dentro de uma máquina
       else if (path.length > 2) {
         const parentPath = path.slice(0, -1);
         const parentNode = getNodeAtPath(treeData, parentPath);
-        
+
         if (parentNode?.machineId) {
           const machineId = parentNode.machineId;
           const children = extras.byMachineId[machineId] || [];
-          const idx = children.findIndex(n => n.title === currentName);
-          
+          const idx = children.findIndex((n) => n.title === currentName);
+
           if (idx >= 0) {
             extras.byMachineId[machineId] = [...children];
-            extras.byMachineId[machineId][idx] = { 
-              ...extras.byMachineId[machineId][idx], 
-              title: newTitle 
+            extras.byMachineId[machineId][idx] = {
+              ...extras.byMachineId[machineId][idx],
+              title: newTitle,
             };
             saveExtras(extras);
           }
         }
       }
     }
-    
+
     // Atualiza a árvore para refletir as mudanças
     await syncFromApi();
     handleCloseMenu();
@@ -188,21 +196,25 @@ export default function AssetsTree() {
   // Função auxiliar para encontrar um nó pelo caminho
   const getNodeAtPath = (tree: TreeItem[], path: number[]): ApiNode | null => {
     let current: { children?: TreeItem[] } = { children: [...tree] };
-    
+
     for (let i = 0; i < path.length; i++) {
       const index = path[i];
-      if (!current.children || !Array.isArray(current.children) || index >= current.children.length) {
+      if (
+        !current.children ||
+        !Array.isArray(current.children) ||
+        index >= current.children.length
+      ) {
         return null;
       }
-      
+
       const nextNode = current.children[index];
       if (i === path.length - 1) {
         return nextNode as ApiNode;
       }
-      
+
       current = nextNode as { children?: TreeItem[] };
     }
-    
+
     return null;
   };
 
@@ -212,7 +224,7 @@ export default function AssetsTree() {
       const machines = await MachineService.getAll();
       const extras = loadExtras();
       const renames = loadRenames();
-      
+
       // Atualiza os nomes das máquinas que foram renomeadas localmente
       // mas ainda não foram atualizadas na API
       const updatedMachines = await Promise.all(
@@ -220,24 +232,27 @@ export default function AssetsTree() {
           if (renames[machine.id]) {
             try {
               // Tenta atualizar o nome no servidor
-              const updated = await MachineService.update(machine.id, { 
-                name: renames[machine.id] 
+              const updated = await MachineService.update(machine.id, {
+                name: renames[machine.id],
               });
-              
+
               // Remove do registro de renomeações locais se a atualização for bem-sucedida
               delete renames[machine.id];
               saveRenames(renames);
-              
+
               return updated;
             } catch (error) {
-              console.error(`Erro ao sincronizar renomeação da máquina ${machine.id}:`, error);
+              console.error(
+                `Erro ao sincronizar renomeação da máquina ${machine.id}:`,
+                error
+              );
               return machine; // Mantém a máquina original em caso de erro
             }
           }
           return machine;
         })
       );
-      
+
       const built = buildTreeFrom(updatedMachines, extras, renames);
       setTreeData(built);
     } catch (error) {
@@ -249,28 +264,28 @@ export default function AssetsTree() {
   // Carrega os dados iniciais
   useEffect(() => {
     let active = true;
-    
+
     const loadData = async () => {
       try {
         const machines = await MachineService.getAll();
         if (!active) return;
-        
+
         const extras = loadExtras();
         const renames = loadRenames();
         const built = buildTreeFrom(machines, extras, renames);
-        
+
         setTreeData(built);
       } catch (error) {
         console.error("Erro ao carregar máquinas:", error);
         setTreeData([]);
       }
     };
-    
+
     loadData();
-    
+
     // Configura a sincronização periódica a cada 30 segundos
     const syncInterval = setInterval(syncFromApi, 30000);
-    
+
     return () => {
       active = false;
       clearInterval(syncInterval);
@@ -283,9 +298,20 @@ export default function AssetsTree() {
 
   return (
     <Box>
-      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mb: 2,
+        }}
+      >
         <Typography variant="h4">Árvore de Ativos</Typography>
-        <Button variant="outlined" startIcon={<SyncIcon />} onClick={syncFromApi}>
+        <Button
+          variant="outlined"
+          startIcon={<SyncIcon />}
+          onClick={syncFromApi}
+        >
           Sincronizar
         </Button>
       </Box>
@@ -309,7 +335,15 @@ export default function AssetsTree() {
                       bgcolor: "#e6f2ff",
                     }}
                   >
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1, py: 0.5, pl: 1 }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        py: 0.5,
+                        pl: 1,
+                      }}
+                    >
                       <FolderIcon fontSize="small" color="action" />
                       <Tooltip
                         title={
@@ -323,13 +357,19 @@ export default function AssetsTree() {
                         <Typography
                           component="span"
                           fontWeight={600}
-                          sx={{ cursor: (node as unknown as ApiNode).sn ? "help" : "default" }}
+                          sx={{
+                            cursor: (node as unknown as ApiNode).sn
+                              ? "help"
+                              : "default",
+                          }}
                         >
                           {String(node.title)}
                         </Typography>
                       </Tooltip>
                     </Box>
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                    <Box
+                      sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                    >
                       <Tooltip title="Configurações">
                         <IconButton
                           size="small"
@@ -367,7 +407,8 @@ export default function AssetsTree() {
                 syncFromApi();
               }}
             >
-              <SyncIcon fontSize="small" style={{ marginRight: 8 }} /> Sincronizar da API
+              <SyncIcon fontSize="small" style={{ marginRight: 8 }} />{" "}
+              Sincronizar da API
             </MenuItem>
           )}
           {menuIsRoot && <Divider />}

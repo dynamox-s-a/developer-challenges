@@ -18,6 +18,10 @@
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ],
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
