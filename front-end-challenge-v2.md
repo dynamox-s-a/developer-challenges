@@ -77,4 +77,4 @@ In general we will be looking for the following:
   **Yes, this allows us to see how much time you spent on the challenge.**
 
 * If I have more questions, who can I contact?
-  **Please reach out to <rafael.schmitz@dynamox.net> (Front end dev).**
+  **Please reply to the email who sent you this test.**

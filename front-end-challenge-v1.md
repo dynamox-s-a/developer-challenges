@@ -148,4 +148,4 @@ In general we will be looking for the following:
   **No, create-react-app is not acceptable for this challenge.**
 
 * If I have more questions, who can I contact?
-  **Please reach out to <adriano.junior@dynamox.net> (Fullstack dev).**
+  **Please reply to the email who sent you this test.**

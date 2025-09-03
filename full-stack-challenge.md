@@ -119,7 +119,7 @@ In general we will be looking for the following:
   **Yes, the use of Material UI 5 is mandatory for this challenge.**
 
 1. If I have more questions, who can I contact?
-  **Please reach out to [Calil](https://www.linkedin.com/in/calil-amaral-84005b67/) (Development Coordinator).**
+  **Please reply to the email who sent you this test.**
 
 1. Can I build my own back-end API?
   **Yes, you can build your own back-end API, but it needs to use NodeJS.**
