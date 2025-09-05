@@ -1,0 +1,16 @@
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Infrastructure\bin\Debug\net9.0\Dynapredict.Infrastructure.deps.json
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Infrastructure\bin\Debug\net9.0\Dynapredict.Infrastructure.runtimeconfig.json
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Infrastructure\bin\Debug\net9.0\Dynapredict.Infrastructure.dll
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Infrastructure\bin\Debug\net9.0\Dynapredict.Infrastructure.pdb
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Infrastructure\bin\Debug\net9.0\Dynapredict.Domain.dll
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Infrastructure\bin\Debug\net9.0\Dynapredict.Domain.pdb
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Infrastructure\obj\Debug\net9.0\Dynapredict.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Infrastructure\obj\Debug\net9.0\Dynapredict.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Infrastructure\obj\Debug\net9.0\Dynapredict.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Infrastructure\obj\Debug\net9.0\Dynapred.D3A8F74B.Up2Date
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Infrastructure\obj\Debug\net9.0\Dynapredict.Infrastructure.dll
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Infrastructure\obj\Debug\net9.0\refint\Dynapredict.Infrastructure.dll
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Infrastructure\obj\Debug\net9.0\Dynapredict.Infrastructure.pdb
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Infrastructure\obj\Debug\net9.0\Dynapredict.Infrastructure.genruntimeconfig.cache
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Infrastructure\obj\Debug\net9.0\ref\Dynapredict.Infrastructure.dll
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Infrastructure\obj\Debug\net9.0\Dynapredict.Infrastructure.sourcelink.json

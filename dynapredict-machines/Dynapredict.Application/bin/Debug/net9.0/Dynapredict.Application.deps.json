@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "Dynapredict.Application/1.0.0": {
+        "dependencies": {
+          "Dynapredict.Domain": "1.0.0"
+        },
+        "runtime": {
+          "Dynapredict.Application.dll": {}
+        }
+      },
+      "Dynapredict.Domain/1.0.0": {
+        "runtime": {
+          "Dynapredict.Domain.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Dynapredict.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Dynapredict.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

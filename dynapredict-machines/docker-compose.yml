@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: dynapredict-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: dynapredict
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: .
+      dockerfile: Dynapredict.Api/Dockerfile.dockerfile
+    container_name: dynapredict-api
+    environment:
+      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=dynapredict;Username=postgres;Password=postgres"
+    depends_on:
+      - db
+    ports:
+      - "5023:5023"
+
+  frontend:
+    build:
+      context: ./dynapredict-frontend
+      dockerfile: Dockerfile.dockerfile
+    container_name: dynapredict-frontend
+    depends_on:
+      - api
+    ports:
+      - "5173:5173"
+    command: ["npm", "run", "dev", "--", "--host"]
+
+volumes:
+  db_data:

@@ -1,0 +1,10 @@
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Domain\bin\Debug\net9.0\Dynapredict.Domain.deps.json
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Domain\bin\Debug\net9.0\Dynapredict.Domain.dll
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Domain\bin\Debug\net9.0\Dynapredict.Domain.pdb
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Domain\obj\Debug\net9.0\Dynapredict.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Domain\obj\Debug\net9.0\Dynapredict.Domain.csproj.CoreCompileInputs.cache
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Domain\obj\Debug\net9.0\Dynapredict.Domain.dll
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Domain\obj\Debug\net9.0\refint\Dynapredict.Domain.dll
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Domain\obj\Debug\net9.0\Dynapredict.Domain.pdb
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Domain\obj\Debug\net9.0\ref\Dynapredict.Domain.dll
+C:\Users\KABUM\dynapredict-machines\Dynapredict.Domain\obj\Debug\net9.0\Dynapredict.Domain.sourcelink.json
