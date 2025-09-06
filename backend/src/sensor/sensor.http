@@ -1,0 +1,13 @@
+### Create sensor
+POST http://localhost:3000/sensors
+Content-Type: application/json
+Authorization: Bearer <YOUR_JWT_TOKEN>
+
+{
+  "model": "HFPlus",  // ou "TcAg", "TcAs"
+  "monitoringPointId": 1
+}
+
+### Get all sensors
+GET http://localhost:3000/sensors
+Authorization: Bearer <YOUR_JWT_TOKEN>
