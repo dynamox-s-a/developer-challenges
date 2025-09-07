@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectLoading, selectError } from "@/domain/data/selectors";
 import { dataFetchRequested } from "@/domain/data/actions";
-import { Container, Button, Alert, Typography } from "@mui/material";
+import { Container, Button, Alert } from "@mui/material";
 import MachineHeader from "./components/MachineHeader";
 import ChartsGroup from "./components/charts/ChartsGroup";
 
@@ -17,10 +17,6 @@ export default function DataPage() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Dados da Máquina
-      </Typography>
-
       {loading && <p>Carregando…</p>}
 
       {error && (
