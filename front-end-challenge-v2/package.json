@@ -9,8 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "api": "json-server --watch ./response-challenge-v2.json --port 3001",
-    "test": "vitest",
-    "cy:open": "cypress open"
+    "test": "vitest --ui"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -31,18 +30,21 @@
     "@eslint/js": "^9.33.0",
     "@testing-library/jest-dom": "^6.8.0",
     "@testing-library/react": "^16.3.0",
+    "@types/node": "^24.3.1",
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.0",
-    "cypress": "^15.1.0",
+    "@vitest/ui": "^3.2.4",
     "eslint": "^9.33.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
+    "jsdom": "^26.1.0",
     "json-server": "^1.0.0-beta.3",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.39.1",
     "vite": "^7.1.4",
+    "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4"
   }
 }
