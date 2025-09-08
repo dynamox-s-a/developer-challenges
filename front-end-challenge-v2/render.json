@@ -1,0 +1,3 @@
+{
+  "startCommand": "json-server --watch response-challenge-v2.json --port 10000"
+}
