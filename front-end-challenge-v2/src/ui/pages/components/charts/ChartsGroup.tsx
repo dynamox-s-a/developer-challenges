@@ -27,7 +27,6 @@ function computeExtremes(...groups: PreparedSeries[][]) {
   return min === Infinity ? null : { xMin: min, xMax: max };
 }
 
-// Busca binária pelo ponto mais próximo em X
 function nearestPoint(
   series: Highcharts.Series,
   x: number
@@ -53,7 +52,6 @@ function nearestPoint(
   return cand;
 }
 
-// Extrai clientX/clientY de MouseEvent ou TouchEvent
 function toMouseEvent(native: MouseEvent | TouchEvent): MouseEvent {
   let clientX: number, clientY: number;
   if ("touches" in native && native.touches.length) {
@@ -93,7 +91,6 @@ export default function ChartsGroup() {
     [accChart, velChart, tmpChart]
   );
 
-  // Encontra o chart onde o evento ocorreu
   const findOriginChart = useCallback(
     (target: EventTarget | null) => {
       const charts = listCharts();
@@ -106,7 +103,6 @@ export default function ChartsGroup() {
     [listCharts]
   );
 
-  // Sincroniza por timestamp: calcula xValue no chart de origem e aplica nos demais
   const handleMove = useCallback(
     (native: MouseEvent | TouchEvent) => {
       const charts = listCharts();
@@ -119,22 +115,24 @@ export default function ChartsGroup() {
 
       charts.forEach((chart) => {
         const axis = chart.xAxis[0];
-        const series = chart.series[0];
-        if (!series) return;
 
-        const p = nearestPoint(series, xValue);
-        if (!p) return;
+        const points = chart.series
+          .filter((s) => s.visible !== false)
+          .map((s) => nearestPoint(s, xValue))
+          .filter((p): p is Highcharts.Point => !!p);
 
-        // Constrói um evento posicionado no mesmo timestamp dentro deste chart
-        const plotX = axis.toPixels(xValue, true); // px no plot deste chart
+        if (points.length === 0) return;
+
+        const plotX = axis.toPixels(xValue, true);
         const chartPos = chart.pointer.getChartPosition();
         const clientX =
           chartPos.left + chart.plotLeft + plotX - window.pageXOffset;
         const clientY =
           chartPos.top +
           chart.plotTop +
-          (p.plotY ?? chart.plotHeight / 2) -
+          (points[0].plotY ?? chart.plotHeight / 2) -
           window.pageYOffset;
+
         const mouse = new MouseEvent("mousemove", {
           clientX,
           clientY,
@@ -143,9 +141,10 @@ export default function ChartsGroup() {
         });
         const e = chart.pointer.normalize(mouse);
 
-        p.setState("hover");
-        chart.tooltip.refresh(p, e);
-        axis.drawCrosshair(e, p);
+        points.forEach((pt) => pt.setState("hover"));
+        chart.tooltip.refresh(points, e);
+
+        axis.drawCrosshair(e, points[0]);
       });
     },
     [listCharts, findOriginChart]
@@ -155,8 +154,7 @@ export default function ChartsGroup() {
     listCharts().forEach((c) => {
       c.tooltip.hide(0);
       c.xAxis[0].hideCrosshair();
-      // remove hover state para garantir o marker sumir
-      c.series[0]?.points.forEach((pt) => pt.setState(""));
+      c.series.forEach((s) => s.points.forEach((pt) => pt.setState("")));
     });
   }, [listCharts]);
 

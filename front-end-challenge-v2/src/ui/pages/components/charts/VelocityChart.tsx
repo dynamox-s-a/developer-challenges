@@ -7,18 +7,9 @@ type Props = {
   onReady?: (c: Highcharts.Chart) => void;
   xMin?: number;
   xMax?: number;
-  onHoverX?: (x: number) => void;
-  onLeave?: () => void;
 };
 
-export default function VelocityChart({
-  series,
-  onReady,
-  xMin,
-  xMax,
-  onHoverX,
-  onLeave,
-}: Props) {
+export default function VelocityChart({ series, onReady, xMin, xMax }: Props) {
   return (
     <BaseTimeseriesChart
       title="Velocidade (RMS)"
@@ -27,8 +18,6 @@ export default function VelocityChart({
       onReady={onReady}
       xMin={xMin}
       xMax={xMax}
-      onHoverX={onHoverX}
-      onLeave={onLeave}
     />
   );
 }

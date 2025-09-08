@@ -7,8 +7,6 @@ type Props = {
   onReady?: (c: Highcharts.Chart) => void;
   xMin?: number;
   xMax?: number;
-  onHoverX?: (x: number) => void;
-  onLeave?: () => void;
 };
 
 export default function TemperatureChart({
@@ -16,8 +14,6 @@ export default function TemperatureChart({
   onReady,
   xMin,
   xMax,
-  onHoverX,
-  onLeave,
 }: Props) {
   return (
     <BaseTimeseriesChart
@@ -27,8 +23,6 @@ export default function TemperatureChart({
       onReady={onReady}
       xMin={xMin}
       xMax={xMax}
-      onHoverX={onHoverX}
-      onLeave={onLeave}
     />
   );
 }
