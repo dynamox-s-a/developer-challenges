@@ -1,4 +1,3 @@
-// src/ui/theme/globals.tsx
 import GlobalStyles from "@mui/material/GlobalStyles";
 
 export function AppGlobalStyles() {

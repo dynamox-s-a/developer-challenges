@@ -5,7 +5,7 @@ import Router from "./router";
 
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import { theme } from "@/ui/theme/theme";
-import { AppGlobalStyles } from "@/ui/theme/globals";
+import { AppGlobalStyles } from "@/ui/theme/GlobalStyles";
 
 import { Provider } from "react-redux";
 import { store } from "@/app/store";
