@@ -1,31 +1,31 @@
 steps:
   # Build container
-  - name: 'gcr.io/cloud-builders/docker'
+  - name: gcr.io/cloud-builders/docker
     args: [
-      'build', '-t',
-      '$_REGION-docker.pkg.dev/$_PROJECT_NAME/registry/$_SERVICE_NAME:$COMMIT_SHA',
-      '.'
+      build, -t,
+      $_REGION-docker.pkg.dev/$_PROJECT_NAME/registry/$_SERVICE_NAME:$COMMIT_SHA,
+      .
     ]
 
   # Push container
-  - name: 'gcr.io/cloud-builders/docker'
+  - name: gcr.io/cloud-builders/docker
     args: [
-      'push',
-      '$_REGION-docker.pkg.dev/$_PROJECT_NAME/registry/$_SERVICE_NAME:$COMMIT_SHA'
+      push,
+      $_REGION-docker.pkg.dev/$_PROJECT_NAME/registry/$_SERVICE_NAME:$COMMIT_SHA
     ]
 
   # Configure kubectl
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: bash
-  args:
-    - -c
-    - |
-      gcloud container clusters get-credentials gke-cluster \
-        --region ${_REGION} --project ${_PROJECT_NAME}
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: bash
+    args:
+        - -c
+        - |
+          gcloud container clusters get-credentials gke-cluster \
+          --region ${_REGION} --project ${_PROJECT_NAME}
 
   # Fetch DB URL and update secret
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
-    entrypoint: 'bash'
+    entrypoint: bash
     args:
       - -c
       - |
@@ -44,7 +44,7 @@ steps:
       envsubst < k8s/${_SERVICE_NAME}.yaml | kubectl apply -f -
 
 images:
-  - '$_REGION-docker.pkg.dev/$_PROJECT_NAME/registry/$_SERVICE_NAME:$COMMIT_SHA'
+  - $_REGION-docker.pkg.dev/$_PROJECT_NAME/registry/$_SERVICE_NAME:$COMMIT_SHA
 
 options:
   logging: CLOUD_LOGGING_ONLY
