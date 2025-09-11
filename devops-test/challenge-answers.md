@@ -92,16 +92,6 @@ curl localhost:8000/count
 curl -X POST localhost:8000/increment
 ```
 
-### Cloud Environment Setup (GKE)
-Deployment is handled via Cloud Build:  
-- Push code to 'main' branch - Cloud Build builds & deploys.
-
-**Check backend service:**
-```bash
-kubectl port-forward deployment/backend 8000:8000
-curl http://localhost:8000/count
-```
-
 ---
 
 ## ⏱️ 2. Extraction CronJob
@@ -137,6 +127,11 @@ kubectl create job --from=cronjob/extractor extractor-manual-$(date +%s)
 # Runs a job manually
 ```
 
+
+### Cloud Environment Setup (GKE)
+Deployment is handled via Cloud Build:  
+- Push code to 'main' branch - Cloud Build builds & deploys.
+- 
 ### Cloud Environment Setup (GKE)
 - Deployed via Cloud Build.
 - CronJob runs every 15 minutes and calls backend.
