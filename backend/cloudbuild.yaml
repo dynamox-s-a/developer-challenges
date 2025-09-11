@@ -36,12 +36,12 @@ steps:
 
   # Render manifest and apply
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
-  entrypoint: bash
-  args:
-    - -c
-    - |
-      apt-get update && apt-get install -y gettext-base
-      envsubst < k8s/${_SERVICE_NAME}.yaml | kubectl apply -f -
+    entrypoint: bash
+    args:
+        - -c
+        - |
+          apt-get update && apt-get install -y gettext-base
+          envsubst < k8s/${_SERVICE_NAME}.yaml | kubectl apply -f -
 
 images:
   - $_REGION-docker.pkg.dev/$_PROJECT_NAME/registry/$_SERVICE_NAME:$COMMIT_SHA
