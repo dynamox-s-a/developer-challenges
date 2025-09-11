@@ -4,7 +4,8 @@ steps:
   args:
     - build
     - -t
-    - ${_REGION}-docker.pkg.dev/${_PROJECT_NAME}/gcp-exercise/${_SERVICE_NAME}:${COMMIT_SHA} ${_SERVICE_NAME}
+    - ${_REGION}-docker.pkg.dev/${_PROJECT_NAME}/gcp-exercise/${_SERVICE_NAME}:${COMMIT_SHA}
+    - ./${_SERVICE_NAME}
 
 - name: gcr.io/cloud-builders/docker
   args:
