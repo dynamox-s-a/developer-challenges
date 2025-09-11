@@ -14,28 +14,34 @@ steps:
       '$_REGION-docker.pkg.dev/$_PROJECT_NAME/registry/$_SERVICE_NAME:$COMMIT_SHA'
     ]
 
+  # Configure kubectl
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: bash
+  args:
+    - -c
+    - |
+      gcloud container clusters get-credentials gke-cluster \
+        --region ${_REGION} --project ${_PROJECT_NAME}
+
   # Fetch DB URL and update secret
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     entrypoint: 'bash'
     args:
-      - '-c'
+      - -c
       - |
         DB_URL=$(gcloud secrets versions access $_GSM_VERSION --secret=$_GSM_KEY --project=$_PROJECT_NAME)
         kubectl create secret generic db-credentials \
-          --from-literal=DATABASE_URL="$DB_URL" \
+          --from-literal=DATABASE_URL=$DB_URL \
           --dry-run=client -o yaml | kubectl apply -f -
 
   # Render manifest and apply
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        envsubst < k8s/${_SERVICE_NAME}.yaml | kubectl apply -f -
-    env:
-      - 'CLOUDSDK_CORE_PROJECT=$_PROJECT_NAME'
-      - 'CLOUDSDK_COMPUTE_REGION=$_REGION'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=gke-cluster'
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+  entrypoint: bash
+  args:
+    - -c
+    - |
+      apt-get update && apt-get install -y gettext-base
+      envsubst < k8s/${_SERVICE_NAME}.yaml | kubectl apply -f -
 
 images:
   - '$_REGION-docker.pkg.dev/$_PROJECT_NAME/registry/$_SERVICE_NAME:$COMMIT_SHA'
