@@ -2,19 +2,14 @@ steps:
 # Build and push image
 - name: gcr.io/cloud-builders/docker
   args:
-    [
-      build,
-      -t,
-      ${_REGION}-docker.pkg.dev/${_PROJECT_NAME}/gcp-exercise/${_SERVICE_NAME}:${COMMIT_SHA},
-      ${_SERVICE_NAME}
-    ]
+    - build
+    - -t
+    - ${_REGION}-docker.pkg.dev/${_PROJECT_NAME}/gcp-exercise/${_SERVICE_NAME}:${COMMIT_SHA} ${_SERVICE_NAME}
 
 - name: gcr.io/cloud-builders/docker
   args:
-    [
-      push,
-      ${_REGION}-docker.pkg.dev/${_PROJECT_NAME}/gcp-exercise/${_SERVICE_NAME}:${COMMIT_SHA}
-    ]
+    - push
+    - ${_REGION}-docker.pkg.dev/${_PROJECT_NAME}/gcp-exercise/${_SERVICE_NAME}:${COMMIT_SHA}
 
 # Deploy to GKE
 - name: gcr.io/google.com/cloudsdktool/cloud-sdk
