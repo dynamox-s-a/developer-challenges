@@ -13,10 +13,10 @@ spec:
         app: ${_SERVICE_NAME}
     spec:
       containers:
-      - name: ${_SERVICE_NAME}
-        image: ${_REGION}-docker.pkg.dev/${_PROJECT_NAME}/registry/backend:${COMMIT_SHA}
-        ports:
-          - containerPort: 8000
+        - name: ${_SERVICE_NAME}
+          image: ${_REGION}-docker.pkg.dev/${_PROJECT_NAME}/registry/backend:${COMMIT_SHA}
+          ports:
+            - containerPort: 8000
 ---
 apiVersion: v1
 kind: Service
