@@ -10,7 +10,7 @@ spec:
         spec:
           containers:
           - name: extractor
-            image: ${_REGION}-docker.pkg.dev/${_PROJECT_NAME}/gcp-exercise/extractor:${COMMIT_SHA}
+            image: ${_REGION}-docker.pkg.dev/${_PROJECT_NAME}/registry/extractor:${COMMIT_SHA}
             env:
             - name: BACKEND_URL
               value: "http://backend-service:80"
