@@ -10,7 +10,7 @@ steps:
 - name: gcr.io/cloud-builders/docker
   args:
     - push
-    - ${_REGION}-docker.pkg.dev/${_PROJECT_NAME}/gcp-exercise/${_SERVICE_NAME}:${COMMIT_SHA}
+    - ${_REGION}-docker.pkg.dev/${_PROJECT_NAME}/registry/${_SERVICE_NAME}:${COMMIT_SHA}
 
 # Deploy to GKE
 - name: gcr.io/google.com/cloudsdktool/cloud-sdk
