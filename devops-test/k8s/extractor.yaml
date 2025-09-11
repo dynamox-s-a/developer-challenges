@@ -9,9 +9,9 @@ spec:
       template:
         spec:
           containers:
-            - name: extractor
-              image: ${_REGION}-docker.pkg.dev/${_PROJECT_NAME}/registry/extractor:${COMMIT_SHA}
-              env:
-                - name: BACKEND_URL
-                  value: "http://backend-service:80"
+          - name: extractor
+            image: "${_REGION}-docker.pkg.dev/${_PROJECT_NAME}/registry/extractor:${COMMIT_SHA}"
+            env:
+            - name: BACKEND_URL
+              value: "http://backend-service:80"
           restartPolicy: OnFailure
