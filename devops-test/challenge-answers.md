@@ -164,8 +164,8 @@ Deployment is handled via Cloud Build:
 
 ```mermaid
 flowchart TD
-    User --> Backend[Backend Deployment (FastAPI, count/increment)]
-    Backend --> Extractor[Extractor CronJob (every 15m)]
+    User --> Backend["Backend Deployment (FastAPI, count & increment)"]
+    Backend --> Extractor["Extractor CronJob (every 15 minutes)"]
 ```
 
 **On GKE:**
