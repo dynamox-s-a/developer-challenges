@@ -56,9 +56,21 @@ terraform destroy --var-file=<environment>.tfvars
 
 ---
 
+### Minikube deployment
+
+- When testing locally with minikube, always clean older docker images, this will prevent some building and execution errors. Assuming you don't have other images on your machine:
+```
+docker rm -vf $(docker ps -aq)
+```
+- Always start minikube for local testing with:
+```
+minikube start
+eval $(minikube docker-env)    
+```
+
 ## 🖥️ 1. Backend Deployment
 
-### O.S. Environment Setup
+### Local O.S. Environment Setup
 ```bash
 cd backend
 pip install -r requirements.txt
@@ -67,7 +79,9 @@ uvicorn app.main:app --reload
 
 **Test:**
 ```bash
+# This will give the current request count number
 curl http://127.0.0.1:8000/count
+# This will increment the current count
 curl -X POST http://127.0.0.1:8000/increment
 ```
 
@@ -76,54 +90,46 @@ curl -X POST http://127.0.0.1:8000/increment
 docker build -t backend:local ./backend
 docker run -p 8000:8000 backend:local
 ```
+- Same testing as Local.
 
 ### Minikube Environment Setup
 ```bash
-eval $(minikube docker-env)
-docker build -t backend:local ./backend
-kubectl apply -f k8s/backend.yaml
-kubectl port-forward deployment/backend 8000:8000
+docker build -t fastapi-backend ./backend
+kubectl apply -f k8s/local-backend.yaml
 ```
 
 **Test:**
 ```bash
 kubectl port-forward svc/backend 8000:8000
+# Almost the same testing as local.
 curl localhost:8000/count
 curl -X POST localhost:8000/increment
-```
-
-### Cloud Environment Setup (GKE)
-Deployment is handled via Cloud Build:  
-- Push code to 'main' branch - Cloud Build builds & deploys.
-
-**Check backend service:**
-```bash
-kubectl port-forward deployment/backend 8000:8000
-curl http://localhost:8000/count
 ```
 
 ---
 
 ## ⏱️ 2. Extraction CronJob
 
-### O.S. Environment Setup
+### Local O.S. Environment Setup
 ```bash
 cd extractor
-pip install -r requirements.txt
+pip install requests
+# This will execute the job manually, already testing it, you can use a cronjob to configure it to run each 15 minutes with the "*/15 * * * *" config
 BACKEND_URL="http://127.0.0.1:8000/count" python extractor.py
 ```
 
 ### Docker Environment Setup
 ```bash
-docker build -t extractor:local ./extractor
-docker run --network host -e BACKEND_URL="http://127.0.0.1:8000/count" extractor:local
+cd extractor
+docker build -t extractor .
+# This will test the extractor job
+docker run --network host -e BACKEND_URL="http://127.0.0.1:8000/count" extractor
 ```
 
 ### Minikube Environment Setup
 ```bash
-eval $(minikube docker-env)
-docker build -t extractor:local ./extractor
-kubectl apply -f k8s/extractor.yaml
+docker build -t extractor ./extractor
+kubectl apply -f k8s/local-extractor.yaml
 ```
 
 **Test:**
@@ -137,21 +143,20 @@ kubectl create job --from=cronjob/extractor extractor-manual-$(date +%s)
 # Runs a job manually
 ```
 
+
 ### Cloud Environment Setup (GKE)
-- Deployed via Cloud Build.
+Deployment is handled via Cloud Build:  
+- Push code to 'main' branch - Cloud Build builds & deploys.
 - CronJob runs every 15 minutes and calls backend.
 
----
-
-### Additional Information
-- Always start minikube for local testing with:
-```
-minikube start
-```
-- Also, when testing locally with minikube, always clean older docker images, this will prevent some building and execution errors. Assuming you don't have other images on your machine:
-```
-docker rm -vf $(docker ps -aq)
-```
+- Other necessary actions in this environment, must include:
+  -  Deployment, configuration and authentication of a GKE Cluster, so that the K8s pods can work.
+  -  Can bind the gcloud kubernetes services via authentication and commands, due to ClusterIP configuration.
+    ```
+      gcloud container clusters get-credentials <gke-cluster-name> --region <region-location> --project <project-name>
+      kubectl get svc backend
+    ```
+  - Can also change the configuration to expose a public IP for the services, although not recommended due to security and costs concerns.
 
 ---
 
@@ -251,7 +256,7 @@ flowchart TD
 - Improve CI/CD with automated tests.
 - Add monitoring with Prometheus/Grafana and better logging than raw GCP Cloud Logging.
 - Optimize pod resource requests/limits for cost efficiency.
-- Improve Environment Variables usage, using Google Secret Manager, so there is less hardcoding, code instability between local/production environments, and to protect sensitive data.
-- Improve Terraform configuration files,
+- Configure better Environment Variables usage, using Google Secret Manager and Cloud Build, to protect sensitive data, less hardcoding, and reduce code instability between local/production environments.
+- Improve Terraform configuration files, to use Secret Manager, introduce necessary PostgreSQL and GKE Cluster configurations.
 
 ---
