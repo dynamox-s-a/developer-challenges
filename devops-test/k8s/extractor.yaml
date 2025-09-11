@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: extractor-cron
+spec:
+  schedule: "*/15 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: extractor
+            image: ${_REGION}-docker.pkg.dev/${_PROJECT_NAME}/gcp-exercise/extractor:${COMMIT_SHA}
+            env:
+            - name: BACKEND_URL
+              value: "http://backend-service:80"
+          restartPolicy: OnFailure

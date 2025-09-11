@@ -1,0 +1,29 @@
+steps:
+# Build and push image
+- name: gcr.io/cloud-builders/docker
+  args:
+    [
+      build,
+      -t,
+      ${_REGION}-docker.pkg.dev/${_PROJECT_NAME}/gcp-exercise/${_SERVICE_NAME}:${COMMIT_SHA},
+      ${_SERVICE_NAME}
+    ]
+
+- name: gcr.io/cloud-builders/docker
+  args:
+    [
+      push,
+      ${_REGION}-docker.pkg.dev/${_PROJECT_NAME}/gcp-exercise/${_SERVICE_NAME}:${COMMIT_SHA}
+    ]
+
+# Deploy to GKE
+- name: gcr.io/google.com/cloudsdktool/cloud-sdk
+  entrypoint: bash
+  args:
+    - -c
+    - |
+      gcloud container clusters get-credentials gke-cluster \
+        --region ${_REGION} --project ${_PROJECT_NAME}
+
+      apt-get update && apt-get install -y gettext-base
+      envsubst < k8s/${_SERVICE_NAME}.yaml | kubectl apply -f -
