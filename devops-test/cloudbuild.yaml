@@ -5,7 +5,7 @@ steps:
     - build
     - -t
     - ${_REGION}-docker.pkg.dev/${_PROJECT_NAME}/registry/${_SERVICE_NAME}:${COMMIT_SHA}
-    - ${_SERVICE_NAME}
+    - ./devops-test/${_SERVICE_NAME}
 
 - name: gcr.io/cloud-builders/docker
   args:
