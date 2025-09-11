@@ -22,3 +22,6 @@ steps:
 
       apt-get update && apt-get install -y gettext-base
       envsubst < k8s/${_SERVICE_NAME}.yaml | kubectl apply -f -
+
+options:
+  logging: CLOUD_LOGGING_ONLY
