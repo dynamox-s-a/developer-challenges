@@ -10,17 +10,17 @@ It also contains the Terraform files necessary for deployment to the GCP.
 ### Git Setup
 ```bash
 git clone <your-repo-url>
-cd gcp-fastapi-exercise
+cd devops-test
 ```
 
 ### Editor Setup
 - Install **Visual Studio Code**
 - Recommended extensions:
-  - Python (Microsoft)
-  - Docker (Microsoft)
-  - Kubernetes (Microsoft)
-  - YAML (Red Hat)
-- If using terminal, necessary services must be installed, such as:
+  - Python
+  - Docker
+  - Kubernetes
+  - YAML
+- If using terminal, necessary services must be installed:
   - docker
   - kubectl
   - minikube
@@ -62,13 +62,13 @@ terraform destroy --var-file=<environment>.tfvars
 ```bash
 cd backend
 pip install -r requirements.txt
-uvicorn main:app --reload --port 8000
+uvicorn app.main:app --reload
 ```
 
 **Test:**
 ```bash
-curl http://localhost:8000/count
-curl -X POST http://localhost:8000/increment
+curl http://127.0.0.1:8000/count
+curl -X POST http://127.0.0.1:8000/increment
 ```
 
 ### Docker Environment Setup
@@ -81,13 +81,20 @@ docker run -p 8000:8000 backend:local
 ```bash
 eval $(minikube docker-env)
 docker build -t backend:local ./backend
-kubectl apply -f k8s/local-backend.yaml
+kubectl apply -f k8s/backend.yaml
 kubectl port-forward deployment/backend 8000:8000
 ```
 
+**Test:**
+```bash
+kubectl port-forward svc/backend 8000:8000
+curl localhost:8000/count
+curl -X POST localhost:8000/increment
+```
+
 ### Cloud Environment Setup (GKE)
-Deployment is handled via **Cloud Build**:  
-- Push code to `main` branch → Cloud Build builds & deploys.
+Deployment is handled via Cloud Build:  
+- Push code to 'main' branch - Cloud Build builds & deploys.
 
 **Check backend service:**
 ```bash
@@ -103,26 +110,31 @@ curl http://localhost:8000/count
 ```bash
 cd extractor
 pip install -r requirements.txt
-python extractor.py
+BACKEND_URL="http://127.0.0.1:8000/count" python extractor.py
 ```
 
 ### Docker Environment Setup
 ```bash
 docker build -t extractor:local ./extractor
-docker run --env BACKEND_URL=http://host.docker.internal:8000 extractor:local
+docker run --network host -e BACKEND_URL="http://127.0.0.1:8000/count" extractor:local
 ```
 
 ### Minikube Environment Setup
 ```bash
 eval $(minikube docker-env)
 docker build -t extractor:local ./extractor
-kubectl apply -f k8s/local-extractor.yaml
+kubectl apply -f k8s/extractor.yaml
 ```
 
-**Check logs:**
+**Test:**
 ```bash
+kubectl get jobs --watch 
+# Real time job checking
 kubectl get pods
-kubectl logs <extractor-pod>
+kubectl logs <extractor-pod-name>
+# Check logging to see if executions are being completed
+kubectl create job --from=cronjob/extractor extractor-manual-$(date +%s)
+# Runs a job manually
 ```
 
 ### Cloud Environment Setup (GKE)
@@ -131,7 +143,19 @@ kubectl logs <extractor-pod>
 
 ---
 
-## 🏗️ Architectural Diagram
+### Additional Information
+- Always start minikube for local testing with:
+```
+minikube start
+```
+- Also, when testing locally with minikube, always clean older docker images, this will prevent some building and execution errors. Assuming you don't have other images on your machine:
+```
+docker rm -vf $(docker ps -aq)
+```
+
+---
+
+##  Architectural Diagram
 
 ```mermaid
 flowchart TD
