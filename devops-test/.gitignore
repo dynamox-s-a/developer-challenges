@@ -1,0 +1,23 @@
+# Ignoring artifacts from local building and testing
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+.env
+*.env
+
+# Docker
+*.log
+*.pid
+*.seed
+*.bak
+
+# Local testing
+.env.local
+*.sqlite
+
+# OS
+.DS_Store
+Thumbs.db

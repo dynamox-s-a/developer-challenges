@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${_SERVICE_NAME}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ${_SERVICE_NAME}
+  template:
+    metadata:
+      labels:
+        app: ${_SERVICE_NAME}
+    spec:
+      containers:
+      - name: ${_SERVICE_NAME}
+        image: "${_REGION}-docker.pkg.dev/${_PROJECT_NAME}/registry/backend:${COMMIT_SHA}"
+        ports:
+          - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  type: ClusterIP
+  selector:
+    app: ${_SERVICE_NAME}
+  ports:
+    - port: 80
+      targetPort: 8000
