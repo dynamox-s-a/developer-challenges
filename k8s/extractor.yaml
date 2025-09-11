@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ${_SERVICE_NAME}
+spec:
+  schedule: "*/15 * * * *" # every 15 minutes
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: ${_SERVICE_NAME}
+            image: ${_REGION}-docker.pkg.dev/${_PROJECT_NAME}/gcp-exercise/${_SERVICE_NAME}:${COMMIT_SHA}
+            env:
+              - name: DATABASE_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: db-credentials
+                    key: DATABASE_URL
+              - name: BACKEND_URL
+                value: "http://backend-service/count"
+          restartPolicy: OnFailure

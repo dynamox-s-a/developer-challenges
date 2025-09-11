@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${_SERVICE_NAME}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ${_SERVICE_NAME}
+  template:
+    metadata:
+      labels:
+        app: ${_SERVICE_NAME}
+    spec:
+      containers:
+      - name: ${_SERVICE_NAME}
+        image: ${_REGION}-docker.pkg.dev/${_PROJECT_NAME}/gcp-exercise/${_SERVICE_NAME}:${COMMIT_SHA}
+        ports:
+          - containerPort: 8000
+        env:
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: DATABASE_URL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${_SERVICE_NAME}-service
+spec:
+  type: ClusterIP   # 👈 safe, internal-only
+  selector:
+    app: ${_SERVICE_NAME}
+  ports:
+    - port: 80
+      targetPort: 8000
