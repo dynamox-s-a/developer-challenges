@@ -178,7 +178,7 @@ flowchart TD
 
 **Release Process:**
 - Push to repo -> Cloud Build builds Docker image, pushes to Artifact Registry, applies Kubernetes manifests.
-- Manifests templated with 'envsubst' -> no hardcoded project/region.
+- For Cloud Build. the manifests are templated with 'envsubst' -> no hardcoded project/region.
 
 **Automation Pipeline:**
 - Separate Cloud Build triggers for backend and extractor.
@@ -187,6 +187,7 @@ flowchart TD
   - Linting
   - Vulnerability scanning before deployment
   - Secret Manager for sensitive data handling
+  - Improved handling of substitution variables
 
 ---
 
@@ -195,12 +196,12 @@ flowchart TD
 **Risks:**
 - CronJob may call public backend if exposed - risk of abuse.
 - Images may contain vulnerabilities.
-- No authentication on backend API.
+- No authentication on backend API - anyone with could make a request to the API, if exposed via public IP.
 
 **Mitigations:**
 - Keep backend as ClusterIP (internal-only) during tests, only enabling public IP for production.
+- Even better, add authentication layers (API keys / IAM).
 - Use GCP’s Artifact Registry scanning.
-- Add authentication (API keys / IAM).
 - Better use of GCP Secret Manager for sensitive values.
 
 ---
@@ -208,10 +209,10 @@ flowchart TD
 ## FinOps Brief Analysis
 
 **Cost Estimate Assumptions:**
-- The node needs may vary due to workload, but can be adjusted.
-- On a staging environment, for example, costs would be much lower due to fewer pods running, and we can tears down clusters when not in use, etc.
-- Configurations provided are not consistent, since machine templates assume you will use their default cpu/memory. I'll use the machine templates as the basis for the cost calculation.
-- Taking in account southamerica-east1, which is the region closest to us, and also an eco region. Some costs may be higher than if deployesd on a cheaper alternative, such as us-central1.
+- The node amount may vary due to workload, but can be adjusted and scaled as needed.
+- On a staging or test environment, costs would be much lower due to fewer pods running, and we can tears down clusters when not in use, among other optimizations.
+- Configurations provided are not consistent, since machine templates assume you will use their default cpu/memory, and some values can not be adjusted on the Google Cost Calculator, or ven on the machine configuration themselves. I'll use the machine templates as the basis for the cost calculation.
+- Taking in account southamerica-east1, which is the region closest to us, and also an eco region. Some costs may be higher than if deployed on a cheaper alternative, such as us-central1.
 - Also not taking in account storage, building and networking costs, which may ramp up these numbers depending on the application.
 
 **I'll make 2 estimates**
@@ -219,8 +220,8 @@ flowchart TD
 - Scenario A - Using 5 Nodes on Backend, 2 on Extractor.
 - Scenario B - Worst-case scenario, with node-pod mapping on 1:1.
 
-- Backend - n1-highcpu-4 - 4 vCPUs, 3.6 GiB RAM
-- Extraction - n1-highmem-2 - 2vCPUs, 13GiB RAM
+- Backend - n1-highcpu-4 - 4 vCPUs, 3.6 GiB RAM - 55 pods
+- Extraction - n1-highmem-2 - 2vCPUs, 13GiB RAM - 28 pods
 
 *Scenario A*
 
