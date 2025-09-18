@@ -23,7 +23,10 @@ This project delivers a dashboard application to visualize machine condition dat
 # install dependencies
 npm install
 
-# start dev server (http://localhost:5173)
+# start mock API (http://localhost:3000)
+npm run api
+
+# in another terminal, start dev server (http://localhost:5173)
 npm run dev
 
 # build for production
@@ -31,7 +34,6 @@ npm run build
 
 # preview production build
 npm run preview
-```
 
 ---
 
