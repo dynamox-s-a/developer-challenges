@@ -1,0 +1,146 @@
+{
+  "user": [
+    {
+      "id": 1,
+      "email": "admin@events.com",
+      "password": "admin123",
+      "role": "admin"
+    },
+    {
+      "id": 2,
+      "email": "reader@events.com",
+      "password": "reader123",
+      "role": "reader"
+    }
+  ],
+  "event": [
+    {
+      "id": 1,
+      "name": "JavaScript Fundamentals Workshop",
+      "date": "2025-08-15T09:00:00.000Z",
+      "location": "São Paulo Tech Hub",
+      "description": "Learn JavaScript basics and best practices",
+      "category": "Workshop"
+    },
+    {
+      "id": 2,
+      "name": "Data Science Conference Brazil",
+      "date": "2025-07-22T08:30:00.000Z",
+      "location": "Rio de Janeiro Convention Center",
+      "description": "Explore machine learning and data analytics",
+      "category": "Conference"
+    },
+    {
+      "id": 3,
+      "name": "Cybersecurity Awareness Webinar",
+      "date": "2025-09-10T15:00:00.000Z",
+      "location": "Online - Google Meet",
+      "description": "Protect your business from cyber threats",
+      "category": "Webinar"
+    },
+    {
+      "id": 4,
+      "name": "Entrepreneurs Networking Night",
+      "date": "2025-08-28T18:00:00.000Z",
+      "location": "Startup Café Florianópolis",
+      "description": "Meet like-minded entrepreneurs and investors",
+      "category": "Networking"
+    },
+    {
+      "id": 5,
+      "name": "Digital Marketing Bootcamp",
+      "date": "2025-09-05T10:00:00.000Z",
+      "location": "Marketing Institute Brasília",
+      "description": "Master social media and online advertising",
+      "category": "Other"
+    },
+    {
+      "id": 6,
+      "name": "Python for Beginners Workshop",
+      "date": "2025-07-18T13:30:00.000Z",
+      "location": "Code Academy Salvador",
+      "description": "Introduction to Python programming language",
+      "category": "Workshop"
+    },
+    {
+      "id": 7,
+      "name": "Blockchain Technology Summit",
+      "date": "2025-09-12T09:00:00.000Z",
+      "location": "Curitiba Innovation Center",
+      "description": "Future of blockchain and cryptocurrency",
+      "category": "Conference"
+    },
+    {
+      "id": 8,
+      "name": "Remote Work Best Practices",
+      "date": "2025-08-08T16:00:00.000Z",
+      "location": "Online - Zoom Platform",
+      "description": "Tips for effective remote team collaboration",
+      "category": "Webinar"
+    },
+    {
+      "id": 9,
+      "name": "React Next.js Conference 2025",
+      "date": "2025-10-15T14:00:00.000Z",
+      "location": "São Paulo Convention Center",
+      "description": "Explore the latest React and Next.js features",
+      "category": "Conference"
+    },
+    {
+      "id": 10,
+      "name": "Advanced TypeScript Workshop",
+      "date": "2025-10-22T09:00:00.000Z",
+      "location": "Tech Hub Rio de Janeiro",
+      "description": "Deep dive into TypeScript advanced patterns",
+      "category": "Workshop"
+    },
+    {
+      "id": 11,
+      "name": "Cloud Architecture Webinar",
+      "date": "2025-11-05T16:00:00.000Z",
+      "location": "Online - Zoom Platform",
+      "description": "Learn modern cloud architecture principles",
+      "category": "Webinar"
+    },
+    {
+      "id": 12,
+      "name": "Tech Startup Networking",
+      "date": "2025-11-12T19:00:00.000Z",
+      "location": "Innovation Hub Belo Horizonte",
+      "description": "Connect with startup founders and investors",
+      "category": "Networking"
+    },
+    {
+      "id": 13,
+      "name": "AI Ethics Discussion Panel",
+      "date": "2025-12-03T15:30:00.000Z",
+      "location": "University of São Paulo",
+      "description": "Debate on artificial intelligence ethics",
+      "category": "Other"
+    },
+    {
+      "id": 14,
+      "name": "Mobile Development Workshop",
+      "date": "2025-10-28T10:00:00.000Z",
+      "location": "Digital Campus Recife",
+      "description": "Build cross-platform mobile applications",
+      "category": "Workshop"
+    },
+    {
+      "id": 15,
+      "name": "DevOps Best Practices Conference",
+      "date": "2025-11-18T08:00:00.000Z",
+      "location": "Porto Alegre Tech Center",
+      "description": "Latest trends in DevOps and CI/CD pipelines",
+      "category": "Conference"
+    },
+    {
+      "id": 16,
+      "name": "UX/UI Design Webinar Series",
+      "date": "2025-10-30T14:00:00.000Z",
+      "location": "Online - Microsoft Teams",
+      "description": "Master user experience and interface design",
+      "category": "Webinar"
+    }
+  ]
+}
