@@ -7,6 +7,7 @@ import { getEventById, updateEvent, deleteEvent } from "@/lib/api/apiClients";
 import FormEvent from "@/components/forms/FormEvent";
 import { Box, Typography, Alert } from "@mui/material";
 import type { EventFormData } from "@/types";
+import { ROUTES } from "@/constants";
 
 export default function EditEventPage({
   params,
@@ -47,7 +48,7 @@ export default function EditEventPage({
 
   // Redireciona se não estiver autenticado
   if (!authLoading && !isAuthenticated) {
-    router.push("/");
+    router.push(ROUTES.HOME);
     return null;
   }
 
@@ -82,7 +83,7 @@ export default function EditEventPage({
 
       // Redireciona após sucesso
       setTimeout(() => {
-        router.push("/admin");
+        router.push(ROUTES.DASHBOARD);
       }, 2000);
     } catch (err) {
       console.error("Erro ao atualizar evento:", err);
@@ -93,7 +94,7 @@ export default function EditEventPage({
   };
 
   const handleCancel = () => {
-    router.push("/admin");
+    router.push(ROUTES.DASHBOARD);
   };
 
   const handleDelete = async () => {
@@ -111,7 +112,7 @@ export default function EditEventPage({
     try {
       await deleteEvent(eventId);
       alert("Evento excluído com sucesso!");
-      router.push("/dashboard");
+      router.push(ROUTES.DASHBOARD);
     } catch (err) {
       console.error("Erro ao excluir evento:", err);
       setError("Erro ao excluir evento. Verifique se a API está rodando.");

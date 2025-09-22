@@ -13,12 +13,13 @@ import type { JWTPayload } from "../../types/auth";
 export function generateFakeJWT(user: {
   email: string;
   name?: string;
-  role: "admin" | "reader";
+  role: UserRole;
 }): string {
   const now = Math.floor(Date.now() / 1000);
 
   // Convert string role to UserRole enum
-  const userRole = user.role === "admin" ? UserRole.ADMIN : UserRole.READER;
+  const userRole =
+    user.role === UserRole.ADMIN ? UserRole.ADMIN : UserRole.READER;
 
   const payload: JWTPayload = {
     userId: generateUserId(user.email),

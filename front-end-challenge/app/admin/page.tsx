@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Box, Typography, Button, Paper, Alert } from "@mui/material";
 import Loading from "@/components/ui/Loading";
+import { ROUTES } from "@/constants";
 
 export default function AdminPage() {
   const router = useRouter();
@@ -77,7 +78,7 @@ export default function AdminPage() {
                 variant="contained"
                 color="primary"
                 size="large"
-                onClick={() => router.push("/admin/events/add")}
+                onClick={() => router.push(ROUTES.ADMIN.EVENTS.ADD)}
                 sx={{ p: 2 }}
               >
                 <Box>

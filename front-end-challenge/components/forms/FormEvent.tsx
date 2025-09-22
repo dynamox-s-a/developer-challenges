@@ -14,6 +14,11 @@ import {
 import { EventNote } from "@mui/icons-material";
 import { useState } from "react";
 import type { EventFormData, FormEventProps } from "../../types/forms";
+import {
+  formatDateForInput,
+  getCurrentDateForInput,
+  validateEventForm,
+} from "../../utils";
 
 const CATEGORIES = [
   "Workshop",
@@ -40,8 +45,8 @@ export default function FormEvent({
   const [formData, setFormData] = useState<EventFormData>({
     name: initialData.name || "",
     date: initialData.date
-      ? new Date(initialData.date).toISOString().slice(0, 16)
-      : "",
+      ? formatDateForInput(initialData.date)
+      : getCurrentDateForInput(),
     location: initialData.location || "",
     description: initialData.description || "",
     category: initialData.category || "",
@@ -81,36 +86,9 @@ export default function FormEvent({
   };
 
   const validateForm = (): boolean => {
-    const newErrors: Partial<EventFormData> = {};
-
-    if (!formData.name.trim()) {
-      newErrors.name = "Nome do evento é obrigatório";
-    }
-
-    if (!formData.date) {
-      newErrors.date = "Data do evento é obrigatória";
-    } else {
-      const eventDate = new Date(formData.date);
-      const today = new Date();
-      if (eventDate < today) {
-        newErrors.date = "Data do evento deve ser futura";
-      }
-    }
-
-    if (!formData.location.trim()) {
-      newErrors.location = "Local do evento é obrigatório";
-    }
-
-    if (!formData.description.trim()) {
-      newErrors.description = "Descrição do evento é obrigatória";
-    }
-
-    if (!formData.category) {
-      newErrors.category = "Categoria do evento é obrigatória";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    const validationErrors = validateEventForm(formData, [...CATEGORIES]);
+    setErrors(validationErrors);
+    return Object.keys(validationErrors).length === 0;
   };
 
   const handleSubmit = (e: React.FormEvent) => {

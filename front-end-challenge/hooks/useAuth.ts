@@ -9,6 +9,7 @@ import {
 } from "@/lib/auth/jwt-fake";
 import { authenticateUser, setAuthToken } from "@/lib/api/apiClients";
 import type { AuthUser, LoginFormCredentials } from "@/types";
+import { UserRole } from "@/types";
 
 export function useAuth() {
   const [token, saveToken, removeToken] = useLocalStorage();
@@ -87,7 +88,7 @@ export function useAuth() {
 
           // Determina redirecionamento baseado na role
           const redirectTo =
-            authenticatedUser.role === "admin" ? "/admin" : "/dashboard";
+            authenticatedUser.role === UserRole.ADMIN ? "/admin" : "/dashboard";
 
           setLoading(false);
           return { success: true, redirectTo };
@@ -126,14 +127,14 @@ export function useAuth() {
   /**
    * Verifica se o usuário tem role de admin
    */
-  const isAdmin = user?.role === "admin";
+  const isAdmin = user?.role === UserRole.ADMIN;
 
   /**
    * Obtém a rota de redirecionamento baseada na role do usuário
    */
   const getRedirectRoute = () => {
     if (!user) return "/";
-    return user.role === "admin" ? "/admin" : "/dashboard";
+    return user.role === UserRole.ADMIN ? "/admin" : "/dashboard";
   };
 
   return {

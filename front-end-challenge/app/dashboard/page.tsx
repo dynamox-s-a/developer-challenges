@@ -23,6 +23,12 @@ import {
 import Loading from "@/components/ui/Loading";
 import { getEvents } from "@/lib/api/apiClients";
 import type { Event } from "@/types";
+import { ROUTES } from "@/constants";
+import {
+  formatEventDate,
+  formatCardDescription,
+  formatEventCategory,
+} from "../../utils";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -117,7 +123,7 @@ export default function DashboardPage() {
 
   const handleLogout = () => {
     logout();
-    router.push("/");
+    router.push(ROUTES.HOME);
   };
 
   // Componente para renderizar lista de eventos
@@ -155,7 +161,10 @@ export default function DashboardPage() {
                 <ListItem
                   onClick={
                     isAdmin
-                      ? () => router.push(`/admin/events/edit/${event.id}`)
+                      ? () =>
+                          router.push(
+                            ROUTES.ADMIN.EVENTS.EDIT(String(event.id))
+                          )
                       : undefined
                   }
                   sx={{
@@ -178,7 +187,7 @@ export default function DashboardPage() {
                           {event.name}
                         </Typography>
                         <Chip
-                          label={event.category}
+                          label={formatEventCategory(event.category)}
                           size="small"
                           variant="outlined"
                           sx={{ ml: 1 }}
@@ -193,7 +202,7 @@ export default function DashboardPage() {
                           color="text.secondary"
                           sx={{ display: "block" }}
                         >
-                          📅 {new Date(event.date).toLocaleString("pt-BR")}
+                          📅 {formatEventDate(event.date)}
                         </Typography>
                         <Typography
                           component="span"
@@ -209,7 +218,7 @@ export default function DashboardPage() {
                           color="text.secondary"
                           sx={{ display: "block", mt: 0.5 }}
                         >
-                          {event.description}
+                          {formatCardDescription(event.description)}
                         </Typography>
                       </>
                     }
@@ -307,7 +316,7 @@ export default function DashboardPage() {
                         <MenuItem value="">Todas</MenuItem>
                         {uniqueCategories.map((category) => (
                           <MenuItem key={category} value={category}>
-                            {category}
+                            {formatEventCategory(category)}
                           </MenuItem>
                         ))}
                       </Select>

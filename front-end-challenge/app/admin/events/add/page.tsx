@@ -7,6 +7,7 @@ import { createEvent } from "@/lib/api/apiClients";
 import FormEvent from "@/components/forms/FormEvent";
 import { Box, Typography, Alert, Button } from "@mui/material";
 import type { EventFormData } from "@/types";
+import { ROUTES } from "@/constants";
 
 export default function AddEventPage() {
   const router = useRouter();
@@ -17,7 +18,7 @@ export default function AddEventPage() {
 
   // Redireciona se não estiver autenticado
   if (!authLoading && !isAuthenticated) {
-    router.push("/");
+    router.push(ROUTES.HOME);
     return null;
   }
 
@@ -36,7 +37,7 @@ export default function AddEventPage() {
             </Typography>
             <Button
               variant="contained"
-              onClick={() => router.push("/dashboard")}
+              onClick={() => router.push(ROUTES.DASHBOARD)}
               sx={{ mt: 2 }}
             >
               Voltar ao Dashboard
@@ -65,7 +66,7 @@ export default function AddEventPage() {
 
       // Redireciona após sucesso
       setTimeout(() => {
-        router.push("/admin");
+        router.push(ROUTES.DASHBOARD);
       }, 2000);
     } catch (err) {
       console.error("Erro ao criar evento:", err);
@@ -76,7 +77,7 @@ export default function AddEventPage() {
   };
 
   const handleCancel = () => {
-    router.push("/admin");
+    router.push(ROUTES.DASHBOARD);
   };
 
   if (authLoading) {
