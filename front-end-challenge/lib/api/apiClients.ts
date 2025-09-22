@@ -83,7 +83,7 @@ class ApiClient {
   /**
    * Busca usuário por ID
    */
-  async getUserById(id: number): Promise<User> {
+  async getUserById(id: string): Promise<User> {
     return this.request<User>(`/user/${id}`);
   }
 
@@ -118,7 +118,7 @@ class ApiClient {
   /**
    * Busca evento por ID
    */
-  async getEventById(id: number): Promise<Event> {
+  async getEventById(id: string): Promise<Event> {
     return this.request<Event>(`/event/${id}`);
   }
 
@@ -135,7 +135,7 @@ class ApiClient {
   /**
    * Atualiza evento existente
    */
-  async updateEvent(id: number, event: Partial<Event>): Promise<Event> {
+  async updateEvent(id: string, event: Partial<Event>): Promise<Event> {
     return this.request<Event>(`/event/${id}`, {
       method: "PUT",
       body: JSON.stringify(event),
@@ -145,7 +145,7 @@ class ApiClient {
   /**
    * Remove evento
    */
-  async deleteEvent(id: number): Promise<void> {
+  async deleteEvent(id: string): Promise<void> {
     return this.request<void>(`/event/${id}`, {
       method: "DELETE",
     });
@@ -172,14 +172,14 @@ export const apiClient = new ApiClient();
 
 // Export individual functions for convenience
 export const getUsers = () => apiClient.getUsers();
-export const getUserById = (id: number) => apiClient.getUserById(id);
+export const getUserById = (id: string) => apiClient.getUserById(id);
 export const authenticateUser = (credentials: LoginCredentials) =>
   apiClient.authenticateUser(credentials);
 export const getEvents = () => apiClient.getEvents();
-export const getEventById = (id: number) => apiClient.getEventById(id);
+export const getEventById = (id: string) => apiClient.getEventById(id);
 export const createEvent = (event: Omit<Event, "id">) =>
   apiClient.createEvent(event);
-export const updateEvent = (id: number, event: Partial<Event>) =>
+export const updateEvent = (id: string, event: Partial<Event>) =>
   apiClient.updateEvent(id, event);
-export const deleteEvent = (id: number) => apiClient.deleteEvent(id);
+export const deleteEvent = (id: string) => apiClient.deleteEvent(id);
 export const healthCheck = () => apiClient.healthCheck();

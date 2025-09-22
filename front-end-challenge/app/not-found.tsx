@@ -25,7 +25,6 @@ export default function NotFound() {
             width: "100%",
           }}
         >
-          {/* Número 404 */}
           <Typography
             variant="h1"
             sx={{
@@ -39,7 +38,6 @@ export default function NotFound() {
             404
           </Typography>
 
-          {/* Título */}
           <Typography
             variant="h4"
             component="h1"
@@ -52,7 +50,6 @@ export default function NotFound() {
             Página não encontrada
           </Typography>
 
-          {/* Descrição */}
           <Typography
             variant="body1"
             color="text.secondary"
