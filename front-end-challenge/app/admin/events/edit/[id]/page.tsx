@@ -4,8 +4,9 @@ import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { getEventById, updateEvent, deleteEvent } from "@/lib/api/apiClients";
-import FormEvent, { EventFormData } from "@/components/forms/FormEvent";
+import FormEvent from "@/components/forms/FormEvent";
 import { Box, Typography, Alert } from "@mui/material";
+import type { EventFormData } from "@/types";
 
 export default function EditEventPage({
   params,

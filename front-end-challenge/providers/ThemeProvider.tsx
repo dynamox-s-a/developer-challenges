@@ -1,12 +1,8 @@
 "use client";
 
 import { ThemeProvider, CssBaseline } from "@mui/material";
-import { ReactNode } from "react";
 import theme from "@/styles/theme";
-
-interface ThemeProviderWrapperProps {
-  children: ReactNode;
-}
+import type { ThemeProviderWrapperProps } from "../types/ui";
 
 export function ThemeProviderWrapper({ children }: ThemeProviderWrapperProps) {
   return (

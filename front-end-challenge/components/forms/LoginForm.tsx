@@ -11,18 +11,7 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff, Login } from "@mui/icons-material";
 import { useState } from "react";
-
-export interface LoginFormData {
-  username: string;
-  password: string;
-}
-
-export interface LoginFormProps {
-  onSubmit: (data: LoginFormData) => void;
-  loading?: boolean;
-  title?: string;
-  className?: string;
-}
+import type { LoginFormCredentials, LoginFormProps } from "@/types";
 
 export default function LoginForm({
   onSubmit,
@@ -30,7 +19,7 @@ export default function LoginForm({
   title = "Login",
   className,
 }: LoginFormProps) {
-  const [formData, setFormData] = useState<LoginFormData>({
+  const [formData, setFormData] = useState<LoginFormCredentials>({
     username: "",
     password: "",
   });
@@ -38,7 +27,7 @@ export default function LoginForm({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setFormData((prev: LoginFormCredentials) => ({
       ...prev,
       [name]: value,
     }));

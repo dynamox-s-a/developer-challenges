@@ -1,9 +1,5 @@
-import { ReactNode } from "react";
 import { ThemeProviderWrapper } from "./ThemeProvider";
-
-interface ProvidersProps {
-  children: ReactNode;
-}
+import type { ProvidersProps } from "../types/ui";
 
 export function Providers({ children }: ProvidersProps) {
   return <ThemeProviderWrapper>{children}</ThemeProviderWrapper>;

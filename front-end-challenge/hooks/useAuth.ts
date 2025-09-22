@@ -8,21 +8,11 @@ import {
   isValidFakeJWT,
 } from "@/lib/auth/jwt-fake";
 import { authenticateUser, setAuthToken } from "@/lib/api/apiClients";
-
-export interface User {
-  userId: string;
-  email: string;
-  role: "admin" | "reader";
-}
-
-export interface LoginCredentials {
-  username: string; // email
-  password: string;
-}
+import type { AuthUser, LoginFormCredentials } from "@/types";
 
 export function useAuth() {
   const [token, saveToken, removeToken] = useLocalStorage();
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   // Verifica token ao carregar
@@ -58,7 +48,7 @@ export function useAuth() {
    * @returns Promise<{ success: boolean, redirectTo?: string }>
    */
   const login = async (
-    credentials: LoginCredentials
+    credentials: LoginFormCredentials
   ): Promise<{
     success: boolean;
     redirectTo?: string;

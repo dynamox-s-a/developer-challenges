@@ -22,15 +22,7 @@ import {
 } from "@mui/material";
 import Loading from "@/components/ui/Loading";
 import { getEvents } from "@/lib/api/apiClients";
-
-interface Event {
-  id: number;
-  name: string;
-  date: string;
-  location: string;
-  description: string;
-  category: string;
-}
+import type { Event } from "@/types";
 
 export default function DashboardPage() {
   const router = useRouter();

@@ -4,8 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { createEvent } from "@/lib/api/apiClients";
-import FormEvent, { EventFormData } from "@/components/forms/FormEvent";
+import FormEvent from "@/components/forms/FormEvent";
 import { Box, Typography, Alert, Button } from "@mui/material";
+import type { EventFormData } from "@/types";
 
 export default function AddEventPage() {
   const router = useRouter();

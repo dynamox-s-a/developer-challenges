@@ -3,33 +3,9 @@
  * Permite consumir dados do db.json
  */
 
+import type { User, Event, LoginCredentials } from "@/types";
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
-
-export interface User {
-  id: number;
-  email: string;
-  password: string;
-  role: "admin" | "reader";
-}
-
-export interface Event {
-  id: number;
-  name: string;
-  date: string;
-  location: string;
-  description: string;
-  category: string;
-}
-
-export interface LoginCredentials {
-  email: string;
-  password: string;
-}
-
-export interface LoginResponse {
-  user: Omit<User, "password">;
-  token: string;
-}
 
 class ApiClient {
   private baseUrl: string;

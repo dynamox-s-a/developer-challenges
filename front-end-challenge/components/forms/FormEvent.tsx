@@ -13,24 +13,7 @@ import {
 } from "@mui/material";
 import { EventNote } from "@mui/icons-material";
 import { useState } from "react";
-
-export interface EventFormData {
-  name: string;
-  date: string;
-  location: string;
-  description: string;
-  category: string;
-}
-
-export interface FormEventProps {
-  onSubmit: (data: EventFormData) => void;
-  onCancel?: () => void;
-  onDelete?: () => void;
-  loading?: boolean;
-  title?: string;
-  initialData?: Partial<EventFormData>;
-  className?: string;
-}
+import type { EventFormData, FormEventProps } from "../../types/forms";
 
 const CATEGORIES = [
   "Workshop",

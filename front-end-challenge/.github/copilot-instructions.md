@@ -64,6 +64,7 @@ if (!authLoading && !isAuthenticated) {
 - `hooks/` - Custom hooks (`useAuth`, `useLocalStorage`)
 - `lib/api/` - API client with TypeScript interfaces and auth token support
 - `providers/` - React providers (Theme, etc.)
+- `types/` - Centralized TypeScript type definitions
 
 ## API Client System
 
@@ -87,11 +88,19 @@ const events: Event[] = await getEvents();
 
 ### Data Types
 
-Key interfaces defined in `lib/api/apiClients.ts`:
+**Use centralized types**: Import from `@/types` instead of individual files:
 
-- `Event` - Event data structure
-- `User` - User with role-based permissions
-- `LoginCredentials` - Authentication payload
+```typescript
+import { User, Event, LoginCredentials, EventFormData } from "@/types";
+```
+
+**Type Organization**:
+
+- `types/auth.ts` - User, authentication, and JWT types
+- `types/events.ts` - Event data and filtering types
+- `types/forms.ts` - Form component props and data types
+- `types/ui.ts` - UI component and theme types
+- `types/index.ts` - Central export file (use this for imports)
 
 ## Material-UI Integration
 
@@ -153,20 +162,28 @@ if (!isAdmin) {
 
 1. Create page in `app/` following the file-based routing
 2. Add authentication checks using `useAuth()`
-3. Import necessary MUI components and forms
+3. Import necessary MUI components and types from `@/types`
+
+### Working with Types
+
+1. **Always import from central types**: `import { User, Event } from '@/types'`
+2. **Add new types** to appropriate file in `types/` directory
+3. **Export new types** from `types/index.ts` for easy importing
+4. **Use existing patterns**: Check `types/` for similar interfaces before creating new ones
 
 ### Extending API
 
-1. Add interface to `lib/api/apiClients.ts`
+1. Add interface to `types/` directory (not in API client)
 2. Add corresponding methods to `ApiClient` class
-3. Export functions at bottom of file
+3. Export functions at bottom of API client file
 4. Auth tokens are automatically included
 
 ### New Components
 
 1. Place in appropriate `components/` subdirectory
-2. Export from `components/index.ts` if reusable
-3. Use TypeScript interfaces for props
+2. Import types from `@/types` instead of defining inline
+3. Export from `components/index.ts` if reusable
+4. Use TypeScript interfaces for props from centralized types
 
 ## Environment Variables
 

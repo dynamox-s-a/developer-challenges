@@ -1,11 +1,12 @@
 "use client";
 
 import styles from "./page.module.css";
-import LoginForm, { LoginFormData } from "@/components/forms/LoginForm";
+import LoginForm from "@/components/forms/LoginForm";
 import { useAuth } from "@/hooks/useAuth";
 import { Alert } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import type { LoginFormCredentials } from "@/types";
 
 export default function Home() {
   const router = useRouter();
@@ -21,7 +22,7 @@ export default function Home() {
     }
   }, [isAuthenticated, loading, router, getRedirectRoute]);
 
-  const handleLogin = async (data: LoginFormData) => {
+  const handleLogin = async (data: LoginFormCredentials) => {
     setLoginError(null);
     setIsLoggingIn(true);
 

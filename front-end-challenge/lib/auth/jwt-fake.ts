@@ -2,14 +2,8 @@
  * Utilitários para gerar e validar JWT fake para desenvolvimento
  */
 
-interface JWTPayload {
-  userId: string;
-  email: string;
-  name: string;
-  role: "admin" | "reader";
-  iat: number; // issued at
-  exp: number; // expires at
-}
+import { UserRole } from "../../types/auth";
+import type { JWTPayload } from "../../types/auth";
 
 /**
  * Gera um JWT fake para desenvolvimento
@@ -23,11 +17,14 @@ export function generateFakeJWT(user: {
 }): string {
   const now = Math.floor(Date.now() / 1000);
 
+  // Convert string role to UserRole enum
+  const userRole = user.role === "admin" ? UserRole.ADMIN : UserRole.READER;
+
   const payload: JWTPayload = {
     userId: generateUserId(user.email),
     email: user.email,
     name: user.name || user.email.split("@")[0],
-    role: user.role,
+    role: userRole,
     iat: now,
     exp: now + 24 * 60 * 60, // Expira em 24 horas
   };
