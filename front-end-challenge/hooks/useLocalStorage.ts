@@ -2,62 +2,50 @@
 
 import { useState } from "react";
 
-export function useLocalStorage<T>(
-  key: string,
-  initialValue: T
-): [T, (value: T | ((val: T) => T)) => void, () => void] {
-  // Estado para armazenar o valor atual
-  const [storedValue, setStoredValue] = useState<T>(() => {
+export function useLocalStorage(): [
+  string | null,
+  (token: string) => void,
+  () => void
+] {
+  const key = "jwt_token";
+
+  const [token, setToken] = useState<string | null>(() => {
     // Evita erro durante SSR verificando se window existe
     if (typeof window === "undefined") {
-      return initialValue;
+      return null;
     }
 
     try {
-      const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
+      return window.localStorage.getItem(key);
     } catch (error) {
-      console.error(`Erro ao ler localStorage para a chave "${key}":`, error);
-      return initialValue;
+      console.error("Erro ao ler token do localStorage:", error);
+      return null;
     }
   });
 
-  // Função para definir valor no localStorage e no estado
-  const setValue = (value: T | ((val: T) => T)) => {
+  const saveToken = (newToken: string) => {
     try {
-      // Permite que o valor seja uma função, como useState
-      const valueToStore =
-        value instanceof Function ? value(storedValue) : value;
+      setToken(newToken);
 
-      setStoredValue(valueToStore);
-
-      // Salva no localStorage apenas no cliente
       if (typeof window !== "undefined") {
-        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+        window.localStorage.setItem(key, newToken);
       }
     } catch (error) {
-      console.error(
-        `Erro ao definir localStorage para a chave "${key}":`,
-        error
-      );
+      console.error("Erro ao salvar token no localStorage:", error);
     }
   };
 
-  // Função para remover valor do localStorage
-  const removeValue = () => {
+  const removeToken = () => {
     try {
-      setStoredValue(initialValue);
+      setToken(null);
 
       if (typeof window !== "undefined") {
         window.localStorage.removeItem(key);
       }
     } catch (error) {
-      console.error(
-        `Erro ao remover localStorage para a chave "${key}":`,
-        error
-      );
+      console.error("Erro ao remover token do localStorage:", error);
     }
   };
 
-  return [storedValue, setValue, removeValue];
+  return [token, saveToken, removeToken];
 }
