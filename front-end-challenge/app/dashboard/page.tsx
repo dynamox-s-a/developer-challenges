@@ -141,7 +141,14 @@ export default function DashboardPage() {
     chipColor: "success" | "default" | "error";
   }) => (
     <Box sx={{ mb: 3 }}>
-      <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
+          mb: 2,
+        }}
+      >
         <Typography variant="h6">{title}</Typography>
         <Chip label={events.length} color={chipColor} size="small" />
       </Box>
@@ -149,7 +156,7 @@ export default function DashboardPage() {
       {events.length === 0 ? (
         <Alert severity="info">{emptyMessage}</Alert>
       ) : (
-        <Paper elevation={1} sx={{ maxHeight: 300, overflow: "auto" }}>
+        <Paper elevation={3} sx={{ maxHeight: 300, overflow: "auto" }}>
           <List>
             {events.map((event, index) => (
               <div key={event.id}>

@@ -33,9 +33,17 @@ export interface LoginResponse {
 
 class ApiClient {
   private baseUrl: string;
+  private token: string | null = null;
 
   constructor(baseUrl: string = API_BASE_URL) {
     this.baseUrl = baseUrl;
+  }
+
+  /**
+   * Define o token de autorização
+   */
+  setAuthToken(token: string | null) {
+    this.token = token;
   }
 
   /**
@@ -47,11 +55,18 @@ class ApiClient {
   ): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`;
 
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+      ...(options.headers as Record<string, string>),
+    };
+
+    // Adiciona token de autorização se disponível
+    if (this.token) {
+      headers.Authorization = `Bearer ${this.token}`;
+    }
+
     const config: RequestInit = {
-      headers: {
-        "Content-Type": "application/json",
-        ...options.headers,
-      },
+      headers,
       ...options,
     };
 
@@ -169,6 +184,11 @@ class ApiClient {
 
 // Instância singleton do cliente da API
 export const apiClient = new ApiClient();
+
+// Função para definir o token de autorização
+export const setAuthToken = (token: string | null) => {
+  apiClient.setAuthToken(token);
+};
 
 // Export individual functions for convenience
 export const getUsers = () => apiClient.getUsers();

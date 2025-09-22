@@ -110,7 +110,7 @@ export default function EditEventPage({
     try {
       await deleteEvent(eventId);
       alert("Evento excluído com sucesso!");
-      router.push("/admin");
+      router.push("/dashboard");
     } catch (err) {
       console.error("Erro ao excluir evento:", err);
       setError("Erro ao excluir evento. Verifique se a API está rodando.");

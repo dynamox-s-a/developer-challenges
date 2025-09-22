@@ -7,7 +7,7 @@ import {
   decodeFakeJWT,
   isValidFakeJWT,
 } from "@/lib/auth/jwt-fake";
-import { authenticateUser } from "@/lib/api/apiClients";
+import { authenticateUser, setAuthToken } from "@/lib/api/apiClients";
 
 export interface User {
   userId: string;
@@ -35,14 +35,18 @@ export function useAuth() {
           email: payload.email,
           role: payload.role,
         });
+        // Define o token no cliente API
+        setAuthToken(token);
       } else {
         // Token inválido ou expirado
         removeToken();
         setUser(null);
+        setAuthToken(null);
       }
     } else if (!token) {
       // Se não há token, garante que user é null
       setUser(null);
+      setAuthToken(null);
     }
     setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -88,6 +92,9 @@ export function useAuth() {
             role: payload.role,
           });
 
+          // Define o token no cliente API
+          setAuthToken(fakeToken);
+
           // Determina redirecionamento baseado na role
           const redirectTo =
             authenticatedUser.role === "admin" ? "/admin" : "/dashboard";
@@ -118,6 +125,7 @@ export function useAuth() {
   const logout = () => {
     removeToken();
     setUser(null);
+    setAuthToken(null);
   };
 
   /**
