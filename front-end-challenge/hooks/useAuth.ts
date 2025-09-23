@@ -64,6 +64,8 @@ export function useAuth() {
         password: credentials.password,
       });
 
+      console.log(authenticatedUser);
+
       if (authenticatedUser) {
         // Gera JWT fake com dados do usuário da API
         const fakeToken = generateFakeJWT({
@@ -96,6 +98,7 @@ export function useAuth() {
       }
 
       setLoading(false);
+      console.log("A");
       return {
         success: false,
         error: "Credenciais inválidas. Verifique email e senha.",

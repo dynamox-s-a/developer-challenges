@@ -3,10 +3,10 @@
 import styles from "./page.module.css";
 import LoginForm from "@/components/forms/LoginForm";
 import { useAuth } from "@/hooks/useAuth";
-import { Alert } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import type { LoginFormCredentials } from "@/types";
+import AlertMessage from "@/components/ui/feedback/AlertMessage";
 
 export default function Home() {
   const router = useRouter();
@@ -45,7 +45,7 @@ export default function Home() {
     return (
       <div className={styles.page}>
         <main className={styles.main}>
-          <div className={styles.container}>Carregando...</div>
+          <div className={styles.container} />
         </main>
       </div>
     );
@@ -58,11 +58,7 @@ export default function Home() {
         <div className={styles.container}>
           <section className={styles.section}>
             <div className={styles.loginContainer}>
-              {loginError && (
-                <Alert severity="error" sx={{ mb: 2, maxWidth: 400 }}>
-                  {loginError}
-                </Alert>
-              )}
+              {loginError && <AlertMessage message={loginError} />}
 
               <LoginForm
                 onSubmit={handleLogin}

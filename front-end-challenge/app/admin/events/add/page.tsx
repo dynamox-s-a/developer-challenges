@@ -1,13 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { createEvent } from "@/lib/api/apiClients";
 import FormEvent from "@/components/forms/FormEvent";
-import { Box, Typography, Alert, Button } from "@mui/material";
+import { Typography, Alert } from "@mui/material";
 import type { EventFormData } from "@/types";
 import { ROUTES } from "@/constants";
+import Loading from "@/components/ui/feedback/Loading";
+import AlertMessage from "@/components/ui/feedback/AlertMessage";
+import PageContainer from "@/components/ui/layout/PageContainer";
 
 export default function AddEventPage() {
   const router = useRouter();
@@ -17,35 +20,20 @@ export default function AddEventPage() {
   const [error, setError] = useState<string | null>(null);
 
   // Redireciona se não estiver autenticado
-  if (!authLoading && !isAuthenticated) {
-    router.push(ROUTES.HOME);
-    return null;
+  useEffect(() => {
+    if (!authLoading && (!isAuthenticated || !isAdmin)) {
+      router.push(ROUTES.HOME);
+    }
+  }, [authLoading, isAuthenticated, isAdmin, router]);
+
+  // Retorna loading enquanto verifica autenticação
+  if (authLoading) {
+    return <Loading />;
   }
 
-  // Se não for admin, pode acessar mas com aviso
-  if (!authLoading && !isAdmin) {
-    return (
-      <Box sx={{ minHeight: "100vh", backgroundColor: "grey.50", py: 4 }}>
-        <Box sx={{ maxWidth: 800, mx: "auto", px: 2 }}>
-          <Alert severity="warning" sx={{ mb: 3 }}>
-            <Typography variant="h6" gutterBottom>
-              Acesso Restrito
-            </Typography>
-            <Typography variant="body2">
-              Apenas administradores podem cadastrar eventos. Entre em contato
-              com um admin para solicitar permissões.
-            </Typography>
-            <Button
-              variant="contained"
-              onClick={() => router.push(ROUTES.DASHBOARD)}
-              sx={{ mt: 2 }}
-            >
-              Voltar ao Dashboard
-            </Button>
-          </Alert>
-        </Box>
-      </Box>
-    );
+  // Retorna null se não estiver autenticado (o useEffect irá redirecionar)
+  if (!isAuthenticated || !isAdmin) {
+    return null;
   }
 
   const handleSubmit = async (data: EventFormData) => {
@@ -77,52 +65,31 @@ export default function AddEventPage() {
   };
 
   const handleCancel = () => {
-    router.push(ROUTES.DASHBOARD);
+    router.back();
   };
 
-  if (authLoading) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "100vh",
-        }}
-      >
-        <Typography variant="h6">Carregando...</Typography>
-      </Box>
-    );
-  }
-
   return (
-    <Box sx={{ minHeight: "100vh", backgroundColor: "grey.50", py: 4 }}>
-      <Box sx={{ maxWidth: 800, mx: "auto", px: 2 }}>
-        {success && (
-          <Alert severity="success" sx={{ mb: 3 }}>
-            <Typography variant="h6" gutterBottom>
-              Evento Criado com Sucesso! 🎉
-            </Typography>
-            <Typography variant="body2">
-              O evento foi adicionado ao sistema. Redirecionando para o painel
-              administrativo...
-            </Typography>
-          </Alert>
-        )}
+    <PageContainer>
+      {success && (
+        <Alert severity="success" sx={{ mb: 3 }}>
+          <Typography variant="h6" gutterBottom>
+            Evento Criado com Sucesso! 🎉
+          </Typography>
+          <Typography variant="body2">
+            O evento foi adicionado ao sistema. Redirecionando para o painel
+            administrativo...
+          </Typography>
+        </Alert>
+      )}
 
-        {error && (
-          <Alert severity="error" sx={{ mb: 3 }}>
-            <Typography variant="body2">{error}</Typography>
-          </Alert>
-        )}
+      {error && <AlertMessage message={error} />}
 
-        <FormEvent
-          onSubmit={handleSubmit}
-          onCancel={handleCancel}
-          loading={loading}
-          title="Cadastrar Novo Evento"
-        />
-      </Box>
-    </Box>
+      <FormEvent
+        onSubmit={handleSubmit}
+        onCancel={handleCancel}
+        loading={loading}
+        title="Cadastrar Novo Evento"
+      />
+    </PageContainer>
   );
 }

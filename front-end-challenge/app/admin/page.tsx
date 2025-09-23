@@ -3,9 +3,13 @@
 import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { Box, Typography, Button, Paper, Alert } from "@mui/material";
-import Loading from "@/components/ui/Loading";
+import { Box, Typography, Paper, Alert } from "@mui/material";
+import Loading from "@/components/ui/feedback/Loading";
 import { ROUTES } from "@/constants";
+import PageContainer from "@/components/ui/layout/PageContainer";
+import LogoutButton from "@/components/ui/actions/LogoutButton";
+import AddNewEventButton from "@/components/ui/actions/AddNewEventButton";
+import ListAllEventsButton from "@/components/ui/actions/ListAllEventsButton";
 
 export default function AdminPage() {
   const router = useRouter();
@@ -31,80 +35,50 @@ export default function AdminPage() {
   };
 
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        backgroundColor: "grey.50",
-        py: 4,
-      }}
-    >
-      <Box sx={{ maxWidth: 800, mx: "auto", px: 2 }}>
-        <Paper elevation={3} sx={{ p: 4 }}>
+    <PageContainer>
+      <Paper elevation={3} sx={{ p: 4 }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 3,
+          }}
+        >
+          <Typography variant="h4" color="primary">
+            Painel Administrativo
+          </Typography>
+          <LogoutButton onClick={handleLogout} />
+        </Box>
+
+        <Alert severity="success" sx={{ mb: 3 }}>
+          Bem-vindo ao painel administrativo, {user?.email}! Você tem acesso
+          completo ao sistema.
+        </Alert>
+
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="h6" gutterBottom>
+            Gerenciamento de Eventos
+          </Typography>
+
           <Box
             sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              mb: 3,
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+              gap: 2,
+              mt: 2,
             }}
           >
-            <Typography variant="h4" color="primary">
-              Painel Administrativo
-            </Typography>
-            <Button variant="outlined" onClick={handleLogout}>
-              Logout
-            </Button>
+            <AddNewEventButton
+              onClick={() => router.push(ROUTES.ADMIN.EVENTS.ADD)}
+            />
+
+            <ListAllEventsButton
+              onClick={() => router.push(ROUTES.DASHBOARD)}
+            />
           </Box>
-
-          <Alert severity="success" sx={{ mb: 4 }}>
-            Bem-vindo ao painel administrativo, {user?.email}! Você tem acesso
-            completo ao sistema.
-          </Alert>
-
-          <Box sx={{ mb: 4 }}>
-            <Typography variant="h6" gutterBottom>
-              Gerenciamento de Eventos
-            </Typography>
-
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-                gap: 2,
-                mt: 2,
-              }}
-            >
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                onClick={() => router.push(ROUTES.ADMIN.EVENTS.ADD)}
-                sx={{ p: 2 }}
-              >
-                <Box>
-                  <Typography variant="subtitle1" fontWeight="bold">
-                    Cadastrar Novo Evento
-                  </Typography>
-                </Box>
-              </Button>
-
-              <Button
-                variant="outlined"
-                color="primary"
-                size="large"
-                onClick={() => router.push("/dashboard")}
-                sx={{ p: 2 }}
-              >
-                <Box>
-                  <Typography variant="subtitle1" fontWeight="bold">
-                    Ver Todos os Eventos
-                  </Typography>
-                </Box>
-              </Button>
-            </Box>
-          </Box>
-        </Paper>
-      </Box>
-    </Box>
+        </Box>
+      </Paper>
+    </PageContainer>
   );
 }

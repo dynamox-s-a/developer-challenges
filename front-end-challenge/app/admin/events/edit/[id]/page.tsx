@@ -5,9 +5,12 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { getEventById, updateEvent, deleteEvent } from "@/lib/api/apiClients";
 import FormEvent from "@/components/forms/FormEvent";
-import { Box, Typography, Alert } from "@mui/material";
+import { Alert } from "@mui/material";
 import type { EventFormData } from "@/types";
 import { ROUTES } from "@/constants";
+import Loading from "@/components/ui/feedback/Loading";
+import AlertMessage from "@/components/ui/feedback/AlertMessage";
+import PageContainer from "@/components/ui/layout/PageContainer";
 
 export default function EditEventPage({
   params,
@@ -47,21 +50,30 @@ export default function EditEventPage({
   }, [eventId, isAuthenticated, isAdmin]);
 
   // Redireciona se não estiver autenticado
-  if (!authLoading && !isAuthenticated) {
-    router.push(ROUTES.HOME);
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) {
+      router.push(ROUTES.HOME);
+    }
+  }, [authLoading, isAuthenticated, router]);
+
+  // Retorna loading enquanto verifica autenticação
+  if (authLoading) {
+    return <Loading />;
+  }
+
+  // Retorna null se não estiver autenticado (o useEffect irá redirecionar)
+  if (!isAuthenticated) {
     return null;
   }
 
   // Se não for admin, mostra acesso negado
   if (!authLoading && !isAdmin) {
     return (
-      <Box sx={{ minHeight: "100vh", backgroundColor: "grey.50", py: 4 }}>
-        <Box sx={{ maxWidth: 800, mx: "auto", px: 2 }}>
-          <Alert severity="warning">
-            Apenas administradores podem editar eventos.
-          </Alert>
-        </Box>
-      </Box>
+      <PageContainer>
+        <Alert severity="warning">
+          Apenas administradores podem editar eventos.
+        </Alert>
+      </PageContainer>
     );
   }
 
@@ -94,7 +106,7 @@ export default function EditEventPage({
   };
 
   const handleCancel = () => {
-    router.push(ROUTES.DASHBOARD);
+    router.back();
   };
 
   const handleDelete = async () => {
@@ -122,44 +134,27 @@ export default function EditEventPage({
   };
 
   if (authLoading || !initialData) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "100vh",
-        }}
-      >
-        <Typography variant="h6">Carregando...</Typography>
-      </Box>
-    );
+    return <Loading />;
   }
 
   return (
-    <Box sx={{ minHeight: "100vh", backgroundColor: "grey.50", py: 4 }}>
-      <Box sx={{ maxWidth: 800, mx: "auto", px: 2 }}>
-        {success && (
-          <Alert severity="success" sx={{ mb: 3 }}>
-            Evento atualizado com sucesso! Redirecionando...
-          </Alert>
-        )}
+    <PageContainer>
+      {success && (
+        <Alert severity="success" sx={{ mb: 3 }}>
+          Evento atualizado com sucesso! Redirecionando...
+        </Alert>
+      )}
 
-        {error && (
-          <Alert severity="error" sx={{ mb: 3 }}>
-            {error}
-          </Alert>
-        )}
+      {error && <AlertMessage message={error} />}
 
-        <FormEvent
-          onSubmit={handleSubmit}
-          onCancel={handleCancel}
-          onDelete={handleDelete}
-          loading={loading}
-          title="Editar Evento"
-          initialData={initialData}
-        />
-      </Box>
-    </Box>
+      <FormEvent
+        onSubmit={handleSubmit}
+        onCancel={handleCancel}
+        onDelete={handleDelete}
+        loading={loading}
+        title="Editar Evento"
+        initialData={initialData}
+      />
+    </PageContainer>
   );
 }

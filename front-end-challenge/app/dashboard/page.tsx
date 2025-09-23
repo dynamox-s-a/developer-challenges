@@ -3,32 +3,19 @@
 import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Box, Typography, Paper, Alert, Button } from "@mui/material";
 import {
-  Box,
-  Typography,
-  Button,
-  Paper,
-  Alert,
-  List,
-  ListItem,
-  ListItemText,
-  Divider,
-  TextField,
-  MenuItem,
-  Chip,
-  FormControl,
-  InputLabel,
-  Select,
-} from "@mui/material";
-import Loading from "@/components/ui/Loading";
+  Loading,
+  EventsList,
+  EventFilters,
+  StatsChips,
+  LogoutButton,
+  AppContainer,
+  PageHeader,
+} from "@/components/ui";
 import { getEvents } from "@/lib/api/apiClients";
 import type { Event } from "@/types";
 import { ROUTES } from "@/constants";
-import {
-  formatEventDate,
-  formatCardDescription,
-  formatEventCategory,
-} from "../../utils";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -126,295 +113,97 @@ export default function DashboardPage() {
     router.push(ROUTES.HOME);
   };
 
-  // Componente para renderizar lista de eventos
-  const EventsList = ({
-    events,
-    title,
-    emptyMessage,
-    chipColor,
-  }: {
-    events: Event[];
-    title: string;
-    emptyMessage: string;
-    chipColor: "success" | "default" | "error";
-  }) => (
-    <Box sx={{ mb: 3 }}>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 2,
-          mb: 2,
-        }}
-      >
-        <Typography variant="h6">{title}</Typography>
-        <Chip label={events.length} color={chipColor} size="small" />
-      </Box>
+  const handleClearFilters = () => {
+    setSearchTerm("");
+    setCategoryFilter("");
+    setLocationFilter("");
+    setSortBy("date");
+    setSortOrder("asc");
+  };
 
-      {events.length === 0 ? (
-        <Alert severity="info">{emptyMessage}</Alert>
-      ) : (
-        <Paper elevation={3} sx={{ maxHeight: 300, overflow: "auto" }}>
-          <List>
-            {events.map((event, index) => (
-              <div key={event.id}>
-                <ListItem
-                  onClick={
-                    isAdmin
-                      ? () =>
-                          router.push(
-                            ROUTES.ADMIN.EVENTS.EDIT(String(event.id))
-                          )
-                      : undefined
-                  }
-                  sx={{
-                    cursor: isAdmin ? "pointer" : "default",
-                    "&:hover": isAdmin
-                      ? { backgroundColor: "action.hover" }
-                      : {},
-                  }}
-                >
-                  <ListItemText
-                    primary={
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Typography variant="subtitle1" fontWeight="medium">
-                          {event.name}
-                        </Typography>
-                        <Chip
-                          label={formatEventCategory(event.category)}
-                          size="small"
-                          variant="outlined"
-                          sx={{ ml: 1 }}
-                        />
-                      </Box>
-                    }
-                    secondary={
-                      <>
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          color="text.secondary"
-                          sx={{ display: "block" }}
-                        >
-                          📅 {formatEventDate(event.date)}
-                        </Typography>
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          color="text.secondary"
-                          sx={{ display: "block" }}
-                        >
-                          📍 {event.location}
-                        </Typography>
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          color="text.secondary"
-                          sx={{ display: "block", mt: 0.5 }}
-                        >
-                          {formatCardDescription(event.description)}
-                        </Typography>
-                      </>
-                    }
-                  />
-                </ListItem>
-                {index < events.length - 1 && <Divider />}
-              </div>
-            ))}
-          </List>
-        </Paper>
-      )}
-    </Box>
-  );
+  const hasFilters = Boolean(searchTerm || categoryFilter || locationFilter);
 
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        backgroundColor: "grey.50",
-        py: 4,
-      }}
-    >
-      <Box sx={{ maxWidth: 1200, mx: "auto", px: 2 }}>
-        <Paper elevation={3} sx={{ p: 4 }}>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              mb: 3,
-            }}
-          >
-            <Typography variant="h4" color="primary">
-              Dashboard - Event Management System
-            </Typography>
-            <Button variant="outlined" onClick={handleLogout}>
-              Logout
-            </Button>
-          </Box>
+    <AppContainer>
+      <Paper elevation={3} sx={{ p: 4 }}>
+        <PageHeader
+          title="Dashboard - Event Management System"
+          action={<LogoutButton onClick={handleLogout} />}
+        />
 
-          <Alert severity="success" sx={{ mb: 3 }}>
-            Bem-vindo, {user?.email}!
-            {isAdmin && (
-              <Box sx={{ mt: 1 }}>
-                <Typography variant="body2">
-                  Como você é admin, também tem acesso à{" "}
-                  <Button
-                    variant="text"
-                    size="small"
-                    onClick={() => router.push("/admin")}
-                    sx={{ textDecoration: "underline", p: 0, minWidth: "auto" }}
-                  >
-                    área administrativa
-                  </Button>{" "}
-                  e pode clicar nos eventos para editá-los.
-                </Typography>
-              </Box>
-            )}
-          </Alert>
+        <Alert severity="success" sx={{ mb: 3 }}>
+          Bem-vindo, {user?.email}!
+          {isAdmin && (
+            <Box sx={{ mt: 1 }}>
+              <Typography variant="body2">
+                Como você é admin, também tem acesso à{" "}
+                <Button
+                  variant="text"
+                  size="small"
+                  onClick={() => router.push("/admin")}
+                  sx={{ textDecoration: "underline", p: 0, minWidth: "auto" }}
+                >
+                  área administrativa
+                </Button>{" "}
+                e pode clicar nos eventos para editá-los.
+              </Typography>
+            </Box>
+          )}
+        </Alert>
 
-          <Box sx={{ mb: 4 }}>
-            {loadingEvents ? (
-              <Typography>Carregando eventos...</Typography>
-            ) : (
-              <>
-                <Paper elevation={0} sx={{ p: 3, mb: 3 }}>
-                  <Typography variant="h6" gutterBottom>
-                    Filtros e Ordenação
-                  </Typography>
+        <Box sx={{ mb: 4 }}>
+          {loadingEvents ? (
+            <Typography>Carregando eventos...</Typography>
+          ) : (
+            <>
+              <EventFilters
+                searchTerm={searchTerm}
+                categoryFilter={categoryFilter}
+                locationFilter={locationFilter}
+                sortBy={sortBy}
+                sortOrder={sortOrder}
+                onSearchChange={setSearchTerm}
+                onCategoryChange={setCategoryFilter}
+                onLocationChange={setLocationFilter}
+                onSortByChange={setSortBy}
+                onSortOrderChange={setSortOrder}
+                onClearFilters={() => {
+                  setSearchTerm("");
+                  setCategoryFilter("");
+                  setLocationFilter("");
+                  setSortBy("date");
+                  setSortOrder("asc");
+                }}
+                categories={uniqueCategories}
+              />
 
-                  <Box
-                    sx={{
-                      display: "flex",
-                      gap: 2,
-                      flexWrap: "wrap",
-                      alignItems: "center",
-                    }}
-                  >
-                    <TextField
-                      label="Buscar eventos"
-                      placeholder="Nome ou descrição..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      size="small"
-                      sx={{ minWidth: 200, flex: 1 }}
-                    />
+              <StatsChips
+                totalEvents={events.length}
+                upcomingEvents={upcomingEvents.length}
+                pastEvents={pastEvents.length}
+                filteredEvents={filteredEvents.length}
+                hasFilters={hasFilters}
+              />
 
-                    <FormControl size="small" sx={{ minWidth: 120 }}>
-                      <InputLabel>Categoria</InputLabel>
-                      <Select
-                        value={categoryFilter}
-                        label="Categoria"
-                        onChange={(e) => setCategoryFilter(e.target.value)}
-                      >
-                        <MenuItem value="">Todas</MenuItem>
-                        {uniqueCategories.map((category) => (
-                          <MenuItem key={category} value={category}>
-                            {formatEventCategory(category)}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+              <EventsList
+                events={upcomingEvents}
+                title="Eventos Próximos"
+                emptyMessage="Nenhum evento próximo encontrado."
+                chipColor="success"
+                isAdmin={isAdmin}
+              />
 
-                    <TextField
-                      label="Local"
-                      placeholder="Filtrar por local..."
-                      value={locationFilter}
-                      onChange={(e) => setLocationFilter(e.target.value)}
-                      size="small"
-                      sx={{ minWidth: 120 }}
-                    />
-
-                    <FormControl size="small" sx={{ minWidth: 120 }}>
-                      <InputLabel>Ordenar por</InputLabel>
-                      <Select
-                        value={sortBy}
-                        label="Ordenar por"
-                        onChange={(e) =>
-                          setSortBy(e.target.value as "date" | "name")
-                        }
-                      >
-                        <MenuItem value="date">Data</MenuItem>
-                        <MenuItem value="name">Nome</MenuItem>
-                      </Select>
-                    </FormControl>
-
-                    <FormControl size="small" sx={{ minWidth: 120 }}>
-                      <InputLabel>Ordem</InputLabel>
-                      <Select
-                        value={sortOrder}
-                        label="Ordem"
-                        onChange={(e) =>
-                          setSortOrder(e.target.value as "asc" | "desc")
-                        }
-                      >
-                        <MenuItem value="asc">
-                          {sortBy === "date" ? "Mais antigo" : "A → Z"}
-                        </MenuItem>
-                        <MenuItem value="desc">
-                          {sortBy === "date" ? "Mais recente" : "Z → A"}
-                        </MenuItem>
-                      </Select>
-                    </FormControl>
-
-                    <Button
-                      variant="contained"
-                      onClick={() => {
-                        setSearchTerm("");
-                        setCategoryFilter("");
-                        setLocationFilter("");
-                        setSortBy("date");
-                        setSortOrder("asc");
-                      }}
-                    >
-                      Limpar Filtros
-                    </Button>
-                  </Box>
-                </Paper>
-
-                <Box sx={{ mb: 3, display: "flex", gap: 2, flexWrap: "wrap" }}>
-                  <Chip label={`Total: ${events.length}`} color="primary" />
-                  <Chip
-                    label={`Próximos: ${upcomingEvents.length}`}
-                    color="success"
-                  />
-                  <Chip
-                    label={`Passados: ${pastEvents.length}`}
-                    color="default"
-                  />
-                  {(searchTerm || categoryFilter || locationFilter) && (
-                    <Chip
-                      label={`Filtrados: ${filteredEvents.length}`}
-                      color="secondary"
-                      variant="outlined"
-                    />
-                  )}
-                </Box>
-
-                <EventsList
-                  events={upcomingEvents}
-                  title="Eventos Próximos"
-                  emptyMessage="Nenhum evento próximo encontrado."
-                  chipColor="success"
-                />
-
-                <EventsList
-                  events={pastEvents}
-                  title="Eventos Passados"
-                  emptyMessage="Nenhum evento passado encontrado."
-                  chipColor="default"
-                />
-              </>
-            )}
-          </Box>
-        </Paper>
-      </Box>
-    </Box>
+              <EventsList
+                events={pastEvents}
+                title="Eventos Passados"
+                emptyMessage="Nenhum evento passado encontrado."
+                chipColor="default"
+                isAdmin={isAdmin}
+              />
+            </>
+          )}
+        </Box>
+      </Paper>
+    </AppContainer>
   );
 }

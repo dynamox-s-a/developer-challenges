@@ -2,7 +2,6 @@
 
 import {
   TextField,
-  Button,
   Paper,
   Typography,
   Box,
@@ -19,6 +18,9 @@ import {
   getCurrentDateForInput,
   validateEventForm,
 } from "../../utils";
+import DeleteButton from "../ui/actions/DeleteButton";
+import SaveButton from "../ui/actions/SaveButton";
+import CancelButton from "../ui/actions/CancelButton";
 
 const CATEGORIES = [
   "Workshop",
@@ -224,36 +226,12 @@ export default function FormEvent({
           >
             <Box sx={{ display: "flex", gap: 2 }}>
               {onCancel && (
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  onClick={handleCancel}
-                  disabled={loading}
-                >
-                  Cancelar
-                </Button>
+                <CancelButton onClick={handleCancel} loading={loading} />
               )}
-
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                disabled={loading}
-              >
-                {loading ? "Salvando..." : "Salvar"}
-              </Button>
+              <SaveButton loading={loading} />
             </Box>
 
-            {onDelete && (
-              <Button
-                variant="contained"
-                color="error"
-                onClick={onDelete}
-                disabled={loading}
-              >
-                Excluir
-              </Button>
-            )}
+            {onDelete && <DeleteButton onClick={onDelete} loading={loading} />}
           </Box>
         </Box>
       </form>

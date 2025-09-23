@@ -82,19 +82,14 @@ class ApiClient {
    * Autentica usuário com email e senha
    */
   async authenticateUser(credentials: LoginCredentials): Promise<User | null> {
-    try {
-      const users = await this.getUsers();
+    const users = await this.getUsers();
 
-      const user = users.find(
-        (u) =>
-          u.email === credentials.email && u.password === credentials.password
-      );
+    const user = users.find(
+      (u) =>
+        u.email === credentials.email && u.password === credentials.password
+    );
 
-      return user || null;
-    } catch (error) {
-      console.error("Authentication error:", error);
-      return null;
-    }
+    return user || null;
   }
 
   // === EVENT ENDPOINTS ===

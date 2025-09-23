@@ -2,16 +2,16 @@
 
 import {
   TextField,
-  Button,
   Paper,
   Typography,
   Box,
   IconButton,
   InputAdornment,
 } from "@mui/material";
-import { Visibility, VisibilityOff, Login } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import type { LoginFormCredentials, LoginFormProps } from "@/types";
+import LoginButton from "../ui/actions/LoginButton";
 
 export default function LoginForm({
   onSubmit,
@@ -77,32 +77,24 @@ export default function LoginForm({
           required
           margin="normal"
           disabled={loading}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={togglePasswordVisibility}
-                  edge="end"
-                  disabled={loading}
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={togglePasswordVisibility}
+                    edge="end"
+                    disabled={loading}
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            },
           }}
         />
 
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          size="large"
-          startIcon={<Login />}
-          disabled={loading}
-          sx={{ mt: 2 }}
-        >
-          {loading ? "Entrando..." : "Entrar"}
-        </Button>
+        <LoginButton loading={loading} />
       </Box>
     </Paper>
   );
