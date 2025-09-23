@@ -113,14 +113,6 @@ export default function DashboardPage() {
     router.push(ROUTES.HOME);
   };
 
-  const handleClearFilters = () => {
-    setSearchTerm("");
-    setCategoryFilter("");
-    setLocationFilter("");
-    setSortBy("date");
-    setSortOrder("asc");
-  };
-
   const hasFilters = Boolean(searchTerm || categoryFilter || locationFilter);
 
   return (
