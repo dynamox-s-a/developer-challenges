@@ -12,7 +12,8 @@ class ApiClient {
   private token: string | null = null;
 
   constructor(baseUrl: string = API_BASE_URL) {
-    this.baseUrl = baseUrl;
+    // Remove trailing slash to avoid double slashes in URLs
+    this.baseUrl = baseUrl.replace(/\/$/, "");
   }
 
   /**
