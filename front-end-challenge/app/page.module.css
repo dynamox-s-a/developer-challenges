@@ -1,0 +1,93 @@
+/* Layout e estrutura da página principal */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  gap: 1rem;
+}
+
+.container {
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* Utilitários para responsividade */
+@media (max-width: 768px) {
+  .main {
+    padding: 1rem;
+  }
+
+  .container {
+    padding: 0 0.5rem;
+  }
+}
+
+/* Classes auxiliares para trabalhar com MUI */
+.muiPaper {
+  /* Evita conflitos com componentes MUI Paper */
+  background: transparent !important;
+}
+
+.flexCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flexColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.flexRow {
+  display: flex;
+  flex-direction: row;
+}
+
+/* Estilos específicos para o formulário de login */
+.loginContainer {
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.loginTitle {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.loginButton {
+  margin-top: 2rem;
+}
+
+/* Estilos para o botão com ícone */
+.loginButton .MuiButton-startIcon {
+  margin-right: 8px;
+}
