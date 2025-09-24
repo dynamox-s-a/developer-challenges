@@ -41,3 +41,16 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+
+# Testing
+coverage/
+.nyc_output/
+*.lcov
+.jest-cache/
+junit.xml
+test-results/
+.coverage/
+
+# Jest
+jest.config.js.map
+setupTests.js.map
