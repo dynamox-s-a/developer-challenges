@@ -1,7 +1,8 @@
-import '@testing-library/jest-dom'
+import "@testing-library/jest-dom";
 
 // Configurações do Jest DOM para TypeScript
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace jest {
     interface Matchers<R> {
       toBeInTheDocument(): R;
@@ -14,34 +15,36 @@ declare global {
 }
 
 // Mock do Next.js router
-jest.mock('next/navigation', () => ({
+jest.mock("next/navigation", () => ({
   useRouter() {
     return {
       push: jest.fn(),
       replace: jest.fn(),
       prefetch: jest.fn(),
       back: jest.fn(),
-    }
+    };
   },
   usePathname() {
-    return ''
+    return "";
   },
   useSearchParams() {
-    return new URLSearchParams()
+    return new URLSearchParams();
   },
-}))
+}));
 
 // Mock do localStorage
-const localStorageMock = {
+const localStorageMock: Storage = {
   getItem: jest.fn(),
   setItem: jest.fn(),
   removeItem: jest.fn(),
   clear: jest.fn(),
-}
-global.localStorage = localStorageMock
+  length: 0,
+  key: jest.fn(),
+};
+global.localStorage = localStorageMock;
 
 // Mock do fetch
-global.fetch = jest.fn()
+global.fetch = jest.fn();
 
 // Mock do console para testes mais limpos
 global.console = {
@@ -52,4 +55,4 @@ global.console = {
   info: jest.fn(),
   warn: jest.fn(),
   error: jest.fn(),
-}
+};

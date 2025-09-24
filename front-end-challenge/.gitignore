@@ -54,3 +54,5 @@ test-results/
 # Jest
 jest.config.js.map
 setupTests.js.map
+*storybook.log
+storybook-static

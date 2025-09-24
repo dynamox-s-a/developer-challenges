@@ -44,7 +44,9 @@ describe("useLocalStorage Hook", () => {
     });
 
     it("deve inicializar com null quando authStorage.getToken retorna undefined", () => {
-      mockAuthStorage.getToken.mockReturnValue(undefined as any);
+      mockAuthStorage.getToken.mockReturnValue(
+        undefined as unknown as string | null
+      );
 
       const { result } = renderHook(() => useLocalStorage());
       const [token] = result.current;
@@ -177,8 +179,7 @@ describe("useLocalStorage Hook", () => {
 
       const { result, rerender } = renderHook(() => useLocalStorage());
 
-      const [initialToken, initialSaveToken, initialRemoveToken] =
-        result.current;
+      const [initialToken, ,] = result.current;
 
       rerender();
 

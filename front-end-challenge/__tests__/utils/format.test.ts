@@ -33,8 +33,8 @@ describe("Format Utils", () => {
     });
 
     it("should handle null/undefined input", () => {
-      expect(capitalize(null as any)).toBe("");
-      expect(capitalize(undefined as any)).toBe("");
+      expect(capitalize(null as unknown as string)).toBe("");
+      expect(capitalize(undefined as unknown as string)).toBe("");
     });
   });
 
@@ -68,8 +68,8 @@ describe("Format Utils", () => {
     });
 
     it("should handle null/undefined input", () => {
-      expect(capitalizeWords(null as any)).toBe("");
-      expect(capitalizeWords(undefined as any)).toBe("");
+      expect(capitalizeWords(null as unknown as string)).toBe("");
+      expect(capitalizeWords(undefined as unknown as string)).toBe("");
     });
   });
 
@@ -105,8 +105,8 @@ describe("Format Utils", () => {
     });
 
     it("should handle null/undefined input", () => {
-      expect(truncateText(null as any, 5)).toBe(null);
-      expect(truncateText(undefined as any, 5)).toBe(undefined);
+      expect(truncateText(null as unknown as string, 5)).toBe(null);
+      expect(truncateText(undefined as unknown as string, 5)).toBe(undefined);
     });
 
     it("should preserve unicode characters", () => {

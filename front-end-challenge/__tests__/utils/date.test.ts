@@ -48,8 +48,8 @@ describe("Date Utils", () => {
 
     it("should handle null and undefined input", () => {
       // Test that these don't crash and return some string
-      const nullResult = formatEventDate(null as any);
-      const undefinedResult = formatEventDate(undefined as any);
+      const nullResult = formatEventDate(null as unknown as string);
+      const undefinedResult = formatEventDate(undefined as unknown as string);
 
       expect(typeof nullResult).toBe("string");
       expect(typeof undefinedResult).toBe("string");
@@ -80,8 +80,10 @@ describe("Date Utils", () => {
 
     it("should handle null and undefined input", () => {
       // Test that these don't crash and return some string
-      const nullResult = formatDateForInput(null as any);
-      const undefinedResult = formatDateForInput(undefined as any);
+      const nullResult = formatDateForInput(null as unknown as string);
+      const undefinedResult = formatDateForInput(
+        undefined as unknown as string
+      );
 
       expect(typeof nullResult).toBe("string");
       expect(typeof undefinedResult).toBe("string");

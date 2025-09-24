@@ -8,7 +8,14 @@ import {
 } from "@/lib/auth/jwt-fake";
 import { authenticateUser, setAuthToken } from "@/lib/api/apiClients";
 import { UserRole } from "@/types";
-import type { AuthUser, LoginFormCredentials } from "@/types";
+import type { LoginFormCredentials } from "@/types";
+
+// Tipo específico para o resultado do login
+interface LoginResult {
+  success: boolean;
+  redirectTo?: string;
+  error?: string;
+}
 
 // Mocks
 jest.mock("@/hooks/useLocalStorage");
@@ -346,7 +353,7 @@ describe("useAuth Hook", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      let loginResult: any;
+      let loginResult: LoginResult | undefined;
       await act(async () => {
         loginResult = await result.current.login(credentials);
       });
@@ -411,7 +418,7 @@ describe("useAuth Hook", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      let loginResult: any;
+      let loginResult: LoginResult | undefined;
       await act(async () => {
         loginResult = await result.current.login(credentials);
       });
@@ -443,7 +450,7 @@ describe("useAuth Hook", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      let loginResult: any;
+      let loginResult: LoginResult | undefined;
       await act(async () => {
         loginResult = await result.current.login(credentials);
       });
@@ -474,7 +481,7 @@ describe("useAuth Hook", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      let loginResult: any;
+      let loginResult: LoginResult | undefined;
       await act(async () => {
         loginResult = await result.current.login(credentials);
       });
@@ -548,7 +555,7 @@ describe("useAuth Hook", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      let loginResult: any;
+      let loginResult: LoginResult | undefined;
       await act(async () => {
         loginResult = await result.current.login(credentials);
       });

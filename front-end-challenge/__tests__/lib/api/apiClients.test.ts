@@ -435,8 +435,6 @@ describe("ApiClient", () => {
     });
 
     it("deve preservar headers customizados quando passados", async () => {
-      const customHeaders = { "X-Custom-Header": "test-value" };
-
       // Teste direto na classe ApiClient para testar headers customizados
       mockFetch.mockResolvedValueOnce(createMockResponse([]));
 
