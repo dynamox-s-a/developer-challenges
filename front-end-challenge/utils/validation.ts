@@ -39,10 +39,10 @@ export const isValidEventLocation = (location: string): boolean => {
 };
 
 /**
- * Validates event description (10-1000 characters)
+ * Validates event description (50-1000 characters)
  */
 export const isValidEventDescription = (description: string): boolean => {
-  return description.trim().length >= 10 && description.trim().length <= 1000;
+  return description.trim().length >= 50 && description.trim().length <= 1000;
 };
 
 /**
@@ -77,7 +77,7 @@ export const VALIDATION_MESSAGES = {
   INVALID_PASSWORD: "Senha deve ter pelo menos 6 caracteres",
   INVALID_EVENT_NAME: "Nome deve ter entre 2 e 100 caracteres",
   INVALID_EVENT_LOCATION: "Local deve ter entre 2 e 200 caracteres",
-  INVALID_EVENT_DESCRIPTION: "Descrição deve ter entre 10 e 1000 caracteres",
+  INVALID_EVENT_DESCRIPTION: "Descrição deve ter entre 50 e 1000 caracteres",
   INVALID_EVENT_DATE: "Data deve ser no futuro",
   INVALID_EVENT_CATEGORY: "Categoria inválida",
 } as const;

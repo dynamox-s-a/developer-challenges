@@ -19,7 +19,7 @@
       "name": "JavaScript Fundamentals Workshop",
       "date": "2025-08-15T09:00:00.000Z",
       "location": "São Paulo Tech Hub",
-      "description": "Learn JavaScript basics and best practices",
+      "description": "Aprenda os fundamentos do JavaScript e as melhores práticas de programação. Workshop prático com exercícios hands-on e projetos reais para iniciantes e desenvolvedores que querem solidificar seus conhecimentos em JavaScript moderno.",
       "category": "Workshop"
     },
     {
@@ -27,7 +27,7 @@
       "name": "Data Science Conference Brazil",
       "date": "2025-07-22T08:30:00.000Z",
       "location": "Rio de Janeiro Convention Center",
-      "description": "Explore machine learning and data analytics",
+      "description": "Explore as últimas tendências em machine learning e análise de dados. Conferência com palestrantes renomados do setor, cases práticos e networking com profissionais da área de ciência de dados no Brasil.",
       "category": "Conference"
     },
     {
@@ -35,7 +35,7 @@
       "name": "Cybersecurity Awareness Webinar",
       "date": "2025-09-10T15:00:00.000Z",
       "location": "Online - Google Meet",
-      "description": "Protect your business from cyber threats",
+      "description": "Proteja sua empresa contra ameaças cibernéticas com estratégias eficazes. Webinar abrangente sobre segurança digital, prevenção de ataques, boas práticas e como criar uma cultura de segurança organizacional.",
       "category": "Webinar"
     },
     {
@@ -43,7 +43,7 @@
       "name": "Entrepreneurs Networking Night",
       "date": "2025-08-28T18:00:00.000Z",
       "location": "Startup Café Florianópolis",
-      "description": "Meet like-minded entrepreneurs and investors",
+      "description": "Encontre empreendedores e investidores em um ambiente descontraído. Noite de networking com pitch sessions, palestras inspiradoras e oportunidades de conexão para expandir sua rede de contatos no ecossistema empreendedor.",
       "category": "Networking"
     },
     {
@@ -51,7 +51,7 @@
       "name": "Digital Marketing Bootcamp",
       "date": "2025-09-05T10:00:00.000Z",
       "location": "Marketing Institute Brasília",
-      "description": "Master social media and online advertising",
+      "description": "Transforme sua presença digital com estratégias eficazes de marketing. Webinar com especialistas abordando SEO, redes sociais, automação de marketing e como aumentar conversões online.",
       "category": "Other"
     },
     {
@@ -59,7 +59,7 @@
       "name": "Python for Beginners Workshop",
       "date": "2025-07-18T13:30:00.000Z",
       "location": "Code Academy Salvador",
-      "description": "Introduction to Python programming language",
+      "description": "Aprenda Python desde o zero com instruções práticas e projetos reais. Workshop para iniciantes com foco em sintaxe, estruturas de dados, bibliotecas essenciais e desenvolvimento de aplicações básicas em Python.",
       "category": "Workshop"
     },
     {
@@ -67,7 +67,7 @@
       "name": "Blockchain Technology Summit",
       "date": "2025-09-12T09:00:00.000Z",
       "location": "Curitiba Innovation Center",
-      "description": "Future of blockchain and cryptocurrency",
+      "description": "Descubra o futuro das transações digitais com blockchain e criptomoedas. Conferência com especialistas internacionais explorando casos de uso, tecnologias emergentes e o impacto da blockchain nos negócios.",
       "category": "Conference"
     },
     {
@@ -75,7 +75,7 @@
       "name": "Remote Work Best Practices",
       "date": "2025-08-08T16:00:00.000Z",
       "location": "Online - Zoom Platform",
-      "description": "Tips for effective remote team collaboration",
+      "description": "Maximize sua produtividade trabalhando remotamente com dicas práticas. Webinar abordando organização pessoal, ferramentas de colaboração, comunicação eficaz e como manter o equilíbrio vida-trabalho.",
       "category": "Webinar"
     },
     {
@@ -83,7 +83,7 @@
       "name": "React Next.js Conference 2025",
       "date": "2025-10-15T14:00:00.000Z",
       "location": "São Paulo Convention Center",
-      "description": "Explore the latest React and Next.js features",
+      "description": "Participe da maior conferência de React e Next.js do Brasil. Evento com palestrantes internacionais, workshops práticos, networking e as últimas novidades do ecossistema React para desenvolvedores.",
       "category": "Conference"
     },
     {
@@ -91,7 +91,7 @@
       "name": "Advanced TypeScript Workshop",
       "date": "2025-10-22T09:00:00.000Z",
       "location": "Tech Hub Rio de Janeiro",
-      "description": "Deep dive into TypeScript advanced patterns",
+      "description": "Aprimore suas habilidades em TypeScript com conceitos avançados e práticas. Workshop focado em generics, decorators, advanced types, performance optimization e arquitetura de projetos TypeScript complexos.",
       "category": "Workshop"
     },
     {
@@ -99,7 +99,7 @@
       "name": "Cloud Architecture Webinar",
       "date": "2025-11-05T16:00:00.000Z",
       "location": "Online - Zoom Platform",
-      "description": "Learn modern cloud architecture principles",
+      "description": "Construa aplicações escaláveis na nuvem com arquiteturas modernas. Webinar cobrindo AWS, Azure, microserviços, containers, DevOps practices e estratégias de migração para cloud computing.",
       "category": "Webinar"
     },
     {
@@ -107,7 +107,7 @@
       "name": "Tech Startup Networking",
       "date": "2025-11-12T19:00:00.000Z",
       "location": "Innovation Hub Belo Horizonte",
-      "description": "Connect with startup founders and investors",
+      "description": "Conecte-se com fundadores de startups e investidores em um ambiente inovador. Evento de networking com pitch sessions, mentorias, discussões sobre tecnologia e oportunidades de investimento no setor tech.",
       "category": "Networking"
     },
     {
@@ -115,7 +115,7 @@
       "name": "AI Ethics Discussion Panel",
       "date": "2025-12-03T15:30:00.000Z",
       "location": "University of São Paulo",
-      "description": "Debate on artificial intelligence ethics",
+      "description": "Participe do debate sobre ética em inteligência artificial e seus impactos sociais. Painel com especialistas discutindo responsabilidade tecnológica, vieses algorítmicos e o futuro da IA na sociedade.",
       "category": "Other"
     },
     {
@@ -123,7 +123,7 @@
       "name": "Mobile Development Workshop",
       "date": "2025-10-28T10:00:00.000Z",
       "location": "Digital Campus Recife",
-      "description": "Build cross-platform mobile applications",
+      "description": "Desenvolva aplicações móveis multiplataforma com React Native e Flutter. Workshop prático abordando desenvolvimento híbrido, APIs nativas, performance mobile e publicação nas app stores.",
       "category": "Workshop"
     },
     {
@@ -131,7 +131,7 @@
       "name": "DevOps Best Practices Conference",
       "date": "2025-11-18T08:00:00.000Z",
       "location": "Porto Alegre Tech Center",
-      "description": "Latest trends in DevOps and CI/CD pipelines",
+      "description": "Domine as melhores práticas de DevOps e automação de processos. Conferência com cases reais de CI/CD, containerização, monitoramento, infraestrutura como código e cultura DevOps em empresas brasileiras.",
       "category": "Conference"
     },
     {
@@ -139,7 +139,7 @@
       "name": "UX/UI Design Webinar Series",
       "date": "2025-10-30T14:00:00.000Z",
       "location": "Online - Microsoft Teams",
-      "description": "Master user experience and interface design",
+      "description": "Masterize design de experiência do usuário e interfaces intuitivas. Série de webinars cobrindo pesquisa UX, prototipagem, design systems, acessibilidade e tendências em design digital.",
       "category": "Webinar"
     }
   ]

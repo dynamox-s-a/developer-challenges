@@ -155,10 +155,10 @@ describe("Validation Utils", () => {
   });
 
   describe("isValidEventDescription", () => {
-    it("should accept descriptions between 10-1000 characters", () => {
+    it("should accept descriptions between 50-1000 characters", () => {
       const validDescriptions = [
-        "A".repeat(10), // exactly 10 chars
-        "Este é um evento de teste com descrição válida para testar validação.",
+        "A".repeat(50), // exactly 50 chars
+        "Este é um evento de teste com descrição válida para testar validação e precisa ter pelo menos cinquenta caracteres.",
         "A".repeat(1000), // exactly 1000 chars
       ];
 
@@ -167,17 +167,26 @@ describe("Validation Utils", () => {
       });
     });
 
-    it("should reject descriptions outside 10-1000 character range", () => {
+    it("should reject descriptions outside 50-1000 character range", () => {
       const invalidDescriptions = [
         "",
         "Short", // 5 chars
-        "A".repeat(9), // 9 chars
+        "A".repeat(10), // 10 chars
+        "A".repeat(49), // 49 chars
         "A".repeat(1001), // 1001 chars
       ];
 
       invalidDescriptions.forEach((description) => {
         expect(isValidEventDescription(description)).toBe(false);
       });
+    });
+
+    it("should trim whitespace when validating length", () => {
+      const description = " " + "A".repeat(50) + " "; // 50 chars + whitespace
+      expect(isValidEventDescription(description)).toBe(true);
+
+      const shortDescription = " " + "A".repeat(49) + " "; // 49 chars + whitespace
+      expect(isValidEventDescription(shortDescription)).toBe(false);
     });
   });
 
@@ -254,7 +263,8 @@ describe("Validation Utils", () => {
       name: "Test Event",
       date: futureDate.toISOString().split("T")[0],
       location: "Test Location",
-      description: "This is a valid description for testing purposes.",
+      description:
+        "Esta é uma descrição válida para propósitos de teste e tem pelo menos cinquenta caracteres para atender aos requisitos.",
       category: "Workshop",
     };
 
