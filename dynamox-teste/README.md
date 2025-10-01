@@ -22,4 +22,5 @@ E avaliar o meu projeto.
 
 Agradeço desde ja pela participação.
 Eu nunca tinha criado um projeto em React do 0, então a documentação foi muito bem utilizada.
+Talvel tenha errado o Fork, mas o projeto foi iniciado no dia 29/09/2025 e finalizado dia 01/10/2025
 Obrigado, até mais!
