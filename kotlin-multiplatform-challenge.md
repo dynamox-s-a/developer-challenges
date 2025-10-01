@@ -32,6 +32,22 @@ The users of the app should know whether they got the question right before movi
 
 Throughout the challenge, we expect you to demonstrate familiarity with the proposed technologies, apply development best practices, and showcase your problem-solving skills. **Code quality, clarity, readability, and maintainability** will be the main evaluation points.
 
+## User Stories and Functional Requirements
+Below are the functional requirements for the application. Feel free to make any assumptions you deem necessary to complete the challenge, documenting them in the README.
+
+### 1 - Quiz visualization and answer submission
+- [ ] As a user, I want to load a question with a set of alternative answers, so that I can choose the one that is right.  
+- [ ] As a user, I want to choose an answer for a question from a set of alternatives and submit it, so that I can know if I made the right choice.
+
+### 2 - Quiz navigation
+- [ ] As a user, I want to move to the next question once I have received the result of my answer submission, so that I can get to the end of the quiz.
+- [ ] As a user, I want to know the final score for the quiz once I have submitted 10 answers, so that I could share it with friends
+- [ ] As a user I want to restart the quiz with new questions, so that I could get a new score
+
+### 3 - User management
+- [ ] As a user, I want to register my name or nickname, so that different users could use the app
+- [ ] As a user, I want to save the score of every quiz I made, so that I can visualize the score of every user at all times
+
 ## Backend API
 
 - Backend host: https://quiz-api-bwi5hjqyaq-uc.a.run.app
