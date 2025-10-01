@@ -2,9 +2,9 @@
 
 ## Overview
 
-The test consists of developing a multiplatform (Android and iOS) Quiz app in Kotlin.
+The test consists of developing a robust and intuitive multiplatform (Android and iOS) Quiz application in Kotlin.
 
-The quiz consists of a sequence of 10 multiple-choice questions. When the app opens, the user enters their name or nickname and presses a button to start the quiz. Questions must are obtained via HTTP requests and are received in JSON format as shown below.
+The quiz is composed by a sequence of 10 multiple-choice questions. When the app opens, the user enters their name or nickname and presses a button to start the quiz. Questions must be obtained via HTTP requests and are received in JSON format as shown below.
 
 ```json
 {
@@ -29,6 +29,8 @@ The response to each question is checked via an HTTP POST request. The server re
 ```
 
 The users of the app should know whether they got the question right before moving on to the next one. At the end of the 10 questions, the app should display the user's score and offer an option to restart the quiz.
+
+Throughout the challenge, we expect you to demonstrate familiarity with the proposed technologies, apply development best practices, and showcase your problem-solving skills. **Code quality, clarity, readability, and maintainability** will be the main evaluation points.
 
 ## Backend API
 
@@ -88,3 +90,9 @@ The server will return:
 - Error handling
 - Local database to store players
 - Consistent design, animations, icons, etc.
+
+## Submission Instructions
+1. **Fork** this repository to your personal GitHub account.  
+2. Create a new **branch** from `main` with your name (e.g., `firstname-lastname`).  
+3. After completing the challenge, open a **Pull Request** from your branch to the original repository's `main` branch.  
+4. Our team will be notified, review your solution, and get in touch with you. 
