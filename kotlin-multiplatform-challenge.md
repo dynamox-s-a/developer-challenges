@@ -88,6 +88,35 @@ The server will return:
 }
 ```
 
+## Mandatory Technical Requirements
+
+- [ ] The application must be written in **Kotlin** using **Kotlin Multiplatform**
+- [ ] The application must run for **Android**
+- [ ] Use a data persistence mechanism to store players and scores
+- [ ] Use Jetpack Compose for the views
+
+---
+
+## Bonus Points (Optional Requirements)
+These items (1 to 3) are not mandatory, but implementing them will significantly enhance the quality of your evaluation.
+
+### 1 - Best Practices & Architecture
+- [ ] Use **Dependency Injection** to manage the application's dependencies.
+- [ ] Use **Kotlin Flow/Coroutines** for asynchronous operations.
+- [ ] Use consistent design, animations, icons, etc.
+- [ ] Divide the solution into **layers of responsibility** (e.g., Api, Application, Domain, Infrastructure). 
+- [ ] Implement some design pattern.  
+- [ ] Implement **consistent error handling**, with appropriate HTTP status codes (e.g., `400` for validation, `404` for not found, `500` for unexpected errors).  
+
+### 2 - Quality & DevOps
+- [ ] Write **unit or integration tests** for the main business logic.
+- [ ] Create a **README.md** file with clear instructions to run the project locally (either with Docker or manually).
+
+### 3 - Multiplatform
+- [ ] Application running in both Android and iOS devices
+
+---
+
 ## Evaluation Criteria
 
 - Technical capability
@@ -96,16 +125,6 @@ The server will return:
 - Code reuse
 - Code readability
 - Commit history
-
-## Bonus Points
-
-- Kotlin Flow/Coroutines
-- Dependency injection
-- Tests
-- Jetpack Compose
-- Error handling
-- Local database to store players
-- Consistent design, animations, icons, etc.
 
 ## Submission Instructions
 1. **Fork** this repository to your personal GitHub account.  
