@@ -38,6 +38,10 @@ With vast experience, enhances software development, leading complex system deve
 
 - [ ] [01 - Dynamox DevOps Developer Challenge Foundation Teams](./dev-sec-fin-ops-challenge-v1/README.md)
 
+## Challenges Mobile
+
+- [ ] [01 - Dynamox Kotlin Multiplatform Developer Challenge](./kotlin-multiplatform-challenge.md)
+
 ## Ready to Begin the Challenges?
 
 1. [ ] Fork this repository to your own Github account.
