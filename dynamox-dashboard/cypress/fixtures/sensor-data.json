@@ -1,0 +1,86 @@
+[
+  {
+    "name": "Acceleration Sensor 1",
+    "data": [
+      {
+        "datetime": "2024-01-01T00:00:00Z",
+        "max": 10.5
+      },
+      {
+        "datetime": "2024-01-01T01:00:00Z",
+        "max": 12.3
+      },
+      {
+        "datetime": "2024-01-01T02:00:00Z",
+        "max": 9.8
+      },
+      {
+        "datetime": "2024-01-01T03:00:00Z",
+        "max": 11.2
+      }
+    ]
+  },
+  {
+    "name": "Acceleration Sensor 2",
+    "data": [
+      {
+        "datetime": "2024-01-01T00:00:00Z",
+        "max": 8.2
+      },
+      {
+        "datetime": "2024-01-01T01:00:00Z",
+        "max": 9.1
+      },
+      {
+        "datetime": "2024-01-01T02:00:00Z",
+        "max": 7.5
+      },
+      {
+        "datetime": "2024-01-01T03:00:00Z",
+        "max": 8.8
+      }
+    ]
+  },
+  {
+    "name": "Velocity Sensor 1",
+    "data": [
+      {
+        "datetime": "2024-01-01T00:00:00Z",
+        "max": 25.0
+      },
+      {
+        "datetime": "2024-01-01T01:00:00Z",
+        "max": 27.8
+      },
+      {
+        "datetime": "2024-01-01T02:00:00Z",
+        "max": 23.5
+      },
+      {
+        "datetime": "2024-01-01T03:00:00Z",
+        "max": 26.2
+      }
+    ]
+  },
+  {
+    "name": "Temperature Sensor 1",
+    "data": [
+      {
+        "datetime": "2024-01-01T00:00:00Z",
+        "max": 22.5
+      },
+      {
+        "datetime": "2024-01-01T01:00:00Z",
+        "max": 23.1
+      },
+      {
+        "datetime": "2024-01-01T02:00:00Z",
+        "max": 21.8
+      },
+      {
+        "datetime": "2024-01-01T03:00:00Z",
+        "max": 22.9
+      }
+    ]
+  }
+]

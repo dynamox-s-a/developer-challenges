@@ -1,0 +1,26 @@
+{
+  "buildCommand": "npm run build:vercel",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/response-challenge-v2.json",
+      "destination": "/response-challenge-v2.json"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/response-challenge-v2.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    }
+  ]
+}
