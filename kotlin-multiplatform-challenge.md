@@ -1,4 +1,4 @@
-# Kotlin Multiplatform Technical Test
+# Dynamox Kotlin Multiplatform Developer Challenge
 
 ## Overview
 
