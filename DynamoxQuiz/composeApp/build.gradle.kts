@@ -33,8 +33,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.database)
-            implementation(projects.shared)
+            implementation(projects.modules.database)
+            implementation(projects.modules.shared)
 
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -51,6 +51,9 @@ kotlin {
 
             implementation(libs.sqldelight.runtime)
             implementation(libs.sqldelight.coroutines)
+
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
         }
         androidMain.dependencies {
             implementation(compose.preview)
@@ -58,22 +61,31 @@ kotlin {
 
             implementation(libs.androidx.sqlite.bundled)
             implementation(libs.sqldelight.driver.android)
+
+            implementation(libs.koin.android)
         }
         iosMain.dependencies {
             implementation(libs.sqldelight.driver.native)
         }
 
         commonTest.dependencies {
-            implementation(projects.testUtils)
+            implementation(projects.modules.testUtils)
             implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.koin.test)
         }
         androidInstrumentedTest.dependencies {
-            implementation(projects.testUtils)
+            implementation(projects.modules.testUtils)
 
             implementation(libs.junit)
             implementation(libs.androidx.testExt.junit)
             implementation(libs.androidx.test.core)
             implementation(libs.androidx.test.runner)
+
+            implementation(libs.kotlinx.coroutines.test)
+
+            implementation(libs.koin.test)
+            implementation(libs.koin.test.junit4)
         }
     }
 }
@@ -88,7 +100,7 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.dynamox.quiz.test.InstrumentationTestRunner"
     }
     packaging {
         resources {

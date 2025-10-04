@@ -1,8 +1,9 @@
-package com.dynamox.quiz.test
+package com.dynamox.quiz.test.database
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.cash.sqldelight.db.SqlDriver
 import com.dynamox.quiz.database.DatabaseDynamoxQuiz
 import com.dynamox.quiz.database.DriverFactory
 import com.dynamox.quiz.database.createDatabase
@@ -10,17 +11,31 @@ import com.dynamox.quiz.testUtils.Dummy
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.startKoin
+import org.koin.dsl.module
+import org.koin.test.AutoCloseKoinTest
+import org.koin.test.inject
 import kotlin.time.Clock
 
 @RunWith(AndroidJUnit4::class)
-class DatabaseTest {
-    private lateinit var db: DatabaseDynamoxQuiz
+class DatabaseTest : AutoCloseKoinTest() {
+    private val db: DatabaseDynamoxQuiz by inject()
 
     @Before
     fun setup() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        val driver = DriverFactory(context).createInMemoryDriver()
-        db = createDatabase(driver = driver)
+        startKoin {
+            modules(
+                module {
+                    single<SqlDriver> {
+                        val context = ApplicationProvider.getApplicationContext<Context>()
+                        DriverFactory(context).createInMemoryDriver()
+                    }
+                    single<DatabaseDynamoxQuiz> {
+                        createDatabase(driver = get())
+                    }
+                }
+            )
+        }
     }
 
     @Test

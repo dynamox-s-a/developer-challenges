@@ -24,7 +24,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.database)
+            implementation(projects.modules.database)
 
             implementation(libs.kotlinx.datetime)
         }

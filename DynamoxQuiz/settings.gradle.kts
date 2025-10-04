@@ -29,6 +29,6 @@ dependencyResolutionManagement {
 }
 
 include(":composeApp")
-include(":database")
-include(":shared")
-include(":testUtils")
+include(":modules:database")
+include(":modules:shared")
+include(":modules:testUtils")

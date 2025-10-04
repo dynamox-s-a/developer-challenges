@@ -29,13 +29,15 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.shared)
+            implementation(projects.modules.shared)
 
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.coroutines.core)
 
             implementation(libs.sqldelight.runtime)
             implementation(libs.sqldelight.coroutines)
+
+            implementation(libs.koin.core)
         }
         androidMain.dependencies {
             implementation(libs.androidx.sqlite.bundled)
