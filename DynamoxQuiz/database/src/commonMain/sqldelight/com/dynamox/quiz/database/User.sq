@@ -1,0 +1,36 @@
+import kotlin.Boolean;
+import kotlin.uuid.Uuid;
+
+CREATE TABLE User (
+    id TEXT AS Uuid PRIMARY KEY NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    name TEXT NOT NULL,
+    password_algo TEXT NOT NULL,
+    password_salt BLOB NOT NULL,
+    password_hash BLOB NOT NULL,
+    password_iters INTEGER NOT NULL,
+    createdAt INTEGER DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    lastModified INTEGER DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    deleted INTEGER AS Boolean DEFAULT 0 NOT NULL,
+    deletedAt INTEGER DEFAULT NULL
+);
+
+CREATE INDEX user_email_index ON User(email);
+
+selectAll:
+SELECT * FROM User;
+
+selectAllNonDeleted:
+SELECT * FROM User WHERE deleted = 0;
+
+selectById:
+SELECT * FROM User WHERE id = ?;
+
+selectByEmail:
+SELECT * FROM User WHERE email = ?;
+
+save:
+INSERT OR REPLACE INTO User VALUES ?;
+
+delete:
+DELETE FROM User WHERE id = ?;

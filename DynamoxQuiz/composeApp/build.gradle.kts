@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -14,7 +13,14 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
+    compilerOptions {
+        optIn.addAll(
+            "kotlin.time.ExperimentalTime",
+            "kotlin.uuid.ExperimentalUuidApi",
+        )
+    }
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -24,24 +30,50 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     sourceSets {
-        androidMain.dependencies {
-            implementation(compose.preview)
-            implementation(libs.androidx.activity.compose)
-        }
         commonMain.dependencies {
+            implementation(projects.database)
+            implementation(projects.shared)
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.kotlinx.coroutines.core)
+
+            implementation(libs.sqldelight.runtime)
+            implementation(libs.sqldelight.coroutines)
         }
+        androidMain.dependencies {
+            implementation(compose.preview)
+            implementation(libs.androidx.activity.compose)
+
+            implementation(libs.androidx.sqlite.bundled)
+            implementation(libs.sqldelight.driver.android)
+        }
+        iosMain.dependencies {
+            implementation(libs.sqldelight.driver.native)
+        }
+
         commonTest.dependencies {
+            implementation(projects.testUtils)
             implementation(libs.kotlin.test)
+        }
+        androidInstrumentedTest.dependencies {
+            implementation(projects.testUtils)
+
+            implementation(libs.junit)
+            implementation(libs.androidx.testExt.junit)
+            implementation(libs.androidx.test.core)
+            implementation(libs.androidx.test.runner)
         }
     }
 }
@@ -56,6 +88,7 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     packaging {
         resources {
@@ -76,4 +109,3 @@ android {
 dependencies {
     debugImplementation(compose.uiTooling)
 }
-
