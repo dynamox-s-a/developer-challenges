@@ -54,6 +54,8 @@ kotlin {
 
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
+
+            implementation(libs.ktor.client.core)
         }
         androidMain.dependencies {
             implementation(compose.preview)
@@ -63,9 +65,13 @@ kotlin {
             implementation(libs.sqldelight.driver.android)
 
             implementation(libs.koin.android)
+
+            implementation(libs.ktor.client.okhttp)
         }
         iosMain.dependencies {
             implementation(libs.sqldelight.driver.native)
+
+            implementation(libs.ktor.client.darwin)
         }
 
         commonTest.dependencies {
@@ -100,7 +106,7 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
-        testInstrumentationRunner = "com.dynamox.quiz.test.InstrumentationTestRunner"
+        testInstrumentationRunner = "com.dynamox.quiz.testUtils.InstrumentationTestRunner"
     }
     packaging {
         resources {

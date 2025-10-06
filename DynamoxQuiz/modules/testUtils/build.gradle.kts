@@ -28,6 +28,9 @@ kotlin {
 
             implementation(libs.kotlinx.datetime)
         }
+        androidMain.dependencies {
+            implementation(libs.androidx.test.runner)
+        }
     }
 }
 
@@ -37,7 +40,6 @@ android {
 
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
