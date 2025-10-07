@@ -36,6 +36,7 @@ kotlin {
 
             implementation(libs.sqldelight.runtime)
             implementation(libs.sqldelight.coroutines)
+            implementation(libs.sqldelight.primitiveAdapters)
 
             implementation(libs.koin.core)
         }
@@ -67,6 +68,7 @@ sqldelight {
     databases {
         create("DatabaseDynamoxQuiz") {
             packageName.set("com.dynamox.quiz.database")
+            dialect(libs.sqldelight.dialect)
         }
     }
 }

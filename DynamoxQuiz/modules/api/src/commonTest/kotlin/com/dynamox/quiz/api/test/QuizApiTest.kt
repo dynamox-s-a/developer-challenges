@@ -2,7 +2,6 @@ package com.dynamox.quiz.api.test
 
 import com.dynamox.quiz.api.QuizApi
 import com.dynamox.quiz.api.apiKoinModule
-import com.dynamox.quiz.api.models.QuizAnswer
 import io.ktor.http.Url
 import kotlinx.coroutines.test.runTest
 import org.koin.core.context.startKoin
@@ -15,7 +14,12 @@ import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
-//@Ignore
+/**
+ * These tests require the API to be running and accessible at the specified URL.
+ * They are ignored by default to avoid failures in environments where the API is not available.
+ * Remove the @Ignore annotation to run these tests.
+ */
+@Ignore
 class QuizApiTest : KoinTest {
 
     private val quizApi: QuizApi by inject()

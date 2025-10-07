@@ -1,0 +1,44 @@
+import kotlin.Boolean;
+import kotlin.uuid.Uuid;
+
+CREATE TABLE UserEntity (
+    id TEXT AS Uuid PRIMARY KEY NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    name TEXT NOT NULL,
+    password_algo TEXT NOT NULL,
+    password_salt BLOB NOT NULL,
+    password_hash BLOB NOT NULL,
+    password_iters INTEGER NOT NULL,
+    createdAt INTEGER DEFAULT (unixepoch()*1000) NOT NULL,
+    lastModified INTEGER DEFAULT (unixepoch()*1000) NOT NULL,
+    deleted INTEGER AS Boolean DEFAULT 0 NOT NULL,
+    deletedAt INTEGER DEFAULT NULL,
+    CHECK (email = lower(email)),
+    CHECK (deleted IN (0,1))
+);
+CREATE INDEX idx_quizscore_userid ON QuizScore(userId);
+CREATE INDEX idx_user_active ON UserEntity(deleted) WHERE deleted = 0;
+
+selectAll:
+SELECT * FROM UserEntity;
+
+selectAllNonDeleted:
+SELECT * FROM UserEntity WHERE deleted = 0;
+
+selectById:
+SELECT * FROM UserEntity WHERE id = ?;
+
+selectByEmail:
+SELECT * FROM UserEntity WHERE email = ?;
+
+insert:
+INSERT INTO UserEntity VALUES ?;
+
+update:
+UPDATE UserEntity SET
+  email = ?, name = ?, password_algo = ?, password_salt = ?, password_hash = ?,
+  password_iters = ?, createdAt = ?, lastModified = ?, deleted = ?, deletedAt = ?
+WHERE id = ?;
+
+delete:
+DELETE FROM UserEntity WHERE id = ?;

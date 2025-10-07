@@ -9,3 +9,5 @@ fun Uuid.Companion.fromString(stringUuid: String): Uuid {
         throw IllegalArgumentException("Failed to parse $stringUuid to Uuid", ex)
     }
 }
+
+fun String.toUuid(): Uuid = Uuid.fromString(this)

@@ -1,0 +1,38 @@
+import kotlin.Boolean;
+import kotlin.Int;
+import kotlin.uuid.Uuid;
+
+CREATE TABLE QuizScore (
+    id TEXT AS Uuid PRIMARY KEY NOT NULL,
+    userId TEXT AS Uuid NOT NULL,
+    score INTEGER AS Int NOT NULL,
+    timeTakenMs INTEGER NOT NULL,
+    createdAt INTEGER DEFAULT (unixepoch()*1000) NOT NULL,
+    deleted INTEGER AS Boolean DEFAULT 0 NOT NULL,
+    deletedAt INTEGER DEFAULT NULL,
+    FOREIGN KEY(userId) REFERENCES UserEntity(id) ON DELETE CASCADE,
+    CHECK (deleted IN (0,1))
+);
+
+CREATE INDEX idx_quizscore_best_active
+ON QuizScore(userId, score DESC, timeTakenMs ASC, createdAt ASC)
+WHERE deleted = 0;
+
+selectAll:
+SELECT * FROM QuizScore;
+
+selectAllNonDeleted:
+SELECT * FROM QuizScore WHERE deleted = 0;
+
+selectById:
+SELECT * FROM QuizScore WHERE id = ?;
+
+selectAllByUserId:
+SELECT * FROM QuizScore WHERE userId = ? AND deleted = 0;
+
+save:
+INSERT OR REPLACE INTO QuizScore VALUES ?;
+
+delete:
+DELETE FROM QuizScore WHERE id = ?;
+

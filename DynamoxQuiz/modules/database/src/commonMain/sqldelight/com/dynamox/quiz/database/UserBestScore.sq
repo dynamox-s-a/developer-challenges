@@ -1,0 +1,48 @@
+CREATE VIEW UserBestScore AS
+SELECT
+    u.id AS userId,
+    u.name AS userName,
+    qs.id AS scoreId,
+    qs.score AS score,
+    qs.timeTakenMs AS timeTakenMs,
+    qs.createdAt AS createdAt
+FROM UserEntity u
+JOIN QuizScore qs
+    ON qs.userId = u.id
+WHERE u.deleted = 0
+    AND qs.deleted = 0
+    AND qs.score = (
+        SELECT MAX(q1.score)
+        FROM QuizScore q1
+        WHERE q1.userId = u.id AND q1.deleted = 0
+    )
+    AND qs.timeTakenMs = (
+        SELECT MIN(q2.timeTakenMs)
+        FROM QuizScore q2
+        WHERE q2.userId = u.id
+            AND q2.deleted = 0
+            AND q2.score = qs.score
+    )
+    AND qs.createdAt = (
+        SELECT MIN(q3.createdAt)
+        FROM QuizScore q3
+        WHERE q3.userId = u.id
+            AND q3.deleted = 0
+            AND q3.score = qs.score
+            AND q3.timeTakenMs = qs.timeTakenMs
+    )
+    AND qs.id = (
+        SELECT MIN(q4.id)
+        FROM QuizScore q4
+        WHERE q4.userId = u.id
+            AND q4.deleted = 0
+            AND q4.score = qs.score
+            AND q4.timeTakenMs = qs.timeTakenMs
+            AND q4.createdAt = qs.createdAt
+);
+
+selectAll:
+SELECT * FROM UserBestScore ORDER BY score DESC, timeTakenMs ASC, createdAt ASC, userName ASC;
+
+selectByUserId:
+SELECT * FROM UserBestScore WHERE userId = ? ORDER BY score DESC, timeTakenMs ASC, createdAt ASC, userName ASC;

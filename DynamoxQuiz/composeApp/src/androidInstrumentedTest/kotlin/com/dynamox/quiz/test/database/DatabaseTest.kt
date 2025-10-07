@@ -6,20 +6,24 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.cash.sqldelight.db.SqlDriver
 import com.dynamox.quiz.database.DatabaseDynamoxQuiz
 import com.dynamox.quiz.database.DriverFactory
-import com.dynamox.quiz.database.createDatabase
+import com.dynamox.quiz.database.QuizScore
+import com.dynamox.quiz.database.UserEntity
+import com.dynamox.quiz.database.persistenceKoinModule
+import com.dynamox.quiz.shared.systemEpochMilliseconds
 import com.dynamox.quiz.testUtils.Dummy
 import org.junit.Before
-import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
-import kotlin.time.Clock
+import kotlin.random.Random
+import kotlin.time.Duration.Companion.minutes
+import kotlin.uuid.Uuid
 
 @RunWith(AndroidJUnit4::class)
-class DatabaseTest : AutoCloseKoinTest() {
-    private val db: DatabaseDynamoxQuiz by inject()
+abstract class DatabaseTest : AutoCloseKoinTest() {
+    protected val db: DatabaseDynamoxQuiz by inject()
 
     @Before
     fun setup() {
@@ -30,55 +34,50 @@ class DatabaseTest : AutoCloseKoinTest() {
                         val context = ApplicationProvider.getApplicationContext<Context>()
                         DriverFactory(context).createInMemoryDriver()
                     }
-                    single<DatabaseDynamoxQuiz> {
-                        createDatabase(driver = get())
-                    }
-                }
+                },
+                persistenceKoinModule()
             )
         }
     }
 
-    @Test
-    fun testGetUsers() {
-        val initialUsers = db.userQueries.selectAll().executeAsList()
-        println("Initial users: $initialUsers")
-        assert(initialUsers.isEmpty())
-    }
-
-    @Test
-    fun testCreateUser() {
-        val newUser = Dummy.user()
-        db.userQueries.save(newUser)
-        val usersAfterInsert = db.userQueries.selectAll().executeAsList()
-        println("Users after insert: $usersAfterInsert")
-        assert(usersAfterInsert.size == 1)
-        assert(usersAfterInsert[0].id == newUser.id)
-    }
-
-    @Test
-    fun updateUser() {
-        val newUser = Dummy.user()
-        db.userQueries.save(newUser)
-        val updatedUser = newUser.copy(
-            name = "Updated Name",
-            lastModified = Clock.System.now().toEpochMilliseconds()
+    fun createAndSaveUser(
+        id: Uuid = Uuid.random(),
+        email: String = "testuser_${id}@test.com",
+        name: String = "Test User",
+        deleted: Boolean = false,
+        deletedAt: Long? = null,
+    ): UserEntity {
+        val user = Dummy.user(
+            id = id,
+            email = email,
+            name = name,
+            deleted = deleted,
+            deletedAt = deletedAt,
         )
-        db.userQueries.save(updatedUser)
-        val usersAfterUpdate = db.userQueries.selectAll().executeAsList()
-        println("Users after update: $usersAfterUpdate")
-        assert(usersAfterUpdate.size == 1)
-        val currentUser = usersAfterUpdate[0]
-        assert(currentUser.id == updatedUser.id)
-        assert(currentUser.name == "Updated Name")
+        db.userEntityQueries.insert(user)
+        return user
     }
 
-    @Test
-    fun deleteUser() {
-        val newUser = Dummy.user()
-        db.userQueries.save(newUser)
-        db.userQueries.delete(newUser.id)
-        val usersAfterDelete = db.userQueries.selectAll().executeAsList()
-        println("Users after delete: $usersAfterDelete")
-        assert(usersAfterDelete.isEmpty())
+    fun createAndSaveScore(
+        id: Uuid = Uuid.random(),
+        userId: Uuid = Uuid.random(),
+        score: Int = Random.nextInt(11),
+        timeTaken: Long = Random.nextInt(2, 6).minutes.inWholeMilliseconds,
+        createdAt: Long = systemEpochMilliseconds(),
+        deleted: Boolean = false,
+        deletedAt: Long? = null
+    ): QuizScore {
+        val score = Dummy.score(
+            id = id,
+            userId = userId,
+            score = score,
+            timeTaken = timeTaken,
+            createdAt = createdAt,
+            deleted = deleted,
+            deletedAt = deletedAt,
+        )
+        db.quizScoreQueries.save(score)
+        return score
     }
+
 }
