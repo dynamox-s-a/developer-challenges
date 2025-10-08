@@ -36,4 +36,14 @@ interface ClientDataRepository {
     suspend fun deleteQuizScore(id: Uuid): Result<Unit>
 
     suspend fun loadQuizScore(id: Uuid): Result<QuizScore>
+
+    suspend fun loadUserEntityByEmail(email: String): Result<UserEntity?>
+
+    suspend fun updateUserPassword(
+        userId: Uuid,
+        algo: String,
+        salt: ByteArray,
+        hash: ByteArray,
+        iters: Long
+    ): Result<Unit>
 }

@@ -31,6 +31,10 @@ SELECT * FROM UserEntity WHERE id = ?;
 selectByEmail:
 SELECT * FROM UserEntity WHERE email = ?;
 
+selectByEmailNonDeleted:
+SELECT * FROM UserEntity
+WHERE email = ? AND deleted = 0;
+
 insert:
 INSERT INTO UserEntity VALUES ?;
 
@@ -38,6 +42,15 @@ update:
 UPDATE UserEntity SET
   email = ?, name = ?, password_algo = ?, password_salt = ?, password_hash = ?,
   password_iters = ?, createdAt = ?, lastModified = ?, deleted = ?, deletedAt = ?
+WHERE id = ?;
+
+updatePasswordById:
+UPDATE UserEntity SET
+  password_algo  = ?,
+  password_salt  = ?,
+  password_hash  = ?,
+  password_iters = ?,
+  lastModified   = (unixepoch()*1000)
 WHERE id = ?;
 
 delete:

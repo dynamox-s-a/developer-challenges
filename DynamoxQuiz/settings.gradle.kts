@@ -31,5 +31,6 @@ dependencyResolutionManagement {
 include(":composeApp")
 include(":modules:database")
 include(":modules:api")
+include(":modules:authenticator")
 include(":modules:shared")
 include(":modules:testUtils")

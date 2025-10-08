@@ -1,4 +1,4 @@
-package com.dynamox.quiz.database.utils
+package com.dynamox.quiz.shared
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope

@@ -20,6 +20,7 @@ sqliteBundled = "2.6.1"
 coreKtx = "1.7.0"
 koin = "4.1.1"
 ktor = "3.3.0"
+cryptography="0.5.0"
 
 [libraries]
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
@@ -68,6 +69,12 @@ ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-conte
 ktor-client-encoding = { group = "io.ktor", name = "ktor-client-encoding", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
+
+cryptography-core = { group = "dev.whyoleg.cryptography", name= "cryptography-core" , version.ref = "cryptography" }
+cryptography-random = { group = "dev.whyoleg.cryptography", name= "cryptography-random" , version.ref = "cryptography" }
+cryptography-provider-jdk = { group = "dev.whyoleg.cryptography", name= "cryptography-provider-jdk" , version.ref = "cryptography" }
+cryptography-provider-cryptokit = { group = "dev.whyoleg.cryptography", name= "cryptography-provider-cryptokit" , version.ref = "cryptography" }
+cryptography-provider-apple = { group = "dev.whyoleg.cryptography", name= "cryptography-provider-apple" , version.ref = "cryptography" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

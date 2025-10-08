@@ -6,7 +6,7 @@ import com.dynamox.quiz.database.QuizScore
 import com.dynamox.quiz.database.UserBestScore
 import com.dynamox.quiz.database.UserEntity
 import com.dynamox.quiz.database.models.toModel
-import com.dynamox.quiz.database.utils.runCatchingOnDispatcher
+import com.dynamox.quiz.shared.runCatchingOnDispatcher
 import com.dynamox.quiz.shared.systemEpochMilliseconds
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -140,5 +140,27 @@ class ClientDataRepositoryImpl(
 
     override suspend fun loadQuizScore(id: Uuid) = runCatchingOnDispatcher(dispatcher) {
         scoresQueries.selectById(id).executeAsOne()
+    }
+
+    override suspend fun loadUserEntityByEmail(email: String): Result<UserEntity?> =
+        runCatchingOnDispatcher(dispatcher) {
+            userQueries.selectByEmail(email.lowercase()).executeAsOneOrNull()
+        }
+
+    override suspend fun updateUserPassword(
+        userId: Uuid,
+        algo: String,
+        salt: ByteArray,
+        hash: ByteArray,
+        iters: Long
+    ): Result<Unit> = runCatchingOnDispatcher(dispatcher) {
+        userQueries.updatePasswordById(
+            password_algo = algo,
+            password_salt = salt,
+            password_hash = hash,
+            password_iters = iters,
+            id = userId
+        )
+        Unit
     }
 }

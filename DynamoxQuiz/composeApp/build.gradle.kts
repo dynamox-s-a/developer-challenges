@@ -34,6 +34,8 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.modules.database)
+            implementation(projects.modules.api)
+            implementation(projects.modules.authenticator)
             implementation(projects.modules.shared)
 
             implementation(compose.runtime)

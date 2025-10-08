@@ -26,18 +26,34 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.modules.shared)
             implementation(projects.modules.database)
-            implementation(libs.kotlinx.coroutines.core)
 
             implementation(libs.kotlinx.datetime)
+            implementation(libs.kotlinx.coroutines.core)
+
+            implementation(libs.koin.core)
+
+            implementation(libs.cryptography.core)
+            implementation(libs.cryptography.random)
+        }
+        commonTest.dependencies {
+            implementation(projects.modules.testUtils)
+
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.koin.test)
         }
         androidMain.dependencies {
-            implementation(libs.androidx.test.runner)
+            implementation(libs.cryptography.provider.jdk)
+        }
+        iosMain.dependencies {
+            implementation(libs.cryptography.provider.apple)
+            implementation(libs.cryptography.provider.cryptokit)
         }
     }
 }
 
 android {
-    namespace = "com.dynamox.quiz.testUtils"
+    namespace = "com.dynamox.quiz.auth"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
