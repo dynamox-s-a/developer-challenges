@@ -1,10 +1,10 @@
 package com.dynamox.quiz.auth.test
 
 import com.dynamox.quiz.auth.Authenticator
-import com.dynamox.quiz.auth.authKoinModule
-import com.dynamox.quiz.auth.models.AuthenticateResult
-import com.dynamox.quiz.auth.models.ChangePasswordResult
-import com.dynamox.quiz.auth.models.RegisterResult
+import com.dynamox.quiz.auth.koin.authKoinModule
+import com.dynamox.quiz.auth.model.AuthenticateResult
+import com.dynamox.quiz.auth.model.ChangePasswordResult
+import com.dynamox.quiz.auth.model.RegisterResult
 import com.dynamox.quiz.database.repository.ClientDataRepository
 import com.dynamox.quiz.testUtils.database.InMemoryClientDataRepository
 import kotlinx.coroutines.test.runTest

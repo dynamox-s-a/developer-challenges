@@ -1,7 +1,7 @@
 package com.dynamox.quiz.api.test
 
 import com.dynamox.quiz.api.QuizApi
-import com.dynamox.quiz.api.apiKoinModule
+import com.dynamox.quiz.api.koin.apiKoinModule
 import io.ktor.http.Url
 import kotlinx.coroutines.test.runTest
 import org.koin.core.context.startKoin

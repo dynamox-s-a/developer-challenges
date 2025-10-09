@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dynamox Quiz</string>
+
+    <string name="join_to_quiz_message">Participe para jogar e subir no ranking!</string>
+
+    <string name="email">Email</string>
+    <string name="password">Senha</string>
+    <string name="hide">Ocultar</string>
+    <string name="show">Exibir</string>
+    <string name="signup">Cadastrar</string>
+    <string name="login">Entrar</string>
+    <string name="logout">Sair</string>
+    <string name="name">Nome</string>
+    <string name="back">Voltar</string>
+    <string name="home">Início</string>
+    <string name="profile">Perfil</string>
+    <string name="score">Pontuação</string>
+    <string name="time">Tempo</string>
+    <string name="save">Salvar</string>
+    <string name="delete">Excluir</string>
+    <string name="confirm">Confirmar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="confirmation">Confirmação</string>
+    <string name="error">Erro</string>
+    <string name="question">Pergunta</string>
+    <string name="final_question">Última Pergunta</string>
+    <string name="leave">Sair</string>
+    <string name="resubmit">Reenviar</string>
+    <string name="try_again">Tentar Novamente</string>
+    <string name="continue">Continuar</string>
+    <string name="submit">Enviar</string>
+    <string name="finish">Finalizar</string>
+    <string name="next">Próximo</string>
+    <string name="restart">Reiniciar</string>
+
+    <string name="create_account">Criar Conta</string>
+    <string name="welcome_message">Bem-vindo ao Dynamox Quiz App!</string>
+    <string name="test_knowledge_message">Teste seus conhecimentos e veja sua posição no ranking contra os melhores jogadores.</string>
+    <string name="start_quiz">Começar Quiz</string>
+    <string name="best_players">Melhores Jogadores</string>
+    <string name="no_scores_message">Ainda não há pontuações. Seja o primeiro a jogar!</string>
+    <string name="saved_scores">Pontuações Salvas</string>
+    <string name="no_saved_scores_message">Você ainda não tem pontuações salvas. Jogue um quiz para salvar sua pontuação!</string>
+    <string name="delete_score_confirmation_message">Você tem certeza que deseja excluir esta pontuação?</string>
+    <string name="score_saved_message">Pontuação salva com sucesso!</string>
+    <string name="quiz_resume">Resumo do Quiz</string>
+    <string name="loading_final_question">Carregando última pergunta...</string>
+    <string name="loading_question">Carregando pergunta...</string>
+    <string name="submitting_your_answer">Enviando sua resposta...</string>
+    <string name="invalid_state_message">Estado inválido. Vamos buscar outra pergunta.</string>
+    <string name="correct_message">Correto!</string>
+    <string name="wrong_message">Errado!</string>
+    <string name="time_for_question_message">Tempo para esta pergunta: %1$s</string>
+    <string name="quiz_completed">Quiz Concluído!</string>
+    <string name="your_final_score_message">Sua pontuação final é %1$d!</string>
+    <string name="total_time_message">Tempo total: %1$s</string>
+    <string name="save_score">Salvar pontuação</string>
+    <string name="leave_quiz">Sair do Quiz?</string>
+    <string name="leave_quiz_confirmation_message">Você tem certeza que quer sair do quiz? Seu progresso será perdido.</string>
+
+    <string name="network_error_message">Erro de rede. Por favor, verifique sua conexão com a internet.</string>
+    <string name="forbidden_error_message">Acesso negado. Você não tem permissão para acessar este recurso.</string>
+    <string name="not_found_error_message">Recurso não encontrado. O recurso solicitado não pôde ser encontrado.</string>
+    <string name="parse_error_message">Erro ao processar os dados. Tente novamente mais tarde.</string>
+    <string name="unauthorized_error_message">Acesso não autorizado. Por favor, faça login novamente.</string>
+    <string name="unknown_error_message">Ocorreu um erro desconhecido. Por favor, tente novamente mais tarde.</string>
+
+    <string name="failed_to_load_user_to_validate_message">Falha ao carregar usuário para validar credenciais.</string>
+    <string name="failed_to_update_credentials_message">Falha ao atualizar as credenciais do usuário.</string>
+    <string name="invalid_credentials_message">E-mail ou senha inválidos.</string>
+    <string name="user_deleted_message">Esta conta de usuário foi excluída.</string>
+
+    <string name="empty_name_error">O nome não pode estar vazio.</string>
+    <string name="invalid_email_error">O e-mail não é válido.</string>
+    <string name="failed_to_verify_email_message">Falha ao verificar o e-mail.</string>
+    <string name="email_already_in_use_message">O e-mail já está em uso.</string>
+    <string name="failed_to_create_user_message">Falha ao criar o usuário.</string>
+
+    <string name="failed_to_update_profile_message">Falha ao atualizar o perfil.</string>
+    <string name="failed_to_delete_score">Falha ao excluir a pontuação.</string>
+
+    <string name="failed_to_save_score_user_not_authenticated_message">Usuário não autenticado. Não é possível salvar a pontuação.</string>
+    <string name="failed_to_save_score_message">Falha ao salvar a pontuação.</string>
+
+</resources>

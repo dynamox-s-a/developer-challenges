@@ -1,13 +1,13 @@
 package com.dynamox.quiz.api.impl
 
 import com.dynamox.quiz.api.QuizApi
-import com.dynamox.quiz.api.models.ApiResult
-import com.dynamox.quiz.api.models.QuizAnswer
-import com.dynamox.quiz.api.models.QuizQuestion
-import com.dynamox.quiz.api.models.QuizResult
-import com.dynamox.quiz.api.utils.callApiParseResponse
-import com.dynamox.quiz.api.utils.configureKtorClient
-import com.dynamox.quiz.api.utils.div
+import com.dynamox.quiz.api.model.ApiResult
+import com.dynamox.quiz.api.model.QuizAnswer
+import com.dynamox.quiz.api.model.QuizQuestion
+import com.dynamox.quiz.api.model.QuizResult
+import com.dynamox.quiz.api.util.callApiParseResponse
+import com.dynamox.quiz.api.util.configureKtorClient
+import com.dynamox.quiz.api.util.div
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter

@@ -1,8 +1,8 @@
 package com.dynamox.quiz.api.test
 
-import com.dynamox.quiz.api.models.QuizAnswer
-import com.dynamox.quiz.api.models.QuizQuestion
-import com.dynamox.quiz.api.models.QuizResult
+import com.dynamox.quiz.api.model.QuizAnswer
+import com.dynamox.quiz.api.model.QuizQuestion
+import com.dynamox.quiz.api.model.QuizResult
 import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertTrue

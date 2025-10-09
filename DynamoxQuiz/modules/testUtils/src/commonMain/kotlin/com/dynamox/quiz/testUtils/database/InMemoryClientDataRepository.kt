@@ -3,12 +3,13 @@ package com.dynamox.quiz.testUtils.database
 import com.dynamox.quiz.database.QuizScore
 import com.dynamox.quiz.database.UserBestScore
 import com.dynamox.quiz.database.UserEntity
-import com.dynamox.quiz.database.models.toModel
+import com.dynamox.quiz.database.model.toModel
 import com.dynamox.quiz.database.repository.ClientDataRepository
 import com.dynamox.quiz.shared.systemEpochMilliseconds
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -16,6 +17,10 @@ import kotlin.concurrent.Volatile
 import kotlin.uuid.Uuid
 
 
+/**
+ * In-memory implementation of [ClientDataRepository] for testing purposes.
+ * Supports simulating failures for specific operations.
+ */
 class InMemoryClientDataRepository : ClientDataRepository {
 
     enum class Op {
@@ -207,15 +212,22 @@ class InMemoryClientDataRepository : ClientDataRepository {
         Result.success(sortedUserScoresVisible(userId))
     }
 
-    override suspend fun observeUserQuizScores(userId: Uuid): Flow<List<QuizScore>> =
-        mutex.withLock {
-            if (shouldFail(Op.OBSERVE_USER_QUIZ_SCORES)) {
-                return@withLock MutableStateFlow<List<QuizScore>>(emptyList()).asStateFlow()
+    override fun observeUserQuizScores(userId: Uuid): Flow<List<QuizScore>> {
+        return flow {
+            mutex.withLock {
+                while (true) {
+                    if (shouldFail(Op.OBSERVE_USER_QUIZ_SCORES)) {
+                        emit(emptyList())
+                    } else {
+                        val flow = userScoresFlows.getOrPut(userId) { MutableStateFlow(sortedUserScoresVisible(userId)) }
+                        emit(flow.value)
+                    }
+                    delay(100)
+                }
             }
-            val flow =
-                userScoresFlows.getOrPut(userId) { MutableStateFlow(sortedUserScoresVisible(userId)) }
-            flow.asStateFlow()
         }
+    }
+
 
     override suspend fun loadTopQuizScores() = mutex.withLock {
         if (shouldFail(Op.LOAD_TOP_QUIZ_SCORES)) return@withLock Result.failure(RuntimeException("forced failure: LOAD_TOP_QUIZ_SCORES"))
@@ -224,15 +236,23 @@ class InMemoryClientDataRepository : ClientDataRepository {
         Result.success(list)
     }
 
-    override suspend fun observeTopQuizScores(): Flow<List<UserBestScore>> = mutex.withLock {
-        if (shouldFail(Op.OBSERVE_TOP_QUIZ_SCORES)) {
-            return@withLock MutableStateFlow<List<UserBestScore>>(emptyList()).asStateFlow()
+    override fun observeTopQuizScores(): Flow<List<UserBestScore>> {
+        return flow {
+            mutex.withLock {
+                while (true) {
+                    if (shouldFail(Op.OBSERVE_TOP_QUIZ_SCORES)) {
+                        emit(emptyList())
+                    } else {
+                        if (bestScoresFlow.value.isEmpty()) {
+                            val bestScores = computeTopBestAllUsers()
+                            bestScoresFlow.update { bestScores }
+                        }
+                        emit(bestScoresFlow.value)
+                    }
+                    delay(100)
+                }
+            }
         }
-        if (bestScoresFlow.value.isEmpty()) {
-            val bestScores = computeTopBestAllUsers()
-            bestScoresFlow.update { bestScores }
-        }
-        bestScoresFlow.asStateFlow()
     }
 
     override suspend fun loadUserBestScore(userId: Uuid) = mutex.withLock {

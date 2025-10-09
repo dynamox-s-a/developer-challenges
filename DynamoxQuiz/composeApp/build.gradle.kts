@@ -18,6 +18,9 @@ kotlin {
         optIn.addAll(
             "kotlin.time.ExperimentalTime",
             "kotlin.uuid.ExperimentalUuidApi",
+            "kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "kotlinx.cinterop.BetaInteropApi",
+            "androidx.compose.material3.ExperimentalMaterial3Api",
         )
     }
 
@@ -44,9 +47,11 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(compose.materialIconsExtended)
 
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.androidx.navigation.compose)
 
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.coroutines.core)

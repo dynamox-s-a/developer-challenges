@@ -7,8 +7,10 @@ import kotlin.random.Random
 import kotlin.time.Duration.Companion.minutes
 import kotlin.uuid.Uuid
 
+/**
+ * Utility object to create dummy data for testing purposes.
+ */
 object Dummy {
-
     fun user(
         id: Uuid = Uuid.random(),
         email: String = "testuser_${id}@test.com",
