@@ -91,8 +91,9 @@ The server will return:
 ## Mandatory Technical Requirements
 
 - [ ] The application must be written in **Swift**
-- [ ] Use a data persistence mechanism to store players and scores
-- [ ] Use SwiftUI for the views
+- [ ] Use **CocoaPods** for dependency management
+- [ ] Use some data persistence mechanism to store players and scores
+- [ ] Use **UIKit and SwiftUI** for the views
 
 ---
 
@@ -116,7 +117,7 @@ These items (1 to 3) are not mandatory, but implementing them will significantly
 ## Evaluation Criteria
 
 - Technical capability
-- Android knowledge
+- iOS knowledge
 - Project and code architecture
 - Code reuse
 - Code readability
