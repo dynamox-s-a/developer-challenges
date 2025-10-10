@@ -120,7 +120,7 @@ These items (1 to 3) are not mandatory, but implementing them will significantly
 ## Evaluation Criteria
 
 - Technical capability
-- Android knowledge
+- Android, iOS and KMP knowledge
 - Project and code architecture
 - Code reuse
 - Code readability
