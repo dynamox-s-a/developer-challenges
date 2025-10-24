@@ -43,6 +43,9 @@ With vast experience, enhances software development, leading complex system deve
 - [ ] [01 - Dynamox Kotlin Multiplatform Developer Challenge](./kotlin-multiplatform-challenge.md)
 - [ ] [02 - Dynamox Android Developer Challenge](./android-challenge.md)
 
+## Challenge Back-End
+- [ ] [01 - Dynamox Back-End Time Series ](./back-end-challenge-v1.md)
+
 ## Ready to Begin the Challenges?
 
 1. [ ] Fork this repository to your own Github account.
