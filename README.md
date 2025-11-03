@@ -42,6 +42,7 @@ With vast experience, enhances software development, leading complex system deve
 
 - [ ] [01 - Dynamox Kotlin Multiplatform Developer Challenge](./kotlin-multiplatform-challenge.md)
 - [ ] [02 - Dynamox Android Developer Challenge](./android-challenge.md)
+- [ ] [03 - Dynamox iOS Developer Challenge](./ios-challenge.md)
 
 ## Ready to Begin the Challenges?
 
