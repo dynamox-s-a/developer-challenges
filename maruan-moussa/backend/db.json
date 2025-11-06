@@ -1,17 +1,27 @@
 {
-    "users": [
-        {
-            "id": 1,
-            "email": "admin@events.com",
-            "password": "admin123",
-            "role": "admin"
-        },
-        {
-            "id": 2,
-            "email": "reader@events.com",
-            "password": "reader123",
-            "role": "reader"
-        }
-    ],
-    "events": []
+  "users": [
+    {
+      "id": "1",
+      "email": "admin@events.com",
+      "password": "admin123",
+      "role": "admin"
+    },
+    {
+      "id": "2",
+      "email": "reader@events.com",
+      "password": "reader123",
+      "role": "reader"
+    }
+  ],
+  "events": [
+    {
+      "id": "bfdd",
+      "title": "teste de evento com nome gigantesco",
+      "date": "2025-11-06",
+      "time": "02:10",
+      "location": "São Paulo, SP",
+      "category": "conferencia",
+      "description": "asasasasasdsadasdwqeewqdeqwdsdsadqwewsaddasfdaqwwewqe"
+    }
+  ]
 }

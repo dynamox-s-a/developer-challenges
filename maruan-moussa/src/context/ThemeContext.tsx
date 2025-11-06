@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import { darkTheme, ligthTheme } from "@/theme/theme";
+import { darkTheme, lightTheme } from "@/theme/theme";
 
 type ThemeContextType = {
   mode: "light" | "dark";
@@ -13,7 +13,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProviderCustom = ({ children }: { children: React.ReactNode }) => {
   const [mode, setMode] = useState<"light" | "dark">("light");
-  const [mounted, setMounted] = useState(false); // <- controle da hidratação
+  const [mounted, setMounted] = useState(false); 
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -34,7 +34,7 @@ export const ThemeProviderCustom = ({ children }: { children: React.ReactNode })
 
   const toggleTheme = () => setMode((prev) => (prev === "light" ? "dark" : "light"));
 
-  const theme = useMemo(() => (mode === "light" ? ligthTheme : darkTheme), [mode]);
+  const theme = useMemo(() => (mode === "light" ? lightTheme : darkTheme), [mode]);
 
   if (!mounted) {
     return null;

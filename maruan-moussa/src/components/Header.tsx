@@ -8,24 +8,26 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { useEffect } from "react";
 import { loadAuthFromStorage, logout } from "@/store/authSlice";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 export default function Header() {
   const { mode, toggleTheme } = useThemeMode();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { isAuthenticated, user } = useAppSelector((state) => state.auth);
+  const isMobile = useMediaQuery("(max-width: 600px)");
 
   useEffect(() => {
     dispatch(loadAuthFromStorage())
   }, [dispatch]);
 
   const handleAuthAction = () => {
-    if(isAuthenticated){
-        dispatch(logout());
-        router.push("/");
+    if (isAuthenticated) {
+      dispatch(logout());
+      router.push("/");
 
     } else {
-        router.push("/login")
+      router.push("/login")
     }
   }
 
@@ -53,7 +55,7 @@ export default function Header() {
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Box
             component="img"
-            src="/logo.svg" 
+            src="/logo.svg"
             alt="Logo"
             sx={{
               width: 30,
@@ -68,32 +70,36 @@ export default function Header() {
             variant="h5"
             fontWeight={700}
             sx={{
+              fontSize: { xs: "1.1rem", sm: "1.4rem" }, 
               letterSpacing: 0.5,
-              background:
-                "linear-gradient(90deg, #3b82f6, #7c3aed, #3b82f6)",
+              background: "linear-gradient(90deg, #3b82f6, #7c3aed, #3b82f6)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
+              whiteSpace: "nowrap",
             }}
           >
-            Event Manager
+            {user?.role === "admin"
+              ? (isMobile ? "Admin Panel" : "Painel do Administrador")
+              : isAuthenticated
+                ? "Eventos"
+                : "Event Manager"}
           </Typography>
         </Box>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-        <Button
+          <Button
             variant="contained"
             onClick={handleAuthAction}
             sx={{
               borderRadius: "10px",
               textTransform: "none",
               fontWeight: 600,
-              px: 3,
-              py: 1,
-              background:
-                "linear-gradient(135deg, #7C3AED 0%, #0891B2 100%)",
+              px: { xs: 2, sm: 3 },
+              py: { xs: 0.7, sm: 1 },
+              fontSize: { xs: "0.85rem", sm: "0.8rem" }, // menor no mobile
+              background: "linear-gradient(135deg, #7C3AED 0%, #0891B2 100%)",
               "&:hover": {
-                background:
-                  "linear-gradient(135deg, #6D28D9 0%, #0E7490 100%)",
+                background: "linear-gradient(135deg, #6D28D9 0%, #0E7490 100%)",
                 transform: "translateY(-2px)",
               },
             }}
