@@ -47,6 +47,9 @@ With vast experience, enhances software development, leading complex system deve
 ## Challenge Back-End
 - [ ] [01 - Dynamox Back-End Time Series ](./back-end-challenge-v1.md)
 
+## Challenge QA
+- [ ] [01- Dynamox QA Challenge](./qa-challenge.md)
+
 ## Ready to Begin the Challenges?
 
 1. [ ] Fork this repository to your own Github account.
