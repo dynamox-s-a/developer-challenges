@@ -1,44 +1,60 @@
-# Teste para QA em aplicações web
-Neste desafio vamos avaliar sua capacidade de desenvolver testes automatizados para uma aplicação web responsável por exibir dados de um sensor de vibração e temperatura.
+# QA Test for Web Applications
 
-Considere o seguinte fluxo de desenvolvimento. A equipe de Produto elaborou os requisitos funcionais e disponibilizou o seguinte [arquivo](https://www.figma.com/file/QxUZkTUIzQA7cvyiMvVyxK/Front-end---Teste?type=design&node-id=1001%3A3&mode=design&t=JLnbGmQJcSlnYYE2-1) contendo o protótipo da tela. Os requisitos de produto são:
+In this challenge, we will evaluate your ability to develop automated tests for a web application responsible for displaying data from a vibration and temperature sensor.
 
-1. Como usuário, quero visualizar uma tela contendo um pequeno cabeçalho com informações sobre a máquina e alguns gráficos. 
-2. Como usuário, quero visualizar 3 gráficos de séries temporais de Aceleração RMS, Velocidade RMS e Temperatura.
-3. Como usuário, quero que os dados estejam atualizados a cada novo acesso à página.
-4. Como usuário, ao realizar um *hover* nas séries temporais, visualizo uma tooltip com os valores dos dados.
+Consider the following development flow. The Product team has created the functional requirements and provided the following [file](https://www.figma.com/file/QxUZkTUIzQA7cvyiMvVyxK/Front-end---Teste?type=design&node-id=1001%3A3&mode=design&t=JLnbGmQJcSlnYYE2-1) containing the screen prototype. The product requirements are:
 
-Para a obtenção dos dados, são feitas as seguintes requisições:
-- **GET** para a rota */data*. Contém dados de séries temporais que serão exibidos nos gráficos. Para fins deste teste, os dados são estáticos.
-- **GET** para a rota */metadata*. Contém informações associadas ao ponto de monitoramento que serão exibidas no cabeçalho.
+1. As a user, I want to view a screen containing a small header with machine information and some charts.
+2. As a user, I want to view 3 time series charts for RMS Acceleration, RMS Velocity, and Temperature.
+3. As a user, I want the data to be refreshed every time I access the page.
+4. As a user, when hovering over the time series, I want to see a tooltip displaying the data values.
 
-A aplicação web está disponível neste [link](https://frontend-test-for-qa.vercel.app/).
+To obtain the data, the following requests are made:
 
-## Requisitos do teste
+* **GET** request to the */data* route. Contains time series data that will be displayed in the charts. For the purposes of this test, the data is static.
+* **GET** request to the */metadata* route. Contains information associated with the monitoring point that will be displayed in the header.
 
-Os requisitos de produto representam macrojornadas, portanto considere também detalhes na implementação.
-- O usuário consegue completar esta jornada?
-- A implementação atende todas as especificações do protótipo?
-- Existem comportamentos estranhos ou não esperados?
+The web application is available at this [link](https://frontend-test-for-qa.vercel.app/).
 
-Implemente testes automatizados para cada cenário que você julgar apropriado. É esperado que os testes passem onde os critérios foram atendidos, e que falhem onde não foram atendidos.
+## Test Requirements
 
-## Critérios de avaliação
+The product requirements represent macro-journeys, so also consider implementation details:
 
-Os seguintes itens serão avaliados:
-- Organização e estrutura do repositório de testes.
-- Documentação e legibilidade de código.
-- Qualidade e cobertura dos testes.
+* Can the user complete this journey?
+* Does the implementation meet all specifications of the prototype?
+* Are there any strange or unexpected behaviors?
 
-Considere também: 
-- Encontrou um defeito e não sabe como criar um teste automatizado neste cenário? Descreva como você relataria o problema para o desenvolvedor.
-- Encontrou um requisito de produto não especificado no protótipo? Descreva como você relataria para o designer.
-- Não existe um número mínimo e máximo de testes. Encontre um número que equilibre robustez do software e tempo de execução de testes.
-- O framework utilizado fica a seu critério.
+Implement automated tests for each scenario you find appropriate. Tests are expected to pass where the criteria are met and fail where they are not.
 
-## Como submeter a avaliação
-- Crie um branch remota com o seu nome;
-- Clone o repositório localmente;
-- Implemente o código na sua branch local;
-- Suba as alterações para sua branch remota;
-- Quando concluir o teste, comunique o seu contato do processo seletivo.
+## Evaluation Criteria
+
+The following items will be evaluated:
+
+* Organization and structure of the test repository.
+* Code documentation and readability.
+* Test quality and coverage.
+
+Also consider:
+
+* Found a defect but don’t know how to create an automated test for it? Describe how you would report the issue to the developer.
+* Found a product requirement not specified in the prototype? Describe how you would report it to the designer.
+* There is no minimum or maximum number of tests. Find a balance between software robustness and test execution time.
+* The choice of framework is up to you.
+
+## Ready to Begin the Challenges?
+
+* Fork this repository to your own Github account.
+* Create a new branch using your first name and last name. For example: `caroline-oliveira`.
+* After completing the challenge, create a pull request to this repository (https://github.com/dynamox-s-a/js-ts-full-stack-test) pointing to the main branch.
+* We will receive a notification about your pull request, review your solution and get in touch with you.
+<br>
+
+**Good luck! We look forward to reviewing your submission.** 🚀
+
+## Frequently Asked Questions
+
+* Is it necessary to fork the project?
+  **Yes, this allows us to see how much time you spent on the challenge.**
+
+* If I have more questions, who can I contact?
+  **Please reply to the email who sent you this test.**
