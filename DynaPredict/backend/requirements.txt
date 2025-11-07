@@ -5,4 +5,7 @@ python-dotenv==1.2.1
 python-jose==3.5.0
 python-multipart==0.0.20
 SQLAlchemy==2.0.44
-uvicorn==0.38.0..
+uvicorn==0.38.0
+sqlalchemy-utils==0.42.0
+alembic==1.17.1
+psycopg2-binary==2.9.11
