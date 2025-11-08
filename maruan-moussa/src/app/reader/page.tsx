@@ -4,80 +4,83 @@ import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import {
   Box,
   Container,
-  Card,
-  CardContent,
-  CardActions,
   Typography,
   TextField,
   MenuItem,
-  Button,
-  Chip,
   InputAdornment,
   CircularProgress,
 } from "@mui/material";
-import { CalendarMonth, LocationOn, Search } from "@mui/icons-material";
+import { Search } from "@mui/icons-material";
 import { useMemo, useState } from "react";
-import { categoryColors, categoryMap } from "@/constants/eventCategories";
+import { categoryOptions } from "@/constants/eventCategories";
 import { useEvents } from "@/hooks/useEventQueries";
-
-
+import { usePagination } from "@/hooks/usePagination";
+import { EventGrid } from "@/components/events/EventGrid";
+import { EventModel } from "@/dto/EventModelDto";
+import { PaginationControls } from "@/components/PaginationControls";
 
 export default function ReaderPage() {
   const [search, setSearch] = useState("");
   const [filterCategory, setFilterCategory] = useState("Todos");
-  const [sortBy, setSortBy] = useState("data");
-  const {data: events = [], isLoading, isError } = useEvents();
+  const [sortBy, setSortBy] = useState<"data" | "nome">("data");
+  const { data: events = [], isLoading, isError } = useEvents();
 
-  const now = useMemo(() => new Date(), []);
-
-  const filteredAndSortedEvents = useMemo(() => {
+  const { future, past } = useMemo(() => {
     if (!events.length) return { future: [], past: [] };
-  
+
     const normalizeDate = (date: Date) =>
       new Date(date.getFullYear(), date.getMonth(), date.getDate());
     const today = normalizeDate(new Date());
-  
+
     const searchLower = search.toLowerCase();
-  
-    let filtered = [...events].filter((e) => {
+    let filtered = events.filter((e) => {
       const title = e.title?.toLowerCase() || "";
-      const desc = e.description?.toLowerCase() || "";
-      const loc = e.location?.toLowerCase() || "";
-      return (
-        title.includes(searchLower) ||
-        desc.includes(searchLower) ||
-        loc.includes(searchLower)
-      );
+      return title.includes(searchLower);
     });
-  
+
     if (filterCategory !== "Todos") {
       filtered = filtered.filter(
         (e) => e.category.toLowerCase() === filterCategory.toLowerCase()
       );
     }
-  
+
     filtered.sort((a, b) => {
-      if (sortBy === "nome") {
-        return a.title.localeCompare(b.title);
-      }
+      if (sortBy === "nome") return a.title.localeCompare(b.title);
       return new Date(a.date).getTime() - new Date(b.date).getTime();
     });
-  
+
     const future = filtered.filter(
       (e) => normalizeDate(new Date(e.date)) >= today
     );
     const past = filtered.filter(
       (e) => normalizeDate(new Date(e.date)) < today
     );
-  
+
     return { future, past };
   }, [events, search, filterCategory, sortBy]);
-  
 
-  const { future, past } = filteredAndSortedEvents;
+  const {
+    paginatedData: paginatedFuture,
+    currentPage: futurePage,
+    totalPages: futureTotal,
+    isFirstPage: isFirstFuture,
+    isLastPage: isLastFuture,
+    nextPage: nextFuture,
+    prevPage: prevFuture,
+  } = usePagination<EventModel>(future, 9);
+
+  const {
+    paginatedData: paginatedPast,
+    currentPage: pastPage,
+    totalPages: pastTotal,
+    isFirstPage: isFirstPast,
+    isLastPage: isLastPast,
+    nextPage: nextPast,
+    prevPage: prevPast,
+  } = usePagination<EventModel>(past, 9);
 
   return (
-   <ProtectedRoute requiredRole="reader">
+    <ProtectedRoute requiredRole="reader">
       <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
         <Box sx={{ flex: 1, mt: 8 }}>
           <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -110,19 +113,17 @@ export default function ReaderPage() {
                 onChange={(e) => setFilterCategory(e.target.value)}
               >
                 <MenuItem value="Todos">Todas as categorias</MenuItem>
-                <MenuItem value="Conferência">Conferência</MenuItem>
-                <MenuItem value="Workshop">Workshop</MenuItem>
-                <MenuItem value="Webinar">Webinar</MenuItem>
-                <MenuItem value="Networking">Networking</MenuItem>
-                <MenuItem value="Outro">Outro</MenuItem>
+                {categoryOptions.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
               </TextField>
               <TextField
                 select
                 fullWidth
                 value={sortBy}
-                onChange={(e) =>
-                  setSortBy(e.target.value as "data" | "nome")
-                }
+                onChange={(e) => setSortBy(e.target.value as "data" | "nome")}
               >
                 <MenuItem value="data">Ordenar por data</MenuItem>
                 <MenuItem value="nome">Ordenar por nome</MenuItem>
@@ -154,7 +155,8 @@ export default function ReaderPage() {
             >
               Eventos Futuros
             </Typography>
-            {future.length === 0 ? (
+
+            {paginatedFuture.length === 0 ? (
               <Typography
                 variant="body1"
                 sx={{
@@ -167,85 +169,18 @@ export default function ReaderPage() {
                 Nenhum evento futuro encontrado.
               </Typography>
             ) : (
-              <Box
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: {
-                    xs: "1fr",
-                    sm: "1fr 1fr",
-                    md: "1fr 1fr 1fr",
-                  },
-                  gap: 3,
-                  mb: 6,
-                }}
-              >
-                {future.map((event) => (
-                  <Card
-                    key={event.id}
-                    sx={{
-                      backdropFilter: "blur(20px)",
-                      background: "rgba(255, 255, 255, 0.05)",
-                      border: "1px solid rgba(255, 255, 255, 0.1)",
-                      display: "flex",
-                      flexDirection: "column",
-                      height: "100%",
-                    }}
-                  >
-                    <CardContent sx={{ flex: 1 }}>
-                      <Box sx={{ mb: 2 }}>
-                        <Chip
-                          label={categoryMap[event.category] || event.category}
-                          color={categoryColors[event.category] || "default"}
-                          size="small"
-                        />
-                      </Box>
-                      <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
-                        {event.title}
-                      </Typography>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          mb: 1,
-                          color: "text.secondary",
-                        }}
-                      >
-                        <CalendarMonth sx={{ fontSize: 16, mr: 1 }} />
-                        {event.date}
-                      </Box>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          mb: 2,
-                          color: "text.secondary",
-                        }}
-                      >
-                        <LocationOn sx={{ fontSize: 16, mr: 1 }} />
-                        {event.location}
-                      </Box>
-                      <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                        {event.description}
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Button
-                        fullWidth
-                        variant="contained"
-                        sx={{
-                          background:
-                            "linear-gradient(135deg, #7C3AED 0%, #0891B2 100%)",
-                        }}
-                      >
-                        Ver Detalhes
-                      </Button>
-                    </CardActions>
-                  </Card>
-                ))}
-              </Box>
+              <>
+                <EventGrid events={paginatedFuture} />
+                <PaginationControls
+                  currentPage={futurePage}
+                  totalPages={futureTotal}
+                  onPrevPage={prevFuture}
+                  onNextPage={nextFuture}
+                  isFirstPage={isFirstFuture}
+                  isLastPage={isLastFuture}
+                />
+              </>
             )}
-
-            {/* 📆 Eventos Passados */}
             <Typography
               variant="h5"
               sx={{
@@ -258,7 +193,7 @@ export default function ReaderPage() {
               Eventos Passados
             </Typography>
 
-            {past.length === 0 ? (
+            {paginatedPast.length === 0 ? (
               <Typography
                 variant="body1"
                 sx={{
@@ -270,69 +205,17 @@ export default function ReaderPage() {
                 Nenhum evento passado encontrado.
               </Typography>
             ) : (
-              <Box
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: {
-                    xs: "1fr",
-                    sm: "1fr 1fr",
-                    md: "1fr 1fr 1fr",
-                  },
-                  gap: 3,
-                }}
-              >
-                {past.map((event) => (
-                  <Card
-                    key={event.id}
-                    sx={{
-                      backdropFilter: "blur(20px)",
-                      background: "rgba(255, 255, 255, 0.05)",
-                      border: "1px solid rgba(255, 255, 255, 0.1)",
-                      opacity: 0.75,
-                      display: "flex",
-                      flexDirection: "column",
-                      height: "100%",
-                    }}
-                  >
-                    <CardContent sx={{ flex: 1 }}>
-                      <Chip
-                        label={event.category}
-                        color={categoryColors[event.category] || "default"}
-                        size="small"
-                        sx={{ mb: 2 }}
-                      />
-                      <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
-                        {event.title}
-                      </Typography>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          mb: 1,
-                          color: "text.secondary",
-                        }}
-                      >
-                        <CalendarMonth sx={{ fontSize: 16, mr: 1 }} />
-                        {event.date}
-                      </Box>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          mb: 2,
-                          color: "text.secondary",
-                        }}
-                      >
-                        <LocationOn sx={{ fontSize: 16, mr: 1 }} />
-                        {event.location}
-                      </Box>
-                      <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                        {event.description}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                ))}
-              </Box>
+              <>
+                <EventGrid events={paginatedPast} faded />
+                <PaginationControls
+                  currentPage={pastPage}
+                  totalPages={pastTotal}
+                  onPrevPage={prevPast}
+                  onNextPage={nextPast}
+                  isFirstPage={isFirstPast}
+                  isLastPage={isLastPast}
+                />
+              </>
             )}
           </Container>
         </Box>

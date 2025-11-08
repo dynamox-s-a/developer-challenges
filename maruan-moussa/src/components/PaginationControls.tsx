@@ -1,70 +1,70 @@
 "use client";
 
 import { Box, Button, MenuItem, Select, Typography } from "@mui/material";
-import { ArrowBack, ArrowForward } from "@mui/icons-material";
 
 interface PaginationControlsProps {
   currentPage: number;
   totalPages: number;
-  itemsPerPage: number;
-  onItemsPerPageChange: (value: number) => void;
+  itemsPerPage?: number;
+  onItemsPerPageChange?: (value: number) => void;
   onPrevPage: () => void;
   onNextPage: () => void;
   isFirstPage: boolean;
   isLastPage: boolean;
+  showItemsPerPage?: boolean; 
 }
 
 export const PaginationControls = ({
   currentPage,
   totalPages,
-  itemsPerPage,
+  itemsPerPage = 5,
   onItemsPerPageChange,
   onPrevPage,
   onNextPage,
   isFirstPage,
   isLastPage,
+  showItemsPerPage = false, 
 }: PaginationControlsProps) => {
   return (
     <Box
       sx={{
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: showItemsPerPage ? "space-between" : "center",
         alignItems: "center",
-        mt: 0,
+        mt: 2,
         px: 2,
         py: 1.5,
         borderTop: "1px solid rgba(255,255,255,0.1)",
         borderRadius: "0 0 16px 16px",
       }}
     >
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        <Select
-          size="small"
-          value={itemsPerPage}
-          onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
-          sx={{
-            borderRadius: "12px",
-            fontWeight: 500,
-            "& .MuiSelect-select": {
-              py: 0.5,
-              px: 1.5,
-            },
-          }}
-        >
-          {[5, 10, 25].map((opt) => (
-            <MenuItem key={opt} value={opt}>
-              {opt} por página
-            </MenuItem>
-          ))}
-        </Select>
-      </Box>
-
-      {/* 📄 Navegação */}
+      {showItemsPerPage && (
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Select
+            size="small"
+            value={itemsPerPage}
+            onChange={(e) => onItemsPerPageChange?.(Number(e.target.value))}
+            sx={{
+              borderRadius: "12px",
+              fontWeight: 500,
+              "& .MuiSelect-select": {
+                py: 0.5,
+                px: 1.5,
+              },
+            }}
+          >
+            {[5, 10, 25].map((opt) => (
+              <MenuItem key={opt} value={opt}>
+                {opt} por página
+              </MenuItem>
+            ))}
+          </Select>
+        </Box>
+      )}
       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
         <Typography variant="body2" sx={{ fontWeight: 600, color: "text.secondary" }}>
           Página {currentPage} de {totalPages}
         </Typography>
-
         <Box sx={{ display: "flex", gap: 1 }}>
           <Button
             variant="outlined"
@@ -83,7 +83,6 @@ export const PaginationControls = ({
           >
             Anterior
           </Button>
-
           <Button
             variant="contained"
             disabled={isLastPage}

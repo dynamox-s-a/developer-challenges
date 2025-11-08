@@ -2,11 +2,12 @@ import { EventModel } from "@/dto/EventModelDto";
 import { useMemo } from "react";
 
 type SortOrder = "asc" | "desc";
-
+type sortBy = "title" | "date";
 interface UseFilteredEventsProps {
   events?: EventModel[];
   filter: string;
   sortOrder?: SortOrder;
+  sortBy?: sortBy;
 }
 
 export const useFilteredEvents = ({

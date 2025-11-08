@@ -1,46 +1,42 @@
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 
-interface UsePaginationOptions<T> {
-  data?: T[];
-  itemsPerPage?: number;
-  onPageChange?: (page: number) => void;
-}
+type PaginationParams<T> =
+  | T[] 
+  | { data: T[]; itemsPerPage?: number };
 
-export function usePagination<T>({
-  data = [],
-  itemsPerPage = 5,
-  onPageChange,
-}: UsePaginationOptions<T>) {
+export function usePagination<T>(
+  input: PaginationParams<T>,
+  itemsPerPageParam?: number
+) {
+  const data = Array.isArray(input) ? input : input.data;
+  const itemsPerPage = Array.isArray(input)
+    ? itemsPerPageParam ?? 10
+    : input.itemsPerPage ?? 10;
+
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.max(1, Math.ceil(data.length / itemsPerPage));
 
-  const safePage = Math.min(currentPage, totalPages);
-
   const paginatedData = useMemo(() => {
-    const start = (safePage - 1) * itemsPerPage;
-    return data.slice(start, start + itemsPerPage);
-  }, [data, safePage, itemsPerPage]);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return data.slice(startIndex, startIndex + itemsPerPage);
+  }, [data, currentPage, itemsPerPage]);
 
-  const handlePageChange = (page: number) => {
-    const nextPage = Math.min(Math.max(page, 1), totalPages);
-    setCurrentPage(nextPage);
-    onPageChange?.(nextPage);
-  };
-
-  const nextPage = () => handlePageChange(currentPage + 1);
-  const prevPage = () => handlePageChange(currentPage - 1);
+  const nextPage = () => setCurrentPage((p) => Math.min(p + 1, totalPages));
+  const prevPage = () => setCurrentPage((p) => Math.max(p - 1, 1));
+  const handlePageChange = (page: number) =>
+    setCurrentPage(Math.min(Math.max(page, 1), totalPages));
   const resetPage = () => setCurrentPage(1);
 
   return {
-    currentPage: safePage,
-    totalPages,
     paginatedData,
+    currentPage,
+    totalPages,
     nextPage,
     prevPage,
     handlePageChange,
     resetPage,
-    isFirstPage: safePage === 1,
-    isLastPage: safePage === totalPages,
+    isFirstPage: currentPage === 1,
+    isLastPage: currentPage === totalPages,
   };
 }
