@@ -15,13 +15,37 @@
   ],
   "events": [
     {
-      "id": "bfdd",
+      "id": 1,
       "title": "teste de evento com nome gigantesco",
       "date": "2025-11-06",
       "time": "02:10",
       "location": "São Paulo, SP",
       "category": "conferencia",
       "description": "asasasasasdsadasdwqeewqdeqwdsdsadqwewsaddasfdaqwwewqe"
+    },
+    {
+      "id": 2,
+      "title": "Workshop React",
+      "date": "2025-12-10",
+      "location": "Florianópolis",
+      "description": "Evento sobre React avançado.",
+      "category": "Workshop"
+    },
+    {
+      "id": 3,
+      "title": "Webinar Cloud",
+      "date": "2025-11-01",
+      "location": "Online",
+      "description": "Palestra sobre arquitetura de nuvem.",
+      "category": "Webinar"
+    },
+    {
+      "id": 4,
+      "title": "Conferência Dev Summit",
+      "date": "2025-10-01",
+      "location": "São Paulo",
+      "description": "Maior conferência de tecnologia do país.",
+      "category": "Conferência"
     }
   ]
 }

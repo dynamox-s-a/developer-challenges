@@ -8,7 +8,6 @@ const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700"],
 });
 
-/* ========================= LIGHT THEME ========================= */
 export const lightTheme = createTheme({
   palette: {
     mode: "light",
@@ -78,7 +77,6 @@ export const lightTheme = createTheme({
   },
 });
 
-/* ========================= DARK THEME ========================= */
 export const darkTheme = createTheme({
   palette: {
     mode: "dark",
@@ -91,8 +89,8 @@ export const darkTheme = createTheme({
       main: "#06B6D4",
     },
     background: {
-      default: "#0A0A0A", // preto absoluto
-      paper: "rgba(17, 24, 39, 0.85)", // translúcido
+      default: "#0A0A0A", 
+      paper: "rgba(17, 24, 39, 0.85)",
     },
     text: {
       primary: "#E0E7FF",
