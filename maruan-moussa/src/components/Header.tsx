@@ -11,7 +11,7 @@ import {
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { useThemeMode } from "@/context/ThemeContext";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { useEffect } from "react";
 import { loadAuthFromStorage, logout } from "@/store/authSlice";
@@ -20,6 +20,7 @@ import { useMediaQuery } from "@/hooks/useMediaQuery";
 export default function Header() {
   const { mode, toggleTheme } = useThemeMode();
   const router = useRouter();
+  const pathname = usePathname();
   const dispatch = useAppDispatch();
   const { isAuthenticated, user } = useAppSelector((state) => state.auth);
   const isMobile = useMediaQuery("(max-width: 600px)");
@@ -28,14 +29,12 @@ export default function Header() {
     dispatch(loadAuthFromStorage());
   }, [dispatch]);
 
-  const handleAuthAction = () => {
-    if (isAuthenticated) {
-      dispatch(logout());
-      router.push("/");
-    } else {
-      router.push("/login");
-    }
+  const handleLogout = () => {
+    dispatch(logout());
+    router.push("/");
   };
+
+  const isLoginPage = pathname === "/";
 
   return (
     <AppBar
@@ -73,7 +72,7 @@ export default function Header() {
                 mode === "dark"
                   ? "0 0 8px rgba(124,58,237,0.4)"
                   : "0 0 8px rgba(8,145,178,0.25)",
-                  backgroundColor: "transparent", 
+              backgroundColor: "transparent",
             }}
           />
           <Typography
@@ -97,26 +96,31 @@ export default function Header() {
               : "Event Manager"}
           </Typography>
         </Box>
+
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <Button
-            variant="contained"
-            onClick={handleAuthAction}
-            sx={{
-              borderRadius: "10px",
-              textTransform: "none",
-              fontWeight: 600,
-              px: { xs: 2, sm: 3 },
-              py: { xs: 0.7, sm: 1 },
-              fontSize: { xs: "0.85rem", sm: "0.8rem" },
-              background: "linear-gradient(135deg, #7C3AED 0%, #0891B2 100%)",
-              "&:hover": {
-                background: "linear-gradient(135deg, #6D28D9 0%, #0E7490 100%)",
-                transform: "translateY(-2px)",
-              },
-            }}
-          >
-            {isAuthenticated ? "Logout" : "Login"}
-          </Button>
+          {isAuthenticated && !isLoginPage && (
+            <Button
+              variant="contained"
+              onClick={handleLogout}
+              sx={{
+                borderRadius: "10px",
+                textTransform: "none",
+                fontWeight: 600,
+                px: { xs: 2, sm: 3 },
+                py: { xs: 0.7, sm: 1 },
+                fontSize: { xs: "0.85rem", sm: "0.8rem" },
+                background: "linear-gradient(135deg, #7C3AED 0%, #0891B2 100%)",
+                "&:hover": {
+                  background:
+                    "linear-gradient(135deg, #6D28D9 0%, #0E7490 100%)",
+                  transform: "translateY(-2px)",
+                },
+              }}
+            >
+              Logout
+            </Button>
+          )}
+
           <IconButton
             onClick={toggleTheme}
             aria-label="toggle-theme"
