@@ -9,3 +9,4 @@ uvicorn==0.38.0
 sqlalchemy-utils==0.42.0
 alembic==1.17.1
 psycopg2-binary==2.9.11
+fastapi-pagination==0.10.5
