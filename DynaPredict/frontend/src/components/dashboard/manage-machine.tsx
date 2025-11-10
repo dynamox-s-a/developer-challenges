@@ -34,11 +34,7 @@ export function MachineManagement(): React.JSX.Element {
   async function getMachine() {
     try {
       setLoading(true);
-      const response = await api.get("/machine", {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("access_token"),
-        },
-      });
+      const response = await api.get("/machine");
       setMachines(Array.isArray(response.data) ? response.data : []);
     } catch (err) {
       console.error("Failed to fetch machines:", err);
@@ -62,7 +58,7 @@ export function MachineManagement(): React.JSX.Element {
       // simple user feedback — replace with Snackbar if you prefer
       window.alert("Erro ao excluir máquina");
     } finally {
-    //   getMachine();
+      //   getMachine();
       setDeletingId(null);
     }
   }

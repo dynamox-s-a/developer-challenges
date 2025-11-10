@@ -35,11 +35,7 @@ export function CreateMachine(): React.JSX.Element {
     const response = await api.post(
       "/machine",
       { name, type },
-      {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("access_token"),
-        },
-      }
+      
     );
 
     console.log("response", response);

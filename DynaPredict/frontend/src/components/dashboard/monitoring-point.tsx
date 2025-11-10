@@ -25,11 +25,7 @@ export function MonitoringPointTable() {
   const fetchPoints = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await api.get("/monitoring-point", {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("access_token"),
-        },
-      });
+      const response = await api.get("/monitoring-point");
       console.log("API response:", response);
       // A API retorna um array diretamente em .data ou em .data.items
       const rawData = response.data.items || response.data || [];

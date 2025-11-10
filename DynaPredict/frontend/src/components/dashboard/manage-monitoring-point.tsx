@@ -68,11 +68,7 @@ export function MonitoringPointManagement(): React.JSX.Element {
   const loadPoints = React.useCallback(async () => {
     try {
       setLoading(true);
-      const res = await api.get("/monitoring-point", {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("access_token"),
-        },
-      });
+      const res = await api.get("/monitoring-point");
       // A API retorna 'monitoring_point_id' como o ID principal.
       const data = (res.data.items || res.data.data || res.data || []).map(
         (item: any, index: number) => ({
@@ -179,41 +175,6 @@ export function MonitoringPointManagement(): React.JSX.Element {
       loadPoints();
       setActionState(null);
     }
-  }
-
-  function handleDeleteMonitoringPoint(pointId?: number): void {
-    // If no id provided, inform the user and abort
-    if (typeof pointId === "undefined" || pointId === null) {
-      setStatusMessage({
-        message: "ID do ponto de monitoramento não fornecido.",
-        severity: "error",
-      });
-      return;
-    }
-
-    (async () => {
-      setLoading(true);
-      try {
-        await api.delete(`/monitoring-point/${pointId}`, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
-          },
-        });
-        setStatusMessage({
-          message: "Ponto de monitoramento excluído com sucesso.",
-          severity: "success",
-        });
-        await loadPoints();
-      } catch (err) {
-        console.error("Erro ao excluir ponto de monitoramento:", err);
-        setStatusMessage({
-          message: "Erro ao excluir ponto de monitoramento.",
-          severity: "error",
-        });
-      } finally {
-        setLoading(false);
-      }
-    })();
   }
 
   return (
