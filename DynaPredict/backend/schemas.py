@@ -23,3 +23,10 @@ class MachineUpdateSchema(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class SensorCreateSchema(BaseModel):
+    model: str
+
+    class Config:
+        from_attributes = True
