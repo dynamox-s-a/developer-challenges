@@ -15,6 +15,8 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { logout } from "../../features/auth-slice";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
 import HomeIcon from "@mui/icons-material/Home";
@@ -95,6 +97,7 @@ export interface LayoutProps {
 export function DashboardLayout({ children }: { children: ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
@@ -152,7 +155,14 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
 
       <Box sx={{ p: 2 }}>
         <Button
-          onClick={() => navigate("/login")}
+          onClick={() => {
+            try {
+              dispatch(logout());
+            } catch (e) {
+              console.error("Logout dispatch failed:", e);
+            }
+            navigate("/login");
+          }}
           startIcon={<LogoutIcon color="error" />}
           sx={{
             color: "error.main",
