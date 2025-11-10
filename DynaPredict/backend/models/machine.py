@@ -6,23 +6,17 @@ from .base import Base
 class Machine(Base):
     __tablename__ = 'machines'
 
-    MACHINE_TYPES = [
-        ('PUMP', 'Pump'),
-        ('FAN', 'Fan'),
-    ]
-
     id = Column("id", Integer, primary_key=True, autoincrement=True)
-    name = Column("name", String, nullable=False)
-    # type = Column("type", ChoiceType(choices=MACHINE_TYPES), nullable=False)
+    name = Column("name", String, nullable=False, unique=True)
     type = Column("type", String, nullable=False)
 
-    # Chave estrangeira para o usuário
+    # Chave estrangeira para o usuário proprietário
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
 
-    # Relacionamento de volta para User
+    # Relacionamento de volta para User (muitas máquinas -> 1 usuário)
     user = relationship("User", back_populates="machines")
 
-    # Relacionamento: Uma máquina para muitos pontos de monitoramento
+    # Relacionamento: uma máquina pode ter muitos pontos de monitoramento
     monitoring_points = relationship(
         "MonitoringPoint", back_populates="machine", cascade="all, delete-orphan")
 

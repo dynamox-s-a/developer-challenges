@@ -13,13 +13,16 @@ class Sensor(Base):
     ]
 
     id = Column("id", Integer, primary_key=True, autoincrement=True)
-    # model = Column("model", ChoiceType(choices=SENSOR_MODELS), nullable=False)
     model = Column("model", String, nullable=False)
-    monitoring_point_id = Column(Integer, ForeignKey(
-        'monitoring_points.id'), unique=True, nullable=False)
+    # Relacionamento de volta para User (muitos sensores -> 1 usuário)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    user = relationship("User", back_populates="sensors")
 
-    # Relacionamento de volta para MonitoringPoint
-    monitoring_point = relationship("MonitoringPoint", back_populates="sensor")
+    # Relacionamento 1:1 com MonitoringPoint.
+    # A chave estrangeira fica em MonitoringPoint.sensor_id (uma coluna única em monitoring_points).
+    monitoring_point = relationship(
+        "MonitoringPoint", back_populates="sensor", uselist=False)
 
-    def __init__(self, model: str, monitoring_point_id: int):
+    def __init__(self, model: str, user_id: int):
         self.model = model
+        self.user_id = user_id

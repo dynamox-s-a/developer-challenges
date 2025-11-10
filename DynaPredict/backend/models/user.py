@@ -8,12 +8,18 @@ class User(Base):
 
     id = Column("id", Integer, primary_key=True, autoincrement=True)
     email = Column("email", String, nullable=False, unique=True)
-    # Lembre-se de armazenar um hash da senha, não a senha em texto plano.
     password = Column("password", String, nullable=False)
+    # Relacionamento 1:N um usuário pode ter várias máquinas
+    machines = relationship(
+        "Machine", back_populates="user", cascade="all, delete-orphan")
 
-    # # Relacionamento: Um usuário para muitas máquinas
-    # machines = relationship(
-    #     "Machine", back_populates="user", cascade="all, delete-orphan")
+    # Relacionamento 1:N um usuário pode ter vários sensores
+    sensors = relationship(
+        "Sensor", back_populates="user", cascade="all, delete-orphan")
+
+    # Relacionamento 1:N um usuário pode ter vários pontos de monitoramento
+    monitoring_points = relationship(
+        "MonitoringPoint", back_populates="user", cascade="all, delete-orphan")
 
     def __init__(self, email: str, password: str):
         self.email = email

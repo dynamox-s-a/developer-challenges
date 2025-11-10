@@ -24,6 +24,7 @@ def get_session():
 
 
 def verify_token(token: str = Depends(oauth2_scheme), session: Session = Depends(get_session)):
+    print(token)
     if not SECRET_KEY:
         raise RuntimeError("SECRET_KEY environment variable is not set")
     try:
