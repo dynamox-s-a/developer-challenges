@@ -1,35 +1,23 @@
-import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../features/auth-slice";
-import type { RootState } from "../features/store";
-import { Link } from "react-router-dom";
+import { DashboardLayout } from "../components/dashboard/layout";
+import { MonitoringPointTable } from "../components/dashboard/monitoring-point";
+import { Typography, Divider } from "@mui/material";
 
-export default function HomePage() {
-  const dispatch = useDispatch();
-  const { isLogged, access_token } = useSelector(
-    (state: RootState) => state.auth
-  );
-
+// Dashboard page
+export function Dashboard() {
   return (
-    <div style={{ padding: 20 }}>
-      <h1>🏠 Página Inicial</h1>
-      {isLogged ? (
-        <>
-          <p>Você está logado ✅</p>
-          <p>
-            Token atual:{" "}
-            {access_token ? `${access_token.slice(0, 20)}...` : "---"}
-          </p>
-          <button onClick={() => dispatch(logout())}>Sair</button>
-          <br />
-          <Link to="/protected">Ir para rota protegida</Link>
-        </>
-      ) : (
-        <>
-          <p>Você não está logado ❌</p>
-          <Link to="/login">Fazer login</Link> |{" "}
-          <Link to="/register">Criar conta</Link>
-        </>
-      )}
-    </div>
+    <DashboardLayout>
+      <Typography variant="h4" gutterBottom>
+        Visão Geral da Fábrica
+      </Typography>
+      <Divider sx={{ mb: 3 }} />
+
+      <Typography variant="h5" sx={{ mb: 2 }}>
+        Pontos de Monitoramento Cadastrados
+      </Typography>
+
+      <MonitoringPointTable data={[]} />
+    </DashboardLayout>
   );
 }
+
+export default Dashboard;

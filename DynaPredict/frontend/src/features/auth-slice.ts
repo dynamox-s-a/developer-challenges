@@ -1,5 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { authClient, type UserParams } from "../services/auth-client";
+
+const initialState = {
+  access_token: localStorage.getItem("access_token") || "",
+  refresh_token: localStorage.getItem("refresh_token") || "",
+  isLogged: (() => {
+    try {
+      if (typeof window === "undefined") return false;
+      const token = localStorage.getItem("access_token");
+      return Boolean(token);
+    } catch {
+      return false;
+    }
+  })(),
+  error: null as string | null,
+};
+
 export const loginUser = createAsyncThunk(
   "auth/login",
   async (user: UserParams, { rejectWithValue }) => {
@@ -16,21 +32,6 @@ export const loginUser = createAsyncThunk(
     };
   }
 );
-
-const initialState = {
-  access_token: localStorage.getItem("access_token") || "",
-  refresh_token: localStorage.getItem("refresh_token") || "",
-  isLogged: (() => {
-    try {
-      if (typeof window === "undefined") return false;
-      const token = localStorage.getItem("access_token");
-      return Boolean(token);
-    } catch {
-      return false;
-    }
-  })(),
-  error: null as string | null,
-};
 
 const authSlice = createSlice({
   name: "auth",
@@ -58,4 +59,5 @@ const authSlice = createSlice({
 });
 
 export const { logout } = authSlice.actions;
+export const selectUser = (state: { user: any; }) => state.user;
 export default authSlice.reducer;
