@@ -1,5 +1,4 @@
-import { Suspense, lazy } from "react";
-// No hooks used here; pages handle auth checks themselves.
+import { Suspense } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -14,12 +13,8 @@ import Dashboard from "./pages/dashboard";
 import { CreateMachine } from "./components/dashboard/create-machine";
 import { MachineManagement } from "./components/dashboard/manage-machine";
 import { EditMachine } from "./components/dashboard/edit-machine";
-// Route-level code-splitting: defer page code until route is visited.
-// const LoginPage = lazy(() => import("./pages/Login"));
-// const CreateAccountPage = lazy(() => import("./pages/CreateAccount"));
-// const Dashboard = lazy(() => import("./pages/dashboard"));
-
-// Keep PrivateRoute inline in files that need it to avoid unused symbol lint.
+import { CreateSensor } from "./components/dashboard/create-sensor";
+import { SensorManagement } from "./components/dashboard/manage-sensor";
 
 export default function App() {
   return (
@@ -76,11 +71,24 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/sensors"
+            element={<Navigate to="/sensors/manage" replace />}
+          />
+          <Route
+            path="/sensors/create"
             element={
               <ProtectedRoute>
-                <div style={{ padding: 24 }}>Sensores - Em desenvolvimento</div>
+                <CreateSensor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/sensors/manage"
+            element={
+              <ProtectedRoute>
+                <SensorManagement />
               </ProtectedRoute>
             }
           />

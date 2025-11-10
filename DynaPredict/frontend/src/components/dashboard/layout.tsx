@@ -19,7 +19,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
 import HomeIcon from "@mui/icons-material/Home";
 import MemoryIcon from "@mui/icons-material/Memory";
-import SettingsIcon from "@mui/icons-material/Settings";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SensorsIcon from "@mui/icons-material/Sensors";
 import AddIcon from "@mui/icons-material/Add";
