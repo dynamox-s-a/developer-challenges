@@ -1,124 +1,87 @@
+import { useEffect, useState, useCallback } from "react";
 import {
   Box,
   Typography,
   IconButton,
   Tooltip,
   CircularProgress,
-  Chip,
 } from "@mui/material";
-import {
-  DataGrid,
-  type GridColDef,
-  type GridRenderCellParams,
-} from "@mui/x-data-grid";
+import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { api } from "../../services/api";
 
 export interface MonitoringPoint {
-  id: number;
-  name: string;
-  machine: string;
-  sensor_model: string;
-  created_at: string;
-  status: "active" | "inactive" | "fault";
+  id: number; // Adicionado para a chave do DataGrid
+  monitoring_point_name: string;
+  machine_name?: string;
+  machine_type?: string;
+  sensor_model?: string;
 }
 
-interface MonitoringPointTableProps {
-  data: MonitoringPoint[];
-  loading?: boolean;
-  onRefresh?: () => void;
-  onEdit?: (id: number) => void;
-  onDelete?: (id: number) => void;
-}
+export function MonitoringPointTable() {
+  const [data, setData] = useState<MonitoringPoint[]>([]);
+  const [loading, setLoading] = useState(false);
 
-export function MonitoringPointTable({
-  data,
-  loading = false,
-  onRefresh,
-  onEdit,
-  onDelete,
-}: MonitoringPointTableProps) {
+  const fetchPoints = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await api.get("/monitoring-point", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("access_token"),
+        },
+      });
+      console.log("API response:", response);
+      // A API retorna um array diretamente em .data ou em .data.items
+      const rawData = response.data.items || response.data || [];
+      const formattedData = rawData.map((item: any, index: number) => ({
+        id: item.monitoring_point_id ?? item.id ?? index, // Garante que o ID correto seja usado
+        machine_name: item.machine_name,
+        machine_type: item.machine_type,
+        monitoring_point_name: item.monitoring_point_name,
+        sensor_model: item.sensor_model,
+      }));
+      setData(formattedData);
+    } catch (error) {
+      // Adicionando um log de erro mais visível
+      console.error("Failed to fetch monitoring points:", error);
+      // Você pode adicionar um feedback para o usuário aqui, como um Snackbar
+      setData([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchPoints();
+  }, [fetchPoints]);
+
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 70 },
+    // Nome da Máquina
     {
-      field: "name",
-      headerName: "Ponto de Monitoramento",
+      field: "machine_name",
+      headerName: "Nome da Máquina",
       flex: 1,
       minWidth: 180,
     },
+    // Tipo da Máquina
     {
-      field: "machine",
-      headerName: "Máquina",
-      flex: 1,
-      minWidth: 180,
+      field: "machine_type",
+      headerName: "Tipo da Máquina",
+      width: 180,
     },
+    // Nome do Ponto de Monitoramento
+    {
+      field: "monitoring_point_name",
+      headerName: "Nome do Ponto de Monitoramento",
+      flex: 1,
+      minWidth: 220,
+    },
+    // Modelo do Sensor
     {
       field: "sensor_model",
-      headerName: "Sensor",
+      headerName: "Modelo do Sensor",
       flex: 1,
       minWidth: 150,
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      width: 140,
-      renderCell: (params: GridRenderCellParams) => {
-        const color =
-          params.value === "active"
-            ? "success"
-            : params.value === "inactive"
-            ? "default"
-            : "error";
-        const label =
-          params.value === "active"
-            ? "Ativo"
-            : params.value === "inactive"
-            ? "Inativo"
-            : "Falha";
-        return <Chip label={label} color={color} size="small" />;
-      },
-    },
-    {
-      field: "created_at",
-      headerName: "Criado em",
-      flex: 1,
-      minWidth: 150, // Ensure params.value is treated as a string or Date
-      valueFormatter: (params: GridRenderCellParams<MonitoringPoint, string>) =>
-        new Date(params.value as string).toLocaleDateString("pt-BR", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-        }),
-    },
-    {
-      field: "actions",
-      headerName: "Ações",
-      width: 120,
-      sortable: false,
-      align: "center",
-      renderCell: (params: GridRenderCellParams) => (
-        <Box>
-          {onEdit && (
-            <Tooltip title="Editar">
-              <IconButton size="small" onClick={() => onEdit(params.row.id)}>
-                <EditIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          )}
-          {onDelete && (
-            <Tooltip title="Excluir">
-              <IconButton
-                size="small"
-                color="error"
-                onClick={() => onDelete(params.row.id)}
-              >
-                <DeleteIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          )}
-        </Box>
-      ),
     },
   ];
 
@@ -135,21 +98,23 @@ export function MonitoringPointTable({
         <Typography variant="h6" fontWeight={600}>
           Pontos de Monitoramento
         </Typography>
-        {onRefresh && (
-          <Tooltip title="Atualizar">
-            <IconButton color="primary" onClick={onRefresh}>
-              <RefreshIcon />
-            </IconButton>
-          </Tooltip>
-        )}
+        <Tooltip title="Atualizar">
+          <IconButton color="primary" onClick={fetchPoints}>
+            <RefreshIcon />
+          </IconButton>
+        </Tooltip>
       </Box>
 
       <DataGrid
         rows={data}
         columns={columns}
         disableRowSelectionOnClick
-        autoHeight
         density="comfortable"
+        initialState={{
+          pagination: {
+            paginationModel: { pageSize: 5 },
+          },
+        }}
         pageSizeOptions={[5, 10, 25]}
         loading={loading}
         slots={{

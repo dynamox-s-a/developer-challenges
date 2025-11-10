@@ -39,7 +39,6 @@ export function MachineManagement(): React.JSX.Element {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
       });
-      // assume response.data is an array of machines
       setMachines(Array.isArray(response.data) ? response.data : []);
     } catch (err) {
       console.error("Failed to fetch machines:", err);
@@ -51,7 +50,6 @@ export function MachineManagement(): React.JSX.Element {
 
   useEffect(() => {
     getMachine();
-    // optionally we could add polling or refresh on focus
   }, []);
 
   async function handleDelete(id: number) {

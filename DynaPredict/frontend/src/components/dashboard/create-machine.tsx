@@ -77,7 +77,7 @@ export function CreateMachine(): React.JSX.Element {
   return (
     <DashboardLayout>
       <Typography variant="h4" gutterBottom>
-        Gestão de Máquinas: Criar
+        Gestão de Máquinas
       </Typography>
       <Divider sx={{ mb: 3 }} />
 

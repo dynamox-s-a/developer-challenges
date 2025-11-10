@@ -25,8 +25,6 @@ import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 const DRAWER_WIDTH = 240;
 
-
-
 interface MenuItem {
   text: string;
   icon?: React.ReactElement | null;
@@ -65,6 +63,11 @@ const menuItems: MenuItem[] = [
         text: "Criar",
         icon: <AddIcon />,
         path: "/monitoring-points/create",
+      },
+      {
+        text: "Gerenciar",
+        icon: <EditIcon />,
+        path: "/monitoring-points/manage",
       },
     ],
   },
@@ -105,7 +108,6 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
 
       <Divider />
 
-     
       <List component="nav" sx={{ flexGrow: 1, overflowY: "auto" }}>
         {menuItems.map((item, idx) => (
           <React.Fragment key={idx}>
@@ -166,7 +168,6 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
 
   return (
     <Box sx={{ display: "flex" }}>
-     
       <AppBar
         position="fixed"
         sx={{
@@ -184,18 +185,9 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
           >
             <MenuIcon />
           </IconButton>
-
-          {/* <Button
-            color="inherit"
-            onClick={handleLogout}
-            sx={{ display: { xs: "none", sm: "flex" } }}
-          >
-            <LogoutIcon sx={{ mr: 1 }} /> Sair
-          </Button> */}
         </Toolbar>
       </AppBar>
 
-      
       <Box
         component="nav"
         sx={{ width: { sm: DRAWER_WIDTH }, flexShrink: { sm: 0 } }}

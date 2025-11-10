@@ -15,6 +15,9 @@ import { MachineManagement } from "./components/dashboard/manage-machine";
 import { EditMachine } from "./components/dashboard/edit-machine";
 import { CreateSensor } from "./components/dashboard/create-sensor";
 import { SensorManagement } from "./components/dashboard/manage-sensor";
+import { CreateMonitoringPoint } from "./components/dashboard/create-monitoring-point";
+import { MonitoringPointManagement } from "./components/dashboard/manage-monitoring-point";
+import RemoveMonitoringPoint from "./components/dashboard/remove-monitoring-point";
 
 export default function App() {
   return (
@@ -33,7 +36,6 @@ export default function App() {
             }
           />
 
-          {/* Machine management routes */}
           <Route
             path="/machines/create"
             element={
@@ -60,14 +62,27 @@ export default function App() {
             }
           />
 
-          {/* Monitoring / sensors / settings placeholders */}
           <Route
             path="/monitoring-points/create"
             element={
               <ProtectedRoute>
-                <div style={{ padding: 24 }}>
-                  Ponto de Monitoramento - Em desenvolvimento
-                </div>
+                <CreateMonitoringPoint />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/monitoring-points/manage"
+            element={
+              <ProtectedRoute>
+                <MonitoringPointManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/monitoring-points/remove"
+            element={
+              <ProtectedRoute>
+                <RemoveMonitoringPoint />
               </ProtectedRoute>
             }
           />
@@ -89,16 +104,6 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <SensorManagement />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <ProtectedRoute>
-                <div style={{ padding: 24 }}>
-                  Configurações - Em desenvolvimento
-                </div>
               </ProtectedRoute>
             }
           />
