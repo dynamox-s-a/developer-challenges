@@ -5,9 +5,9 @@ import {
   Box,
   Typography,
   Chip,
-  Button,
+  IconButton,
 } from "@mui/material";
-import { CalendarMonth, LocationOn } from "@mui/icons-material";
+import { CalendarMonth, Delete, Edit, LocationOn } from "@mui/icons-material";
 import { categoryColors, categoryMap } from "@/constants/eventCategories";
 import { EventModel } from "@/dto/EventModelDto";
 
@@ -16,14 +16,18 @@ interface EventCardExpandableProps {
   expandedId: string | null;
   onToggle: (id: string | null) => void;
   faded?: boolean;
+  onEdit?: (event: EventModel) => void;
+  onDelete?: (event: EventModel) => void;
 }
 
 export default function EventCardExpandable({
   event,
   expandedId,
   onToggle,
+  onEdit,
+  onDelete,
 }: EventCardExpandableProps) {
-    const expanded = expandedId === String(event.id);
+  const expanded = expandedId === String(event.id);
 
 
   return (
@@ -51,11 +55,11 @@ export default function EventCardExpandable({
         boxShadow: expanded
           ? "0 15px 45px rgba(124,58,237,0.3)"
           : "0 5px 20px rgba(0,0,0,0.1)",
-          paddingTop: "24px",
-          paddingRight: "24px",
-          paddingLeft: "24px",
-          paddingBottom: expanded ? "36px" : "24px",
-        
+        paddingTop: "24px",
+        paddingRight: "24px",
+        paddingLeft: "24px",
+        paddingBottom: expanded ? "36px" : "24px",
+
       }}
     >
       <motion.div layout="position">
@@ -121,6 +125,36 @@ export default function EventCardExpandable({
           </Typography>
         </motion.div>
       )}
+
+      {(onEdit || onDelete) && (
+        <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-end", mt: 2 }}>
+          {onEdit && (
+            <IconButton
+              size="small"
+              color="primary"
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit(event);
+              }}
+            >
+              <Edit fontSize="small" />
+            </IconButton>
+          )}
+          {onDelete && (
+            <IconButton
+              size="small"
+              color="error"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete(event);
+              }}
+            >
+              <Delete fontSize="small" />
+            </IconButton>
+          )}
+        </Box>
+      )}
+
     </motion.div>
   );
 }

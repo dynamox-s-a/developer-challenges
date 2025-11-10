@@ -6,9 +6,11 @@ import EventCardExpandable from "./EventCardExpandable";
 interface EventGridProps {
     events: EventModel[];
     faded?: boolean;
+    onEdit?: (event: EventModel) => void;
+    onDelete?: (event: EventModel) => void;
 }
 
-export function EventGrid({ events, faded = false }: EventGridProps) {
+export function EventGrid({ events, faded = false, onEdit, onDelete }: EventGridProps) {
     const [expandedId, setExpandedId] = useState<string | null>(null);
     return (
         <Box
@@ -30,6 +32,8 @@ export function EventGrid({ events, faded = false }: EventGridProps) {
                     expandedId={expandedId}
                     onToggle={setExpandedId}
                     faded={faded}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
                 />
             ))}
         </Box>

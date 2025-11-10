@@ -15,37 +15,61 @@
   ],
   "events": [
     {
-      "id": 1,
-      "title": "teste de evento com nome gigantesco",
-      "date": "2025-11-06",
-      "time": "02:10",
+      "id": "1",
+      "title": "Conferência Dev Summit",
+      "date": "2025-12-15",
       "location": "São Paulo, SP",
-      "category": "conferencia",
-      "description": "asasasasasdsadasdwqeewqdeqwdsdsadqwewsaddasfdaqwwewqe"
+      "description": "Maior conferência de tecnologia da América Latina, com foco em inovação e engenharia de software.",
+      "category": "Conferência"
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "Workshop React",
       "date": "2025-12-10",
       "location": "Florianópolis",
-      "description": "Evento sobre React avançado.",
+      "description": "Evento sobre React avançado, cobrindo otimizações, hooks customizados e SSR com Next.js.",
       "category": "Workshop"
     },
     {
-      "id": 3,
+      "id": "3",
+      "title": "Hackathon Dynamox",
+      "date": "2025-11-28",
+      "location": "Joinville, SC",
+      "description": "Desafio de 48 horas para criar soluções inovadoras usando IoT e dados industriais.",
+      "category": "Hackathon"
+    },
+    {
+      "id": "4",
       "title": "Webinar Cloud",
-      "date": "2025-11-01",
+      "date": "2025-10-01",
       "location": "Online",
-      "description": "Palestra sobre arquitetura de nuvem.",
+      "description": "Palestra sobre arquitetura de nuvem e boas práticas de segurança.",
       "category": "Webinar"
     },
     {
-      "id": 4,
-      "title": "Conferência Dev Summit",
-      "date": "2025-10-01",
-      "location": "São Paulo",
-      "description": "Maior conferência de tecnologia do país.",
+      "id": "5",
+      "title": "Encontro Frontend Floripa",
+      "date": "2025-09-20",
+      "location": "Florianópolis, SC",
+      "description": "Meetup local de desenvolvedores front-end com talks e networking.",
+      "category": "Meetup"
+    },
+    {
+      "id": "6",
+      "title": "Dev Week 2025",
+      "date": "2025-08-10",
+      "location": "Curitiba, PR",
+      "description": "Semana de palestras e workshops sobre desenvolvimento full stack e tendências de mercado.",
       "category": "Conferência"
+    },
+    {
+      "id": "66fe",
+      "title": "teste de novo evento",
+      "date": "2025-11-15",
+      "time": "02:10",
+      "location": "Florianopolis, sc",
+      "category": "conferencia",
+      "description": "conferencia de teste, precisamos juntar todos os devs"
     }
   ]
 }

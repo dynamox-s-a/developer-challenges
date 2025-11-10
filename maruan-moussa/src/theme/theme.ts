@@ -46,6 +46,15 @@ export const lightTheme = createTheme({
           minHeight: "100vh",
           transition: "background 0.3s ease",
         },
+        input: {
+          "&:-webkit-autofill, &:-webkit-autofill:hover, &:-webkit-autofill:focus, &:-webkit-autofill:active": {
+            WebkitBoxShadow:
+              "0 0 0 1000px rgba(0,0,0,0.04) inset !important",
+            WebkitTextFillColor: "#000 !important",
+            caretColor: "#000 !important",
+            transition: "background-color 9999s ease-in-out 0s !important",
+          },
+        },
       },
     },
     MuiButton: {
@@ -76,7 +85,6 @@ export const lightTheme = createTheme({
     },
   },
 });
-
 export const darkTheme = createTheme({
   palette: {
     mode: "dark",
@@ -89,7 +97,7 @@ export const darkTheme = createTheme({
       main: "#06B6D4",
     },
     background: {
-      default: "#0A0A0A", 
+      default: "#0A0A0A",
       paper: "rgba(17, 24, 39, 0.85)",
     },
     text: {
@@ -121,6 +129,15 @@ export const darkTheme = createTheme({
           minHeight: "100vh",
           color: "#E0E7FF",
           transition: "background-color 0.4s ease",
+        },
+        input: {
+          "&:-webkit-autofill, &:-webkit-autofill:hover, &:-webkit-autofill:focus, &:-webkit-autofill:active": {
+            WebkitBoxShadow:
+              "0 0 0 1000px rgba(255,255,255,0.05) inset !important",
+            WebkitTextFillColor: "#fff !important",
+            caretColor: "#fff !important",
+            transition: "background-color 9999s ease-in-out 0s !important",
+          },
         },
       },
     },

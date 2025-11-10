@@ -1,7 +1,7 @@
 "use client";
 
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
-import {  useEvents } from "@/hooks/useEventQueries";
+import { useEvents } from "@/hooks/useEventQueries";
 import { ArrowDownward, ArrowUpward, Delete, Edit } from "@mui/icons-material";
 import { Box, Chip, Container, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
 import { useState } from "react";
@@ -84,12 +84,22 @@ export default function AdminPage() {
           transition: "all 0.3s ease",
         }}
       >
-        
+
         <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
           <Box sx={{ flex: 1, mt: 8 }}>
             <Container maxWidth="lg" sx={{ py: 4 }}>
-              <Typography variant="h4" sx={{ mb: 4, fontWeight: 700 }}>
-                Eventos
+              <Typography
+                variant="h4"
+                sx={{
+                  mb: 2, 
+                  fontWeight: 800,
+                  letterSpacing: 0.5,
+                  background: "linear-gradient(90deg, #7C3AED 0%, #3B82F6 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                Gerenciamento de Eventos
               </Typography>
               <EventHeader
                 filter={search}
@@ -311,27 +321,49 @@ export default function AdminPage() {
                         ))
                       )}
                     </TableBody>
-                    <TableFooter>
+                    <TableFooter
+                      sx={{
+                        background: theme.palette.mode === "dark"
+                          ? "rgba(25, 25, 25, 0.85)"
+                          : "rgba(255, 255, 255, 0.8)",
+                        width: "100%",
+                      }}
+                    >
                       <TableRow>
                         <TableCell
-                          colSpan={5}
+                          colSpan={6}
                           sx={{
                             px: 3,
                             py: 2,
-                            background: "rgba(255,255,255,0.02)",
-                            borderTop: "1px solid rgba(255,255,255,0.08)",
+                            borderTop: theme.palette.mode === "dark"
+                              ? "1px solid rgba(255,255,255,0.05)"
+                              : "1px solid rgba(0,0,0,0.08)",
+                            borderBottomLeftRadius: "16px",
+                            borderBottomRightRadius: "16px",
+                            width: "100%",
+                            background: "transparent",
                           }}
                         >
-                          <PaginationControls
-                            currentPage={currentPage}
-                            totalPages={totalPages}
-                            itemsPerPage={itemsPerPage}
-                            onItemsPerPageChange={setItemsPerPage}
-                            onPrevPage={prevPage}
-                            onNextPage={nextPage}
-                            isFirstPage={isFirstPage}
-                            isLastPage={isLastPage}
-                          />
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "flex-end",
+                              alignItems: "center",
+                              width: "100%",
+                              background: "transparent",
+                            }}
+                          >
+                            <PaginationControls
+                              currentPage={currentPage}
+                              totalPages={totalPages}
+                              itemsPerPage={itemsPerPage}
+                              onItemsPerPageChange={setItemsPerPage}
+                              onPrevPage={prevPage}
+                              onNextPage={nextPage}
+                              isFirstPage={isFirstPage}
+                              isLastPage={isLastPage}
+                            />
+                          </Box>
                         </TableCell>
                       </TableRow>
                     </TableFooter>

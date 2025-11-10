@@ -346,8 +346,6 @@ export const EventFormModal = ({
               )}
             />
           </Box>
-
-          {/* Descrição com contador */}
           <Controller
             name="description"
             control={control}
@@ -396,7 +394,6 @@ export const EventFormModal = ({
         >
           Cancelar
         </Button>
-
         <Button
           onClick={handleSubmit(onSubmit)}
           variant="contained"

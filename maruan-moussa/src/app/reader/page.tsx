@@ -84,7 +84,20 @@ export default function ReaderPage() {
       <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
         <Box sx={{ flex: 1, mt: 8 }}>
           <Container maxWidth="lg" sx={{ py: 4 }}>
-            {/* 🔍 Filtros */}
+            <Typography
+              variant="body1"
+              sx={{
+                mb: 3,
+                color: "text.secondary",
+                fontWeight: 400,
+                fontSize: { xs: "1rem", sm: "1.2rem" },
+                lineHeight: 1.8,
+                textAlign: { xs: "center", sm: "left" },
+                px: { xs: 1, sm: 0 },
+              }}
+            >
+              Aqui você encontra os melhores eventos de tecnologia — fique por dentro do que vem por aí.
+            </Typography>
             <Box
               sx={{
                 display: "flex",
@@ -155,7 +168,6 @@ export default function ReaderPage() {
             >
               Eventos Futuros
             </Typography>
-
             {paginatedFuture.length === 0 ? (
               <Typography
                 variant="body1"

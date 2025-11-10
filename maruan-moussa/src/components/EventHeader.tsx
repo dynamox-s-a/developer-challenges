@@ -38,7 +38,6 @@ export const EventHeader = ({ filter, setFilter, onAddEvent }: EventHeaderProps)
         transition: "background-color 0.3s ease, border 0.3s ease",
       }}
     >
-      {/* Campo de busca */}
       <TextField
         placeholder="Buscar evento..."
         size="small"
@@ -75,8 +74,6 @@ export const EventHeader = ({ filter, setFilter, onAddEvent }: EventHeaderProps)
           ),
         }}
       />
-
-      {/* Botão Novo Evento */}
       <Button
         variant="contained"
         startIcon={<AddIcon />}
