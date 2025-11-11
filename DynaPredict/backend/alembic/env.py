@@ -20,6 +20,11 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 # access to the values within the .ini file in use.
 config = context.config
 
+# Set the database URL from the environment variable if it exists.
+# This will override the sqlalchemy.url in alembic.ini when running in Docker.
+config.set_main_option('sqlalchemy.url', os.environ.get(
+    'DATABASE_URL', config.get_main_option('sqlalchemy.url')))
+
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:

@@ -1,8 +1,10 @@
 import enum
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-DATABASE_URL = "postgresql://user:password@localhost/dynapredict_db"
+DATABASE_URL = os.getenv(
+    "DATABASE_URL", "postgresql+psycopg2://user:password@localhost/dynapredict_db")
 
 # URL do banco de dados (PostgreSQL). Ajuste conforme o ambiente de execução.
 db = create_engine(DATABASE_URL)
