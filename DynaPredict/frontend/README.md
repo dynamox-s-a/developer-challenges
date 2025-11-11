@@ -1,73 +1,111 @@
-# React + TypeScript + Vite
+# Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Sumário**
+- [Frontend](#frontend)
+  - [Sobre o projeto](#sobre-o-projeto)
+  - [Funcionalidades Implementadas](#funcionalidades-implementadas)
+    - [Autenticação](#autenticação)
+    - [Gerenciamento de Máquinas](#gerenciamento-de-máquinas)
+    - [Gerenciamento de Sensores](#gerenciamento-de-sensores)
+    - [Gerenciamento de Pontos de Monitoramento](#gerenciamento-de-pontos-de-monitoramento)
+  - [Tecnologias Utilizadas](#tecnologias-utilizadas)
+  - [Executar o Projeto](#executar-o-projeto)
+    - [Pré-requisitos](#pré-requisitos)
+    - [Passos para Executar](#passos-para-executar)
+  - [Usabilidade](#usabilidade)
+## Sobre o projeto
 
-Currently, two official plugins are available:
+Este projeto foi desenvolvido como parte do desafio full-stack da Dynamox. Ele consiste em um frontend construído com React e Vite, que consome os recursos do backend fornecido. O Material UI foi utilizado para a criação dos componentes e do dashboard.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## React Compiler
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Funcionalidades Implementadas
 
-## Expanding the ESLint configuration
+O projeto implementa as seguintes funcionalidades conforme o desafio proposto:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Autenticação
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- [x] Usuário pode se registrar com email e senha fixos para rotas privadas.
+- [x] Rotas privadas são protegidas e acessíveis apenas para usuários autenticados.
+- [x] Usuário pode fazer login e logout, para evita acesso não autorizado.
+- [x] Utilização de Redux e Redux Toolkit para gerenciar o estado de autenticação do usuário.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Gerenciamento de Máquinas
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- [x] Usuário pode criar máquinas, com nome e tipo selecionado a partir de uma lista.
+- [x] Usuário pode alterar o nome e o tipo de uma máquina existente.
+- [x] Usuário pode deletar máquinas, desde que não estejam em uso.
+- [x] Usuário pode visualizar a lista de máquinas cadastradas.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Gerenciamento de Sensores
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- [x] Usuário pode criar sensores, com id único e tipo selecionado a partir de uma lista `["TcAg", "TcAs", "HF+"]`'.
+- [x] Usuário pode excluir sensores, desde que não estejam em uso.
+      [x] Usuário pode visualizar a lista de sensores cadastrados.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Gerenciamento de Pontos de Monitoramento
+
+- [x] Usuário pode criar pontos de monitoramento, associando máquinas
+- [x] Usuario pode associar sensores aos pontos de monitoramento. Sequindo a restrição de que sensores do tipo `TcAg` e `TcAs` não podem ser associados em máquinas do tipo `Pump`.
+- [x] Usuário pode alterar as associações de máquinas e sensores em pontos de monitoramento existentes.
+- [x] Usuário pode deletar pontos de monitoramento.
+- [x] Usuário pode visualizar a lista página de pontos de monitoramento na dashboard.
+
+## Tecnologias Utilizadas
+
+- React
+- Vite
+- TypeScript
+- Redux e Redux Toolkit
+- Material UI 5
+
+## Executar o Projeto
+
+### Pré-requisitos
+
+- Node.js (versão 14 ou superior)
+- npm ou yarn
+- Backend em execução (conforme o repositório do backend fornecido)
+- git
+
+### Passos para Executar
+
+1. Clone este repositório:
+
+   ```bash
+   git clone https://github.com/MatheusDMedeiros/developer-challenges.git
+   git switch matheus-medeiros
+
+   ```
+
+2. Navegue até o diretório do frontend:
+   ```bash
+   cd ./developer-challenges/DynaPredict/frontend
+   ```
+3. Instale as dependências:
+   ```bash
+   npm install
+   # ou
+   yarn install
+   ```
+4. Inicie o servidor de desenvolvimento:
+   ```bash
+   npm run dev
+   # ou
+   yarn dev
+   ```
+
+:clap : Parabéns! O frontend do projeto deve estar rodando agora em `http://localhost:5173` (ou outra porta, caso a 5173 esteja ocupada). Certifique-se de que o backend também esteja em execução para que o frontend possa consumir os dados corretamente.
+
+> [!NOTE]
+> Caso a porta padrão esteja ocupada, o Vite irá sugerir uma nova porta automaticamente. Fique atento em alterar no beckend, no arquivo main.py a variável `allow_origins` para refletir a nova porta, caso necessário.
+
+## Usabilidade
+
+O sistema já conta com a criação de um usuário padrão para facilitar os testes:
+
+> - E-mail: `dynamox@example.com`
+>
+> - Senha: `123456789`
+
+Estes dados devem ser utilizados para realizar o login e acessar as rotas privadas do sistema.
