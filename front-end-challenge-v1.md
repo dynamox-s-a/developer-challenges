@@ -39,6 +39,7 @@ In today's digital landscape, a well-crafted landing page is crucial for busines
    - Meta tags optimization
    - Semantic HTML structure
    - Social media meta tags
+4. [ ] Cover the application logic with automated tests
 
 
 3 - Bonus
@@ -108,13 +109,13 @@ The system should have two pre-configured users in the [json-server](https://www
 4. [ ] Create a mock REST API using [json-server](https://www.npmjs.com/package/json-server).
 5. [ ] Use Material UI 6 for styling with custom theme configuration.
 6. [ ] Ensure responsive design for all screen sizes.
+7. [ ] Ensure correct business logic and behavior with automated unit tests.
 
 ### Bonus
-1. [ ] Add unit tests with Jest. [Check out](https://jestjs.io/docs/getting-started) to get started.
-2. [ ] Add e2e tests with Cypress. [Check out](https://docs.cypress.io/guides/getting-started/installing-cypress) to get started.
-3. [ ] Implement role-based route protection using HOCs or middleware.
-4. [ ] Deploy your application to a cloud provider and provide a link for the running app.
-5. [ ] Add Storybook documentation for UI components.
+1. [ ] Add e2e tests with Cypress. [Check out](https://docs.cypress.io/guides/getting-started/installing-cypress) to get started.
+2. [ ] Implement role-based route protection using HOCs or middleware.
+3. [ ] Deploy your application to a cloud provider and provide a link for the running app.
+4. [ ] Add Storybook documentation for UI components.
 
 ## Evaluation Criteria
 

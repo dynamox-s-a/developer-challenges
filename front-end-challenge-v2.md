@@ -40,11 +40,12 @@ Use the figma as a reference to build an interface and develop the following use
 1. [ ] Use Vite for building the app. [Check out](https://vitejs.dev/guide/) to get started.
 1. [ ] Use Material UI 5 for styling the application. [Check out](https://mui.com/material-ui/getting-started/) to get started.
 1. [ ] Use Highcharts, Plotly, D3 or any similar library to display the plots. [Check out](https://www.highcharts.com/docs/index) to get started.
+1. [ ] Ensure correct business logic and behavior with automated unit tests.
 
 We encourage using our frontend stack tooling to make the challenge resemble our everyday tasks.
 
 3 - Bonus
-1. [ ] Add unit tests with Vitest. [Check out](https://vitest.dev/guide/) to get started.
+1. [ ] Use Storybook for documentation. [Check out](https://storybook.js.org/docs) to get started.
 1. [ ] Add e2e tests with Cypress. [Check out](https://learn.cypress.io/) to get started.
 1. [ ] Deploy your application to a cloud provider and provide a link for the running app.
 

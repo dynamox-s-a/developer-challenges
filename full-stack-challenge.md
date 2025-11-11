@@ -58,11 +58,10 @@ You can use the following user stories as a guide to implement the application f
 1. [ ] Create reusable components.
 1. [ ] The code is well-organized and documented.
 1. [ ] The application layout is responsive.
-The choice of remaining tools is at your discretion.
+1. [ ] Ensure correct business logic and behavior with automated unit tests.
 
 6 - Bonus
 
-1. [ ] Implement unit tests for the application (let us know how to run them, otherwise we won't be able to evaluate).
 1. [ ] Implement your own back-end code. If you pick this option, write it using NodeJS JavaScript runtime (not Java, not PHP...). Although we also work with Python here, we are looking for JavaScript related skills in this test.
 1. [ ] If you choose to implement your own back-end, we encourage you to use either PostgreSQL or MongoDB as a persistence layer.
 1. [ ] If you choose to use PostgreSQL, use Prisma ORM (or even try Drizzle, or Kysely) to interact with PostgreSQL.
