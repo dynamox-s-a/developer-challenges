@@ -33,13 +33,16 @@ The server side application is the backbone of many modern applications, low lat
 
 2 - Technical Requirements
 1. [ ] Use Python
-2. [ ] Use a REST-API framework
+2. [ ] Use a REST-API framework (ex.: FastAPI)
 3. [ ] The latency between client and the server side must be below 350ms in all requests
-
+4. [ ] Use a database to store the time series data
+5. [ ] Ensure correct business logic and behavior with automated unit tests (ex.: pytest);
 
 3 - Bonus
 1. [ ] Deploy your application to a cloud provider and provide the api url.
-2. [ ] Implement a functionality that gives me a future prediction of the time series data. 
+2. [ ] Implement a functionality that gives me a future prediction of the time series data.
+3. [ ] Add load balancer to the application.
+4. [ ] Add load tests to the application.
 
 
 ## Evaluation Criteria

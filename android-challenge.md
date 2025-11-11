@@ -93,6 +93,7 @@ The server will return:
 - [ ] The application must be written in **Kotlin**
 - [ ] Use a data persistence mechanism to store players and scores
 - [ ] Use Jetpack Compose for the views
+- [ ] Ensure correct business logic and behavior with automated unit tests.
 
 ---
 
@@ -108,7 +109,7 @@ These items (1 to 3) are not mandatory, but implementing them will significantly
 - [ ] Implement **consistent error handling**, with appropriate HTTP status codes (e.g., `400` for validation, `404` for not found, `500` for unexpected errors).  
 
 ### 2 - Quality & DevOps
-- [ ] Write **unit or integration tests** for the main business logic.
+- [ ] Write **integration tests** for the main business logic.
 - [ ] Create a **README.md** file with clear instructions to run the project locally (either with Docker or manually).
 
 ---
