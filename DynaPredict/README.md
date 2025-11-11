@@ -36,14 +36,14 @@ As funcionalidades e implementações estão detalhadas nos respectivos READMEs 
 1. Clone o repositório:
 
    ```bash
-   git clone https://github.com/MatheusDMedeiros/developer-challenges.git
-   git switch matheus-medeiros
-
+    git clone https://github.com/MatheusDMedeiros/developer-challenges.git
+    cd developer-challenges
+    git switch matheus-medeiros
    ```
 
 2. Navegue até o diretório do projeto:
    ```bash
-   cd ./developer-challenges/DynaPredict
+   cd ./DynaPredict
    ```
 3. Inicie a composição Docker:
    ```bash

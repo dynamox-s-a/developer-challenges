@@ -73,14 +73,15 @@ O projeto implementa as seguintes funcionalidades conforme o desafio proposto:
 1. Clone este repositório:
 
    ```bash
-   git clone https://github.com/MatheusDMedeiros/developer-challenges.git
-   git switch matheus-medeiros
+    git clone https://github.com/MatheusDMedeiros/developer-challenges.git
+    cd developer-challenges
+    git switch matheus-medeiros
 
    ```
 
 2. Navegue até o diretório do frontend:
    ```bash
-   cd ./developer-challenges/DynaPredict/frontend
+   cd ./DynaPredict/frontend
    ```
 3. Instale as dependências:
    ```bash
