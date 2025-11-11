@@ -86,14 +86,10 @@ O projeto implementa as seguintes funcionalidades conforme o desafio proposto:
 3. Instale as dependências:
    ```bash
    npm install
-   # ou
-   yarn install
    ```
 4. Inicie o servidor de desenvolvimento:
    ```bash
    npm run dev
-   # ou
-   yarn dev
    ```
 
 :clap : Parabéns! O frontend do projeto deve estar rodando agora em `http://localhost:5173` (ou outra porta, caso a 5173 esteja ocupada). Certifique-se de que o backend também esteja em execução para que o frontend possa consumir os dados corretamente.

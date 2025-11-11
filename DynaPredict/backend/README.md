@@ -123,7 +123,7 @@ curl -X GET http://localhost:8000/machine \
    ```
 3. Crie um ambiente virtual e ative-o:
    ```bash
-    python -m venv venv
+    python3 -m venv venv
     source venv/bin/activate
    ```
 4. Instale as dependências:
