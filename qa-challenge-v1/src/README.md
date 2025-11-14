@@ -1,6 +1,6 @@
 # QA challenge v1 (Python) - Playwright Sync API + pytest-html
 
-Projeto de exemplo para o desafio de QA: testes E2E usando **Playwright (Sync API)**,
+Projeto para o desafio de QA: testes E2E usando **Playwright (Sync API)**,
 **pytest** e **pytest-html**. O navegador roda em **modo visível** (headful).
 
 ## Pré-requisitos
