@@ -61,7 +61,7 @@ In general we will be looking for the following:
 
 * Fork this repository to your own Github account.
 * Create a new branch using your first name and last name. For example: `caroline-oliveira`.
-* After completing the challenge, create a pull request to this repository (https://github.com/dynamox-s-a/python-back-end-test) pointing to the main branch.
+* After completing the challenge, create a pull request to this repository (https://github.com/dynamox-s-a/developer-challenges) pointing to the main branch.
 * We will receive a notification about your pull request, review your solution and get in touch with you.
 <br>
 
