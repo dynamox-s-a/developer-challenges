@@ -50,18 +50,6 @@ With vast experience, enhances software development, leading complex system deve
 ## Challenge QA
 - [ ] [01- Dynamox QA Challenge](./qa-challenge.md)
 
-## Ready to Begin the Challenges?
-
-1. [ ] Fork this repository to your own Github account.
-1. [ ] Create a new branch using your first name and last name. For example: `caroline-oliveira`.
-1. [ ] After completing the challenge, create a pull request to this repository (https://github.com/dynamox-s-a/js-ts-full-stack-test), aimed at the main branch.
-1. [ ] We will receive a notification about your pull request, review your solution, and get in touch with you.
-
-## Frequently Asked Questions
-
-1. Is it necessary to fork the project?
-  **Yes, this allows us to see how much time you spent on the challenge.**
-
 </br>
 
 **Good luck! We look forward to reviewing your submission.** 🚀
