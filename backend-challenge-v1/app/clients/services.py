@@ -1,8 +1,16 @@
 from sqlalchemy.orm import Session
 from app.clients.models import Client
 from app.clients.schemas import ClientCreate
+from fastapi import HTTPException
 
 def create_client(db: Session, payload: ClientCreate):
+    verifyClient = db.query(Client).filter(Client.email == payload.email).first()
+    if verifyClient:
+        raise HTTPException(
+            status_code=400,
+            detail="A client with this email already exists."
+        )
+
     client = Client(**payload.model_dump())
     db.add(client)
     db.commit()

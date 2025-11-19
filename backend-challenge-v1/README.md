@@ -86,7 +86,7 @@ Todas as rotas necessitam de autenticação via JWT. Para obter um token:
 1. Faça login em `POST /auth/login`
 2. Use o token retornado no Auth/Bearer token das requisições. O Token tem duração de 1hora:
    ```
-   Authorization: Bearer <seu-token>
+   Auth -> Bearer Token -> Copiar e colar o access_token da rota de login
    ```
 
 ## 📚 Rotas da API
