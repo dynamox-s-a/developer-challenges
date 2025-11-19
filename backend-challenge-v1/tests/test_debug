@@ -1,0 +1,46 @@
+# tests/test_debug.py
+import pytest
+from app.core.security import hash_password, verify_password
+from app.users.models import User
+
+def test_password_hash_verification():
+    """Testa se o hash e verificação estão funcionando"""
+    password = "testpassword123"
+    hashed = hash_password(password)
+    
+    print(f"\n=== DEBUG HASH ===")
+    print(f"Password: {password}")
+    print(f"Hash: {hashed}")
+    print(f"Verify: {verify_password(password, hashed)}")
+    print(f"==================\n")
+    
+    assert verify_password(password, hashed) == True
+
+def test_user_creation_and_verification(db):
+    """Testa criação de usuário e verificação"""
+    from app.core.security import hash_password, verify_password
+    
+    password = "testpassword123"
+    hashed = hash_password(password)
+    
+    user = User(
+        name="Test User",
+        email="test@example.com",
+        hashed_password=hashed
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    
+    print(f"\n=== DEBUG USER ===")
+    print(f"User ID: {user.id}")
+    print(f"User Email: {user.email}")
+    print(f"User Hash: {user.hashed_password}")
+    print(f"Verify: {verify_password(password, user.hashed_password)}")
+    print(f"==================\n")
+    
+    from sqlalchemy import select
+    found_user = db.query(User).filter(User.email == "test@example.com").first()
+    
+    assert found_user is not None
+    assert verify_password(password, found_user.hashed_password) == True
