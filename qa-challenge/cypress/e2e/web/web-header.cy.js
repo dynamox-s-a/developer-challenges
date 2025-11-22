@@ -3,13 +3,14 @@ describe('Web GUI Test - Header', () => {
     cy.visit('https://frontend-test-for-qa.vercel.app/')
 
     //  Checking header: 
-    // 1. Header items - assert that 'Máquina' and 'Ponto' are on the web page
+    // 1. Header items - assert that 'Máquina' and 'Ponto' are present 
+    // on the web page without any 'null' values
     cy.contains('.MuiTypography-caption', 'Máquina');
     cy.contains('.MuiTypography-caption', 'Ponto');
     cy.get('.MuiTypography-caption').then($Object => {
       const text = $Object.text();
 
-    if (!text.includes('Máquina') || !text.includes('Ponto')) {
+    if (!text.includes('Máquina') || !text.includes('Ponto') || text.toLowerCase().includes('null')) {
       throw new Error('Header issues');
     }
     //cy.log('Text: ' + $Object.text());
