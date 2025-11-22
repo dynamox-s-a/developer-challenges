@@ -2,7 +2,7 @@
 
 ## Test Framework
 
-The tool chosen to complete this challenge is Cypress, a JavaScript-based testing platform built on Node.js. 
+The chosen tool to complete this challenge was Cypress, a JavaScript-based testing platform built on Node.js. 
 
 ### Environment
 
