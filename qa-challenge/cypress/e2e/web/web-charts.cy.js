@@ -77,7 +77,7 @@ describe('Web GUI Test - Charts', () => {
       });
     });
 
-    // Temperatura -checking tooltip
+    // Temperatura - checking tooltip
     cy.get('.highcharts-container').eq(1).find('path.highcharts-label-box.highcharts-tooltip-box')
     .then(($el) => {
       if ($el.length === 0) {
