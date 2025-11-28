@@ -11,7 +11,18 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-
+/**
+ * Implementação do QuizRepository.
+ *
+ * Combina RemoteDataSource e LocalDataSource para fornecer dados ao domínio.
+ *
+ * Responsabilidades:
+ * - Converter DTOs em modelos de domínio.
+ * - Tratar exceções e retornar Result<...>.
+ * - Encapsular acesso ao banco e à API.
+ *
+ * Nenhuma camada acima precisa conhecer Retrofit, Room, DAOs ou DTOs.
+ */
 class QuizRepositoryImpl @Inject constructor(
     private val remote: RemoteDataSource,
     private val local: LocalDataSource
