@@ -10,6 +10,15 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
+
+/**
+ * Módulo Hilt responsável por fornecer instâncias relacionadas à camada de Rede.
+ *
+ * - Configura o Retrofit com Gson converter.
+ * - Cria um OkHttpClient padrão.
+ * - Expõe o serviço QuizApi como singleton para toda a aplicação.
+ *
+ */
 private const val BASE_URL = "https://quiz-api-bwi5hjqyaq-uc.a.run.app/"
 @Module
 @InstallIn(SingletonComponent::class)
