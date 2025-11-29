@@ -7,6 +7,7 @@ import com.andrebritovita.quizapp.domain.usecase.GetNewQuestionUseCase
 import com.andrebritovita.quizapp.domain.usecase.SaveScoreUseCase
 import com.andrebritovita.quizapp.domain.usecase.SubmitAnswerUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,11 +22,74 @@ class QuizViewModel @Inject constructor(
     private val submitAnswerUseCase: SubmitAnswerUseCase,
     private val saveScoreUseCase: SaveScoreUseCase
 ) : ViewModel() {
+
     private val _uiState = MutableStateFlow(QuizUiState())
     val uiState: StateFlow<QuizUiState> = _uiState.asStateFlow()
 
     init {
         loadNextQuestion()
+    }
+
+    fun selectOption(option: String){
+        if (_uiState.value.isAnswerCorrect == null) {
+            _uiState.update {
+                it.copy(selectedOption = option)
+            }
+        }
+    }
+
+    fun submitAnswer(){
+        val currentState = _uiState.value
+        val currentQuestion = currentState.question
+        val selectedOption = currentState.selectedOption
+
+        if (currentQuestion == null || selectedOption == null) return
+
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(isCheckingAnswer = true)
+            }
+            val result = submitAnswerUseCase(
+                currentQuestion.id,
+                selectedOption
+            )
+            if (result.isSuccess) {
+                val isCorrect = result.getOrNull() == true
+                _uiState.update {
+                    it.copy(
+                        isCheckingAnswer = false,
+                        isAnswerCorrect = isCorrect,
+                        score = if (isCorrect) {
+                            it.score + 1
+                        } else {
+                            it.score
+                        }
+                    )
+                }
+                delay(1500)
+                if (currentState.questionIndex >= currentState.totalQuestions) {
+                    finishQuiz()
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            questionIndex = it.questionIndex + 1
+                        )
+                    }
+                    loadNextQuestion()
+                }
+            } else {
+                _uiState.update {
+                    it.copy (
+                        isCheckingAnswer = false,
+                        errorResId = R.string.error_generic
+                    )
+                }
+            }
+        }
+    }
+
+    private fun finishQuiz() {
+        _uiState.update { it.copy(isQuizFinished = true) }
     }
 
     private fun loadNextQuestion() {
@@ -44,7 +108,6 @@ class QuizViewModel @Inject constructor(
                     )
                 }
             } else {
-                //val errorId = R.string.error_generic
                 val errorId = if (result.exceptionOrNull() is IOException) {
                     R.string.error_network
                 } else {
