@@ -7,10 +7,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.andrebritovita.quizapp.ui.screens.HistoryScreen
-import com.andrebritovita.quizapp.ui.screens.QuizScreen
-import com.andrebritovita.quizapp.ui.screens.ResultScreen
-import com.andrebritovita.quizapp.ui.screens.WelcomeScreen
+import com.andrebritovita.quizapp.ui.screens.history.HistoryScreen
+import com.andrebritovita.quizapp.ui.screens.quiz.QuizScreen
+import com.andrebritovita.quizapp.ui.screens.result.ResultScreen
+import com.andrebritovita.quizapp.ui.screens.welcome.WelcomeScreen
 
 @Composable
 fun QuizNavGraph(

@@ -1,4 +1,4 @@
-package com.andrebritovita.quizapp.ui.screens
+package com.andrebritovita.quizapp.ui.screens.result
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
