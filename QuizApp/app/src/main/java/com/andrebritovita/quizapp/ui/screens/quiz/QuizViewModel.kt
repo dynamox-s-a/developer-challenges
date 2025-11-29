@@ -92,7 +92,7 @@ class QuizViewModel @Inject constructor(
         _uiState.update { it.copy(isQuizFinished = true) }
     }
 
-    private fun loadNextQuestion() {
+    fun loadNextQuestion() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorResId = null) }
 
