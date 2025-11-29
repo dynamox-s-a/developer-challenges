@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">QuizApp</string>
+    <string name="welcome_title">Quiz Dynamox</string>
+    <string name="welcome_hint">Enter your name or nickname</string>
+    <string name="btn_start">Start Quiz</string>
+    <string name="btn_history">View History</string>
+
+    <string name="quiz_question_count">Question %1$d of %2$d</string>
+    <string name="btn_submit">Submit Answer</string>
+    <string name="feedback_correct">Correct!</string>
+    <string name="feedback_incorrect">Incorrect!</string>
+
+    <string name="result_title">Final Result</string>
+    <string name="result_score_format">You got %1$d out of %2$d questions correct!</string>
+    <string name="btn_play_again">Play Again</string>
+
+    <string name="history_title">Score History</string>
+    <string name="history_empty">No scores recorded yet.</string>
+    <string name="history_item_format">%1$s - %2$d/%3$d points</string>
+
+    <string name="error_generic">An error occurred. Please try again.</string>
+    <string name="error_network">No internet connection.</string>
+    <string name="btn_retry">Try Again</string>
+
+    <string name="content_desc_logo">Quiz Dynamox Logo</string>
+</resources>
