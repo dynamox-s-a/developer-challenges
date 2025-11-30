@@ -15,6 +15,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,89 +34,95 @@ fun QuizContent(
     onOptionSelected: (String) -> Unit,
     onSubmit: () -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp)
-            .verticalScroll(rememberScrollState())
-    ) {
-        LinearProgressIndicator(
-            progress = { state.questionIndex / state.totalQuestions.toFloat() },
-            modifier = Modifier.fillMaxWidth().height(8.dp),
-            color = MaterialTheme.colorScheme.secondary,
-            trackColor = MaterialTheme.colorScheme.surfaceVariant,
-        )
-
-        Spacer(Modifier.height(16.dp))
-
-        Text(
-            text = stringResource(
-                R.string.quiz_question_count,
-                state.questionIndex,
-                state.totalQuestions
-            ),
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-
-        Spacer(Modifier.height(8.dp))
-
-        state.question?.let { question ->
-            Text(
-                text = question.statement,
-                style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.onBackground
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        containerColor = MaterialTheme.colorScheme.background
+    ){ paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(24.dp)
+                .verticalScroll(rememberScrollState())
+        ) {
+            LinearProgressIndicator(
+                progress = { state.questionIndex / state.totalQuestions.toFloat() },
+                modifier = Modifier.fillMaxWidth().height(8.dp),
+                color = MaterialTheme.colorScheme.secondary,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant,
             )
 
-            Spacer(Modifier.height(32.dp))
+            Spacer(Modifier.height(16.dp))
 
-            question.options.forEach { option ->
-                val isSelected = option == state.selectedOption
-                val isResultState = state.isAnswerCorrect != null
+            Text(
+                text = stringResource(
+                    R.string.quiz_question_count,
+                    state.questionIndex,
+                    state.totalQuestions
+                ),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
 
-                val cardColor = when {
-                    isResultState && isSelected && state.isAnswerCorrect == true -> InfoGreen
-                    isResultState && isSelected -> ErrorRed
-                    isSelected -> MaterialTheme.colorScheme.primaryContainer
-                    else -> MaterialTheme.colorScheme.surface
-                }
+            Spacer(Modifier.height(8.dp))
 
-                val borderColor = when {
-                    isResultState && isSelected -> Color.Transparent
-                    isSelected -> MaterialTheme.colorScheme.primary
-                    else -> MaterialTheme.colorScheme.outline
-                }
+            state.question?.let { question ->
+                Text(
+                    text = question.statement,
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
 
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                        .clickable(enabled = !state.isCheckingAnswer && !isResultState) {
-                            onOptionSelected(option)
-                        },
-                    border = BorderStroke(2.dp, borderColor),
-                    colors = CardDefaults.cardColors(containerColor = cardColor)
-                ) {
-                    Row(
-                        modifier = Modifier.padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                Spacer(Modifier.height(32.dp))
+
+                question.options.forEach { option ->
+                    val isSelected = option == state.selectedOption
+                    val isResultState = state.isAnswerCorrect != null
+
+                    val cardColor = when {
+                        isResultState && isSelected && state.isAnswerCorrect == true -> InfoGreen
+                        isResultState && isSelected -> ErrorRed
+                        isSelected -> MaterialTheme.colorScheme.primaryContainer
+                        else -> MaterialTheme.colorScheme.surface
+                    }
+
+                    val borderColor = when {
+                        isResultState && isSelected -> Color.Transparent
+                        isSelected -> MaterialTheme.colorScheme.primary
+                        else -> MaterialTheme.colorScheme.outline
+                    }
+
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                            .clickable(enabled = !state.isCheckingAnswer && !isResultState) {
+                                onOptionSelected(option)
+                            },
+                        border = BorderStroke(2.dp, borderColor),
+                        colors = CardDefaults.cardColors(containerColor = cardColor)
                     ) {
-                        Text(
-                            text = option,
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.weight(1f),
-                            color = if (isSelected || isResultState) Color.Black else MaterialTheme.colorScheme.onSurface
-                        )
+                        Row(
+                            modifier = Modifier.padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = option,
+                                style = MaterialTheme.typography.bodyLarge,
+                                modifier = Modifier.weight(1f),
+                                color = if (isSelected || isResultState) Color.Black else MaterialTheme.colorScheme.onSurface
+                            )
+                        }
                     }
                 }
             }
-        }
 
-        Spacer(Modifier.height(32.dp))
-        PrimaryButton(
-            text = if (state.isCheckingAnswer) "..." else stringResource(R.string.btn_submit),
-            onClick = onSubmit,
-            enabled = state.isButtonEnabled
-        )
+            Spacer(Modifier.height(32.dp))
+            PrimaryButton(
+                text = if (state.isCheckingAnswer) "..." else stringResource(R.string.btn_submit),
+                onClick = onSubmit,
+                enabled = state.isButtonEnabled
+            )
+        }
     }
 }
