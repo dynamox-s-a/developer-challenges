@@ -27,7 +27,7 @@ Aplicativo Android nativo de Quiz desenvolvido para o desafio técnico da **Dyna
     <img src="docs/quiz_true.png" width="22%" />
     <img src="docs/quiz_false.png" width="22%" />
     <img src="docs/result.png" width="22%" />
-    <img src="docs/history.png" width="22%" />
+    <img src="docs/quiz_history.png" width="22%" />
 </div>
 
 ---
