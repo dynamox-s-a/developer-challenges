@@ -1,5 +1,6 @@
 package com.andrebritovita.quizapp.ui.screens.quiz
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andrebritovita.quizapp.R
@@ -18,11 +19,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class QuizViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
     private val getNewQuestionUseCase: GetNewQuestionUseCase,
     private val submitAnswerUseCase: SubmitAnswerUseCase,
     private val saveScoreUseCase: SaveScoreUseCase
 ) : ViewModel() {
 
+    private val playerName: String = savedStateHandle["playerName"] ?: "Desconhecido"
     private val _uiState = MutableStateFlow(QuizUiState())
     val uiState: StateFlow<QuizUiState> = _uiState.asStateFlow()
 
@@ -30,7 +33,7 @@ class QuizViewModel @Inject constructor(
         loadNextQuestion()
     }
 
-    fun selectOption(option: String){
+    fun selectOption(option: String) {
         if (_uiState.value.isAnswerCorrect == null) {
             _uiState.update {
                 it.copy(selectedOption = option)
@@ -38,7 +41,7 @@ class QuizViewModel @Inject constructor(
         }
     }
 
-    fun submitAnswer(){
+    fun submitAnswer() {
         val currentState = _uiState.value
         val currentQuestion = currentState.question
         val selectedOption = currentState.selectedOption
@@ -79,7 +82,7 @@ class QuizViewModel @Inject constructor(
                 }
             } else {
                 _uiState.update {
-                    it.copy (
+                    it.copy(
                         isCheckingAnswer = false,
                         errorResId = R.string.error_generic
                     )
@@ -89,7 +92,13 @@ class QuizViewModel @Inject constructor(
     }
 
     private fun finishQuiz() {
-        _uiState.update { it.copy(isQuizFinished = true) }
+        viewModelScope.launch {
+            saveScoreUseCase(
+                name = playerName,
+                score = _uiState.value.score
+            )
+            _uiState.update { it.copy(isQuizFinished = true) }
+        }
     }
 
     fun loadNextQuestion() {
