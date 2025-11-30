@@ -31,7 +31,7 @@ class GetNewQuestionUseCase @Inject constructor (
                 return res
             }
         }
-        return Result.failure(Exception("Não foi possível encontrar uma pergunta nova após $MAX_ATTEMPTS tentativas."))
+        return Result.failure(Exception("Could not find a new unique question after $MAX_ATTEMPTS attempts."))
     }
     /**
      * Limpa a memória de perguntas vistas.

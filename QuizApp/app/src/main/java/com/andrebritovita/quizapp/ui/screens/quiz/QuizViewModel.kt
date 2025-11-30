@@ -25,7 +25,7 @@ class QuizViewModel @Inject constructor(
     private val saveScoreUseCase: SaveScoreUseCase
 ) : ViewModel() {
 
-    private val playerName: String = savedStateHandle["playerName"] ?: "Desconhecido"
+    private val playerName: String = savedStateHandle["playerName"] ?: "Unknown"
     private val _uiState = MutableStateFlow(QuizUiState())
     val uiState: StateFlow<QuizUiState> = _uiState.asStateFlow()
 
