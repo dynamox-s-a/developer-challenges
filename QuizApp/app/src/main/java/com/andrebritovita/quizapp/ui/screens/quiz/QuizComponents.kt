@@ -2,6 +2,7 @@ package com.andrebritovita.quizapp.ui.screens.quiz
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +16,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,7 +25,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.andrebritovita.quizapp.R
 import com.andrebritovita.quizapp.ui.components.PrimaryButton
 import com.andrebritovita.quizapp.ui.theme.ErrorRed
@@ -36,20 +41,22 @@ fun QuizContent(
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = colorScheme.background
     ){ paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
                 .padding(24.dp)
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             LinearProgressIndicator(
                 progress = { state.questionIndex / state.totalQuestions.toFloat() },
                 modifier = Modifier.fillMaxWidth().height(8.dp),
-                color = MaterialTheme.colorScheme.secondary,
-                trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                color = colorScheme.secondary,
+                trackColor = colorScheme.surfaceVariant,
             )
 
             Spacer(Modifier.height(16.dp))
@@ -60,17 +67,17 @@ fun QuizContent(
                     state.questionIndex,
                     state.totalQuestions
                 ),
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                style = typography.labelLarge,
+                color = colorScheme.onSurfaceVariant
             )
 
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(32.dp))
 
             state.question?.let { question ->
                 Text(
                     text = question.statement,
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = MaterialTheme.colorScheme.onBackground
+                    style = typography.headlineLarge,
+                    color = colorScheme.onBackground
                 )
 
                 Spacer(Modifier.height(32.dp))
@@ -82,14 +89,19 @@ fun QuizContent(
                     val cardColor = when {
                         isResultState && isSelected && state.isAnswerCorrect == true -> InfoGreen
                         isResultState && isSelected -> ErrorRed
-                        isSelected -> MaterialTheme.colorScheme.primaryContainer
-                        else -> MaterialTheme.colorScheme.surface
+                        isSelected -> colorScheme.secondary
+                        else -> colorScheme.surface
                     }
 
                     val borderColor = when {
                         isResultState && isSelected -> Color.Transparent
-                        isSelected -> MaterialTheme.colorScheme.primary
-                        else -> MaterialTheme.colorScheme.outline
+                        isSelected -> colorScheme.secondary
+                        else -> colorScheme.outline
+                    }
+
+                    val textColor = when {
+                        isSelected -> Color.White
+                        else -> colorScheme.onSurface
                     }
 
                     Card(
@@ -108,9 +120,12 @@ fun QuizContent(
                         ) {
                             Text(
                                 text = option,
-                                style = MaterialTheme.typography.bodyLarge,
+                                style = typography.bodyLarge.copy(
+                                    fontWeight = FontWeight.SemiBold,
+                                    fontSize = 18.sp
+                                ),
                                 modifier = Modifier.weight(1f),
-                                color = if (isSelected || isResultState) Color.Black else MaterialTheme.colorScheme.onSurface
+                                color = textColor
                             )
                         }
                     }
