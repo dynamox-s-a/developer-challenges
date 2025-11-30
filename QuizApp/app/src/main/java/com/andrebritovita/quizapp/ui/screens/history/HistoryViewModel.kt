@@ -10,6 +10,16 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
+/**
+ * ViewModel da tela de histórico de pontuações.
+ *
+ * Responsável por:
+ * - Observar continuamente as pontuações salvas no banco local através do [ObserveScoresUseCase].
+ * - Transformar o fluxo de dados em um [StateFlow] de [HistoryUiState] utilizado pela UI.
+ *
+ * A ViewModel não armazena estado próprio; apenas repassa os valores emitidos pelo caso de uso,
+ * mantendo a tela sempre atualizada conforme novos jogos são registrados.
+ */
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
     observeScoresUseCase: ObserveScoresUseCase

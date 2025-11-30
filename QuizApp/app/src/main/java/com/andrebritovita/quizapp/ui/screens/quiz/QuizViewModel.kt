@@ -17,6 +17,18 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 import javax.inject.Inject
 
+/**
+ * ViewModel responsável por toda a lógica da tela de Quiz.
+ *
+ * Suas responsabilidades incluem:
+ * - Carregar perguntas através do [GetNewQuestionUseCase].
+ * - Validar respostas usando o [SubmitAnswerUseCase].
+ * - Atualizar a pontuação e encaminhar o resultado final.
+ * - Persistir a pontuação ao final do jogo com [SaveScoreUseCase].
+ *
+ * A UI observa apenas o [uiState], seguindo o padrão UDF (Unidirectional Data Flow).
+ * Toda atualização de estado ocorre de forma reativa por meio de StateFlow.
+ */
 @HiltViewModel
 class QuizViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
