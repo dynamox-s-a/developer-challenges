@@ -22,6 +22,8 @@
     <string name="error_generic">An error occurred. Please try again.</string>
     <string name="error_network">No internet connection.</string>
     <string name="btn_retry">Try Again</string>
+    <string name="loading_title">Preparing the Quiz...</string>
+    <string name="loading_subtitle">The first connection may take a few seconds.</string>
 
     <string name="content_desc_logo">Quiz Dynamox Logo</string>
 </resources>
