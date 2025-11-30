@@ -12,7 +12,6 @@ import com.andrebritovita.quizapp.ui.components.LoadingView
 
 @Composable
 fun QuizScreen(
-    playerName: String,
     viewModel: QuizViewModel = hiltViewModel(),
     onQuizFinished: (Int) -> Unit
 ) {

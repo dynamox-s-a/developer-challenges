@@ -32,10 +32,8 @@ fun QuizNavGraph(
             arguments = listOf(
                 navArgument("playerName") { type = NavType.StringType }
             )
-        ) { backStackEntry ->
-            val playerName = backStackEntry.arguments?.getString("playerName") ?: ""
+        ) {
             QuizScreen(
-                playerName = playerName,
                 onQuizFinished = {
                     navController.navigate(Screen.Result.createRoute(it)) {
                         popUpTo(Screen.Welcome.route) {
