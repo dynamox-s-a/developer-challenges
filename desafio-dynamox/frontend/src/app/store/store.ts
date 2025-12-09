@@ -1,10 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import machinesReducer from './machineSlice';
+import pointsReducer from './pointsSlice';
 
 export const store = configureStore({
   reducer: {
     machines: machinesReducer,
-    // Futuramente adicionaremos 'points: pointsReducer' aqui
+    points: pointsReducer,
   },
 });
 
