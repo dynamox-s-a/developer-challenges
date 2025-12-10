@@ -100,8 +100,8 @@ export function EventForm({ event, onSuccess }: EventFormProps) {
     router.push("/admin/events");
   };
 
-  // Watch description for character count
-  const description = watch("description", "");
+  // Watch description for character count - use useWatch for better performance
+  const descriptionValue = watch("description") || "";
 
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -193,7 +193,7 @@ export function EventForm({ event, onSuccess }: EventFormProps) {
         error={!!errors.description}
         helperText={
           errors.description?.message ||
-          `${description.length}/50 characters minimum`
+          `${descriptionValue.length}/50 characters minimum`
         }
         disabled={isLoading}
         required

@@ -54,8 +54,10 @@ export default function LoginPage() {
     try {
       await dispatch(
         login({ email: data.email.trim(), password: data.password }),
-      );
-    } catch (_error) {}
+      ).unwrap();
+    } catch {
+      // Error is handled by Redux state
+    }
   };
 
   return (

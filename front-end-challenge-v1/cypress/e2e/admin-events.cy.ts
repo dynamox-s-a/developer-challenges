@@ -112,16 +112,23 @@ describe("Admin Events Management", () => {
       cy.fixture("events").then((events) => {
         const { newEvent } = events;
 
+        // Wait for form to be fully loaded
         cy.get('[data-testid="event-name-input"]').should("be.visible");
+
+        // Select category first to avoid re-render issues
+        cy.get("#category").click();
+        cy.get(`[data-value="${newEvent.category}"]`).click();
+
+        // Fill in fields with small delay to allow React state to settle
         cy.get('[data-testid="event-name-input"]').type(newEvent.name, {
-          delay: 0,
+          delay: 10,
         });
         cy.get('[data-testid="event-location-input"]').type(newEvent.location, {
-          delay: 0,
+          delay: 10,
         });
         cy.get('[data-testid="event-description-input"]').type(
           newEvent.description,
-          { delay: 0 },
+          { delay: 10 },
         );
 
         // Set future date
@@ -129,13 +136,10 @@ describe("Admin Events Management", () => {
         futureDate.setDate(futureDate.getDate() + 30);
         const formattedDate = futureDate.toISOString().slice(0, 16);
         cy.get('[data-testid="event-datetime-input"]').type(formattedDate, {
-          delay: 0,
+          delay: 10,
         });
 
-        // Select category
-        cy.get("#category").click();
-        cy.get(`[data-value="${newEvent.category}"]`).click();
-
+        // Submit form
         cy.get('[data-testid="event-submit-button"]').click();
 
         // Should redirect to events list
@@ -189,13 +193,17 @@ describe("Admin Events Management", () => {
     it("should update event successfully", () => {
       cy.get('[aria-label="edit"]').first().click();
 
-      // Clear and update name
+      // Wait for form to load with event data
       cy.get('[data-testid="event-name-input"]').should("be.visible");
+      cy.get('[data-testid="event-name-input"]').should("not.have.value", "");
+
+      // Clear and update name with delay to let React state settle
       cy.get('[data-testid="event-name-input"]').clear();
       cy.get('[data-testid="event-name-input"]').type("Updated Event Name", {
-        delay: 0,
+        delay: 10,
       });
 
+      // Submit form
       cy.get('[data-testid="event-submit-button"]').click();
 
       // Should redirect back to list

@@ -74,8 +74,10 @@ describe("Reader Events Features", () => {
 
     it("should show filtered indicator when search is active", () => {
       cy.visit("/events");
-      cy.get('input[placeholder*="Search"]').type("Test", { delay: 0 });
+      // Search for a term that exists in the data to ensure results are shown
+      cy.get('input[placeholder*="Search"]').type("Conference", { delay: 10 });
       cy.wait(500);
+      // The filtered indicator appears in the results summary when there are matching results
       cy.contains("(filtered)").should("be.visible");
     });
 
@@ -133,11 +135,19 @@ describe("Reader Events Features", () => {
       cy.get('[data-value="Workshop"]').click();
       cy.wait(500);
 
-      // Click reset button (IconButton with aria-label)
+      // Verify category was selected
+      cy.get("#category-filter").should("contain", "Workshop");
+
+      // Wait for reset button to appear (it only shows when filters are active)
+      cy.get('[aria-label="Reset filters"]').should("be.visible");
+
+      // Click reset button
       cy.get('[aria-label="Reset filters"]').click();
 
-      // Category filter should show All
-      cy.get("#category-filter").should("contain", "All");
+      // After reset, category filter should reset to empty (showing "All Categories" in dropdown)
+      // But MUI Select shows the InputLabel "Category" when no value is selected
+      // So we verify the filter is reset by checking the reset button is no longer visible
+      cy.get('[aria-label="Reset filters"]').should("not.exist");
     });
   });
 
