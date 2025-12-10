@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { fn } from "@storybook/test";
+import { fn } from "storybook/test";
 import { EventTabPanel, EventTabs } from "./EventTabs";
 
 const meta: Meta<typeof EventTabs> = {
