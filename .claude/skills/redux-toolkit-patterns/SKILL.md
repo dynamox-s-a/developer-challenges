@@ -202,18 +202,20 @@ export default eventsSlice.reducer;
 ```tsx
 // store/slices/eventsSlice.ts (continued)
 import { createAsyncThunk } from '@reduxjs/toolkit';
-
-const API_URL = 'http://localhost:3001';
+import axios from 'axios';
+import { axiosInstance } from '@/lib/api';
 
 // Fetch all events
 export const fetchEvents = createAsyncThunk(
   'events/fetchEvents',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${API_URL}/events`);
-      if (!response.ok) throw new Error('Failed to fetch events');
-      return (await response.json()) as Event[];
+      const response = await axiosInstance.get<Event[]>('/events');
+      return response.data;
     } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+      }
       return rejectWithValue((error as Error).message);
     }
   }
@@ -224,14 +226,12 @@ export const createEvent = createAsyncThunk(
   'events/createEvent',
   async (event: Omit<Event, 'id'>, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${API_URL}/events`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(event),
-      });
-      if (!response.ok) throw new Error('Failed to create event');
-      return (await response.json()) as Event;
+      const response = await axiosInstance.post<Event>('/events', event);
+      return response.data;
     } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+      }
       return rejectWithValue((error as Error).message);
     }
   }
@@ -242,14 +242,12 @@ export const updateEventAsync = createAsyncThunk(
   'events/updateEventAsync',
   async (event: Event, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${API_URL}/events/${event.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(event),
-      });
-      if (!response.ok) throw new Error('Failed to update event');
-      return (await response.json()) as Event;
+      const response = await axiosInstance.put<Event>(`/events/${event.id}`, event);
+      return response.data;
     } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+      }
       return rejectWithValue((error as Error).message);
     }
   }
@@ -260,12 +258,12 @@ export const deleteEventAsync = createAsyncThunk(
   'events/deleteEventAsync',
   async (id: string, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${API_URL}/events/${id}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) throw new Error('Failed to delete event');
+      await axiosInstance.delete(`/events/${id}`);
       return id;
     } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+      }
       return rejectWithValue((error as Error).message);
     }
   }
@@ -461,6 +459,8 @@ export function EventList() {
 ```tsx
 // store/slices/authSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { axiosInstance } from '@/lib/api';
 
 interface User {
   id: string;
@@ -491,11 +491,11 @@ export const login = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await fetch('http://localhost:3001/users');
-      const users = await response.json();
+      const response = await axiosInstance.get<(User & { password: string })[]>('/users');
+      const users = response.data;
 
       const user = users.find(
-        (u: User & { password: string }) =>
+        (u) =>
           u.email === credentials.email && u.password === credentials.password
       );
 
@@ -520,6 +520,9 @@ export const login = createAsyncThunk(
         token,
       };
     } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+      }
       return rejectWithValue((error as Error).message);
     }
   }
@@ -585,3 +588,5 @@ export default authSlice.reducer;
 5. **Use typed hooks** - useAppDispatch and useAppSelector
 6. **Handle loading/error states** - Consistent async state management
 7. **Server Component consideration** - Redux is for client components only
+8. **Use axios with interceptors** - Centralize auth and error handling
+9. **Use axios.isAxiosError()** - Properly type-guard axios errors in thunks

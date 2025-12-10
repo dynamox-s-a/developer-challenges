@@ -97,7 +97,14 @@ import {
   useCallback,
 } from 'react';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 import { decodeToken, isTokenValid, TokenPayload } from '@/lib/auth/token';
+
+// Create axios instance
+const axiosInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001',
+  headers: { 'Content-Type': 'application/json' },
+});
 
 interface User {
   id: string;
@@ -167,18 +174,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3001/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await axiosInstance.post<{ token: string; user: User }>(
+        '/auth/login',
+        { email, password }
+      );
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Login failed');
-      }
-
-      const { token: newToken, user: userData } = await response.json();
+      const { token: newToken, user: userData } = response.data;
 
       // Store token
       localStorage.setItem('token', newToken);
@@ -192,6 +193,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         router.push('/events');
       }
     } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.error || 'Login failed');
+      }
       throw error;
     } finally {
       setIsLoading(false);
@@ -598,57 +602,71 @@ export default function LoginPage() {
 
 ```tsx
 // lib/api/client.ts
+import axios, { AxiosRequestConfig } from 'axios';
 import { getToken, removeToken } from '@/lib/auth/storage';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
-interface FetchOptions extends RequestInit {
-  requireAuth?: boolean;
-}
+// Create axios instance with default config
+export const axiosInstance = axios.create({
+  baseURL: API_URL,
+  headers: { 'Content-Type': 'application/json' },
+});
 
-export async function authenticatedFetch<T>(
+// Request interceptor to add auth token
+axiosInstance.interceptors.request.use((config) => {
+  const token = getToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// Response interceptor to handle auth errors
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (axios.isAxiosError(error)) {
+      // Handle 401 - unauthorized
+      if (error.response?.status === 401) {
+        removeToken();
+        if (typeof window !== 'undefined') {
+          window.location.href = '/login';
+        }
+        return Promise.reject(new Error('Unauthorized'));
+      }
+
+      // Handle 403 - forbidden
+      if (error.response?.status === 403) {
+        return Promise.reject(new Error('Access denied. Insufficient permissions.'));
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
+// Generic API request helper
+export async function apiRequest<T>(
   endpoint: string,
-  options: FetchOptions = {}
+  options: AxiosRequestConfig = {}
 ): Promise<T> {
-  const { requireAuth = true, ...fetchOptions } = options;
-
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-    ...fetchOptions.headers,
-  };
-
-  if (requireAuth) {
-    const token = getToken();
-    if (token) {
-      (headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;
+  try {
+    const response = await axiosInstance.request<T>({
+      url: endpoint,
+      ...options,
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const message =
+        error.response?.data?.message ||
+        error.response?.statusText ||
+        error.message ||
+        `Request failed with status ${error.response?.status}`;
+      throw new Error(message);
     }
+    throw error;
   }
-
-  const response = await fetch(`${API_URL}${endpoint}`, {
-    ...fetchOptions,
-    headers,
-  });
-
-  // Handle 401 - unauthorized
-  if (response.status === 401) {
-    removeToken();
-    if (typeof window !== 'undefined') {
-      window.location.href = '/login';
-    }
-    throw new Error('Unauthorized');
-  }
-
-  // Handle 403 - forbidden
-  if (response.status === 403) {
-    throw new Error('Access denied. Insufficient permissions.');
-  }
-
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({}));
-    throw new Error(error.message || `Request failed: ${response.status}`);
-  }
-
-  return response.json();
 }
 ```
 
@@ -792,3 +810,5 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 6. **Clear tokens on logout** - Remove from all storage locations
 7. **Implement refresh token pattern** - For production apps
 8. **Use TypeScript** - Type all auth-related interfaces
+9. **Use axios interceptors** - Centralize auth token injection and error handling
+10. **Prefer axios over fetch** - Better error handling, automatic JSON parsing, interceptors

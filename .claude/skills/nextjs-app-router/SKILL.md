@@ -73,6 +73,7 @@ export function EventForm() {
 | Keep sensitive info server-side | Browser-only APIs |
 | Large dependencies | Interactive UI elements |
 | SEO-critical content | Real-time updates |
+| Use native `fetch` (Next.js caching) | Use `axios` (interceptors, better errors) |
 
 ## Route Patterns
 
@@ -270,6 +271,8 @@ export const config = {
 4. **Implement proper loading states** - Every async boundary needs loading UI
 5. **Handle errors gracefully** - Use error.tsx at appropriate levels
 6. **Optimize metadata** - Use generateMetadata for dynamic pages
+7. **Use fetch in Server Components/Actions** - Next.js extends fetch with caching
+8. **Use axios in Client Components** - Better error handling and interceptors for auth
 
 ## Common Patterns for Event Management
 

@@ -300,35 +300,47 @@ server.listen(PORT, () => {
 
 ```tsx
 // lib/api.ts
+import axios, { AxiosRequestConfig } from 'axios';
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
-interface RequestOptions extends RequestInit {
-  token?: string;
-}
+// Create axios instance with default config
+export const axiosInstance = axios.create({
+  baseURL: API_URL,
+  headers: { 'Content-Type': 'application/json' },
+});
 
-async function apiRequest<T>(
-  endpoint: string,
-  options: RequestOptions = {}
-): Promise<T> {
-  const { token, ...fetchOptions } = options;
-
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-    ...(token && { Authorization: `Bearer ${token}` }),
-    ...fetchOptions.headers,
-  };
-
-  const response = await fetch(`${API_URL}${endpoint}`, {
-    ...fetchOptions,
-    headers,
-  });
-
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({}));
-    throw new Error(error.message || `API Error: ${response.status}`);
+// Request interceptor to add auth token
+axiosInstance.interceptors.request.use((config) => {
+  const token = getAuthToken(); // From your auth storage
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
+  return config;
+});
 
-  return response.json();
+// Generic API request helper
+export async function apiRequest<T>(
+  endpoint: string,
+  options: AxiosRequestConfig = {}
+): Promise<T> {
+  try {
+    const response = await axiosInstance.request<T>({
+      url: endpoint,
+      ...options,
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const message =
+        error.response?.data?.message ||
+        error.response?.statusText ||
+        error.message ||
+        `Request failed with status ${error.response?.status}`;
+      throw new Error(message);
+    }
+    throw error;
+  }
 }
 
 // Auth API
@@ -336,7 +348,7 @@ export const authApi = {
   login: (email: string, password: string) =>
     apiRequest<{ token: string; user: User }>('/auth/login', {
       method: 'POST',
-      body: JSON.stringify({ email, password }),
+      data: { email, password },
     }),
 };
 
@@ -347,24 +359,21 @@ export const eventsApi = {
 
   getById: (id: string) => apiRequest<Event>(`/events/${id}`),
 
-  create: (event: Omit<Event, 'id'>, token: string) =>
+  create: (event: Omit<Event, 'id'>) =>
     apiRequest<Event>('/events', {
       method: 'POST',
-      body: JSON.stringify(event),
-      token,
+      data: event,
     }),
 
-  update: (id: string, event: Partial<Event>, token: string) =>
+  update: (id: string, event: Partial<Event>) =>
     apiRequest<Event>(`/events/${id}`, {
       method: 'PATCH',
-      body: JSON.stringify(event),
-      token,
+      data: event,
     }),
 
-  delete: (id: string, token: string) =>
+  delete: (id: string) =>
     apiRequest<void>(`/events/${id}`, {
       method: 'DELETE',
-      token,
     }),
 };
 ```
@@ -439,12 +448,10 @@ export const fetchEvents = createAsyncThunk(
 
 export const createEvent = createAsyncThunk(
   'events/createEvent',
-  async (
-    { event, token }: { event: Omit<Event, 'id'>; token: string },
-    { rejectWithValue }
-  ) => {
+  async (event: Omit<Event, 'id'>, { rejectWithValue }) => {
     try {
-      return await eventsApi.create(event, token);
+      // Token is automatically added via axios interceptor
+      return await eventsApi.create(event);
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }
@@ -523,3 +530,5 @@ console.log('Mock data generated!');
 5. **Generate mock data** - Use faker.js for realistic test data
 6. **Document your API** - Keep README with available endpoints
 7. **Handle errors gracefully** - Frontend should expect API failures
+8. **Use axios for HTTP requests** - Better error handling, interceptors, automatic JSON
+9. **Centralize auth with interceptors** - Add tokens automatically to all requests
