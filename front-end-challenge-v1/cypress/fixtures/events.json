@@ -1,0 +1,13 @@
+{
+  "newEvent": {
+    "name": "Test Conference 2025",
+    "location": "Test Convention Center, Test City",
+    "description": "This is a comprehensive test event description that contains more than fifty characters to pass validation requirements.",
+    "category": "Conference"
+  },
+  "updatedEvent": {
+    "name": "Updated Test Conference 2025",
+    "location": "Updated Convention Center, New City",
+    "description": "This is an updated event description that also contains more than fifty characters for validation purposes."
+  }
+}
