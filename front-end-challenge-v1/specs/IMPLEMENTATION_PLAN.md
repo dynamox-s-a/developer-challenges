@@ -91,16 +91,16 @@
 
 ---
 
-### Phase 3: Event Data Layer
+### Phase 3: Event Data Layer ✅ COMPLETED
 **Focus:** Event CRUD operations and state management
 
-| Task | Description | Priority |
-|------|-------------|----------|
+| Task | Description | Status |
+|------|-------------|--------|
 | 3.1 | Create events slice with RTK Query or createAsyncThunk | ✅ Done (Phase 1) |
 | 3.2 | Define Event model with validation rules | ✅ Done (Phase 1) |
 | 3.3 | Implement CRUD API endpoints integration | ✅ Done (Phase 1) |
-| 3.4 | Add event filtering/sorting logic | 🟡 Important |
-| 3.5 | Create past/upcoming event separation | 🟡 Important |
+| 3.4 | Add event filtering/sorting logic | ✅ Done |
+| 3.5 | Create past/upcoming event separation | ✅ Done |
 
 **Event Schema:** ✅ Implemented in `src/types/event.ts`
 ```typescript
@@ -116,10 +116,13 @@ interface Event {
 }
 ```
 
-**Deliverables:**
+**Deliverables:** ✅ All completed
 - `src/features/events/eventsSlice.ts` - ✅ Event state management with CRUD thunks (created in Phase 1)
 - `src/features/events/eventsApi.ts` - ✅ Events domain API with getAll, getById, create, update, delete (created in Phase 1)
 - `src/types/event.ts` - ✅ Event type definitions (created in Phase 1)
+- `src/features/events/eventsSelectors.ts` - ✅ Selectors for filtering, sorting, past/upcoming separation
+- `src/features/events/useEvents.ts` - ✅ Custom hook for events with filter state management
+- `src/features/events/index.ts` - ✅ Barrel exports for events feature
 
 ---
 
@@ -281,7 +284,7 @@ front-end-challenge-v1/
 |-------|------|--------|--------------|
 | 1 | Foundation | ✅ Complete | None |
 | 2 | Authentication | ✅ Complete | Phase 1 |
-| 3 | Event Data Layer | 🔄 Partial (3/5 done) | Phase 1, 2 |
+| 3 | Event Data Layer | ✅ Complete | Phase 1, 2 |
 | 4 | Admin Features | ⏳ Pending | Phase 1, 2, 3 |
 | 5 | Reader Features | ⏳ Pending | Phase 1, 2, 3 |
 | 6 | UI Components | ⏳ Pending | Phase 1 (can parallel) |
