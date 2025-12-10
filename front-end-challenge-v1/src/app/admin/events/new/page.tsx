@@ -1,7 +1,7 @@
 "use client";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { Box, Button, Container, Paper, Typography } from "@mui/material";
+import { Box, Button, Paper, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { EventForm } from "@/components/events";
 
@@ -13,7 +13,7 @@ export default function CreateEventPage() {
   };
 
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
+    <>
       <Box sx={{ mb: 4 }}>
         <Button
           startIcon={<ArrowBackIcon />}
@@ -30,6 +30,6 @@ export default function CreateEventPage() {
       <Paper sx={{ p: 4 }}>
         <EventForm />
       </Paper>
-    </Container>
+    </>
   );
 }

@@ -7,7 +7,6 @@ import {
   Box,
   Button,
   CircularProgress,
-  Container,
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -59,7 +58,7 @@ export default function AdminEventsPage() {
   const sortedEvents = sortEvents(events, sortField, sortOrder);
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <>
       <Box
         sx={{
           display: "flex",
@@ -111,6 +110,6 @@ export default function AdminEventsPage() {
           onSortChange={handleSortChange}
         />
       )}
-    </Container>
+    </>
   );
 }

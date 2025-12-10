@@ -4,9 +4,7 @@ import EventIcon from "@mui/icons-material/Event";
 import {
   Alert,
   Box,
-  Button,
   CircularProgress,
-  Container,
   Grid,
   Paper,
   Typography,
@@ -19,13 +17,9 @@ import {
   EventTabPanel,
   EventTabs,
 } from "@/components/events";
-import { logout } from "@/features/auth/authSlice";
 import { useEvents } from "@/features/events/useEvents";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 export default function EventsPage() {
-  const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
   const [activeTab, setActiveTab] = useState<EventTabValue>("upcoming");
 
   const {
@@ -42,35 +36,14 @@ export default function EventsPage() {
     clearError,
   } = useEvents();
 
-  const handleLogout = () => {
-    dispatch(logout());
-  };
-
   const currentEvents = activeTab === "upcoming" ? upcomingEvents : pastEvents;
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      {/* Header */}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 4,
-        }}
-      >
-        <Typography variant="h4" component="h1">
-          Events
-        </Typography>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <Typography variant="body2" color="text.secondary">
-            {user?.email}
-          </Typography>
-          <Button variant="outlined" onClick={handleLogout}>
-            Logout
-          </Button>
-        </Box>
-      </Box>
+    <>
+      {/* Page Title */}
+      <Typography variant="h4" component="h1" sx={{ mb: 3 }}>
+        Events
+      </Typography>
 
       {/* Error Alert */}
       {error && (
@@ -153,7 +126,7 @@ export default function EventsPage() {
           {(filters.search || filters.category) && " (filtered)"}
         </Typography>
       )}
-    </Container>
+    </>
   );
 }
 

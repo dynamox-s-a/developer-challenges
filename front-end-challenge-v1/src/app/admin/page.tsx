@@ -9,14 +9,12 @@ import {
   Button,
   Card,
   CardContent,
-  Container,
   Grid,
   Paper,
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { logout } from "@/features/auth/authSlice";
 import { selectEventCounts } from "@/features/events/eventsSelectors";
 import { fetchEvents } from "@/features/events/eventsSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -24,17 +22,12 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 export default function AdminDashboard() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
   const counts = useAppSelector(selectEventCounts);
   const { isLoading } = useAppSelector((state) => state.events);
 
   useEffect(() => {
     dispatch(fetchEvents());
   }, [dispatch]);
-
-  const handleLogout = () => {
-    dispatch(logout());
-  };
 
   const handleManageEvents = () => {
     router.push("/admin/events");
@@ -45,27 +38,10 @@ export default function AdminDashboard() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 4,
-        }}
-      >
-        <Typography variant="h4" component="h1">
-          Admin Dashboard
-        </Typography>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <Typography variant="body2" color="text.secondary">
-            {user?.email}
-          </Typography>
-          <Button variant="outlined" onClick={handleLogout}>
-            Logout
-          </Button>
-        </Box>
-      </Box>
+    <>
+      <Typography variant="h4" component="h1" sx={{ mb: 4 }}>
+        Admin Dashboard
+      </Typography>
 
       {/* Stats Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
@@ -136,6 +112,6 @@ export default function AdminDashboard() {
           </Button>
         </Box>
       </Paper>
-    </Container>
+    </>
   );
 }

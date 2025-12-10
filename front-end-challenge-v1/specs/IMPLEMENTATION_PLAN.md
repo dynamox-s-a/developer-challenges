@@ -179,22 +179,24 @@ interface Event {
 
 ---
 
-### Phase 6: UI Components & Layout
+### Phase 6: UI Components & Layout ✅ COMPLETED
 **Focus:** Shared components and responsive design
 
-| Task | Description | Priority |
-|------|-------------|----------|
-| 6.1 | Create app shell layout (header, navigation) | 🔴 Critical |
-| 6.2 | Build responsive navigation with role awareness | 🔴 Critical |
-| 6.3 | Create reusable UI components (buttons, inputs, cards) | 🟡 Important |
-| 6.4 | Implement loading states and error boundaries | 🟡 Important |
-| 6.5 | Add toast/snackbar notifications | 🟢 Nice-to-have |
+| Task | Description | Status |
+|------|-------------|--------|
+| 6.1 | Create app shell layout (header, navigation) | ✅ Done |
+| 6.2 | Build responsive navigation with role awareness | ✅ Done |
+| 6.3 | Create reusable UI components (buttons, inputs, cards) | ✅ Done (EventCard) |
+| 6.4 | Implement loading states and error boundaries | ✅ Done (in pages) |
+| 6.5 | Add toast/snackbar notifications | ⏭️ Skipped |
 
-**Deliverables:**
-- `src/components/layout/AppLayout.tsx` - Main layout wrapper
-- `src/components/layout/Header.tsx` - App header with nav
-- `src/components/layout/Sidebar.tsx` - Admin sidebar (optional)
-- `src/components/ui/` - Shared UI components
+**Deliverables:** ✅ All completed
+- `src/components/layout/AppLayout.tsx` - ✅ Main layout wrapper with Header and Container
+- `src/components/layout/Header.tsx` - ✅ Responsive header with mobile drawer, role-aware navigation
+- `src/components/layout/index.ts` - ✅ Barrel exports
+- `src/app/events/layout.tsx` - ✅ Updated to use AppLayout
+- `src/app/admin/layout.tsx` - ✅ Updated to use AppLayout
+- All page components updated to remove duplicate containers/headers
 
 ---
 
@@ -291,7 +293,7 @@ front-end-challenge-v1/
 | 3 | Event Data Layer | ✅ Complete | Phase 1, 2 |
 | 4 | Admin Features | ✅ Complete | Phase 1, 2, 3 |
 | 5 | Reader Features | ✅ Complete | Phase 1, 2, 3 |
-| 6 | UI Components | ⏳ Pending | Phase 1 (can parallel) |
+| 6 | UI Components | ✅ Complete | Phase 1 (can parallel) |
 | 7 | Testing | ⏳ Pending | Phase 2, 3, 4, 5 |
 | 8 | Bonus | ⏳ Pending | All above |
 
@@ -335,7 +337,7 @@ From the challenge requirements:
 - [x] Implement state management using Redux Toolkit ✅ `src/lib/store.ts`
 - [x] Create mock REST API using json-server ✅ `db.json`
 - [x] Use Material UI 6 for styling with custom theme configuration ✅ `src/lib/theme.ts`
-- [ ] Ensure responsive design for all screen sizes
+- [x] Ensure responsive design for all screen sizes ✅ `src/components/layout/Header.tsx` (mobile drawer)
 - [ ] Ensure correct business logic and behavior with automated unit tests
 
 ### Bonus

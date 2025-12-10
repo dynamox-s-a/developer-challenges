@@ -6,7 +6,6 @@ import {
   Box,
   Button,
   CircularProgress,
-  Container,
   Paper,
   Typography,
 } from "@mui/material";
@@ -46,18 +45,16 @@ export default function EditEventPage() {
   // Show loading while fetching events
   if (isLoading && events.length === 0) {
     return (
-      <Container maxWidth="md" sx={{ py: 4 }}>
-        <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}>
-          <CircularProgress />
-        </Box>
-      </Container>
+      <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}>
+        <CircularProgress />
+      </Box>
     );
   }
 
   // Show error if event not found
   if (!event && events.length > 0) {
     return (
-      <Container maxWidth="md" sx={{ py: 4 }}>
+      <>
         <Box sx={{ mb: 4 }}>
           <Button
             startIcon={<ArrowBackIcon />}
@@ -70,12 +67,12 @@ export default function EditEventPage() {
         <Alert severity="error">
           Event not found. The event may have been deleted or the ID is invalid.
         </Alert>
-      </Container>
+      </>
     );
   }
 
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
+    <>
       <Box sx={{ mb: 4 }}>
         <Button
           startIcon={<ArrowBackIcon />}
@@ -101,6 +98,6 @@ export default function EditEventPage() {
       )}
 
       <Paper sx={{ p: 4 }}>{event && <EventForm event={event} />}</Paper>
-    </Container>
+    </>
   );
 }
