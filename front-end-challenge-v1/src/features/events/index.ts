@@ -1,8 +1,17 @@
 // Redux slice and actions
 
+export type { EventTabValue } from "./components";
+// Components
+export {
+  EventCard,
+  EventFilters,
+  EventForm,
+  EventsTable,
+  EventTabPanel,
+  EventTabs,
+} from "./components";
 // API
 export { eventsApi } from "./eventsApi";
-
 // Selectors
 export {
   filterAndSortEvents,
@@ -23,7 +32,6 @@ export {
   selectUpcomingEvents,
   sortEvents,
 } from "./eventsSelectors";
-
 export {
   clearError,
   createEvent,
@@ -32,17 +40,5 @@ export {
   fetchEvents,
   updateEvent,
 } from "./eventsSlice";
-
 // Hooks
 export { useEvents } from "./useEvents";
-
-// Components
-export {
-  EventCard,
-  EventFilters,
-  EventForm,
-  EventsTable,
-  EventTabPanel,
-  EventTabs,
-} from "./components";
-export type { EventTabValue } from "./components";

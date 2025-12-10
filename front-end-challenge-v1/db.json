@@ -1,13 +1,13 @@
 {
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "email": "admin@events.com",
       "password": "admin123",
       "role": "admin"
     },
     {
-      "id": 2,
+      "id": "2",
       "email": "reader@events.com",
       "password": "reader123",
       "role": "reader"
@@ -16,8 +16,8 @@
   "events": [
     {
       "id": "550e8400-e29b-41d4-a716-446655440001",
-      "name": "Tech Conference 2025",
-      "dateTime": "2025-03-15T09:00:00.000Z",
+      "name": "Tech Conference 2026",
+      "dateTime": "2026-03-15T09:00:00.000Z",
       "location": "San Francisco Convention Center",
       "description": "Join us for the largest tech conference of the year featuring keynotes from industry leaders, hands-on workshops, and networking opportunities.",
       "category": "Conference",
@@ -27,52 +27,12 @@
     {
       "id": "550e8400-e29b-41d4-a716-446655440002",
       "name": "React Workshop: Advanced Patterns",
-      "dateTime": "2025-02-20T14:00:00.000Z",
+      "dateTime": "2026-02-20T14:00:00.000Z",
       "location": "Online via Zoom",
       "description": "Deep dive into advanced React patterns including compound components, render props, and custom hooks. Perfect for intermediate to advanced developers.",
       "category": "Workshop",
       "createdAt": "2024-12-01T10:00:00.000Z",
       "updatedAt": "2024-12-01T10:00:00.000Z"
-    },
-    {
-      "id": "550e8400-e29b-41d4-a716-446655440003",
-      "name": "Introduction to AI/ML",
-      "dateTime": "2025-01-25T16:00:00.000Z",
-      "location": "Online Webinar",
-      "description": "A comprehensive introduction to artificial intelligence and machine learning concepts for beginners. Learn the fundamentals and explore real-world applications.",
-      "category": "Webinar",
-      "createdAt": "2024-12-01T10:00:00.000Z",
-      "updatedAt": "2024-12-01T10:00:00.000Z"
-    },
-    {
-      "id": "550e8400-e29b-41d4-a716-446655440004",
-      "name": "Developer Meetup: Austin",
-      "dateTime": "2025-02-10T18:30:00.000Z",
-      "location": "Capital Factory, Austin TX",
-      "description": "Monthly developer meetup in Austin! Connect with fellow developers, share your projects, and learn from lightning talks on various tech topics.",
-      "category": "Networking",
-      "createdAt": "2024-12-01T10:00:00.000Z",
-      "updatedAt": "2024-12-01T10:00:00.000Z"
-    },
-    {
-      "id": "550e8400-e29b-41d4-a716-446655440005",
-      "name": "Cloud Architecture Summit",
-      "dateTime": "2024-11-15T09:00:00.000Z",
-      "location": "Seattle Convention Center",
-      "description": "Past event: A comprehensive summit covering cloud architecture best practices, serverless computing, and multi-cloud strategies from AWS, Azure, and GCP experts.",
-      "category": "Conference",
-      "createdAt": "2024-09-01T10:00:00.000Z",
-      "updatedAt": "2024-09-01T10:00:00.000Z"
-    },
-    {
-      "id": "550e8400-e29b-41d4-a716-446655440006",
-      "name": "Startup Pitch Night",
-      "dateTime": "2024-10-20T19:00:00.000Z",
-      "location": "TechHub NYC",
-      "description": "Past event: An exciting evening where startups pitched their ideas to investors and industry experts. Great networking opportunity for entrepreneurs.",
-      "category": "Networking",
-      "createdAt": "2024-09-01T10:00:00.000Z",
-      "updatedAt": "2024-09-01T10:00:00.000Z"
     }
   ]
 }

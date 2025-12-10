@@ -7,31 +7,35 @@ describe("Authentication", () => {
     it("should display login form", () => {
       cy.visit("/login");
       cy.contains("Sign in to your account").should("be.visible");
-      cy.get('input[name="email"]').should("be.visible");
-      cy.get('input[name="password"]').should("be.visible");
-      cy.get('button[type="submit"]').should("be.visible");
+      cy.get('[data-testid="email-input"]').should("be.visible");
+      cy.get('[data-testid="password-input"]').should("be.visible");
+      cy.get('[data-testid="login-button"]').should("be.visible");
     });
 
     it("should show validation errors for empty fields", () => {
       cy.visit("/login");
-      cy.get('button[type="submit"]').click();
+      cy.get('[data-testid="login-button"]').click();
       cy.contains("Email is required").should("be.visible");
       cy.contains("Password is required").should("be.visible");
     });
 
     it("should show validation error for invalid email format", () => {
       cy.visit("/login");
-      cy.get('input[name="email"]').type("invalid-email");
-      cy.get('input[name="password"]').type("password123");
-      cy.get('button[type="submit"]').click();
-      cy.contains("Please enter a valid email").should("be.visible");
+      cy.get('[data-testid="email-input"]').type("invalid-email", { delay: 0 });
+      cy.get('[data-testid="password-input"]').type("password123", { delay: 0 });
+      cy.get('[data-testid="login-button"]').click();
+      cy.contains("Please enter a valid email address").should("be.visible");
     });
 
     it("should show error for invalid credentials", () => {
       cy.visit("/login");
-      cy.get('input[name="email"]').type("wrong@email.com");
-      cy.get('input[name="password"]').type("wrongpassword");
-      cy.get('button[type="submit"]').click();
+      cy.get('[data-testid="email-input"]').type("wrong@email.com", {
+        delay: 0,
+      });
+      cy.get('[data-testid="password-input"]').type("wrongpassword", {
+        delay: 0,
+      });
+      cy.get('[data-testid="login-button"]').click();
       cy.contains("Invalid email or password").should("be.visible");
     });
   });
@@ -39,11 +43,13 @@ describe("Authentication", () => {
   describe("Admin Login", () => {
     it("should login as admin and redirect to admin dashboard", () => {
       cy.visit("/login");
-      cy.get('input[name="email"]').type("admin@events.com");
-      cy.get('input[name="password"]').type("admin123");
-      cy.get('button[type="submit"]').click();
+      cy.get('[data-testid="email-input"]').type("admin@events.com", {
+        delay: 0,
+      });
+      cy.get('[data-testid="password-input"]').type("admin123", { delay: 0 });
+      cy.get('[data-testid="login-button"]').click();
 
-      cy.url().should("include", "/admin");
+      cy.url({ timeout: 15000 }).should("include", "/admin");
       cy.contains("Admin Dashboard").should("be.visible");
     });
 
@@ -61,11 +67,13 @@ describe("Authentication", () => {
   describe("Reader Login", () => {
     it("should login as reader and redirect to events page", () => {
       cy.visit("/login");
-      cy.get('input[name="email"]').type("reader@events.com");
-      cy.get('input[name="password"]').type("reader123");
-      cy.get('button[type="submit"]').click();
+      cy.get('[data-testid="email-input"]').type("reader@events.com", {
+        delay: 0,
+      });
+      cy.get('[data-testid="password-input"]').type("reader123", { delay: 0 });
+      cy.get('[data-testid="login-button"]').click();
 
-      cy.url().should("include", "/events");
+      cy.url({ timeout: 15000 }).should("include", "/events");
       cy.contains("Events").should("be.visible");
     });
 
@@ -76,7 +84,7 @@ describe("Authentication", () => {
 
     it("should NOT show Admin Dashboard link for readers", () => {
       cy.loginAsReader();
-      cy.get("nav").should("not.contain", "Admin Dashboard");
+      cy.get("header").should("not.contain", "Admin Dashboard");
     });
   });
 
@@ -96,11 +104,11 @@ describe("Authentication", () => {
     it("should clear auth token from localStorage on logout", () => {
       cy.loginAsAdmin();
       cy.window().then((win) => {
-        expect(win.localStorage.getItem("auth_token")).to.exist;
+        expect(win.localStorage.getItem("event_management_auth")).to.exist;
       });
       cy.logout();
       cy.window().then((win) => {
-        expect(win.localStorage.getItem("auth_token")).to.be.null;
+        expect(win.localStorage.getItem("event_management_auth")).to.be.null;
       });
     });
   });

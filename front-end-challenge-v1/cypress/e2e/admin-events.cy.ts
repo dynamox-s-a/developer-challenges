@@ -32,31 +32,33 @@ describe("Admin Events Management", () => {
   });
 
   describe("Events List", () => {
-    it("should display events table", () => {
+    beforeEach(() => {
       cy.visit("/admin/events");
+      // Wait for page to fully load and table to be visible
+      cy.contains("Manage Events").should("be.visible");
+      cy.get("table").should("be.visible");
+    });
+
+    it("should display events table", () => {
       cy.contains("Manage Events").should("be.visible");
       cy.get("table").should("be.visible");
     });
 
     it("should have sortable columns", () => {
-      cy.visit("/admin/events");
       cy.contains("th", "Name").should("be.visible");
       cy.contains("th", "Date & Time").should("be.visible");
     });
 
     it("should navigate to create event from list page", () => {
-      cy.visit("/admin/events");
       cy.contains("button", "Create Event").click();
       cy.url().should("include", "/admin/events/new");
     });
 
     it("should have edit buttons for each event", () => {
-      cy.visit("/admin/events");
       cy.get('[aria-label="edit"]').should("exist");
     });
 
     it("should have delete buttons for each event", () => {
-      cy.visit("/admin/events");
       cy.get('[aria-label="delete"]').should("exist");
     });
   });
@@ -68,28 +70,39 @@ describe("Admin Events Management", () => {
 
     it("should display create event form", () => {
       cy.contains("Create New Event").should("be.visible");
-      cy.get('input[name="name"]').should("be.visible");
-      cy.get('input[name="dateTime"]').should("be.visible");
-      cy.get('input[name="location"]').should("be.visible");
-      cy.get('textarea[name="description"]').should("be.visible");
+      cy.get('[data-testid="event-name-input"]').should("be.visible");
+      cy.get('[data-testid="event-datetime-input"]').should("be.visible");
+      cy.get('[data-testid="event-location-input"]').should("be.visible");
+      cy.get('[data-testid="event-description-input"]').should("be.visible");
     });
 
     it("should show validation errors for empty form submission", () => {
-      cy.contains("button", "Create Event").click();
-      cy.contains("Name is required").should("be.visible");
+      cy.get('[data-testid="event-submit-button"]')
+        .should("be.visible")
+        .click();
+      cy.contains("Event name is required").should("be.visible");
     });
 
     it("should show validation error for short description", () => {
-      cy.get('input[name="name"]').type("Test Event");
-      cy.get('input[name="location"]').type("Test Location");
-      cy.get('textarea[name="description"]').type("Too short");
+      cy.get('[data-testid="event-name-input"]').should("be.visible");
+      cy.get('[data-testid="event-name-input"]').type("Test Event", {
+        delay: 0,
+      });
+      cy.get('[data-testid="event-location-input"]').type("Test Location", {
+        delay: 0,
+      });
+      cy.get('[data-testid="event-description-input"]').type("Too short", {
+        delay: 0,
+      });
       // Set future date
       const futureDate = new Date();
       futureDate.setDate(futureDate.getDate() + 7);
       const formattedDate = futureDate.toISOString().slice(0, 16);
-      cy.get('input[name="dateTime"]').type(formattedDate);
+      cy.get('[data-testid="event-datetime-input"]').type(formattedDate, {
+        delay: 0,
+      });
 
-      cy.contains("button", "Create Event").click();
+      cy.get('[data-testid="event-submit-button"]').click();
       cy.contains("Description must be at least 50 characters").should(
         "be.visible",
       );
@@ -99,24 +112,34 @@ describe("Admin Events Management", () => {
       cy.fixture("events").then((events) => {
         const { newEvent } = events;
 
-        cy.get('input[name="name"]').type(newEvent.name);
-        cy.get('input[name="location"]').type(newEvent.location);
-        cy.get('textarea[name="description"]').type(newEvent.description);
+        cy.get('[data-testid="event-name-input"]').should("be.visible");
+        cy.get('[data-testid="event-name-input"]').type(newEvent.name, {
+          delay: 0,
+        });
+        cy.get('[data-testid="event-location-input"]').type(newEvent.location, {
+          delay: 0,
+        });
+        cy.get('[data-testid="event-description-input"]').type(
+          newEvent.description,
+          { delay: 0 },
+        );
 
         // Set future date
         const futureDate = new Date();
         futureDate.setDate(futureDate.getDate() + 30);
         const formattedDate = futureDate.toISOString().slice(0, 16);
-        cy.get('input[name="dateTime"]').type(formattedDate);
+        cy.get('[data-testid="event-datetime-input"]').type(formattedDate, {
+          delay: 0,
+        });
 
         // Select category
         cy.get("#category").click();
         cy.get(`[data-value="${newEvent.category}"]`).click();
 
-        cy.contains("button", "Create Event").click();
+        cy.get('[data-testid="event-submit-button"]').click();
 
         // Should redirect to events list
-        cy.url().should("include", "/admin/events");
+        cy.url({ timeout: 15000 }).should("include", "/admin/events");
         cy.url().should("not.include", "/new");
 
         // New event should appear in the list
@@ -125,41 +148,58 @@ describe("Admin Events Management", () => {
     });
 
     it("should navigate back to events list", () => {
-      cy.contains("button", "Back to Events").click();
+      cy.get('[data-testid="event-cancel-button"]')
+        .should("be.visible")
+        .click();
       cy.url().should("include", "/admin/events");
       cy.url().should("not.include", "/new");
     });
   });
 
   describe("Edit Event", () => {
-    it("should navigate to edit page from events list", () => {
+    beforeEach(() => {
       cy.visit("/admin/events");
+      // Wait for events table to load
+      cy.contains("Manage Events").should("be.visible");
+      cy.get("table").should("be.visible");
+      cy.get('[aria-label="edit"]').should("exist");
+    });
+
+    it("should navigate to edit page from events list", () => {
       cy.get('[aria-label="edit"]').first().click();
       cy.url().should("match", /\/admin\/events\/[\w-]+\/edit/);
       cy.contains("Edit Event").should("be.visible");
     });
 
     it("should pre-populate form with event data", () => {
-      cy.visit("/admin/events");
       cy.get('[aria-label="edit"]').first().click();
 
       // Form fields should have values
-      cy.get('input[name="name"]').should("not.have.value", "");
-      cy.get('input[name="location"]').should("not.have.value", "");
-      cy.get('textarea[name="description"]').should("not.have.value", "");
+      cy.get('[data-testid="event-name-input"]').should("not.have.value", "");
+      cy.get('[data-testid="event-location-input"]').should(
+        "not.have.value",
+        "",
+      );
+      cy.get('[data-testid="event-description-input"]').should(
+        "not.have.value",
+        "",
+      );
     });
 
     it("should update event successfully", () => {
-      cy.visit("/admin/events");
       cy.get('[aria-label="edit"]').first().click();
 
       // Clear and update name
-      cy.get('input[name="name"]').clear().type("Updated Event Name");
+      cy.get('[data-testid="event-name-input"]').should("be.visible");
+      cy.get('[data-testid="event-name-input"]').clear();
+      cy.get('[data-testid="event-name-input"]').type("Updated Event Name", {
+        delay: 0,
+      });
 
-      cy.contains("button", "Update Event").click();
+      cy.get('[data-testid="event-submit-button"]').click();
 
       // Should redirect back to list
-      cy.url().should("include", "/admin/events");
+      cy.url({ timeout: 15000 }).should("include", "/admin/events");
       cy.url().should("not.include", "/edit");
 
       // Updated name should appear
@@ -168,8 +208,15 @@ describe("Admin Events Management", () => {
   });
 
   describe("Delete Event", () => {
-    it("should show confirmation dialog when clicking delete", () => {
+    beforeEach(() => {
       cy.visit("/admin/events");
+      // Wait for events table to load
+      cy.contains("Manage Events").should("be.visible");
+      cy.get("table").should("be.visible");
+      cy.get('[aria-label="delete"]').should("exist");
+    });
+
+    it("should show confirmation dialog when clicking delete", () => {
       cy.get('[aria-label="delete"]').first().click();
 
       // Confirmation dialog should appear
@@ -178,8 +225,6 @@ describe("Admin Events Management", () => {
     });
 
     it("should cancel deletion when clicking cancel", () => {
-      cy.visit("/admin/events");
-
       // Get initial row count
       cy.get("tbody tr").then(($rows) => {
         const initialCount = $rows.length;
@@ -196,8 +241,6 @@ describe("Admin Events Management", () => {
     });
 
     it("should delete event when confirming", () => {
-      cy.visit("/admin/events");
-
       // Get initial row count
       cy.get("tbody tr").then(($rows) => {
         const initialCount = $rows.length;

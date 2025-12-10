@@ -16,69 +16,19 @@ import {
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import * as yup from "yup";
-import { createEvent, updateEvent } from "../eventsSlice";
+import type { InferType } from "yup";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import type { CreateEventPayload, Event, EventCategory } from "@/types";
+import { EVENT_CATEGORIES } from "../constants";
+import { createEvent, updateEvent } from "../eventsSlice";
+import { formatDateTimeForInput, getMinDateTime } from "../utils";
+import { eventSchema } from "../validations";
 
-const EVENT_CATEGORIES: EventCategory[] = [
-  "Conference",
-  "Workshop",
-  "Webinar",
-  "Networking",
-  "Other",
-];
-
-// Validation schema using Yup
-const eventSchema = yup
-  .object({
-    name: yup
-      .string()
-      .required("Event name is required")
-      .min(3, "Name must be at least 3 characters")
-      .max(100, "Name must be less than 100 characters"),
-    dateTime: yup
-      .string()
-      .required("Date and time is required")
-      .test("future-date", "Event date must be in the future", (value) => {
-        if (!value) return false;
-        return new Date(value) > new Date();
-      }),
-    location: yup
-      .string()
-      .required("Location is required")
-      .min(3, "Location must be at least 3 characters"),
-    description: yup
-      .string()
-      .required("Description is required")
-      .test(
-        "min-length",
-        "Description must be at least 50 characters",
-        (value) => (value?.trim().length || 0) >= 50,
-      ),
-    category: yup
-      .string()
-      .required("Category is required")
-      .oneOf(EVENT_CATEGORIES as string[], "Please select a valid category"),
-  })
-  .required();
-
-type EventFormData = yup.InferType<typeof eventSchema>;
+type EventFormData = InferType<typeof eventSchema>;
 
 interface EventFormProps {
   event?: Event;
   onSuccess?: () => void;
-}
-
-// Format ISO date string to datetime-local input format
-function formatDateTimeForInput(isoString: string): string {
-  const date = new Date(isoString);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-  return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
 export function EventForm({ event, onSuccess }: EventFormProps) {
@@ -150,13 +100,6 @@ export function EventForm({ event, onSuccess }: EventFormProps) {
     router.push("/admin/events");
   };
 
-  // Get minimum date for datetime input (current time)
-  const getMinDateTime = (): string => {
-    const now = new Date();
-    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-    return now.toISOString().slice(0, 16);
-  };
-
   // Watch description for character count
   const description = watch("description", "");
 
@@ -178,6 +121,7 @@ export function EventForm({ event, onSuccess }: EventFormProps) {
         disabled={isLoading}
         required
         sx={{ mb: 3 }}
+        inputProps={{ "data-testid": "event-name-input" }}
       />
 
       <TextField
@@ -192,7 +136,10 @@ export function EventForm({ event, onSuccess }: EventFormProps) {
         required
         slotProps={{
           inputLabel: { shrink: true },
-          htmlInput: { min: getMinDateTime() },
+          htmlInput: {
+            min: getMinDateTime(),
+            "data-testid": "event-datetime-input",
+          },
         }}
         sx={{ mb: 3 }}
       />
@@ -207,6 +154,7 @@ export function EventForm({ event, onSuccess }: EventFormProps) {
         disabled={isLoading}
         required
         sx={{ mb: 3 }}
+        inputProps={{ "data-testid": "event-location-input" }}
       />
 
       <Controller
@@ -250,6 +198,7 @@ export function EventForm({ event, onSuccess }: EventFormProps) {
         disabled={isLoading}
         required
         sx={{ mb: 3 }}
+        inputProps={{ "data-testid": "event-description-input" }}
       />
 
       <Box sx={{ display: "flex", gap: 2, justifyContent: "flex-end" }}>
@@ -258,6 +207,7 @@ export function EventForm({ event, onSuccess }: EventFormProps) {
           onClick={handleCancel}
           disabled={isLoading}
           type="button"
+          data-testid="event-cancel-button"
         >
           Cancel
         </Button>
@@ -266,6 +216,7 @@ export function EventForm({ event, onSuccess }: EventFormProps) {
           variant="contained"
           disabled={isLoading}
           startIcon={isLoading ? <CircularProgress size={20} /> : undefined}
+          data-testid="event-submit-button"
         >
           {isLoading
             ? isEditing

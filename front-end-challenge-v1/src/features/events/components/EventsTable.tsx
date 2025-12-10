@@ -25,9 +25,11 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { deleteEvent } from "../eventsSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import type { Event, EventCategory, SortOrder } from "@/types";
+import type { Event, SortOrder } from "@/types";
+import { CATEGORY_COLORS } from "../constants";
+import { deleteEvent } from "../eventsSlice";
+import { formatDateTime, isUpcoming } from "../utils";
 
 interface EventsTableProps {
   events: Event[];
@@ -35,17 +37,6 @@ interface EventsTableProps {
   sortOrder: SortOrder;
   onSortChange: (field: "name" | "dateTime") => void;
 }
-
-const CATEGORY_COLORS: Record<
-  EventCategory,
-  "primary" | "secondary" | "success" | "warning" | "info"
-> = {
-  Conference: "primary",
-  Workshop: "success",
-  Webinar: "info",
-  Networking: "secondary",
-  Other: "warning",
-};
 
 export function EventsTable({
   events,
@@ -84,21 +75,6 @@ export function EventsTable({
   const handleDeleteCancel = () => {
     setDeleteDialogOpen(false);
     setEventToDelete(null);
-  };
-
-  const formatDateTime = (dateTimeString: string): string => {
-    const date = new Date(dateTimeString);
-    return date.toLocaleString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
-
-  const isUpcoming = (dateTimeString: string): boolean => {
-    return new Date(dateTimeString) > new Date();
   };
 
   if (events.length === 0) {
@@ -178,6 +154,7 @@ export function EventsTable({
                         onClick={() => handleEdit(event.id)}
                         disabled={isLoading}
                         color="primary"
+                        aria-label="edit"
                       >
                         <EditIcon fontSize="small" />
                       </IconButton>
@@ -188,6 +165,7 @@ export function EventsTable({
                         onClick={() => handleDeleteClick(event)}
                         disabled={isLoading}
                         color="error"
+                        aria-label="delete"
                       >
                         <DeleteIcon fontSize="small" />
                       </IconButton>

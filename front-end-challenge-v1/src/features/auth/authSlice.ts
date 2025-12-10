@@ -10,7 +10,7 @@ const initialState: AuthState = {
   user: null,
   token: null,
   isAuthenticated: false,
-  isLoading: false,
+  isLoading: true, // Start as loading until auth is initialized from storage
   error: null,
 };
 

@@ -4,18 +4,8 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Box, Card, CardContent, Chip, Typography } from "@mui/material";
-import type { Event, EventCategory } from "@/types";
-
-const CATEGORY_COLORS: Record<
-  EventCategory,
-  "primary" | "secondary" | "success" | "warning" | "info"
-> = {
-  Conference: "primary",
-  Workshop: "success",
-  Webinar: "info",
-  Networking: "secondary",
-  Other: "warning",
-};
+import type { Event } from "@/types";
+import { CATEGORY_COLORS } from "../constants";
 
 interface EventCardProps {
   event: Event;

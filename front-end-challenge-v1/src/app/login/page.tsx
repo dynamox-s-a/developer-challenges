@@ -15,25 +15,12 @@ import {
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import { clearError, login } from "@/features/auth/authSlice";
+import type { InferType } from "yup";
+import { login } from "@/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { loginSchema } from "@/features/auth/validations";
 
-// Validation schema using Yup
-const loginSchema = yup
-  .object({
-    email: yup
-      .string()
-      .required("Email is required")
-      .email("Please enter a valid email address"),
-    password: yup
-      .string()
-      .required("Password is required")
-      .min(6, "Password must be at least 6 characters"),
-  })
-  .required();
-
-type LoginFormData = yup.InferType<typeof loginSchema>;
+type LoginFormData = InferType<typeof loginSchema>;
 
 export default function LoginPage() {
   const router = useRouter();
@@ -63,15 +50,12 @@ export default function LoginPage() {
     }
   }, [isAuthenticated, user, router]);
 
-  // Clear auth errors when component unmounts
-  useEffect(() => {
-    return () => {
-      dispatch(clearError());
-    };
-  }, [dispatch]);
-
-  const onSubmit = (data: LoginFormData) => {
-    dispatch(login({ email: data.email.trim(), password: data.password }));
+  const onSubmit = async (data: LoginFormData) => {
+    try {
+      await dispatch(
+        login({ email: data.email.trim(), password: data.password }),
+      );
+    } catch (_error) {}
   };
 
   return (
@@ -122,6 +106,7 @@ export default function LoginPage() {
                 helperText={errors.email?.message}
                 disabled={isLoading}
                 sx={{ mb: 2 }}
+                inputProps={{ "data-testid": "email-input" }}
               />
               <TextField
                 {...register("password")}
@@ -134,6 +119,7 @@ export default function LoginPage() {
                 helperText={errors.password?.message}
                 disabled={isLoading}
                 sx={{ mb: 3 }}
+                inputProps={{ "data-testid": "password-input" }}
               />
               <Button
                 type="submit"
@@ -142,6 +128,7 @@ export default function LoginPage() {
                 size="large"
                 disabled={isLoading}
                 sx={{ py: 1.5 }}
+                data-testid="login-button"
               >
                 {isLoading ? (
                   <CircularProgress size={24} color="inherit" />

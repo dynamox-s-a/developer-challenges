@@ -96,7 +96,10 @@ export function Header() {
           </ListItem>
         ))}
         <ListItem disablePadding>
-          <ListItemButton onClick={handleLogout}>
+          <ListItemButton
+            onClick={handleLogout}
+            data-testid="logout-button-mobile"
+          >
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>
@@ -164,6 +167,7 @@ export function Header() {
                   color="inherit"
                   startIcon={<LogoutIcon />}
                   onClick={handleLogout}
+                  data-testid="logout-button"
                 >
                   Logout
                 </Button>

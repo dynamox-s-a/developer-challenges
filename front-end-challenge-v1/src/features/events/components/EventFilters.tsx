@@ -18,14 +18,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import type { EventCategory, EventFilters as EventFiltersType } from "@/types";
-
-const EVENT_CATEGORIES: EventCategory[] = [
-  "Conference",
-  "Workshop",
-  "Webinar",
-  "Networking",
-  "Other",
-];
+import { EVENT_CATEGORIES } from "../constants";
 
 interface EventFiltersProps {
   filters: EventFiltersType;
