@@ -233,13 +233,26 @@ interface Event {
 
 ---
 
-### Phase 8 (Bonus): Additional Enhancements
+### Phase 8 (Bonus): Additional Enhancements ✅ PARTIALLY COMPLETED
 **Focus:** Storybook, deployment
 
-| Task | Description | Priority |
-|------|-------------|----------|
-| 8.1 | Setup Storybook for UI components | 🟢 Bonus |
-| 8.2 | Deploy to Vercel/cloud | 🟢 Bonus |
+| Task | Description | Status |
+|------|-------------|--------|
+| 8.1 | Setup Storybook for UI components | ✅ Done |
+| 8.2 | Deploy to Vercel/cloud | ⏳ Pending |
+
+**Deliverables:** ✅ Storybook completed
+- `.storybook/main.ts` - ✅ Storybook configuration with @storybook/nextjs-vite
+- `.storybook/preview.tsx` - ✅ MUI theme and Redux provider integration
+- `src/components/events/EventCard.stories.tsx` - ✅ 8 stories covering all categories and states
+- `src/components/events/EventFilters.stories.tsx` - ✅ 7 stories for filter variations
+- `src/components/events/EventTabs.stories.tsx` - ✅ 7 stories including tab panels
+- `src/components/events/EventsTable.stories.tsx` - ✅ 8 stories for table states
+- `tsconfig.json` - ✅ Updated to exclude .stories files from Next.js build
+
+**NPM Scripts Added:**
+- `npm run storybook` - Start Storybook development server on port 6006
+- `npm run build-storybook` - Build static Storybook for deployment
 
 ---
 
@@ -308,7 +321,7 @@ front-end-challenge-v1/
 | 5 | Reader Features | ✅ Complete | Phase 1, 2, 3 |
 | 6 | UI Components | ✅ Complete | Phase 1 (can parallel) |
 | 7 | Testing (Cypress E2E) | ✅ Complete | Phase 2, 3, 4, 5 |
-| 8 | Bonus | ⏳ Pending | All above |
+| 8 | Bonus (Storybook) | ✅ Partial | All above |
 
 ---
 
@@ -357,4 +370,4 @@ From the challenge requirements:
 - [x] Add e2e tests with Cypress ✅ `cypress/e2e/` (54 tests across 3 spec files)
 - [x] Implement role-based route protection using HOCs or middleware ✅ `src/components/auth/ProtectedRoute.tsx`
 - [ ] Deploy to cloud provider
-- [ ] Add Storybook documentation for UI components
+- [x] Add Storybook documentation for UI components ✅ `.storybook/` and `*.stories.tsx` files
