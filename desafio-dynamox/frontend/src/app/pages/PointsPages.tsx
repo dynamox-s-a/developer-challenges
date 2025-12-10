@@ -1,153 +1,152 @@
-import React, { useEffect, useState } from 'react';
-import { 
-  Box, Button, Typography, Dialog, DialogTitle, DialogContent, 
-  DialogActions, TextField, MenuItem, Alert, Snackbar, Divider 
-} from '@mui/material';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from '../store/store';
-import { fetchPoints, createPoint, clearError } from '../store/pointsSlice';
-import { fetchMachines } from '../store/machineSlice';
+import { RootState } from '../store/store';
+import { addPoint, updatePoint, deletePoint, Point, SensorModel } from '../store/pointsSlice';
+import {
+  Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  Typography, Box, Button, Dialog, DialogTitle, DialogContent, DialogActions,
+  TextField, FormControl, InputLabel, Select, MenuItem, IconButton, Alert, TablePagination, Chip
+} from '@mui/material';
 
-// Ícone SVG
-const AddIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-);
+const EditIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" /></svg>;
+const TrashIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>;
+const PlusIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>;
 
-export const PointsPage = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  
-  const pointsState = useSelector((state: RootState) => state.points);
-  const machinesState = useSelector((state: RootState) => state.machines);
-
-  const points = pointsState?.items || [];
-  const pointError = pointsState?.error || null;
-  const machines = machinesState?.items || [];
+export default function PointsPage() {
+  const points = useSelector((state: RootState) => state.points.points);
+  const machines = useSelector((state: RootState) => state.machines.machines);
+  const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState('');
-  const [machineId, setMachineId] = useState('');
-  const [sensorModel, setSensorModel] = useState('HF+');
-  const [sensorId, setSensorId] = useState('');
+  const [editingPoint, setEditingPoint] = useState<Point | null>(null);
+  const [formData, setFormData] = useState({ name: '', machineId: '', sensorModel: 'HF+' as SensorModel });
+  const [error, setError] = useState('');
+  
+  // Paginação
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  useEffect(() => {
-    dispatch(fetchPoints());
-    dispatch(fetchMachines());
-  }, [dispatch]);
-
-  const handleSave = async () => {
-    const payload = {
-      name,
-      machineId,
-      sensor: sensorId ? { id: sensorId, model: sensorModel } : undefined
-    };
-
-    const result = await dispatch(createPoint(payload));
-    
-    if (createPoint.fulfilled.match(result)) {
-      setOpen(false);
-      setName('');
-      setSensorId('');
-      setMachineId('');
+  const handleOpen = (point?: Point) => {
+    setError('');
+    if (point) {
+      setEditingPoint(point);
+      setFormData({ name: point.name, machineId: point.machineId, sensorModel: point.sensorModel });
+    } else {
+      setEditingPoint(null);
+      setFormData({ name: '', machineId: machines[0]?.id || '', sensorModel: 'HF+' });
     }
-
+    setOpen(true);
   };
 
-  const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'name', headerName: 'Nome do Ponto', flex: 1 },
-    { 
-      field: 'machineName', 
-      headerName: 'Máquina', 
-      width: 200,
-      valueGetter: (params: any) => params.row.machine?.name || '-'
-    },
-    { 
-      field: 'sensorModel', 
-      headerName: 'Sensor', 
-      width: 150,
-      valueGetter: (params: any) => params.row.sensor?.model || 'Sem Sensor'
-    },
-  ];
+  const handleSave = () => {
+    const machine = machines.find(m => m.id === formData.machineId);
+    if (!machine) { setError('Selecione uma máquina válida.'); return; }
+
+    // Regra de Negócio: Bomba não aceita TcAg/TcAs
+    if (machine.type === 'Bomba' && (formData.sensorModel === 'TcAg' || formData.sensorModel === 'TcAs')) {
+      setError(`Erro: Máquinas do tipo 'Bomba' não aceitam sensores ${formData.sensorModel}.`);
+      return;
+    }
+
+    if (editingPoint) {
+      dispatch(updatePoint({ ...editingPoint, ...formData }));
+    } else {
+      dispatch(addPoint({ id: `p${Date.now()}`, status: 'active', ...formData }));
+    }
+    setOpen(false);
+  };
+
+  const handleDelete = (id: string) => {
+    if (window.confirm('Excluir este ponto?')) dispatch(deletePoint(id));
+  };
 
   return (
-    <Box sx={{ height: 600, width: '100%', p: 2 }}>
+    <Box sx={{ p: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-        <Typography variant="h4" fontWeight="bold">Pontos de Monitoramento</Typography>
-        <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpen(true)}>
-          Novo Ponto
-        </Button>
+        <Typography variant="h5">Pontos de Monitoramento</Typography>
+        <Button variant="contained" startIcon={<PlusIcon />} onClick={() => handleOpen()}>Novo Ponto</Button>
       </Box>
 
-      <Snackbar open={!!pointError} autoHideDuration={6000} onClose={() => dispatch(clearError())}>
-        <Alert severity="error" onClose={() => dispatch(clearError())}>{pointError}</Alert>
-      </Snackbar>
-
-      <Box sx={{ height: 500, bgcolor: 'background.paper', borderRadius: 1 }}>
-        <DataGrid
-          rows={points}
-          columns={columns}
-          initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
-          pageSizeOptions={[5, 10]}
-          disableRowSelectionOnClick
-          sx={{ border: 0 }}
+      <Paper>
+        <TableContainer>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>Nome</TableCell>
+                <TableCell>Sensor</TableCell>
+                <TableCell>Máquina</TableCell>
+                <TableCell align="right">Ações</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {points
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((point) => {
+                  const machine = machines.find(m => m.id === point.machineId);
+                  return (
+                    <TableRow key={point.id} hover>
+                      <TableCell>{point.name}</TableCell>
+                      <TableCell><Chip label={point.sensorModel} size="small" color="primary" variant="outlined" /></TableCell>
+                      <TableCell>
+                        <Typography variant="body2">{machine?.name || '---'}</Typography>
+                        <Typography variant="caption" color="textSecondary">{machine?.type}</Typography>
+                      </TableCell>
+                      <TableCell align="right">
+                        <IconButton size="small" onClick={() => handleOpen(point)}><EditIcon /></IconButton>
+                        <IconButton size="small" color="error" onClick={() => handleDelete(point.id)}><TrashIcon /></IconButton>
+                      </TableCell>
+                    </TableRow>
+                  );
+              })}
+              {points.length === 0 && <TableRow><TableCell colSpan={4} align="center">Nenhum ponto registado.</TableCell></TableRow>}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={points.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={(e, n) => setPage(n)}
+          onRowsPerPageChange={(e) => { setRowsPerPage(parseInt(e.target.value, 10)); setPage(0); }}
         />
-      </Box>
+      </Paper>
 
-      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">
-        <DialogTitle>Novo Ponto</DialogTitle>
-        <DialogContent sx={{ pt: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <TextField 
-            label="Nome do Ponto" 
-            fullWidth 
-            value={name} 
-            onChange={e => setName(e.target.value)} 
+      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="xs">
+        <DialogTitle>{editingPoint ? 'Editar Ponto' : 'Novo Ponto'}</DialogTitle>
+        <DialogContent>
+          {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+          <TextField
+            autoFocus margin="dense" label="Nome" fullWidth variant="outlined"
+            value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })}
           />
-          
-          <TextField 
-            select 
-            label="Máquina Associada" 
-            fullWidth 
-            value={machineId} 
-            onChange={e => setMachineId(e.target.value)}
-          >
-            {machines.map((m) => (
-              <MenuItem key={m.id} value={m.id}>
-                {m.name} ({m.type})
-              </MenuItem>
-            ))}
-          </TextField>
-
-          <Typography variant="caption" sx={{ mt: 1, color: 'text.secondary', fontWeight: 'bold' }}>
-            CONFIGURAÇÃO DO SENSOR (OPCIONAL)
-          </Typography>
-          <Divider />
-
-          <TextField 
-            label="ID do Sensor (ex: X-100)" 
-            fullWidth 
-            value={sensorId} 
-            onChange={e => setSensorId(e.target.value)} 
-          />
-          
-          <TextField 
-            select 
-            label="Modelo do Sensor" 
-            fullWidth 
-            value={sensorModel} 
-            onChange={e => setSensorModel(e.target.value)}
-          >
-            <MenuItem value="HF+">HF+</MenuItem>
-            <MenuItem value="TcAg">TcAg</MenuItem>
-            <MenuItem value="TcAs">TcAs</MenuItem>
-          </TextField>
-          
+          <FormControl fullWidth margin="dense">
+            <InputLabel>Máquina</InputLabel>
+            <Select
+              value={formData.machineId} label="Máquina"
+              onChange={e => { setFormData({ ...formData, machineId: e.target.value }); setError(''); }}
+            >
+              {machines.map(m => <MenuItem key={m.id} value={m.id}>{m.name} ({m.type})</MenuItem>)}
+            </Select>
+          </FormControl>
+          <FormControl fullWidth margin="dense">
+            <InputLabel>Modelo Sensor</InputLabel>
+            <Select
+              value={formData.sensorModel} label="Modelo Sensor"
+              onChange={e => { setFormData({ ...formData, sensorModel: e.target.value as SensorModel }); setError(''); }}
+            >
+              <MenuItem value="HF+">HF+</MenuItem>
+              <MenuItem value="TcAg">TcAg</MenuItem>
+              <MenuItem value="TcAs">TcAs</MenuItem>
+            </Select>
+          </FormControl>
         </DialogContent>
-        <DialogActions sx={{ p: 2 }}>
+        <DialogActions>
           <Button onClick={() => setOpen(false)}>Cancelar</Button>
-          <Button variant="contained" onClick={handleSave}>Salvar</Button>
+          <Button onClick={handleSave} variant="contained">Salvar</Button>
         </DialogActions>
       </Dialog>
     </Box>
   );
-};
+}

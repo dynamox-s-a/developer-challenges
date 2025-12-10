@@ -1,65 +1,44 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { api } from '../services/api';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+export type SensorModel = 'TcAg' | 'TcAs' | 'HF+';
 
 export interface Point {
   id: string;
   name: string;
   machineId: string;
-  machine?: { name: string; type: string };
-  sensor?: { id: string; model: string };
+  sensorModel: SensorModel;
+  status: 'active' | 'archived';
 }
 
 interface PointsState {
-  items: Point[];
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  error: string | null;
+  points: Point[];
 }
 
 const initialState: PointsState = {
-  items: [],
-  status: 'idle',
-  error: null,
+  points: [
+    { id: 'p1', name: 'Vibração Eixo X', machineId: 'm2', sensorModel: 'TcAg', status: 'active' },
+    { id: 'p2', name: 'Acelerômetro HF', machineId: 'm1', sensorModel: 'HF+', status: 'active' },
+  ],
 };
-
-// Buscar todos os pontos
-export const fetchPoints = createAsyncThunk('points/fetchPoints', async () => {
-  const response = await api.get('/points');
-  return response.data;
-});
-
-// Criar um novo ponto
-export const createPoint = createAsyncThunk('points/createPoint', async (data: any, { rejectWithValue }) => {
-  try {
-    const response = await api.post('/points', data);
-    return response.data;
-  } catch (err: any) {
-    // Captura o erro e retorna a mensagem
-    return rejectWithValue(err.response?.data?.message || 'Erro ao criar');
-  }
-});
 
 const pointsSlice = createSlice({
   name: 'points',
   initialState,
   reducers: {
-    clearError: (state) => { state.error = null; }
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchPoints.pending, (state) => { state.status = 'loading'; })
-      .addCase(fetchPoints.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.items = action.payload;
-      })
-      .addCase(createPoint.fulfilled, (state, action) => {
-        state.items.push(action.payload);
-        state.error = null;
-      })
-      .addCase(createPoint.rejected, (state, action) => {
-        state.error = action.payload as string; // Salvar a mensagem de erro
-      });
+    addPoint: (state, action: PayloadAction<Point>) => {
+      state.points.push(action.payload);
+    },
+    updatePoint: (state, action: PayloadAction<Point>) => {
+      const index = state.points.findIndex((p) => p.id === action.payload.id);
+      if (index !== -1) {
+        state.points[index] = action.payload;
+      }
+    },
+    deletePoint: (state, action: PayloadAction<string>) => {
+      state.points = state.points.filter((p) => p.id !== action.payload);
+    },
   },
 });
 
-export const { clearError } = pointsSlice.actions;
+export const { addPoint, updatePoint, deletePoint } = pointsSlice.actions;
 export default pointsSlice.reducer;

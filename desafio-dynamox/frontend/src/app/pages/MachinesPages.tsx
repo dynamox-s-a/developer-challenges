@@ -1,136 +1,103 @@
-import React, { useEffect, useState } from 'react';
-import { 
-  Box, 
-  Button, 
-  Typography, 
-  Dialog, 
-  DialogTitle, 
-  DialogContent, 
-  DialogActions, 
-  TextField, 
-  MenuItem,
-  CircularProgress
-} from '@mui/material';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from '../store/store';
-import { fetchMachines, createMachine } from '../store/machineSlice';
+import { RootState } from '../store/store';
+import { addMachine, updateMachine, deleteMachine, Machine, MachineType } from '../store/machineSlice';
+import {
+  Paper, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton,
+  Typography, Box, Button, Dialog, DialogTitle, DialogContent, DialogActions,
+  TextField, FormControl, InputLabel, Select, MenuItem, Divider
+} from '@mui/material';
 
-const AddIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-);
+// Ícones simples para não depender de pacotes externos no teste
+const EditIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" /></svg>;
+const TrashIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>;
+const PlusIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>;
 
-export const MachinesPages = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { items, status } = useSelector((state: RootState) => state.machines);
+export default function MachinesPage() {
+  const machines = useSelector((state: RootState) => state.machines.machines);
+  const dispatch = useDispatch();
   
   const [open, setOpen] = useState(false);
-  const [newName, setNewName] = useState('');
-  const [newType, setNewType] = useState('Bomba');
+  const [editingMachine, setEditingMachine] = useState<Machine | null>(null);
+  const [formData, setFormData] = useState({ name: '', type: 'Bomba' as MachineType });
 
-  // Busca os dados assim que a tela abre
-  useEffect(() => {
-    if (status === 'idle') {
-      dispatch(fetchMachines());
+  const handleOpen = (machine?: Machine) => {
+    if (machine) {
+      setEditingMachine(machine);
+      setFormData({ name: machine.name, type: machine.type });
+    } else {
+      setEditingMachine(null);
+      setFormData({ name: '', type: 'Bomba' });
     }
-  }, [status, dispatch]);
-
-  // Função para Salvar Nova Máquina
-  const handleSave = async () => {
-    if (!newName) return;
-    await dispatch(createMachine({ name: newName, type: newType }));
-    setOpen(false);
-    setNewName('');
+    setOpen(true);
   };
 
-  // Colunas da Tabela
-  const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 90 },
-    { field: 'name', headerName: 'Nome da Máquina', flex: 1 },
-    { 
-      field: 'type', 
-      headerName: 'Tipo', 
-      width: 150,
-      renderCell: (params) => (
-        <span style={{ 
-          fontWeight: 'bold', 
-          color: params.value === 'Bomba' ? '#d32f2f' : '#1976d2' 
-        }}>
-          {params.value}
-        </span>
-      )
-    },
-  ];
+  const handleSave = () => {
+    if (editingMachine) {
+      dispatch(updateMachine({ ...editingMachine, ...formData }));
+    } else {
+      dispatch(addMachine({ id: `m${Date.now()}`, status: 'online', ...formData }));
+    }
+    setOpen(false);
+  };
+
+  const handleDelete = (id: string) => {
+    if (window.confirm('Tem a certeza que deseja excluir esta máquina?')) {
+      dispatch(deleteMachine(id));
+    }
+  };
 
   return (
-    <Box sx={{ height: 600, width: '100%', p: 2 }}>
+    <Box sx={{ p: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-        <Typography variant="h4" component="h1" fontWeight="bold">
-          Máquinas
-        </Typography>
-        <Button 
-          variant="contained" 
-          startIcon={<AddIcon />}
-          onClick={() => setOpen(true)}
-          sx={{ fontWeight: 'bold' }}
-        >
-          Nova Máquina
-        </Button>
+        <Typography variant="h5">Gestão de Máquinas</Typography>
+        <Button variant="contained" startIcon={<PlusIcon />} onClick={() => handleOpen()}>Nova Máquina</Button>
       </Box>
 
-      
-      <Box sx={{ height: 500, width: '100%', bgcolor: 'background.paper', borderRadius: 1 }}>
-        <DataGrid
-          rows={items || []} 
-          columns={columns}
-          initialState={{
-            pagination: { paginationModel: { pageSize: 5 } },
-          }}
-          pageSizeOptions={[5, 10, 25]}
-          loading={status === 'loading'}
-          disableRowSelectionOnClick
-          sx={{ border: 0 }}
-        />
-      </Box>
+      <Paper>
+        <List>
+          {machines.map((machine) => (
+            <React.Fragment key={machine.id}>
+              <ListItem>
+                <ListItemText
+                  primary={machine.name}
+                  secondary={`${machine.type} — Status: ${machine.status}`}
+                />
+                <ListItemSecondaryAction>
+                  <IconButton onClick={() => handleOpen(machine)}><EditIcon /></IconButton>
+                  <IconButton onClick={() => handleDelete(machine.id)} color="error"><TrashIcon /></IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <Divider />
+            </React.Fragment>
+          ))}
+          {machines.length === 0 && <Typography sx={{ p: 2, textAlign: 'center', color: 'gray' }}>Nenhuma máquina cadastrada.</Typography>}
+        </List>
+      </Paper>
 
-      
-      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">
-        <DialogTitle>Nova Máquina</DialogTitle>
-        <DialogContent sx={{ pt: 2 }}>
+      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="xs">
+        <DialogTitle>{editingMachine ? 'Editar Máquina' : 'Nova Máquina'}</DialogTitle>
+        <DialogContent>
           <TextField
-            autoFocus
-            margin="dense"
-            label="Nome da Máquina"
-            placeholder="Ex: Bomba Centrífuga 01"
-            fullWidth
-            variant="outlined"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            sx={{ mb: 3, mt: 1 }}
+            autoFocus margin="dense" label="Nome" fullWidth variant="outlined"
+            value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })}
           />
-          <TextField
-            select
-            margin="dense"
-            label="Tipo"
-            fullWidth
-            value={newType}
-            onChange={(e) => setNewType(e.target.value)}
-          >
-            <MenuItem value="Bomba">Bomba</MenuItem>
-            <MenuItem value="Ventilador">Ventilador</MenuItem>
-          </TextField>
+          <FormControl fullWidth margin="dense">
+            <InputLabel>Tipo</InputLabel>
+            <Select
+              value={formData.type} label="Tipo"
+              onChange={e => setFormData({ ...formData, type: e.target.value as MachineType })}
+            >
+              <MenuItem value="Bomba">Bomba</MenuItem>
+              <MenuItem value="Ventilador">Ventilador</MenuItem>
+            </Select>
+          </FormControl>
         </DialogContent>
-        <DialogActions sx={{ p: 2 }}>
-          <Button onClick={() => setOpen(false)} color="inherit">Cancelar</Button>
-          <Button 
-            onClick={handleSave} 
-            variant="contained"
-            disabled={status === 'loading' || !newName}
-          >
-            {status === 'loading' ? <CircularProgress size={24} /> : 'Salvar'}
-          </Button>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>Cancelar</Button>
+          <Button onClick={handleSave} variant="contained">Salvar</Button>
         </DialogActions>
       </Dialog>
     </Box>
   );
-};
+}

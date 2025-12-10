@@ -1,52 +1,43 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { api } from '../services/api';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+export type MachineType = 'Bomba' | 'Ventilador';
 
 export interface Machine {
   id: string;
   name: string;
-  type: 'Bomba' | 'Ventilador';
+  type: MachineType;
+  status: 'online' | 'offline' | 'maintenance';
 }
 
-interface MachinesState {
-  items: Machine[];
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+interface MachineState {
+  machines: Machine[];
 }
 
-const initialState: MachinesState = {
-  items: [],
-  status: 'idle',
+const initialState: MachineState = {
+  machines: [
+    { id: 'm1', name: 'Bomba Principal', type: 'Bomba', status: 'online' },
+    { id: 'm2', name: 'Ventilador Exaustão', type: 'Ventilador', status: 'maintenance' },
+  ],
 };
 
-export const fetchMachines = createAsyncThunk('machines/fetchMachines', async () => {
-  const response = await api.get('/machines');
-  return response.data;
-});
-
-export const createMachine = createAsyncThunk('machines/createMachine', async (newMachine: { name: string; type: string }) => {
-  const response = await api.post('/machines', newMachine);
-  return response.data;
-});
-
-const machinesSlice = createSlice({
+const machineSlice = createSlice({
   name: 'machines',
   initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      // Quando começar a buscar
-      .addCase(fetchMachines.pending, (state) => {
-        state.status = 'loading';
-      })
-      // Quando terminar com sucesso
-      .addCase(fetchMachines.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.items = action.payload;
-      })
-      // Quando criar uma nova, adiciona na lista local
-      .addCase(createMachine.fulfilled, (state, action) => {
-        state.items.push(action.payload);
-      });
+  reducers: {
+    addMachine: (state, action: PayloadAction<Machine>) => {
+      state.machines.push(action.payload);
+    },
+    updateMachine: (state, action: PayloadAction<Machine>) => {
+      const index = state.machines.findIndex((m) => m.id === action.payload.id);
+      if (index !== -1) {
+        state.machines[index] = action.payload;
+      }
+    },
+    deleteMachine: (state, action: PayloadAction<string>) => {
+      state.machines = state.machines.filter((m) => m.id !== action.payload);
+    },
   },
 });
 
-export default machinesSlice.reducer;
+export const { addMachine, updateMachine, deleteMachine } = machineSlice.actions;
+export default machineSlice.reducer;

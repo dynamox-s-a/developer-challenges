@@ -18,8 +18,8 @@ model User {
 model Machine {
   id String @id @default(uuid())
   name String
-  type String // "Bomba" ou "Ventilador"
-  monitoringPoints MonitoringPoint[] // Relação: Uma máquina tem vários pontos
+  type String
+  monitoringPoints MonitoringPoint[]
   createdAt DateTime @default(now())
 }
 
@@ -29,13 +29,13 @@ model MonitoringPoint {
   name String
   machineId String
   machine Machine @relation(fields: [machineId], references: [id], onDelete: Cascade)
-  sensor Sensor?  // Relação: Um ponto pode ter 0 ou 1 sensor
+  sensor Sensor?
 }
 
 // Modelo de Sensor
 model Sensor {
-  id String @id // ID único manual (ex: "X123")
-  model String // "TcAg", "TcAs", "HF+"
+  id String @id 
+  model String
   monitoringPointId String @unique
   monitoringPoint MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
 }
