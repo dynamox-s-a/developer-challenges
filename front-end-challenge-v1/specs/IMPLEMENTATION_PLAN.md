@@ -159,23 +159,23 @@ interface Event {
 
 ---
 
-### Phase 5: Reader Features
+### Phase 5: Reader Features ✅ COMPLETED
 **Focus:** Reader-facing event views with filtering
 
-| Task | Description | Priority |
-|------|-------------|----------|
-| 5.1 | Create reader events list page | 🔴 Critical |
-| 5.2 | Implement upcoming vs past events tabs/sections | 🔴 Critical |
-| 5.3 | Add search functionality | 🟡 Important |
-| 5.4 | Add filter by category | 🟡 Important |
-| 5.5 | Implement sorting (date, name) | 🟡 Important |
-| 5.6 | Create event detail view (optional) | 🟢 Nice-to-have |
+| Task | Description | Status |
+|------|-------------|--------|
+| 5.1 | Create reader events list page | ✅ Done |
+| 5.2 | Implement upcoming vs past events tabs/sections | ✅ Done |
+| 5.3 | Add search functionality | ✅ Done |
+| 5.4 | Add filter by category | ✅ Done |
+| 5.5 | Implement sorting (date, name) | ✅ Done |
+| 5.6 | Create event detail view (optional) | ⏭️ Skipped |
 
-**Deliverables:**
-- `src/app/events/page.tsx` - Reader events list
-- `src/components/events/EventCard.tsx` - Event display card
-- `src/components/events/EventFilters.tsx` - Search/filter controls
-- `src/components/events/EventTabs.tsx` - Past/Upcoming tabs
+**Deliverables:** ✅ All completed
+- `src/app/events/page.tsx` - ✅ Reader events list with tabs, filters, and grid layout
+- `src/components/events/EventCard.tsx` - ✅ Event display card with date/time/location/category
+- `src/components/events/EventFilters.tsx` - ✅ Search, category filter, sort controls
+- `src/components/events/EventTabs.tsx` - ✅ Past/Upcoming tabs with badge counts
 
 ---
 
@@ -290,7 +290,7 @@ front-end-challenge-v1/
 | 2 | Authentication | ✅ Complete | Phase 1 |
 | 3 | Event Data Layer | ✅ Complete | Phase 1, 2 |
 | 4 | Admin Features | ✅ Complete | Phase 1, 2, 3 |
-| 5 | Reader Features | ⏳ Pending | Phase 1, 2, 3 |
+| 5 | Reader Features | ✅ Complete | Phase 1, 2, 3 |
 | 6 | UI Components | ⏳ Pending | Phase 1 (can parallel) |
 | 7 | Testing | ⏳ Pending | Phase 2, 3, 4, 5 |
 | 8 | Bonus | ⏳ Pending | All above |
@@ -322,11 +322,11 @@ From the challenge requirements:
 - [x] View events ✅ `src/app/admin/events/page.tsx`
 
 ### Reader Features (Role: reader)
-- [ ] View events
-- [ ] View past events separately from upcoming events
-- [ ] Search and filter events
-- [ ] Sort events by Date
-- [ ] Sort events by Name
+- [x] View events ✅ `src/app/events/page.tsx`
+- [x] View past events separately from upcoming events ✅ `src/components/events/EventTabs.tsx`
+- [x] Search and filter events ✅ `src/components/events/EventFilters.tsx`
+- [x] Sort events by Date ✅ Sort toggle in EventFilters
+- [x] Sort events by Name ✅ Sort toggle in EventFilters
 
 ### Technical Requirements
 - [x] Use TypeScript ✅

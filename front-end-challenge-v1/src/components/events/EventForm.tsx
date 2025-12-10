@@ -228,7 +228,9 @@ export function EventForm({ event, onSuccess }: EventFormProps) {
                 </MenuItem>
               ))}
             </Select>
-            {fieldError && <FormHelperText>{fieldError.message}</FormHelperText>}
+            {fieldError && (
+              <FormHelperText>{fieldError.message}</FormHelperText>
+            )}
           </FormControl>
         )}
       />
