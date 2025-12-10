@@ -2,6 +2,7 @@
 
 // API
 export { eventsApi } from "./eventsApi";
+
 // Selectors
 export {
   filterAndSortEvents,
@@ -22,6 +23,7 @@ export {
   selectUpcomingEvents,
   sortEvents,
 } from "./eventsSelectors";
+
 export {
   clearError,
   createEvent,
@@ -33,3 +35,14 @@ export {
 
 // Hooks
 export { useEvents } from "./useEvents";
+
+// Components
+export {
+  EventCard,
+  EventFilters,
+  EventForm,
+  EventsTable,
+  EventTabPanel,
+  EventTabs,
+} from "./components";
+export type { EventTabValue } from "./components";

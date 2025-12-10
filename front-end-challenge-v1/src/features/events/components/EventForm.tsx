@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
-import { createEvent, updateEvent } from "@/features/events/eventsSlice";
+import { createEvent, updateEvent } from "../eventsSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import type { CreateEventPayload, Event, EventCategory } from "@/types";
 

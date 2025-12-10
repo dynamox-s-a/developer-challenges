@@ -25,7 +25,7 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { deleteEvent } from "@/features/events/eventsSlice";
+import { deleteEvent } from "../eventsSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import type { Event, EventCategory, SortOrder } from "@/types";
 

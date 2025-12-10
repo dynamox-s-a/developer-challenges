@@ -3,7 +3,7 @@
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Box, Button, Paper, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { EventForm } from "@/components/events";
+import { EventForm } from "@/features/events";
 
 export default function CreateEventPage() {
   const router = useRouter();

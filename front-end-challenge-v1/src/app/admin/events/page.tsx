@@ -11,9 +11,12 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { EventsTable } from "@/components/events";
-import { sortEvents } from "@/features/events/eventsSelectors";
-import { clearError, fetchEvents } from "@/features/events/eventsSlice";
+import {
+  clearError,
+  EventsTable,
+  fetchEvents,
+  sortEvents,
+} from "@/features/events";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import type { SortOrder } from "@/types";
 

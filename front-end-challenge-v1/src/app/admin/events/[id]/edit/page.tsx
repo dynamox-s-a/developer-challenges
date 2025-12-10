@@ -11,9 +11,12 @@ import {
 } from "@mui/material";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { EventForm } from "@/components/events";
-import { selectEventById } from "@/features/events/eventsSelectors";
-import { clearError, fetchEvents } from "@/features/events/eventsSlice";
+import {
+  clearError,
+  EventForm,
+  fetchEvents,
+  selectEventById,
+} from "@/features/events";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 export default function EditEventPage() {

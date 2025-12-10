@@ -10,14 +10,14 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import type { EventTabValue } from "@/components/events";
 import {
   EventCard,
   EventFilters,
   EventTabPanel,
   EventTabs,
-} from "@/components/events";
-import { useEvents } from "@/features/events/useEvents";
+  useEvents,
+} from "@/features/events";
+import type { EventTabValue } from "@/features/events";
 
 export default function EventsPage() {
   const [activeTab, setActiveTab] = useState<EventTabValue>("upcoming");
