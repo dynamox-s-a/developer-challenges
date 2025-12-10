@@ -1,3 +1,4 @@
+import axios, { type AxiosRequestConfig } from "axios";
 import type { AuthUser, LoginCredentials, User } from "@/types";
 import { generateToken, isTokenValid } from "./jwt";
 
@@ -9,6 +10,23 @@ interface StoredAuth {
   user: AuthUser;
   token: string;
 }
+
+// Create axios instance with default config
+const axiosInstance = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+// Request interceptor to add auth token
+axiosInstance.interceptors.request.use((config) => {
+  const token = getAuthToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 // Token management
 export function getStoredAuth(): StoredAuth | null {
@@ -48,32 +66,25 @@ export function getAuthToken(): string | null {
 // API request helper - exported for use by feature APIs
 export async function apiRequest<T>(
   endpoint: string,
-  options: RequestInit = {},
+  options: AxiosRequestConfig = {},
 ): Promise<T> {
-  const token = getAuthToken();
-
-  const headers: HeadersInit = {
-    "Content-Type": "application/json",
-    ...options.headers,
-  };
-
-  if (token) {
-    (headers as Record<string, string>).Authorization = `Bearer ${token}`;
+  try {
+    const response = await axiosInstance.request<T>({
+      url: endpoint,
+      ...options,
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const message =
+        error.response?.data?.message ||
+        error.response?.statusText ||
+        error.message ||
+        `Request failed with status ${error.response?.status}`;
+      throw new Error(message);
+    }
+    throw error;
   }
-
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    ...options,
-    headers,
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(
-      errorText || `Request failed with status ${response.status}`,
-    );
-  }
-
-  return response.json();
 }
 
 // Auth API
@@ -104,3 +115,6 @@ export async function loginApi(
 
   return { user: authUser, token };
 }
+
+// Export axios instance for direct use if needed
+export { axiosInstance };

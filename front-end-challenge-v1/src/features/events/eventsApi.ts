@@ -21,7 +21,7 @@ export const eventsApi = {
 
     return apiRequest<Event>("/events", {
       method: "POST",
-      body: JSON.stringify(newEvent),
+      data: newEvent,
     });
   },
 
@@ -37,7 +37,7 @@ export const eventsApi = {
 
     return apiRequest<Event>(`/events/${id}`, {
       method: "PUT",
-      body: JSON.stringify(updatedEvent),
+      data: updatedEvent,
     });
   },
 
