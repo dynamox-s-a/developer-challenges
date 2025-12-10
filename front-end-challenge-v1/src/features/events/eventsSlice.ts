@@ -3,13 +3,13 @@ import {
   createSlice,
   type PayloadAction,
 } from "@reduxjs/toolkit";
-import { eventsApi } from "@/lib/api";
 import type {
   CreateEventPayload,
   Event,
   EventsState,
   UpdateEventPayload,
 } from "@/types";
+import { eventsApi } from "./eventsApi";
 
 const initialState: EventsState = {
   events: [],

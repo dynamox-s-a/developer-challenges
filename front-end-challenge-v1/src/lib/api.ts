@@ -1,11 +1,4 @@
-import type {
-  AuthUser,
-  CreateEventPayload,
-  Event,
-  LoginCredentials,
-  UpdateEventPayload,
-  User,
-} from "@/types";
+import type { AuthUser, LoginCredentials, User } from "@/types";
 import { generateToken, isTokenValid } from "./jwt";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
@@ -52,8 +45,8 @@ export function getAuthToken(): string | null {
   return auth?.token ?? null;
 }
 
-// API request helper
-async function apiRequest<T>(
+// API request helper - exported for use by feature APIs
+export async function apiRequest<T>(
   endpoint: string,
   options: RequestInit = {},
 ): Promise<T> {
@@ -111,51 +104,3 @@ export async function loginApi(
 
   return { user: authUser, token };
 }
-
-// Events API
-export const eventsApi = {
-  async getAll(): Promise<Event[]> {
-    return apiRequest<Event[]>("/events");
-  },
-
-  async getById(id: string): Promise<Event> {
-    return apiRequest<Event>(`/events/${id}`);
-  },
-
-  async create(payload: CreateEventPayload): Promise<Event> {
-    const now = new Date().toISOString();
-    const newEvent = {
-      ...payload,
-      id: crypto.randomUUID(),
-      createdAt: now,
-      updatedAt: now,
-    };
-
-    return apiRequest<Event>("/events", {
-      method: "POST",
-      body: JSON.stringify(newEvent),
-    });
-  },
-
-  async update(payload: UpdateEventPayload): Promise<Event> {
-    const { id, ...updates } = payload;
-    const existing = await eventsApi.getById(id);
-
-    const updatedEvent = {
-      ...existing,
-      ...updates,
-      updatedAt: new Date().toISOString(),
-    };
-
-    return apiRequest<Event>(`/events/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(updatedEvent),
-    });
-  },
-
-  async delete(id: string): Promise<void> {
-    await apiRequest(`/events/${id}`, {
-      method: "DELETE",
-    });
-  },
-};

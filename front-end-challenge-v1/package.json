@@ -16,6 +16,7 @@
     "@emotion/styled": "^11.14.1",
     "@mui/material": "^7.3.6",
     "@reduxjs/toolkit": "^2.11.1",
+    "axios": "^1.13.2",
     "json-server": "^1.0.0-beta.3",
     "next": "16.0.8",
     "react": "19.2.1",

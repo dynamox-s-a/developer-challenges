@@ -36,7 +36,8 @@
 - `src/lib/StoreProvider.tsx` - Redux Provider wrapper for Next.js App Router
 - `src/lib/ThemeProvider.tsx` - MUI Theme Provider wrapper with CssBaseline
 - `src/lib/jwt.ts` - Fake JWT generation, validation, and decoding utilities
-- `src/lib/api.ts` - API client with auth token handling and events CRUD
+- `src/lib/api.ts` - Core API client with auth token handling and `apiRequest` helper
+- `src/features/events/eventsApi.ts` - Events domain API (getAll, getById, create, update, delete)
 - `src/types/user.ts` - User, AuthUser, LoginCredentials, AuthState interfaces
 - `src/types/event.ts` - Event, EventCategory, CRUD payloads, EventFilters interfaces
 - `src/types/index.ts` - Barrel exports
@@ -110,7 +111,7 @@ interface Event {
 
 **Deliverables:**
 - `src/features/events/eventsSlice.ts` - ✅ Event state management with CRUD thunks (created in Phase 1)
-- `src/lib/api.ts` - ✅ Events API with getAll, getById, create, update, delete (created in Phase 1)
+- `src/features/events/eventsApi.ts` - ✅ Events domain API with getAll, getById, create, update, delete (created in Phase 1)
 - `src/types/event.ts` - ✅ Event type definitions (created in Phase 1)
 
 ---
@@ -248,9 +249,12 @@ front-end-challenge-v1/
 │   │       └── eventsApi.ts
 │   ├── lib/
 │   │   ├── store.ts
+│   │   ├── hooks.ts
 │   │   ├── theme.ts
 │   │   ├── api.ts
-│   │   └── jwt.ts
+│   │   ├── jwt.ts
+│   │   ├── StoreProvider.tsx
+│   │   └── ThemeProvider.tsx
 │   └── types/
 │       ├── user.ts
 │       ├── event.ts
