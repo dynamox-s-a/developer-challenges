@@ -1,5 +1,6 @@
 "use client";
 
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Alert,
   Box,
@@ -13,7 +14,9 @@ import {
   TextField,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
+import * as yup from "yup";
 import { createEvent, updateEvent } from "@/features/events/eventsSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import type { CreateEventPayload, Event, EventCategory } from "@/types";
@@ -26,21 +29,41 @@ const EVENT_CATEGORIES: EventCategory[] = [
   "Other",
 ];
 
-interface FormData {
-  name: string;
-  dateTime: string;
-  location: string;
-  description: string;
-  category: EventCategory | "";
-}
+// Validation schema using Yup
+const eventSchema = yup
+  .object({
+    name: yup
+      .string()
+      .required("Event name is required")
+      .min(3, "Name must be at least 3 characters")
+      .max(100, "Name must be less than 100 characters"),
+    dateTime: yup
+      .string()
+      .required("Date and time is required")
+      .test("future-date", "Event date must be in the future", (value) => {
+        if (!value) return false;
+        return new Date(value) > new Date();
+      }),
+    location: yup
+      .string()
+      .required("Location is required")
+      .min(3, "Location must be at least 3 characters"),
+    description: yup
+      .string()
+      .required("Description is required")
+      .test(
+        "min-length",
+        "Description must be at least 50 characters",
+        (value) => (value?.trim().length || 0) >= 50,
+      ),
+    category: yup
+      .string()
+      .required("Category is required")
+      .oneOf(EVENT_CATEGORIES as string[], "Please select a valid category"),
+  })
+  .required();
 
-interface FormErrors {
-  name?: string;
-  dateTime?: string;
-  location?: string;
-  description?: string;
-  category?: string;
-}
+type EventFormData = yup.InferType<typeof eventSchema>;
 
 interface EventFormProps {
   event?: Event;
@@ -65,19 +88,29 @@ export function EventForm({ event, onSuccess }: EventFormProps) {
 
   const isEditing = Boolean(event);
 
-  const [formData, setFormData] = useState<FormData>({
-    name: "",
-    dateTime: "",
-    location: "",
-    description: "",
-    category: "",
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm<EventFormData>({
+    resolver: yupResolver(eventSchema),
+    defaultValues: {
+      name: "",
+      dateTime: "",
+      location: "",
+      description: "",
+      category: "",
+    },
+    mode: "onBlur",
   });
-  const [formErrors, setFormErrors] = useState<FormErrors>({});
 
   // Initialize form with event data when editing
   useEffect(() => {
     if (event) {
-      setFormData({
+      reset({
         name: event.name,
         dateTime: formatDateTimeForInput(event.dateTime),
         location: event.location,
@@ -85,70 +118,15 @@ export function EventForm({ event, onSuccess }: EventFormProps) {
         category: event.category,
       });
     }
-  }, [event]);
+  }, [event, reset]);
 
-  const validateForm = (): boolean => {
-    const errors: FormErrors = {};
-
-    // Name validation
-    if (!formData.name.trim()) {
-      errors.name = "Event name is required";
-    }
-
-    // Date/Time validation
-    if (!formData.dateTime) {
-      errors.dateTime = "Date and time is required";
-    } else {
-      const selectedDate = new Date(formData.dateTime);
-      const now = new Date();
-      if (selectedDate <= now) {
-        errors.dateTime = "Event date must be in the future";
-      }
-    }
-
-    // Location validation
-    if (!formData.location.trim()) {
-      errors.location = "Location is required";
-    }
-
-    // Description validation
-    if (!formData.description.trim()) {
-      errors.description = "Description is required";
-    } else if (formData.description.trim().length < 50) {
-      errors.description = `Description must be at least 50 characters (currently ${formData.description.trim().length})`;
-    }
-
-    // Category validation
-    if (!formData.category) {
-      errors.category = "Category is required";
-    }
-
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-
-  const handleChange = (field: keyof FormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-
-    // Clear specific field error when user starts typing
-    if (formErrors[field]) {
-      setFormErrors((prev) => ({ ...prev, [field]: undefined }));
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
+  const onSubmit = async (data: EventFormData) => {
     const payload: CreateEventPayload = {
-      name: formData.name.trim(),
-      dateTime: new Date(formData.dateTime).toISOString(),
-      location: formData.location.trim(),
-      description: formData.description.trim(),
-      category: formData.category as EventCategory,
+      name: data.name.trim(),
+      dateTime: new Date(data.dateTime).toISOString(),
+      location: data.location.trim(),
+      description: data.description.trim(),
+      category: data.category as EventCategory,
     };
 
     try {
@@ -179,8 +157,11 @@ export function EventForm({ event, onSuccess }: EventFormProps) {
     return now.toISOString().slice(0, 16);
   };
 
+  // Watch description for character count
+  const description = watch("description", "");
+
   return (
-    <Box component="form" onSubmit={handleSubmit} noValidate>
+    <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
       {error && (
         <Alert severity="error" sx={{ mb: 3 }}>
           {error}
@@ -188,29 +169,25 @@ export function EventForm({ event, onSuccess }: EventFormProps) {
       )}
 
       <TextField
+        {...register("name")}
         fullWidth
         id="name"
-        name="name"
         label="Event Name"
-        value={formData.name}
-        onChange={(e) => handleChange("name", e.target.value)}
-        error={Boolean(formErrors.name)}
-        helperText={formErrors.name}
+        error={!!errors.name}
+        helperText={errors.name?.message}
         disabled={isLoading}
         required
         sx={{ mb: 3 }}
       />
 
       <TextField
+        {...register("dateTime")}
         fullWidth
         id="dateTime"
-        name="dateTime"
         label="Date and Time"
         type="datetime-local"
-        value={formData.dateTime}
-        onChange={(e) => handleChange("dateTime", e.target.value)}
-        error={Boolean(formErrors.dateTime)}
-        helperText={formErrors.dateTime}
+        error={!!errors.dateTime}
+        helperText={errors.dateTime?.message}
         disabled={isLoading}
         required
         slotProps={{
@@ -221,59 +198,52 @@ export function EventForm({ event, onSuccess }: EventFormProps) {
       />
 
       <TextField
+        {...register("location")}
         fullWidth
         id="location"
-        name="location"
         label="Location"
-        value={formData.location}
-        onChange={(e) => handleChange("location", e.target.value)}
-        error={Boolean(formErrors.location)}
-        helperText={formErrors.location}
+        error={!!errors.location}
+        helperText={errors.location?.message}
         disabled={isLoading}
         required
         sx={{ mb: 3 }}
       />
 
-      <FormControl
-        fullWidth
-        error={Boolean(formErrors.category)}
-        required
-        sx={{ mb: 3 }}
-      >
-        <InputLabel id="category-label">Category</InputLabel>
-        <Select
-          labelId="category-label"
-          id="category"
-          name="category"
-          value={formData.category}
-          label="Category"
-          onChange={(e) => handleChange("category", e.target.value)}
-          disabled={isLoading}
-        >
-          {EVENT_CATEGORIES.map((category) => (
-            <MenuItem key={category} value={category}>
-              {category}
-            </MenuItem>
-          ))}
-        </Select>
-        {formErrors.category && (
-          <FormHelperText>{formErrors.category}</FormHelperText>
+      <Controller
+        name="category"
+        control={control}
+        render={({ field, fieldState: { error: fieldError } }) => (
+          <FormControl fullWidth error={!!fieldError} required sx={{ mb: 3 }}>
+            <InputLabel id="category-label">Category</InputLabel>
+            <Select
+              {...field}
+              labelId="category-label"
+              id="category"
+              label="Category"
+              disabled={isLoading}
+            >
+              {EVENT_CATEGORIES.map((category) => (
+                <MenuItem key={category} value={category}>
+                  {category}
+                </MenuItem>
+              ))}
+            </Select>
+            {fieldError && <FormHelperText>{fieldError.message}</FormHelperText>}
+          </FormControl>
         )}
-      </FormControl>
+      />
 
       <TextField
+        {...register("description")}
         fullWidth
         id="description"
-        name="description"
         label="Description"
         multiline
         rows={4}
-        value={formData.description}
-        onChange={(e) => handleChange("description", e.target.value)}
-        error={Boolean(formErrors.description)}
+        error={!!errors.description}
         helperText={
-          formErrors.description ||
-          `${formData.description.length}/50 characters minimum`
+          errors.description?.message ||
+          `${description.length}/50 characters minimum`
         }
         disabled={isLoading}
         required

@@ -1,5 +1,6 @@
 "use client";
 
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Alert,
   Box,
@@ -12,14 +13,27 @@ import {
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 import { clearError, login } from "@/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
-interface FormErrors {
-  email?: string;
-  password?: string;
-}
+// Validation schema using Yup
+const loginSchema = yup
+  .object({
+    email: yup
+      .string()
+      .required("Email is required")
+      .email("Please enter a valid email address"),
+    password: yup
+      .string()
+      .required("Password is required")
+      .min(6, "Password must be at least 6 characters"),
+  })
+  .required();
+
+type LoginFormData = yup.InferType<typeof loginSchema>;
 
 export default function LoginPage() {
   const router = useRouter();
@@ -28,9 +42,18 @@ export default function LoginPage() {
     (state) => state.auth,
   );
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [formErrors, setFormErrors] = useState<FormErrors>({});
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: yupResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    mode: "onBlur",
+  });
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -47,33 +70,8 @@ export default function LoginPage() {
     };
   }, [dispatch]);
 
-  const validateForm = (): boolean => {
-    const errors: FormErrors = {};
-
-    if (!email.trim()) {
-      errors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      errors.email = "Please enter a valid email address";
-    }
-
-    if (!password.trim()) {
-      errors.password = "Password is required";
-    } else if (password.length < 6) {
-      errors.password = "Password must be at least 6 characters";
-    }
-
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
-    dispatch(login({ email: email.trim(), password }));
+  const onSubmit = (data: LoginFormData) => {
+    dispatch(login({ email: data.email.trim(), password: data.password }));
   };
 
   return (
@@ -111,43 +109,29 @@ export default function LoginPage() {
               </Alert>
             )}
 
-            <Box component="form" onSubmit={handleSubmit} noValidate>
+            <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
               <TextField
+                {...register("email")}
                 fullWidth
                 id="email"
-                name="email"
                 label="Email Address"
                 type="email"
                 autoComplete="email"
                 autoFocus
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  if (formErrors.email) {
-                    setFormErrors((prev) => ({ ...prev, email: undefined }));
-                  }
-                }}
-                error={Boolean(formErrors.email)}
-                helperText={formErrors.email}
+                error={!!errors.email}
+                helperText={errors.email?.message}
                 disabled={isLoading}
                 sx={{ mb: 2 }}
               />
               <TextField
+                {...register("password")}
                 fullWidth
                 id="password"
-                name="password"
                 label="Password"
                 type="password"
                 autoComplete="current-password"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                  if (formErrors.password) {
-                    setFormErrors((prev) => ({ ...prev, password: undefined }));
-                  }
-                }}
-                error={Boolean(formErrors.password)}
-                helperText={formErrors.password}
+                error={!!errors.password}
+                helperText={errors.password?.message}
                 disabled={isLoading}
                 sx={{ mb: 3 }}
               />
