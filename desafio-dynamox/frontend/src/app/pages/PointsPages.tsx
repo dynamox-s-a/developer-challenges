@@ -7,7 +7,7 @@ import {
   Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
   Typography, Box, Button, Dialog, DialogTitle, DialogContent, DialogActions,
   TextField, FormControl, InputLabel, Select, MenuItem, IconButton, Alert, TablePagination, Chip,
-  TableSortLabel
+  TableSortLabel, useTheme, useMediaQuery
 } from '@mui/material';
 
 const EditIcon = () => (
@@ -55,6 +55,8 @@ export default function PointsPage() {
   const machines = useSelector((state: RootState) => state.machines.machines);
   const machinesStatus = useSelector((state: RootState) => state.machines.status);
   const dispatch = useDispatch<AppDispatch>();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     if (pointsStatus === 'idle') 
@@ -166,20 +168,28 @@ export default function PointsPage() {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-        <Typography variant="h5">Pontos de Monitoramento</Typography>
+      <Box sx={{ 
+        display: 'flex',
+        flexDirection: { xs: 'column', sm: 'row'},
+        justifyContent: 'space-between',
+        alignItems: { xs: 'stretch', sm: 'center'},
+        gap: 2,
+        mb: 3 }}>
+        <Typography variant="h5" sx={{textAlign: { xs: 'center', sm: 'left'}, fontWeight: 500}}>Pontos de Monitoramento</Typography>
         <Button
           variant="contained"
           startIcon={<PlusIcon />}
           onClick={() => handleOpen()}
+          fullWidth={isMobile}
+          size={isMobile ? "large" : "medium"}
         >
           Novo Ponto
         </Button>
       </Box>
 
-      <Paper>
+      <Paper elevation={2}>
         <TableContainer>
-          <Table size="small">
+          <Table size={isMobile ? "small" : "medium"}>
             <TableHead>
               <TableRow>
                 <TableCell sortDirection={orderBy === 'name' ? order : false}>
@@ -232,7 +242,7 @@ export default function PointsPage() {
                           variant="outlined"
                         />
                       </TableCell>
-                      <TableCell>
+                      <TableCell sx={{ display: { xs: 'none', md: 'table-cell' }}}>
                         <Typography variant="body2">
                           {machine?.name || '---'}
                         </Typography>
@@ -244,6 +254,7 @@ export default function PointsPage() {
                         <IconButton
                           size="small"
                           onClick={() => handleOpen(point)}
+                          sx={{ mr: 1}}
                         >
                           <EditIcon />
                         </IconButton>
@@ -279,6 +290,7 @@ export default function PointsPage() {
             setRowsPerPage(parseInt(e.target.value, 10));
             setPage(0);
           }}
+          labelRowsPerPage={isMobile ? "Linhas" : "Linhas por página:"}
         />
       </Paper>
 
@@ -305,6 +317,7 @@ export default function PointsPage() {
             variant="outlined"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            sx={{ mb: 2 }}
           />
           <FormControl fullWidth margin="dense">
             <InputLabel>Máquina</InputLabel>

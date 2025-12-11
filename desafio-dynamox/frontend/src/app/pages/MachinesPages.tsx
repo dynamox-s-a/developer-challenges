@@ -5,7 +5,8 @@ import { fetchMachines, addNewMachine, updateMachine, deleteMachine, Machine, Ma
 import {
   Paper, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton,
   Typography, Box, Button, Dialog, DialogTitle, DialogContent, DialogActions,
-  TextField, FormControl, InputLabel, Select, MenuItem, Divider
+  TextField, FormControl, InputLabel, Select, MenuItem, Divider, useTheme,
+  useMediaQuery
 } from '@mui/material';
 
 const EditIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" /></svg>;
@@ -16,7 +17,8 @@ export default function MachinesPage() {
   const machines = useSelector((state: RootState) => state.machines.machines);
   const dispatch = useDispatch<AppDispatch>();
   const status = useSelector((state: RootState) => state.machines.status);
-  
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = useState(false);
   const [editingMachine, setEditingMachine] = useState<Machine | null>(null);
   const [formData, setFormData] = useState({ name: '', type: 'Bomba' as MachineType });
@@ -55,29 +57,67 @@ export default function MachinesPage() {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-        <Typography variant="h5">Gestão de Máquinas</Typography>
-        <Button variant="contained" startIcon={<PlusIcon />} onClick={() => handleOpen()}>Nova Máquina</Button>
+      <Box sx={{ 
+        display: 'flex',
+        flexDirection: { xs: 'column', sm: 'row'}, 
+        justifyContent: 'space-between', 
+        alignItems: { xs: 'stretch', sm: 'center'},
+        gap: 2,
+        mb: 3 
+      }}>
+        <Typography variant="h5" sx={{ textAlign: { xs:'center', sm: 'left'}, fontWeight: 500}}>Gestão de Máquinas</Typography>
+        <Button 
+          variant="contained" 
+          startIcon={<PlusIcon />} 
+          onClick={() => handleOpen()}
+          fullWidth={isMobile}
+          size={isMobile ? "large" : "medium"}
+          >
+            Nova Máquina
+          </Button>
       </Box>
 
-      <Paper>
+      <Paper elevation={2}>
         <List>
           {machines.map((machine) => (
             <React.Fragment key={machine.id}>
-              <ListItem>
+              <ListItem 
+                alignItems="flex-start"
+                secondaryAction={
+                  <Box>
+                    <IconButton edge="end" onClick={() => handleOpen(machine)} aria-label="edit" sx={{ mr: 1}}><EditIcon /></IconButton>
+                    <IconButton onClick={() => handleDelete(machine.id)} aria-label="delete" color="error"><TrashIcon /></IconButton>
+                  </Box>
+                }  
+              >
                 <ListItemText
-                  primary={machine.name}
-                  secondary={`${machine.type} — Status: ${machine.status}`}
+                  primary={
+                    <Typography variant="subtitle1" component="div"   fontWeight="medium">
+                      {machine.name}
+                    </Typography>
+                  }
+                  secondary={
+                    <Typography variant="body2" component="span"  color="text.primary" sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 0.5 }}>
+                      <Box component="span" sx={{ px: 1, py: 0.25, bgcolor: 'action.hover', borderRadius: 1, fontSize: '0.75rem'}}>
+                        {machine.type}
+                      </Box>
+
+                      <Box component="span" sx={{ color: machine.status === 'online' ? 'succes.main' : 'error.main', fontSize: '0.875rem' }}>
+                        {machine.status}
+                      </Box>
+                    </Typography>               
+                  }
                 />
-                <ListItemSecondaryAction>
-                  <IconButton onClick={() => handleOpen(machine)}><EditIcon /></IconButton>
-                  <IconButton onClick={() => handleDelete(machine.id)} color="error"><TrashIcon /></IconButton>
-                </ListItemSecondaryAction>
               </ListItem>
-              <Divider />
+              <Divider component="li"/>
             </React.Fragment>
           ))}
-          {machines.length === 0 && <Typography sx={{ p: 2, textAlign: 'center', color: 'gray' }}>Nenhuma máquina cadastrada.</Typography>}
+          {machines.length === 0 && (
+            <Box sx={{ p: 4, textAlign: 'center', color: 'text.secondary'}}>
+              <Typography sx={{ p: 2, textAlign: 'center', color: 'gray' }}>Nenhuma máquina cadastrada.</Typography>
+            </Box>
+            )}
+
         </List>
       </Paper>
 
@@ -87,6 +127,7 @@ export default function MachinesPage() {
           <TextField
             autoFocus margin="dense" label="Nome" fullWidth variant="outlined"
             value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })}
+            sx={{ mb: 2, mt: 1}}
           />
           <FormControl fullWidth margin="dense">
             <InputLabel>Tipo</InputLabel>
