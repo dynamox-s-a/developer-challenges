@@ -7,35 +7,29 @@ datasource db {
   url = env("DATABASE_URL")  
 }
 
-// Modelo de Usuário (Requisito 1)
 model User {
   id String @id @default(uuid())
   email String @unique
   password String
 }
 
-// Modelo de Máquina (Requisito 2)
 model Machine {
   id String @id @default(uuid())
   name String
   type String
+  status String?
   monitoringPoints MonitoringPoint[]
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-// Modelo de Ponto de Monitoramento (Requisito 3)
 model MonitoringPoint {
   id String   @id @default(uuid())
   name String
-  machineId String
+  sensorModel String
+  status String?
   machine Machine @relation(fields: [machineId], references: [id], onDelete: Cascade)
-  sensor Sensor?
-}
-
-// Modelo de Sensor
-model Sensor {
-  id String @id 
-  model String
-  monitoringPointId String @unique
-  monitoringPoint MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
+  machineId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

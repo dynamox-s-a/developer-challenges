@@ -1,38 +1,13 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../store/store';
+import { RootState, AppDispatch } from '../store/store';
+import { fetchPoints, addPoint, updatePoint, deletePoint, Point, SensorModel } from '../store/pointsSlice';
+import { fetchMachines } from '../store/machineSlice';
 import {
-  addPoint,
-  updatePoint,
-  deletePoint,
-  Point,
-  SensorModel,
-} from '../store/pointsSlice';
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  Box,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  IconButton,
-  Alert,
-  TablePagination,
-  Chip,
-  TableSortLabel,
+  Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  Typography, Box, Button, Dialog, DialogTitle, DialogContent, DialogActions,
+  TextField, FormControl, InputLabel, Select, MenuItem, IconButton, Alert, TablePagination, Chip,
+  TableSortLabel
 } from '@mui/material';
 
 const EditIcon = () => (
@@ -76,8 +51,18 @@ const PlusIcon = () => (
 
 export default function PointsPage() {
   const points = useSelector((state: RootState) => state.points.points);
+  const pointsStatus = useSelector((state: RootState) => state.points.status);
   const machines = useSelector((state: RootState) => state.machines.machines);
-  const dispatch = useDispatch();
+  const machinesStatus = useSelector((state: RootState) => state.machines.status);
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    if (pointsStatus === 'idle') 
+      dispatch(fetchPoints());
+    
+    if (machinesStatus === 'idle')
+      dispatch(fetchMachines());
+  }, [pointsStatus, machinesStatus, dispatch]);
 
   const [open, setOpen] = useState(false);
   const [editingPoint, setEditingPoint] = useState<Point | null>(null);
@@ -106,21 +91,18 @@ export default function PointsPage() {
       let valueB: string | number = '';
 
       if (orderBy === 'machine') {
-        // Busca o nome da máquina para ordenar
         valueA = machines.find(m => m.id === a.machineId)?.name || '';
         valueB = machines.find(m => m.id === b.machineId)?.name || '';
       } else {
         valueA = a[orderBy as keyof Point] as string | number || '';
         valueB = b[orderBy as keyof Point] as string | number || '';
       }
-      // Ordenação para strings
       if (typeof valueA === 'string' && typeof valueB === 'string') {
         return order === 'asc' 
           ? valueA.localeCompare(valueB) 
           : valueB.localeCompare(valueA);
       }
 
-      // Ordenação para números
       if (valueA < valueB) {
         return order === 'asc' ? -1 : 1;
       }
@@ -172,7 +154,7 @@ export default function PointsPage() {
       dispatch(updatePoint({ ...editingPoint, ...formData }));
     } else {
       dispatch(
-        addPoint({ id: `p${Date.now()}`, status: 'active', ...formData })
+        addPoint({ status: 'active', ...formData })
       );
     }
     setOpen(false);

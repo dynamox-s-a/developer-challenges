@@ -1,12 +1,13 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
+import { CreatePointDto } from './dto/create-point.dto';
 
 @Injectable()
 export class PointsService {
   constructor(private prisma: PrismaService) {}
-
+/*
   async create(data: { name: string; machineId: string; sensor?: { id: string; model: string } }) {
-    // 1. Regra de Negócio: Buscar a máquina para ver o tipo
+   
     const machine = await this.prisma.machine.findUnique({
       where: { id: data.machineId }
     });
@@ -41,15 +42,27 @@ export class PointsService {
       include: { sensor: true } // Retorna o sensor criado na resposta
     });
   }
+*/
+  create(CreatePointDto: CreatePointDto) {
+    return this.prisma.monitoringPoint.create({ 
+      data: {
+        name: CreatePointDto.name,
+        machineId: CreatePointDto.machineId,
+        sensorModel: CreatePointDto.sensorModel,
+      }
+      });
+  }
 
   findAll() {
-    // Traz a lista completa: Ponto + Nome da Máquina + Sensor
-    return this.prisma.monitoringPoint.findMany({
-      include: {
-        machine: true,
-        sensor: true
-      }
-    });
+    return this.prisma.monitoringPoint.findMany();
+  }
+
+  findOne(id: string) {
+    return this.prisma.monitoringPoint.findUnique({ where: { id } });
+  }
+
+  update(id: string, updatePointDto: any) {
+    return this.prisma.monitoringPoint.update({ where: { id }, data: updatePointDto });
   }
 
   remove(id: string) {

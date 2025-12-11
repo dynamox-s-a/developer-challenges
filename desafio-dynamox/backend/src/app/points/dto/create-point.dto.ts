@@ -1,20 +1,27 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsNotEmpty, IsEnum, IsUUID, IsOptional } from 'class-validator';
 
-class CreateSensorDto {
-  @ApiProperty({ example: 'S-100', description: 'ID manual do sensor' })
-  id: string;
-
-  @ApiProperty({ example: 'HF+', enum: ['TcAg', 'TcAs', 'HF+'], description: 'Modelo do sensor' })
-  model: string;
+export enum SensorModel {
+  TcAg = 'TcAg',
+  TcAs = 'TcAs',
+  HF_PLUS = 'HF+',
 }
 
 export class CreatePointDto {
-  @ApiProperty({ example: 'Ponto Motor Traseiro', description: 'Nome do ponto' })
+  @IsString()
+  @IsNotEmpty()
   name: string;
 
-  @ApiProperty({ example: 'COLE_O_UUID_DA_MAQUINA_AQUI', description: 'ID da máquina dona deste ponto' })
+  @IsEnum(SensorModel, {
+    message: 'sensorModel must be either TcAg, TcAs, or HF+',
+  })
+  @IsNotEmpty()
+  sensorModel: string;
+
+  @IsUUID()
+  @IsNotEmpty()
   machineId: string;
 
-  @ApiProperty({ required: false, type: CreateSensorDto, description: 'Dados do sensor (Opcional)' })
-  sensor?: CreateSensorDto;
+  @IsOptional()
+  @IsString()
+  status?: string;
 }
