@@ -1,7 +1,6 @@
 # Makefile definitions
 
 SRC = src
-JS_PAC_MANAGER = npm
 ECHO = @echo -e "\n---|"
 
 # Commands
@@ -13,21 +12,24 @@ run_server: build_server
 
 run_app: build_app
 	$(ECHO) "Running app"
+	npm run start
 
 build_server:
-	$(ECHO) "Building server files"
-	touch server.file
+	$(ECHO) "Building server"
 
 build_app:
-	$(ECHO) "Building application files"
-	touch app.file
+	$(ECHO) "Building application"
+	npm ci
+	npm run build
 
 clean: clean_server clean_app
+	$(ECHO) "Removing common files"
+	rm -rf .next
+	rm -rf node_modules
 
 clean_server:
-	$(ECHO) "Uninstalling server"
-	rm -f server.file
+	$(ECHO) "Removing server files"
 
 clean_app:
-	$(ECHO) "Uninstalling application"
-	rm -f app.file
+	$(ECHO) "Removing application files"
+
