@@ -1,9 +1,7 @@
 {
-  "name": "material-kit-react",
-  "version": "4.1.0",
-  "author": "Devias",
-  "licence": "MIT",
-  "homepage": "https://devias.io",
+  "name": "fullstack-challenge",
+  "version": "1.0",
+  "author": "Matheus Roque",
   "private": false,
   "scripts": {
     "dev": "next dev",
