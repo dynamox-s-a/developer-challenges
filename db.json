@@ -1,0 +1,15 @@
+{
+  "machines": [
+    {
+      "id": "ebe1",
+      "name": "Bomba de Ar",
+      "type": "Pump"
+    },
+    {
+      "id": "1b2e",
+      "name": "Ventilador",
+      "type": "Fan"
+    }
+  ],
+  "monitoringPoints": []
+}

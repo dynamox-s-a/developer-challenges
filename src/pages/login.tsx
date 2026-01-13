@@ -16,7 +16,7 @@ export const Login = () => {
     setError('');
     if (email === 'admin@dynamox.net' && password === 'admin') {
       dispatch(login(email));
-      navigate('/dashboard'); 
+      navigate('/machines'); 
     } else {
       setError('Credenciais inválidas! Tente: admin@dynamox.net / admin');
     }
