@@ -13,38 +13,53 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
 import { useSelection } from '@/hooks/use-selection';
-
-function noop(): void {
-  // do nothing
-}
+import { Button } from '@mui/material';
+import { TrashIcon } from '@phosphor-icons/react';
 
 export interface Machine {
-    id: string;
-    name: string;
-    type: string;
+  id: string;
+  name: string;
+  type: string;
 }
 
 interface MachineTableProps {
   count?: number;
-  page?: number;
   rows?: Machine[];
-  rowsPerPage?: number;
 }
 
 export function MachinesTable({
   count = 0,
   rows = [],
-  page = 0,
-  rowsPerPage = 0,
 }: MachineTableProps): React.JSX.Element {
   const rowIds = React.useMemo(() => {
     return rows.map((customer) => customer.id);
   }, [rows]);
 
-  const { selectAll, deselectAll, selectOne, deselectOne, selected } = useSelection(rowIds);
+  // Data
+  const [page, setPage] = React.useState(0);
+  const rowsPerPage = 5;
 
-  const selectedSome = (selected?.size ?? 0) > 0 && (selected?.size ?? 0) < rows.length;
-  const selectedAll = rows.length > 0 && selected?.size === rows.length;
+  // Select rows
+  const { selectOne, deselectOne, selected } = useSelection(rowIds);
+  const selectedSome = selected.size > 1;
+
+  // Handlers
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number,
+  ) => {
+    setPage(newPage);
+  };
+
+  const handleDeleteItems = () => {
+    console.log([...selected]);
+    console.log(selectedSome);
+    for (const value of selected) {
+        rows = rows.filter(x => x.id != value);
+    }
+  };
+
+  //Component
 
   return (
     <Card>
@@ -52,17 +67,11 @@ export function MachinesTable({
         <Table sx={{ minWidth: '800px' }}>
           <TableHead>
             <TableRow>
-              <TableCell padding="checkbox">
-                <Checkbox
-                  checked={selectedAll}
-                  indeterminate={selectedSome}
-                  onChange={(event) => {
-                    if (event.target.checked) {
-                      selectAll();
-                    } else {
-                      deselectAll();
-                    }
-                  }}
+              <TableCell>
+                <Button startIcon = {<TrashIcon fontSize="var(--icon-fontSize-md)" color='red'/>}
+                    onClick={()=>{
+                        handleDeleteItems();
+                    }}
                 />
               </TableCell>
               <TableCell>Name</TableCell>
@@ -70,7 +79,10 @@ export function MachinesTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => {
+            {(rowsPerPage > 0
+            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            : rows
+            ).map((row) => {
               const isSelected = selected?.has(row.id);
 
               return (
@@ -99,11 +111,10 @@ export function MachinesTable({
       <TablePagination
         component="div"
         count={count}
-        onPageChange={noop}
-        onRowsPerPageChange={noop}
+        onPageChange={handleChangePage}
         page={page}
         rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[5]}
       />
     </Card>
   );
