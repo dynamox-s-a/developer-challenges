@@ -5,6 +5,7 @@ import { Layout } from './components/Layout';
 import { useSelector } from 'react-redux';
 import { type RootState } from './store';
 import type { JSX } from 'react';
+import { Sensors } from './pages/Sensors';
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
@@ -27,7 +28,7 @@ function App() {
         path="/sensors" 
         element={
           <PrivateRoute>
-            <div style={{ padding: 20, textAlign: 'center' }}>Página de Sensores (Em construção)</div>
+            <Sensors />
           </PrivateRoute>
         } 
       />

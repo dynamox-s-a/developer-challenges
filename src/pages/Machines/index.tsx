@@ -14,7 +14,7 @@ import EditIcon from '@mui/icons-material/Edit';
 
 export const Machines = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { list, status, error } = useSelector((state: RootState) => state.machines);
+  const { list, status, error } = useSelector((state: RootState) => state.machines) as { list: Machine[]; status: string; error: string | null };
   
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null); 
@@ -37,13 +37,13 @@ export const Machines = () => {
 
   
   const handleOpenEdit = (machine: Machine) => {
-    setEditingId(machine.id); 
+    setEditingId(Number(machine.id)); 
     setName(machine.name);    
     setType(machine.type);
     setOpen(true);
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     if (confirm('Tem certeza que deseja deletar esta máquina?')) {
       dispatch(deleteMachine(id));
     }
@@ -53,7 +53,7 @@ export const Machines = () => {
     if (!name.trim()) return alert("Nome obrigatório");
 
     if (editingId) {
-      dispatch(updateMachine({ id: editingId, name, type: type as 'Pump' | 'Fan' }));
+      dispatch(updateMachine({ id: String(editingId), name, type: type as 'Pump' | 'Fan' }));
     } else {
       dispatch(addMachine({ name, type: type as 'Pump' | 'Fan' }));
     }

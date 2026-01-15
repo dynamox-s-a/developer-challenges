@@ -1,15 +1,52 @@
 {
   "machines": [
     {
-      "id": "ebe1",
-      "name": "Bomba de Ar",
-      "type": "Pump"
+      "id": "9df9",
+      "name": "Bomba eólica",
+      "type": "Fan"
     },
     {
-      "id": "1b2e",
-      "name": "Ventilador",
-      "type": "Fan"
+      "id": "d682",
+      "name": "Bomba",
+      "type": "Pump"
     }
   ],
-  "monitoringPoints": []
+  "monitoringPoints": [
+    {
+      "id": "ebe1",
+      "machineId": null,
+      "name": "Pontencia de Pressão",
+      "sensorModel": "HF+"
+    },
+    {
+      "id": "9df9",
+      "machineId": "9df9",
+      "name": "Temperatura do Motor",
+      "sensorModel": "TcAg"
+    },
+    {
+      "id": "2c53",
+      "name": "temp",
+      "machineId": "d682",
+      "sensorModel": "HF+"
+    },
+    {
+      "id": "6049",
+      "name": "tc",
+      "machineId": "9df9",
+      "sensorModel": "TcAg"
+    },
+    {
+      "id": "0772",
+      "name": "ta",
+      "machineId": "9df9",
+      "sensorModel": "TcAs"
+    },
+    {
+      "id": "ba3a",
+      "name": "Bomba eólica",
+      "machineId": "9df9",
+      "sensorModel": "HF+"
+    }
+  ]
 }

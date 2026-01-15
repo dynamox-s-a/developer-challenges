@@ -1,8 +1,8 @@
-import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export interface Machine {
-    id: number,
+    id: string,
     name: string,
     type: 'Pump' | 'Fan';
 }
@@ -34,7 +34,7 @@ export const updateMachine = createAsyncThunk('machines/updateMachine', async (u
     return response.data;
 });
 
-export const deleteMachine = createAsyncThunk('machines/deleteMachine', async (machineId: number) => {
+export const deleteMachine = createAsyncThunk('machines/deleteMachine', async (machineId: string) => {
     await axios.delete(`http://localhost:3000/machines/${machineId}`);
     return machineId;
 });

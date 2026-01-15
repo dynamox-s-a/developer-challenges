@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react';
-import { TopBar } from './Topbar';
+import { TopBar } from './TopBar';
 import { Box } from '@mui/material';
 
 interface LayoutProps {
