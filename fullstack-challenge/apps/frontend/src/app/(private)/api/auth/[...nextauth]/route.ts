@@ -17,6 +17,7 @@ const handler = NextAuth({
         if (!credentials) {
           return null
         }
+        //definicao das credenciais estaticas
         if (credentials.email == "gabryel@gmail.com" && credentials.password == "123") {
           return {
             id: "1",

@@ -33,7 +33,7 @@
     "../../apps/frontend/.next/types/**/*.ts",
     "../../dist/apps/frontend/.next/types/**/*.ts",
     "next-env.d.ts"
-, "src/app/(public)/layout.tsx"  ],
+, "layout.tsx"  ],
   "exclude": [
     "out-tsc",
     "dist",
