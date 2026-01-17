@@ -9,6 +9,56 @@
       "id": "d682",
       "name": "Bomba",
       "type": "Pump"
+    },
+    {
+      "id": "514d",
+      "name": "Máquina Cypress E2E",
+      "type": "Fan"
+    },
+    {
+      "id": "1074",
+      "name": "Máquina Cypress E2E",
+      "type": "Fan"
+    },
+    {
+      "id": "5881",
+      "name": "Máquina Descartável",
+      "type": "Fan"
+    },
+    {
+      "id": "f540",
+      "name": "Máquina Descartável",
+      "type": "Fan"
+    },
+    {
+      "id": "5e8e",
+      "name": "Máquina Cypress E2E",
+      "type": "Fan"
+    },
+    {
+      "id": "b536",
+      "name": "Máquina Descartável",
+      "type": "Fan"
+    },
+    {
+      "id": "9816",
+      "name": "Máquina Descartável",
+      "type": "Fan"
+    },
+    {
+      "id": "ac3c",
+      "name": "Máquina Velha",
+      "type": "Pump"
+    },
+    {
+      "id": "2b94",
+      "name": "Máquina Renomeada Pro",
+      "type": "Fan"
+    },
+    {
+      "id": "e922",
+      "name": "Máquina Renomeada Pro",
+      "type": "Fan"
     }
   ],
   "monitoringPoints": [
@@ -46,6 +96,18 @@
       "id": "ba3a",
       "name": "Bomba eólica",
       "machineId": "9df9",
+      "sensorModel": "HF+"
+    },
+    {
+      "id": "db19",
+      "name": "Sensor de Pressão 01",
+      "machineId": "d682",
+      "sensorModel": "HF+"
+    },
+    {
+      "id": "cde1",
+      "name": "Sensor de Pressão 01",
+      "machineId": "d682",
       "sensorModel": "HF+"
     }
   ]

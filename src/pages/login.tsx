@@ -5,19 +5,34 @@ import { useDispatch } from 'react-redux';
 import { login } from '../store/authSlice';
 
 export const Login = () => {
+  // uso dispatch para disparar a ação de login no Redux
   const dispatch = useDispatch();
+  
+  // uso navigate para redirecionar o usuário após login bem-sucedido
   const navigate = useNavigate();
+  
+  // armazeno o email do formulário
   const [email, setEmail] = useState('');
+  
+  // armazeno a senha do formulário
   const [password, setPassword] = useState('');
+  
+  // armazeno a mensagem de erro para exibir ao usuário
   const [error, setError] = useState('');
 
+  // valido as credenciais e faço login se forem válidas
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    
+    // verifico se o email e senha correspondem às credenciais esperadas
     if (email === 'admin@dynamox.net' && password === 'admin') {
+      // uso dispatch para disparar a ação de login salvando o email no estado global
       dispatch(login(email));
+      // uso navigate para redirecionar para a página de máquinas
       navigate('/machines'); 
     } else {
+      // exibo uma mensagem de erro com as credenciais corretas
       setError('Credenciais inválidas! Tente: admin@dynamox.net / admin');
     }
   };
@@ -32,6 +47,7 @@ export const Login = () => {
           alignItems: 'center',
         }}
       >
+        {/* monto o card de login com elevation e padding */}
         <Paper 
           elevation={3} 
           sx={{ 
@@ -42,15 +58,19 @@ export const Login = () => {
             width: '100%' 
           }}
         >
+          {/* exibo o título da aplicação */}
           <Typography component="h1" variant="h5" color="primary" sx={{ fontWeight: 'bold' }}>
             DynaPredict
           </Typography>
-          
+
+          {/* exibo um subtítulo descrevendo o propósito da página */}
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
             Entre para gerenciar seus ativos
           </Typography>
 
+          {/* crio o formulário de login */}
           <Box component="form" onSubmit={handleLogin} sx={{ width: '100%' }}>
+            {/*crio um campo de entrada para o email */}
             <TextField
               margin="normal"
               required
@@ -63,6 +83,8 @@ export const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+            
+            {/* crio um campo de entrada para a senha */}
             <TextField
               margin="normal"
               required
@@ -76,12 +98,14 @@ export const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
             
+            {/* exibo um alerta de erro se houver mensagem de erro */}
             {error && (
               <Alert severity="error" sx={{ mt: 2 }}>
                 {error}
               </Alert>
             )}
 
+            {/* crio o botão de submit para fazer login */}
             <Button
               type="submit"
               fullWidth
