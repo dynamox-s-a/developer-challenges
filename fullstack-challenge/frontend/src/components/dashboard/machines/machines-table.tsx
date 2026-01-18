@@ -24,16 +24,22 @@ const columns: GridColDef[] = [
   }
 ];
 
+const machineTemplate = {
+  name: "",
+  type: ""
+}
+
 export function MachinesTable({ fetchRowsPromise }: MachineTableProps): React.JSX.Element {
   const initialRows: GridRowsProp = React.use(fetchRowsPromise)
   const repository = new MachineRepository()
 
   return (
     <InteractiveTable
+      rowTemplate={machineTemplate}
       columns={columns}
       initialRows={initialRows}
-      // listRows={repository.list}
-      // createRow={repository.create}
+      handleRefresh={() => repository.list()}
+      handleCreate={(row) => repository.create(row as Machine)}
       handleUpdate={(row) => repository.update(row as Machine)}
       handleDelete={(row) => repository.delete(row as Machine)}
     />

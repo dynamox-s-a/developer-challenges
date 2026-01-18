@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import * as React from 'react';
@@ -38,21 +39,23 @@ declare module '@mui/x-data-grid' {
     setRowModesModel: (
       newModel: (oldModel: GridRowModesModel) => GridRowModesModel,
     ) => void;
+    rowTemplate: any;
+    rows: GridRowsProp;
   }
 }
 
 function EditToolbar(props: GridSlotProps['toolbar']) {
-  const { setRows, setRowModesModel } = props;
+  const { setRows, setRowModesModel, rowTemplate, rows } = props;
 
   const handleClick = () => {
-    const id = '000';
+    const newId = 1+ Math.max(0, ...rows.map(row => Number(row.id)));
     setRows((oldRows) => [
       ...oldRows,
-      { id, name: '', age: '', role: '', isNew: true },
+      {id: newId, ... rowTemplate, isNew: true} ,
     ]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
+      [newId]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
     }));
   };
 
@@ -135,19 +138,21 @@ const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
 };
 
 interface InteractiveTableProps {
+    rowTemplate: any
     columns: GridColDef[];
     initialRows: GridRowsProp;
-    // handleRefresh: () => GridRowsProp;
-    // handleCreate: (row: GridValidRowModel) => void;
+    handleRefresh: () => Promise<any>;
+    handleCreate: (row: GridValidRowModel) => void;
     handleUpdate: (row: GridValidRowModel) => void;
     handleDelete: (row: GridValidRowModel) => void;
   }
 
 export function InteractiveTable({
+  rowTemplate,
   columns,
   initialRows,
-  // handleRefresh,
-  // handleCreate,
+  handleRefresh,
+  handleCreate,
   handleUpdate,
   handleDelete,
 }: InteractiveTableProps) {
@@ -168,6 +173,11 @@ export function InteractiveTable({
   const [paginationModel, setPaginationModel] = React.useState({ pageSize: 5, page: 0 });
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
 
+  const refreshTableData = async () => { 
+    const result = await handleRefresh()
+    setRows(result)
+  }
+
   const actionHandlers = React.useMemo<ActionHandlers>(
     () => ({
       handleEditClick: (id: GridRowId) => {
@@ -181,10 +191,6 @@ export function InteractiveTable({
           ...prevRowModesModel,
           [id]: { mode: GridRowModes.View },
         }));
-
-        const row = rows.find((row) => row.id === id)
-        console.log('machine', row)
-        handleUpdate(row as GridValidRowModel)
       },
       handleDeleteClick: (id: GridRowId) => {
         setRows((prevRows) => prevRows.filter((row) => row.id !== id));
@@ -214,9 +220,13 @@ export function InteractiveTable({
 
   const processRowUpdate = (newRow: GridRowModel) => {
     const updatedRow = { ...newRow, isNew: false };
+    console.log(updatedRow)
     setRows((prevRows) =>
       prevRows.map((row) => (row.id === newRow.id ? updatedRow : row)),
     );
+    delete newRow.isNew;
+    handleCreate(newRow)
+
     return updatedRow;
   };
 
@@ -254,7 +264,7 @@ export function InteractiveTable({
           showToolbar
           slots={{ toolbar: EditToolbar as GridSlots['toolbar'] }}
           slotProps={{
-            toolbar: { setRows, setRowModesModel },
+            toolbar: { setRows, setRowModesModel, rowTemplate, rows },
           }}
         />
       </ActionHandlersContext.Provider>
