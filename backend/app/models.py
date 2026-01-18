@@ -11,15 +11,16 @@ class SensorModel(str, Enum):
     TCAS = "TcAs"
     HF_PLUS = "HF+"
 
-class User(SQLModel, Table=True):
+class User(SQLModel, table=True):
     __tablename__ = "user"
     id: Optional[int] = Field(default=None, primary_key=True)
+    name: str
     email: str = Field(unique=True, index=True)
     hash: str
 
     machines: List["Machine"] = Relationship(back_populates="user")
 
-class Machine(SQLModel, Table=True):
+class Machine(SQLModel, table=True):
     __tablename__ = "machine"
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
@@ -29,16 +30,16 @@ class Machine(SQLModel, Table=True):
     user: User = Relationship(back_populates="machines")
     monitoring_points: List["MonitoringPoint"] = Relationship(back_populates="machine")
 
-class MonitoringPoint(SQLModel, Table=True):
+class MonitoringPoint(SQLModel, table=True):
     __tablename__ = "monitoring_points"
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
     machine_id: int = Field(foreign_key="machine.id")
 
     machine: Machine = Relationship(back_populates="monitoring_points")
-    sensor: Optional["Sensor"] = Relationship(back_populates="monitoring_points")
+    sensor: Optional["Sensor"] = Relationship(back_populates="monitoring_point")
 
-class Sensor(SQLModel, Table=True):
+class Sensor(SQLModel, table=True):
     __tablename__ = "sensor"
     id: str = Field(primary_key=True, index=True)
     model: SensorModel
