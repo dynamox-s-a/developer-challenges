@@ -14,5 +14,5 @@ def get_session():
         yield session
 
 def create_db():
-    from ..modules.models import User, Machine, MonitoringPoint, Sensor
+    from ..models import User, Machine, MonitoringPoint, Sensor
     SQLModel.metadata.create_all(engine)
