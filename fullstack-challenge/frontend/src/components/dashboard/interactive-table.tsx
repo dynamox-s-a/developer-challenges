@@ -220,12 +220,12 @@ export function InteractiveTable({
 
   const processRowUpdate = (newRow: GridRowModel) => {
     const updatedRow = { ...newRow, isNew: false };
-    console.log(updatedRow)
     setRows((prevRows) =>
-      prevRows.map((row) => (row.id === newRow.id ? updatedRow : row)),
+    prevRows.map((row) => (row.id === newRow.id ? updatedRow : row)),
     );
-    delete newRow.isNew;
-    handleCreate(newRow)
+    const {id, isNew, ...rowData} = newRow;
+    console.log(rowData)
+    handleCreate(rowData as GridValidRowModel)
 
     return updatedRow;
   };

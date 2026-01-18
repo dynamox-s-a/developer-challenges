@@ -22,19 +22,18 @@ export async function createMachine(name: string, type: string) {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, type })
+      body: JSON.stringify({ name: name, type: type })
     };
+
     const response = await fetch("http://localhost:3001/machines/", requestOptions);
 
     if (!response.ok) {
       throw new Error("Falhou em createMachine");
     }
 
-    const result = await response.json();
-    return result;
   } catch (error: unknown) {
     console.log('Error no createMachine', error)
-    return []
+    return
   }
 }
 
@@ -51,11 +50,8 @@ export async function updateMachine(machine: Machine) {
       throw new Error("Falhou em updateMachine");
     }
 
-    const result = await response.json();
-    return result;
   } catch (error: unknown) {
     console.log('Error no updateMachine', error)
-    return []
   }
 }
 
@@ -70,11 +66,8 @@ export async function deleteMachine(machine: Machine) {
       throw new Error("Falhou em deleteMachine");
     }
 
-    const result = await response.json();
-    return result;
   } catch (error: unknown) {
     console.log('Error no deleteMachine', error)
-    return []
   }
 }
 
