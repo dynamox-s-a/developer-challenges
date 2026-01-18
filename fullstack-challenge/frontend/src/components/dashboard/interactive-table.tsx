@@ -8,6 +8,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
+
 import {
   GridRowsProp,
   GridRowModesModel,
@@ -22,11 +23,12 @@ import {
   Toolbar,
   ToolbarButton,
   GridSlots,
-  gridEditRowsStateSelector,
-  useGridSelector,
-  useGridApiContext,
-  GridActionsCell,
+  GridValidRowModel,
   GridRenderCellParams,
+  useGridApiContext,
+  useGridSelector,
+  gridEditRowsStateSelector,
+  GridActionsCell,
   GridActionsCellItem,
 } from '@mui/x-data-grid';
 
@@ -66,51 +68,51 @@ function EditToolbar(props: GridSlotProps['toolbar']) {
 }
 
 function ActionsCell(props: GridRenderCellParams) {
-    const apiRef = useGridApiContext();
-    const rowModesModel = useGridSelector(apiRef, gridEditRowsStateSelector);
-    const isInEditMode = rowModesModel[props.id] !== undefined;
-  
-    const { handleSaveClick, handleCancelClick, handleEditClick, handleDeleteClick } =
-      React.useContext(ActionHandlersContext);
-  
-    return (
-      <GridActionsCell {...props}>
-        {isInEditMode ? (
-          <React.Fragment>
-            <GridActionsCellItem
-              icon={<SaveIcon />}
-              label="Save"
-              material={{ sx: { color: 'primary.main' } }}
-              onClick={() => handleSaveClick(props.id)}
-            />
-            <GridActionsCellItem
-              icon={<CancelIcon />}
-              label="Cancel"
-              className="textPrimary"
-              onClick={() => handleCancelClick(props.id)}
-              color="inherit"
-            />
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            <GridActionsCellItem
-              icon={<EditIcon />}
-              label="Edit"
-              className="textPrimary"
-              onClick={() => handleEditClick(props.id)}
-              color="inherit"
-            />
-            <GridActionsCellItem
-              icon={<DeleteIcon />}
-              label="Delete"
-              onClick={() => handleDeleteClick(props.id)}
-              color="inherit"
-            />
-          </React.Fragment>
-        )}
-      </GridActionsCell>
-    );
-  }
+  const apiRef = useGridApiContext();
+  const rowModesModel = useGridSelector(apiRef, gridEditRowsStateSelector);
+  const isInEditMode = rowModesModel[props.id] !== undefined;
+
+  const { handleSaveClick, handleCancelClick, handleEditClick, handleDeleteClick } =
+    React.useContext(ActionHandlersContext);
+
+  return (
+    <GridActionsCell {...props}>
+      {isInEditMode ? (
+        <React.Fragment>
+          <GridActionsCellItem
+            icon={<SaveIcon />}
+            label="Save"
+            material={{ sx: { color: 'primary.main' } }}
+            onClick={() => handleSaveClick(props.id)}
+          />
+          <GridActionsCellItem
+            icon={<CancelIcon />}
+            label="Cancel"
+            className="textPrimary"
+            onClick={() => handleCancelClick(props.id)}
+            color="inherit"
+          />
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <GridActionsCellItem
+            icon={<EditIcon />}
+            label="Edit"
+            className="textPrimary"
+            onClick={() => handleEditClick(props.id)}
+            color="inherit"
+          />
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            onClick={() => handleDeleteClick(props.id)}
+            color="inherit"
+          />
+        </React.Fragment>
+      )}
+    </GridActionsCell>
+  );
+}
 
 interface ActionHandlers {
   handleCancelClick: (id: GridRowId) => void;
@@ -134,23 +136,34 @@ const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
 
 interface InteractiveTableProps {
     columns: GridColDef[];
-    columnsCount: number;
-    initialRows?: GridRowsProp;
+    initialRows: GridRowsProp;
+    // handleRefresh: () => GridRowsProp;
+    // handleCreate: (row: GridValidRowModel) => void;
+    handleUpdate: (row: GridValidRowModel) => void;
+    handleDelete: (row: GridValidRowModel) => void;
   }
 
-export function InteractiveTable({columns, columnsCount, initialRows = []}: InteractiveTableProps) {
-    if (columns.length == columnsCount) {
-        columns.push({
-            field: 'actions',
-            type: 'actions',
-            headerName: 'Actions',
-            width: 100,
-            cellClassName: 'actions',
-            align: 'right',
-            headerAlign: 'right',
-            renderCell: (params) => <ActionsCell {...params} />,
-        });
-    }
+export function InteractiveTable({
+  columns,
+  initialRows,
+  // handleRefresh,
+  // handleCreate,
+  handleUpdate,
+  handleDelete,
+}: InteractiveTableProps) {
+  const tableColumns = [
+    ...columns,
+    {
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Actions',
+      width: 100,
+      cellClassName: 'actions',
+      align: 'right',
+      headerAlign: 'right',
+      renderCell: (params) => <ActionsCell {...params} />,
+    } as GridColDef
+  ]
   const [rows, setRows] = React.useState(initialRows);
   const [paginationModel, setPaginationModel] = React.useState({ pageSize: 5, page: 0 });
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
@@ -163,14 +176,21 @@ export function InteractiveTable({columns, columnsCount, initialRows = []}: Inte
           [id]: { mode: GridRowModes.Edit },
         }));
       },
-      handleSaveClick: (id: GridRowId) => {
+      handleSaveClick: async (id: GridRowId) => {
         setRowModesModel((prevRowModesModel) => ({
           ...prevRowModesModel,
           [id]: { mode: GridRowModes.View },
         }));
+
+        const row = rows.find((row) => row.id === id)
+        console.log('machine', row)
+        handleUpdate(row as GridValidRowModel)
       },
       handleDeleteClick: (id: GridRowId) => {
         setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+
+        const row = rows.find((row) => row.id === id)
+        handleDelete(row as GridValidRowModel)
       },
       handleCancelClick: (id: GridRowId) => {
         setRowModesModel((prevRowModesModel) => {
@@ -189,7 +209,7 @@ export function InteractiveTable({columns, columnsCount, initialRows = []}: Inte
         });
       },
     }),
-    [],
+    [rows, handleUpdate, handleDelete],
   );
 
   const processRowUpdate = (newRow: GridRowModel) => {
@@ -225,7 +245,7 @@ export function InteractiveTable({columns, columnsCount, initialRows = []}: Inte
               },
             }
           }
-          columns={columns}
+          columns={tableColumns}
           editMode="row"
           rowModesModel={rowModesModel}
           onRowModesModelChange={setRowModesModel}

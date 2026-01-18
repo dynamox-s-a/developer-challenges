@@ -1,0 +1,157 @@
+import { Machine } from "./entity/machine";
+import { MonitoringPoint } from "./entity/monitoring-point";
+
+export async function listMachines() {
+  try {
+    const response = await fetch("http://localhost:3001/machines/");
+
+    if (!response.ok) {
+      throw new Error("Falhou em listMachines");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error: unknown) {
+    console.log('Error no listMachines', error)
+    return []
+  }
+}
+
+export async function createMachine(name: string, type: string) {
+  try {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, type })
+    };
+    const response = await fetch("http://localhost:3001/machines/", requestOptions);
+
+    if (!response.ok) {
+      throw new Error("Falhou em createMachine");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error: unknown) {
+    console.log('Error no createMachine', error)
+    return []
+  }
+}
+
+export async function updateMachine(machine: Machine) {
+  try {
+    const requestOptions = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: machine.name, type: machine.type })
+    };
+    const response = await fetch(`http://localhost:3001/machines/${machine.id}`, requestOptions);
+
+    if (!response.ok) {
+      throw new Error("Falhou em updateMachine");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error: unknown) {
+    console.log('Error no updateMachine', error)
+    return []
+  }
+}
+
+export async function deleteMachine(machine: Machine) {
+  try {
+    const requestOptions = {
+      method: 'DELETE'
+    };
+    const response = await fetch(`http://localhost:3001/machines/${machine.id}`, requestOptions);
+
+    if (!response.ok) {
+      throw new Error("Falhou em deleteMachine");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error: unknown) {
+    console.log('Error no deleteMachine', error)
+    return []
+  }
+}
+
+
+export async function listMonitoringPoints() {
+  try {
+    const response = await fetch("http://localhost:3001/monitoring-points/");
+
+    if (!response.ok) {
+      throw new Error("Falhou em listMonitoringPoints");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error: unknown) {
+    console.log('Error no listMonitoringPoints', error)
+    return []
+  }
+}
+
+export async function createMonitoringPoint(name: string, type: string, machineId: number) {
+  try {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, type, machineId })
+    };
+    const response = await fetch("http://localhost:3001/monitoring-points/", requestOptions);
+
+    if (!response.ok) {
+      throw new Error("Falhou em createMonitoringPoint");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error: unknown) {
+    console.log('Error no createMonitoringPoint', error)
+    return []
+  }
+}
+
+export async function updateMonitoringPoint(monitoringPoint: MonitoringPoint) {
+  try {
+    const requestOptions = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: monitoringPoint.name, type: monitoringPoint.type, machinedId: monitoringPoint.machineId })
+    };
+    const response = await fetch(`http://localhost:3001/monitoring-points/${monitoringPoint.id}`, requestOptions);
+
+    if (!response.ok) {
+      throw new Error("Falhou em updateMonitoringPoint");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error: unknown) {
+    console.log('Error no updateMonitoringPoint', error)
+    return []
+  }
+}
+
+export async function deleteMonitoringPoint(monitoringPoint: MonitoringPoint) {
+  try {
+    const requestOptions = {
+      method: 'DELETE'
+    };
+    const response = await fetch(`http://localhost:3001/monitoring-points/${monitoringPoint.id}`, requestOptions);
+
+    if (!response.ok) {
+      throw new Error("Falhou em deleteMonitoringPoints");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error: unknown) {
+    console.log('Error no deleteMonitoringPoints', error)
+    return []
+  }
+}

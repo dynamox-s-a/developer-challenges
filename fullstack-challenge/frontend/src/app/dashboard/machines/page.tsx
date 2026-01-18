@@ -1,74 +1,17 @@
-'use client'
-
 import * as React from 'react';
 import type { Metadata } from 'next';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import { config } from '@/config';
-import { InteractiveTable } from '@/components/dashboard/interactive-table';
-import { 
-  GridColDef,
-  GridRowsProp,
-} from '@mui/x-data-grid';
+import MachineRepository from '@/lib/repository/machine';
+import { MachinesTable } from '@/components/dashboard/machines/machines-table';
 
 export const metadata = { title: `Machines | Dashboard | ${config.site.name}` } satisfies Metadata;
 
-// Data
-export interface Machine {
-    id: string;
-    name: string;
-    type: string;
-  }
-
-
-// const initialRows: GridRowsProp = [
-//   { id: '001', name: 'AEP-001', type: 'Pump'},
-//   { id: '002', name: 'AEP-002', type: 'Pump'},
-//   { id: '003', name: 'GIP-001', type: 'Pump'},
-//   { id: '005', name: 'GIP-002', type: 'Pump'},
-//   { id: '006', name: 'TF-001', type: 'Fan'},
-//   { id: '007', name: 'TF-002', type: 'Fan'},
-//   { id: '008', name: 'TF-003', type: 'Fan'},
-//   { id: '009', name: 'TF-005', type: 'Fan'},
-// ] satisfies Machine[];
-
-const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 150, editable: false },
-    { field: 'name', headerName: 'Name', width: 180, editable: true },
-    {
-      field: 'type',
-      headerName: 'Type',
-      width: 220,
-      editable: true,
-      type: 'singleSelect',
-      valueOptions: ['Fan', 'Pump'],
-    },
-  ];
-
-  
 export default function Page(): React.JSX.Element {
-  let machines: GridRowsProp = [];
-
-  const getMachines = async () => {
-    console.log("getmachines comecando a executar");
-    try {
-      const response = await fetch("localhost:3001/machines");
-
-      if (!response.ok) {
-        throw new Error("Falhou em getMachines");
-      }
-
-      machines = await response.json();
-      console.log(machines);
-    } catch (error) {
-      console.log("Error", error);
-    }
-  }
-
-  console.log("chamada machines");
-  void getMachines();
-  console.log("chamada finalizada");
+  const repository = new MachineRepository()
+  const fetchRowsPromise = repository.list()
 
   return (
     <Stack spacing={3}>
@@ -77,11 +20,7 @@ export default function Page(): React.JSX.Element {
           <Typography variant="h4">Machines</Typography>
         </Stack>
       </Stack>
-      <InteractiveTable 
-        columns={columns}
-        columnsCount={columns.length}
-        initialRows={machines}
-      />
+      <MachinesTable fetchRowsPromise={fetchRowsPromise}></MachinesTable>
     </Stack>
   );
 }

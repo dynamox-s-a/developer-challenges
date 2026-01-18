@@ -1,0 +1,1 @@
+Please, refer to the [README](fullstack-challenge/README.md) in the `fullstack-challenge` folder
