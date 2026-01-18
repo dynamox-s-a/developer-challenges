@@ -1,0 +1,12 @@
+annotated-types==0.7.0
+greenlet==3.3.0
+psycopg2-binary==2.9.11
+pydantic==2.12.5
+pydantic_core==2.41.5
+python-dotenv==1.2.1
+SQLAlchemy==2.0.45
+sqlmodel==0.0.31
+typing-inspection==0.4.2
+typing_extensions==4.15.0
+fastapi
+uvicorn[standard]
