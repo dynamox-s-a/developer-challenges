@@ -28,21 +28,21 @@ class Machine(SQLModel, table=True):
     user_id: int = Field(foreign_key="user.id")
     
     user: User = Relationship(back_populates="machines")
-    monitoring_points: List["MonitoringPoint"] = Relationship(back_populates="machine")
+    monitoring_points: List["MonitoringPoint"] = Relationship(back_populates="machine", sa_relationship_kwargs={"cascade": "all, delete-orphan"})
 
 class MonitoringPoint(SQLModel, table=True):
     __tablename__ = "monitoring_points"
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
-    machine_id: int = Field(foreign_key="machine.id")
+    machine_id: int = Field(foreign_key="machine.id", ondelete="CASCADE")
 
     machine: Machine = Relationship(back_populates="monitoring_points")
-    sensor: Optional["Sensor"] = Relationship(back_populates="monitoring_point")
+    sensor: Optional["Sensor"] = Relationship(back_populates="monitoring_point", sa_relationship_kwargs={"cascade": "all, delete-orphan"})
 
 class Sensor(SQLModel, table=True):
     __tablename__ = "sensor"
     id: str = Field(primary_key=True, index=True)
     model: SensorModel
-    monitoring_point_id: int = Field(foreign_key="monitoring_points.id", unique=True)
+    monitoring_point_id: int = Field(foreign_key="monitoring_points.id", unique=True, ondelete="CASCADE")
     
     monitoring_point: MonitoringPoint = Relationship(back_populates="sensor")
