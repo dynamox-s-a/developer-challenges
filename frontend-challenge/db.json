@@ -1,0 +1,26 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "admin@events.com",
+      "password": "admin123",
+      "role": "admin"
+    },
+    {
+      "id": "2",
+      "email": "reader@events.com",
+      "password": "reader123",
+      "role": "reader"
+    }
+  ],
+  "events": [
+    {
+      "name": "Teste",
+      "date": "2026-01-13T11:20",
+      "location": "Teste Local",
+      "description": "Teste description",
+      "category": "Conferência",
+      "id": "4a9f"
+    }
+  ]
+}
