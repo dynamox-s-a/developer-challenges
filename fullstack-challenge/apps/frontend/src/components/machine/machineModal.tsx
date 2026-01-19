@@ -18,17 +18,13 @@ import { Machine } from '@/store/machine/machine.types';
 
 type MachineType = 'Pump' | 'Fan';
 
-type CreateMachineModalProps = {
+type MachineModalProps = {
   open: boolean;
   onClose: () => void;
   machine?: Machine | null;
 };
 
-export function CreateMachineModal({
-  open,
-  onClose,
-  machine,
-}: CreateMachineModalProps) {
+export function MachineModal({ open, onClose, machine }: MachineModalProps) {
   const dispatch = useDispatch();
 
   const [name, setName] = useState('');

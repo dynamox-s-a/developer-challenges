@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { MachinesPageClient } from '@/components/machine/machineViewCards';
+import { MachinesPageClient } from '@/components/machine/machineView';
 
 export default async function MachinePage() {
   const session = await getServerSession();
