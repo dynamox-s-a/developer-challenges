@@ -1,10 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { monitoringPointsTable } from 'src/modules/drizzle/schema';
+import { machinesTable } from 'src/modules/drizzle/schema';
 import {
   DRIZZLE,
   type DrizzleConnection,
 } from 'src/modules/drizzle/drizzle.module';
-import MonitoringPoint, { MonitoringPointType } from 'src/entities/monitoring-point.entity';
+import MonitoringPoint, {
+  MonitoringPointType,
+} from 'src/entities/monitoring-point.entity';
 import { eq } from 'drizzle-orm';
 
 @Injectable()
@@ -13,9 +16,20 @@ export class MonitoringPointRepository {
 
   async list(): Promise<MonitoringPoint[]> {
     try {
-      const result = await this.drizzleConnection.select().from(monitoringPointsTable);
-
-      return result as MonitoringPoint[];
+      const monitoringPointsData = await this.drizzleConnection
+        .select()
+        .from(monitoringPointsTable)
+        .leftJoin(
+          machinesTable,
+          eq(machinesTable.id, monitoringPointsTable.machineId),
+        );
+      if (!monitoringPointsData) {
+        throw new Error('error monitoring');
+      }
+      return monitoringPointsData.map((row) => {
+        const machine = row.machines_table;
+        return { machine, ...row.monitoring_points_table } as MonitoringPoint;
+      });
     } catch (error) {
       console.error('Error on MonitoringPointRepository.list', error);
       return [];
@@ -27,21 +41,30 @@ export class MonitoringPointRepository {
       const result = await this.drizzleConnection
         .select()
         .from(monitoringPointsTable)
+        .leftJoin(
+          machinesTable,
+          eq(machinesTable.id, monitoringPointsTable.machineId),
+        )
         .where(eq(monitoringPointsTable.id, id));
 
-      console.log('result', result);
-      return result[0] as MonitoringPoint;
+      const row = result[0];
+      const machine = row.machines_table;
+      return { machine, ...row.monitoring_points_table } as MonitoringPoint;
     } catch (error) {
       console.error('Error on MonitoringPointRepository.get', error);
       return null;
     }
   }
 
-  async create(name: string, type: MonitoringPointType, machineId: number): Promise<boolean> {
+  async create(
+    name: string,
+    type: MonitoringPointType,
+    machineId: number,
+  ): Promise<boolean> {
     const newMonitoringPoint: typeof monitoringPointsTable.$inferInsert = {
       name,
       type,
-      machineId
+      machineId,
     };
     try {
       const result = await this.drizzleConnection
@@ -55,11 +78,16 @@ export class MonitoringPointRepository {
     }
   }
 
-  async update(id: number, name: string, type: MonitoringPointType): Promise<boolean> {
+  async update(
+    id: number,
+    name: string,
+    type: MonitoringPointType,
+    machineId: number,
+  ): Promise<boolean> {
     try {
       const result = await this.drizzleConnection
         .update(monitoringPointsTable)
-        .set({ name, type })
+        .set({ name, type, machineId })
         .where(eq(monitoringPointsTable.id, id));
 
       return result.rowsAffected > 0;

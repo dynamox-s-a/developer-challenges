@@ -13,10 +13,10 @@ interface MachineTableProps {
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 150, editable: false },
-  { field: 'name', headerName: 'Name', width: 180, editable: true },
+  { field: 'name', headerName: 'Machine Name', width: 180, editable: true },
   {
     field: 'type',
-    headerName: 'Type',
+    headerName: 'Machine Type',
     width: 220,
     editable: true,
     type: 'singleSelect',
@@ -29,15 +29,15 @@ const machineTemplate = {
   type: ""
 }
 
-export function MachinesTable({ fetchRowsPromise }: MachineTableProps): React.JSX.Element {
-  const initialRows: GridRowsProp = React.use(fetchRowsPromise)
+export async function MachinesTable(): Promise<React.JSX.Element> {
   const repository = new MachineRepository()
+  // const initialRows: GridRowsProp = await repository.list();
 
   return (
     <InteractiveTable
       rowTemplate={machineTemplate}
       columns={columns}
-      initialRows={initialRows}
+      initialRows={[] as GridRowsProp}
       handleRefresh={() => repository.list()}
       handleCreate={(row) => repository.create(row as Machine)}
       handleUpdate={(row) => repository.update(row as Machine)}

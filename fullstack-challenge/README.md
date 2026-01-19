@@ -10,9 +10,7 @@ The development and tests were done both in a Linux environment. Here are the to
 
 - make
 - npm
-- npx
-- drizzle-kit
-- sqlite
+- NodeJs (^25.3.0)
 
 The frontend was based on a [Devias Kit](https://github.com/devias-io/material-kit-react) template, which runs using Next.js. Also, some component examples found in the [MUI documentation](https://v6.mui.com/base-ui/getting-started/) were utilized to speed up the process, such as tables and buttons.
 
@@ -28,19 +26,19 @@ In this folder you will find a makefile containing targets to build and deploy t
 
 Build the service:
 
-```
+``` bash
 make build_server
 ```
 
 When the build is finished, if succesful, run the service with:
 
-```
+``` bash
 make run_server
 ```
 
 Alternatively, you can use a target that build and then run the service:
 
-```
+``` bash
 make server
 ```
 
@@ -48,19 +46,19 @@ make server
 
 Build the pages:
 
-```
+```bash
 make build_app
 ```
 
 When the build is finished, if succesful, run the application with:
 
-```
+```bash
 make run_app
 ```
 
 Alternatively, you can use a target that build and then run the application:
 
-```
+```bash
 make app
 ```
 

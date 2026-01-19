@@ -45,17 +45,17 @@ declare module '@mui/x-data-grid' {
 }
 
 function EditToolbar(props: GridSlotProps['toolbar']) {
-  const { setRows, setRowModesModel, rowTemplate, rows } = props;
+  const { setRows, setRowModesModel, rowTemplate } = props;
 
   const handleClick = () => {
-    const newId = 1+ Math.max(0, ...rows.map(row => Number(row.id)));
+    const id = 0;
     setRows((oldRows) => [
       ...oldRows,
-      {id: newId, ... rowTemplate, isNew: true} ,
+      {id: id, ... rowTemplate, isNew: true} ,
     ]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
-      [newId]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
+      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
     }));
   };
 
@@ -142,9 +142,9 @@ interface InteractiveTableProps {
     columns: GridColDef[];
     initialRows: GridRowsProp;
     handleRefresh: () => Promise<any>;
-    handleCreate: (row: GridValidRowModel) => void;
-    handleUpdate: (row: GridValidRowModel) => void;
-    handleDelete: (row: GridValidRowModel) => void;
+    handleCreate: (row: GridValidRowModel) => Promise<void>;
+    handleUpdate: (row: GridValidRowModel) => Promise<void>;
+    handleDelete: (row: GridValidRowModel) => Promise<void>;
   }
 
 export function InteractiveTable({
@@ -169,6 +169,7 @@ export function InteractiveTable({
       renderCell: (params) => <ActionsCell {...params} />,
     } as GridColDef
   ]
+
   const [rows, setRows] = React.useState(initialRows);
   const [paginationModel, setPaginationModel] = React.useState({ pageSize: 5, page: 0 });
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
@@ -177,6 +178,14 @@ export function InteractiveTable({
     const result = await handleRefresh()
     setRows(result)
   }
+
+  React.useEffect(() => {
+    handleRefresh().then((data) => {
+      if (data) {
+        setRows(data as GridRowsProp)
+      }
+    })
+  }, [handleRefresh])
 
   const actionHandlers = React.useMemo<ActionHandlers>(
     () => ({
@@ -215,7 +224,7 @@ export function InteractiveTable({
         });
       },
     }),
-    [rows, handleUpdate, handleDelete],
+    [rows, handleDelete],
   );
 
   const processRowUpdate = (newRow: GridRowModel) => {
@@ -224,8 +233,11 @@ export function InteractiveTable({
     prevRows.map((row) => (row.id === newRow.id ? updatedRow : row)),
     );
     const {id, isNew, ...rowData} = newRow;
-    console.log(rowData)
-    handleCreate(rowData as GridValidRowModel)
+    if (id === 0) {
+      handleCreate(rowData as GridValidRowModel).then(()  => refreshTableData())
+    } else {
+      handleUpdate({id, ...rowData}).then(()  => refreshTableData())
+    }
 
     return updatedRow;
   };

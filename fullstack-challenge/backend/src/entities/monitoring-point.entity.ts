@@ -1,3 +1,5 @@
+import Machine from './machine.entity';
+
 export type MonitoringPointType = 'TcAg' | 'TcAs' | 'HF+';
 
 export default class MonitoringPoint {
@@ -6,10 +8,17 @@ export default class MonitoringPoint {
     readonly name: string,
     readonly type: MonitoringPointType,
     readonly machineId: number,
+    readonly machine: Machine,
   ) {}
 
   static restore(params: MonitoringPointProps) {
-    return new MonitoringPoint(params.id, params.name, params.type, params.machineId);
+    return new MonitoringPoint(
+      params.id,
+      params.name,
+      params.type,
+      params.machineId,
+      params.machine,
+    );
   }
 }
 
@@ -18,4 +27,5 @@ export type MonitoringPointProps = {
   name: string;
   type: MonitoringPointType;
   machineId: number;
+  machine: Machine;
 };

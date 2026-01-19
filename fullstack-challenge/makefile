@@ -28,8 +28,9 @@ run_app:
 build_server:
 	$(ECHO) "Building server"
 	cd $(SERVER_DIR) && \
-	npx drizzle-kit push && \
 	npm ci && \
+	npx drizzle-kit generate && \
+	npx drizzle-kit migrate && \
 	npm run build
 
 build_app:

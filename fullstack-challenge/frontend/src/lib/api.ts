@@ -101,11 +101,8 @@ export async function createMonitoringPoint(name: string, type: string, machineI
       throw new Error("Falhou em createMonitoringPoint");
     }
 
-    const result = await response.json();
-    return result;
   } catch (error: unknown) {
     console.log('Error no createMonitoringPoint', error)
-    return []
   }
 }
 
@@ -114,7 +111,7 @@ export async function updateMonitoringPoint(monitoringPoint: MonitoringPoint) {
     const requestOptions = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: monitoringPoint.name, type: monitoringPoint.type, machinedId: monitoringPoint.machineId })
+      body: JSON.stringify({ name: monitoringPoint.name, type: monitoringPoint.type, machineId: monitoringPoint.machineId })
     };
     const response = await fetch(`http://localhost:3001/monitoring-points/${monitoringPoint.id}`, requestOptions);
 
@@ -122,11 +119,8 @@ export async function updateMonitoringPoint(monitoringPoint: MonitoringPoint) {
       throw new Error("Falhou em updateMonitoringPoint");
     }
 
-    const result = await response.json();
-    return result;
   } catch (error: unknown) {
     console.log('Error no updateMonitoringPoint', error)
-    return []
   }
 }
 
@@ -141,10 +135,7 @@ export async function deleteMonitoringPoint(monitoringPoint: MonitoringPoint) {
       throw new Error("Falhou em deleteMonitoringPoints");
     }
 
-    const result = await response.json();
-    return result;
   } catch (error: unknown) {
     console.log('Error no deleteMonitoringPoints', error)
-    return []
   }
 }

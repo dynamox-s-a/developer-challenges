@@ -13,10 +13,10 @@ interface MonitoringPointTableProps {
   
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 150, editable: false },
-  { field: 'name', headerName: 'Name', width: 180, editable: true },
+  { field: 'name', headerName: 'Monitoring Point Name', width: 180, editable: true },
   {
       field: 'type',
-      headerName: 'Type',
+      headerName: 'Sensor Model',
       width: 220,
       editable: true,
       type: 'singleSelect',
@@ -28,12 +28,12 @@ const columns: GridColDef[] = [
         if (row.machineType === 'Pump') {
           return ["HF+"];
         }
-        return []; // Default empty
+        return ["HF+"]; // Default empty
       },
   },
   { field: 'machineId', headerName: 'Machined ID', width: 180, editable: true },
-  { field: 'machineName', headerName: 'Machine name', width: 180, editable: false },
-  { field: 'machineType', headerName: 'Machine type', width: 180, editable: false },
+  { field: 'machineName', headerName: 'Machine Name', width: 180, editable: false },
+  { field: 'machineType', headerName: 'Machine Type', width: 180, editable: false },
 ];
 
 const monitoringPointTemplate = { 
@@ -45,15 +45,15 @@ const monitoringPointTemplate = {
   machineType: '', 
 }
 
-export function MonitoringPointsTable({ fetchRowsPromise }: MonitoringPointTableProps): React.JSX.Element {
-  const initialRows: GridRowsProp = React.use(fetchRowsPromise)
+export async function MonitoringPointsTable(): Promise<React.JSX.Element> {
   const repository = new MonitoringPointRepository()
+  // const initialRows: GridRowsProp = await repository.list();
 
   return (
     <InteractiveTable
       rowTemplate={monitoringPointTemplate}
       columns={columns}
-      initialRows={initialRows}
+      initialRows={[] as GridRowsProp}
       handleRefresh={() => repository.list()}
       handleCreate={(row) => repository.create(row as MonitoringPoint)}
       handleUpdate={(row) => repository.update(row as MonitoringPoint)}

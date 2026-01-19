@@ -4,14 +4,11 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import { config } from '@/config';
-import MachineRepository from '@/lib/repository/machine';
 import { MachinesTable } from '@/components/dashboard/machines/machines-table';
 
 export const metadata = { title: `Machines | Dashboard | ${config.site.name}` } satisfies Metadata;
 
 export default function Page(): React.JSX.Element {
-  const repository = new MachineRepository()
-  const fetchRowsPromise = repository.list()
 
   return (
     <Stack spacing={3}>
@@ -20,7 +17,7 @@ export default function Page(): React.JSX.Element {
           <Typography variant="h4">Machines</Typography>
         </Stack>
       </Stack>
-      <MachinesTable fetchRowsPromise={fetchRowsPromise}></MachinesTable>
+      <MachinesTable></MachinesTable>
     </Stack>
   );
 }

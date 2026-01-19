@@ -9,12 +9,19 @@ import {
   Res,
 } from '@nestjs/common';
 import { MonitoringPointRepository } from '../../repositories/monitoring-point.repository';
-import type { CreateMonitoringPointDto, UpdateMonitoringPointDto } from './monitoring-point.dto';
+import { MachineRepository } from '../../repositories/machine.repository';
+import type {
+  CreateMonitoringPointDto,
+  UpdateMonitoringPointDto,
+} from './monitoring-point.dto';
 import type { Response } from 'express';
 
 @Controller('monitoring-points')
 export class MonitoringPointController {
-  constructor(private readonly monitoringPointRepository: MonitoringPointRepository) {}
+  constructor(
+    private readonly monitoringPointRepository: MonitoringPointRepository,
+    private readonly machineRepository: MachineRepository,
+  ) {}
 
   @Get()
   list(): any {
@@ -28,7 +35,9 @@ export class MonitoringPointController {
     }
 
     if (!Number.isInteger(+id)) {
-      return response.status(400).send('MonitoringPoint id should be a number.');
+      return response
+        .status(400)
+        .send('MonitoringPoint id should be a number.');
     }
 
     const monitoringPoint = await this.monitoringPointRepository.find(+id);
@@ -58,9 +67,10 @@ export class MonitoringPointController {
     }
 
     if (
-      createMonitoringPointDto.type !== 'TcAg' && 
+      createMonitoringPointDto.type !== 'TcAg' &&
       createMonitoringPointDto.type !== 'TcAs' &&
-      createMonitoringPointDto.type !== 'HF+') {
+      createMonitoringPointDto.type !== 'HF+'
+    ) {
       return response
         .status(400)
         .send('Invalid monitoring point type. Should be "Fan" or "Pump"');
@@ -69,7 +79,7 @@ export class MonitoringPointController {
     const success = await this.monitoringPointRepository.create(
       createMonitoringPointDto.name,
       createMonitoringPointDto.type,
-      createMonitoringPointDto.machineId
+      +createMonitoringPointDto.machineId,
     );
 
     if (!success) {
@@ -90,14 +100,16 @@ export class MonitoringPointController {
     }
 
     if (!Number.isInteger(+id)) {
-      return response.status(400).send('MonitoringPoint id should be a number.');
+      return response
+        .status(400)
+        .send('MonitoringPoint id should be a number.');
     }
 
     if (!updateMonitoringPointDto) {
       return response.status(400).send('MonitoringPoint body is required.');
     }
 
-    const { name, type } = updateMonitoringPointDto;
+    const { name, type, machineId } = updateMonitoringPointDto;
 
     if (!name) {
       return response.status(400).send('MonitoringPoint name is required.');
@@ -110,7 +122,21 @@ export class MonitoringPointController {
     if (type !== 'TcAg' && type !== 'TcAs' && type !== 'HF+') {
       return response
         .status(400)
-        .send('Invalid monitoring point type. Should be "TcAg", "TcAs" or "HF+"');
+        .send(
+          'Invalid monitoring point type. Should be "TcAg", "TcAs" or "HF+"',
+        );
+    }
+
+    if (!machineId) {
+      return response
+        .status(400)
+        .send('MonitoringPoint machineId is required.');
+    }
+
+    if (!Number.isInteger(+machineId)) {
+      return response
+        .status(400)
+        .send('MonitoringPoint machineId should be a number.');
     }
 
     const monitoringPoint = await this.monitoringPointRepository.find(+id);
@@ -119,13 +145,30 @@ export class MonitoringPointController {
       return response.status(404).send('MonitoringPoint not found.');
     }
 
-    const success = await this.monitoringPointRepository.update(+id, name, type);
+    const machine = await this.machineRepository.find(+machineId);
+
+    if (!machine) {
+      return response.status(400).send('Machine not found.');
+    }
+
+    if (machine.type === 'Pump' && (type === 'TcAg' || type === 'TcAs')) {
+      return response.status(400).send('Invalid sensor type for machine.');
+    }
+
+    const success = await this.monitoringPointRepository.update(
+      +id,
+      name,
+      type,
+      +machineId,
+    );
 
     if (!success) {
       return response.status(500).send('Error on monitoring point update.');
     }
 
-    return response.status(200).send({ id: +id, name, type });
+    return response
+      .status(200)
+      .send({ id: +id, name, type, machineId: +machineId });
   }
 
   @Delete(':id')
@@ -135,7 +178,9 @@ export class MonitoringPointController {
     }
 
     if (!Number.isInteger(+id)) {
-      return response.status(400).send('MonitoringPoint id should be a number.');
+      return response
+        .status(400)
+        .send('MonitoringPoint id should be a number.');
     }
 
     const monitoringPoint = await this.monitoringPointRepository.find(+id);
