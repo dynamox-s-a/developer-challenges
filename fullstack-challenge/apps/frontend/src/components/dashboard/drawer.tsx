@@ -9,11 +9,13 @@ import {
   ListItemIcon,
   ListItemText,
   Box,
+  Divider,
 } from '@mui/material';
 
 import Image from 'next/image';
 import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
+import LogoutButton from '@/components/login/logoutButton';
 
 const drawerWidth = 240;
 
@@ -28,13 +30,15 @@ export function DashboardDrawer() {
         '& .MuiDrawer-paper': {
           width: drawerWidth,
           bgcolor: 'primary.main',
+          display: 'flex',
+          flexDirection: 'column',
         },
       }}
     >
+      {/* Logo */}
       <Box
         sx={{
           p: 1,
-          width: '100%',
           display: 'flex',
           justifyContent: 'center',
         }}
@@ -48,8 +52,8 @@ export function DashboardDrawer() {
         />
       </Box>
 
+      {/* Menu */}
       <List>
-        {/* Botão Máquinas */}
         <ListItemButton
           component={Link}
           href="/dashboard/machines"
@@ -62,9 +66,7 @@ export function DashboardDrawer() {
               color: 'black',
               '& .MuiListItemIcon-root': { color: 'black' },
             },
-            '&:hover': {
-              bgcolor: 'primary.light',
-            },
+            '&:hover': { bgcolor: 'primary.light' },
           }}
         >
           <ListItemIcon>
@@ -73,7 +75,6 @@ export function DashboardDrawer() {
           <ListItemText primary="Máquinas" />
         </ListItemButton>
 
-        {/* Botão Monitoramento */}
         <ListItemButton
           component={Link}
           href="/dashboard/monitor"
@@ -86,9 +87,7 @@ export function DashboardDrawer() {
               color: 'black',
               '& .MuiListItemIcon-root': { color: 'black' },
             },
-            '&:hover': {
-              bgcolor: 'primary.light',
-            },
+            '&:hover': { bgcolor: 'primary.light' },
           }}
         >
           <ListItemIcon>
@@ -97,6 +96,12 @@ export function DashboardDrawer() {
           <ListItemText primary="Monitoramento" />
         </ListItemButton>
       </List>
+
+      {/* Logout no rodapé */}
+      <Box sx={{ mt: 'auto' }}>
+        <Divider sx={{ bgcolor: 'primary.light', mx: 2 }} />
+        <LogoutButton />
+      </Box>
     </Drawer>
   );
 }

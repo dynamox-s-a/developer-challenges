@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react';
 import { Box } from '@mui/material';
-import { DashboardDrawer } from '@/components/drawer';
+import { DashboardDrawer } from '@/components/dashboard/drawer';
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (

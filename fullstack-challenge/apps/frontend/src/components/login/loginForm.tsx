@@ -36,7 +36,7 @@ export default function LoginForm() {
       setPassword('');
     } else {
       setError(null);
-      window.location.href = '/dashboard';
+      window.location.href = '/dashboard/machines';
     }
   }
 
@@ -103,7 +103,7 @@ export default function LoginForm() {
           />
 
           <TextField
-            label="Password"
+            label="Senha"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
