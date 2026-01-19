@@ -7,10 +7,6 @@ import { InteractiveTable } from '../interactive-table';
 import { Machine } from '@/lib/entity/machine';
 import MachineRepository from '@/lib/repository/machine';
 
-interface MachineTableProps {
-  fetchRowsPromise: Promise<Machine[]>;
-}
-
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 150, editable: false },
   { field: 'name', headerName: 'Machine Name', width: 180, editable: true },
@@ -31,7 +27,6 @@ const machineTemplate = {
 
 export async function MachinesTable(): Promise<React.JSX.Element> {
   const repository = new MachineRepository()
-  // const initialRows: GridRowsProp = await repository.list();
 
   return (
     <InteractiveTable

@@ -29,7 +29,6 @@ export class MachineRepository {
         .from(machinesTable)
         .where(eq(machinesTable.id, id));
 
-      console.log('result', result);
       return result[0] as Machine;
     } catch (error) {
       console.error('Error on MachineRepository.get', error);

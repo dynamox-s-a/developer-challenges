@@ -7,9 +7,6 @@ import { InteractiveTable } from '../interactive-table';
 import { MonitoringPoint } from '@/lib/entity/monitoring-point';
 import MonitoringPointRepository from '@/lib/repository/monitoring-point';
 
-interface MonitoringPointTableProps {
-  fetchRowsPromise: Promise<MonitoringPoint[]>;
-}
   
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 150, editable: false },
@@ -20,7 +17,6 @@ const columns: GridColDef[] = [
       width: 220,
       editable: true,
       type: 'singleSelect',
-      // valueOptions: ["TcAg", "TcAs", "HF+"]
       valueOptions: ({ row }) => {
         if (row.machineType === 'Fan') {
           return ["TcAg", "TcAs", "HF+"];
@@ -28,7 +24,7 @@ const columns: GridColDef[] = [
         if (row.machineType === 'Pump') {
           return ["HF+"];
         }
-        return ["HF+"]; // Default empty
+        return ["TcAg", "TcAs", "HF+"];
       },
   },
   { field: 'machineId', headerName: 'Machined ID', width: 180, editable: true },
@@ -47,7 +43,6 @@ const monitoringPointTemplate = {
 
 export async function MonitoringPointsTable(): Promise<React.JSX.Element> {
   const repository = new MonitoringPointRepository()
-  // const initialRows: GridRowsProp = await repository.list();
 
   return (
     <InteractiveTable
