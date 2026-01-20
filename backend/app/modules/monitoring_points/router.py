@@ -46,6 +46,7 @@ def list_monitoring_points(
 ):
     
     sort_options = {
+        "point_id": MonitoringPoint.id,
         "machine_name": Machine.name,
         "machine_type": Machine.type,
         "point_name": MonitoringPoint.name,
@@ -57,6 +58,7 @@ def list_monitoring_points(
 
     query = (
         select(
+            MonitoringPoint.id.label("point_id"),
             Machine.name.label("machine_name"),
             Machine.type.label("machine_type"),
             MonitoringPoint.name.label("point_name"),

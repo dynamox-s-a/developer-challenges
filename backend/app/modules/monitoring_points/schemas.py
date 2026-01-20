@@ -17,6 +17,7 @@ class MonitoringPointRead(BaseModel):
         from_attributes: True
 
 class MonitoringPointList(BaseModel):
+    point_id: int
     machine_name: str
     machine_type: MachineType
     point_name: str
