@@ -4,7 +4,7 @@ from sqlmodel import Session, select
 from app.core.database import get_session
 from app.core.security import verify_password, create_access_token
 from app.models import User
-from .schemas import Token, UserCreate, UserRead
+from .schemas import Token, UserCreate, UserRead, UserInfo
 from app.core.security import get_password_hash
 
 router = APIRouter()
@@ -17,7 +17,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), session: Session = D
         raise HTTPException(status_code=401, detail="E-mail ou senha incorretos")
 
     token = create_access_token(data={"sub": user.email})
-    return Token(access_token=token, token_type="bearer")
+    return Token(access_token=token, token_type="bearer", user=UserInfo(id=str(user.id), name=user.name, email=user.email))
 
 @router.post("/signup", response_model=UserRead, status_code=status.HTTP_201_CREATED)
 def signup(user_in: UserCreate, session: Session = Depends(get_session)):
