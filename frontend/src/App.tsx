@@ -1,8 +1,21 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Login } from './pages/Login';
+import { ProtectedRoute } from './components/ProtectedRoute';
+
 function App() {
   return (
-    <div>
-      <h1>Sistema de Monitoramento Dynamox</h1>
-    </div>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<div><h1>Rotas privadas</h1></div>}/>
+        </Route>
+
+        <Route path="*" element={<Navigate to="/dashboard"/>} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
+
 export default App
