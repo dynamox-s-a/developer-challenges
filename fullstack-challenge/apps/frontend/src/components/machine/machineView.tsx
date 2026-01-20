@@ -10,6 +10,7 @@ import { MachineCard } from './machineCard';
 import { MachineModal } from './machineModal';
 import { Machine } from '@/store/machine/machine.types';
 import { deleteMachine } from '@/store/machine/machine.slices';
+import { MonitoringModal } from '@/components/monitoring/monitoringModal';
 
 export function MachinesPageClient() {
   const dispatch = useDispatch();
@@ -22,6 +23,8 @@ export function MachinesPageClient() {
 
   const [open, setOpen] = useState(false);
   const [editingMachine, setEditingMachine] = useState<Machine | null>(null);
+  const [openMonitoring, setOpenMonitoring] = useState(false);
+  const [selectedMachine, setSelectedMachine] = useState<Machine | null>(null);
 
   function handleCreate() {
     setEditingMachine(null);
@@ -35,6 +38,16 @@ export function MachinesPageClient() {
 
   function handleDelete(id: string) {
     dispatch(deleteMachine(id));
+  }
+
+  function handleAddMonitoring(machine: Machine) {
+    setSelectedMachine(machine);
+    setOpenMonitoring(true);
+  }
+
+  function closeMonitoring() {
+    setOpenMonitoring(false);
+    setSelectedMachine(null);
   }
 
   return (
@@ -52,6 +65,7 @@ export function MachinesPageClient() {
             machine={machine}
             onSettings={handleEdit}
             onDelete={handleDelete}
+            onAddPoint={handleAddMonitoring}
           />
         ))}
       </Box>
@@ -61,6 +75,14 @@ export function MachinesPageClient() {
         machine={editingMachine}
         onClose={() => setOpen(false)}
       />
+
+      {selectedMachine && (
+        <MonitoringModal
+          open={openMonitoring}
+          machine={selectedMachine}
+          onClose={closeMonitoring}
+        />
+      )}
     </Box>
   );
 }

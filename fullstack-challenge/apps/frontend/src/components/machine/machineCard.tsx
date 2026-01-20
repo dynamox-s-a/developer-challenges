@@ -4,17 +4,20 @@ import { Card, CardContent, Typography, IconButton, Box } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Machine } from '@/store/machine/machine.types';
+import AddIcon from '@mui/icons-material/Add';
 
 interface MachineCardProps {
   machine: Machine;
   onSettings: (machine: Machine) => void;
   onDelete: (id: string) => void;
+  onAddPoint: (machine: Machine) => void;
 }
 
 export function MachineCard({
   machine,
   onSettings,
   onDelete,
+  onAddPoint,
 }: MachineCardProps) {
   return (
     <Card
@@ -44,15 +47,30 @@ export function MachineCard({
       </IconButton>
 
       <CardContent sx={{ pt: 5 }}>
-        <Typography variant="h5" align="center" fontWeight={600}>
+        <Typography variant="h5" align="center" fontWeight={700}>
           {machine.name}
         </Typography>
 
         <Box mt={2}>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body1" color="text.secondary">
             Tipo
           </Typography>
           <Typography>{machine.type}</Typography>
+        </Box>
+
+        <Box
+          mt={2}
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Typography variant="body2" color="black">
+            Pontos de monitoramento
+          </Typography>
+
+          <IconButton size="small" onClick={() => onAddPoint(machine)}>
+            <AddIcon />
+          </IconButton>
         </Box>
       </CardContent>
     </Card>
