@@ -9,8 +9,18 @@ from sqlmodel import Session, select
 
 router = APIRouter()
 
+@router.get("/machines/{machine_id}/monitoring-points/", response_model=List[MonitoringPointRead])
+def get_points(
+    machine_id: int,
+    session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user)
+):
+    
+    list_points = session.exec(select(MonitoringPoint).join(Machine).where(Machine.id == machine_id, Machine.user_id == current_user.id)).all()
+    return list_points
+
 @router.post("/machines/{machine_id}/monitoring-points", response_model=MonitoringPointRead, status_code=status.HTTP_201_CREATED)
-def create_machine(
+def create_point(
     monitoring_point_in: MonitoringPointCreate,
     machine_id: int,
     session: Session = Depends(get_session),
