@@ -4,6 +4,7 @@ from app.models import SensorModel
 class SensorCreate(BaseModel):
     id: str
     model: SensorModel
+    monitoring_point_id: int
     
 class SensorRead(BaseModel):
     id: str
