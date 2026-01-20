@@ -1,12 +1,42 @@
 # Extractor Cronjob Service
 
+Small service that performs a extraction job on the URL set in the env variable `EXTRACTION_URL`. If the request fails, the service tries other URLs set on the environment before declaring failure. Currently, the service don't execute any procedure to persistently store the job result, instead the result is just logged on console.
+
 ## O.S. Environment Setup
 
-* [Nodejs setup](https://nodejs.org/en/download)
-* [Python setup](https://www.python.org/downloads/)
+To run the service locally you need the following:
 
-TODO.
+- poetry
+- Python (>=3.14);
+
+Then the script can be used with the command:
+
+```bash
+POETRY_DOTENV_LOCATION=.env poetry run python src/main.py
+```
 
 ## Docker Environment Setup
 
-TODO.
+Build the Docker image with:
+
+```bash
+docker-compose build
+```
+
+After building the image, run the it with the following command:
+
+```bash
+docker compose run extraction-script
+```
+
+## Kubernetes Setup
+
+To setup a cronjob using the extractor run the following:
+
+```bash
+minikube image load extractor-cronjob-extraction-script:latest
+kubectl apply -f k8s.yaml
+```
+
+After this, the local Kubernetes cluster will have the cronjob successfully registered to be triggered each 15 minutes, or to be mannually triggered.
+

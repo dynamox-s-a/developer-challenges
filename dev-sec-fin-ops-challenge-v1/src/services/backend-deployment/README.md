@@ -22,7 +22,7 @@ docker-compose build
 After building the image, run the it with the following command:
 
 ```bash
-docker run -p 8000:8000 backend-deployment-count-api:latest
+docker compose run count-api
 ```
 
 ## Kubernetes Setup

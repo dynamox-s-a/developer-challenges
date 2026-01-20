@@ -1,0 +1,11 @@
+services:
+  extraction-script:
+    network_mode: "host"
+    env_file: 
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: extractor-cronjob-extraction-script:latest
+    command: poetry run python src/main.py
+    restart: unless-stopped
