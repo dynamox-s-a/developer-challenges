@@ -25,7 +25,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { Machine } from '@/store/machine/machine.types';
 import { AppDispatch, RootState } from '@/store/indext';
-import { useEffect } from 'react';
 
 interface Props {
   open: boolean;

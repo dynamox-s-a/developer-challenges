@@ -1,11 +1,14 @@
-import { getServerSession } from 'next-auth';
-import { redirect } from 'next/navigation';
+import { MonitoringTable } from '@/components/monitoring/monitoringTable';
+import { Container, Typography } from '@mui/material';
 
-export default async function MaquinasPage() {
-  const session = await getServerSession();
-  if (!session) {
-    redirect('/');
-  }
+export default function MonitoringPage() {
+  return (
+    <Container>
+      <Typography variant="h4" mb={3}>
+        Monitoring Points
+      </Typography>
 
-  return <h1>Monitoramento</h1>;
+      <MonitoringTable />
+    </Container>
+  );
 }
