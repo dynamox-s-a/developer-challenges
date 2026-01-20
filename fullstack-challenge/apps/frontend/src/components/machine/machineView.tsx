@@ -45,7 +45,7 @@ export function MachinesPageClient() {
 
       <ModalButton onClick={handleCreate} disabled={!canAddMachine} />
 
-      <Box mt={3} display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={20}>
+      <Box mt={3} display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={50}>
         {machines.map((machine) => (
           <MachineCard
             key={machine.id}
