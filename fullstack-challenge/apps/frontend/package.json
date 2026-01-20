@@ -2,9 +2,23 @@
   "name": "@org/frontend",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
   "dependencies": {
     "next": "~16.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "@types/jest": "^29.5.0",
+    "ts-jest": "^29.1.1",
+    "jest-environment-jsdom": "^29.7.0",
+    "@testing-library/jest-dom": "^6.4.0"
   }
 }

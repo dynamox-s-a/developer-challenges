@@ -32,8 +32,9 @@
     "src/**/*.jsx",
     "../../apps/frontend/.next/types/**/*.ts",
     "../../dist/apps/frontend/.next/types/**/*.ts",
-    "next-env.d.ts"
-, "layout.tsx"  ],
+    "next-env.d.ts",
+    "layout.tsx"
+  ],
   "exclude": [
     "out-tsc",
     "dist",
