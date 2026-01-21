@@ -1,3 +1,11 @@
+/**
+ * Formulário de login responsável por autenticar o usuário via NextAuth.
+ *
+ * Gerencia estado de email, senha e mensagens de erro,
+ * realizando o signIn com Credentials e redirecionando
+ * para o dashboard em caso de sucesso.
+ */
+
 'use client';
 
 import { Box, TextField, Button, Typography } from '@mui/material';

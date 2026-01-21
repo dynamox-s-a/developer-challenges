@@ -1,3 +1,10 @@
+/**
+ * View responsável por listar e gerenciar as máquinas cadastradas.
+ *
+ * Renderiza os cards em uma grade 2x2 com limite máximo de máquinas,
+ * controla os modais de criação/edição e a adição de pontos de monitoramento.
+ */
+
 'use client';
 
 import { useState } from 'react';
@@ -11,8 +18,9 @@ import { MachineModal } from './machineModal';
 import { Machine } from '@/store/machine/machine.types';
 import { deleteMachine } from '@/store/machine/machine.slices';
 import { MonitoringModal } from '@/components/monitoring/monitoringModal';
+import { deleteMonitoringPointsByMachine } from '@/store/monitoring/monitoring.slices';
 
-export function MachinesPageClient() {
+export function MachineView() {
   const dispatch = useDispatch();
 
   const machines = useSelector((state: RootState) =>
@@ -38,6 +46,7 @@ export function MachinesPageClient() {
 
   function handleDelete(id: string) {
     dispatch(deleteMachine(id));
+    dispatch(deleteMonitoringPointsByMachine(id));
   }
 
   function handleAddMonitoring(machine: Machine) {

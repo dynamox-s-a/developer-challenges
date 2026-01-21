@@ -1,5 +1,6 @@
 import reducer, {
   addMonitoringPoint,
+  deleteMonitoringPointsByMachine,
   clearMonitoringError,
 } from './monitoring.slices';
 import { MonitoringPoint } from './monitoring.types';
@@ -79,6 +80,36 @@ describe('monitoring slice', () => {
     expect(state.error).toBe(
       'Sensores TcAg e TcAs não são permitidos para máquinas do tipo Pump'
     );
+  });
+
+  it('removes all monitoring points associated with a machine', () => {
+    const secondMachinePoint: MonitoringPoint = {
+      ...baseMonitoringPoint,
+      id: 'mp-2',
+      machineId: 'machine-2',
+      machineName: 'Secondary Fan',
+      machineType: 'Fan',
+      name: 'Vibration',
+      sensor: {
+        id: 'sensor-2',
+        model: 'HF+',
+      },
+    };
+
+    const stateWithPoints = reducer(
+      reducer(initialState, addMonitoringPoint(baseMonitoringPoint)),
+      addMonitoringPoint(secondMachinePoint)
+    );
+
+    expect(stateWithPoints.items).toHaveLength(2);
+
+    const finalState = reducer(
+      stateWithPoints,
+      deleteMonitoringPointsByMachine('machine-1')
+    );
+
+    expect(finalState.items).toHaveLength(1);
+    expect(finalState.items[0].machineId).toBe('machine-2');
   });
 
   it('clears the error message', () => {

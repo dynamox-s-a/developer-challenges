@@ -1,3 +1,9 @@
+/**
+ * Configuração do NextAuth para autenticação via Credentials.
+ * Responsável por validar email e senha usando variáveis de ambiente
+ * e expor os handlers GET e POST no App Router.
+ */
+
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 

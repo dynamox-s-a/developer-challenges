@@ -1,3 +1,10 @@
+/**
+ * Modal responsável pela criação de pontos de monitoramento vinculados a uma máquina.
+ *
+ * Permite definir o nome do ponto e o modelo do sensor,
+ * aplicando regras de disponibilidade conforme o tipo da máquina.
+ */
+
 'use client';
 
 import {

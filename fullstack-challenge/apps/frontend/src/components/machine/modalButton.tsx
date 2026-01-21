@@ -1,3 +1,9 @@
+/**
+ * Botão flutuante responsável por abrir o modal de criação de máquinas.
+ *
+ * Exibe tooltip quando o limite máximo de máquinas é atingido.
+ */
+
 'use client';
 
 import { Fab, Tooltip } from '@mui/material';

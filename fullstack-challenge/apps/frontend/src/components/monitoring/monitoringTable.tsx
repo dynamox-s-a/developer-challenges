@@ -1,3 +1,11 @@
+/**
+ * Tabela responsável por exibir os pontos de monitoramento cadastrados.
+ *
+ * Os dados são obtidos a partir do estado global do Redux,
+ * enquanto ordenação e paginação são controladas por estado local
+ * e aplicadas através de selectors.
+ */
+
 'use client';
 
 import {

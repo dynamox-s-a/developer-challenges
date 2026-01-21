@@ -1,3 +1,8 @@
+/**
+ * Modal de formulário para criação e edição de máquinas,
+ * integrando-se ao Redux para persistir as alterações.
+ */
+
 'use client';
 
 import { useEffect, useState } from 'react';

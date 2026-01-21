@@ -1,3 +1,11 @@
+/**
+ * Slice responsável pelo gerenciamento do estado de máquinas.
+ *
+ * Mantém as máquinas normalizadas (ids e entities),
+ * controla operações de criação, edição e remoção,
+ * e aplica a regra de limite máximo de máquinas permitidas.
+ */
+
 import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
 import { Machine } from './machine.types';
 

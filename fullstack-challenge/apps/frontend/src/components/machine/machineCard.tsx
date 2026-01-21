@@ -1,3 +1,10 @@
+/**
+ * Card responsável por exibir as informações da máquina e seus pontos de monitoramento.
+ *
+ * Permite ações de configuração, exclusão da máquina e adição de pontos,
+ * respeitando o limite máximo de pontos de monitoramento por máquina (2).
+ */
+
 'use client';
 
 import {

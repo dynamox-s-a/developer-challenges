@@ -1,3 +1,9 @@
+/**
+ * Componente de layout que renderiza o drawer lateral do dashboard,
+ * contendo o menu de navegação principal, destaque da rota ativa
+ * e ação de logout no rodapé.
+ */
+
 'use client';
 
 import Link from 'next/link';

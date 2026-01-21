@@ -1,3 +1,7 @@
+/**
+ * Botão de logout que encerra a sessão do usuário via NextAuth.
+ */
+
 'use client';
 
 import { ListItemButton, ListItemIcon, Typography } from '@mui/material';

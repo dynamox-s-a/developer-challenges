@@ -1,104 +1,192 @@
-# New Nx Repository
+# Dynamox – Full Stack Challenge (Nx + Next.js)
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+Este projeto foi desenvolvido como parte de um desafio técnico utilizando **Nx Workspace** com **Next.js**, **React**, **TypeScript**, **Redux Toolkit** e **NextAuth**.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+A aplicação permite autenticação de usuários, gerenciamento de máquinas e pontos de monitoramento, aplicando regras de negócio e boas práticas de arquitetura front-end.
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+---
 
-## Generate a library
+## Tecnologias Utilizadas
 
-```sh
-npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
+- Nx Workspace;
+- Next.js (App Router);
+- React + TypeScript;
+- Redux Toolkit;
+- NextAuth;
+- Material UI (MUI);
+
+---
+
+## Pré-requisitos
+
+Antes de iniciar o projeto, é necessário ter instalado:
+
+- Node.js (versão 18 ou superior);
+- npm ou yarn;
+- Nx CLI (opcional);
+
+Instalação global do Nx CLI (opcional):
+
+```bash
+npm install -g nx
 ```
 
-## Run tasks
+---
 
-To build the library use:
+## Instalação do Projeto
 
-```sh
-npx nx build pkg1
+1. Acesse a pasta do projeto:
+
+```bash
+cd fullstack-challenge
 ```
 
-To run any task with Nx use:
+2. Instale as dependências (conforme o gerenciador npm ou yarn):
 
-```sh
-npx nx <target> <project-name>
+```bash
+npm install
+
+yarn install
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+---
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Variáveis de Ambiente
 
-## Versioning and releasing
+A autenticação é feita utilizando **NextAuth com Credentials Provider**.
 
-To version and release the library use
+Crie um arquivo `.env` na raiz do projeto com o seguinte conteúdo:
 
-```
-npx nx release
-```
-
-Pass `--dry-run` to see what would happen without actually releasing the library.
-
-[Learn more about Nx release &raquo;](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Keep TypeScript project references up to date
-
-Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
-
-To manually trigger the process to sync the project graph dependencies information to the TypeScript project references, run the following command:
-
-```sh
-npx nx sync
+```env
+AUTH_USER_EMAIL=
+AUTH_USER_PASSWORD=
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=
 ```
 
-You can enforce that the TypeScript project references are always in the correct state when running in CI by adding a step to your CI job configuration that runs the following command:
+##### Descrição das variáveis:
 
-```sh
-npx nx sync:check
+- AUTH_USER_EMAIL: E-mail utilizado para autenticação.
+
+- AUTH_USER_PASSWORD: Senha utilizado para autenticação.
+
+- NEXTAUTH_URL: URL base da aplicação. Em ambiente local, normalmente: http://localhost:3000
+
+- NEXTAUTH_SECRET: Chave secreta utilizada pelo NextAuth para assinar e criptografar sessões e tokens. Pode ser uma string em base 64, caso tenha o openssl instalado poderá obter a string usando o seguinte comando:
+
+```bash
+openssl rand -base64 32
 ```
 
-[Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
+ou usar a seguinte string já criada:
 
-## Nx Cloud
-
-Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
-
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Set up CI (non-Github Actions CI)
-
-**Note:** This is only required if your CI provider is not GitHub Actions.
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
+```env
+NEXTAUTH_SECRET= v8q5K3jHn9YtF2Q6rZb0mH1uXf7WcN4pLkQw3aE2sF1=
 ```
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+---
 
-## Install Nx Console
+## Executando o Projeto
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+Para rodar a aplicação em ambiente de desenvolvimento:
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```bash
+npx nx dev frontend
+```
 
-## Useful links
+Caso queira rodar a aplicação em ambiente de produção:
 
-Learn more:
+```bash
+npx nx build frontend
+npx nx start frontend
+```
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/js?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+A aplicação estará disponível em:
 
-And join the Nx community:
+```
+http://localhost:3000
+```
 
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+---
+
+## Autenticação
+
+- Implementada com **NextAuth**;
+- Provider: **Credentials**;
+- Credenciais definidas via variáveis de ambiente;
+- Redirecionamento para o dashboard após login;
+- Logout disponível no menu lateral;
+
+---
+
+## Gerenciamento de Máquinas
+
+- Limite máximo de **4 máquinas**
+- Cada máquina possui:
+  - Nome;
+  - Tipo (`Pump` ou `Fan`);
+
+---
+
+## Pontos de Monitoramento
+
+- Cada máquina pode ter no máximo **2 pontos de monitoramento**
+- Máquinas do tipo `Pump` não aceitam sensores `TcAg` e `TcAs`
+- Cada ponto contém:
+  - Nome;
+  - Modelo do sensor;
+  - Referência à máquina;
+
+---
+
+## Tabela de Monitoramento
+
+- Exibe todos os pontos cadastrados;
+- Ordenação por coluna;
+- Paginação;
+
+---
+
+## Testes
+
+- Testes unitários para:
+  - Redux slices;
+  - Redux selectors;
+- Ferramenta utilizada: **Jest**;
+
+Execução dos testes:
+
+```bash
+npx nx test frontend
+```
+
+---
+
+## Considerações Finais
+
+Tempo de desenvolvimento: ~3 dias
+
+##### Melhorias:
+
+- Front-end:
+
+  - Integração com a API utilizando Redux Thunk para gerenciamento de chamadas assíncronas;
+  - Inclusão de um botão de ação com ícone de edição (lápis) para permitir a alteração de pontos de monitoramento;
+  - Implementação de um modal para edição e exclusão dos pontos de monitoramento;
+  - Aprimoramento do design e da usabilidade da tabela de monitoramento;
+  - Melhoria na centralização, responsividade e organização visual dos cards de máquinas.
+
+- Back-end:
+
+  - Implementação das regras de negócio no back-end para deixar o sistema mais robusto;
+  - Aprimoramento do mecanismo de autenticação utilizando JWT;
+  - Implementação de expiração e renovação automática de tokens, evitando tokens válidos por tempo indeterminado;
+  - Validação dos tokens de autenticação no back-end, como complemento à autenticação do front-end;
+  - Integração com um banco de dados PostgreSQL;
+  - Armazenamento de credenciais de usuários de forma segura, utilizando criptografia de senha no banco de dados em vez de variáveis de ambiente.
+  - Documentação da API utilizando Swagger.
+
+- Ambiente e Qualidade :
+  - Inclusão do ESLint para padronização de código e formatação;
+  - Implementação de um processo automatizado no Git para execução do ESLint antes da realização de commits;
+  - Publicação da aplicação em ambiente de nuvem;

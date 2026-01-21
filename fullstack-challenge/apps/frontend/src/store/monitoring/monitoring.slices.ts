@@ -1,3 +1,8 @@
+/**
+ * Redux slice do domínio de monitoramento,
+ * responsável por armazenar pontos e validar regras do domínio
+ */
+
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { MonitoringPoint } from './monitoring.types';
 
@@ -40,13 +45,24 @@ const monitoringSlice = createSlice({
       state.error = undefined;
     },
 
+    deleteMonitoringPointsByMachine(state, action: PayloadAction<string>) {
+      const machineId = action.payload;
+
+      state.items = state.items.filter((mp) => mp.machineId !== machineId);
+
+      state.error = undefined;
+    },
+
     clearMonitoringError(state) {
       state.error = undefined;
     },
   },
 });
 
-export const { addMonitoringPoint, clearMonitoringError } =
-  monitoringSlice.actions;
+export const {
+  addMonitoringPoint,
+  clearMonitoringError,
+  deleteMonitoringPointsByMachine,
+} = monitoringSlice.actions;
 
 export default monitoringSlice.reducer;

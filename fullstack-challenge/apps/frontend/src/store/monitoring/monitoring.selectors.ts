@@ -1,3 +1,8 @@
+/**
+ * Selectors memorizados que transformam os pontos de monitoramento do Redux,
+ * aplicando ordenação e paginação com base em parâmetros de UI.
+ */
+
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '@/store/indext';
 import { MonitoringPoint } from './monitoring.types';
