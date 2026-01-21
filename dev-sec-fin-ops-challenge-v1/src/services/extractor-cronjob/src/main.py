@@ -9,6 +9,10 @@ K8S_URL = os.getenv("K8S_DEFAULT_URL","http://localhost:8000/count")
 DEFAULT_URLS = [LOCAL_URL, DOCKER_URL, K8S_URL]
 EXTRACTION_URL = os.getenv("EXTRACTION_URL", DEFAULT_URLS[0])
 
+def log_print(tag: str, msg: str):
+  time = datetime.now(timezone.utc).isoformat()
+  print(f"[{tag} {time}] {msg}")
+
 def store_result(data):
   # This function would have the logic to send the data to a persistant storage
   print(data)
@@ -16,19 +20,21 @@ def store_result(data):
 def request_handler():
   try:
     req_result = requests.get(EXTRACTION_URL)
+    log_print("INFO", f"Success extraction from {EXTRACTION_URL}")
     return req_result
   except:
-    print(f"Failed to perform request on {EXTRACTION_URL}, trying default URLS")
+    log_print("WARN", f"Failed to perform request on {EXTRACTION_URL}, trying default URLS")
     for url in DEFAULT_URLS:
       try:
         req_result = requests.get(url)
-        print(f"Success extraction from {url}")
+        log_print("INFO", f"Success extraction from {url}")
         return req_result
       except:
-        print(f"Failed to perform request on {url}")
-  exit(1)
+        log_print("WARN", f"Failed to perform request on {url}")
+    raise Exception
 
 def run():
+  log_print("INFO", "Starting job...")
   try:
     req_result = request_handler()
     data = req_result.json()
@@ -38,7 +44,8 @@ def run():
         "data": data
     }
     store_result(result)
+    log_print("INFO", f"Job ended in success")
   except Exception as e:
-    print(f"Job ended in failure: {e}")
+    log_print("ERRO", f"Job ended in failure: {e}")
 
 run()

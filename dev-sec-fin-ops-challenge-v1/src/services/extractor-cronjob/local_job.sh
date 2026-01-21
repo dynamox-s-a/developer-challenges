@@ -1,0 +1,1 @@
+POETRY_DOTENV_LOCATION=.env poetry run python src/main.py

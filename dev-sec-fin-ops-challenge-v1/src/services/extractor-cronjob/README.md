@@ -15,6 +15,14 @@ Then the script can be used with the command:
 POETRY_DOTENV_LOCATION=.env poetry run python src/main.py
 ```
 
+Then, using a cron daemon of your choosing, make sure that the `crond` service is enable and run the following command:
+
+```bash
+(crontab -l 2>/dev/null; echo "15 * * * * $(pwd)/local_job.sh >> /var/log/extractor") | crontab -
+```
+
+If successful, a new cronjob will be set in your crontab, running the extractor each 15 minutes.
+
 ## Docker Environment Setup
 
 Build the Docker image with:
@@ -28,6 +36,14 @@ After building the image, run the it with the following command:
 ```bash
 docker compose run extraction-script
 ```
+
+Then, using a cron daemon of your choosing, make sure that the `crond` service is enable and run the following command:
+
+```bash
+(crontab -l 2>/dev/null; echo "15 * * * * $(pwd)/docker_job.sh >> /var/log/extractor") | crontab -
+```
+
+If successful, a new cronjob will be set in your crontab, running the extractor in a container each 15 minutes.
 
 ## Kubernetes Setup
 
