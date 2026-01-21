@@ -9,11 +9,10 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />}/>
         <Route path="/signup" element={<Signup />} />
 
         <Route element={<ProtectedRoute />}>
-          <Route path="/dashboard" element={<div><h1>Rotas privadas</h1></div>}/>
+          <Route path="/dashboard" element={<Dashboard />}/>
         </Route>
 
         <Route path="*" element={<Navigate to="/dashboard"/>} />
