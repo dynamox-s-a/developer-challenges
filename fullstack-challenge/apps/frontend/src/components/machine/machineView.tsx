@@ -9,7 +9,7 @@
 
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store/indext';
+import { RootState } from '@/store/index';
 import { Box, Typography } from '@mui/material';
 
 import { ModalButton } from './modalButton';

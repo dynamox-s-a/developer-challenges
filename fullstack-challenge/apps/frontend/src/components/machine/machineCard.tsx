@@ -22,7 +22,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Machine } from '@/store/machine/machine.types';
 import AddIcon from '@mui/icons-material/Add';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/store/indext';
+import { RootState } from '@/store/index';
 
 interface MachineCardProps {
   machine: Machine;

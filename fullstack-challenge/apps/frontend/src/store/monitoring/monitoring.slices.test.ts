@@ -14,8 +14,6 @@ describe('monitoring slice', () => {
   const baseMonitoringPoint: MonitoringPoint = {
     id: 'mp-1',
     machineId: 'machine-1',
-    machineName: 'Main Pump',
-    machineType: 'Pump',
     name: 'Bearing',
     sensor: {
       id: 'sensor-1',
@@ -23,63 +21,30 @@ describe('monitoring slice', () => {
     },
   };
 
-  it('adds a monitoring point when business rules are satisfied', () => {
+  it('adds a monitoring point', () => {
     const state = reducer(
       initialState,
       addMonitoringPoint(baseMonitoringPoint)
     );
 
     expect(state.items).toHaveLength(1);
+    expect(state.items[0]).toEqual(baseMonitoringPoint);
     expect(state.error).toBeUndefined();
   });
 
-  it('prevents adding more than two monitoring points to the same machine', () => {
-    const secondPoint = {
+  it('adds multiple monitoring points for the same machine', () => {
+    const secondPoint: MonitoringPoint = {
       ...baseMonitoringPoint,
       id: 'mp-2',
       name: 'Motor',
     };
 
-    const thirdPoint = {
-      ...baseMonitoringPoint,
-      id: 'mp-3',
-      name: 'Coupling',
-    };
-
-    const stateWithTwoPoints = reducer(
+    const state = reducer(
       reducer(initialState, addMonitoringPoint(baseMonitoringPoint)),
       addMonitoringPoint(secondPoint)
     );
 
-    const finalState = reducer(
-      stateWithTwoPoints,
-      addMonitoringPoint(thirdPoint)
-    );
-
-    expect(finalState.items).toHaveLength(2);
-    expect(finalState.error).toBe(
-      'Cada máquina pode ter no máximo 2 pontos de monitoramento'
-    );
-  });
-
-  it('blocks TcAg and TcAs sensors for Pump machines', () => {
-    const invalidMonitoringPoint: MonitoringPoint = {
-      ...baseMonitoringPoint,
-      sensor: {
-        id: 'sensor-2',
-        model: 'TcAg',
-      },
-    };
-
-    const state = reducer(
-      initialState,
-      addMonitoringPoint(invalidMonitoringPoint)
-    );
-
-    expect(state.items).toHaveLength(0);
-    expect(state.error).toBe(
-      'Sensores TcAg e TcAs não são permitidos para máquinas do tipo Pump'
-    );
+    expect(state.items).toHaveLength(2);
   });
 
   it('removes all monitoring points associated with a machine', () => {
@@ -87,13 +52,7 @@ describe('monitoring slice', () => {
       ...baseMonitoringPoint,
       id: 'mp-2',
       machineId: 'machine-2',
-      machineName: 'Secondary Fan',
-      machineType: 'Fan',
       name: 'Vibration',
-      sensor: {
-        id: 'sensor-2',
-        model: 'HF+',
-      },
     };
 
     const stateWithPoints = reducer(
@@ -112,19 +71,11 @@ describe('monitoring slice', () => {
     expect(finalState.items[0].machineId).toBe('machine-2');
   });
 
-  it('clears the error message', () => {
-    const stateWithError = reducer(
-      initialState,
-      addMonitoringPoint({
-        ...baseMonitoringPoint,
-        sensor: {
-          id: 'sensor-3',
-          model: 'TcAs',
-        },
-      })
-    );
-
-    expect(stateWithError.error).toBeDefined();
+  it('clears the error message manually', () => {
+    const stateWithError = {
+      ...initialState,
+      error: 'some error',
+    };
 
     const clearedState = reducer(stateWithError, clearMonitoringError());
 

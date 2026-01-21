@@ -10,90 +10,125 @@
 
 import {
   Table,
+  TableBody,
+  TableCell,
+  TableContainer,
   TableHead,
   TableRow,
-  TableCell,
-  TableBody,
   TableSortLabel,
   TablePagination,
+  Paper,
 } from '@mui/material';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import {
-  selectMonitoringPoints,
-  Order,
-} from '@/store/monitoring/monitoring.selectors';
-import { RootState } from '@/store/indext';
+import { RootState } from '@/store/index';
+import { getComparator, Order, stableSort } from './monitoringTableSort';
 
-const columns = [
+interface TableRowData {
+  machineName: string;
+  machineType: string;
+  monitoringPointName: string;
+  sensorModel: string;
+}
+
+type HeadCell = {
+  id: keyof TableRowData;
+  label: string;
+};
+
+const headCells: HeadCell[] = [
   { id: 'machineName', label: 'Máquina' },
   { id: 'machineType', label: 'Tipo da Máquina' },
-  { id: 'name', label: 'Ponto de Monitoramento' },
-  { id: 'sensor', label: 'Modelo do Sensor' },
-] as const;
-
-type ColumnId = (typeof columns)[number]['id'];
+  { id: 'monitoringPointName', label: 'Ponto de Monitoramento' },
+  { id: 'sensorModel', label: 'Modelo do Sensor' },
+];
 
 export function MonitoringTable() {
-  const [orderBy, setOrderBy] = useState<ColumnId>('machineName');
   const [order, setOrder] = useState<Order>('asc');
+  const [orderBy, setOrderBy] = useState<keyof TableRowData>('machineName');
   const [page, setPage] = useState(0);
+
   const rowsPerPage = 5;
 
-  const points = useSelector((state: RootState) =>
-    selectMonitoringPoints(state, orderBy, order, page, rowsPerPage)
+  const machines = useSelector((state: RootState) => state.machines);
+  const monitoringPoints = useSelector(
+    (state: RootState) => state.monitoring.items
   );
 
-  const total = useSelector(
-    (state: RootState) => state.monitoring.items.length
-  );
+  const rows = useMemo<TableRowData[]>(() => {
+    return monitoringPoints
+      .map((mp) => {
+        const machine = machines.entities[mp.machineId];
+        if (!machine) return null;
 
-  const handleSort = (property: ColumnId) => {
+        return {
+          machineName: machine.name,
+          machineType: machine.type,
+          monitoringPointName: mp.name,
+          sensorModel: mp.sensor.model,
+        };
+      })
+      .filter(Boolean) as TableRowData[];
+  }, [machines, monitoringPoints]);
+
+  const handleRequestSort = (property: keyof TableRowData) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
-    setPage(0);
   };
 
-  return (
-    <>
-      <Table>
-        <TableHead>
-          <TableRow>
-            {columns.map((col) => (
-              <TableCell key={col.id}>
-                <TableSortLabel
-                  active={orderBy === col.id}
-                  direction={orderBy === col.id ? order : 'asc'}
-                  onClick={() => handleSort(col.id)}
-                >
-                  {col.label}
-                </TableSortLabel>
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
 
-        <TableBody>
-          {points.map((point) => (
-            <TableRow key={point.id}>
-              <TableCell>{point.machineName}</TableCell>
-              <TableCell>{point.machineType}</TableCell>
-              <TableCell>{point.name}</TableCell>
-              <TableCell>{point.sensor.model}</TableCell>
+  const visibleRows = useMemo(() => {
+    return stableSort(rows, getComparator(order, orderBy)).slice(
+      page * rowsPerPage,
+      page * rowsPerPage + rowsPerPage
+    );
+  }, [rows, order, orderBy, page]);
+
+  return (
+    <Paper>
+      <TableContainer>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              {headCells.map((headCell) => (
+                <TableCell key={headCell.id}>
+                  <TableSortLabel
+                    active={orderBy === headCell.id}
+                    direction={orderBy === headCell.id ? order : 'asc'}
+                    onClick={() => handleRequestSort(headCell.id)}
+                  >
+                    {headCell.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+
+          <TableBody>
+            {visibleRows.map((row, index) => (
+              <TableRow key={index}>
+                <TableCell>{row.machineName}</TableCell>
+                <TableCell>{row.machineType}</TableCell>
+                <TableCell>{row.monitoringPointName}</TableCell>
+                <TableCell>{row.sensorModel}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
       <TablePagination
         component="div"
-        count={total}
-        rowsPerPage={rowsPerPage}
+        count={rows.length}
         page={page}
-        onPageChange={(_, newPage) => setPage(newPage)}
+        onPageChange={handleChangePage}
+        rowsPerPage={rowsPerPage}
         rowsPerPageOptions={[5]}
       />
-    </>
+    </Paper>
   );
 }

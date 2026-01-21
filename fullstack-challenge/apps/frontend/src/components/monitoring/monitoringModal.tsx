@@ -31,7 +31,7 @@ import { nanoid } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { Machine } from '@/store/machine/machine.types';
-import { AppDispatch, RootState } from '@/store/indext';
+import { AppDispatch, RootState } from '@/store/index';
 
 interface Props {
   open: boolean;
@@ -51,8 +51,6 @@ export function MonitoringModal({ open, machine, onClose }: Props) {
       id: nanoid(),
       name,
       machineId: machine.id,
-      machineType: machine.type,
-      machineName: machine.name,
       sensor: {
         id: nanoid(),
         model: sensorModel,

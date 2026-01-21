@@ -1,3 +1,5 @@
+'use client';
+
 import LoginForm from '@/components/login/loginForm';
 import { Box } from '@mui/material';
 

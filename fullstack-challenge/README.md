@@ -175,6 +175,8 @@ Tempo de desenvolvimento: ~3 dias
   - Implementação de um modal para edição e exclusão dos pontos de monitoramento;
   - Aprimoramento do design e da usabilidade da tabela de monitoramento;
   - Melhoria na centralização, responsividade e organização visual dos cards de máquinas.
+  - Inclusão de mais validações de dados.
+  - Correção dos erros relacionados a estado vazio.
 
 - Back-end:
 

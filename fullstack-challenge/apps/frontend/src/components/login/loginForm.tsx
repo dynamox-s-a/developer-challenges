@@ -92,7 +92,7 @@ export default function LoginForm() {
             p: { xs: 3, sm: 6 },
             borderRadius: 3,
             boxShadow: 5,
-            backgroundColor: '#fff',
+            backgroundColor: '#ffffff',
             display: 'flex',
             flexDirection: 'column',
             gap: 3,

@@ -6,7 +6,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
 import { Theme } from '@/shared/theme/theme';
-import { store } from '@/store/indext';
+import { store } from '@/store/index';
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
