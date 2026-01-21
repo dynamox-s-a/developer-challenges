@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import api from "../../config/api";
 
 interface AuthResponse {
     user: { id: string; name: string; email: string } | null;
@@ -15,18 +16,11 @@ export const loginUser = createAsyncThunk(
             formData.append('username', credentials.email);
             formData.append('password', credentials.password);
 
-            const response = await fetch('http://localhost:8000/auth/login', {
-                method: 'POST',
+            const response = await api.post('/auth/login', formData, {
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: formData,
             });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.detail || 'Falha na autenticação');
-            }
-
-            const data = await response.json();
+            const data = response.data;
 
             localStorage.setItem('token', data.access_token);
             localStorage.setItem('user', JSON.stringify(data.user));
@@ -36,7 +30,8 @@ export const loginUser = createAsyncThunk(
                 user: data.user
             } as AuthResponse;
         } catch (error: any) {
-            return rejectWithValue(error.message);
+            const message = error.response?.data?.detail || 'Falha na autenticacao';
+            return rejectWithValue(message);
         }
     }
 );
@@ -45,18 +40,8 @@ export const registerUser = createAsyncThunk(
     'auth/register',
     async (userData: { name: string; email: string; password: string }, { rejectWithValue }) => {
         try {
-            const response = await fetch('http://localhost:8000/auth/signup', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(userData),
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.detail || 'Erro ao cadastrar usuario');
-            }
-
-            return await response.json();
+            const response = await api.post('auth/signup', userData);
+            return response.data;
         } catch (error: any) {
             return rejectWithValue(error.message);
         }
