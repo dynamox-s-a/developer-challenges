@@ -1,0 +1,65 @@
+{
+  "machines": [
+    {
+      "id": "ae161551-1856-4696-b2ea-e7b218c903e9",
+      "name": "Maquina 01",
+      "type": "Fan"
+    }
+  ],
+  "monitoringPoints": [
+    {
+      "id": "29ee1d02-9bac-4f21-8961-ec59d030911a",
+      "machineId": "ae161551-1856-4696-b2ea-e7b218c903e9",
+      "name": "Ponto 01",
+      "sensor": {
+        "id": "123456",
+        "model": "TcAg"
+      }
+    },
+    {
+      "id": "032bc334-8507-4239-9310-d719184ac66c",
+      "machineId": "ae161551-1856-4696-b2ea-e7b218c903e9",
+      "name": "Ponto 01",
+      "sensor": {
+        "id": "123456",
+        "model": "TcAg"
+      }
+    },
+    {
+      "id": "7a6be175-976a-4267-aa5d-695a5f375ddb",
+      "machineId": "ae161551-1856-4696-b2ea-e7b218c903e9",
+      "name": "revwrvwv",
+      "sensor": {
+        "id": "vfd\\ f  b\\fv",
+        "model": "TcAg"
+      }
+    },
+    {
+      "id": "4af8e633-1e74-47a3-b827-ab501ee1b67d",
+      "machineId": "ae161551-1856-4696-b2ea-e7b218c903e9",
+      "name": "evcwqecvqwec",
+      "sensor": {
+        "id": "qecqCAqee",
+        "model": "TcAs"
+      }
+    },
+    {
+      "id": "29286fc3-3300-4d71-8a1d-393958a24e16",
+      "machineId": "ae161551-1856-4696-b2ea-e7b218c903e9",
+      "name": "revwrvw",
+      "sensor": {
+        "id": "ervwevw",
+        "model": "TcAs"
+      }
+    },
+    {
+      "id": "ed688f0e-c02e-46e2-a119-137733bdec75",
+      "machineId": "ae161551-1856-4696-b2ea-e7b218c903e9",
+      "name": "ewvcqweceqwc",
+      "sensor": {
+        "id": "efvwecqec",
+        "model": "HF+"
+      }
+    }
+  ]
+}
