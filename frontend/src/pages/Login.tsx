@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Container, Box, TextField, Button, Typography, Alert, CircularProgress, Paper } from '@mui/material';
+import { Container, Box, TextField, Button, Typography, Alert, CircularProgress, Paper, Link } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { loginUser } from '../features/auth/authSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 
 export const Login = () => {
     const[email, setEmail] = useState('');
@@ -25,7 +25,7 @@ export const Login = () => {
       <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Paper elevation={3} sx={{ p: 4, width: '100%' }}>
           <Typography component="h1" variant="h5" align="center" gutterBottom>
-            Hub Control Login
+            Login
           </Typography>
 
           {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
@@ -61,6 +61,14 @@ export const Login = () => {
               {loading ? <CircularProgress size={24} color="inherit" /> : 'Entrar'}
             </Button>
           </Box>
+          <Box sx={{ mt: 2, textAlign: 'center' }}>
+          <Typography variant="body2">
+            Não tem uma conta?{' '}
+            <Link component={RouterLink} to="/signup" sx={{ fontWeight: 'bold', textDecoration: 'none' }}>
+              Cadastre-se aqui
+            </Link>
+          </Typography>
+        </Box>
         </Paper>
       </Box>
     </Container>
