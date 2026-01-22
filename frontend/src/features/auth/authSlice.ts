@@ -2,8 +2,14 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import api from "../../config/api";
 
+interface User {
+    id: string;
+    name: string;
+    email: string;
+}
+
 interface AuthResponse {
-    user: { id: string; name: string; email: string } | null;
+    user: User | null;
     token: string;
 }
 
@@ -49,7 +55,7 @@ export const registerUser = createAsyncThunk(
 );
 
 interface AuthState {
-    user: any | null;
+    user: User | null;
     token: string | null;
     isAuthenticated: boolean;
     loading: boolean;
