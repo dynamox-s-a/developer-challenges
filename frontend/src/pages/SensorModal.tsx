@@ -77,6 +77,12 @@ export const SensorModal = ({ open, onClose, point }: SensorModalProps) => {
           variant="contained" 
           onClick={handleSave} 
           disabled={!sensorId || !model || loading}
+          sx={{
+            bgcolor: '#7a2f54',
+            '&:hover': {
+              bgcolor: '#8a3f64'
+            }
+          }}
         >
           {loading ? 'Associando...' : 'Confirmar'}
         </Button>

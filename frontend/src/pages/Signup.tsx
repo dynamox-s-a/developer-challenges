@@ -33,9 +33,9 @@ export const Signup = () => {
     };
     return (
     <Container component="main" maxWidth="xs">
-      <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', bgcolor: '#7a2f54' }}>
         <Paper elevation={3} sx={{ p: 4, width: '100%' }}>
-          <Typography component="h1" variant="h5" align="center" gutterBottom>
+          <Typography component="h1" variant="h5" align="center" gutterBottom sx={{fontWeight: 'bold'}}>
             Criar Nova Conta
           </Typography>
           {signupSuccess && (
@@ -81,16 +81,19 @@ export const Signup = () => {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, bgcolor: '#7a2f54', '&:hover': { bgcolor: '#8a3f64' } }}
               disabled={loading || signupSuccess}
             >
               {loading ? <CircularProgress size={24} color="inherit" /> : 'Cadastrar'}
             </Button>
 
             <Box sx={{ textAlign: 'center' }}>
-              <Link to="/login" style={{ textDecoration: 'none', color: '#1976d2' }}>
-                Já possui uma conta? Entre aqui
+              <Typography variant="body2">
+                Já possui uma conta?{' '} 
+              <Link to="/login" style={{ textDecoration: 'none', color: '#7a2f54', fontWeight: 'bold', fontStyle: 'normal' }}>
+                Entre aqui
               </Link>
+              </Typography>
             </Box>
           </Box>
         </Paper>

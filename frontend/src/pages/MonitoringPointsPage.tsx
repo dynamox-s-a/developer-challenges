@@ -56,8 +56,13 @@ const MonitoringPointsPage = ({ sortBy = 'point_name', order = 'asc' }: Monitori
                   <Tooltip title="Associar Sensor">
                     <IconButton 
                       size="small" 
-                      color="primary" 
                       onClick={() => setSelectedPoint(point)}
+                      sx={{
+                        color: '#7a2f54',
+                        '&:hover': {
+                          bgcolor: 'rgba(122, 47, 84, 0.08)'
+                        }
+                      }}
                     >
                       <SettingsInputComponentIcon fontSize="small" />
                     </IconButton>

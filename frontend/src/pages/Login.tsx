@@ -22,9 +22,9 @@ export const Login = () => {
     };
     return (
     <Container component="main" maxWidth="xs">
-      <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', bgcolor: '#7a2f54' }}>
         <Paper elevation={3} sx={{ p: 4, width: '100%' }}>
-          <Typography component="h1" variant="h5" align="center" gutterBottom>
+          <Typography component="h1" variant="h5" align="center" gutterBottom sx={{fontWeight: 'bold'}}>
             Login
           </Typography>
 
@@ -55,7 +55,7 @@ export const Login = () => {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, bgcolor: '#7a2f54', '&:hover': { bgcolor: '#8a3f64' } }} 
               disabled={loading}
             >
               {loading ? <CircularProgress size={24} color="inherit" /> : 'Entrar'}
@@ -64,7 +64,7 @@ export const Login = () => {
           <Box sx={{ mt: 2, textAlign: 'center' }}>
           <Typography variant="body2">
             Não tem uma conta?{' '}
-            <Link component={RouterLink} to="/signup" sx={{ fontWeight: 'bold', textDecoration: 'none' }}>
+            <Link component={RouterLink} to="/signup" sx={{ fontWeight: 'bold', textDecoration: 'none', color: '#7a2f54'}}>
               Cadastre-se aqui
             </Link>
           </Typography>
