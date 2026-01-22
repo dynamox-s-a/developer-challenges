@@ -15,6 +15,7 @@ interface PointsState {
     page: number;
     loading: boolean;
     error: string | null;
+    createError: string | null;
 }
 
 const initialState: PointsState = {
@@ -23,6 +24,7 @@ const initialState: PointsState = {
     page: 1,
     loading: false,
     error: null,
+    createError: null,
 };
 
 export const fetchMonitoringPoints = createAsyncThunk(
@@ -55,7 +57,7 @@ export const monitoringPointSlice = createSlice({
   name: 'monitoringPoints',
   initialState,
   reducers: {
-    clearError: (state) => { state.error = null; }
+    clearError: (state) => { state.error = null; state.createError = null; }
   },
   extraReducers: (builder) => {
     builder
@@ -70,13 +72,13 @@ export const monitoringPointSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      .addCase(createMonitoringPoint.pending, (state) => { state.loading = true; state.error = null; })
+      .addCase(createMonitoringPoint.pending, (state) => { state.loading = true; state.createError = null; })
       .addCase(createMonitoringPoint.fulfilled, (state) => {
         state.loading = false;
       })
       .addCase(createMonitoringPoint.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
+        state.createError = action.payload as string;
       });
   }
 });
