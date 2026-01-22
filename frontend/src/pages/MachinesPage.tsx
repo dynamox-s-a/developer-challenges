@@ -7,7 +7,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import SettingsInputComponentIcon from '@mui/icons-material/SettingsInputComponent';
 import { clearError } from '../features/monitoringPoints/monitoringPointSlice';
+import { SensorModal } from './SensorModal';
 
 const MachinesPage = () => {
   const dispatch = useAppDispatch();
@@ -21,6 +23,7 @@ const MachinesPage = () => {
   const [editType, setEditType] = useState('');
   const [snackbar, setSnackbar] = useState({ open: false, message: '' });
   const [canChangeType, setCanChangeType] = useState(true);
+  const [selectedPoint, setSelectedPoint] = useState<any | null>(null);
 
   useEffect(() => {
     dispatch(fetchAllMachines());
@@ -64,6 +67,11 @@ const MachinesPage = () => {
 
   const handleCloseError = () => { dispatch(clearError()); };
   const handleCloseSnackbar = () => setSnackbar({ ...snackbar, open: false });
+  
+  const handleCloseSensorModal = () => {
+    setSelectedPoint(null);
+    dispatch(fetchAllMachines());
+  };
 
   if (loading) return <CircularProgress />;
 
@@ -78,7 +86,7 @@ const MachinesPage = () => {
               <Chip 
                 label={machine.type} 
                 size="small" 
-                color={machine.type === 'Pump' ? 'success' : 'primary'} 
+                color={machine.type === 'Pump' ? 'default' : 'primary'} 
                 variant="outlined" 
               />
               <IconButton 
@@ -101,9 +109,32 @@ const MachinesPage = () => {
               <Box sx={{ mb: 2 }}>
               <Typography variant="overline" color="textSecondary">Pontos Associados</Typography>
               {machine.monitoring_points?.map((p: any) => (
-                <Typography key={p.id} variant="body2" sx={{ ml: 1 }}>
-                  • {p.name} {p.sensor ? `(${p.sensor.model})` : '(Sem sensor)'}
-                </Typography>
+                <Stack key={p.id} direction="row" spacing={1} alignItems="center" sx={{ ml: 1, mb: 0.5 }}>
+                  <Typography variant="body2">
+                    • {p.name} {p.sensor ? `(${p.sensor.model})` : '(Sem sensor)'}
+                  </Typography>
+                  {!p.sensor && (
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      startIcon={<SettingsInputComponentIcon />}
+                      onClick={() => setSelectedPoint({ point_id: p.id, point_name: p.name, machine_type: machine.type, machine_name: machine.name })}
+                      sx={{ 
+                        fontSize: '0.75rem', 
+                        py: 0.25, 
+                        px: 1,
+                        borderColor: '#7a2f54',
+                        color: '#7a2f54',
+                        '&:hover': {
+                          borderColor: '#8a3f64',
+                          bgcolor: 'rgba(122, 47, 84, 0.04)'
+                        }
+                      }}
+                    >
+                      Associar Sensor
+                    </Button>
+                  )}
+                </Stack>
               ))}
             </Box>
             {(machine.monitoring_points?.length ?? 0) < 2 ? (
@@ -127,7 +158,7 @@ const MachinesPage = () => {
               </Stack>
             </Box>
           ) : (
-            <Typography variant="caption" color="warning.main">
+            <Typography variant="caption" color="error">
               Limite de pontos atingido para esta máquina.
             </Typography>
           )}
@@ -188,6 +219,11 @@ const MachinesPage = () => {
         {snackbar.message}
       </Alert>
     </Snackbar>
+    <SensorModal 
+      open={Boolean(selectedPoint)} 
+      onClose={handleCloseSensorModal} 
+      point={selectedPoint} 
+    />
     </Box>
   );
 };
