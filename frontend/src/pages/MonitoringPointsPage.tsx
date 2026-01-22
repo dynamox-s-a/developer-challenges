@@ -24,7 +24,7 @@ const MonitoringPointsPage = ({ sortBy = 'point_name', order = 'asc' }: Monitori
     dispatch(fetchMonitoringPoints({ page, sort_by: sortBy, order }));
   }, [dispatch, page, sortBy, order]);
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage + 1);
   };
 
