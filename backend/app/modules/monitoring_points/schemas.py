@@ -11,7 +11,7 @@ class MonitoringPointRead(BaseModel):
     id: int
     name: str
     machine_id: int
-    sensor: Optional[SensorRead]
+    sensor: Optional[SensorRead] = None
 
     class Config:
         from_attributes: True

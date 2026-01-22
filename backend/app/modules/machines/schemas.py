@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from app.models import MachineType
-from typing import Optional
+from ..monitoring_points.schemas import MonitoringPointRead
+from typing import Optional, List
 
 class MachineCreate(BaseModel):
     name: str
@@ -11,6 +12,7 @@ class MachineRead(BaseModel):
     name: str
     type: MachineType
     user_id: int
+    monitoring_points: List[MonitoringPointRead] = []
 
     class Config:
         from_attributes: True

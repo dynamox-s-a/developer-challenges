@@ -2,10 +2,11 @@ from fastapi import APIRouter, Depends, status, HTTPException
 from sqlmodel import Session
 from app.core.database import get_session
 from app.core.security import get_current_user
-from app.models import Machine, User
+from app.models import Machine, User, MonitoringPoint
 from .schemas import MachineCreate, MachineRead, MachineUpdate
 from typing import List
 from sqlmodel import Session, select
+from sqlalchemy.orm import selectinload
 
 router = APIRouter()
 
@@ -34,7 +35,7 @@ def list_machines(
     current_user: User = Depends(get_current_user)
 ):
     
-    list_machines = session.exec(select(Machine).where(Machine.user_id == current_user.id))
+    list_machines = session.exec(select(Machine).where(Machine.user_id == current_user.id).options(selectinload(Machine.monitoring_points).selectinload(MonitoringPoint.sensor)))
     return list_machines
 
 
@@ -45,7 +46,7 @@ def get_machines(
     current_user: User = Depends(get_current_user)
 ):
     
-    machine = session.exec(select(Machine).where(Machine.id == machine_id, Machine.user_id == current_user.id)).first()
+    machine = session.exec(select(Machine).where(Machine.id == machine_id, Machine.user_id == current_user.id).options(selectinload(Machine.monitoring_points).selectinload(MonitoringPoint.sensor))).first()
 
     if machine is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Maquina nao encontrada")

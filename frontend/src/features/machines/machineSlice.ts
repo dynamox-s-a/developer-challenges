@@ -6,6 +6,14 @@ export interface Machine {
     name: string;
     type: 'Pump' | 'Fan';
     user_id: number;
+    monitoring_points?: {
+        id: number;
+        name: string;
+        sensor?: {
+            id: string;
+            model: string;
+        } | null;
+    }[];
 }
 
 export const fetchAllMachines = createAsyncThunk('machines/fetchAll', async (_, { rejectWithValue }) => {
