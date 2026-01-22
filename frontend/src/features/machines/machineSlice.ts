@@ -17,7 +17,7 @@ export const fetchAllMachines = createAsyncThunk('machines/fetchAll', async (_, 
   }
 });
 
-export const createMachine = createAsyncThunk('machines/create', async (data: { name:string, type: string, user_id: number }, { rejectWithValue }) => {
+export const createMachine = createAsyncThunk('machines/create', async (data: { name: string, type: string }, { rejectWithValue }) => {
     try {
         const response = await api.post('/machines', data);
         return response.data;

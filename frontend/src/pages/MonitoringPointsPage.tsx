@@ -6,13 +6,16 @@ import {
   TableRow, Paper, Typography, TablePagination, CircularProgress 
 } from '@mui/material';
 
-const MonitoringPointsPage = () => {
+interface MonitoringPointsPageProps {
+  sortBy?: string;
+  order?: 'asc' | 'desc';
+}
+
+const MonitoringPointsPage = ({ sortBy = 'point_name', order = 'asc' }: MonitoringPointsPageProps) => {
   const dispatch = useAppDispatch();
   const { items, total, loading, error } = useAppSelector((state) => state.monitoringPoints);
   
   const [page, setPage] = useState(1);
-  const [sortBy] = useState('point_name');
-  const [order] = useState<'asc' | 'desc'>('asc');
 
   useEffect(() => {
     dispatch(fetchMonitoringPoints({ page, sort_by: sortBy, order }));
@@ -27,7 +30,7 @@ const MonitoringPointsPage = () => {
 
   return (
     <Paper sx={{ width: '100%', p: 2, mt: 3 }}>
-      <Typography variant="h5" gutterBottom>Inventário de Pontos (Requisito 5 itens/pág)</Typography>
+      <Typography variant="h5" gutterBottom>Inventário de Pontos</Typography>
       <TableContainer>
         <Table size="small">
           <TableHead>
