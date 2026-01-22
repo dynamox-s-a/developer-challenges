@@ -43,7 +43,7 @@ export const createMonitoringPoint = createAsyncThunk(
   'points/create',
   async ({ machineId, name }: { machineId: number; name: string }, { rejectWithValue }) => {
     try {
-      const response = await api.post(`/machines/${machineId}/monitoring-points`, { name });
+      const response = await api.post(`/machines/${machineId}/monitoring-points`, { machine_id: machineId, name });
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.detail || 'Erro ao criar ponto');
