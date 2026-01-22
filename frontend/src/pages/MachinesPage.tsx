@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { fetchAllMachines, deleteMachine, updateMachine } from '../features/machines/machineSlice';
 import { createMonitoringPoint } from '../features/monitoringPoints/monitoringPointSlice';
-import { Accordion, AccordionSummary, AccordionDetails, Typography, Box, CircularProgress, Button, TextField, Stack, Chip, Dialog, DialogTitle, DialogContent, DialogActions, IconButton, MenuItem } from '@mui/material';
+import { Accordion, AccordionSummary, AccordionDetails, Typography, Box, CircularProgress, Button, TextField, Stack, Chip, Dialog, DialogTitle, DialogContent, DialogActions, IconButton, MenuItem, Snackbar, Alert } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -19,17 +19,21 @@ const MachinesPage = () => {
   const [editMachine, setEditMachine] = useState<any | null>(null);
   const [editName, setEditName] = useState('');
   const [editType, setEditType] = useState('');
+  const [snackbar, setSnackbar] = useState({ open: false, message: '' });
+  const [canChangeType, setCanChangeType] = useState(true);
 
   useEffect(() => {
     dispatch(fetchAllMachines());
   }, [dispatch]);
 
-  const handleAddPoint = (machineId: number) => {
-    const name = newPointNames[machineId];
-    if (name) {
-      dispatch(createMonitoringPoint({ machineId, name }));
-      setNewPointNames({ ...newPointNames, [machineId]: '' });
-    }
+  const handleAddPoint = async (machineId: number) => {
+  const name = newPointNames[machineId];
+  if (name) {
+    await dispatch(createMonitoringPoint({ machineId, name })).unwrap();
+    setSnackbar({ open: true, message: 'Ponto de monitoramento criado com sucesso!' });
+    dispatch(fetchAllMachines());
+    setNewPointNames({ ...newPointNames, [machineId]: '' });
+  }
   };
 
   const handleDelete = async () => {
@@ -40,9 +44,15 @@ const MachinesPage = () => {
   };
 
   const handleOpenEdit = (machine: any) => {
+    const hasRestrictedSensors = machine.monitoring_points?.some((point: any) =>
+    point.sensor && ['TcAg', 'TcAs'].includes(point.sensor.model)
+    );
+
     setEditMachine(machine);
     setEditName(machine.name);
     setEditType(machine.type);
+
+    setCanChangeType(!hasRestrictedSensors);
   };
 
   const handleSaveEdit = async () => {
@@ -53,6 +63,7 @@ const MachinesPage = () => {
   };
 
   const handleCloseError = () => { dispatch(clearError()); };
+  const handleCloseSnackbar = () => setSnackbar({ ...snackbar, open: false });
 
   if (loading) return <CircularProgress />;
 
@@ -156,7 +167,7 @@ const MachinesPage = () => {
       <DialogContent>
         <Stack spacing={2} sx={{ mt: 1 }}>
           <TextField label="Nome" fullWidth value={editName} onChange={(e) => setEditName(e.target.value)} />
-          <TextField select label="Tipo" fullWidth value={editType} onChange={(e) => setEditType(e.target.value)}>
+          <TextField select label="Tipo" fullWidth value={editType} onChange={(e) => setEditType(e.target.value)} disabled={!canChangeType} helperText={!canChangeType ? "Não é possível alterar o tipo pois há sensores TcAg/TcAs associados" : ""}>
             <MenuItem value="Pump">Pump</MenuItem>
             <MenuItem value="Fan">Fan</MenuItem>
           </TextField>
@@ -167,6 +178,16 @@ const MachinesPage = () => {
         <Button variant="contained" onClick={handleSaveEdit}>Salvar</Button>
       </DialogActions>
     </Dialog>
+    <Snackbar 
+      open={snackbar.open} 
+      autoHideDuration={4000} 
+      onClose={handleCloseSnackbar}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+    >
+      <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+        {snackbar.message}
+      </Alert>
+    </Snackbar>
     </Box>
   );
 };
