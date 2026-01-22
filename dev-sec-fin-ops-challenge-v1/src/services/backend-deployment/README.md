@@ -6,10 +6,17 @@ Small service that listens to `localhost:8000` and counts the amount of calls re
 
 To run the service locally you need the following:
 
+- poetry
 - Python (>=3.14);
 - Python libraries:
   - fastapi (>=0.128.0,<0.129.0);
   - uvicorn (>=0.40.0,<0.41.0);
+
+The service may be provided with the command:
+
+```bash
+POETRY_DOTENV_LOCATION=.env poetry run uvicorn src.main:app --host 0.0.0.0 --port 8000
+```
 
 ## Docker Environment Setup
 
