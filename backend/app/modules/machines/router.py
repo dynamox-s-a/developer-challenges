@@ -35,7 +35,12 @@ def list_machines(
     current_user: User = Depends(get_current_user)
 ):
     
-    list_machines = session.exec(select(Machine).where(Machine.user_id == current_user.id).options(selectinload(Machine.monitoring_points).selectinload(MonitoringPoint.sensor)))
+    list_machines = session.exec(
+        select(Machine)
+        .where(Machine.user_id == current_user.id)
+        .order_by(Machine.id)
+        .options(selectinload(Machine.monitoring_points).selectinload(MonitoringPoint.sensor))
+    )
     return list_machines
 
 

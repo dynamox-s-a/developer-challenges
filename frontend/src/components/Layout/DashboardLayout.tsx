@@ -21,11 +21,13 @@ export const DashboardLayout = ({ drawerWidth, drawerContent, children }: Dashbo
         component="main" 
         sx={{ 
           flexGrow: 1, 
-          p: 3, 
+          p: { xs: 2, md: 3 },
+          pt: { xs: 2, md: 3 },
           bgcolor: '#f4f6f8', 
           minHeight: '100vh',
           marginTop: isMobile ? '64px' : 0,
-          width: isMobile ? '100%' : `calc(100% - ${drawerWidth}px)`
+          width: isMobile ? '100%' : `calc(100% - ${drawerWidth}px)`,
+          transition: 'margin-top 0.2s ease'
         }}
       >
         {children}

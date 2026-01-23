@@ -171,31 +171,33 @@ const handleSaveEdit = async () => {
           elevation={1}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Typography sx={{ fontWeight: 'bold' }}>{machine.name}</Typography>
+            <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
+              <Typography sx={{ fontWeight: 'bold', flexGrow: 1 }}>{machine.name}</Typography>
               <Chip 
                 label={machine.type} 
                 size="small" 
                 color={machine.type === 'Pump' ? 'default' : 'primary'} 
                 variant="outlined" 
               />
-              <IconButton 
-                size="small" 
-                color="error" 
-                onClick={(e) => { e.stopPropagation(); setConfirmDelete(machine.id); }}
-              >
-                <DeleteIcon fontSize="small" />
-              </IconButton>
-              <IconButton 
-                  size="small" 
-                  onClick={(e) => { e.stopPropagation(); handleOpenEdit(machine); }}
-                >
-                  <EditIcon fontSize="small" />
-              </IconButton>
-          </Stack>
+            </Stack>
           </AccordionSummary>
           <AccordionDetails sx={{ borderTop: '1px solid #eee' }}>
             <Box sx={{ mt: 1 }}>
+              <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
+                <IconButton 
+                  size="small" 
+                  color="error" 
+                  onClick={() => setConfirmDelete(machine.id)}
+                >
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+                <IconButton 
+                  size="small" 
+                  onClick={() => handleOpenEdit(machine)}
+                >
+                  <EditIcon fontSize="small" />
+                </IconButton>
+              </Stack>
               <Box sx={{ mb: 2 }}>
               <Typography variant="overline" color="textSecondary">Pontos Associados</Typography>
               {machine.monitoring_points?.map((p: any) => (
