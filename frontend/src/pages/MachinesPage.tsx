@@ -8,6 +8,7 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SettingsInputComponentIcon from '@mui/icons-material/SettingsInputComponent';
+import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
 import { clearError } from '../features/monitoringPoints/monitoringPointSlice';
 import { SensorModal } from './SensorModal';
 
@@ -122,7 +123,27 @@ const handleSaveEdit = async () => {
   return (
     <Box>
       <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>Gestão de Ativos</Typography>
-      {items.map((machine) => (
+      {items.length === 0 ? (
+        <Box 
+          sx={{ 
+            textAlign: 'center', 
+            py: 8, 
+            px: 3,
+            bgcolor: '#fafafa',
+            borderRadius: 2,
+            border: '2px dashed #e0e0e0'
+          }}
+        >
+          <PrecisionManufacturingIcon sx={{ fontSize: 64, color: '#692746', mb: 2, opacity: 0.7 }} />
+          <Typography variant="h6" color="text.secondary" gutterBottom>
+            Nenhuma máquina cadastrada
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+            Comece criando sua primeira máquina através do botão <strong>"Nova Máquina"</strong> no topo da página.
+          </Typography>
+        </Box>
+      ) : (
+        items.map((machine) => (
         <Accordion key={machine.id} sx={{ mb: 1, borderRadius: '8px !important', '&:before': { display: 'none' } }} elevation={1}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Stack direction="row" spacing={2} alignItems="center">
@@ -218,7 +239,8 @@ const handleSaveEdit = async () => {
           </Box>
           </AccordionDetails>
         </Accordion>
-      ))}
+      ))
+      )}
       <Dialog open={Boolean(confirmDelete)} onClose={() => setConfirmDelete(null)}>
         <DialogTitle>Excluir Máquina?</DialogTitle>
         <DialogContent>

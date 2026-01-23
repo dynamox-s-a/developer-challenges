@@ -5,7 +5,7 @@ import {
   Stack, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, MenuItem, useMediaQuery, useTheme, IconButton
 } from '@mui/material';
 import { 
-  Dashboard as DashIcon, PrecisionManufacturing, ExitToApp, Add as AddIcon, Sort as SortIcon 
+  Dashboard as DashIcon, PrecisionManufacturing, ExitToApp, Add as AddIcon, Sort as SortIcon, Widgets as WidgetsIcon 
 } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { logout } from '../features/auth/authSlice';
@@ -205,17 +205,40 @@ export const Dashboard = () => {
                   </Card>
                 </Grid>
               </Grid>
-              <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2, mt: 1 }}>
-              <Button 
-                variant="text" 
-                startIcon={<SortIcon />} 
-                sx={{ color: 'text.secondary', textTransform: 'none', fontWeight: 500 }}
-                onClick={() => setOpenSortModal(true)}
-              >
-                Ordenar
-              </Button>
-            </Stack>
-              <MonitoringPointsPage sortBy={sortBy} order={order} />
+              {total === 0 ? (
+                <Box 
+                  sx={{ 
+                    textAlign: 'center', 
+                    py: 8, 
+                    px: 3,
+                    bgcolor: '#fafafa',
+                    borderRadius: 2,
+                    border: '2px dashed #e0e0e0'
+                  }}
+                >
+                  <WidgetsIcon sx={{ fontSize: 64, color: '#692746', mb: 2, opacity: 0.7 }} />
+                  <Typography variant="h6" color="text.secondary" gutterBottom>
+                    Nenhum ponto de monitoramento encontrado
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                    Crie uma máquina e adicione pontos de monitoramento para começar a visualizar dados.
+                  </Typography>
+                </Box>
+              ) : (
+                <>
+                  <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2, mt: 1 }}>
+                    <Button 
+                      variant="text" 
+                      startIcon={<SortIcon />} 
+                      sx={{ color: 'text.secondary', textTransform: 'none', fontWeight: 500 }}
+                      onClick={() => setOpenSortModal(true)}
+                    >
+                      Ordenar
+                    </Button>
+                  </Stack>
+                  <MonitoringPointsPage sortBy={sortBy} order={order} />
+                </>
+              )}
             </>
           ) : (
             <MachinesPage />
