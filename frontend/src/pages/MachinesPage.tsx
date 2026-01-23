@@ -82,12 +82,32 @@ const MachinesPage = () => {
     setCanChangeType(!hasRestrictedSensors);
   };
 
-  const handleSaveEdit = async () => {
-    if (editMachine) {
-      await dispatch(updateMachine({ id: editMachine.id, name: editName, type: editType }));
-      setEditMachine(null);
-    }
-  };
+const handleSaveEdit = async () => {
+  if (!editMachine) return;
+
+  try {
+    await dispatch(updateMachine({ 
+      id: editMachine.id, 
+      name: editName.trim(), 
+      type: editType 
+    })).unwrap();
+    
+    await dispatch(fetchAllMachines()).unwrap();
+    
+    setEditMachine(null);
+    setSnackbar({ 
+      open: true, 
+      message: 'Máquina atualizada com sucesso!',
+      severity: 'success'
+    });
+  } catch (error: any) {
+    setSnackbar({ 
+      open: true, 
+      message: error || 'Erro ao atualizar máquina',
+      severity: 'error'
+    });
+  }
+};
 
   const handleCloseError = () => { dispatch(clearError()); };
   const handleCloseSnackbar = () => setSnackbar({ ...snackbar, open: false });
