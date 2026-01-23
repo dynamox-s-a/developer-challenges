@@ -7,21 +7,21 @@ from app.modules.auth.router import router as auth_router
 from app.modules.machines.router import router as machines_router
 from app.modules.monitoring_points.router import router as points_router
 from app.modules.sensors.router import router as sensor_router
-from contextlib import asynccontextmanager
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     create_db()
     yield
 
-app = FastAPI(title="Dynamox API", lifespan=lifespan)
+app = FastAPI(title=settings.PROJECT_NAME, lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.ORIGINS.split(",") if settings.ORIGINS else ["*"],
+    allow_origins=settings.ORIGINS,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type"],
+    max_age=3600,
 )
 
 app.include_router(auth_router, prefix="/auth", tags=["Auth"])
