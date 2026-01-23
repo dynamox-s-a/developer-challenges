@@ -25,6 +25,7 @@ const MachinesPage = () => {
   const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity?: 'success' | 'error' }>({ open: false, message: '' });
   const [canChangeType, setCanChangeType] = useState(true);
   const [selectedPoint, setSelectedPoint] = useState<any | null>(null);
+  const [expandedAccordions, setExpandedAccordions] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     dispatch(fetchAllMachines());
@@ -118,6 +119,18 @@ const handleSaveEdit = async () => {
     dispatch(fetchAllMachines());
   };
 
+  const handleAccordionChange = (machineId: number) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpandedAccordions(prev => {
+      const newSet = new Set(prev);
+      if (isExpanded) {
+        newSet.add(machineId);
+      } else {
+        newSet.delete(machineId);
+      }
+      return newSet;
+    });
+  };
+
   if (loading) return <CircularProgress />;
 
   return (
@@ -144,7 +157,13 @@ const handleSaveEdit = async () => {
         </Box>
       ) : (
         items.map((machine) => (
-        <Accordion key={machine.id} sx={{ mb: 1, borderRadius: '8px !important', '&:before': { display: 'none' } }} elevation={1}>
+        <Accordion 
+          key={machine.id} 
+          expanded={expandedAccordions.has(machine.id)}
+          onChange={handleAccordionChange(machine.id)}
+          sx={{ mb: 1, borderRadius: '8px !important', '&:before': { display: 'none' } }} 
+          elevation={1}
+        >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Stack direction="row" spacing={2} alignItems="center">
               <Typography sx={{ fontWeight: 'bold' }}>{machine.name}</Typography>
