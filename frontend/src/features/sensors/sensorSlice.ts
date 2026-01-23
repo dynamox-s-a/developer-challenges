@@ -14,7 +14,7 @@ export const associateSensor = createAsyncThunk(
             const response = await api.post('/sensors', sensorData);
             return response.data;
         } catch (error: any) {
-            return rejectWithValue(error.response?.data?.detal || 'Erro ao associar sensor');
+            return rejectWithValue(error.response?.data?.detail || 'Erro ao associar sensor');
         }
     }
 );
