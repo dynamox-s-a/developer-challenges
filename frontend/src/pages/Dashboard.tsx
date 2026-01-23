@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { 
   Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, 
   AppBar, Toolbar, Typography, Breadcrumbs, Link, Container, Card, CardContent, Grid,
-  Stack, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, MenuItem
+  Stack, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, MenuItem, useMediaQuery, useTheme, IconButton
 } from '@mui/material';
 import { 
   Dashboard as DashIcon, PrecisionManufacturing, ExitToApp, Add as AddIcon, Sort as SortIcon 
@@ -13,7 +13,43 @@ import { useNavigate } from 'react-router-dom';
 import MachinesPage from './MachinesPage';
 import MonitoringPointsPage from './MonitoringPointsPage';
 import { fetchAllMachines, createMachine } from '../features/machines/machineSlice';
+import MenuIcon from '@mui/icons-material/Menu';
 
+const ResponsiveDrawer = ({ 
+  drawerWidth, 
+  children 
+}: { 
+  drawerWidth: number; 
+  children: React.ReactNode 
+}) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  return (
+    <>
+      {isMobile && (
+        <AppBar position="fixed" sx={{ bgcolor: '#692746' }}>
+          <Toolbar>
+            <IconButton onClick={() => setMobileOpen(!mobileOpen)}>
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6">HUB CONTROL</Typography>
+          </Toolbar>
+        </AppBar>
+      )}
+      
+      <Drawer
+        variant={isMobile ? "temporary" : "permanent"}
+        open={isMobile ? mobileOpen : true}
+        onClose={() => setMobileOpen(false)}
+        sx={{ width: drawerWidth }}
+      >
+        {children}
+      </Drawer>
+    </>
+  );
+};
 
 const drawerWidth = 240;
 
@@ -56,39 +92,40 @@ export const Dashboard = () => {
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': { width: drawerWidth, boxSizing: 'border-box', bgcolor: '#692746', color: 'white' },
-        }}
-      >
-        <Toolbar><Typography variant="h6" sx={{ fontWeight: 'bold' }}>HUB CONTROL</Typography></Toolbar>
-        <List sx={{ flexGrow: 1 }}>
-          <ListItem disablePadding>
-            <ListItemButton onClick={() => setCurrentView('home')} selected={currentView === 'home'}>
-              <ListItemIcon sx={{ color: 'white' }}><DashIcon /></ListItemIcon>
-              <ListItemText primary="Dashboard" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton onClick={() => setCurrentView('machines')} selected={currentView === 'machines'}>
-              <ListItemIcon sx={{ color: 'white' }}><PrecisionManufacturing /></ListItemIcon>
-              <ListItemText primary="Máquinas" />
-            </ListItemButton>
-          </ListItem>
-        </List>
-        <List>
-          <ListItem disablePadding>
-            <ListItemButton onClick={handleLogout} sx={{ color: '#f4f6f8' }}>
-              <ListItemIcon sx={{ color: '#f4f6f8' }}><ExitToApp /></ListItemIcon>
-              <ListItemText primary="Sair" />
-            </ListItemButton>
-          </ListItem>
-        </List>
-      </Drawer>
-
+      <ResponsiveDrawer drawerWidth={drawerWidth}>
+        <Drawer
+          variant="permanent"
+          sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            '& .MuiDrawer-paper': { width: drawerWidth, boxSizing: 'border-box', bgcolor: '#692746', color: 'white' },
+          }}
+        >
+          <Toolbar><Typography variant="h6" sx={{ fontWeight: 'bold' }}>HUB CONTROL</Typography></Toolbar>
+          <List sx={{ flexGrow: 1 }}>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => setCurrentView('home')} selected={currentView === 'home'}>
+                <ListItemIcon sx={{ color: 'white' }}><DashIcon /></ListItemIcon>
+                <ListItemText primary="Dashboard" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => setCurrentView('machines')} selected={currentView === 'machines'}>
+                <ListItemIcon sx={{ color: 'white' }}><PrecisionManufacturing /></ListItemIcon>
+                <ListItemText primary="Máquinas" />
+              </ListItemButton>
+            </ListItem>
+          </List>
+          <List>
+            <ListItem disablePadding>
+              <ListItemButton onClick={handleLogout} sx={{ color: '#f4f6f8' }}>
+                <ListItemIcon sx={{ color: '#f4f6f8' }}><ExitToApp /></ListItemIcon>
+                <ListItemText primary="Sair" />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        </Drawer>
+      </ResponsiveDrawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3, bgcolor: '#f4f6f8', minHeight: '100vh' }}>
         <AppBar position="static" color="transparent" elevation={0} sx={{ mb: 3 }}>
           <Toolbar sx={{ justifyContent: 'space-between', px: '0 !important' }}>
