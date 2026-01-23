@@ -22,15 +22,16 @@ export const Dashboard = () => {
   const [newMachine, setNewMachine] = useState({ name: '', type: 'Pump' });
   const [sortBy, setSortBy] = useState('point_name');
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+  const [allPoints, setAllPoints] = useState<any[]>([]);
   
   const { user } = useAppSelector((state) => state.auth);
-  const { total = 0, items: monitoringPoints = [] } = useAppSelector((state) => state.monitoringPoints);
+  const { total = 0 } = useAppSelector((state) => state.monitoringPoints);
   const { items: machines = [] } = useAppSelector((state) => state.machines);
   
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const activeSensors = monitoringPoints.filter(point => point.sensor_model !== null).length;
+  const activeSensors = allPoints.filter(point => point.sensor_model !== null).length;
 
   useEffect(() => {
     let isMounted = true;
@@ -38,7 +39,10 @@ export const Dashboard = () => {
     const loadData = async () => {
       if (isMounted) {
         await dispatch(fetchAllMachines());
-        await dispatch(fetchMonitoringPoints({ page: 1, size: 100 }));
+        const result = await dispatch(fetchMonitoringPoints({ page: 1, size: 10000 })).unwrap();
+        if (result?.items) {
+          setAllPoints(result.items);
+        }
       }
     };
 
