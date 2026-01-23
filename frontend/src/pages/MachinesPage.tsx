@@ -119,7 +119,7 @@ const handleSaveEdit = async () => {
     dispatch(fetchAllMachines());
   };
 
-  const handleAccordionChange = (machineId: number) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+  const handleAccordionChange = (machineId: number) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
     setExpandedAccordions(prev => {
       const newSet = new Set(prev);
       if (isExpanded) {
