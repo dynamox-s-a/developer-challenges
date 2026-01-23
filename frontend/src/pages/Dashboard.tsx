@@ -70,8 +70,29 @@ export const Dashboard = () => {
   const activeSensors = monitoringPoints.filter(point => point.sensor_model !== null).length;
 
   useEffect(() => {
-    dispatch(fetchAllMachines());
-  },  [dispatch]);
+    let isMounted = true;
+    const abortController = new AbortController();
+
+    const loadData = async () => {
+      try {
+        const result = await dispatch(fetchAllMachines());
+        
+        if (isMounted && fetchAllMachines.fulfilled.match(result)) {
+        }
+      } catch (error) {
+        if (isMounted) {
+          console.error('Erro ao carregar máquinas:', error);
+        }
+      }
+    };
+
+    loadData();
+
+    return () => {
+      isMounted = false;
+      abortController.abort();
+    };
+  }, [dispatch]);
 
   const handleLogout = () => {
     dispatch(logout());
