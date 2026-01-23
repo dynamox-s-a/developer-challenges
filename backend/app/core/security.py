@@ -8,14 +8,32 @@ from sqlmodel import Session, select
 from .database import get_session
 from app.models import User
 
+MAX_PASSWORD_LENGTH = 72
+MIN_PASSWORD_LENGTH = 8
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password[:72], hashed_password)
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    if len(plain_password) > MAX_PASSWORD_LENGTH:
+        return False
+    
+    return pwd_context.verify(plain_password, hashed_password)
 
 def get_password_hash(password):
-    return pwd_context.hash(password[:72])
+    if len(password) > MAX_PASSWORD_LENGTH:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Senha não pode exceder {MAX_PASSWORD_LENGTH} caracteres."
+        )
+    
+    if len(password) < MIN_PASSWORD_LENGTH:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Senha deve ter no minimo {MAX_PASSWORD_LENGTH} caracteres."
+        )
+    
+    return pwd_context.hash(password)
 
 def create_access_token(data: dict):
     to_encode = data.copy()
