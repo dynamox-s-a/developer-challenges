@@ -21,7 +21,7 @@ const MachinesPage = () => {
   const [editMachine, setEditMachine] = useState<any | null>(null);
   const [editName, setEditName] = useState('');
   const [editType, setEditType] = useState('');
-  const [snackbar, setSnackbar] = useState({ open: false, message: '' });
+  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity?: 'success' | 'error' }>({ open: false, message: '' });
   const [canChangeType, setCanChangeType] = useState(true);
   const [selectedPoint, setSelectedPoint] = useState<any | null>(null);
 
@@ -30,13 +30,37 @@ const MachinesPage = () => {
   }, [dispatch]);
 
   const handleAddPoint = async (machineId: number) => {
-  const name = newPointNames[machineId];
-  if (name) {
-    await dispatch(createMonitoringPoint({ machineId, name })).unwrap();
-    setSnackbar({ open: true, message: 'Ponto de monitoramento criado com sucesso!' });
-    dispatch(fetchAllMachines());
-    setNewPointNames({ ...newPointNames, [machineId]: '' });
-  }
+    const name = newPointNames[machineId]?.trim();
+
+    if (!name) {
+      setSnackbar({ 
+        open: true, 
+        message: 'Nome do ponto não pode ser vazio',
+        severity: 'error'
+      });
+      return;
+    }
+
+    if (name.length < 3 || name.length > 50) {
+      setSnackbar({ 
+        open: true, 
+        message: 'Nome deve ter entre 3 e 50 caracteres',
+        severity: 'error'
+      });
+      return;
+    }
+    try {
+        await dispatch(createMonitoringPoint({ machineId, name })).unwrap();
+        await dispatch(fetchAllMachines()).unwrap();
+        
+        setSnackbar({ 
+          open: true, 
+          message: 'Ponto de monitoramento criado com sucesso!',
+          severity: 'success'
+        });
+        
+        setNewPointNames({ ...newPointNames, [machineId]: '' });
+      } catch (error: any) {}
   };
 
   const handleDelete = async () => {
@@ -215,7 +239,7 @@ const MachinesPage = () => {
       onClose={handleCloseSnackbar}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
     >
-      <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+      <Alert onClose={handleCloseSnackbar} severity={snackbar.severity || 'success'} sx={{ width: '100%' }}>
         {snackbar.message}
       </Alert>
     </Snackbar>
