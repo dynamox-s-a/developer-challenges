@@ -58,7 +58,8 @@ const machineSlice = createSlice({
     initialState: { 
         items: [] as Machine[],
         loading: false,
-        error: null as string | null },
+        error: null as string | null,
+        initialLoad: true },
     reducers: {
         clearError: (state) => {
             state.error = null;
@@ -69,6 +70,10 @@ const machineSlice = createSlice({
         addAsyncHandlers(builder, fetchAllMachines, {
             onFulfilled: (state, action) => {
                 state.items = action.payload;
+                state.initialLoad = false;
+            },
+            onRejected: (state) => {
+                state.initialLoad = false;
             }
         });
 

@@ -14,7 +14,7 @@ import { SensorModal } from './SensorModal';
 
 const MachinesPage = () => {
   const dispatch = useAppDispatch();
-  const { items, loading } = useAppSelector((state) => state.machines);
+  const { items, loading, initialLoad } = useAppSelector((state) => state.machines);
   const { createError } = useAppSelector((state) => state.monitoringPoints);
 
   const [newPointNames, setNewPointNames] = useState<{[key: number]: string}>({});
@@ -131,7 +131,7 @@ const handleSaveEdit = async () => {
     });
   };
 
-  if (loading) {
+  if (loading || initialLoad) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
         <CircularProgress />
