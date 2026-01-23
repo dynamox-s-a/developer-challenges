@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../../config/api';
+import { addAsyncHandlers } from '../../utils/redux.utils';
 
 export interface MonitoringPoint {
     point_id: number;
@@ -60,26 +61,25 @@ export const monitoringPointSlice = createSlice({
     clearError: (state) => { state.error = null; state.createError = null; }
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchMonitoringPoints.pending, (state) => { state.loading = true; })
-      .addCase(fetchMonitoringPoints.fulfilled, (state, action) => {
-        state.loading = false;
+    addAsyncHandlers(builder, fetchMonitoringPoints, {
+      onFulfilled: (state, action) => {
         state.items = action.payload.items;
         state.total = action.payload.total;
         state.page = action.payload.page;
-      })
-      .addCase(fetchMonitoringPoints.rejected, (state, action) => {
-        state.loading = false;
+      },
+      onRejected: (state, action) => {
         state.error = action.payload as string;
-      })
-      .addCase(createMonitoringPoint.pending, (state) => { state.loading = true; state.createError = null; })
-      .addCase(createMonitoringPoint.fulfilled, (state) => {
-        state.loading = false;
-      })
-      .addCase(createMonitoringPoint.rejected, (state, action) => {
-        state.loading = false;
+      }
+    });
+
+    addAsyncHandlers(builder, createMonitoringPoint, {
+      onPending: (state) => {
+        state.createError = null;
+      },
+      onRejected: (state, action) => {
         state.createError = action.payload as string;
-      });
+      }
+    });
   }
 });
 

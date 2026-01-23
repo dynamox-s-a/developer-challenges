@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../config/api";
+import { addAsyncHandlers } from "../../utils/redux.utils";
 
 export interface Machine {
     id: number;
@@ -65,57 +66,29 @@ const machineSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-        .addCase(fetchAllMachines.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-        })
-        .addCase(fetchAllMachines.fulfilled, (state, action) => { 
-            state.loading = false;
-            state.items = action.payload; 
-        })
-        .addCase(fetchAllMachines.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload as string;
-        })
+        addAsyncHandlers(builder, fetchAllMachines, {
+            onFulfilled: (state, action) => {
+                state.items = action.payload;
+            }
+        });
 
-        .addCase(createMachine.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-        })
-        .addCase(createMachine.fulfilled, (state, action) => { 
-            state.loading = false;
-            state.items.push(action.payload); 
-        })
-        .addCase(createMachine.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload as string;
-        })
+        addAsyncHandlers(builder, createMachine, {
+            onFulfilled: (state, action) => {
+                state.items.push(action.payload);
+            }
+        });
 
-        .addCase(updateMachine.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-        })
-        .addCase(updateMachine.fulfilled, (state, action) => {
-            state.loading = false;
-            const index = state.items.findIndex(m => m.id === action.payload.id);
-            if (index !== -1) state.items[index] = action.payload;
-        })
-        .addCase(updateMachine.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload as string;
-        })
+        addAsyncHandlers(builder, updateMachine, {
+            onFulfilled: (state, action) => {
+                const index = state.items.findIndex(m => m.id === action.payload.id);
+                if (index !== -1) state.items[index] = action.payload;
+            }
+        });
 
-        .addCase(deleteMachine.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-        })
-        .addCase(deleteMachine.fulfilled, (state, action) => {
-            state.loading = false;
-            state.items = state.items.filter(m => m.id !== action.payload);
-        })
-        .addCase(deleteMachine.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload as string;
+        addAsyncHandlers(builder, deleteMachine, {
+            onFulfilled: (state, action) => {
+                state.items = state.items.filter(m => m.id !== action.payload);
+            }
         });
     }
 });

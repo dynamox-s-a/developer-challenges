@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import api from "../../config/api";
+import { addAsyncHandlers } from "../../utils/redux.utils";
 
 interface User {
     id: string;
@@ -88,34 +89,24 @@ export const authSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder
-        .addCase(loginUser.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-        })
-        .addCase(loginUser.fulfilled, (state, action: PayloadAction<AuthResponse>) => {
-            state.loading = false;
-            state.isAuthenticated = true;
-            state.user = action.payload.user;
-            state.token = action.payload.token;
-        })
-        .addCase(loginUser.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload as string;
-        })
-        .addCase(registerUser.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-            state.signupSuccess = false;
-        })
-        .addCase(registerUser.fulfilled, (state) => {
-            state.loading = false;
-            state.signupSuccess = true;
-        })
-        .addCase(registerUser.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload as string;
-            state.signupSuccess = false;
+        addAsyncHandlers(builder, loginUser, {
+            onFulfilled: (state, action: PayloadAction<AuthResponse>) => {
+                state.isAuthenticated = true;
+                state.user = action.payload.user;
+                state.token = action.payload.token;
+            }
+        });
+
+        addAsyncHandlers(builder, registerUser, {
+            onPending: (state) => {
+                state.signupSuccess = false;
+            },
+            onFulfilled: (state) => {
+                state.signupSuccess = true;
+            },
+            onRejected: (state) => {
+                state.signupSuccess = false;
+            }
         });
     },
 });

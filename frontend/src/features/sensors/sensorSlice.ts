@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../config/api";
+import { addAsyncHandlers } from "../../utils/redux.utils";
 
 export interface SensorCreate {
     id: string;
@@ -29,10 +30,11 @@ export const sensorSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder
-        .addCase(associateSensor.pending, (state) => { state.loading = true; state.error = null; })
-        .addCase(associateSensor.fulfilled, (state) => { state.loading = false; state.success = true; })
-        .addCase(associateSensor.rejected, (state, action) => { state.loading = false; state.error = action.payload as string; });
+        addAsyncHandlers(builder, associateSensor, {
+            onFulfilled: (state) => {
+                state.success = true;
+            }
+        });
     }
 });
 
