@@ -30,10 +30,10 @@ const initialState: PointsState = {
 
 export const fetchMonitoringPoints = createAsyncThunk(
     'points/fetchList',
-    async ({ page, sort_by, order }: { page: number, sort_by: string, order: 'asc' | 'desc' }, { rejectWithValue }) => {
+    async ({ page, size, sort_by, order }: { page: number, size?: number, sort_by?: string, order?: 'asc' | 'desc' }, { rejectWithValue }) => {
         try {
             const response = await api.get('/monitoring-points', {
-                params: { page, size: 5, sort_by, order }
+                params: { page, size: size || 5, sort_by: sort_by || 'point_name', order: order || 'asc' }
             });
             return response.data;
         } catch(error: any) {
