@@ -1,11 +1,14 @@
 {
-  "extends": "../tsconfig.base.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "out-tsc/@dynamox-challenge/backend-e2e",
     "esModuleInterop": true,
     "noUnusedLocals": false,
     "noImplicitAny": false
   },
-  "include": ["jest.config.ts", "src/**/*.ts"],
+  "include": [
+    "jest.config.ts",
+    "src/**/*.ts"
+  ],
   "references": []
 }

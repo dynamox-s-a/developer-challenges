@@ -90,8 +90,6 @@
     "webpack-cli": "^5.1.4"
   },
   "workspaces": [
-    "apps/*",
-    "backend",
-    "backend-e2e"
+    "apps/*"
   ]
 }

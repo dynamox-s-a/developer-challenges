@@ -11,7 +11,7 @@
           "args": [
             "--node-env=production"
           ],
-          "cwd": "backend"
+          "cwd": "apps/backend"
         },
         "configurations": {
           "development": {
@@ -28,8 +28,8 @@
         "cache": true,
         "executor": "@nx/js:prune-lockfile",
         "outputs": [
-          "{workspaceRoot}/backend/dist/package.json",
-          "{workspaceRoot}/backend/dist/package-lock.json"
+          "{workspaceRoot}/apps/backend/dist/package.json",
+          "{workspaceRoot}/apps/backend/dist/package-lock.json"
         ],
         "options": {
           "buildTarget": "build"
@@ -41,7 +41,7 @@
         ],
         "cache": true,
         "outputs": [
-          "{workspaceRoot}/backend/dist/workspace_modules"
+          "{workspaceRoot}/apps/backend/dist/workspace_modules"
         ],
         "executor": "@nx/js:copy-workspace-modules",
         "options": {
@@ -86,11 +86,16 @@
     "@nestjs/common": "^11.0.0",
     "@nestjs/core": "^11.0.0",
     "@nestjs/platform-express": "^11.0.0",
+    "@prisma/adapter-pg": "^7.3.0",
+    "@prisma/client": "^7.3.0",
+    "pg": "^8.18.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
-    "@nestjs/testing": "^11.0.0"
+    "@nestjs/testing": "^11.0.0",
+    "@types/node": "^20.19.9",
+    "@types/pg": "^8.16.0"
   }
 }
