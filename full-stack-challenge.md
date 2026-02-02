@@ -4,9 +4,11 @@
 
 In order to contribute to the enhancement of our Corporate Channels and asset condition monitoring platform, DynaPredict, we present you with the following challenge: 
 
-Build a robust and intuitive application developed using React and TypeScript. It should include authentication, machine management, sensor management, and general user-friendly features. 
+Build a robust and intuitive full-stack application developed using React and TypeScript for the frontend, and a suitable backend technology. The application should include authentication, machine management, sensor management, time-series data processing, and general user-friendly features.
 
-While going through the challenge, you should be able to handle ambiguous situations, adhere to best practices in front-end development, and demonstrate excellent problem-solving skills. Effective communication through well-documented code, code quality, readability, and maintainability will also be evaluated.
+To properly address this challenge, you must deliver a fully integrated end‑to‑end flow, with frontend components connected to real backend endpoints and persistent storage. Implementing features only halfway — such as building UI components without backend integration — will not meet the challenge requirements. Complete integration between frontend and backend is more important than implementing isolated or unfinished client‑side features.
+
+While going through the challenge, you should be able to handle ambiguous situations, adhere to best practices in both front-end and back-end development, and demonstrate excellent problem-solving skills. Effective communication through well-documented code, code quality, readability, and maintainability will also be evaluated.
 
 ## User Stories and Functional Requirements
 
@@ -60,25 +62,43 @@ You can use the following user stories as a guide to implement the application f
 1. [ ] The application layout is responsive.
 1. [ ] Ensure correct business logic and behavior with automated unit tests.
 
-6 - Bonus
+6 - Back-end Requirements
 
-1. [ ] Implement your own back-end code. If you pick this option, write it using NodeJS JavaScript runtime (not Java, not PHP...). Although we also work with Python here, we are looking for JavaScript related skills in this test.
-1. [ ] If you choose to implement your own back-end, we encourage you to use either PostgreSQL or MongoDB as a persistence layer.
+1. [ ] Implement your own back-end code using NodeJS JavaScript runtime (not Java, not PHP...). Although we also work with Python here, we are looking for JavaScript related skills in this test.
+1. [ ] Use either PostgreSQL or MongoDB as a persistence layer.
 1. [ ] If you choose to use PostgreSQL, use Prisma ORM (or even try Drizzle, or Kysely) to interact with PostgreSQL.
-1. [ ] If you choose to use MongoDB, use Mongoose ORM to interact with the database;
-1. [ ] Use Nest.js Framework for the back-end (we are moving some services to that tool).
+1. [ ] If you choose to use MongoDB, use Mongoose ORM to interact with the database.
+1. [ ] Implement RESTful API endpoints for all required functionality (authentication, machine management, sensor management).
+1. [ ] Implement time-series data storage and retrieval functionality for sensor data.
+1. [ ] Ensure the API has proper error handling and validation.
+1. [ ] Implement unit tests for backend code.
+1. [ ] The latency between client and the server side should be below 350ms for all requests.
+
+7 - Time-Series Data Management
+
+1. [ ] As a user, I want to be able to store raw sensor data as time-series for my monitoring points.
+1. [ ] As a user, I want to be able to retrieve metrics about the time-series data for my sensors.
+1. [ ] As a user, I want to be able to delete time-series data I've sent to the server.
+1. [ ] As a user, I want to be able to retrieve the number of time-series I've stored in the server.
+1. [ ] As a user, I want to be able to retrieve a full time-series I've stored.
+1. [ ] As a user, I want to be able to visualize time-series data in a chart or graph format.
+
+8 - Bonus
+
 1. [ ] Use Nx to manage the whole application as a monorepo (we use that tool a lot here).
 1. [ ] Add e2e tests with Cypress (use it to test a full user flow).
 1. [ ] If you were provided with a baseline code, identify any areas of bad code or suboptimal implementations and refactor them.
 1. [ ] Deploy your application to a cloud provider and provide a link for the running app.
+1. [ ] Implement a functionality that gives a future prediction of the time-series data.
+1. [ ] Add load balancer to the application.
+1. [ ] Add load tests to the application.
 
-7 - Tips
+9 - Tips
 
 1. [ ] There is no need to reinvent the wheel. You can use a Material UI 5 free template like [Devias Kit](https://mui.com/store/items/devias-kit/) to speed up the development process.
 1. [ ] Not familiar with Redux? Check out [this tutorial](https://egghead.io/courses/modern-redux-with-redux-toolkit-rtk-and-typescript-64f243c8) to get started.
 1. [ ] Not familiar with Cypress? Check out [these tutorials](https://learn.cypress.io/) to get started.
-1. [ ] You can mock your back-end using a package like [json-server](https://www.npmjs.com/package/json-server), which creates a fake REST API. Bear in mind that those implementing their own back-end will check more boxes in the evaluation process.
-
+1. [ ] For time-series data visualization, consider using libraries like [Recharts](https://recharts.org/), [Chart.js](https://www.chartjs.org/), or [D3.js](https://d3js.org/).
 </br>
 
 
@@ -90,11 +110,16 @@ In general we will be looking for the following:
 
 1. [ ] Anyone should be able to follow the instructions and run the application.
 1. [ ] User stories were implemented according to the functional requirements.
-1. [ ] Front-end code is successfully integrated with a back-end API (either a fake one, or one you built yourself).
-1. [ ] Ability to refactor existing code (if applicable) and write unit tests for the written code.
-1. [ ] Adherence to best practices in front-end development.
+1. [ ] Front-end code is successfully integrated with a back-end API.
+1. [ ] Back-end code successfully integrates with a persistent storage solution.
+1. [ ] Time-series data is properly stored, processed, and visualized.
+1. [ ] Ability to refactor existing code (if applicable) and write unit tests for both front-end and back-end code.
+1. [ ] Adherence to best practices in both front-end and back-end development.
+1. [ ] API performance meets the latency requirements.
 1. [ ] Problem-solving skills and ability to handle ambiguity.
 1. [ ] Code quality, readability, and maintainability.
+1. [ ] Code is well-organized and documented.
+1. [ ] Use of atomic and semantic commits following a clear commit message convention (e.g., Conventional Commits).
 
 ## Ready to Begin the Challenges?
 
@@ -120,11 +145,11 @@ In general we will be looking for the following:
 1. If I have more questions, who can I contact?
   **Please reply to the email who sent you this test.**
 
-1. Can I build my own back-end API?
-  **Yes, you can build your own back-end API, but it needs to use NodeJS.**
+1. Is implementing a back-end API required?
+  **Yes, implementing your own back-end API is now a core requirement, not a bonus. It needs to use NodeJS.**
 
-1. Can I use any NodeJS framework to the back-end?
-  **Yes, but we encourage you to use Nest.js. We are currently migrating away from pure ExpressJS and from Adonis.**
+1. Can I use AI to complete the challenge?
+  **Yes, however, keep in mind you will need to explain your decisions and code.**
 
 </br>
 
