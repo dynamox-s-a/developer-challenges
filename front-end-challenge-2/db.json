@@ -1,0 +1,36 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "admin@events.com",
+      "password": "admin123",
+      "role": "admin",
+      "name": "Administrador"
+    },
+    {
+      "id": 2,
+      "email": "reader@events.com",
+      "password": "reader123",
+      "role": "reader",
+      "name": "Leitor"
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "name": "Conferência Tech 2026",
+      "date": "2026-03-15T09:00:00",
+      "location": "São Paulo Convention Center",
+      "description": "A maior conferência de tecnologia do Brasil, reunindo profissionais e empresas inovadoras para discutir as últimas tendências em desenvolvimento de software e inteligência artificial.",
+      "category": "Conferência"
+    },
+    {
+      "id": 2,
+      "name": "Workshop de React Avançado",
+      "date": "2026-02-20T14:00:00",
+      "location": "Online via Zoom",
+      "description": "Workshop intensivo sobre técnicas avançadas de React, incluindo Server Components, Suspense, hooks personalizados e otimização de performance para aplicações de grande escala.",
+      "category": "Workshop"
+    }
+  ]
+}
