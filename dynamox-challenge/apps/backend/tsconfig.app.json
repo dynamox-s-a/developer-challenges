@@ -6,12 +6,13 @@
     "types": [
       "node"
     ],
-    "rootDir": "src",
     "moduleResolution": "nodenext",
-    "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "target": "es2021"
+    "useDefineForClassFields": false,
+    "target": "es2021",
+    "baseUrl": ".",
+    "paths": {}
   },
   "include": [
     "src/**/*.ts"

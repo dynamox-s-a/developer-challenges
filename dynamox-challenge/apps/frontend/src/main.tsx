@@ -7,6 +7,8 @@ import '@/styles/global.css';
 import { UserProvider } from '@/contexts/user-context';
 import { LocalizationProvider } from '@/components/core/localization-provider';
 import { ThemeProvider } from '@/components/core/theme-provider/theme-provider';
+import { Provider } from 'react-redux';
+import { store } from '@/store/store';
 import App from './app/app';
 
 const root = createRoot(document.getElementById('root')!);
@@ -17,7 +19,9 @@ root.render(
       <LocalizationProvider>
         <UserProvider>
           <ThemeProvider>
-            <App />
+            <Provider store={store}>
+              <App />
+            </Provider>
           </ThemeProvider>
         </UserProvider>
       </LocalizationProvider>

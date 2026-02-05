@@ -1,6 +1,6 @@
 export interface Machine {
-  id: number;
+  id: string;
   name: string;
   type: string;
-  status: string;
+  status?: string;
 }

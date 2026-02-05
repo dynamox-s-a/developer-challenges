@@ -14,9 +14,11 @@ import type { Machine } from '@/types/machine';
 
 export interface MachineCardProps {
   machine: Machine;
+  onEdit: () => void;
+  onDelete: () => void;
 }
 
-export function MachineCard({ machine }: MachineCardProps): React.JSX.Element {
+export function MachineCard({ machine, onEdit, onDelete }: MachineCardProps): React.JSX.Element {
   return (
     <Grid size={{ md: 4, sm: 6, xs: 12 }}>
       <Card sx={{ minWidth: 250 }}>
@@ -33,7 +35,7 @@ export function MachineCard({ machine }: MachineCardProps): React.JSX.Element {
                   width: '80px'
                 }}
               >
-                <EngineIcon fontSize="var(--icon-fontSize-lg)" size={80} />
+                <EngineIcon fontSize="var(--icon-fontSize-lg)" size={75} />
               </Avatar>
             </Box>
             <Box sx={{ flex: 1 }}>
@@ -59,8 +61,8 @@ export function MachineCard({ machine }: MachineCardProps): React.JSX.Element {
           </Box>
         </CardContent>
         <CardActions sx={{ display: 'flex', justifyContent: 'end' }}>
-          <Button size="small">Edit</Button>
-          <Button size="small">Delete</Button>
+          <Button size="small" onClick={onEdit}>Edit</Button>
+          <Button size="small" onClick={onDelete} color="error">Delete</Button>
         </CardActions>
       </Card>
     </Grid>
