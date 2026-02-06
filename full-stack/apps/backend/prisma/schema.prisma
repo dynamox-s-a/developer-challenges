@@ -12,6 +12,60 @@ datasource db {
   provider = "postgresql"
 }
 
+enum MachineType {
+  Pump
+  Fan
+}
+
+enum SensorModel {
+  TcAg
+  TcAs
+  HF_plus
+}
+
+model Machine {
+  id        String            @id @default(cuid())
+  name      String
+  type      MachineType
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  monitoringPoints MonitoringPoint[]
+
+  @@index([type])
+  @@index([name])
+}
+
+model MonitoringPoint {
+  id        String   @id @default(cuid())
+  name      String
+  machineId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  machine   Machine  @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  sensor    Sensor?
+
+  // opcional: não repetir nome dentro da mesma máquina
+  @@unique([machineId, name])
+
+  @@index([machineId])
+  @@index([name])
+}
+
+model Sensor {
+  id                String      @id @default(cuid())
+  uniqueId          String      @unique
+  model             SensorModel
+  monitoringPointId String      @unique
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  monitoringPoint MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
+
+  @@index([model])
+}
+
 model HealthCheck {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
