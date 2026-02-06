@@ -1,16 +1,17 @@
 "use client"
 
-import { Box, Button, TextField, ThemeProvider, Typography } from "@mui/material"
+import { Box, Button, TextField, Typography } from "@mui/material"
+
+export const customBox = {
+    display: "flex", 
+    flexDirection: "column", 
+    justifyContent: "center", 
+    alignItems: "center", 
+    border: "2px solid grey"
+}
 
 export default function RegisterComponent() {
   return (
-    <ThemeProvider theme={{
-      palette: {
-        primary: {
-          main: "#a1a1a1"
-        }
-      }
-    }}>
       <Box 
         component="form" 
         height={500}
@@ -18,13 +19,7 @@ export default function RegisterComponent() {
         display={'flex'}
         my={4}
         alignItems={"center"}
-        sx={{
-          display: "flex", 
-          flexDirection: "column", 
-          justifyContent: "center", 
-          alignItems: "center", 
-          border: "2px solid grey"
-        }}
+        sx={customBox}
         >
         <Typography variant="h5" component="div" sx={{mb: 2}}>
           Sign Up
@@ -60,6 +55,5 @@ export default function RegisterComponent() {
           Submit
         </Button>
       </Box>
-    </ThemeProvider>
   )
 }

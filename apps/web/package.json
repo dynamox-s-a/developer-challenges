@@ -10,9 +10,11 @@
     "format": "biome format --write"
   },
   "dependencies": {
+    "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/material": "^5.18.0",
+    "@mui/material-nextjs": "^7.3.7",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
