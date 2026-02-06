@@ -1,14 +1,14 @@
 {
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "email": "admin@events.com",
       "password": "admin123",
       "role": "admin",
       "name": "Administrador"
     },
     {
-      "id": 2,
+      "id": "2",
       "email": "reader@events.com",
       "password": "reader123",
       "role": "reader",
@@ -17,20 +17,77 @@
   ],
   "events": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Conferência Tech 2026",
-      "date": "2026-03-15T09:00:00",
+      "date": "2026-03-01T12:00:00.000Z",
       "location": "São Paulo Convention Center",
-      "description": "A maior conferência de tecnologia do Brasil, reunindo profissionais e empresas inovadoras para discutir as últimas tendências em desenvolvimento de software e inteligência artificial.",
+      "description": "A maior conferência de tecnologia do Brasil, reunindo profissionais e empresas inovadoras para discutir tendências em software e inteligência artificial.",
       "category": "Conferência"
     },
     {
-      "id": 2,
-      "name": "Workshop de React Avançado",
-      "date": "2026-02-20T14:00:00",
-      "location": "Online via Zoom",
-      "description": "Workshop intensivo sobre técnicas avançadas de React, incluindo Server Components, Suspense, hooks personalizados e otimização de performance para aplicações de grande escala.",
+      "id": "2",
+      "name": "Workshop Avançado de React",
+      "date": "2026-04-15T14:00:00.000Z",
+      "location": "Online",
+      "description": "Workshop prático focado em padrões avançados, performance e boas práticas com React e TypeScript.",
       "category": "Workshop"
+    },
+    {
+      "id": "3",
+      "name": "Webinar: IA no Dia a Dia do Dev",
+      "date": "2026-05-10T18:00:00.000Z",
+      "location": "Online",
+      "description": "Webinar sobre como utilizar inteligência artificial para aumentar a produtividade no desenvolvimento de software.",
+      "category": "Webinar"
+    },
+    {
+      "id": "4",
+      "name": "Encontro de Networking Tech SP",
+      "date": "2026-06-05T22:00:00.000Z",
+      "location": "Coworking Vila Olímpia",
+      "description": "Evento presencial para networking entre desenvolvedores, designers e gestores de tecnologia.",
+      "category": "Networking"
+    },
+    {
+      "id": "5",
+      "name": "Summit de Arquitetura Front-end",
+      "date": "2026-07-20T13:00:00.000Z",
+      "location": "Centro de Eventos Rio",
+      "description": "Evento focado em arquiteturas modernas de front-end, micro-frontends e escalabilidade.",
+      "category": "Conferência"
+    },
+
+    {
+      "id": "6",
+      "name": "Workshop de Next.js na Prática",
+      "date": "2025-11-10T14:00:00.000Z",
+      "location": "Online",
+      "description": "Workshop intensivo sobre Next.js, App Router e boas práticas para aplicações modernas.",
+      "category": "Workshop"
+    },
+    {
+      "id": "7",
+      "name": "Webinar: Introdução ao TypeScript",
+      "date": "2025-10-02T18:00:00.000Z",
+      "location": "Online",
+      "description": "Webinar introdutório para desenvolvedores que desejam começar a usar TypeScript em seus projetos.",
+      "category": "Webinar"
+    },
+    {
+      "id": "8",
+      "name": "Meetup Front-end Brasil",
+      "date": "2025-09-15T22:00:00.000Z",
+      "location": "Auditório Tech Hub SP",
+      "description": "Meetup com palestras rápidas e troca de experiências entre profissionais de front-end.",
+      "category": "Networking"
+    },
+    {
+      "id": "9",
+      "name": "Evento Especial: Tendências Tech 2025",
+      "date": "2025-08-01T13:00:00.000Z",
+      "location": "Online",
+      "description": "Evento especial abordando as principais tendências tecnológicas que marcaram o ano de 2025.",
+      "category": "Outro"
     }
   ]
 }
