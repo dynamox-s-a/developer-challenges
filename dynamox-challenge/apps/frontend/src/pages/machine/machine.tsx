@@ -17,11 +17,11 @@ import { useCreateMachineMutation, useUpdateMachineMutation } from '@/store/mach
 export default function MachinePage(): React.JSX.Element {
   const [searchQuery, setSearchQuery] = React.useState('');
 
-  // Modals state
+
   const [isFormModalOpen, setIsFormModalOpen] = React.useState(false);
   const [selectedMachine, setSelectedMachine] = React.useState<Machine | undefined>(undefined);
 
-  // Snackbar state
+
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState('');
   const [snackbarSeverity, setSnackbarSeverity] = React.useState<AlertColor>('error');
@@ -70,7 +70,7 @@ export default function MachinePage(): React.JSX.Element {
       }
       handleCloseForm();
     } catch (error) {
-      console.error('Failed to save machine', error);
+
       showError('Failed to save machine. Please try again.');
     }
   };

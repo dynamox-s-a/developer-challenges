@@ -78,7 +78,6 @@ class AuthClient {
         }
       };
     } catch (error) {
-      console.error('Error fetching user:', error);
       return { data: null, error: 'Failed to fetch user data' };
     }
   }

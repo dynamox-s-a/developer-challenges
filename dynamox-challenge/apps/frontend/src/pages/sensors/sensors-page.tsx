@@ -35,7 +35,7 @@ export default function SensorsPage(): React.JSX.Element {
       try {
         await deleteSensor(id).unwrap();
       } catch (err) {
-        console.error('Failed to delete sensor:', err);
+
       }
     }
   };

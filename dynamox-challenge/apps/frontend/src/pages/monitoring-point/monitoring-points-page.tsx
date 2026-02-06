@@ -14,7 +14,7 @@ import { ConfirmationDialog } from '@/components/shared/confirmation-dialog';
 import { MonitoringPoint } from '@/types/monitoring-point';
 
 export default function MonitoringPointsPage(): React.JSX.Element {
-  // Pagination state
+
   const [page, setPage] = React.useState(1);
   const [limit, setLimit] = React.useState(5);
   const [sortBy, setSortBy] = React.useState('id');
@@ -29,7 +29,7 @@ export default function MonitoringPointsPage(): React.JSX.Element {
   const [isFormModalOpen, setIsFormModalOpen] = React.useState(false);
   const [selectedMonitoringPoint, setSelectedMonitoringPoint] = React.useState<MonitoringPoint | null>(null);
 
-  // Confirmation Dialog State
+
   const [confirmationDialog, setConfirmationDialog] = React.useState<{
     open: boolean;
     title: string;
@@ -43,7 +43,7 @@ export default function MonitoringPointsPage(): React.JSX.Element {
     onConfirm: () => { }
   });
 
-  // Snackbar state
+
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState('');
   const [snackbarSeverity, setSnackbarSeverity] = React.useState<'success' | 'error'>('success');
@@ -72,7 +72,7 @@ export default function MonitoringPointsPage(): React.JSX.Element {
       setIsFormModalOpen(false);
       setSelectedMonitoringPoint(null);
     } catch (err) {
-      console.error(err);
+
       showError('Failed to save Monitoring Point');
     }
   };
@@ -99,7 +99,7 @@ export default function MonitoringPointsPage(): React.JSX.Element {
           showSuccess('Monitoring Point deleted successfully');
           setConfirmationDialog({ ...confirmationDialog, open: false });
         } catch (err) {
-          console.error(err);
+
           showError('Failed to delete Monitoring Point');
         }
       }
@@ -112,7 +112,7 @@ export default function MonitoringPointsPage(): React.JSX.Element {
 
   const handleRowsPerPageChange = (newLimit: number) => {
     setLimit(newLimit);
-    setPage(1); // Reset to first page when changing limit
+    setPage(1);
   };
 
   const handleSortChange = (newSortBy: string, newSortOrder: 'asc' | 'desc') => {
