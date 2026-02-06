@@ -7,7 +7,8 @@
     "build": "tsc -p tsconfig.json",
     "start": "node dist/server.js",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "prisma studio",
+    "prisma:seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@fastify/cors": "^11.2.0",
@@ -23,7 +24,9 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@faker-js/faker": "^10.2.0",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/pg": "^8.16.0",
     "prisma": "^7.3.0",
     "tsx": "^4.21.0"
   }
