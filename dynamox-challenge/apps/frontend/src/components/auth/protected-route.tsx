@@ -4,11 +4,16 @@ import { useSelector } from 'react-redux';
 import type { RootState } from '@/store/store';
 import { paths } from '@/paths';
 
-export default function NotFound(): React.JSX.Element {
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+}
+
+export function ProtectedRoute({ children }: ProtectedRouteProps): React.JSX.Element {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
-  // Redirect to dashboard if authenticated, otherwise to sign-up
-  const redirectPath = isAuthenticated ? paths.dashboard.overview : paths.auth.signUp;
+  if (!isAuthenticated) {
+    return <Navigate to={paths.auth.signIn} replace />;
+  }
 
-  return <Navigate to={redirectPath} replace />;
+  return <>{children}</>;
 }

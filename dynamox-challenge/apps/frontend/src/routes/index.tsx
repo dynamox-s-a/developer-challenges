@@ -2,19 +2,17 @@ import * as React from 'react';
 import type { RouteObject } from 'react-router-dom';
 import { Navigate, Outlet } from 'react-router-dom';
 import { paths } from '@/paths';
+import { ProtectedRoute } from '@/components/auth/protected-route';
 
-// Layouts
 const DashboardLayout = React.lazy(() => import('@/layouts/dashboard-layout'));
 const AuthLayout = React.lazy(() => import('@/components/auth/layout').then(m => ({ default: m.Layout })));
 
-// Pages
 const SignInPage = React.lazy(() => import('@/pages/auth/sign-in'));
 const SignUpPage = React.lazy(() => import('@/pages/auth/sign-up'));
 const AccountPage = React.lazy(() => import('@/pages/dashboard/account'));
 const OverviewPage = React.lazy(() => import('@/pages/dashboard/overview'));
 const NotFoundPage = React.lazy(() => import('@/pages/not-found'));
 const MachinePage = React.lazy(() => import('@/pages/machine/machine'));
-
 const MachineDetailPage = React.lazy(() => import('@/pages/machine/machine-detail-page'));
 const MonitoringPointsPage = React.lazy(() => import('@/pages/monitoring-point/monitoring-points-page'));
 const SensorsPage = React.lazy(() => import('@/pages/sensors/sensors-page'));
@@ -40,7 +38,11 @@ export const routes: RouteObject[] = [
   },
   {
     path: 'dashboard',
-    element: <DashboardLayout />,
+    element: (
+      <ProtectedRoute>
+        <DashboardLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,
