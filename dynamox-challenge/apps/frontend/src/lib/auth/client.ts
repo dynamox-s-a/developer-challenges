@@ -2,20 +2,6 @@
 
 import type { User } from '@/types/user';
 
-function generateToken(): string {
-  const arr = new Uint8Array(12);
-  globalThis.crypto.getRandomValues(arr);
-  return Array.from(arr, (v) => v.toString(16).padStart(2, '0')).join('');
-}
-
-const user = {
-  id: 'USR-000',
-  avatar: '/assets/avatar.png',
-  firstName: 'Sofia',
-  lastName: 'Rivers',
-  email: 'sofia@devias.io',
-} satisfies User;
-
 export interface SignUpParams {
   firstName: string;
   lastName: string;
@@ -38,33 +24,15 @@ export interface ResetPasswordParams {
 
 class AuthClient {
   async signUp(_: SignUpParams): Promise<{ error?: string }> {
-    // Make API request
-
-    // We do not handle the API, so we'll just generate a token and store it in localStorage.
-    const token = generateToken();
-    localStorage.setItem('custom-auth-token', token);
-
-    return {};
+    return { error: 'Sign up should be handled by Redux RTK Query' };
   }
 
   async signInWithOAuth(_: SignInWithOAuthParams): Promise<{ error?: string }> {
     return { error: 'Social authentication not implemented' };
   }
 
-  async signInWithPassword(params: SignInWithPasswordParams): Promise<{ error?: string }> {
-    const { email, password } = params;
-
-    // Make API request
-
-    // We do not handle the API, so we'll check if the credentials match with the hardcoded ones.
-    if (email !== 'sofia@devias.io' || password !== 'Secret1') {
-      return { error: 'Invalid credentials' };
-    }
-
-    const token = generateToken();
-    localStorage.setItem('custom-auth-token', token);
-
-    return {};
+  async signInWithPassword(_: SignInWithPasswordParams): Promise<{ error?: string }> {
+    return { error: 'Sign in should be handled by Redux RTK Query' };
   }
 
   async resetPassword(_: ResetPasswordParams): Promise<{ error?: string }> {
@@ -76,21 +44,47 @@ class AuthClient {
   }
 
   async getUser(): Promise<{ data?: User | null; error?: string }> {
-    // Make API request
-
-    // We do not handle the API, so just check if we have a token in localStorage.
-    const token = localStorage.getItem('custom-auth-token');
+    // Check if we have a token in localStorage (same key as Redux uses)
+    const token = localStorage.getItem('token');
 
     if (!token) {
       return { data: null };
     }
 
-    return { data: user };
+    // Try to fetch user data from the API
+    try {
+      const response = await fetch('http://localhost:4000/api/auth/profile', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        // Token is invalid, remove it
+        localStorage.removeItem('token');
+        return { data: null };
+      }
+
+      const userData = await response.json();
+
+      // Transform backend user format to frontend User type
+      return {
+        data: {
+          id: userData.id.toString(),
+          email: userData.email,
+          firstName: userData.name?.split(' ')[0] || '',
+          lastName: userData.name?.split(' ').slice(1).join(' ') || '',
+          avatar: userData.avatar || undefined,
+        }
+      };
+    } catch (error) {
+      console.error('Error fetching user:', error);
+      return { data: null, error: 'Failed to fetch user data' };
+    }
   }
 
   async signOut(): Promise<{ error?: string }> {
-    localStorage.removeItem('custom-auth-token');
-
+    localStorage.removeItem('token');
     return {};
   }
 }

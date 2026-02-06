@@ -17,7 +17,7 @@ export function GuestGuard({ children }: GuestGuardProps): React.JSX.Element | n
 
   React.useEffect(() => {
     if (isAuthenticated) {
-      navigate(paths.dashboard.overview, { replace: true });
+      navigate(paths.machine.list, { replace: true });
     } else {
       setIsChecking(false);
     }

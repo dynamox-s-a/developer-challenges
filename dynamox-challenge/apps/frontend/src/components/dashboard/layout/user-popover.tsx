@@ -50,7 +50,7 @@ export function UserPopover({ anchorEl, onClose, open }: UserPopoverProps): Reac
       </Box>
       <Divider />
       <MenuList disablePadding sx={{ p: '8px', '& .MuiMenuItem-root': { borderRadius: 1 } }}>
-        <MenuItem component={RouterLink} to={paths.dashboard.account} onClick={onClose}>
+        <MenuItem component={RouterLink} to={paths.account} onClick={onClose}>
           <ListItemIcon>
             <UserIcon fontSize="var(--icon-fontSize-md)" />
           </ListItemIcon>

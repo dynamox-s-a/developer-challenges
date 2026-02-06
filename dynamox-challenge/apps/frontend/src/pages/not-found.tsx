@@ -7,8 +7,7 @@ import { paths } from '@/paths';
 export default function NotFound(): React.JSX.Element {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
-  // Redirect to dashboard if authenticated, otherwise to sign-up
-  const redirectPath = isAuthenticated ? paths.dashboard.overview : paths.auth.signUp;
+  const redirectPath = isAuthenticated ? paths.machine.list : paths.auth.signUp;
 
   return <Navigate to={redirectPath} replace />;
 }

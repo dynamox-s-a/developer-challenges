@@ -86,7 +86,7 @@ export default function MachineDetailPage(): React.JSX.Element {
   console.log('Is array?', Array.isArray(machine.monitoringPoints));
 
   const handleBack = () => {
-    navigate('/dashboard/machine');
+    navigate(paths.machine.list);
   };
 
   const showSuccess = (message: string) => {

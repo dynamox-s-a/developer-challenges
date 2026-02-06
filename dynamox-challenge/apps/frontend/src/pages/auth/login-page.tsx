@@ -29,7 +29,7 @@ export default function LoginPage(): React.JSX.Element {
     try {
       const response = await login({ email, password }).unwrap();
       dispatch(setCredentials(response));
-      navigate(paths.dashboard.overview);
+      navigate(paths.machine.list);
     } catch (err: any) {
       setError(err?.data?.message || 'Login failed. Please check your credentials.');
     }

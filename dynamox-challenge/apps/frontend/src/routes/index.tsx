@@ -10,17 +10,15 @@ const AuthLayout = React.lazy(() => import('@/components/auth/layout').then(m =>
 const SignInPage = React.lazy(() => import('@/pages/auth/sign-in'));
 const SignUpPage = React.lazy(() => import('@/pages/auth/sign-up'));
 const AccountPage = React.lazy(() => import('@/pages/dashboard/account'));
-const OverviewPage = React.lazy(() => import('@/pages/dashboard/overview'));
 const NotFoundPage = React.lazy(() => import('@/pages/not-found'));
 const MachinePage = React.lazy(() => import('@/pages/machine/machine'));
 const MachineDetailPage = React.lazy(() => import('@/pages/machine/machine-detail-page'));
 const MonitoringPointsPage = React.lazy(() => import('@/pages/monitoring-point/monitoring-points-page'));
-const SensorsPage = React.lazy(() => import('@/pages/sensors/sensors-page'));
 
 export const routes: RouteObject[] = [
   {
     path: '/',
-    element: <Navigate to={paths.dashboard.overview} replace />,
+    element: <Navigate to={paths.machine.list} replace />,
   },
   {
     path: 'auth',
@@ -37,7 +35,7 @@ export const routes: RouteObject[] = [
     ],
   },
   {
-    path: 'dashboard',
+    path: 'machine',
     element: (
       <ProtectedRoute>
         <DashboardLayout />
@@ -46,30 +44,38 @@ export const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <OverviewPage />,
-      },
-      {
-        path: 'machine',
         element: <MachinePage />,
       },
       {
-        path: 'machine/:id',
+        path: ':id',
         element: <MachineDetailPage />,
       },
+    ],
+  },
+  {
+    path: 'monitoring-points',
+    element: (
+      <ProtectedRoute>
+        <DashboardLayout />
+      </ProtectedRoute>
+    ),
+    children: [
       {
-        path: 'turbines/:id',
-        element: <MachineDetailPage />,
-      },
-      {
-        path: 'monitoring-points',
+        index: true,
         element: <MonitoringPointsPage />,
       },
+    ],
+  },
+  {
+    path: 'account',
+    element: (
+      <ProtectedRoute>
+        <DashboardLayout />
+      </ProtectedRoute>
+    ),
+    children: [
       {
-        path: 'sensors',
-        element: <SensorsPage />,
-      },
-      {
-        path: 'account',
+        index: true,
         element: <AccountPage />,
       },
     ],

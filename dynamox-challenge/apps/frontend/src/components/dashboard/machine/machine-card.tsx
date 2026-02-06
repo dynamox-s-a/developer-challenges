@@ -85,7 +85,7 @@ export function MachineCard({ machine }: MachineCardProps): React.JSX.Element {
             fullWidth
             size="large"
             endIcon={<ArrowRightIcon />}
-            onClick={() => navigate(paths.dashboard.turbine(machine.id))}
+            onClick={() => navigate(paths.machine.detail(machine.id))}
             sx={{
               py: 1.5,
               borderRadius: 0,
