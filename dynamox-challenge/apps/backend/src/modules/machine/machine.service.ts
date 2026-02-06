@@ -1,4 +1,4 @@
-import { Injectable, ConflictException } from "@nestjs/common";
+import { Injectable, ConflictException, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "../../prisma/prisma.service";
 import { CreateMachineDto } from './dto/create-machine.dto';
 import { UpdateMachineDto } from './dto/update-machine.dto';
@@ -27,15 +27,26 @@ export class MachineService {
     return this.prisma.machine.findMany();
   }
 
-  findOne(id: string) {
+  findOne(id: number) {
     return this.prisma.machine.findUnique({
       where: { id },
+      include: {
+        monitoringPoints: true,
+      },
     });
   }
 
-  async update(id: string, updateMachineDto: UpdateMachineDto) {
+  async update(id: number, updateMachineDto: UpdateMachineDto) {
+    const machine = await this.prisma.machine.findUnique({
+      where: { id },
+    });
+
+    if (!machine) {
+      throw new NotFoundException(`Machine with Id ${id} not found`);
+    }
+
     if (updateMachineDto.name) {
-      const machine = await this.prisma.machine.findFirst({
+      const machineWithSameName = await this.prisma.machine.findFirst({
         where: {
           name: updateMachineDto.name,
           NOT: {
@@ -44,7 +55,7 @@ export class MachineService {
         },
       });
 
-      if (machine) {
+      if (machineWithSameName) {
         throw new ConflictException('Machine with this name already exists');
       }
     }
@@ -55,7 +66,25 @@ export class MachineService {
     });
   }
 
-  remove(id: string) {
+  async remove(id: number) {
+    const monitoringPointsCount = await this.prisma.monitoringPoint.count({
+      where: {
+        machineId: id,
+      },
+    });
+
+    if (monitoringPointsCount > 0) {
+      throw new ConflictException('This Machine have monitoring Point associated!');
+    }
+
+    const machine = await this.prisma.machine.findUnique({
+      where: { id },
+    });
+
+    if (!machine) {
+      throw new ConflictException(`This Machine with Id ${id} don't exists!`);
+    }
+
     return this.prisma.machine.delete({
       where: { id },
     });

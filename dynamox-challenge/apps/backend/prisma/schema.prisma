@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
@@ -19,11 +19,28 @@ datasource db {
 
 
 
+
 model Machine {
-  id String @id @default(uuid())
+  id Int @id @default(autoincrement())
   name String
   type String
+  monitoringPoints MonitoringPoint[]
   // userId String
-  
   // user User @relation(fields: [userId], references: [id])
+}
+
+model MonitoringPoint {
+  id Int @id @default(autoincrement())
+  name String
+  machineId Int
+  machine Machine @relation(fields: [machineId], references: [id])
+  sensors Sensor[]
+}
+
+
+model Sensor {
+  id Int @id @default(autoincrement())
+  model String
+  monitoringPointId Int
+  monitoringPoint MonitoringPoint @relation(fields: [monitoringPointId], references: [id])
 }

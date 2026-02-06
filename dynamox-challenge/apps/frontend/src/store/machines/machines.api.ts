@@ -12,8 +12,9 @@ export const machinesApi = apiSlice.injectEndpoints({
       providesTags: ['Machines'],
     }),
 
-    getMachine: builder.query<Machine, string>({
+    getMachine: builder.query<Machine, number>({
       query: (id) => `${machinesUrl}/${id}`,
+      providesTags: ['Machines'],
     }),
 
     createMachine: builder.mutation<Machine, Partial<Machine>>({
@@ -34,7 +35,7 @@ export const machinesApi = apiSlice.injectEndpoints({
       invalidatesTags: ['Machines'],
     }),
 
-    deleteMachine: builder.mutation<void, string>({
+    deleteMachine: builder.mutation<void, number>({
       query: (id) => ({
         url: `${machinesUrl}/${id}`,
         method: 'DELETE',

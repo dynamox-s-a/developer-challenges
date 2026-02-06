@@ -1,14 +1,9 @@
-// 1. Adicione esta linha no topo!
-import 'dotenv/config'; 
-import { defineConfig, env } from "@prisma/config";
+import { defineConfig } from '@prisma/config';
+import 'dotenv/config';
 
 export default defineConfig({
-  schema: "prisma/schema.prisma",
-  migrations: {
-    path: "prisma/migrations",
-  },
+  schema: 'prisma/schema.prisma',
   datasource: {
-    // Agora o env('DATABASE_URL') vai funcionar porque o dotenv carregou o arquivo antes
-    url: env("DATABASE_URL"),
+    url: process.env.DATABASE_URL,
   },
 });

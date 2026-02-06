@@ -9,16 +9,17 @@ import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { EngineIcon } from '@phosphor-icons/react/dist/ssr/Engine';
+import { useNavigate } from 'react-router-dom';
 
 import type { Machine } from '@/types/machine';
 
 export interface MachineCardProps {
   machine: Machine;
-  onEdit: () => void;
-  onDelete: () => void;
 }
 
-export function MachineCard({ machine, onEdit, onDelete }: MachineCardProps): React.JSX.Element {
+export function MachineCard({ machine }: MachineCardProps): React.JSX.Element {
+  const navigate = useNavigate();
+
   return (
     <Grid size={{ md: 4, sm: 6, xs: 12 }}>
       <Card sx={{ minWidth: 250 }}>
@@ -60,9 +61,8 @@ export function MachineCard({ machine, onEdit, onDelete }: MachineCardProps): Re
             </Box>
           </Box>
         </CardContent>
-        <CardActions sx={{ display: 'flex', justifyContent: 'end' }}>
-          <Button size="small" onClick={onEdit}>Edit</Button>
-          <Button size="small" onClick={onDelete} color="error">Delete</Button>
+        <CardActions sx={{ display: 'flex', width: 100 }}>
+          <Button size="small" onClick={() => navigate(`/dashboard/machine/${machine.id}`)}>Details</Button>
         </CardActions>
       </Card>
     </Grid>

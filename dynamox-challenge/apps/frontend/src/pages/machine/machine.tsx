@@ -10,17 +10,15 @@ import { useGetMachinesQuery } from '@/store/machines/machines.api';
 
 
 
-import { MachineDeleteModal } from '@/components/dashboard/machine/machine-delete-modal';
 import { MachineFormModal } from '@/components/dashboard/machine/machine-form-modal';
 import { Machine } from '@/types/machine';
-import { useCreateMachineMutation, useDeleteMachineMutation, useUpdateMachineMutation } from '@/store/machines/machines.api';
+import { useCreateMachineMutation, useUpdateMachineMutation } from '@/store/machines/machines.api';
 
 export default function MachinePage(): React.JSX.Element {
   const [searchQuery, setSearchQuery] = React.useState('');
 
   // Modals state
   const [isFormModalOpen, setIsFormModalOpen] = React.useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
   const [selectedMachine, setSelectedMachine] = React.useState<Machine | undefined>(undefined);
 
   // Snackbar state
@@ -31,7 +29,6 @@ export default function MachinePage(): React.JSX.Element {
   const { data: machines } = useGetMachinesQuery();
   const [createMachine] = useCreateMachineMutation();
   const [updateMachine] = useUpdateMachineMutation();
-  const [deleteMachine] = useDeleteMachineMutation();
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -78,33 +75,6 @@ export default function MachinePage(): React.JSX.Element {
     }
   };
 
-  const handleOpenDelete = (machine: Machine) => {
-    setSelectedMachine(machine);
-    setIsDeleteModalOpen(true);
-  };
-
-  const handleCloseDelete = () => {
-    setIsDeleteModalOpen(false);
-  };
-
-  const handleConfirmDelete = async () => {
-    if (selectedMachine) {
-      try {
-        await deleteMachine(selectedMachine.id).unwrap();
-        showSuccess('Machine deleted successfully');
-        handleCloseDelete();
-      } catch (error) {
-        console.error('Failed to delete machine', error);
-        showError('Failed to delete machine. Please try again.');
-      }
-    }
-  };
-
-  const handleOpenEdit = (machine: Machine) => {
-    setSelectedMachine(machine);
-    setIsFormModalOpen(true);
-  };
-
   const filteredMachines = machines?.filter((machine) =>
     machine.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -117,10 +87,9 @@ export default function MachinePage(): React.JSX.Element {
           <MachineCard
             key={machine.id}
             machine={machine}
-            onEdit={() => handleOpenEdit(machine)}
-            onDelete={() => handleOpenDelete(machine)}
           />
         ))}
+
       </Grid>
 
       {/* Modals */}
@@ -128,15 +97,8 @@ export default function MachinePage(): React.JSX.Element {
         open={isFormModalOpen}
         onClose={handleCloseForm}
         onSubmit={handleSubmitForm}
-        machine={selectedMachine}
+        machine={undefined}
         machines={machines}
-      />
-
-      <MachineDeleteModal
-        open={isDeleteModalOpen}
-        onClose={handleCloseDelete}
-        onConfirm={handleConfirmDelete}
-        machineName={selectedMachine?.name || ''}
       />
 
       {/* Action Alerts */}

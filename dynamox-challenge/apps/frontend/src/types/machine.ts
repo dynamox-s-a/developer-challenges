@@ -1,6 +1,9 @@
+import { MonitoringPoint } from './monitoring-point';
+
 export interface Machine {
-  id: string;
+  id: number;
   name: string;
   type: string;
   status?: string;
+  monitoringPoints?: MonitoringPoint[];
 }

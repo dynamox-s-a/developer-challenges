@@ -1,5 +1,4 @@
 import { IsNotEmpty, IsString } from 'class-validator';
-import type { MachineType } from '../../../shared/machine-types';
 
 export class CreateMachineDto {
   @IsNotEmpty()
@@ -8,7 +7,5 @@ export class CreateMachineDto {
 
   @IsNotEmpty()
   @IsString()
-  type: MachineType;
-
-
+  type: string;
 }

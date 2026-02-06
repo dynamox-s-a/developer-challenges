@@ -15,6 +15,9 @@ const OverviewPage = React.lazy(() => import('@/pages/dashboard/overview'));
 const NotFoundPage = React.lazy(() => import('@/pages/not-found'));
 const MachinePage = React.lazy(() => import('@/pages/machine/machine'));
 
+const MachineDetailPage = React.lazy(() => import('@/pages/machine/machine-detail-page'));
+const MonitoringPointsPage = React.lazy(() => import('@/pages/monitoring-point/monitoring-points-page'));
+
 export const routes: RouteObject[] = [
   {
     path: '/',
@@ -45,6 +48,14 @@ export const routes: RouteObject[] = [
       {
         path: 'machine',
         element: <MachinePage />,
+      },
+      {
+        path: 'machine/:id',
+        element: <MachineDetailPage />,
+      },
+      {
+        path: 'monitoring-points',
+        element: <MonitoringPointsPage />,
       },
       {
         path: 'account',
