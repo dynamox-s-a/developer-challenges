@@ -5,6 +5,8 @@ export const paths = {
     overview: '/dashboard',
     account: '/dashboard/account',
     machine: '/dashboard/machine',
+    turbine: (id: number) => `/dashboard/turbines/${id}`,
   },
   errors: { notFound: '/errors/not-found' },
 } as const;
+

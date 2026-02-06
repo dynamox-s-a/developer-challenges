@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
@@ -16,13 +15,16 @@ import Snackbar from '@mui/material/Snackbar';
 
 import { useGetMachineQuery, useDeleteMachineMutation, useUpdateMachineMutation } from '@/store/machines/machines.api';
 import { useCreateMonitoringPointMutation, useUpdateMonitoringPointMutation, useDeleteMonitoringPointMutation } from '@/store/monitoring-points/monitoring-points.api';
-import { MachineDeleteModal } from '@/components/dashboard/machine/machine-delete-modal';
+import { useCreateSensorMutation, useDeleteSensorMutation } from '@/store/sensors/sensors.api';
+import { ConfirmationDialog } from '@/components/shared/confirmation-dialog';
 import { MachineFormModal } from '@/components/dashboard/machine/machine-form-modal';
 import { MonitoringPointFormModal } from '@/components/dashboard/monitoring-point/monitoring-point-form-modal';
 import { MonitoringPointsList } from '@/components/dashboard/monitoring-point/monitoring-point-list';
-import { MonitoringPointDeleteModal } from '@/components/dashboard/monitoring-point/monitoring-point-delete-modal';
+import { SensorListModal } from '@/components/dashboard/sensor/sensor-list-modal';
+import { SensorFormModal } from '@/components/dashboard/sensor/sensor-form-modal';
 import { Machine } from '@/types/machine';
 import { MonitoringPoint } from '@/types/monitoring-point';
+import { Sensor, SensorModel } from '@/types/sensor';
 import { Box } from '@mui/system';
 
 export default function MachineDetailPage(): React.JSX.Element {
@@ -39,13 +41,36 @@ export default function MachineDetailPage(): React.JSX.Element {
   const [updateMonitoringPoint] = useUpdateMonitoringPointMutation();
   const [deleteMonitoringPoint] = useDeleteMonitoringPointMutation();
 
+  // Sensor Mutations
+  const [createSensor] = useCreateSensorMutation();
+  const [deleteSensor] = useDeleteSensorMutation();
+
+  // Machine Modals State
   const [isFormModalOpen, setIsFormModalOpen] = React.useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
 
   // Monitoring Point Modals State
   const [isMPFormModalOpen, setIsMPFormModalOpen] = React.useState(false);
-  const [isMPDeleteModalOpen, setIsMPDeleteModalOpen] = React.useState(false);
   const [selectedMonitoringPoint, setSelectedMonitoringPoint] = React.useState<MonitoringPoint | null>(null);
+
+  // Sensor Modal State
+  const [isSensorListModalOpen, setIsSensorListModalOpen] = React.useState(false);
+  const [isSensorFormModalOpen, setIsSensorFormModalOpen] = React.useState(false);
+  const [selectedSensor, setSelectedSensor] = React.useState<Sensor | null>(null);
+
+  // Confirmation Dialog State
+  const [confirmationDialog, setConfirmationDialog] = React.useState<{
+    open: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+    severity?: 'error' | 'warning' | 'info';
+  }>({
+    open: false,
+    title: '',
+    message: '',
+    onConfirm: () => { }
+  });
 
   // Snackbar state
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -54,6 +79,11 @@ export default function MachineDetailPage(): React.JSX.Element {
 
   if (isLoading) return <Typography>Loading...</Typography>;
   if (error || !machine) return <Typography>Error loading machine</Typography>;
+
+  // Debug: Log the machine data to see what we're getting
+  console.log('Machine data:', machine);
+  console.log('MonitoringPoints:', machine.monitoringPoints);
+  console.log('Is array?', Array.isArray(machine.monitoringPoints));
 
   const handleBack = () => {
     navigate('/dashboard/machine');
@@ -114,33 +144,82 @@ export default function MachineDetailPage(): React.JSX.Element {
     }
   };
 
-  const handleDeleteMP = async () => {
-    if (!selectedMonitoringPoint) return;
-    try {
-      await deleteMonitoringPoint(selectedMonitoringPoint.id).unwrap();
-      showSuccess('Monitoring Point deleted successfully');
-      setIsMPDeleteModalOpen(false);
-      setSelectedMonitoringPoint(null);
-    } catch (err) {
-      console.error(err);
-      showError('Failed to delete Monitoring Point');
-    }
-  };
+
 
   const openCreateMPModal = () => {
     setSelectedMonitoringPoint(null);
     setIsMPFormModalOpen(true);
-  }
+  };
 
   const openEditMPModal = (mp: MonitoringPoint) => {
     setSelectedMonitoringPoint(mp);
     setIsMPFormModalOpen(true);
-  }
+  };
 
   const openDeleteMPModal = (mp: MonitoringPoint) => {
+    setConfirmationDialog({
+      open: true,
+      title: 'Delete Monitoring Point',
+      message: `Are you sure you want to delete monitoring point "${mp.name}"? This action cannot be undone.`,
+      severity: 'error',
+      onConfirm: async () => {
+        try {
+          await deleteMonitoringPoint(mp.id).unwrap();
+          showSuccess('Monitoring Point deleted successfully');
+          setConfirmationDialog({ ...confirmationDialog, open: false });
+        } catch (err) {
+          console.error(err);
+          showError('Failed to delete Monitoring Point');
+        }
+      }
+    });
+  };
+
+  const openSensorListModal = (mp: MonitoringPoint) => {
     setSelectedMonitoringPoint(mp);
-    setIsMPDeleteModalOpen(true);
-  }
+    setIsSensorListModalOpen(true);
+  };
+
+  // Sensor Handlers
+  const handleAddSensor = () => {
+    setIsSensorFormModalOpen(true);
+  };
+
+  const handleDeleteSensor = (sensor: Sensor) => {
+    setSelectedSensor(sensor);
+    setConfirmationDialog({
+      open: true,
+      title: 'Delete Sensor',
+      message: `Are you sure you want to delete sensor "${sensor.model}"? This action cannot be undone.`,
+      severity: 'error',
+      onConfirm: async () => {
+        try {
+          await deleteSensor(sensor.id).unwrap();
+          showSuccess('Sensor deleted successfully');
+          setConfirmationDialog({ ...confirmationDialog, open: false });
+          setSelectedSensor(null);
+        } catch (err) {
+          console.error(err);
+          showError('Failed to delete sensor');
+        }
+      }
+    });
+  };
+
+  const handleCreateSensor = async (data: { model: SensorModel }) => {
+    if (!selectedMonitoringPoint) return;
+    try {
+      await createSensor({
+        model: data.model,
+        monitoringPointId: selectedMonitoringPoint.id
+      }).unwrap();
+      showSuccess('Sensor created successfully');
+      setIsSensorFormModalOpen(false);
+    } catch (err) {
+      console.error(err);
+      showError('Failed to create sensor');
+    }
+  };
 
   return (
     <Stack spacing={3}>
@@ -210,6 +289,7 @@ export default function MachineDetailPage(): React.JSX.Element {
         showMachineColumn={false}
         onEdit={openEditMPModal}
         onDelete={openDeleteMPModal}
+        onViewSensor={openSensorListModal}
       />
 
       {/* Modals */}
@@ -220,11 +300,17 @@ export default function MachineDetailPage(): React.JSX.Element {
         machine={machine}
       />
 
-      <MachineDeleteModal
+      <ConfirmationDialog
         open={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
-        onConfirm={handleDelete}
-        machineName={machine.name}
+        onConfirm={async () => {
+          await handleDelete();
+          setIsDeleteModalOpen(false);
+        }}
+        title="Delete Machine"
+        message={`Are you sure you want to delete machine "${machine.name}"? This action cannot be undone.`}
+        severity="error"
+        confirmText="Delete"
       />
 
       <MonitoringPointFormModal
@@ -236,11 +322,34 @@ export default function MachineDetailPage(): React.JSX.Element {
         machines={[machine]} // Pass current machine only, to populate display (though locked)
       />
 
-      <MonitoringPointDeleteModal
-        open={isMPDeleteModalOpen}
-        onClose={() => setIsMPDeleteModalOpen(false)}
-        onConfirm={handleDeleteMP}
-        monitoringPoint={selectedMonitoringPoint}
+      {/* Sensor Modals */}
+      {selectedMonitoringPoint && (
+        <>
+          <SensorListModal
+            open={isSensorListModalOpen}
+            onClose={() => {
+              setIsSensorListModalOpen(false);
+              setSelectedMonitoringPoint(null);
+            }}
+            monitoringPoint={selectedMonitoringPoint}
+            machine={machine}
+            onAddSensor={handleAddSensor}
+            onDeleteSensor={handleDeleteSensor}
+          />
+
+          <SensorFormModal
+            open={isSensorFormModalOpen}
+            onClose={() => setIsSensorFormModalOpen(false)}
+            onSubmit={handleCreateSensor}
+            monitoringPoint={selectedMonitoringPoint}
+            machine={machine}
+          />
+        </>
+      )}
+
+      <ConfirmationDialog
+        {...confirmationDialog}
+        onClose={() => setConfirmationDialog({ ...confirmationDialog, open: false })}
       />
 
       <Snackbar

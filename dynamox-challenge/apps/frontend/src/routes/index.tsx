@@ -17,6 +17,7 @@ const MachinePage = React.lazy(() => import('@/pages/machine/machine'));
 
 const MachineDetailPage = React.lazy(() => import('@/pages/machine/machine-detail-page'));
 const MonitoringPointsPage = React.lazy(() => import('@/pages/monitoring-point/monitoring-points-page'));
+const SensorsPage = React.lazy(() => import('@/pages/sensors/sensors-page'));
 
 export const routes: RouteObject[] = [
   {
@@ -54,8 +55,16 @@ export const routes: RouteObject[] = [
         element: <MachineDetailPage />,
       },
       {
+        path: 'turbines/:id',
+        element: <MachineDetailPage />,
+      },
+      {
         path: 'monitoring-points',
         element: <MonitoringPointsPage />,
+      },
+      {
+        path: 'sensors',
+        element: <SensorsPage />,
       },
       {
         path: 'account',

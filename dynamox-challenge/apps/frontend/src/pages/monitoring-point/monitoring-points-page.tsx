@@ -10,19 +10,38 @@ import { useGetMonitoringPointsQuery, useCreateMonitoringPointMutation, useUpdat
 import { useGetMachinesQuery } from '@/store/machines/machines.api';
 import { MonitoringPointFormModal } from '@/components/dashboard/monitoring-point/monitoring-point-form-modal';
 import { MonitoringPointsList } from '@/components/dashboard/monitoring-point/monitoring-point-list';
-import { MonitoringPointDeleteModal } from '@/components/dashboard/monitoring-point/monitoring-point-delete-modal';
+import { ConfirmationDialog } from '@/components/shared/confirmation-dialog';
 import { MonitoringPoint } from '@/types/monitoring-point';
 
 export default function MonitoringPointsPage(): React.JSX.Element {
-  const { data: monitoringPoints = [], isLoading, error } = useGetMonitoringPointsQuery();
+  // Pagination state
+  const [page, setPage] = React.useState(1);
+  const [limit, setLimit] = React.useState(5);
+  const [sortBy, setSortBy] = React.useState('id');
+  const [sortOrder, setSortOrder] = React.useState<'asc' | 'desc'>('asc');
+
+  const { data: monitoringPointsData, isLoading, error } = useGetMonitoringPointsQuery({ page, limit, sortBy, sortOrder });
   const { data: machines } = useGetMachinesQuery();
   const [createMonitoringPoint] = useCreateMonitoringPointMutation();
   const [updateMonitoringPoint] = useUpdateMonitoringPointMutation();
   const [deleteMonitoringPoint] = useDeleteMonitoringPointMutation();
 
   const [isFormModalOpen, setIsFormModalOpen] = React.useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
   const [selectedMonitoringPoint, setSelectedMonitoringPoint] = React.useState<MonitoringPoint | null>(null);
+
+  // Confirmation Dialog State
+  const [confirmationDialog, setConfirmationDialog] = React.useState<{
+    open: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+    severity?: 'error' | 'warning' | 'info';
+  }>({
+    open: false,
+    title: '',
+    message: '',
+    onConfirm: () => { }
+  });
 
   // Snackbar state
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -58,19 +77,6 @@ export default function MonitoringPointsPage(): React.JSX.Element {
     }
   };
 
-  const handleDelete = async () => {
-    if (!selectedMonitoringPoint) return;
-    try {
-      await deleteMonitoringPoint(selectedMonitoringPoint.id).unwrap();
-      showSuccess('Monitoring Point deleted successfully');
-      setIsDeleteModalOpen(false);
-      setSelectedMonitoringPoint(null);
-    } catch (err) {
-      console.error(err);
-      showError('Failed to delete Monitoring Point');
-    }
-  };
-
   const openCreateModal = () => {
     setSelectedMonitoringPoint(null);
     setIsFormModalOpen(true);
@@ -82,9 +88,37 @@ export default function MonitoringPointsPage(): React.JSX.Element {
   }
 
   const openDeleteModal = (mp: MonitoringPoint) => {
-    setSelectedMonitoringPoint(mp);
-    setIsDeleteModalOpen(true);
+    setConfirmationDialog({
+      open: true,
+      title: 'Delete Monitoring Point',
+      message: `Are you sure you want to delete monitoring point "${mp.name}"? This action cannot be undone.`,
+      severity: 'error',
+      onConfirm: async () => {
+        try {
+          await deleteMonitoringPoint(mp.id).unwrap();
+          showSuccess('Monitoring Point deleted successfully');
+          setConfirmationDialog({ ...confirmationDialog, open: false });
+        } catch (err) {
+          console.error(err);
+          showError('Failed to delete Monitoring Point');
+        }
+      }
+    });
   }
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleRowsPerPageChange = (newLimit: number) => {
+    setLimit(newLimit);
+    setPage(1); // Reset to first page when changing limit
+  };
+
+  const handleSortChange = (newSortBy: string, newSortOrder: 'asc' | 'desc') => {
+    setSortBy(newSortBy);
+    setSortOrder(newSortOrder);
+  };
 
   if (isLoading) return <Typography>Loading...</Typography>;
   if (error) return <Typography>Error loading monitoring points</Typography>;
@@ -103,10 +137,18 @@ export default function MonitoringPointsPage(): React.JSX.Element {
       </Stack>
 
       <MonitoringPointsList
-        monitoringPoints={monitoringPoints}
+        monitoringPoints={monitoringPointsData?.data || []}
+        total={monitoringPointsData?.total || 0}
+        page={page}
+        limit={limit}
+        sortBy={sortBy}
+        sortOrder={sortOrder}
         showMachineColumn={true}
         onEdit={openEditModal}
         onDelete={openDeleteModal}
+        onPageChange={handlePageChange}
+        onRowsPerPageChange={handleRowsPerPageChange}
+        onSortChange={handleSortChange}
       />
 
       <MonitoringPointFormModal
@@ -117,11 +159,9 @@ export default function MonitoringPointsPage(): React.JSX.Element {
         machines={machines}
       />
 
-      <MonitoringPointDeleteModal
-        open={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
-        onConfirm={handleDelete}
-        monitoringPoint={selectedMonitoringPoint}
+      <ConfirmationDialog
+        {...confirmationDialog}
+        onClose={() => setConfirmationDialog({ ...confirmationDialog, open: false })}
       />
 
       <Snackbar

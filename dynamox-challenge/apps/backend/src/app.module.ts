@@ -2,11 +2,12 @@ import { Module } from '@nestjs/common';
 import { PrismaModule } from './modules/prisma/prisma.module';
 import { MachineModule } from './modules/machine/machine.module';
 import { MonitoringPointModule } from './modules/monitoring-point/monitoring-point.module';
+import { SensorModule } from './modules/sensor/sensor.module';
 
 
 
 @Module({
-  imports: [PrismaModule, MachineModule, MonitoringPointModule],
+  imports: [PrismaModule, MachineModule, MonitoringPointModule, SensorModule],
   controllers: [],
   providers: [],
 })

@@ -24,14 +24,22 @@ export class MachineService {
   }
 
   findAll() {
-    return this.prisma.machine.findMany();
+    return this.prisma.machine.findMany({
+      include: {
+        monitoringPoints: true,
+      },
+    });
   }
 
   findOne(id: number) {
     return this.prisma.machine.findUnique({
       where: { id },
       include: {
-        monitoringPoints: true,
+        monitoringPoints: {
+          include: {
+            sensors: true,
+          },
+        },
       },
     });
   }

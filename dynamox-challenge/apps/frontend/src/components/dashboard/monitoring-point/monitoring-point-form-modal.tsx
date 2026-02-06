@@ -13,10 +13,12 @@ import { z } from 'zod';
 
 import { MonitoringPoint } from '@/types/monitoring-point';
 import { Machine } from '@/types/machine';
+import { SensorModel } from '@/types/sensor';
 
 const schema = z.object({
   name: z.string().min(1, { message: 'Name is required' }),
   machineId: z.number().min(1, { message: 'Machine is required' }),
+  sensorModel: z.nativeEnum(SensorModel).optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -38,19 +40,25 @@ export function MonitoringPointFormModal({
   machines = [],
   preSelectedMachineId
 }: MonitoringPointFormModalProps): React.JSX.Element {
-  const { control, handleSubmit, reset, formState: { errors } } = useForm<FormData>({
+  const { control, handleSubmit, reset, watch, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
       name: '',
       machineId: 0,
+      sensorModel: undefined,
     },
   });
+
+  const selectedMachineId = watch('machineId');
+  const selectedMachine = machines.find(m => m.id === selectedMachineId);
+  const isPumpMachine = selectedMachine?.type === 'Bomba';
 
   React.useEffect(() => {
     if (open) {
       reset({
         name: monitoringPoint?.name || '',
         machineId: monitoringPoint?.machineId || preSelectedMachineId || 0,
+        sensorModel: undefined,
       });
     }
   }, [open, monitoringPoint, preSelectedMachineId, reset]);
@@ -95,6 +103,27 @@ export function MonitoringPointFormModal({
                 </TextField>
               )}
             />
+            {!monitoringPoint && (
+              <Controller
+                control={control}
+                name="sensorModel"
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    select
+                    label="Sensor Model (Optional)"
+                    error={Boolean(errors.sensorModel)}
+                    helperText={isPumpMachine ? "TcAg and TcAs are not allowed for Bomba machines" : errors.sensorModel?.message}
+                    fullWidth
+                  >
+                    <MenuItem value="">None</MenuItem>
+                    {!isPumpMachine && <MenuItem value={SensorModel.TcAg}>TcAg</MenuItem>}
+                    {!isPumpMachine && <MenuItem value={SensorModel.TcAs}>TcAs</MenuItem>}
+                    <MenuItem value={SensorModel.HF_PLUS}>HF+</MenuItem>
+                  </TextField>
+                )}
+              />
+            )}
           </Stack>
         </DialogContent>
         <DialogActions>

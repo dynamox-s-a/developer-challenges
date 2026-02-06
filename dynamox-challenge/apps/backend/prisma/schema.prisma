@@ -38,9 +38,16 @@ model MonitoringPoint {
 }
 
 
+enum SensorModel {
+  TcAg
+  TcAs
+  HF_PLUS
+}
+
 model Sensor {
+
   id Int @id @default(autoincrement())
-  model String
+  model SensorModel
   monitoringPointId Int
   monitoringPoint MonitoringPoint @relation(fields: [monitoringPointId], references: [id])
 }

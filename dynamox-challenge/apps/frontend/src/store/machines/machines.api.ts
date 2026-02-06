@@ -14,7 +14,20 @@ export const machinesApi = apiSlice.injectEndpoints({
 
     getMachine: builder.query<Machine, number>({
       query: (id) => `${machinesUrl}/${id}`,
-      providesTags: ['Machines'],
+      providesTags: (result, error, id) => [
+        { type: 'Machines', id },
+        'MonitoringPoints',
+        'Sensors'
+      ],
+      transformResponse: (response: Machine) => {
+        // Ensure monitoringPoints is always an array
+        return {
+          ...response,
+          monitoringPoints: Array.isArray(response.monitoringPoints)
+            ? response.monitoringPoints
+            : []
+        };
+      },
     }),
 
     createMachine: builder.mutation<Machine, Partial<Machine>>({

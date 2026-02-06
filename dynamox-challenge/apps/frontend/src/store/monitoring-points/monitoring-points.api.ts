@@ -3,10 +3,34 @@ import { apiSlice } from "../api/apiSlice";
 
 const monitoringPointsUrl = '/monitoring-points';
 
+// Define pagination response type
+export interface PaginatedMonitoringPoints {
+  data: MonitoringPoint[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export interface MonitoringPointsQueryParams {
+  page?: number;
+  limit?: number;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}
+
 export const monitoringPointsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getMonitoringPoints: builder.query<MonitoringPoint[], void>({
-      query: () => monitoringPointsUrl,
+    getMonitoringPoints: builder.query<PaginatedMonitoringPoints, MonitoringPointsQueryParams | void>({
+      query: (params) => {
+        const queryParams = new URLSearchParams();
+        if (params?.page) queryParams.append('page', params.page.toString());
+        if (params?.limit) queryParams.append('limit', params.limit.toString());
+        if (params?.sortBy) queryParams.append('sortBy', params.sortBy);
+        if (params?.sortOrder) queryParams.append('sortOrder', params.sortOrder);
+
+        return `${monitoringPointsUrl}${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      },
       providesTags: ['MonitoringPoints'],
     }),
 
