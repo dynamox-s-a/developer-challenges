@@ -29,9 +29,20 @@ Create a .env file based on the example:
 cp apps/backend/.env.example apps/backend/.env
 ```
 
+Install pnpm (if not already installed):
+```bash
+npm install -g pnpm
+```
+
 Install dependencies:
 ```bash
 pnpm install
+```
+
+Install JWT and sensible packages:
+```bash
+pnpm add @fastify/jwt @fastify/sensible
+pnpm add -D @types/jsonwebtoken
 ```
 
 Run database migrations:
