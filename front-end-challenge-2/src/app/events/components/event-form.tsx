@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useAppDispatch } from "@/store/hooks";
-import { createEvent, updateEvent } from "@/store/slices/eventsSlice";
+
 import {
   Box,
   TextField,
@@ -11,6 +11,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { Event } from "@/types";
+import { createEvent, updateEvent } from "@/store/event/eventsThunk";
 
 interface EventFormProps {
   event?: Event | null;

@@ -10,7 +10,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
-import { setTimeFilter } from "@/store/slices/eventsSlice";
+import { setTimeFilter } from "@/store/event/eventsSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
 interface EventFiltersProps {

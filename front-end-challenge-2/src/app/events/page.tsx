@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { fetchEvents } from "@/store/slices/eventsSlice";
 import {
   Container,
   Box,
@@ -15,6 +14,7 @@ import {
 
 import EventFilters from "./components/event-filter";
 import EventCard from "./components/event-card";
+import { fetchEvents } from "@/store/event/eventsThunk";
 
 export default function EventsPage() {
   const dispatch = useAppDispatch();

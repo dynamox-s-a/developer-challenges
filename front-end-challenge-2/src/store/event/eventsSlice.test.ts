@@ -1,11 +1,11 @@
 import { describe, it, expect } from "vitest";
-import eventsReducer, {
-  clearError,
+import eventsReducer, { clearError } from "./eventsSlice";
+import {
   createEvent,
   deleteEvent,
   fetchEvents,
   updateEvent,
-} from "./eventsSlice";
+} from "./eventsThunk";
 
 describe("EventsSlice - Redux de Eventos", () => {
   const initialState = {

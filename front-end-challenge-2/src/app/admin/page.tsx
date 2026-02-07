@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { fetchEvents, deleteEvent } from "@/store/slices/eventsSlice";
+
 import {
   Container,
   Box,
@@ -17,6 +17,7 @@ import { Event } from "@/types";
 import EventForm from "@/app/events/components/event-form";
 import EventsTable from "./components/event-table";
 import DeleteDialog from "./components/delete-dialog";
+import { deleteEvent, fetchEvents } from "@/store/event/eventsThunk";
 
 export default function AdminPage() {
   const dispatch = useAppDispatch();
