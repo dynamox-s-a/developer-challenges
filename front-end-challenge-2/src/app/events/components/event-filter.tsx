@@ -10,6 +10,8 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
+import { setTimeFilter } from "@/store/slices/eventsSlice";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
 interface EventFiltersProps {
   searchTerm: string;
@@ -37,6 +39,9 @@ export default function EventFilters({
   sortBy,
   onSortChange,
 }: EventFiltersProps) {
+  const dispatch = useAppDispatch();
+  const filters = useAppSelector((state) => state.events.filters);
+
   return (
     <Box
       sx={{
@@ -82,6 +87,23 @@ export default function EventFilters({
               {cat}
             </MenuItem>
           ))}
+        </Select>
+      </FormControl>
+
+      <FormControl sx={{ minWidth: 200 }}>
+        <InputLabel>Período</InputLabel>
+        <Select
+          value={filters.timeFilter}
+          onChange={(e) =>
+            dispatch(
+              setTimeFilter(e.target.value as "all" | "past" | "upcoming"),
+            )
+          }
+          label="Período"
+        >
+          <MenuItem value="all">Todos</MenuItem>
+          <MenuItem value="past">Passados</MenuItem>
+          <MenuItem value="upcoming">Futuros</MenuItem>
         </Select>
       </FormControl>
 

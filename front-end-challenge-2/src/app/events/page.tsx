@@ -18,7 +18,7 @@ import EventCard from "./components/event-card";
 
 export default function EventsPage() {
   const dispatch = useAppDispatch();
-  const { events, loading } = useAppSelector((state) => state.events);
+  const { events, loading, filters } = useAppSelector((state) => state.events);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("Todas");
@@ -28,7 +28,7 @@ export default function EventsPage() {
     dispatch(fetchEvents());
   }, [dispatch]);
 
-  const { futureEvents, pastEvents } = useMemo(() => {
+  const filteredEvents = useMemo(() => {
     const now = new Date();
     let filtered = [...events];
 
@@ -45,7 +45,10 @@ export default function EventsPage() {
       filtered = filtered.filter((event) => event.category === categoryFilter);
     }
 
-    filtered.sort((a, b) => {
+    const future = filtered.filter((event) => new Date(event.date) > now);
+    const past = filtered.filter((event) => new Date(event.date) <= now);
+
+    const sortFn = (a: (typeof events)[0], b: (typeof events)[0]) => {
       switch (sortBy) {
         case "date-asc":
           return new Date(a.date).getTime() - new Date(b.date).getTime();
@@ -58,13 +61,18 @@ export default function EventsPage() {
         default:
           return 0;
       }
-    });
+    };
 
-    const future = filtered.filter((event) => new Date(event.date) > now);
-    const past = filtered.filter((event) => new Date(event.date) <= now);
+    future.sort(sortFn);
+    past.sort(sortFn);
 
-    return { futureEvents: future, pastEvents: past };
-  }, [events, searchTerm, categoryFilter, sortBy]);
+    let combined = [...future, ...past];
+
+    if (filters.timeFilter === "past") combined = past;
+    else if (filters.timeFilter === "upcoming") combined = future;
+
+    return combined;
+  }, [events, searchTerm, categoryFilter, sortBy, filters.timeFilter]);
 
   if (loading) {
     return (
@@ -96,46 +104,30 @@ export default function EventsPage() {
         onSortChange={setSortBy}
       />
 
-      <Box sx={{ mb: 4 }}>
+      <Box sx={{ mt: 4 }}>
         <Typography variant="h5" component="h2" gutterBottom>
-          Próximos Eventos ({futureEvents.length})
+          {filters.timeFilter === "all"
+            ? "Todos os Eventos"
+            : filters.timeFilter === "upcoming"
+              ? `Próximos Eventos (${filteredEvents.length})`
+              : `Eventos Encerrados (${filteredEvents.length})`}
         </Typography>
         <Divider sx={{ mb: 3 }} />
 
-        {futureEvents.length === 0 ? (
+        {filteredEvents.length === 0 ? (
           <Paper sx={{ p: 4, textAlign: "center" }}>
             <Typography variant="body1" color="text.secondary">
-              Nenhum evento futuro encontrado.
+              Nenhum evento encontrado.
             </Typography>
           </Paper>
         ) : (
           <Grid container spacing={3}>
-            {futureEvents.map((event) => (
+            {filteredEvents.map((event) => (
               <Grid key={event.id} size={{ xs: 12, sm: 6, md: 4 }}>
-                <EventCard event={event} isPast={false} />
-              </Grid>
-            ))}
-          </Grid>
-        )}
-      </Box>
-
-      <Box>
-        <Typography variant="h5" component="h2" gutterBottom>
-          Eventos Encerrados ({pastEvents.length})
-        </Typography>
-        <Divider sx={{ mb: 3 }} />
-
-        {pastEvents.length === 0 ? (
-          <Paper sx={{ p: 4, textAlign: "center" }}>
-            <Typography variant="body1" color="text.secondary">
-              Nenhum evento passado encontrado.
-            </Typography>
-          </Paper>
-        ) : (
-          <Grid container spacing={3}>
-            {pastEvents.map((event) => (
-              <Grid key={event.id} size={{ xs: 12, sm: 6, md: 4 }}>
-                <EventCard event={event} isPast={true} />
+                <EventCard
+                  event={event}
+                  isPast={new Date(event.date) <= new Date()}
+                />
               </Grid>
             ))}
           </Grid>
