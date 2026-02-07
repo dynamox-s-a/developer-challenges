@@ -23,6 +23,7 @@ import {
   setPageSize,
   setSort,
 } from "./store/monitoringPointsSlice";
+import { logout } from "./store/authSlice";
 
 function sensorLabel(v: string | null) {
   if (!v) return "-";
@@ -89,14 +90,22 @@ export default function App() {
           </Typography>
         </Box>
 
-        <Button
-          variant="outlined"
-          startIcon={<RefreshIcon />}
-          onClick={() => dispatch(fetchMonitoringPoints())}
-          disabled={loading}
-        >
-          Refresh
-        </Button>
+        <Stack direction="row" spacing={2}>
+          <Button
+            variant="outlined"
+            onClick={() => dispatch(logout())}
+          >
+            Logout
+          </Button>
+          <Button
+            variant="outlined"
+            startIcon={<RefreshIcon />}
+            onClick={() => dispatch(fetchMonitoringPoints())}
+            disabled={loading}
+          >
+            Refresh
+          </Button>
+        </Stack>
       </Stack>
 
       {error && (

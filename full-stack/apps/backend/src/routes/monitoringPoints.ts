@@ -60,7 +60,28 @@ export async function monitoringPointsRoutes(app: FastifyInstance) {
     const sortBy = (q.sortBy ?? "createdAt") as string;
     const sortOrder = ((q.sortOrder ?? "asc") as string).toLowerCase() === "desc" ? "desc" : "asc";
 
-    const orderBy = mapSort(sortBy, sortOrder);
+    const safeSortBy = ["machineName","machineType","monitoringPointName","sensorModel","createdAt"].includes(sortBy)
+      ? sortBy
+      : "machineName";
+
+    const dir: "asc" | "desc" = sortOrder === "desc" ? "desc" : "asc";
+
+    const orderBy = (() => {
+      switch (safeSortBy) {
+        case "machineName":
+          return { machine: { name: dir } } as const;
+        case "machineType":
+          return { machine: { type: dir } } as const;
+        case "monitoringPointName":
+          return { name: dir } as const;
+        case "sensorModel":
+          return { sensor: { model: dir } } as const;
+        case "createdAt":
+          return { createdAt: dir } as const;
+        default:
+          return { machine: { name: "asc" } } as const;
+      }
+    })();
 
     const [items, total] = await Promise.all([
       prisma.monitoringPoint.findMany({

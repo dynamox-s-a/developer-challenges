@@ -3,6 +3,7 @@ import { faker } from "@faker-js/faker";
 import PrismaPkg from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
+import bcrypt from "bcrypt";
 
 const { PrismaClient } = PrismaPkg;
 
@@ -26,6 +27,17 @@ async function main() {
   await prisma.sensor.deleteMany();
   await prisma.monitoringPoint.deleteMany();
   await prisma.machine.deleteMany();
+
+  const adminUsername = process.env.SEED_ADMIN_USERNAME ?? "admin";
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? "admin";
+
+  const passwordHash = await bcrypt.hash(adminPassword, 10);
+
+  await prisma.user.upsert({
+    where: { username: adminUsername },
+    update: { passwordHash, role: "admin" },
+    create: { username: adminUsername, passwordHash, role: "admin" },
+  });
 
   const machinesCount = 12;
 
