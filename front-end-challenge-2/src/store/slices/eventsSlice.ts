@@ -6,12 +6,18 @@ interface EventsState {
   events: Event[];
   loading: boolean;
   error: string | null;
+  filters: {
+    timeFilter: "all" | "past" | "upcoming";
+  };
 }
 
 const initialState: EventsState = {
   events: [],
   loading: false,
   error: null,
+  filters: {
+    timeFilter: "all",
+  },
 };
 
 export const fetchEvents = createAsyncThunk("events/fetchAll", async () => {
@@ -49,6 +55,12 @@ const eventsSlice = createSlice({
   reducers: {
     clearError: (state) => {
       state.error = null;
+    },
+    setTimeFilter: (
+      state,
+      action: { payload: "all" | "past" | "upcoming" },
+    ) => {
+      state.filters.timeFilter = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -107,5 +119,5 @@ const eventsSlice = createSlice({
   },
 });
 
-export const { clearError } = eventsSlice.actions;
+export const { clearError, setTimeFilter } = eventsSlice.actions;
 export default eventsSlice.reducer;
