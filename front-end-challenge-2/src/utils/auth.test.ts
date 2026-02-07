@@ -9,7 +9,6 @@ import {
 
 describe("Auth Utils - Funções de Autenticação", () => {
   beforeEach(() => {
-    // Limpa localStorage antes de cada teste
     localStorage.clear();
   });
 
@@ -37,7 +36,6 @@ describe("Auth Utils - Funções de Autenticação", () => {
       const user = { id: 5, email: "user@test.com", role: "reader" };
       const token = generateFakeToken(user);
 
-      // Decodifica o token para verificar conteúdo
       const decoded = decodeFakeToken(token);
 
       expect(decoded?.id).toBe(5);
@@ -72,12 +70,11 @@ describe("Auth Utils - Funções de Autenticação", () => {
     });
 
     it("deve verificar expiração do token", () => {
-      // Cria um token manualmente com data expirada
       const expiredPayload = {
         id: 1,
         email: "test@test.com",
         role: "admin",
-        exp: Date.now() - 10000, // Expirado há 10 segundos
+        exp: Date.now() - 10000,
       };
       const expiredToken = btoa(JSON.stringify(expiredPayload));
 
