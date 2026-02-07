@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { checkAuth } from "@/store/auth/authSlice";
+
 import { CircularProgress, Box } from "@mui/material";
+import { checkAuth } from "@/store/auth/authThunk";
 
 export default function Home() {
   const router = useRouter();
