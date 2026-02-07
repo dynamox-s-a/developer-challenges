@@ -86,7 +86,25 @@ export default function EventsTable({
               <TableCell>{event.name}</TableCell>
               <TableCell>{formatDate(event.date)}</TableCell>
               <TableCell>{event.location}</TableCell>
-              <TableCell>{event.category}</TableCell>
+              <TableCell>
+                <Box
+                  component="span"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    border: "1px solid",
+                    padding: "4px 8px",
+                    borderColor: "primary.main",
+                    color: "primary.main",
+                    borderRadius: "8px",
+                    fontWeight: "bold",
+                    width: "100px",
+                    fontSize: "12px",
+                  }}
+                >
+                  {event.category}
+                </Box>
+              </TableCell>
               <TableCell align="right">
                 <IconButton
                   color="primary"
