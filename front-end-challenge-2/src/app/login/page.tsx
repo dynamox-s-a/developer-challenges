@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { login, clearError, checkAuth } from "@/store/slices/authSlice";
+
 import {
   Box,
   Container,
@@ -14,6 +14,8 @@ import {
   Alert,
   CircularProgress,
 } from "@mui/material";
+import { checkAuth, login } from "@/store/auth/authThunk";
+import { clearError } from "@/store/auth/authSlice";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");

@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { logout } from "@/store/slices/authSlice";
+import { logout } from "@/store/auth/authSlice";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import { Logout } from "@mui/icons-material";
 
