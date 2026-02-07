@@ -60,7 +60,6 @@ export default function EventForm({
 
   useEffect(() => {
     if (event) {
-      // Converte a data para o formato datetime-local do input
       const dateObj = new Date(event.date);
       const localDate = new Date(
         dateObj.getTime() - dateObj.getTimezoneOffset() * 60000,
@@ -81,7 +80,7 @@ export default function EventForm({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // Limpa o erro do campo quando o usuário começa a digitar
+
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
@@ -177,7 +176,11 @@ export default function EventForm({
         onChange={handleChange}
         margin="normal"
         required
-        InputLabelProps={{ shrink: true }}
+        slotProps={{
+          inputLabel: {
+            shrink: true,
+          },
+        }}
         error={!!errors.date}
         helperText={errors.date}
       />
