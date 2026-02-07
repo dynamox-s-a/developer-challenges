@@ -1,39 +1,36 @@
-import { NextRequest, NextResponse } from "next/server";
-import z, { success } from "zod";
+import { type NextRequest, NextResponse } from 'next/server'
+import { loginRequestSchema, type loginResponse } from '@/lib/http/auth/types'
 
-const loginPostSchema = z.object({
-  email: z.email(),
-  password: z.string().min(6).max(20),
-})
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json()
 
-const loginPostPayload = z.object({
-  name: z.string().max(20),
-  email: z.email(),
-  token: z.string(),
-})
-
-type loginToken = z.infer<typeof loginPostPayload>
-
-export async function LOGIN(request: NextRequest) {
-  const body = request.json()
-
-  const validatedData = loginPostSchema.parse(body)
-  console.log(validatedData) 
-  // fazer a verificação aqui, lul
-  // enviar para a API
-  // receber retorno do token!!
-  const returnedData: loginToken =
-  {
-    name: "NomeFicticio",
-    email: "a@gmail.com.br",
-    token: "TokenFicticio"
-  }
-
-  return NextResponse.json(
-    {
-      success: true,
-      data: returnedData,
-      message: "Token retornado com sucesso, usuário logado."
+    const validatedData = loginRequestSchema.parse(body)
+    console.log(validatedData)
+    // fazer a verificação aqui, lul
+    // enviar para a API
+    // receber retorno do token!!
+    const returnedData: loginResponse = {
+      name: 'NomeFicticio',
+      email: validatedData.email,
+      token: 'TokenFicticio',
     }
-  )
+
+    return NextResponse.json(
+      {
+        success: true,
+        data: returnedData,
+        message: 'Token retornado com sucesso, usuário logado.',
+      },
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
+    )
+  } catch (error) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: error instanceof Error ? error.message : 'Request inválida.',
+      },
+      { status: 400 },
+    )
+  }
 }

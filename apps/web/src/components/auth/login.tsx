@@ -1,6 +1,10 @@
 "use client"
 
 import { Box, Button, TextField, Typography } from "@mui/material"
+import { useForm } from "react-hook-form"
+import { loginRequestSchema, type loginRequest } from '../../lib/http/auth/types';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { authService } from "@/lib/http/auth";
 
 export const customBox = {
     display: "flex", 
@@ -11,6 +15,19 @@ export const customBox = {
 }
 
 export default function LoginComponent() {
+  const {
+    register,
+    handleSubmit,
+    formState: {errors}
+  } = useForm<loginRequest>({
+    resolver: zodResolver(loginRequestSchema)
+  })
+
+  const onSubmit = async (data: loginRequest) => {
+    const result = await authService.login(data)
+    console.log(result)
+  }
+
   return (
       <Box 
         component="form" 
@@ -20,37 +37,36 @@ export default function LoginComponent() {
         my={4}
         alignItems={"center"}
         sx={customBox}
+        onSubmit={handleSubmit(onSubmit)}
         >
         <Typography variant="h5" component="div" sx={{mb: 2}}>
           Sign In
         </Typography>
+
         <TextField 
-          name="name"
-          label="Name"
-          variant="outlined"
-          sx={{
-            mb: 2
-          }}
-        />
-        <TextField 
-          name="email"
           label="Email"
           variant="outlined"
           sx={{
             mb: 2
           }}
+          {...register("email")}
+          error={!!errors.email}
+          helperText={errors.email?.message}
         />
         <TextField 
-          name="password"
           label="Password"
           variant="outlined"
           type="password"
           sx={{
             mb: 2
           }}
+          {...register("password")}
+          error={!!errors.password}
+          helperText={errors.password?.message}
         />
         <Button
           variant="contained"
+          type="submit"
         >
           Submit
         </Button>
