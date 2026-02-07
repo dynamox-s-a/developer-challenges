@@ -94,7 +94,7 @@ export default function EventsTable({
                   size="small"
                   aria-label="Editar evento"
                 >
-                  <Edit />
+                  <Edit sx={{ fontSize: "18px" }} />
                 </IconButton>
                 <IconButton
                   color="error"
@@ -102,7 +102,7 @@ export default function EventsTable({
                   size="small"
                   aria-label="Deletar evento"
                 >
-                  <Delete />
+                  <Delete sx={{ fontSize: "18px" }} />
                 </IconButton>
               </TableCell>
             </TableRow>
