@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: dynamox-db
+    environment:
+      POSTGRES_USER: dynamox
+      POSTGRES_PASSWORD: dynamox123
+      POSTGRES_DB: dynamox
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dynamox -d dynamox"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api-1:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    environment:
+      DATABASE_URL: postgresql://dynamox:dynamox123@postgres:5432/dynamox?schema=public
+      JWT_SECRET: supersecretkey
+      PORT: 3000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: always
+
+  api-2:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    environment:
+      DATABASE_URL: postgresql://dynamox:dynamox123@postgres:5432/dynamox?schema=public
+      JWT_SECRET: supersecretkey
+      PORT: 3000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: always
+
+  api-3:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    environment:
+      DATABASE_URL: postgresql://dynamox:dynamox123@postgres:5432/dynamox?schema=public
+      JWT_SECRET: supersecretkey
+      PORT: 3000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: always
+
+  loadbalancer:
+    image: nginx:alpine
+    volumes:
+      - ./nginx-lb.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "3000:80"
+    depends_on:
+      - api-1
+      - api-2
+      - api-3
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - loadbalancer
+
+volumes:
+  postgres_data:

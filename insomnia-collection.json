@@ -1,0 +1,690 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-02-05T23:50:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "req_login",
+      "parentId": "fld_auth",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "url": "{{ _.base_url }}/auth/login",
+      "name": "Login",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"email\": \"admin@dynamox.net\",\n\t\"password\": \"admin\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1707177000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_auth",
+      "parentId": "wrk_1",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "name": "Auth",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1707177000000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_list_machines",
+      "parentId": "fld_machines",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "url": "{{ _.base_url }}/machines",
+      "name": "List Machines",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -1707177000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_create_machine",
+      "parentId": "fld_machines",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "url": "{{ _.base_url }}/machines",
+      "name": "Create Machine",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"name\": \"Nova Máquina\",\n\t\"type\": \"Pump\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -1707176900000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_update_machine",
+      "parentId": "fld_machines",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "url": "{{ _.base_url }}/machines/ID_DA_MAQUINA",
+      "name": "Update Machine",
+      "description": "",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"name\": \"Máquina Atualizada\",\n\t\"type\": \"Fan\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -1707176800000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_delete_machine",
+      "parentId": "fld_machines",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "url": "{{ _.base_url }}/machines/ID_DA_MAQUINA",
+      "name": "Delete Machine",
+      "description": "",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -1707176700000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_machines",
+      "parentId": "wrk_1",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "name": "Machines",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1707176000000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_list_monitoring_points",
+      "parentId": "fld_monitoring_points",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "url": "{{ _.base_url }}/monitoring-points",
+      "name": "List Monitoring Points",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "page",
+          "value": "1",
+          "disabled": false
+        },
+        {
+          "name": "limit",
+          "value": "5",
+          "disabled": false
+        },
+        {
+          "name": "sortBy",
+          "value": "name",
+          "disabled": true
+        },
+        {
+          "name": "sortOrder",
+          "value": "asc",
+          "disabled": true
+        },
+        {
+          "name": "machineId",
+          "value": "",
+          "disabled": true
+        }
+      ],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -1707177000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_create_monitoring_point",
+      "parentId": "fld_monitoring_points",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "url": "{{ _.base_url }}/monitoring-points",
+      "name": "Create Monitoring Point",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"name\": \"Ponto de Monitoramento 1\",\n\t\"machineId\": \"ID_DA_MAQUINA\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -1707176900000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_update_monitoring_point",
+      "parentId": "fld_monitoring_points",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "url": "{{ _.base_url }}/monitoring-points/ID_DO_PONTO",
+      "name": "Update Monitoring Point",
+      "description": "",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"name\": \"Ponto Atualizado\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -1707176800000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_delete_monitoring_point",
+      "parentId": "fld_monitoring_points",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "url": "{{ _.base_url }}/monitoring-points/ID_DO_PONTO",
+      "name": "Delete Monitoring Point",
+      "description": "",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -1707176700000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_monitoring_points",
+      "parentId": "wrk_1",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "name": "Monitoring Points",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1707175000000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_list_sensors",
+      "parentId": "fld_sensors",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "url": "{{ _.base_url }}/sensors",
+      "name": "List Sensors",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -1707177000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_create_sensor",
+      "parentId": "fld_sensors",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "url": "{{ _.base_url }}/sensors",
+      "name": "Create Sensor",
+      "description": "Models: TcAg, TcAs, HF+",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"model\": \"TcAg\",\n\t\"monitoringPointId\": \"ID_DO_PONTO\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -1707176900000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_update_sensor",
+      "parentId": "fld_sensors",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "url": "{{ _.base_url }}/sensors/ID_DO_SENSOR",
+      "name": "Update Sensor",
+      "description": "",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"model\": \"HF+\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -1707176800000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_delete_sensor",
+      "parentId": "fld_sensors",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "url": "{{ _.base_url }}/sensors/ID_DO_SENSOR",
+      "name": "Delete Sensor",
+      "description": "",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -1707176700000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_sensors",
+      "parentId": "wrk_1",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "name": "Sensors",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1707174000000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_create_timeseries",
+      "parentId": "fld_timeseries",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "url": "{{ _.base_url }}/time-series",
+      "name": "Create Data Point",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"sensorId\": \"ID_DO_SENSOR\",\n\t\"value\": 25.5,\n\t\"timestamp\": \"2024-02-05T12:00:00Z\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -1707177000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_create_timeseries_batch",
+      "parentId": "fld_timeseries",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "url": "{{ _.base_url }}/time-series/batch",
+      "name": "Create Batch Data",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "[\n\t{\n\t\t\"sensorId\": \"ID_DO_SENSOR\",\n\t\t\"value\": 25.5,\n\t\t\"timestamp\": \"2024-02-05T12:00:00Z\"\n\t},\n\t{\n\t\t\"sensorId\": \"ID_DO_SENSOR\",\n\t\t\"value\": 26.0,\n\t\t\"timestamp\": \"2024-02-05T12:01:00Z\"\n\t}\n]"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -1707176900000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_get_timeseries",
+      "parentId": "fld_timeseries",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "url": "{{ _.base_url }}/time-series",
+      "name": "Get Time Series",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "sensorId",
+          "value": "ID_DO_SENSOR",
+          "disabled": false
+        },
+        {
+          "name": "startDate",
+          "value": "2024-02-01T00:00:00Z",
+          "disabled": true
+        },
+        {
+          "name": "endDate",
+          "value": "2024-02-10T00:00:00Z",
+          "disabled": true
+        }
+      ],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -1707176800000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_get_metrics",
+      "parentId": "fld_timeseries",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "url": "{{ _.base_url }}/time-series/metrics",
+      "name": "Get Metrics",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "sensorId",
+          "value": "ID_DO_SENSOR",
+          "disabled": false
+        }
+      ],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -1707176700000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_delete_timeseries",
+      "parentId": "fld_timeseries",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "url": "{{ _.base_url }}/time-series",
+      "name": "Delete Time Series",
+      "description": "",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [
+        {
+          "name": "sensorId",
+          "value": "ID_DO_SENSOR",
+          "disabled": false
+        }
+      ],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -1707176600000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_timeseries",
+      "parentId": "wrk_1",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "name": "Time Series",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1707173000000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "env_1",
+      "parentId": "wrk_1",
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:3000",
+        "token": "COLE_SEU_TOKEN_AQUI"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "token"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1707177000000,
+      "_type": "environment"
+    },
+    {
+      "_id": "wrk_1",
+      "parentId": null,
+      "modified": 1707177000000,
+      "created": 1707177000000,
+      "name": "Dynamox Challenge API",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
+    }
+  ]
+}

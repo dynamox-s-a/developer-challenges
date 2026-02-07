@@ -1,55 +1,222 @@
-# Dynamox Developer Challenges
+# Dynamox Full-Stack Challenge
 
-## About Dynamox
+Sistema de monitoramento de máquinas e sensores desenvolvido com React, Fastify e PostgreSQL.
 
-[Dynamox](https://dynamox.net/) is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications. 
+---
 
-With our proficiency in signal processing for vibration and acoustics, we deliver advanced and precise monitoring systems. We are committed to optimizing operational efficiency and facilitating proactive maintenance through our innovative technology and integrated solutions.
+## Planejamento de 7 Dias
 
-## Positions
+### Dia 1 (01/02) — Setup + Autenticação Backend ✅
+- [x] Configurar Git (branch `gabriel-leite-araujo`, remote)
+- [x] Limpar arquivos desnecessários do repo
+- [x] Corrigir tsconfig.spec.json faltante
+- [x] Configurar seed do usuário com bcryptjs
+- [x] Estrutura de camadas (repositories, services, routes)
+- [x] POST /auth/login com JWT funcionando
+- [x] Configurar ts-node-dev para hot reload
 
-We are looking for developers who are passionate about learning, growing, and contributing to our team. You will play a key role in our development efforts, working on a variety of projects and collaborating with different teams to build and improve our solutions.
+### Dia 2 (02/02) — Backend: Auth Middleware + Machines
+- [ ] Criar middleware de autenticação JWT
+- [ ] Decorator `authenticate` para rotas protegidas
+- [ ] CRUD `/machines`:
+  - [ ] POST /machines (criar)
+  - [ ] GET /machines (listar)
+  - [ ] GET /machines/:id (buscar)
+  - [ ] PUT /machines/:id (atualizar)
+  - [ ] DELETE /machines/:id (deletar)
+- [ ] Validação: tipo deve ser "Pump" ou "Fan"
+- [ ] Repository + Service de machines
+- [ ] Testes unitários do service
 
-We value flexibility and collaboration, hence we provide opportunities for you to lend your skills to other teams when required. Join us on this exciting journey as we revolutionize our digital platforms. Currently we are particularly interested in individuals who can identify with one of the following role descriptions:
+### Dia 3 (03/02) — Backend: Monitoring Points + Sensors
+- [ ] CRUD `/monitoring-points`
+- [ ] CRUD `/sensors`
+- [ ] Associar sensor a monitoring point
+- [ ] **Regra:** TcAg e TcAs NÃO podem ser usados em máquinas tipo "Pump"
+- [ ] Lista paginada (5/página) com ordenação por qualquer coluna
+- [ ] Repository + Service
+- [ ] Testes unitários
 
-### Junior Software Developer
+### Dia 4 (04/02) — Backend: Time-Series + Finalização API
+- [ ] CRUD `/time-series`:
+  - [ ] POST (armazenar dados do sensor)
+  - [ ] GET (buscar série completa)
+  - [ ] GET /metrics (métricas: min, max, avg)
+  - [ ] GET /count (quantidade de registros)
+  - [ ] DELETE (remover)
+- [ ] Garantir latência < 350ms
+- [ ] Swagger documentação completa
+- [ ] Testes de integração
 
-With limited experience, assists in coding, testing, and stabilizing systems under supervision. Communicates with immediate team members and solves straightforward problems with guidance. Should display a willingness to learn and grow professionally. This is an individual contributor role.
+### Dia 5 (05/02) — Frontend: Setup + Autenticação
+- [ ] Configurar Material UI 5 (tema)
+- [ ] Configurar Redux Toolkit + Thunk
+- [ ] Tela de Login
+- [ ] Proteção de rotas (PrivateRoute)
+- [ ] Logout
+- [ ] Layout base responsivo (sidebar, header)
+- [ ] Axios interceptors para JWT
 
-### Mid-level Software Developer
+### Dia 6 (06/02) — Frontend: CRUD Machines + Monitoring Points
+- [ ] Dashboard inicial
+- [ ] Listagem de Machines (tabela)
+- [ ] Modal criar/editar Machine
+- [ ] Deletar Machine
+- [ ] Listagem de Monitoring Points (paginada, ordenável)
+- [ ] Associar/visualizar sensor
+- [ ] Integração completa com API
 
-With a certain level of proven experience, contributes to software development, solves moderate problems, and starts handling ambiguous situations with minimal guidance. Communicates with the broader team and engages in code reviews and documentation. This role also includes supporting junior engineers and commitment to continuous learning. This is an individual contributor role.
+### Dia 7 (07/02) — Frontend: Time-Series + Polimento + Entrega
+- [ ] Tela de visualização de time-series
+- [ ] Gráfico com Recharts
+- [ ] Upload/input de dados de sensores
+- [ ] Testes unitários frontend
+- [ ] Revisão de código
+- [ ] README com assumptions finais
+- [ ] Commits semânticos organizados
+- [ ] PR final para dynamox-s-a/developer-challenges
 
-### Senior-level Software Developer
+### Bônus Implementados
+- [x] Nx Monorepo
+- [x] Predição Futura de Dados
+- [x] Load Balancer (Nginx)
+- [x] Load Tests (k6)
+- [x] Deploy (Docker/Containerização)
+- [ ] Testes E2E com Cypress (Configuração iniciada)
 
-With vast experience, enhances software development, leading complex system development and ambiguous situation handling. Tackles intricate problems and mentors junior and mid-level engineers. Champions coding standards, project strategy, and technology adoption. Communicates across teams, influencing technical and non-technical stakeholders. This individual contributor role blends technical expertise with leadership, focusing on innovation, mentorship, and strategic contributions to the development process.
+---
 
-## Challenges Full-Stack
+## Stack
 
-- [ ] [01 - Dynamox Full-Stack Node.js React Developer Challenge](./full-stack-challenge.md)
-- [ ] [02 - Dynamox Full-Stack C# React Developer Challenge](./full-stack-csharp-react-challenge.md) 
-  
-## Challenges Front-End
+**Frontend:**
+- React 19 + TypeScript
+- Vite
+- Material UI 5
+- Redux Toolkit
+- React Router
+- Recharts
 
-- [ ] [01 - Dynamox Front-end React Developer Challenge Marketing Teams](./front-end-challenge-v1.md)
-- [ ] [02 - Dynamox Front-end React Developer Challenge Product Teams](./front-end-challenge-v2.md)
+**Backend:**
+- Fastify
+- Prisma ORM
+- PostgreSQL
+- JWT Authentication
+- Regressão Linear para Predição
 
-## Challenges DevOps
+**Infraestrutura:**
+- Docker & Docker Compose
+- Nginx (Load Balancer & Web Server)
+- k6 (Load Testing)
 
-- [ ] [01 - Dynamox DevOps Developer Challenge Foundation Teams](./dev-sec-fin-ops-challenge-v1/README.md)
+**Monorepo:**
+- Nx
 
-## Challenges Mobile
+## Pré-requisitos
 
-- [ ] [01 - Dynamox Kotlin Multiplatform Developer Challenge](./kotlin-multiplatform-challenge.md)
-- [ ] [02 - Dynamox Android Developer Challenge](./android-challenge.md)
-- [ ] [03 - Dynamox iOS Developer Challenge](./ios-challenge.md)
+- Node.js 18+
+- Docker e Docker Compose
+- npm
+- k6 (opcional, para testes de carga)
 
-## Challenge Back-End
-- [ ] [01 - Dynamox Back-End Time Series ](./back-end-challenge-v1.md)
+## Setup
 
-## Challenge QA
-- [ ] [01- Dynamox QA Challenge](./qa-challenge.md)
+1. Instalar dependências:
 
-</br>
+```bash
+npm install
+```
 
-**Good luck! We look forward to reviewing your submission.** 🚀
+2. Subir o banco de dados:
+
+```bash
+npm run db:up
+```
+
+3. Gerar Prisma Client e rodar migrations:
+
+```bash
+npm run db:generate
+npm run db:migrate
+npx prisma db seed
+```
+
+4. Rodar a aplicação (Modo Desenvolvimento):
+
+```bash
+npm run dev
+```
+
+- Frontend: http://localhost:4200
+- Backend: http://localhost:3000
+
+## Setup Completo com Docker (Bônus: Deploy & Load Balancer)
+
+Para simular um ambiente de produção com Load Balancer e múltiplas réplicas da API:
+
+```bash
+docker-compose -f docker-compose.full.yml up --build
+```
+
+- **Frontend (Nginx)**: http://localhost:4200
+- **API (Load Balanced)**: http://localhost:3000
+- **Réplicas API**: 3 instâncias rodando internamente
+
+## Testes de Carga (Bônus)
+
+Com o ambiente rodando (dev ou docker), execute:
+
+```bash
+# Requer k6 instalado
+k6 run load-test.js
+```
+
+## Scripts Disponíveis
+
+| Script | Descrição |
+|--------|-----------|
+| `npm run dev` | Roda frontend e backend |
+| `npm run dev:web` | Roda apenas o frontend |
+| `npm run dev:api` | Roda apenas o backend |
+| `npm run build` | Build de produção |
+| `npm run test` | Executa os testes unitários |
+| `npm run db:up` | Sobe o PostgreSQL |
+| `npm run db:down` | Para o PostgreSQL |
+| `npm run db:migrate` | Roda as migrations |
+| `npm run db:generate` | Gera o Prisma Client |
+| `npm run db:studio` | Abre o Prisma Studio |
+
+## Estrutura do Projeto
+
+```
+├── apps/
+│   ├── web/          # Frontend React + Vite
+│   └── api/          # Backend Fastify
+├── libs/
+│   └── shared/       # Types compartilhados
+├── prisma/
+│   └── schema.prisma # Schema do banco
+├── infra/            # Configurações de infra (Nginx)
+├── docker-compose.yml # DB apenas (Dev)
+├── docker-compose.full.yml # Ambiente completo (Prod Simulado)
+├── load-test.js      # Script de teste de carga k6
+└── package.json
+```
+
+## Assumptions (Ambiguidades Resolvidas)
+
+1. **Autenticação**: Implementada com JWT e credenciais fixas para simplificação do teste.
+
+2. **Sensores HF+**: O modelo "HF+" foi mapeado como "HFPlus" no enum do banco por restrições de caracteres especiais.
+
+3. **Restrição de Sensores**: Sensores TcAg e TcAs não podem ser associados a máquinas do tipo "Pump" - esta validação é feita tanto no frontend quanto no backend.
+
+4. **Time-Series**: Dados são armazenados por sensor individual, com índice composto (sensorId, timestamp) para queries eficientes.
+
+5. **Paginação**: Lista de monitoring points usa paginação server-side com 5 itens por página.
+
+6. **Predição**: Utilizada Regressão Linear Simples baseada nos últimos 50 pontos para prever o próximo valor.
+
+## Credenciais de Teste
+
+- Email: `admin@dynamox.com`
+- Senha: `admin123`

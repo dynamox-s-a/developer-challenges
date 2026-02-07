@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("users")
+}
+
+model Machine {
+  id               String            @id @default(uuid())
+  name             String
+  type             MachineType
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime          @updatedAt @map("updated_at")
+  monitoringPoints MonitoringPoint[]
+
+  @@map("machines")
+}
+
+enum MachineType {
+  Pump
+  Fan
+}
+
+model MonitoringPoint {
+  id        String   @id @default(uuid())
+  name      String
+  machineId String   @map("machine_id")
+  machine   Machine  @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  sensor    Sensor?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("monitoring_points")
+}
+
+model Sensor {
+  id                String          @id @default(uuid())
+  model             SensorModel
+  monitoringPointId String          @unique @map("monitoring_point_id")
+  monitoringPoint   MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
+  timeSeries        TimeSeries[]
+  createdAt         DateTime        @default(now()) @map("created_at")
+
+  @@map("sensors")
+}
+
+enum SensorModel {
+  TcAg
+  TcAs
+  HFPlus @map("HF+")
+}
+
+model TimeSeries {
+  id        String   @id @default(uuid())
+  sensorId  String   @map("sensor_id")
+  sensor    Sensor   @relation(fields: [sensorId], references: [id], onDelete: Cascade)
+  value     Float
+  timestamp DateTime @default(now())
+
+  @@index([sensorId, timestamp])
+  @@map("time_series")
+}
