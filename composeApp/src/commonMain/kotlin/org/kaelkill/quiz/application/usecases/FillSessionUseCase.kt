@@ -8,42 +8,33 @@ class FillSessionUseCase(
     private val sessionRepository: QuizSessionRepository,
     private val questionRepository: QuestionRepository
 ) {
+    companion object {
+        private const val REQUIRED_QUESTIONS = 10
+        private const val MAX_ATTEMPTS = 30
+    }
 
     suspend fun execute(sessionIdStr: String): Result<Unit> {
-        val sessionIdResult = QuizSessionId.create(sessionIdStr)
-        if (sessionIdResult.isFailure) return Result.failure(sessionIdResult.exceptionOrNull()!!)
-        val sessionId = sessionIdResult.getOrThrow()
+        return runCatching {
+            val sessionId = QuizSessionId.create(sessionIdStr).getOrThrow()
 
-        var safetyCounter = 0
-        val maxAttempts = 30
-
-        while (safetyCounter < maxAttempts) {
-            val sessionResult = sessionRepository.getById(sessionId)
-            if (sessionResult.isFailure) return Result.failure(sessionResult.exceptionOrNull()!!)
-            var session = sessionResult.getOrThrow()
-
-            if (session.questions.size >= 10) {
-                return Result.success(Unit)
+            repeat(MAX_ATTEMPTS) {
+                if (isSessionFull(sessionId)) return Result.success(Unit)
+                tryAddQuestion(sessionId)
             }
 
-            val questionResult = questionRepository.getRandomQuestion()
-
-            if (questionResult.isSuccess) {
-                val question = questionResult.getOrThrow()
-
-                val addResult = session.addNewQuestion(question)
-
-                if (addResult.isSuccess) {
-                    session = addResult.getOrThrow()
-
-                    val saveResult = sessionRepository.save(session)
-                    if (saveResult.isFailure) return Result.failure(saveResult.exceptionOrNull()!!)
-                }
-            }
-
-            safetyCounter++
+            throw Exception("Failed to fill session with $REQUIRED_QUESTIONS questions after $MAX_ATTEMPTS attempts")
         }
+    }
 
-        return Result.failure(Exception("Failed to fill session fully"))
+    private suspend fun isSessionFull(sessionId: QuizSessionId): Boolean {
+        val session = sessionRepository.getById(sessionId).getOrThrow()
+        return session.questions.size >= REQUIRED_QUESTIONS
+    }
+
+    private suspend fun tryAddQuestion(sessionId: QuizSessionId) {
+        val session = sessionRepository.getById(sessionId).getOrThrow()
+        val question = questionRepository.getRandomQuestion().getOrNull() ?: return
+        val updated = session.addNewQuestion(question).getOrNull() ?: return
+        sessionRepository.save(updated).getOrThrow()
     }
 }
