@@ -10,6 +10,11 @@ export const sensorsApi = apiSlice.injectEndpoints({
       providesTags: ['Sensors'],
     }),
 
+    getSensorsByMonitoringPoint: builder.query<Sensor[], number>({
+      query: (monitoringPointId) => `${sensorsUrl}?monitoringPointId=${monitoringPointId}`,
+      providesTags: (result, error, id) => [{ type: 'Sensors', id: `LIST_${id}` }, 'Sensors'],
+    }),
+
     createSensor: builder.mutation<Sensor, { model: SensorModel; monitoringPointId: number }>({
       query: (newSensor) => ({
         url: sensorsUrl,
@@ -40,6 +45,7 @@ export const sensorsApi = apiSlice.injectEndpoints({
 
 export const {
   useGetSensorsQuery,
+  useGetSensorsByMonitoringPointQuery,
   useCreateSensorMutation,
   useUpdateSensorMutation,
   useDeleteSensorMutation

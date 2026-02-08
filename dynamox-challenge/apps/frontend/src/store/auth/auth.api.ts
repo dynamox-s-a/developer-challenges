@@ -1,5 +1,5 @@
 import { apiSlice } from '../api/apiSlice';
-import type { AuthResponse, LoginRequest, RegisterRequest } from '@/types/auth';
+import type { AuthResponse, LoginRequest, RegisterRequest, User } from '@/types/auth';
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -17,7 +17,10 @@ export const authApi = apiSlice.injectEndpoints({
         body: userData,
       }),
     }),
+    getMe: builder.query<User, void>({
+      query: () => '/auth/me',
+    }),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation } = authApi;
+export const { useLoginMutation, useRegisterMutation, useGetMeQuery } = authApi;

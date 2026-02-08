@@ -5,14 +5,17 @@ import { Provider } from 'react-redux';
 
 const router = createBrowserRouter(routes);
 
-import {store} from '@/store/store'
+import { store } from '@/store/store'
+import { AuthInitializer } from '@/components/auth/auth-initializer';
 
 export function App() {
   return (
     <>
       <Provider store={store}>
         <React.Suspense fallback={<div>Loading...</div>}>
-          <RouterProvider router={router} />
+          <AuthInitializer>
+            <RouterProvider router={router} />
+          </AuthInitializer>
         </React.Suspense>
       </Provider>
     </>

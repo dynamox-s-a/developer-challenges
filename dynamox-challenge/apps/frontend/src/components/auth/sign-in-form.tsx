@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
@@ -12,8 +12,7 @@ import Link from '@mui/material/Link';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { EyeIcon } from '@phosphor-icons/react/dist/ssr/Eye';
-import { EyeSlashIcon } from '@phosphor-icons/react/dist/ssr/EyeSlash';
+import { Eye as EyeIcon, EyeSlash as EyeSlashIcon } from '@phosphor-icons/react';
 import { Controller, useForm } from 'react-hook-form';
 import { z as zod } from 'zod';
 import { useDispatch } from 'react-redux';
@@ -32,6 +31,7 @@ type Values = zod.infer<typeof schema>;
 const defaultValues = { email: '', password: '' } satisfies Values;
 
 export function SignInForm(): React.JSX.Element {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [login, { isLoading }] = useLoginMutation();
 
@@ -49,7 +49,7 @@ export function SignInForm(): React.JSX.Element {
       try {
         const response = await login(values).unwrap();
         dispatch(setCredentials(response));
-        // GuestGuard will handle navigation automatically
+        navigate(paths.machine.list, { replace: true });
       } catch (err: any) {
         setError('root', {
           type: 'server',
@@ -57,7 +57,7 @@ export function SignInForm(): React.JSX.Element {
         });
       }
     },
-    [login, dispatch, setError]
+    [login, dispatch, setError, navigate]
   );
 
   return (

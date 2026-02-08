@@ -7,7 +7,8 @@
     "importHelpers": true,
     "isolatedModules": true,
     "lib": [
-      "es2022"
+      "es2022",
+      "dom"
     ],
     "module": "esnext",
     "moduleResolution": "bundler",

@@ -34,6 +34,11 @@ export const monitoringPointsApi = apiSlice.injectEndpoints({
       providesTags: ['MonitoringPoints'],
     }),
 
+    getMonitoringPoint: builder.query<MonitoringPoint, number>({
+      query: (id) => `${monitoringPointsUrl}/${id}`,
+      providesTags: (result, error, id) => [{ type: 'MonitoringPoints', id }],
+    }),
+
     createMonitoringPoint: builder.mutation<MonitoringPoint, Partial<MonitoringPoint>>({
       query: (newMonitoringPoint) => ({
         url: monitoringPointsUrl,
@@ -64,6 +69,7 @@ export const monitoringPointsApi = apiSlice.injectEndpoints({
 
 export const {
   useGetMonitoringPointsQuery,
+  useGetMonitoringPointQuery,
   useCreateMonitoringPointMutation,
   useUpdateMonitoringPointMutation,
   useDeleteMonitoringPointMutation

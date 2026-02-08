@@ -11,6 +11,7 @@ export interface GuestGuardProps {
 }
 
 export function GuestGuard({ children }: GuestGuardProps): React.JSX.Element | null {
+  debugger;
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   const [isChecking, setIsChecking] = React.useState<boolean>(true);

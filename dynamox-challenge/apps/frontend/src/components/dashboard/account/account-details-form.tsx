@@ -10,18 +10,20 @@ import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
 import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import Select from '@mui/material/Select';
-
-const states = [
-  { value: 'alabama', label: 'Alabama' },
-  { value: 'new-york', label: 'New York' },
-  { value: 'san-francisco', label: 'San Francisco' },
-  { value: 'los-angeles', label: 'Los Angeles' },
-] as const;
+import { useSelector } from 'react-redux';
+import { selectUser } from '@/store/auth/auth.slice';
 
 export function AccountDetailsForm(): React.JSX.Element {
+  const user = useSelector(selectUser);
+
+  const [firstName, lastName] = React.useMemo(() => {
+    const parts = user?.name?.split(' ') || [];
+    const first = parts[0] || '';
+    const last = parts.slice(1).join(' ') || '';
+    return [first, last];
+  }, [user]);
+
   return (
     <form
       onSubmit={(event) => {
@@ -41,7 +43,7 @@ export function AccountDetailsForm(): React.JSX.Element {
             >
               <FormControl fullWidth required>
                 <InputLabel>First name</InputLabel>
-                <OutlinedInput defaultValue="Sofia" label="First name" name="firstName" />
+                <OutlinedInput defaultValue={firstName} disabled label="First name" name="firstName" />
               </FormControl>
             </Grid>
             <Grid
@@ -52,7 +54,7 @@ export function AccountDetailsForm(): React.JSX.Element {
             >
               <FormControl fullWidth required>
                 <InputLabel>Last name</InputLabel>
-                <OutlinedInput defaultValue="Rivers" label="Last name" name="lastName" />
+                <OutlinedInput defaultValue={lastName} disabled label="Last name" name="lastName" />
               </FormControl>
             </Grid>
             <Grid
@@ -63,7 +65,7 @@ export function AccountDetailsForm(): React.JSX.Element {
             >
               <FormControl fullWidth required>
                 <InputLabel>Email address</InputLabel>
-                <OutlinedInput defaultValue="sofia@devias.io" label="Email address" name="email" />
+                <OutlinedInput defaultValue={user?.email} disabled label="Email address" name="email" />
               </FormControl>
             </Grid>
             <Grid
@@ -72,37 +74,9 @@ export function AccountDetailsForm(): React.JSX.Element {
                 xs: 12,
               }}
             >
-              <FormControl fullWidth>
-                <InputLabel>Phone number</InputLabel>
-                <OutlinedInput label="Phone number" name="phone" type="tel" />
-              </FormControl>
-            </Grid>
-            <Grid
-              size={{
-                md: 6,
-                xs: 12,
-              }}
-            >
-              <FormControl fullWidth>
-                <InputLabel>State</InputLabel>
-                <Select defaultValue="new-york" label="State" name="state" variant="outlined">
-                  {states.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid
-              size={{
-                md: 6,
-                xs: 12,
-              }}
-            >
-              <FormControl fullWidth>
-                <InputLabel>City</InputLabel>
-                <OutlinedInput label="City" />
+              <FormControl fullWidth required>
+                <InputLabel>Password</InputLabel>
+                <OutlinedInput label="Password" name="password" type="password" />
               </FormControl>
             </Grid>
           </Grid>
@@ -115,3 +89,4 @@ export function AccountDetailsForm(): React.JSX.Element {
     </form>
   );
 }
+
