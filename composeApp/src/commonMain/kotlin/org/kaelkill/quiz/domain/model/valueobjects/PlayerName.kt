@@ -1,9 +1,9 @@
 package org.kaelkill.quiz.domain.model.valueobjects
 
-data class PlayerName private constructor(val value: String) {
+data class PlayerName(val value: String) {
     companion object {
-        fun create(input: String): Result<PlayerName> {
-            val result = input.trim()
+        fun create(value: String): Result<PlayerName> {
+            val result = value.trim()
             if (isInvalid(result)) {
                 return Result.failure(IllegalArgumentException("Invalid player name"))
             }
