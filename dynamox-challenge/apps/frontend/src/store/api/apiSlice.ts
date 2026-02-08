@@ -6,8 +6,10 @@ export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: baseUrl,
-    prepareHeaders: (headers) => {
-      const token = localStorage.getItem('token');
+    prepareHeaders: (headers, { getState }) => {
+      // By using getState(), we ensure we're using the token from the Redux store
+      // avoiding direct localStorage access and ensuring reactivity.
+      const token = (getState() as { auth: { token: string } }).auth.token;
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }

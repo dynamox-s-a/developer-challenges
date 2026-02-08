@@ -5,6 +5,7 @@ import { logout, selectUser, setUser } from '@/store/auth/auth.slice';
 import type { AuthState } from '@/store/auth/auth.slice';
 
 export function AuthInitializer({ children }: { children: React.ReactNode }): React.JSX.Element {
+  debugger;
   const dispatch = useDispatch();
   const token = useSelector((state: { auth: AuthState }) => state.auth.token);
   const user = useSelector(selectUser);

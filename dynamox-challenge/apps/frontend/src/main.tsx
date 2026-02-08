@@ -4,7 +4,7 @@ import { HelmetProvider } from 'react-helmet-async';
 
 import '@/styles/global.css';
 
-import { UserProvider } from '@/contexts/user-context';
+
 import { LocalizationProvider } from '@/components/core/localization-provider';
 import { ThemeProvider } from '@/components/core/theme-provider/theme-provider';
 import { Provider } from 'react-redux';
@@ -17,13 +17,11 @@ root.render(
   <React.StrictMode>
     <HelmetProvider>
       <LocalizationProvider>
-        <UserProvider>
-          <ThemeProvider>
-            <Provider store={store}>
-              <App />
-            </Provider>
-          </ThemeProvider>
-        </UserProvider>
+        <ThemeProvider>
+          <Provider store={store}>
+            <App />
+          </Provider>
+        </ThemeProvider>
       </LocalizationProvider>
     </HelmetProvider>
   </React.StrictMode>

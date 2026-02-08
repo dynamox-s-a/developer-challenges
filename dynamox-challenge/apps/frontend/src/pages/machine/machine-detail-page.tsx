@@ -24,7 +24,6 @@ import { SensorListModal } from '@/components/dashboard/monitoring-point/sensor-
 
 import { Machine } from '@/types/machine';
 import { MonitoringPoint } from '@/types/monitoring-point';
-import { Sensor } from '@/types/sensor';
 import { Box } from '@mui/system';
 
 export default function MachineDetailPage(): React.JSX.Element {
