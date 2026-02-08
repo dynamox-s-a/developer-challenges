@@ -1,0 +1,90 @@
+generator client {
+    provider = "prisma-client-js"
+    // output   = "../generated/prisma"
+}
+
+datasource db {
+    provider = "postgresql"
+}
+
+enum MachineType {
+    Pump
+    Fan
+}
+
+enum SensorModel {
+    TcAg
+    TcAs
+    HF_PLUS
+}
+
+model User {
+    id           Int      @id @default(autoincrement())
+    email        String   @unique
+    passwordHash String
+    createdAt    DateTime @default(now()) @db.Timestamptz(3)
+
+    refreshTokens RefreshToken[]
+    machines      Machine[]
+}
+
+model RefreshToken {
+    id        Int      @id @default(autoincrement())
+    tokenHash String   @unique
+    userId    Int
+    user      User     @relation(fields: [userId], references: [id])
+    revokedAt DateTime? @db.Timestamptz(3)
+    createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+    @@index([userId])
+}
+
+model Machine {
+    id        Int      @id @default(autoincrement())
+    userId    Int
+    user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+    name      String
+    type      MachineType
+    createdAt DateTime    @default(now()) @db.Timestamptz(3)
+
+    monitoringPoints MonitoringPoint[]
+
+    @@index([userId])
+    @@index([userId, createdAt])
+}
+
+model MonitoringPoint {
+    id        Int   @id @default(autoincrement())
+    machineId Int
+    machine   Machine  @relation(fields: [machineId], references: [id], onDelete: Cascade)
+    name      String
+    createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+    sensor Sensor?
+    points TimeSeriesPoint[]
+
+    @@index([machineId])
+    @@index([machineId, createdAt])
+}
+
+model Sensor {
+    id                Int          @id @default(autoincrement())
+    uid               String          @unique
+    model             SensorModel
+    monitoringPointId Int          @unique
+    monitoringPoint   MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
+    createdAt         DateTime        @default(now()) @db.Timestamptz(3)
+}
+
+model TimeSeriesPoint {
+    id                Int   @id @default(autoincrement())
+    monitoringPointId Int
+    monitoringPoint   MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
+    timestamp         DateTime
+    value             Float
+    createdAt         DateTime @default(now()) @db.Timestamptz(3)
+
+    @@index([monitoringPointId, timestamp])
+
+    //@@unique([monitoringPointId, timestamp])
+}
