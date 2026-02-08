@@ -19,10 +19,15 @@ export default function AdminHeader() {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{ flexGrow: 1 }}
+          color="primary.contrastText"
+        >
           Painel do Administrador
         </Typography>
-        <Typography variant="body1" sx={{ mr: 2 }}>
+        <Typography variant="body1" sx={{ mr: 2 }} color="primary.contrastText">
           {user?.name}
         </Typography>
         <Button color="inherit" startIcon={<Logout />} onClick={handleLogout}>

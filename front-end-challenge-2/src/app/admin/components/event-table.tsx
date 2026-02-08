@@ -12,6 +12,7 @@ import {
   CircularProgress,
   Box,
   Typography,
+  Chip,
 } from "@mui/material";
 import { Edit, Delete } from "@mui/icons-material";
 import { Event } from "@/types";
@@ -64,19 +65,54 @@ export default function EventsTable({
         <TableHead>
           <TableRow>
             <TableCell>
-              <strong>Nome</strong>
+              <Typography
+                component="h2"
+                gutterBottom
+                color="text.primary"
+                fontWeight="bold"
+              >
+                Nome
+              </Typography>
             </TableCell>
             <TableCell>
-              <strong>Data/Hora</strong>
+              <Typography
+                component="h2"
+                gutterBottom
+                color="text.primary"
+                fontWeight="bold"
+              >
+                Data/Hora
+              </Typography>
             </TableCell>
             <TableCell>
-              <strong>Local</strong>
+              <Typography
+                component="h2"
+                gutterBottom
+                color="text.primary"
+                fontWeight="bold"
+              >
+                Local
+              </Typography>
             </TableCell>
             <TableCell>
-              <strong>Categoria</strong>
+              <Typography
+                component="h2"
+                gutterBottom
+                color="text.primary"
+                fontWeight="bold"
+              >
+                Categoria
+              </Typography>
             </TableCell>
             <TableCell align="right">
-              <strong>Ações</strong>
+              <Typography
+                component="h2"
+                gutterBottom
+                color="text.primary"
+                fontWeight="bold"
+              >
+                Ações
+              </Typography>
             </TableCell>
           </TableRow>
         </TableHead>
@@ -88,21 +124,14 @@ export default function EventsTable({
               <TableCell>{event.location}</TableCell>
               <TableCell>
                 <Box
-                  component="span"
                   sx={{
                     display: "flex",
-                    justifyContent: "center",
-                    border: "1px solid",
-                    padding: "4px 8px",
-                    borderColor: "primary.main",
-                    color: "primary.main",
-                    borderRadius: "8px",
-                    fontWeight: "bold",
-                    width: "100px",
-                    fontSize: "12px",
+                    justifyContent: "space-between",
+                    alignItems: "start",
+                    mb: 2,
                   }}
                 >
-                  {event.category}
+                  <Chip label={event.category} size="small" color="default" />
                 </Box>
               </TableCell>
               <TableCell align="right">

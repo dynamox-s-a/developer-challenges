@@ -26,7 +26,9 @@ export default function EventCard({ event, isPast }: EventCardProps) {
       sx={{
         height: "100%",
         opacity: isPast ? 0.7 : 1,
-        borderLeft: isPast ? "4px solid #bbb" : "4px solid #1976d2",
+        borderLeftWidth: "4px",
+        borderLeftStyle: "solid",
+        borderLeftColor: isPast ? "#bbb" : "primary.main",
       }}
     >
       <CardContent>
@@ -38,7 +40,12 @@ export default function EventCard({ event, isPast }: EventCardProps) {
             mb: 2,
           }}
         >
-          <Typography variant="h6" component="h2" gutterBottom>
+          <Typography
+            variant="h6"
+            component="h2"
+            gutterBottom
+            color="text.primary"
+          >
             {event.name}
           </Typography>
           {isPast && <Chip label="Encerrado" size="small" color="default" />}

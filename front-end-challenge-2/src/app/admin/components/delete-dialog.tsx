@@ -24,7 +24,7 @@ export default function DeleteDialog({
     <Dialog open={open} onClose={onCancel}>
       <DialogTitle>Confirmar Exclusão</DialogTitle>
       <DialogContent>
-        <Typography>
+        <Typography color="text.primary">
           Tem certeza que deseja excluir este evento? Esta ação não pode ser
           desfeita.
         </Typography>

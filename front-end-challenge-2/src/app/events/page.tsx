@@ -91,7 +91,7 @@ export default function EventsPage() {
 
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
+      <Typography variant="h4" component="h1" gutterBottom color="text.primary">
         Eventos
       </Typography>
 
@@ -105,7 +105,12 @@ export default function EventsPage() {
       />
 
       <Box sx={{ mt: 4 }}>
-        <Typography variant="h5" component="h2" gutterBottom>
+        <Typography
+          variant="h5"
+          component="h2"
+          gutterBottom
+          color="text.primary"
+        >
           {filters.timeFilter === "all"
             ? "Todos os Eventos"
             : filters.timeFilter === "upcoming"

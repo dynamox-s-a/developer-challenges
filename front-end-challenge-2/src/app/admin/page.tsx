@@ -71,7 +71,7 @@ export default function AdminPage() {
             mb: 3,
           }}
         >
-          <Typography variant="h4" component="h1">
+          <Typography variant="h4" component="h1" color="text.primary">
             Gerenciar Eventos
           </Typography>
           <Button
