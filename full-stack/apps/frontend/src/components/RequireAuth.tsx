@@ -1,8 +1,13 @@
+import type { ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 import type { RootState } from "../store";
 
-export function RequireAuth({ children }: { children: JSX.Element }) {
+type RequireAuthProps = {
+  children: ReactElement;
+};
+
+export function RequireAuth({ children }: RequireAuthProps) {
   const location = useLocation();
 
   const token = useSelector((s: RootState) => s.auth?.token ?? null);
