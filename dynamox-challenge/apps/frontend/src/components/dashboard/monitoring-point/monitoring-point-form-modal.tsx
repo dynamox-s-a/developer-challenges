@@ -111,7 +111,7 @@ export function MonitoringPointFormModal({
                   <TextField
                     {...field}
                     select
-                    label="Sensor Model (Optional)"
+                    label="Sensor Model"
                     error={Boolean(errors.sensorModel)}
                     helperText={isPumpMachine ? "TcAg and TcAs are not allowed for Bomba machines" : errors.sensorModel?.message}
                     fullWidth

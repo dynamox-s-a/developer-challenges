@@ -75,9 +75,8 @@ export default function MonitoringPointsPage(): React.JSX.Element {
       }
       setIsFormModalOpen(false);
       setSelectedMonitoringPoint(null);
-    } catch (err) {
-
-      showError('Failed to save Monitoring Point');
+    } catch (err: any) {
+      showError(err?.data?.message || 'Failed to save Monitoring Point');
     }
   };
 

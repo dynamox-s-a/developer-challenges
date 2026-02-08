@@ -20,7 +20,14 @@ export const authApi = apiSlice.injectEndpoints({
     getMe: builder.query<User, void>({
       query: () => '/auth/me',
     }),
+    updateProfile: builder.mutation<User, Partial<User> & { password?: string }>({
+      query: (data) => ({
+        url: '/auth/profile',
+        method: 'POST',
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useGetMeQuery } = authApi;
+export const { useLoginMutation, useRegisterMutation, useGetMeQuery, useUpdateProfileMutation } = authApi;

@@ -29,4 +29,9 @@ export class AuthController {
   async getMe(@Request() req) {
     return req.user;
   }
+  @Post('profile')
+  @UseGuards(JwtAuthGuard)
+  async updateProfile(@Request() req, @Body() updateProfileDto: any) {
+    return this.authService.updateProfile(req.user.id, updateProfileDto);
+  }
 }

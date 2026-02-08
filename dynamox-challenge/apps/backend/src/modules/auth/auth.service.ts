@@ -90,4 +90,35 @@ export class AuthService {
     const payload = { sub: userId, email };
     return this.jwtService.sign(payload);
   }
+  async updateProfile(userId: number, updateProfileDto: any) {
+    const { password, ...otherData } = updateProfileDto;
+
+    // Check if email is being updated and if it's already taken
+    if (otherData.email) {
+      const existingUser = await this.prisma.user.findUnique({
+        where: { email: otherData.email },
+      });
+
+      if (existingUser && existingUser.id !== userId) {
+        throw new ConflictException('Email already in use');
+      }
+    }
+
+    const dataToUpdate: any = { ...otherData };
+
+    if (password) {
+      dataToUpdate.password = await bcrypt.hash(password, 10);
+    }
+
+    const updatedUser = await this.prisma.user.update({
+      where: { id: userId },
+      data: dataToUpdate,
+    });
+
+    return {
+      id: updatedUser.id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+    };
+  }
 }
