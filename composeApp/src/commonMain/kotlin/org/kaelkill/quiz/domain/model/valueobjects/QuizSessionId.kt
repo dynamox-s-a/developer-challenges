@@ -15,6 +15,5 @@ data class QuizSessionId private constructor(val value: String) {
         fun generate(): QuizSessionId {
             return QuizSessionId(Uuid.random().toString())
         }
-
     }
 }
