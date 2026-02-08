@@ -44,7 +44,7 @@
 ### Entidades (com identidade)
 
 **Question**
-- Possui um enunciado e entre 3 a 6 opções de resposta
+- Possui um enunciado e 5 opções de resposta
 - Identificada pelo seu QuestionId
 
 **Player**
