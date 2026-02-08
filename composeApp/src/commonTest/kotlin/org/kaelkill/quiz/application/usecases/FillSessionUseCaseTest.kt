@@ -4,7 +4,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.kaelkill.quiz.domain.model.aggregates.QuizSession
 import org.kaelkill.quiz.domain.model.entities.Question
-import org.kaelkill.quiz.domain.model.valueobjects.PlayerName
+import org.kaelkill.quiz.domain.model.valueobjects.PlayerId
 import org.kaelkill.quiz.domain.model.valueobjects.QuizSessionId
 import org.kaelkill.quiz.domain.ports.repositories.QuestionRepository
 import org.kaelkill.quiz.domain.ports.repositories.QuizSessionRepository
@@ -15,11 +15,11 @@ import kotlin.test.assertTrue
 @OptIn(ExperimentalCoroutinesApi::class)
 class FillSessionUseCaseTest {
 
-    private val player = PlayerName.create("Player").getOrThrow()
+    private val playerId = PlayerId.generate()
 
     @Test
     fun `should fill session until it has 10 questions`() = runTest {
-        val session = QuizSession.create(player)
+        val session = QuizSession.create(playerId)
         val sessionRepo = FakeSessionRepository(session)
         val questionRepo = GeneratorQuestionRepository() // Gera q0, q1, q2...
 
@@ -33,7 +33,7 @@ class FillSessionUseCaseTest {
 
     @Test
     fun `should fail immediately if session id format is invalid`() = runTest {
-        val useCase = FillSessionUseCase(FakeSessionRepository(QuizSession.create(player)), GeneratorQuestionRepository())
+        val useCase = FillSessionUseCase(FakeSessionRepository(QuizSession.create(playerId)), GeneratorQuestionRepository())
 
         val result = useCase.execute("   ")
 
@@ -42,7 +42,7 @@ class FillSessionUseCaseTest {
 
     @Test
     fun `should fail if repository fails to fetch session`() = runTest {
-        val session = QuizSession.create(player)
+        val session = QuizSession.create(playerId)
         val sessionRepo = FakeSessionRepository(session, failOnGet = true)
 
         val useCase = FillSessionUseCase(sessionRepo, GeneratorQuestionRepository())
@@ -54,7 +54,7 @@ class FillSessionUseCaseTest {
 
     @Test
     fun `should fail if repository fails to save session`() = runTest {
-        val session = QuizSession.create(player)
+        val session = QuizSession.create(playerId)
         val sessionRepo = FakeSessionRepository(session, failOnSave = true)
 
         val useCase = FillSessionUseCase(sessionRepo, GeneratorQuestionRepository())
@@ -66,7 +66,7 @@ class FillSessionUseCaseTest {
 
     @Test
     fun `should handle duplicates correctly by ignoring them and retrying until max attempts`() = runTest {
-        val session = QuizSession.create(player)
+        val session = QuizSession.create(playerId)
         val sessionRepo = FakeSessionRepository(session)
 
         val fixedQuestion = Question.create("q1", "S", listOf("A","B","C","D","E")).getOrThrow()
@@ -87,7 +87,7 @@ class FillSessionUseCaseTest {
 
     @Test
     fun `should fail if api fails repeatedly (network error)`() = runTest {
-        val session = QuizSession.create(player)
+        val session = QuizSession.create(playerId)
         val sessionRepo = FakeSessionRepository(session)
         val questionRepo = FlakyQuestionRepository(successCount = 2)
 

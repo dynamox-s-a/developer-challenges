@@ -1,7 +1,7 @@
 package org.kaelkill.quiz.domain.model.aggregates
 
 import org.kaelkill.quiz.domain.model.entities.Question
-import org.kaelkill.quiz.domain.model.valueobjects.PlayerName
+import org.kaelkill.quiz.domain.model.valueobjects.PlayerId
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -14,17 +14,17 @@ class QuizSessionTest {
         return Question.create(id, "Statement $id", options).getOrThrow()
     }
 
-    private fun createValidPlayer(): PlayerName {
-        return PlayerName.create("Player One").getOrThrow()
+    private fun createValidPlayer(): PlayerId {
+        return PlayerId.generate()
     }
 
     @Test
     fun `should create empty session initially`() {
-        val player = createValidPlayer()
+        val playerId = createValidPlayer()
 
-        val session = QuizSession.create(player)
+        val session = QuizSession.create(playerId)
 
-        assertEquals(player, session.player)
+        assertEquals(playerId, session.playerId)
         assertTrue(session.questions.isEmpty(), "Session should start with 0 questions")
         assertEquals(0, session.score, "Initial score must be 0")
         assertFalse(session.isFinished, "Session should not be finished")

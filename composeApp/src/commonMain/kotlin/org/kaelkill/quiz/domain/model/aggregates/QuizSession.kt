@@ -3,12 +3,12 @@ package org.kaelkill.quiz.domain.model.aggregates
 import org.kaelkill.quiz.domain.model.entities.Answer
 import org.kaelkill.quiz.domain.model.entities.Question
 import org.kaelkill.quiz.domain.model.valueobjects.AnswerOption
-import org.kaelkill.quiz.domain.model.valueobjects.PlayerName
+import org.kaelkill.quiz.domain.model.valueobjects.PlayerId
 import org.kaelkill.quiz.domain.model.valueobjects.QuizSessionId
 
 data class QuizSession(
     val id: QuizSessionId,
-    val player: PlayerName,
+    val playerId: PlayerId,
     val questions: List<Question> = emptyList(),
     val answers: List<Answer> = emptyList(),
     val score: Int = 0
@@ -20,10 +20,10 @@ data class QuizSession(
     companion object {
         private const val MAX_QUESTIONS = 10
 
-        fun create(player: PlayerName): QuizSession {
+        fun create(playerId: PlayerId): QuizSession {
             return QuizSession(
                 id = QuizSessionId.generate(),
-                player = player
+                playerId = playerId
             )
         }
     }

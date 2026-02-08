@@ -6,7 +6,7 @@ import org.kaelkill.quiz.domain.model.aggregates.QuizSession
 import org.kaelkill.quiz.domain.model.entities.Answer
 import org.kaelkill.quiz.domain.model.entities.Question
 import org.kaelkill.quiz.domain.model.valueobjects.AnswerOption
-import org.kaelkill.quiz.domain.model.valueobjects.PlayerName
+import org.kaelkill.quiz.domain.model.valueobjects.PlayerId
 import org.kaelkill.quiz.domain.model.valueobjects.QuizSessionId
 import org.kaelkill.quiz.domain.ports.repositories.QuestionRepository
 import org.kaelkill.quiz.domain.ports.repositories.QuizSessionRepository
@@ -18,11 +18,11 @@ import kotlin.test.assertTrue
 class AnswerQuestionUseCaseTest {
 
     private val question1 = Question.create("q1", "Statement 1", listOf("A", "B", "C", "D", "E")).getOrThrow()
-    private val player = PlayerName.create("Player").getOrThrow()
+    private val playerId = PlayerId.generate()
 
     @Test
     fun `should answer correctly updates score and saves session`() = runTest {
-        val initialSession = QuizSession.create(player).addNewQuestion(question1).getOrThrow()
+        val initialSession = QuizSession.create(playerId).addNewQuestion(question1).getOrThrow()
         val sessionRepo = FakeQuizSessionRepository(initialSession)
         val questionRepo = FakeQuestionRepository(isAnswerCorrect = true)
 
@@ -42,7 +42,7 @@ class AnswerQuestionUseCaseTest {
 
     @Test
     fun `should answer incorrectly updates history but not score`() = runTest {
-        val initialSession = QuizSession.create(player).addNewQuestion(question1).getOrThrow()
+        val initialSession = QuizSession.create(playerId).addNewQuestion(question1).getOrThrow()
         val sessionRepo = FakeQuizSessionRepository(initialSession)
         val questionRepo = FakeQuestionRepository(isAnswerCorrect = false)
 
@@ -83,7 +83,7 @@ class AnswerQuestionUseCaseTest {
 
     @Test
     fun `should fail if api check fails (network error)`() = runTest {
-        val initialSession = QuizSession.create(player).addNewQuestion(question1).getOrThrow()
+        val initialSession = QuizSession.create(playerId).addNewQuestion(question1).getOrThrow()
         val sessionRepo = FakeQuizSessionRepository(initialSession)
 
         val brokenApiRepo = object : QuestionRepository {
@@ -103,7 +103,7 @@ class AnswerQuestionUseCaseTest {
 
     @Test
     fun `should fail if domain logic rejects answer (e-g question not found)`() = runTest {
-        val initialSession = QuizSession.create(player).addNewQuestion(question1).getOrThrow()
+        val initialSession = QuizSession.create(playerId).addNewQuestion(question1).getOrThrow()
         val sessionRepo = FakeQuizSessionRepository(initialSession)
 
         val useCase = AnswerQuestionUseCase(sessionRepo, FakeQuestionRepository(true))
@@ -116,7 +116,7 @@ class AnswerQuestionUseCaseTest {
 
     @Test
     fun `should fail if domain logic rejects answer (e-g already answered)`() = runTest {
-        var session = QuizSession.create(player).addNewQuestion(question1).getOrThrow()
+        var session = QuizSession.create(playerId).addNewQuestion(question1).getOrThrow()
         val answer = Answer(question1.id, AnswerOption.create("A").getOrThrow())
         session = session.copy(answers = listOf(answer))
 
@@ -131,7 +131,7 @@ class AnswerQuestionUseCaseTest {
 
     @Test
     fun `should fail if repository fails to save the updated session`() = runTest {
-        val initialSession = QuizSession.create(player).addNewQuestion(question1).getOrThrow()
+        val initialSession = QuizSession.create(playerId).addNewQuestion(question1).getOrThrow()
 
         val sessionRepo = FakeQuizSessionRepository(initialSession, failOnSave = true)
 
@@ -141,7 +141,6 @@ class AnswerQuestionUseCaseTest {
 
         assertTrue(result.isFailure)
         assertEquals("DB Save Error", result.exceptionOrNull()?.message)
-        // Testa a linha: if (saveResult.isFailure) ...
     }
 
     class FakeQuizSessionRepository(
