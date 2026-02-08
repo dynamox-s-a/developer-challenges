@@ -4,30 +4,45 @@ import org.kaelkill.quiz.domain.model.entities.Answer
 import org.kaelkill.quiz.domain.model.entities.Question
 import org.kaelkill.quiz.domain.model.valueobjects.AnswerOption
 import org.kaelkill.quiz.domain.model.valueobjects.PlayerName
+import org.kaelkill.quiz.domain.model.valueobjects.QuizSessionId
 
 data class QuizSession(
+    val id: QuizSessionId,
     val player: PlayerName,
-    val questions: List<Question>,
-    val answers: List<Answer> = emptyList()
+    val questions: List<Question> = emptyList(),
+    val answers: List<Answer> = emptyList(),
+    val score: Int = 0
 ) {
 
+    val isFinished: Boolean
+        get() = questions.size == 10 && answers.size == 10
+
     companion object {
-        private const val QUESTIONS_PER_SESSION = 10
+        private const val MAX_QUESTIONS = 10
 
-        fun create(player: PlayerName, questions: List<Question>): Result<QuizSession> {
-            val uniqueQuestions = questions.distinctBy { it.id }
-
-            if (uniqueQuestions.size != QUESTIONS_PER_SESSION) {
-                return Result.failure(IllegalArgumentException("A session must have exactly $QUESTIONS_PER_SESSION unique questions"))
-            }
-
-            return Result.success(QuizSession(player, uniqueQuestions))
+        fun create(player: PlayerName): QuizSession {
+            return QuizSession(
+                id = QuizSessionId.generate(),
+                player = player
+            )
         }
     }
 
-    fun answerQuestion(questionId: String, optionValue: String): Result<QuizSession> {
+    fun addNewQuestion(question: Question): Result<QuizSession> {
+        if (questions.size >= MAX_QUESTIONS) {
+            return Result.failure(IllegalStateException("Quiz is already full (10 questions)"))
+        }
+
+        if (questions.any { it.id == question.id }) {
+            return Result.success(this)
+        }
+
+        return Result.success(copy(questions = questions + question))
+    }
+
+    fun answerQuestion(questionId: String, optionValue: String, isCorrect: Boolean): Result<QuizSession> {
         val question = questions.find { it.id.value == questionId }
-            ?: return Result.failure(IllegalArgumentException("Question not found in this session"))
+            ?: return Result.failure(IllegalArgumentException("Question not found in current session"))
 
         if (isQuestionAlreadyAnswered(question)) {
             return Result.failure(IllegalStateException("Question already answered"))
@@ -38,17 +53,21 @@ data class QuizSession(
         }
 
         val newAnswer = Answer(question.id, selectedOption)
-        return Result.success(copy(answers = answers + newAnswer))
+        val newScore = if (isCorrect) score + 1 else score
+
+        return Result.success(
+            copy(
+                answers = answers + newAnswer,
+                score = newScore
+            )
+        )
     }
 
     private fun isQuestionAlreadyAnswered(question: Question): Boolean {
         return answers.any { it.questionId == question.id }
     }
 
-    private fun parseAndValidateOption(
-        question: Question,
-        optionValue: String
-    ): Result<AnswerOption> {
+    private fun parseAndValidateOption(question: Question, optionValue: String): Result<AnswerOption> {
         val optionResult = AnswerOption.create(optionValue)
 
         if (optionResult.isFailure) return optionResult

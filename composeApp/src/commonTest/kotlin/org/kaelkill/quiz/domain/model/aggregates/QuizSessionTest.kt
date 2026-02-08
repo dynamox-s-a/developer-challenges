@@ -5,6 +5,7 @@ import org.kaelkill.quiz.domain.model.valueobjects.PlayerName
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlin.test.assertFalse
 
 class QuizSessionTest {
 
@@ -18,126 +19,98 @@ class QuizSessionTest {
     }
 
     @Test
-    fun `should create valid session with exactly 10 questions`() {
-        val questions = (1..10).map { createValidQuestion("q$it") }
+    fun `should create empty session initially`() {
         val player = createValidPlayer()
 
-        val result = QuizSession.create(
-            player = player,
-            questions = questions
-        )
+        val session = QuizSession.create(player)
+
+        assertEquals(player, session.player)
+        assertTrue(session.questions.isEmpty(), "Session should start with 0 questions")
+        assertEquals(0, session.score, "Initial score must be 0")
+        assertFalse(session.isFinished, "Session should not be finished")
+    }
+
+    @Test
+    fun `should add new question to session`() {
+        val session = QuizSession.create(createValidPlayer())
+        val question = createValidQuestion("q1")
+
+        val result = session.addNewQuestion(question)
 
         assertTrue(result.isSuccess)
-        val session = result.getOrNull()
-        assertEquals(10, session?.questions?.size)
-        assertEquals(player, session?.player)
+        val updatedSession = result.getOrThrow()
+        assertEquals(1, updatedSession.questions.size)
+        assertEquals("q1", updatedSession.questions.first().id.value)
     }
 
     @Test
-    fun `should fail when questions count is less than 10`() {
-        val questions = (1..9).map { createValidQuestion("q$it") }
-        val player = createValidPlayer()
+    fun `should fail when adding question beyond limit`() {
+        var session = QuizSession.create(createValidPlayer())
+        repeat(10) { i ->
+            session = session.addNewQuestion(createValidQuestion("q$i")).getOrThrow()
+        }
 
-        val result = QuizSession.create(
-            player = player,
-            questions = questions
-        )
+        val result = session.addNewQuestion(createValidQuestion("q11"))
 
         assertTrue(result.isFailure)
-        assertEquals("A session must have exactly 10 unique questions", result.exceptionOrNull()?.message)
+        assertEquals("Quiz is already full (10 questions)", result.exceptionOrNull()?.message)
     }
 
-    @Test
-    fun `should fail when questions count is more than 10`() {
-        val questions = (1..11).map { createValidQuestion("q$it") }
-        val player = createValidPlayer()
 
-        val result = QuizSession.create(
-            player = player,
-            questions = questions
+    @Test
+    fun `should increase score when answer is correct`() {
+        var session = QuizSession.create(createValidPlayer())
+        session = session.addNewQuestion(createValidQuestion("q1")).getOrThrow()
+
+        val result = session.answerQuestion(
+            questionId = "q1",
+            optionValue = "A",
+            isCorrect = true
         )
-
-        assertTrue(result.isFailure)
-        assertEquals("A session must have exactly 10 unique questions", result.exceptionOrNull()?.message)
-    }
-
-    @Test
-    fun `should fail when questions list contains duplicates`() {
-        val questions = (1..9).map { createValidQuestion("q$it") }.toMutableList()
-        questions.add(questions[0])
-        val player = createValidPlayer()
-
-        val result = QuizSession.create(
-            player = player,
-            questions = questions
-        )
-
-        assertTrue(result.isFailure)
-        assertEquals("A session must have exactly 10 unique questions", result.exceptionOrNull()?.message)
-    }
-
-    @Test
-    fun `should sanitize list when input has duplicates but valid unique count`() {
-        val distinctQuestions = (1..10).map { createValidQuestion("q$it") }
-
-        val dirtyList = distinctQuestions.toMutableList()
-        dirtyList.add(distinctQuestions[0])
-
-        val player = createValidPlayer()
-
-        val result = QuizSession.create(player, dirtyList)
-        val session = result.getOrThrow()
-        assertEquals(10, session.questions.size)
-    }
-
-    @Test
-    fun `should register answer successfully`() {
-        val questions = (1..10).map { createValidQuestion("q$it") }
-        val session = QuizSession.create(createValidPlayer(), questions).getOrThrow()
-
-        val questionId = "q1"
-        val selectedOption = "A"
-
-        val result = session.answerQuestion(questionId, selectedOption)
 
         assertTrue(result.isSuccess)
         val updatedSession = result.getOrThrow()
 
+        assertEquals(1, updatedSession.score, "Score should increase to 1")
         assertEquals(1, updatedSession.answers.size)
-        assertEquals("q1", updatedSession.answers.first().questionId.value)
-        assertEquals("A", updatedSession.answers.first().selectedOption.value)
+    }
+
+    @Test
+    fun `should NOT increase score when answer is incorrect`() {
+        var session = QuizSession.create(createValidPlayer())
+        session = session.addNewQuestion(createValidQuestion("q1")).getOrThrow()
+
+        val result = session.answerQuestion(
+            questionId = "q1",
+            optionValue = "B",
+            isCorrect = false
+        )
+
+        assertTrue(result.isSuccess)
+        val updatedSession = result.getOrThrow()
+
+        assertEquals(0, updatedSession.score, "Score should remain 0")
+        assertEquals(1, updatedSession.answers.size)
     }
 
     @Test
     fun `should fail when answering non-existent question`() {
-        val questions = (1..10).map { createValidQuestion("q$it") }
-        val session = QuizSession.create(createValidPlayer(), questions).getOrThrow()
+        val session = QuizSession.create(createValidPlayer())
 
-        val result = session.answerQuestion("q99", "A")
-
-        assertTrue(result.isFailure)
-        assertEquals("Question not found in this session", result.exceptionOrNull()?.message)
-    }
-
-    @Test
-    fun `should fail when answering with invalid option for the question`() {
-        val questions = (1..10).map { createValidQuestion("q$it") }
-        val session = QuizSession.create(createValidPlayer(), questions).getOrThrow()
-
-        val result = session.answerQuestion("q1", "Z")
+        val result = session.answerQuestion("q99", "A", true)
 
         assertTrue(result.isFailure)
-        assertEquals("Selected option is not valid for this question", result.exceptionOrNull()?.message)
+        assertEquals("Question not found in current session", result.exceptionOrNull()?.message)
     }
 
     @Test
     fun `should fail when answering the same question twice`() {
-        val questions = (1..10).map { createValidQuestion("q$it") }
-        val session = QuizSession.create(createValidPlayer(), questions).getOrThrow()
+        var session = QuizSession.create(createValidPlayer())
+        session = session.addNewQuestion(createValidQuestion("q1")).getOrThrow()
 
-        val firstAnswerSession = session.answerQuestion("q1", "A").getOrThrow()
+        val firstAnswerSession = session.answerQuestion("q1", "A", true).getOrThrow()
 
-        val result = firstAnswerSession.answerQuestion("q1", "B")
+        val result = firstAnswerSession.answerQuestion("q1", "B", false)
 
         assertTrue(result.isFailure)
         assertEquals("Question already answered", result.exceptionOrNull()?.message)
