@@ -1,0 +1,22 @@
+services:
+    postgres:
+        image: postgres:16-alpine
+        container_name: dynamox-postgres
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: dynamox
+            POSTGRES_USER: dynamox
+            POSTGRES_PASSWORD: dynamox
+            TZ: America/Sao_Paulo
+        ports:
+            - "5433:5432"
+        volumes:
+            - dynamox_pg_data:/var/lib/postgresql/data
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U dynamox -d dynamox"]
+            interval: 5s
+            timeout: 3s
+            retries: 20
+
+volumes:
+    dynamox_pg_data:
