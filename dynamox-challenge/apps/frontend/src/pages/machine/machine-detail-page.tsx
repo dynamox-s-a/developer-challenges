@@ -62,6 +62,8 @@ export default function MachineDetailPage(): React.JSX.Element {
     message: string;
     onConfirm: () => void;
     severity?: 'error' | 'warning' | 'info';
+    confirmText?: string;
+    hideCancel?: boolean;
   }>({
     open: false,
     title: '',
@@ -149,6 +151,19 @@ export default function MachineDetailPage(): React.JSX.Element {
   };
 
   const openDeleteMPModal = (mp: MonitoringPoint) => {
+    if (mp.sensors && mp.sensors.length > 0) {
+      setConfirmationDialog({
+        open: true,
+        title: 'Cannot Delete Monitoring Point',
+        message: `The monitoring point "${mp.name}" cannot be deleted because it has ${mp.sensors.length} associated sensor(s). Please remove the sensors first.`,
+        severity: 'warning',
+        confirmText: 'OK',
+        hideCancel: true,
+        onConfirm: () => setConfirmationDialog((prev) => ({ ...prev, open: false })),
+      });
+      return;
+    }
+
     setConfirmationDialog({
       open: true,
       title: 'Delete Monitoring Point',

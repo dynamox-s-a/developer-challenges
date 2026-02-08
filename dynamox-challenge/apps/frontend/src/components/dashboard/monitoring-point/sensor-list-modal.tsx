@@ -23,6 +23,7 @@ import {
 import { Trash as TrashIcon, Plus as PlusIcon } from '@phosphor-icons/react';
 import { useGetSensorsByMonitoringPointQuery, useDeleteSensorMutation, useCreateSensorMutation } from '@/store/sensors/sensors.api';
 import { SensorModel } from '@/types/sensor';
+import { ConfirmationDialog } from '@/components/shared/confirmation-dialog';
 
 interface SensorListModalProps {
   open: boolean;
@@ -43,6 +44,16 @@ export function SensorListModal({ open, onClose, monitoringPoint, machine }: Sen
     severity: 'success',
   });
 
+  const [confirmationDialog, setConfirmationDialog] = React.useState<{
+    open: boolean;
+    sensorId: number | null;
+    sensorModel: string;
+  }>({
+    open: false,
+    sensorId: null,
+    sensorModel: '',
+  });
+
   const { data: sensors = [], isLoading, refetch } = useGetSensorsByMonitoringPointQuery(
     monitoringPoint?.id as number,
     { skip: !monitoringPoint?.id }
@@ -50,6 +61,16 @@ export function SensorListModal({ open, onClose, monitoringPoint, machine }: Sen
 
   const machineType = machine?.type || monitoringPoint?.machine?.type;
   const isPumpMachine = machineType === 'Bomba';
+
+  const hasTcAg = sensors.some(s => s.model === SensorModel.TcAg);
+  const hasTcAs = sensors.some(s => s.model === SensorModel.TcAs);
+  const hasHfPlus = sensors.some(s => s.model === SensorModel.HF_PLUS);
+
+  const showTcAg = !isPumpMachine && !hasTcAg;
+  const showTcAs = !isPumpMachine && !hasTcAs;
+  const showHfPlus = !hasHfPlus;
+
+  const hasAvailableOptions = showTcAg || showTcAs || showHfPlus;
 
   const handleCloseSnackbar = () => {
     setSnackbar({ ...snackbar, open: false });
@@ -72,10 +93,21 @@ export function SensorListModal({ open, onClose, monitoringPoint, machine }: Sen
     }
   };
 
-  const handleDelete = async (sensorId: number) => {
+  const handleDeleteClick = (sensorId: number, sensorModel: string) => {
+    setConfirmationDialog({
+      open: true,
+      sensorId,
+      sensorModel,
+    });
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!confirmationDialog.sensorId) return;
+
     try {
-      await deleteSensor(sensorId).unwrap();
+      await deleteSensor(confirmationDialog.sensorId).unwrap();
       setSnackbar({ open: true, message: 'Sensor deleted successfully', severity: 'success' });
+      setConfirmationDialog({ open: false, sensorId: null, sensorModel: '' });
       refetch();
     } catch (err) {
       setSnackbar({ open: true, message: 'Failed to delete sensor', severity: 'error' });
@@ -98,11 +130,11 @@ export function SensorListModal({ open, onClose, monitoringPoint, machine }: Sen
                   value={selectedModel}
                   label="Sensor Model"
                   onChange={(e) => setSelectedModel(e.target.value as SensorModel)}
+                  disabled={!hasAvailableOptions}
                 >
-                  {/* Filter models based on machine type */}
-                  {!isPumpMachine && <MenuItem value={SensorModel.TcAg}>TcAg</MenuItem>}
-                  {!isPumpMachine && <MenuItem value={SensorModel.TcAs}>TcAs</MenuItem>}
-                  <MenuItem value={SensorModel.HF_PLUS}>HF+</MenuItem>
+                  {showTcAg && <MenuItem value={SensorModel.TcAg}>TcAg</MenuItem>}
+                  {showTcAs && <MenuItem value={SensorModel.TcAs}>TcAs</MenuItem>}
+                  {showHfPlus && <MenuItem value={SensorModel.HF_PLUS}>HF+</MenuItem>}
                 </Select>
               </FormControl>
               <Button
@@ -135,8 +167,8 @@ export function SensorListModal({ open, onClose, monitoringPoint, machine }: Sen
                 <ListItem
                   key={sensor.id}
                   secondaryAction={
-                    <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(sensor.id)} disabled={isDeleting}>
-                      {isDeleting ? <CircularProgress size={20} /> : <TrashIcon />}
+                    <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteClick(sensor.id, sensor.model)} disabled={isDeleting}>
+                      {isDeleting && confirmationDialog.sensorId === sensor.id ? <CircularProgress size={20} /> : <TrashIcon />}
                     </IconButton>
                   }
                   sx={{
@@ -159,6 +191,17 @@ export function SensorListModal({ open, onClose, monitoringPoint, machine }: Sen
           <Button onClick={onClose}>Close</Button>
         </DialogActions>
       </Dialog>
+
+      <ConfirmationDialog
+        open={confirmationDialog.open}
+        onClose={() => setConfirmationDialog({ ...confirmationDialog, open: false })}
+        onConfirm={handleConfirmDelete}
+        title="Delete Sensor"
+        message={`Are you sure you want to delete sensor "${confirmationDialog.sensorModel === 'HF_PLUS' ? 'HF+' : confirmationDialog.sensorModel}"? This action cannot be undone.`}
+        confirmText="Delete"
+        severity="error"
+        isLoading={isDeleting}
+      />
 
       <Snackbar
         open={snackbar.open}

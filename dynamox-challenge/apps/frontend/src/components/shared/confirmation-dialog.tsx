@@ -29,7 +29,8 @@ export function ConfirmationDialog({
   cancelText = 'Cancel',
   severity = 'warning',
   isLoading = false,
-}: ConfirmationDialogProps): React.JSX.Element {
+  hideCancel = false,
+}: ConfirmationDialogProps & { hideCancel?: boolean }): React.JSX.Element {
   const getSeverityColor = () => {
     switch (severity) {
       case 'error':
@@ -52,9 +53,11 @@ export function ConfirmationDialog({
         </Alert>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} disabled={isLoading}>
-          {cancelText}
-        </Button>
+        {!hideCancel && (
+          <Button onClick={onClose} disabled={isLoading}>
+            {cancelText}
+          </Button>
+        )}
         <Button
           onClick={onConfirm}
           color={getSeverityColor()}
