@@ -88,5 +88,58 @@ class QuizSessionTest {
         val result = QuizSession.create(player, dirtyList)
         val session = result.getOrThrow()
         assertEquals(10, session.questions.size)
-       }
+    }
+
+    @Test
+    fun `should register answer successfully`() {
+        val questions = (1..10).map { createValidQuestion("q$it") }
+        val session = QuizSession.create(createValidPlayer(), questions).getOrThrow()
+
+        val questionId = "q1"
+        val selectedOption = "A"
+
+        val result = session.answerQuestion(questionId, selectedOption)
+
+        assertTrue(result.isSuccess)
+        val updatedSession = result.getOrThrow()
+
+        assertEquals(1, updatedSession.answers.size)
+        assertEquals("q1", updatedSession.answers.first().questionId.value)
+        assertEquals("A", updatedSession.answers.first().selectedOption.value)
+    }
+
+    @Test
+    fun `should fail when answering non-existent question`() {
+        val questions = (1..10).map { createValidQuestion("q$it") }
+        val session = QuizSession.create(createValidPlayer(), questions).getOrThrow()
+
+        val result = session.answerQuestion("q99", "A")
+
+        assertTrue(result.isFailure)
+        assertEquals("Question not found in this session", result.exceptionOrNull()?.message)
+    }
+
+    @Test
+    fun `should fail when answering with invalid option for the question`() {
+        val questions = (1..10).map { createValidQuestion("q$it") }
+        val session = QuizSession.create(createValidPlayer(), questions).getOrThrow()
+
+        val result = session.answerQuestion("q1", "Z")
+
+        assertTrue(result.isFailure)
+        assertEquals("Selected option is not valid for this question", result.exceptionOrNull()?.message)
+    }
+
+    @Test
+    fun `should fail when answering the same question twice`() {
+        val questions = (1..10).map { createValidQuestion("q$it") }
+        val session = QuizSession.create(createValidPlayer(), questions).getOrThrow()
+
+        val firstAnswerSession = session.answerQuestion("q1", "A").getOrThrow()
+
+        val result = firstAnswerSession.answerQuestion("q1", "B")
+
+        assertTrue(result.isFailure)
+        assertEquals("Question already answered", result.exceptionOrNull()?.message)
+    }
 }
