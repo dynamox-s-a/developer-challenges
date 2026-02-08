@@ -2,6 +2,7 @@ package org.kaelkill.quiz.domain.model.aggregates
 
 import org.kaelkill.quiz.domain.model.entities.Question
 import org.kaelkill.quiz.domain.model.valueobjects.PlayerId
+import org.kaelkill.quiz.domain.model.valueobjects.Score
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -26,7 +27,7 @@ class QuizSessionTest {
 
         assertEquals(playerId, session.playerId)
         assertTrue(session.questions.isEmpty(), "Session should start with 0 questions")
-        assertEquals(0, session.score, "Initial score must be 0")
+        assertEquals(Score.zero(), session.score)
         assertFalse(session.isFinished, "Session should not be finished")
     }
 
@@ -71,7 +72,7 @@ class QuizSessionTest {
         assertTrue(result.isSuccess)
         val updatedSession = result.getOrThrow()
 
-        assertEquals(1, updatedSession.score, "Score should increase to 1")
+        assertEquals(1, updatedSession.score.value)
         assertEquals(1, updatedSession.answers.size)
     }
 
@@ -89,7 +90,7 @@ class QuizSessionTest {
         assertTrue(result.isSuccess)
         val updatedSession = result.getOrThrow()
 
-        assertEquals(0, updatedSession.score, "Score should remain 0")
+        assertEquals(0, updatedSession.score.value)
         assertEquals(1, updatedSession.answers.size)
     }
 

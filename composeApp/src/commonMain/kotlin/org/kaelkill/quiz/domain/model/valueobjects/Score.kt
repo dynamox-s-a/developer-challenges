@@ -1,6 +1,6 @@
 package org.kaelkill.quiz.domain.model.valueobjects
 
-class Score(val value: Int) {
+data class Score(val value: Int) {
     companion object {
         fun create(value: Int): Result<Score> {
 

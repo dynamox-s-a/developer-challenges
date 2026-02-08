@@ -5,13 +5,14 @@ import org.kaelkill.quiz.domain.model.entities.Question
 import org.kaelkill.quiz.domain.model.valueobjects.AnswerOption
 import org.kaelkill.quiz.domain.model.valueobjects.PlayerId
 import org.kaelkill.quiz.domain.model.valueobjects.QuizSessionId
+import org.kaelkill.quiz.domain.model.valueobjects.Score
 
 data class QuizSession(
     val id: QuizSessionId,
     val playerId: PlayerId,
     val questions: List<Question> = emptyList(),
     val answers: List<Answer> = emptyList(),
-    val score: Int = 0
+    val score: Score = Score.zero()
 ) {
 
     val isFinished: Boolean
@@ -53,7 +54,7 @@ data class QuizSession(
         }
 
         val newAnswer = Answer(question.id, selectedOption)
-        val newScore = if (isCorrect) score + 1 else score
+        val newScore = if (isCorrect) score.increment() else score
 
         return Result.success(
             copy(

@@ -36,7 +36,7 @@ class AnswerQuestionUseCaseTest {
 
         assertTrue(result.isSuccess)
         val updatedSession = result.getOrThrow()
-        assertEquals(1, updatedSession.score)
+        assertEquals(1, updatedSession.score.value)
         assertTrue(sessionRepo.wasSaveCalled)
     }
 
@@ -56,7 +56,7 @@ class AnswerQuestionUseCaseTest {
 
         assertTrue(result.isSuccess)
         val updatedSession = result.getOrThrow()
-        assertEquals(0, updatedSession.score)
+        assertEquals(0, updatedSession.score.value)
         assertTrue(sessionRepo.wasSaveCalled)
     }
 
