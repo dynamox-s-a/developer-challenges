@@ -2,7 +2,9 @@
   "name": "@dynamox-challenge/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "test": "nx test frontend"
+  },
   "private": true,
   "dependencies": {
     "@emotion/cache": "^11.14.0",
