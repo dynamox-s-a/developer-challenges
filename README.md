@@ -1,35 +1,62 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+# Quiz Application - Kotlin Multiplatform
 
-* [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./composeApp/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./composeApp/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./composeApp/src/jvmMain/kotlin)
-    folder is the appropriate location.
+Aplicação de quiz multiplataforma (Android/iOS) desenvolvida com **Kotlin Multiplatform** seguindo princípios de **Clean Architecture**, **Domain-Driven Design (DDD)** e **Test-Driven Development (TDD)**.
 
-* [/iosApp](./iosApp/iosApp) contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+## Objetivo
 
-### Build and Run Android Application
+Resposta ao desafio técnico Dynamox:
+- Quiz com 10 perguntas de múltipla escolha
+- Sistema de pontuação e histórico
+- Múltiplos jogadores
+- Persistência de sessão (retomar quiz em andamento)
+- Interface Android (obrigatório) e iOS (bonus)
 
-To build and run the development version of the Android app, use the run configuration from the run widget
-in your IDE’s toolbar or build it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:assembleDebug
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:assembleDebug
-  ```
+## Abordagem
 
-### Build and Run iOS Application
+### TDD
 
-To build and run the development version of the iOS app, use the run configuration from the run widget
-in your IDE’s toolbar or open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+Todo código é desenvolvido test-first, seguindo o ciclo red-green-refactor.
 
----
+### Arquitetura
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+```
+┌─────────────────────────┐
+│     UI (Compose)        │  ← Android/iOS
+├─────────────────────────┤
+│   Use Cases             │  ← Orquestração
+├─────────────────────────┤
+│   Domain (Core)         │  ← Regras de negócio
+├─────────────────────────┤
+│   Infrastructure        │  ← API, DB, etc
+└─────────────────────────┘
+```
+
+Dependências apontam para dentro. Core não conhece frameworks.
+
+## Estrutura
+
+```
+src/
+├── commonMain/kotlin/org/kaelkill/quiz/
+│   └── domain/              # Core
+├── commonTest/kotlin/org/kaelkill/quiz/
+│   └── domain/              # Testes
+├── androidMain/             # Android
+└── iosMain/                 # iOS
+```
+
+## Executar
+
+### Testes
+```bash
+./gradlew test
+```
+
+### Android
+```bash
+./gradlew installDebug
+```
+
+## Documentação
+
+- [DOMAIN_MODEL.md](docs/DOMAIN_MODEL.md) — Modelagem do domínio
