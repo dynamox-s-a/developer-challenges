@@ -4,13 +4,13 @@ import Grid from '@mui/material/Grid';
 import Snackbar from '@mui/material/Snackbar';
 import Alert, { AlertColor } from '@mui/material/Alert';
 
-import { MachineCard } from '@/components/dashboard/machine/machine-card';
-import { MachineToolbar } from '@/components/dashboard/machine/machine-toolbar';
+import { MachineCard } from '@/components/machine/machine-card';
+import { MachineToolbar } from '@/components/machine/machine-toolbar';
 import { useGetMachinesQuery } from '@/store/machines/machines.api';
 
 
 
-import { MachineFormModal } from '@/components/dashboard/machine/machine-form-modal';
+import { MachineFormModal } from '@/components/machine/machine-form-modal';
 import { Machine } from '@/types/machine';
 import { useCreateMachineMutation, useUpdateMachineMutation } from '@/store/machines/machines.api';
 

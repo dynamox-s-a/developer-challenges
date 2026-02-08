@@ -17,10 +17,10 @@ import { useGetMachineQuery, useDeleteMachineMutation, useUpdateMachineMutation 
 import { useCreateMonitoringPointMutation, useUpdateMonitoringPointMutation, useDeleteMonitoringPointMutation } from '@/store/monitoring-points/monitoring-points.api';
 
 import { ConfirmationDialog } from '@/components/shared/confirmation-dialog';
-import { MachineFormModal } from '@/components/dashboard/machine/machine-form-modal';
-import { MonitoringPointFormModal } from '@/components/dashboard/monitoring-point/monitoring-point-form-modal';
-import { MonitoringPointsList } from '@/components/dashboard/monitoring-point/monitoring-point-list';
-import { SensorListModal } from '@/components/dashboard/monitoring-point/sensor-list-modal';
+import { MachineFormModal } from '@/components/machine/machine-form-modal';
+import { MonitoringPointFormModal } from '@/components/monitoring-point/monitoring-point-form-modal';
+import { MonitoringPointsList } from '@/components/monitoring-point/monitoring-point-list';
+import { SensorListModal } from '@/components/monitoring-point/sensor-list-modal';
 
 import { Machine } from '@/types/machine';
 import { MonitoringPoint } from '@/types/monitoring-point';

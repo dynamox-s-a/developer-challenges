@@ -9,7 +9,7 @@ const AuthLayout = React.lazy(() => import('@/components/auth/layout').then(m =>
 
 const SignInPage = React.lazy(() => import('@/pages/auth/sign-in'));
 const SignUpPage = React.lazy(() => import('@/pages/auth/sign-up'));
-const AccountPage = React.lazy(() => import('@/pages/dashboard/account'));
+const AccountPage = React.lazy(() => import('@/pages/account/account'));
 const NotFoundPage = React.lazy(() => import('@/pages/not-found'));
 const MachinePage = React.lazy(() => import('@/pages/machine/machine'));
 const MachineDetailPage = React.lazy(() => import('@/pages/machine/machine-detail-page'));

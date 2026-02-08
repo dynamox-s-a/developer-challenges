@@ -3,8 +3,8 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { AccountDetailsForm } from '@/components/dashboard/account/account-details-form';
-import { AccountInfo } from '@/components/dashboard/account/account-info';
+import { AccountDetailsForm } from '@/components/account/account-details-form';
+import { AccountInfo } from '@/components/account/account-info';
 
 export default function Page(): React.JSX.Element {
   return (

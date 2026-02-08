@@ -8,9 +8,9 @@ import Snackbar from '@mui/material/Snackbar';
 
 import { useGetMonitoringPointsQuery, useCreateMonitoringPointMutation, useUpdateMonitoringPointMutation, useDeleteMonitoringPointMutation } from '@/store/monitoring-points/monitoring-points.api';
 import { useGetMachinesQuery } from '@/store/machines/machines.api';
-import { MonitoringPointFormModal } from '@/components/dashboard/monitoring-point/monitoring-point-form-modal';
-import { MonitoringPointsList } from '@/components/dashboard/monitoring-point/monitoring-point-list';
-import { SensorListModal } from '@/components/dashboard/monitoring-point/sensor-list-modal';
+import { MonitoringPointFormModal } from '@/components/monitoring-point/monitoring-point-form-modal';
+import { MonitoringPointsList } from '@/components/monitoring-point/monitoring-point-list';
+import { SensorListModal } from '@/components/monitoring-point/sensor-list-modal';
 import { ConfirmationDialog } from '@/components/shared/confirmation-dialog';
 import { MonitoringPoint } from '@/types/monitoring-point';
 

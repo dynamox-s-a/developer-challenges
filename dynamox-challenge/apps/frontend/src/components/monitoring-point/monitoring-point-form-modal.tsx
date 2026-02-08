@@ -110,6 +110,7 @@ export function MonitoringPointFormModal({
                 render={({ field }) => (
                   <TextField
                     {...field}
+                    value={field.value || ''}
                     select
                     label="Sensor Model"
                     error={Boolean(errors.sensorModel)}

@@ -5,8 +5,8 @@ import GlobalStyles from '@mui/material/GlobalStyles';
 import { Outlet } from 'react-router-dom';
 
 import { ProtectedRoute } from '@/components/auth/protected-route';
-import { MainNav } from '@/components/dashboard/layout/main-nav';
-import { SideNav } from '@/components/dashboard/layout/side-nav';
+import { MainNav } from '@/layouts/dashboard-layout/main-nav';
+import { SideNav } from '@/layouts/dashboard-layout/side-nav';
 
 export default function Layout(): React.JSX.Element {
   return (
