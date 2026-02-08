@@ -11,12 +11,12 @@ class PlayerTest {
 
     @Test
     fun `should create a valid player with a generated ID`() {
-        val result = Player.create("Kael")
+        val result = Player.create("John")
 
         assertTrue(result.isSuccess)
         val player = result.getOrThrow()
 
-        assertEquals("Kael", player.name.value)
+        assertEquals("John", player.name.value)
         assertTrue(player.id.value.isNotEmpty())
     }
 

@@ -25,7 +25,7 @@ class StartNewQuizSessionUseCaseTest {
 
         val startSessionUseCase = makeSUT(sessionRepo, playerRepo, questionRepo)
 
-        val result = startSessionUseCase.execute("Kael")
+        val result = startSessionUseCase.execute("John")
 
         assertTrue(result.isSuccess)
         val session = result.getOrThrow()
@@ -40,7 +40,7 @@ class StartNewQuizSessionUseCaseTest {
         val playerRepo = FakePlayerRepository(failOnSave = true)
         val startSessionUseCase = makeSUT(FakeQuizSessionRepository(), playerRepo, GeneratorQuestionRepository())
 
-        val result = startSessionUseCase.execute("Kael")
+        val result = startSessionUseCase.execute("John")
 
         assertTrue(result.isFailure)
         assertTrue(result.exceptionOrNull() is Exception)
@@ -51,7 +51,7 @@ class StartNewQuizSessionUseCaseTest {
         val sessionRepo = FakeQuizSessionRepository(failOnSave = true)
         val startSessionUseCase = makeSUT(sessionRepo, FakePlayerRepository(), GeneratorQuestionRepository())
 
-        val result = startSessionUseCase.execute("Kael")
+        val result = startSessionUseCase.execute("John")
 
         assertTrue(result.isFailure)
         assertTrue(result.exceptionOrNull() is Exception) // Esperamos erro de DB
@@ -62,7 +62,7 @@ class StartNewQuizSessionUseCaseTest {
         val questionRepo = GeneratorQuestionRepository(failOnGet = true)
         val startSessionUseCase = makeSUT(FakeQuizSessionRepository(), FakePlayerRepository(), questionRepo)
 
-        val result = startSessionUseCase.execute("Kael")
+        val result = startSessionUseCase.execute("John")
 
         assertTrue(result.isFailure)
         assertTrue(result.exceptionOrNull() is Exception)
@@ -73,7 +73,7 @@ class StartNewQuizSessionUseCaseTest {
         val sessionRepo = FakeQuizSessionRepository(failOnGet = true)
         val startSessionUseCase = makeSUT(sessionRepo, FakePlayerRepository(), GeneratorQuestionRepository())
 
-        val result = startSessionUseCase.execute("Kael")
+        val result = startSessionUseCase.execute("John")
 
         assertTrue(result.isFailure)
         assertTrue(result.exceptionOrNull() is Exception)
