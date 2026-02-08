@@ -26,7 +26,7 @@ export type MonitoringPointsResponse = {
 type State = {
   items: MonitoringPointRow[];
   total: number;
-  loading: boolean;
+  status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 
   // table state
@@ -39,7 +39,7 @@ type State = {
 const initialState: State = {
   items: [],
   total: 0,
-  loading: false,
+  status: "idle",
   error: null,
 
   pageSize: 5,
@@ -90,16 +90,16 @@ const slice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchMonitoringPoints.pending, (state) => {
-        state.loading = true;
+        state.status = "loading";
         state.error = null;
       })
       .addCase(fetchMonitoringPoints.fulfilled, (state, action) => {
-        state.loading = false;
+        state.status = "succeeded";
         state.items = action.payload.items;
         state.total = action.payload.total;
       })
       .addCase(fetchMonitoringPoints.rejected, (state, action) => {
-        state.loading = false;
+        state.status = "failed";
         state.error = action.error.message ?? "Failed to fetch monitoring points";
       });
   },

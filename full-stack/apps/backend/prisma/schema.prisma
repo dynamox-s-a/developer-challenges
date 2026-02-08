@@ -40,6 +40,7 @@ model MonitoringPoint {
   id        String   @id @default(cuid())
   name      String
   machineId String
+  timeSeries TimeSeries[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -78,4 +79,16 @@ model User {
   role         String   @default("admin")
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+}
+
+model TimeSeries {
+  id               String        @id @default(cuid())
+  monitoringPoint  MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
+  monitoringPointId String
+  timestamp        DateTime
+  value            Float
+  createdAt        DateTime      @default(now())
+
+  @@index([monitoringPointId, timestamp])
+  @@unique([monitoringPointId, timestamp])
 }

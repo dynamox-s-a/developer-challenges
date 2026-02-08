@@ -1,6 +1,11 @@
 import { FastifyInstance } from "fastify";
+import { z } from "zod";
 import { prisma } from "../prisma.js";
 import { createMachineSchema, updateMachineSchema } from "../schemas/machine.js";
+
+const paramsSchema = z.object({
+  id: z.string().min(1),
+});
 
 export async function machinesRoutes(app: FastifyInstance) {
   app.get("/machines", async () => {
@@ -46,7 +51,7 @@ export async function machinesRoutes(app: FastifyInstance) {
   );
 
   app.patch("/machines/:id", async (req, reply) => {
-    const id = (req.params as any).id as string;
+    const { id } = paramsSchema.parse(req.params);
     const body = updateMachineSchema.parse(req.body);
 
     const updated = await prisma.machine.update({
@@ -58,7 +63,7 @@ export async function machinesRoutes(app: FastifyInstance) {
   });
 
   app.delete("/machines/:id", async (req, reply) => {
-    const id = (req.params as any).id as string;
+    const { id } = paramsSchema.parse(req.params);
 
     await prisma.machine.delete({ where: { id } });
     return reply.code(204).send();

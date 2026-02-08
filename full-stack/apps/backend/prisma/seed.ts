@@ -4,6 +4,7 @@ import PrismaPkg from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 import bcrypt from "bcrypt";
+import { Prisma } from "@prisma/client";
 
 const { PrismaClient } = PrismaPkg;
 
@@ -20,6 +21,16 @@ const sensorModelsForPump = ["HF_plus"] as const;
 function pickSensorModel(machineType: "Pump" | "Fan") {
   if (machineType === "Pump") return faker.helpers.arrayElement(sensorModelsForPump);
   return faker.helpers.arrayElement(sensorModelsAll);
+}
+
+function minutesAgo(min: number) {
+  return new Date(Date.now() - min * 60 * 1000);
+}
+
+function generateSeriesValue(i: number, base: number) {
+  const sine = Math.sin(i / 10) * 5;
+  const noise = (Math.random() - 0.5) * 2;
+  return Number((base + sine + noise).toFixed(2));
 }
 
 async function main() {
@@ -78,6 +89,47 @@ async function main() {
   const totalSensors = await prisma.sensor.count();
 
   console.log("Seed completed:", { totalMachines, totalMPs, totalSensors });
+
+  const days = Number(process.env.SEED_TS_DAYS ?? "2");
+  const intervalMinutes = Number(process.env.SEED_TS_INTERVAL_MINUTES ?? "15");
+  const fixedPoints = Number(process.env.SEED_TS_POINTS_PER_MP ?? "0");
+
+  const totalPoints =
+    fixedPoints > 0
+      ? fixedPoints
+      : Math.floor((days * 24 * 60) / intervalMinutes);
+
+  const monitoringPoints = await prisma.monitoringPoint.findMany({
+    select: { id: true },
+  });
+
+  let inserted = 0;
+
+  for (const mp of monitoringPoints) {
+    const data: Prisma.TimeSeriesCreateManyInput[] = [];
+
+    for (let i = totalPoints - 1; i >= 0; i--) {
+      const minutes = i * intervalMinutes;
+      const t = minutesAgo(minutes);
+      t.setSeconds(0, 0);
+      const timestamp = t;
+
+      data.push({
+        monitoringPointId: mp.id,
+        timestamp,
+        value: generateSeriesValue(i, 50),
+      });
+    }
+
+    const res = await prisma.timeSeries.createMany({
+      data,
+      skipDuplicates: true,
+    });
+
+    inserted += res.count;
+  }
+
+  console.log(`Seed time-series: inserted ${inserted} points`);
 }
 
 main()

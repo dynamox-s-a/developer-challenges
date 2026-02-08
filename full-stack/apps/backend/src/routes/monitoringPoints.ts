@@ -1,6 +1,19 @@
 import { FastifyInstance } from "fastify";
+import { z } from "zod";
 import { prisma } from "../prisma.js";
 import { createMonitoringPointSchema, updateMonitoringPointSchema } from "../schemas/monitoringPoint.js";
+
+const paramsSchema = z.object({
+  machineId: z.string().min(1),
+  id: z.string().min(1),
+});
+
+const listQuerySchema = z.object({
+  take: z.coerce.number().int().min(1).max(50).default(5),
+  skip: z.coerce.number().int().min(0).default(0),
+  sortBy: z.enum(["machineName", "machineType", "monitoringPointName", "sensorModel", "createdAt"]).default("createdAt"),
+  sortOrder: z.enum(["asc", "desc"]).default("asc"),
+});
 
 const forbiddenForPump = new Set(["TcAg", "TcAs"]);
 
@@ -24,7 +37,7 @@ function mapSort(sortBy: string, sortOrder: "asc" | "desc") {
 export async function monitoringPointsRoutes(app: FastifyInstance) {
   // Create monitoring point for a machine (with sensor)
   app.post("/machines/:machineId/monitoring-points", async (req, reply) => {
-    const machineId = (req.params as any).machineId as string;
+    const { machineId } = paramsSchema.parse(req.params);
     const body = createMonitoringPointSchema.parse(req.body);
 
     const machine = await prisma.machine.findUnique({ where: { id: machineId } });
@@ -53,31 +66,22 @@ export async function monitoringPointsRoutes(app: FastifyInstance) {
 
   // List monitoring points with pagination + sorting (for the table)
   app.get("/monitoring-points", async (req) => {
-    const q = req.query as any;
+    const query = listQuerySchema.parse(req.query);
 
-    const take = Math.min(Math.max(parseInt(q.take ?? "5", 10), 1), 50);
-    const skip = Math.max(parseInt(q.skip ?? "0", 10), 0);
-    const sortBy = (q.sortBy ?? "createdAt") as string;
-    const sortOrder = ((q.sortOrder ?? "asc") as string).toLowerCase() === "desc" ? "desc" : "asc";
-
-    const safeSortBy = ["machineName","machineType","monitoringPointName","sensorModel","createdAt"].includes(sortBy)
-      ? sortBy
-      : "machineName";
-
-    const dir: "asc" | "desc" = sortOrder === "desc" ? "desc" : "asc";
+    const { take, skip, sortBy, sortOrder } = query;
 
     const orderBy = (() => {
-      switch (safeSortBy) {
+      switch (sortBy) {
         case "machineName":
-          return { machine: { name: dir } } as const;
+          return { machine: { name: sortOrder } } as const;
         case "machineType":
-          return { machine: { type: dir } } as const;
+          return { machine: { type: sortOrder } } as const;
         case "monitoringPointName":
-          return { name: dir } as const;
+          return { name: sortOrder } as const;
         case "sensorModel":
-          return { sensor: { model: dir } } as const;
+          return { sensor: { model: sortOrder } } as const;
         case "createdAt":
-          return { createdAt: dir } as const;
+          return { createdAt: sortOrder } as const;
         default:
           return { machine: { name: "asc" } } as const;
       }
@@ -111,9 +115,8 @@ export async function monitoringPointsRoutes(app: FastifyInstance) {
     };
   });
 
-  // Update MP (+ optional sensor)
   app.patch("/monitoring-points/:id", async (req, reply) => {
-    const id = (req.params as any).id as string;
+    const { id } = paramsSchema.parse(req.params);
     const body = updateMonitoringPointSchema.parse(req.body);
 
     const current = await prisma.monitoringPoint.findUnique({
@@ -154,7 +157,7 @@ export async function monitoringPointsRoutes(app: FastifyInstance) {
   });
 
   app.delete("/monitoring-points/:id", async (req, reply) => {
-    const id = (req.params as any).id as string;
+    const { id } = paramsSchema.parse(req.params);
     await prisma.monitoringPoint.delete({ where: { id } });
     return reply.code(204).send();
   });

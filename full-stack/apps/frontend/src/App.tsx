@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Container,
   Typography,
@@ -7,6 +7,7 @@ import {
   Stack,
   Button,
   Chip,
+  LinearProgress,
 } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import {
@@ -16,6 +17,7 @@ import {
   GridToolbar,
 } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import type { AppDispatch, RootState } from "./store";
 import {
   fetchMonitoringPoints,
@@ -24,6 +26,7 @@ import {
   setSort,
 } from "./store/monitoringPointsSlice";
 import { logout } from "./store/authSlice";
+import TimeSeriesDrawer from "./components/TimeSeriesDrawer";
 
 function sensorLabel(v: string | null) {
   if (!v) return "-";
@@ -32,8 +35,23 @@ function sensorLabel(v: string | null) {
 
 export default function App() {
   const dispatch = useDispatch<AppDispatch>();
-  const { items, total, loading, error, page, pageSize, sortBy, sortOrder } =
+  const navigate = useNavigate();
+  const { items, total, status, error, page, pageSize, sortBy, sortOrder } =
     useSelector((s: RootState) => s.monitoringPoints);
+  
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedMP, setSelectedMP] = useState<string | null>(null);
+  const [selectedTitle, setSelectedTitle] = useState<string | undefined>(undefined);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
+
+  function openTimeSeries(id: string) {
+    setSelectedMP(id);
+    setDrawerOpen(true);
+  }
 
   useEffect(() => {
     dispatch(fetchMonitoringPoints());
@@ -74,11 +92,109 @@ export default function App() {
           />
         ),
       },
+      {
+        field: "actions",
+        headerName: "Actions",
+        sortable: false,
+        width: 140,
+        renderCell: (params) => (
+          <Button 
+            size="small" 
+            onClick={() => {
+              openTimeSeries(params.row.id);
+              setSelectedTitle(`${params.row.monitoringPointName} • ${params.row.machineName}`);
+            }}
+          >
+            View
+          </Button>
+        ),
+      },
     ],
     []
   );
 
   const sortModel: GridSortModel = [{ field: sortBy, sort: sortOrder }];
+
+  // Loading state
+  if (status === "loading") {
+    return (
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+          <Box>
+            <Typography variant="h5">Monitoring Points</Typography>
+            <Typography variant="body2" sx={{ opacity: 0.8 }}>
+              Loading...
+            </Typography>
+          </Box>
+        </Stack>
+        <LinearProgress sx={{ mt: 2 }} />
+      </Container>
+    );
+  }
+
+  // Error state
+  if (status === "failed") {
+    return (
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+          <Box>
+            <Typography variant="h5">Monitoring Points</Typography>
+          </Box>
+          <Button
+            variant="outlined"
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
+        </Stack>
+        <Stack spacing={2} sx={{ mt: 2 }}>
+          <Alert severity="error">
+            {error ?? "Failed to load monitoring points"}
+          </Alert>
+          <Button 
+            variant="contained" 
+            onClick={() => dispatch(fetchMonitoringPoints())}
+          >
+            Retry
+          </Button>
+        </Stack>
+      </Container>
+    );
+  }
+
+  // Empty state
+  if (status === "succeeded" && items.length === 0) {
+    return (
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+          <Box>
+            <Typography variant="h5">Monitoring Points</Typography>
+          </Box>
+          <Button
+            variant="outlined"
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
+        </Stack>
+        <Stack spacing={2} sx={{ mt: 2 }}>
+          <Typography variant="h6">No monitoring points found</Typography>
+          <Typography variant="body2" color="text.secondary">
+            Run the seed script to generate demo data.
+          </Typography>
+          <Typography variant="body2" sx={{ fontFamily: "monospace" }}>
+            cd apps/backend && pnpm prisma:seed
+          </Typography>
+          <Button 
+            variant="outlined" 
+            onClick={() => dispatch(fetchMonitoringPoints())}
+          >
+            Refresh
+          </Button>
+        </Stack>
+      </Container>
+    );
+  }
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -93,7 +209,7 @@ export default function App() {
         <Stack direction="row" spacing={2}>
           <Button
             variant="outlined"
-            onClick={() => dispatch(logout())}
+            onClick={handleLogout}
           >
             Logout
           </Button>
@@ -101,25 +217,18 @@ export default function App() {
             variant="outlined"
             startIcon={<RefreshIcon />}
             onClick={() => dispatch(fetchMonitoringPoints())}
-            disabled={loading}
           >
             Refresh
           </Button>
         </Stack>
       </Stack>
 
-      {error && (
-        <Alert severity="error" sx={{ mt: 2 }}>
-          {error}
-        </Alert>
-      )}
-
       <Box sx={{ height: 560, mt: 2 }}>
         <DataGrid
           rows={items}
           columns={columns}
           rowCount={total}
-          loading={loading}
+          loading={false}
           paginationMode="server"
           sortingMode="server"
           disableRowSelectionOnClick
@@ -148,6 +257,13 @@ export default function App() {
           }}
         />
       </Box>
+      
+      <TimeSeriesDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        monitoringPointId={selectedMP}
+        title={selectedTitle}
+      />
     </Container>
   );
 }
