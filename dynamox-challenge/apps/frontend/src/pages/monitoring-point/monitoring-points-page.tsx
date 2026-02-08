@@ -2,7 +2,7 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
+import { Plus as PlusIcon } from '@phosphor-icons/react';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 
@@ -10,6 +10,7 @@ import { useGetMonitoringPointsQuery, useCreateMonitoringPointMutation, useUpdat
 import { useGetMachinesQuery } from '@/store/machines/machines.api';
 import { MonitoringPointFormModal } from '@/components/dashboard/monitoring-point/monitoring-point-form-modal';
 import { MonitoringPointsList } from '@/components/dashboard/monitoring-point/monitoring-point-list';
+import { SensorListModal } from '@/components/dashboard/monitoring-point/sensor-list-modal';
 import { ConfirmationDialog } from '@/components/shared/confirmation-dialog';
 import { MonitoringPoint } from '@/types/monitoring-point';
 
@@ -27,6 +28,7 @@ export default function MonitoringPointsPage(): React.JSX.Element {
   const [deleteMonitoringPoint] = useDeleteMonitoringPointMutation();
 
   const [isFormModalOpen, setIsFormModalOpen] = React.useState(false);
+  const [isSensorModalOpen, setIsSensorModalOpen] = React.useState(false);
   const [selectedMonitoringPoint, setSelectedMonitoringPoint] = React.useState<MonitoringPoint | null>(null);
 
 
@@ -35,6 +37,7 @@ export default function MonitoringPointsPage(): React.JSX.Element {
     title: string;
     message: string;
     onConfirm: () => void;
+    confirmText?: string;
     severity?: 'error' | 'warning' | 'info';
   }>({
     open: false,
@@ -92,6 +95,7 @@ export default function MonitoringPointsPage(): React.JSX.Element {
       open: true,
       title: 'Delete Monitoring Point',
       message: `Are you sure you want to delete monitoring point "${mp.name}"? This action cannot be undone.`,
+      confirmText: 'Delete',
       severity: 'error',
       onConfirm: async () => {
         try {
@@ -146,6 +150,10 @@ export default function MonitoringPointsPage(): React.JSX.Element {
         showMachineColumn={true}
         onEdit={openEditModal}
         onDelete={openDeleteModal}
+        onViewSensor={(mp) => {
+          setSelectedMonitoringPoint(mp);
+          setIsSensorModalOpen(true);
+        }}
         onPageChange={handlePageChange}
         onRowsPerPageChange={handleRowsPerPageChange}
         onSortChange={handleSortChange}
@@ -157,6 +165,16 @@ export default function MonitoringPointsPage(): React.JSX.Element {
         onSubmit={handleCreate}
         monitoringPoint={selectedMonitoringPoint}
         machines={machines}
+      />
+
+      <SensorListModal
+        open={isSensorModalOpen}
+        onClose={() => {
+          setIsSensorModalOpen(false);
+          setSelectedMonitoringPoint(null);
+        }}
+        monitoringPoint={selectedMonitoringPoint}
+        machine={selectedMonitoringPoint?.machine}
       />
 
       <ConfirmationDialog

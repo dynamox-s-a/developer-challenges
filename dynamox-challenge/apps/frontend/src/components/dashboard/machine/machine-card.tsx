@@ -10,8 +10,7 @@ import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { EngineIcon } from '@phosphor-icons/react/dist/ssr/Engine';
-import { ArrowRight as ArrowRightIcon } from '@phosphor-icons/react/dist/ssr/ArrowRight';
+import { Engine as EngineIcon, ArrowRight as ArrowRightIcon } from '@phosphor-icons/react';
 import { useNavigate } from 'react-router-dom';
 
 import type { Machine } from '@/types/machine';

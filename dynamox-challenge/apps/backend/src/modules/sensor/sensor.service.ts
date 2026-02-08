@@ -44,8 +44,15 @@ export class SensorService {
     });
   }
 
-  findAll() {
+  findAll(monitoringPointId?: number) {
+    const where: any = {};
+
+    if (monitoringPointId) {
+      where.monitoringPointId = monitoringPointId;
+    }
+
     return this.prisma.sensor.findMany({
+      where,
       include: {
         monitoringPoint: {
           include: {
@@ -53,6 +60,9 @@ export class SensorService {
           },
         },
       },
+      orderBy: {
+        id: 'asc'
+      }
     });
   }
 
@@ -102,16 +112,6 @@ export class SensorService {
 
     if (!sensor) {
       throw new NotFoundException(`Sensor with Id ${id} not found`);
-    }
-
-    const sensorsCount = await this.prisma.sensor.count({
-      where: {
-        monitoringPointId: id
-      }
-    });
-
-    if (sensorsCount > 0) {
-      throw new ConflictException('Cannot delete Monitoring Point with associated Sensors');
     }
 
     return this.prisma.sensor.delete({

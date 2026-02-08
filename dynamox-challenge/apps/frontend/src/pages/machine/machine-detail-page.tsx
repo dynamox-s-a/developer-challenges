@@ -8,24 +8,23 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Divider from '@mui/material/Divider';
-import { CaretLeft as ArrowLeftIcon } from '@phosphor-icons/react/dist/ssr/CaretLeft';
-import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
+import { CaretLeft as ArrowLeftIcon, Plus as PlusIcon } from '@phosphor-icons/react';
 import IconButton from '@mui/material/IconButton';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 
 import { useGetMachineQuery, useDeleteMachineMutation, useUpdateMachineMutation } from '@/store/machines/machines.api';
 import { useCreateMonitoringPointMutation, useUpdateMonitoringPointMutation, useDeleteMonitoringPointMutation } from '@/store/monitoring-points/monitoring-points.api';
-import { useCreateSensorMutation, useDeleteSensorMutation } from '@/store/sensors/sensors.api';
+
 import { ConfirmationDialog } from '@/components/shared/confirmation-dialog';
 import { MachineFormModal } from '@/components/dashboard/machine/machine-form-modal';
 import { MonitoringPointFormModal } from '@/components/dashboard/monitoring-point/monitoring-point-form-modal';
 import { MonitoringPointsList } from '@/components/dashboard/monitoring-point/monitoring-point-list';
-import { SensorListModal } from '@/components/dashboard/sensor/sensor-list-modal';
-import { SensorFormModal } from '@/components/dashboard/sensor/sensor-form-modal';
+import { SensorListModal } from '@/components/dashboard/monitoring-point/sensor-list-modal';
+
 import { Machine } from '@/types/machine';
 import { MonitoringPoint } from '@/types/monitoring-point';
-import { Sensor, SensorModel } from '@/types/sensor';
+import { Sensor } from '@/types/sensor';
 import { Box } from '@mui/system';
 
 export default function MachineDetailPage(): React.JSX.Element {
@@ -43,8 +42,7 @@ export default function MachineDetailPage(): React.JSX.Element {
   const [deleteMonitoringPoint] = useDeleteMonitoringPointMutation();
 
 
-  const [createSensor] = useCreateSensorMutation();
-  const [deleteSensor] = useDeleteSensorMutation();
+
 
 
   const [isFormModalOpen, setIsFormModalOpen] = React.useState(false);
@@ -56,8 +54,6 @@ export default function MachineDetailPage(): React.JSX.Element {
 
 
   const [isSensorListModalOpen, setIsSensorListModalOpen] = React.useState(false);
-  const [isSensorFormModalOpen, setIsSensorFormModalOpen] = React.useState(false);
-  const [selectedSensor, setSelectedSensor] = React.useState<Sensor | null>(null);
 
 
   const [confirmationDialog, setConfirmationDialog] = React.useState<{
@@ -177,45 +173,7 @@ export default function MachineDetailPage(): React.JSX.Element {
   };
 
 
-  const handleAddSensor = () => {
-    setIsSensorFormModalOpen(true);
-  };
 
-  const handleDeleteSensor = (sensor: Sensor) => {
-    setSelectedSensor(sensor);
-    setConfirmationDialog({
-      open: true,
-      title: 'Delete Sensor',
-      message: `Are you sure you want to delete sensor "${sensor.model}"? This action cannot be undone.`,
-      severity: 'error',
-      onConfirm: async () => {
-        try {
-          await deleteSensor(sensor.id).unwrap();
-          showSuccess('Sensor deleted successfully');
-          setConfirmationDialog({ ...confirmationDialog, open: false });
-          setSelectedSensor(null);
-        } catch (err) {
-
-          showError('Failed to delete sensor');
-        }
-      }
-    });
-  };
-
-  const handleCreateSensor = async (data: { model: SensorModel }) => {
-    if (!selectedMonitoringPoint) return;
-    try {
-      await createSensor({
-        model: data.model,
-        monitoringPointId: selectedMonitoringPoint.id
-      }).unwrap();
-      showSuccess('Sensor created successfully');
-      setIsSensorFormModalOpen(false);
-    } catch (err) {
-
-      showError('Failed to create sensor');
-    }
-  };
 
   return (
     <Stack spacing={3}>
@@ -257,10 +215,6 @@ export default function MachineDetailPage(): React.JSX.Element {
             <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
               <Typography variant="subtitle2" color="text.secondary">Type:</Typography>
               <Typography variant="body1">{machine.type}</Typography>
-            </Box>
-            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-              <Typography variant="subtitle2" color="text.secondary">Status:</Typography>
-              <Typography variant="body1">{machine.status}</Typography>
             </Box>
             <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
               <Typography variant="subtitle2" color="text.secondary">ID:</Typography>
@@ -329,17 +283,8 @@ export default function MachineDetailPage(): React.JSX.Element {
             }}
             monitoringPoint={selectedMonitoringPoint}
             machine={machine}
-            onAddSensor={handleAddSensor}
-            onDeleteSensor={handleDeleteSensor}
           />
 
-          <SensorFormModal
-            open={isSensorFormModalOpen}
-            onClose={() => setIsSensorFormModalOpen(false)}
-            onSubmit={handleCreateSensor}
-            monitoringPoint={selectedMonitoringPoint}
-            machine={machine}
-          />
         </>
       )}
 

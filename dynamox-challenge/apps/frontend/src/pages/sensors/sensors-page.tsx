@@ -1,8 +1,6 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
@@ -11,18 +9,27 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import IconButton from '@mui/material/IconButton';
-import { Trash as TrashIcon } from '@phosphor-icons/react/dist/ssr/Trash';
+import { Trash as TrashIcon } from '@phosphor-icons/react';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 import { useGetSensorsQuery, useDeleteSensorMutation } from '@/store/sensors/sensors.api';
 import { SensorModel } from '@/types/sensor';
+import { ConfirmationDialog } from '@/components/shared/confirmation-dialog';
 
 export default function SensorsPage(): React.JSX.Element {
-  const { data: sensors, isLoading } = useGetSensorsQuery();
+  const { data: sensors, isLoading, error } = useGetSensorsQuery();
   const [deleteSensor] = useDeleteSensorMutation();
 
   const [filterModel, setFilterModel] = React.useState<SensorModel | 'all'>('all');
+  const [selectedSensorId, setSelectedSensorId] = React.useState<number | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
+
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const [snackbarMessage, setSnackbarMessage] = React.useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = React.useState<'success' | 'error'>('success');
 
   const filteredSensors = React.useMemo(() => {
     if (!sensors) return [];
@@ -30,17 +37,34 @@ export default function SensorsPage(): React.JSX.Element {
     return sensors.filter(sensor => sensor.model === filterModel);
   }, [sensors, filterModel]);
 
-  const handleDelete = async (id: number) => {
-    if (confirm('Are you sure you want to delete this sensor?')) {
-      try {
-        await deleteSensor(id).unwrap();
-      } catch (err) {
+  const handleDeleteClick = (id: number) => {
+    setSelectedSensorId(id);
+    setIsDeleteDialogOpen(true);
+  };
 
+  const handleConfirmDelete = async () => {
+    if (selectedSensorId) {
+      try {
+        await deleteSensor(selectedSensorId).unwrap();
+        setSnackbarMessage('Sensor deleted successfully');
+        setSnackbarSeverity('success');
+        setSnackbarOpen(true);
+      } catch (err) {
+        setSnackbarMessage('Failed to delete sensor');
+        setSnackbarSeverity('error');
+        setSnackbarOpen(true);
       }
     }
+    setIsDeleteDialogOpen(false);
+    setSelectedSensorId(null);
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
   };
 
   if (isLoading) return <Typography>Loading...</Typography>;
+  if (error) return <Typography>Error loading sensors</Typography>;
 
   return (
     <Stack spacing={3}>
@@ -88,7 +112,7 @@ export default function SensorsPage(): React.JSX.Element {
                     <TableCell>{sensor.model}</TableCell>
                     <TableCell>{sensor.monitoringPointId}</TableCell>
                     <TableCell align="right">
-                      <IconButton onClick={() => handleDelete(sensor.id)} color="error">
+                      <IconButton aria-label="Delete" onClick={() => handleDeleteClick(sensor.id)} color="error">
                         <TrashIcon />
                       </IconButton>
                     </TableCell>
@@ -99,6 +123,27 @@ export default function SensorsPage(): React.JSX.Element {
           </Table>
         </Box>
       </Card>
+
+      <ConfirmationDialog
+        open={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Delete Sensor"
+        message="Are you sure you want to delete this sensor?"
+        confirmText="Delete"
+        severity="error"
+      />
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled" sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Stack>
   );
 }

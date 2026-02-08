@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from "@nestjs/common";
 import { SensorService } from "./sensor.service";
 import { CreateSensorDto } from "./dto/create-sensor.dto";
 import { UpdateSensorDto } from "./dto/update-sensor.dto";
@@ -14,8 +14,8 @@ export class SensorController {
   }
 
   @Get()
-  findAll() {
-    return this.sensorService.findAll();
+  findAll(@Query('monitoringPointId') monitoringPointId?: string) {
+    return this.sensorService.findAll(monitoringPointId ? parseInt(monitoringPointId, 10) : undefined);
   }
 
   @Get(':id')

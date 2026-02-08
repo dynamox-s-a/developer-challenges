@@ -10,8 +10,7 @@ import MenuList from '@mui/material/MenuList';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 
-import { SignOutIcon } from '@phosphor-icons/react/dist/ssr/SignOut';
-import { UserIcon } from '@phosphor-icons/react/dist/ssr/User';
+import { SignOut as SignOutIcon, User as UserIcon } from '@phosphor-icons/react';
 
 import { paths } from '@/paths';
 import { logout } from '@/store/auth/auth.slice';

@@ -126,6 +126,9 @@ export class MonitoringPointService {
   findOne(id: number) {
     return this.prisma.monitoringPoint.findUnique({
       where: { id },
+      include: {
+        sensors: true,
+      }
     });
   }
 

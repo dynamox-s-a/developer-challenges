@@ -14,8 +14,7 @@ import {
   TableSortLabel,
   Typography,
 } from '@mui/material';
-import { PencilSimple as PencilIcon } from '@phosphor-icons/react/dist/ssr/PencilSimple';
-import { Trash as TrashIcon } from '@phosphor-icons/react/dist/ssr/Trash';
+import { PencilSimple as PencilIcon, Trash as TrashIcon } from '@phosphor-icons/react';
 import { MonitoringPoint } from '@/types/monitoring-point';
 
 interface MonitoringPointsListProps {
@@ -59,7 +58,7 @@ export function MonitoringPointsList({
 
   const handleChangePage = (_event: unknown, newPage: number) => {
     if (onPageChange) {
-      onPageChange(newPage + 1); // Backend uses 1-based indexing
+      onPageChange(newPage + 1);
     }
   };
 
@@ -127,21 +126,23 @@ export function MonitoringPointsList({
                     </>
                   )}
                   <TableCell>{mp.name}</TableCell>
-                  <TableCell>
+                  <TableCell align='left'>
                     {onViewSensor ? (
                       <Button variant="text" onClick={() => onViewSensor(mp)}>
                         View Sensors ({mp._count?.sensors || mp.sensors?.length || 0})
                       </Button>
                     ) : (
-                      <Typography>{mp._count?.sensors || mp.sensors?.length || 0}</Typography>
+                      mp.sensors?.length ? mp.sensors.map((sensor) => sensor.model).join(', ') : (
+                        <Typography>{mp._count?.sensors || mp.sensors?.length || 0}</Typography>
+                      )
                     )}
                   </TableCell>
                   <TableCell align="right">
                     <Stack direction="row" spacing={1} justifyContent="flex-end">
-                      <IconButton onClick={() => onEdit(mp)}>
+                      <IconButton aria-label="Edit" onClick={() => onEdit(mp)}>
                         <PencilIcon />
                       </IconButton>
-                      <IconButton onClick={() => onDelete(mp)} color="error">
+                      <IconButton aria-label="Delete" onClick={() => onDelete(mp)} color="error">
                         <TrashIcon />
                       </IconButton>
                     </Stack>

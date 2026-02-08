@@ -3,8 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import { MagnifyingGlass as MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr/MagnifyingGlass';
-import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
+import { MagnifyingGlass as MagnifyingGlassIcon, Plus as PlusIcon } from '@phosphor-icons/react';
 
 export interface MachineToolbarProps {
   searchQuery: string;
@@ -25,7 +24,6 @@ export function MachineToolbar({ searchQuery, onSearchChange, onAddClick }: Mach
       }}
     >
       <OutlinedInput
-        defaultValue=""
         value={searchQuery}
         onChange={onSearchChange}
         fullWidth={false}
