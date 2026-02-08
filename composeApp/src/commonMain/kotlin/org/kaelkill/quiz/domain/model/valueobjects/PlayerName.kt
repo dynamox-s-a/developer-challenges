@@ -4,7 +4,14 @@ data class PlayerName private constructor(val value: String) {
     companion object {
         fun create(input: String): Result<PlayerName> {
             val result = input.trim()
-           return Result.success(PlayerName(result))
+            if (isValid(result)) {
+                return Result.failure(IllegalArgumentException("Invalid player name"))
+            }
+            return Result.success(PlayerName(result))
+        }
+
+        private fun isValid(input: String): Boolean {
+            return input.isBlank() || input.length < 2 || input.length > 50
         }
     }
 }
