@@ -1,12 +1,10 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
+import { ModalLayout } from '@/components/core/modal-layout';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -64,76 +62,81 @@ export function MonitoringPointFormModal({
   }, [open, monitoringPoint, preSelectedMachineId, reset]);
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>{monitoringPoint ? 'Edit Monitoring Point' : 'Add Monitoring Point'}</DialogTitle>
+    <ModalLayout
+      title={monitoringPoint ? 'Edit Monitoring Point' : 'Add Monitoring Point'}
+      open={open}
+      onClose={onClose}
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogContent>
-          <Stack spacing={2}>
+        <Stack spacing={2} sx={{ p: 2 }}>
+          <Controller
+            control={control}
+            name="name"
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Name"
+                autoFocus
+                error={Boolean(errors.name)}
+                helperText={errors.name?.message}
+                fullWidth
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name="machineId"
+            render={({ field }) => (
+              <TextField
+                {...field}
+                value={field.value || ''}
+                select
+                label="Machine"
+                error={Boolean(errors.machineId)}
+                helperText={errors.machineId?.message}
+                fullWidth
+                disabled={!!monitoringPoint || !!preSelectedMachineId}
+              >
+                {machines.map((machine) => (
+                  <MenuItem key={machine.id} value={machine.id}>
+                    {machine.name}
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
+          />
+          {!monitoringPoint && (
             <Controller
               control={control}
-              name="name"
+              name="sensorModel"
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Name"
-                  error={Boolean(errors.name)}
-                  helperText={errors.name?.message}
-                  fullWidth
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="machineId"
-              render={({ field }) => (
-                <TextField
-                  {...field}
+                  value={field.value || ''}
                   select
-                  label="Machine"
-                  error={Boolean(errors.machineId)}
-                  helperText={errors.machineId?.message}
+                  label="Sensor Model"
+                  error={Boolean(errors.sensorModel)}
+                  helperText={isPumpMachine ? "TcAg and TcAs are not allowed for Bomba machines" : errors.sensorModel?.message}
                   fullWidth
-                  disabled={!!monitoringPoint || !!preSelectedMachineId}
                 >
-                  {machines.map((machine) => (
-                    <MenuItem key={machine.id} value={machine.id}>
-                      {machine.name}
-                    </MenuItem>
-                  ))}
+                  <MenuItem value="">None</MenuItem>
+                  {!isPumpMachine && <MenuItem value={SensorModel.TcAg}>TcAg</MenuItem>}
+                  {!isPumpMachine && <MenuItem value={SensorModel.TcAs}>TcAs</MenuItem>}
+                  <MenuItem value={SensorModel.HF_PLUS}>HF+</MenuItem>
                 </TextField>
               )}
             />
-            {!monitoringPoint && (
-              <Controller
-                control={control}
-                name="sensorModel"
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    value={field.value || ''}
-                    select
-                    label="Sensor Model"
-                    error={Boolean(errors.sensorModel)}
-                    helperText={isPumpMachine ? "TcAg and TcAs are not allowed for Bomba machines" : errors.sensorModel?.message}
-                    fullWidth
-                  >
-                    <MenuItem value="">None</MenuItem>
-                    {!isPumpMachine && <MenuItem value={SensorModel.TcAg}>TcAg</MenuItem>}
-                    {!isPumpMachine && <MenuItem value={SensorModel.TcAs}>TcAs</MenuItem>}
-                    <MenuItem value={SensorModel.HF_PLUS}>HF+</MenuItem>
-                  </TextField>
-                )}
-              />
-            )}
-          </Stack>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
+          )}
+        </Stack>
+        <DialogActions sx={{ p: 2 }}>
+          <Button onClick={onClose} color="inherit">
+            Cancel
+          </Button>
           <Button type="submit" variant="contained">
             Save
           </Button>
         </DialogActions>
       </form>
-    </Dialog>
+    </ModalLayout>
   );
 }
