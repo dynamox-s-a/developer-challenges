@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { z } from "zod";
 import { prisma } from "../prisma.js";
-import "../types/fastify.d.ts";
+import "../types/fastify";
 
 const paramsSchema = z.object({
   id: z.string().min(1),

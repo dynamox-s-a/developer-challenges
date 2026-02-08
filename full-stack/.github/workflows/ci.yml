@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: dynamox
+          POSTGRES_PASSWORD: dynamox
+          POSTGRES_DB: dynamox
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd="pg_isready -U dynamox -d dynamox"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      DATABASE_URL: postgresql://dynamox:dynamox@localhost:5433/dynamox?schema=public
+      JWT_SECRET: test_secret
+      SEED_ADMIN_USERNAME: admin
+      SEED_ADMIN_PASSWORD: admin
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install deps
+        run: pnpm install
+        working-directory: full-stack
+
+      - name: Backend migrate + seed
+        run: |
+          pnpm prisma:migrate
+          pnpm prisma:seed
+        working-directory: full-stack/apps/backend
+
+      - name: Backend tests
+        run: pnpm test
+        working-directory: full-stack/apps/backend
+
+      - name: Frontend tests
+        run: pnpm vitest run
+        working-directory: full-stack/apps/frontend
+
+      - name: Build
+        run: |
+          pnpm --filter backend build
+          pnpm --filter frontend build
+        working-directory: full-stack

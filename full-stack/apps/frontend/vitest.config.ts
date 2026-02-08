@@ -6,6 +6,15 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: "./src/test/setup.ts",
-    globals: true
-  }
+    globals: true,
+    css: false
+  },
+  define: {
+    global: 'globalThis',
+  },
+  resolve: {
+    alias: {
+      '@': '/src',
+    },
+  },
 })

@@ -5,3 +5,5 @@ declare module "fastify" {
     authenticate(request: FastifyRequest, reply: FastifyReply): Promise<void>;
   }
 }
+
+export {};
