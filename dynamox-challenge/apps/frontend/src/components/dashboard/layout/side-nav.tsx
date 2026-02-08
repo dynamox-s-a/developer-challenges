@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box';
+import logo from '@/assets/logo.png';
 
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
@@ -51,9 +52,7 @@ export function SideNav(): React.JSX.Element {
     >
       <Stack spacing={2} sx={{ p: 3 }}>
         <Box component={Link} to={paths.home} sx={{ display: 'inline-flex', textDecoration: 'none' }}>
-          <Typography variant="h5" sx={{ color: 'common.white', fontWeight: 'bold' }}>
-            DynaPredict
-          </Typography>
+          <Box component="img" src={logo} alt="Dynamox" sx={{ height: 54, width: 'auto' }} />
         </Box>
       </Stack>
       <Divider sx={{ borderColor: 'var(--mui-palette-neutral-700)' }} />

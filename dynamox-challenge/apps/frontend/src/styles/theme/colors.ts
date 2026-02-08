@@ -28,19 +28,7 @@ export const kepple = {
   950: '#042f2c',
 } satisfies PartialColor;
 
-export const neonBlue = {
-  50: '#ecf0ff',
-  100: '#dde3ff',
-  200: '#c2cbff',
-  300: '#9ca7ff',
-  400: '#7578ff',
-  500: '#635bff',
-  600: '#4e36f5',
-  700: '#432ad8',
-  800: '#3725ae',
-  900: '#302689',
-  950: '#1e1650',
-} satisfies PartialColor;
+
 
 export const nevada = {
   50: '#fbfcfe',
@@ -96,4 +84,18 @@ export const stormGrey = {
   800: '#313749',
   900: '#212636',
   950: '#121621',
+} satisfies PartialColor;
+
+export const dynamoxPurple = {
+  50: '#f8f4f6',
+  100: '#f0e6eb',
+  200: '#e0c9d6',
+  300: '#cba5bd',
+  400: '#ab6f93',
+  500: '#8e4b70',
+  600: '#692746', // Main
+  700: '#542038',
+  800: '#3b1d2a', // Dark
+  900: '#2a151e',
+  950: '#10050b',
 } satisfies PartialColor;
