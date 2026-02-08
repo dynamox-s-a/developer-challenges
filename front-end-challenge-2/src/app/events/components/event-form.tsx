@@ -10,36 +10,15 @@ import {
   MenuItem,
   CircularProgress,
 } from "@mui/material";
-import { Event } from "@/types";
+import { CreateEventDto, Event } from "@/types";
 import { createEvent, updateEvent } from "@/store/event/eventsThunk";
+import { validateEventForm } from "@/utils/validation";
+import { EVENT_CATEGORIES } from "@/constants/events";
 
 interface EventFormProps {
   event?: Event | null;
   onSuccess: () => void;
   onCancel: () => void;
-}
-
-type EventCategory =
-  | "Conferência"
-  | "Workshop"
-  | "Webinar"
-  | "Networking"
-  | "Outro";
-
-const categories: EventCategory[] = [
-  "Conferência",
-  "Workshop",
-  "Webinar",
-  "Networking",
-  "Outro",
-];
-
-interface FormData {
-  name: string;
-  date: string;
-  location: string;
-  description: string;
-  category: EventCategory;
 }
 
 export default function EventForm({
@@ -51,7 +30,7 @@ export default function EventForm({
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<CreateEventDto>({
     name: "",
     date: "",
     location: "",
@@ -60,6 +39,7 @@ export default function EventForm({
   });
 
   useEffect(() => {
+    console.log("Evento recebido para edição:", event);
     if (event) {
       const dateObj = new Date(event.date);
       const localDate = new Date(
@@ -87,45 +67,12 @@ export default function EventForm({
     }
   };
 
-  const validate = () => {
-    const newErrors: Record<string, string> = {};
-
-    if (!formData.name.trim()) {
-      newErrors.name = "Nome é obrigatório";
-    }
-
-    if (!formData.date) {
-      newErrors.date = "Data e hora são obrigatórias";
-    } else {
-      const selectedDate = new Date(formData.date);
-      const now = new Date();
-      if (selectedDate <= now) {
-        newErrors.date = "A data deve ser futura";
-      }
-    }
-
-    if (!formData.location.trim()) {
-      newErrors.location = "Local é obrigatório";
-    }
-
-    if (!formData.description.trim()) {
-      newErrors.description = "Descrição é obrigatória";
-    } else if (formData.description.trim().length < 50) {
-      newErrors.description = "Descrição deve ter no mínimo 50 caracteres";
-    }
-
-    if (!formData.category) {
-      newErrors.category = "Categoria é obrigatória";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validate()) {
+    const validationErrors = validateEventForm(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
       return;
     }
 
@@ -227,7 +174,7 @@ export default function EventForm({
         error={!!errors.category}
         helperText={errors.category}
       >
-        {categories.map((cat) => (
+        {EVENT_CATEGORIES.map((cat) => (
           <MenuItem key={cat} value={cat}>
             {cat}
           </MenuItem>
