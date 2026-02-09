@@ -8,6 +8,8 @@ plugins {
     alias(libs.plugins.composeCompiler)
 
     kotlin("plugin.serialization") version "2.1.10"
+    id("app.cash.sqldelight") version "2.2.1"
+
 
 }
 
@@ -36,9 +38,14 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
             implementation(libs.koin.android)
 
+            implementation("app.cash.sqldelight:android-driver:2.2.1")
+
+
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+            implementation("app.cash.sqldelight:native-driver:2.2.1")
+
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -60,6 +67,10 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
+
+            // Sqldelight
+            implementation("app.cash.sqldelight:coroutines-extensions:2.2.1")
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -67,6 +78,14 @@ kotlin {
 
             implementation(libs.ktor.client.mock)
 
+        }
+    }
+}
+
+sqldelight {
+    databases {
+        create("QuizDatabase") {
+            packageName.set("org.kaelkill.quiz.infrastructure.db")
         }
     }
 }
