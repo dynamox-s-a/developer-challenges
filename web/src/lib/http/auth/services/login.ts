@@ -2,7 +2,7 @@ import {
   type loginResponse,
   loginResponseSchema,
   type loginRequest,
-} from '../types'
+} from '@/utils/zod.types'
 
 export class LoginService {
   async loginPost(body: loginRequest): Promise<loginResponse> {

@@ -1,7 +1,11 @@
-import { registerRequestSchema, type registerRequest } from '../types'
+import {
+  type registerResponse,
+  registerResponseSchema,
+  type registerRequest,
+} from '@/utils/zod.types'
 
 export class RegisterService {
-  async registerPost(body: registerRequest): Promise<registerRequest> {
+  async registerPost(body: registerRequest): Promise<registerResponse> {
     const response = await fetch('/api/auth/register', {
       method: 'POST',
       headers: {
@@ -10,8 +14,9 @@ export class RegisterService {
       body: JSON.stringify(body),
     })
 
-    const parsedResponse = await response.json()
-    const validatedResponse = registerRequestSchema.parse(parsedResponse.data)
+    const data = await response.json()
+    const validatedResponse = registerResponseSchema.parse(data)
+    console.log(validatedResponse)
     return validatedResponse
   }
 }

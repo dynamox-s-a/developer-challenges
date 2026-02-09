@@ -1,29 +1,41 @@
+import userRepository from '@/lib/database/user/repository'
+import { registerRequestSchema } from '@/utils/zod.types'
 import { type NextRequest, NextResponse } from 'next/server'
-import z from 'zod'
-
-const registerPostSchema = z.object({
-  name: z.string().max(20),
-  email: z.email(),
-  password: z.string().min(6).max(20),
-})
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
+    const validateData = registerRequestSchema.parse(body)
+    const user = await userRepository.create(validateData)
 
-    const validateData = registerPostSchema.parse(body)
-    // processamento de dados
-    // envio para a API
+    console.log(user)
 
-    return NextResponse.json({
-      success: true,
-      data: validateData,
-      message: 'Dados enviados com sucesso.',
-    })
+    if (user === null)
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Email já cadastrado.',
+        },
+        { status: 400 },
+      )
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Usuário cadastrado com sucesso.',
+      },
+      { status: 200 },
+    )
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      message: error instanceof Error ? error.message : 'Request Inválida',
-    })
+    return NextResponse.json(
+      {
+        success: false,
+        message:
+          error instanceof Error
+            ? error.message
+            : 'Falha no cadastro do usuário, tente novamente mais tarde.',
+      },
+      { status: 400 },
+    )
   }
 }

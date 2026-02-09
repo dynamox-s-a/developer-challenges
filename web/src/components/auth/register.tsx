@@ -1,10 +1,13 @@
 'use client'
 
 import { authService } from '@/lib/http/auth'
-import { registerRequestSchema, type registerRequest } from '@/lib/http/auth/types'
+import { registerRequestSchema, type registerRequest } from '@/utils/zod.types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Box, Button, TextField, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
+import { ErrorModal } from '../errorModal'
+import { useState } from 'react'
+import { redirect } from 'next/navigation'
 
 export const customBox = {
   display: 'flex',
@@ -20,15 +23,26 @@ export default function RegisterComponent() {
     handleSubmit,
     formState: { errors },
   } = useForm<registerRequest>({
-    resolver: zodResolver(registerRequestSchema)
+    resolver: zodResolver(registerRequestSchema),
   })
 
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalError, setModalError] = useState('');
+
   const onSubmit = async (data: registerRequest) => {
-   const response = await authService.register(data)
-   console.log(response)
+    const response = await authService.register(data)
+    if (!response.success) {
+      setModalError(response.message);
+      setModalOpen(true);
+    }
+
+    if (response.success) {
+      redirect("/auth/login")
+    }
   }
 
   return (
+    <>
     <Box
       component="form"
       height={500}
@@ -81,5 +95,11 @@ export default function RegisterComponent() {
         Submit
       </Button>
     </Box>
+    <ErrorModal 
+      open={modalOpen}
+      message={modalError}
+      onClose={() => setModalOpen(false)}
+    />
+  </>
   )
 }

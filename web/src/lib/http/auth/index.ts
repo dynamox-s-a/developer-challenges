@@ -1,6 +1,11 @@
 import { LoginService } from './services/login'
 import { RegisterService } from './services/register'
-import type { loginRequest, loginResponse, registerRequest } from './types'
+import type {
+  loginRequest,
+  loginResponse,
+  registerRequest,
+  registerResponse,
+} from '@/utils/zod.types'
 
 class AuthService {
   private loginService: LoginService
@@ -15,7 +20,7 @@ class AuthService {
     return await this.loginService.loginPost(body)
   }
 
-  async register(body: registerRequest): Promise<registerRequest> {
+  async register(body: registerRequest): Promise<registerResponse> {
     return await this.registerService.registerPost(body)
   }
 }

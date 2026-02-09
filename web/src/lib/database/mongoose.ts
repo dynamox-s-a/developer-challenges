@@ -1,11 +1,14 @@
 import { env } from '@/utils/env'
 import mongoose from 'mongoose'
 
-export async function dbConnect() {
-  if (!env.MONGODB_URI) {
-    throw new Error('Please define the MONGODB_URI enviroment variable')
+const dbConnect = async () => {
+  if (mongoose.connection.readyState >= 1) return
+  try {
+    await mongoose.connect(env.MONGODB_URI, { dbName: 'todoApp' })
+    console.log('MongoDB Connected')
+  } catch (error) {
+    console.error('MongoDB Connection Error:', error)
+    process.exit(1)
   }
-
-  await mongoose.connect(env.MONGODB_URI)
-  return mongoose
 }
+export default dbConnect

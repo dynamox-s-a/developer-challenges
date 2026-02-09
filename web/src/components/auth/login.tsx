@@ -2,7 +2,7 @@
 
 import { Box, Button, TextField, Typography } from "@mui/material"
 import { useForm } from "react-hook-form"
-import { loginRequestSchema, type loginRequest } from '../../lib/http/auth/types';
+import { loginRequestSchema, type loginRequest } from '../../utils/zod.types';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authService } from "@/lib/http/auth";
 import { redirect } from "next/navigation";
