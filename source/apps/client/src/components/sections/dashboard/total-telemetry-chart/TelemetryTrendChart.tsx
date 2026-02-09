@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
-import { SxProps, useTheme } from '@mui/material';
+import { Box, Container, Skeleton, Stack, SxProps, Typography, useTheme } from '@mui/material';
+import IconifyIcon from 'components/base/IconifyIcon';
 import * as echarts from 'echarts/core';
 import ReactEchart from 'components/base/ReactEchart';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -28,11 +29,44 @@ interface SpentChartProps {
     data: number[];
     color: string;
   }[];
+  loading?: boolean;
+  error?: string | null;
   sx?: SxProps;
 }
 
-const TelemetryTrendChart = ({ categories, series, ...rest }: SpentChartProps) => {
+const TelemetryTrendChart = ({ categories, series, loading, error, ...rest }: SpentChartProps) => {
   const theme = useTheme();
+
+  if (loading) {
+    return (
+      <Skeleton
+        variant="rectangular"
+        width="100%"
+        height={235}
+        sx={{ borderRadius: 4, mt: 2 }}
+      />
+    );
+  }
+
+  if (error) {
+    return (
+      <Container
+        sx={{
+          height: 235,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: 1.5,
+        }}
+      >
+        <IconifyIcon icon="tabler:alert-circle" color="error.main" fontSize="2.5rem" />
+        <Typography variant="body1" fontWeight={600} color="error" textAlign="center">
+          {error}
+        </Typography>
+      </Container>
+    );
+  }
 
   const finalCategories = categories && categories.length > 0 ? categories.map(v => new Date(v).toLocaleTimeString()) : [];
   const finalSeries = series && series.length > 0 ? series : [];

@@ -114,8 +114,16 @@ const statsSlice = createSlice({
         state.status = 'succeeded';
         state.sensorsDistribution = action.payload;
       })
+      .addCase(fetchTelemetryTrend.pending, (state) => {
+        state.status = 'loading';
+      })
       .addCase(fetchTelemetryTrend.fulfilled, (state, action) => {        
+        state.status = 'succeeded';
         state.telemetryTrend = action.payload;
+      })
+      .addCase(fetchTelemetryTrend.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message || 'Failed to fetch telemetry trend';
       });
   },
 });

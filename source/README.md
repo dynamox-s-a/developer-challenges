@@ -95,8 +95,10 @@ pnpm serve:simulator
 - **Strict Association**: Machines of type `Pump` cannot be associated with `TcAg` or `TcAs` sensors.
 - **Telemetry**: High-frequency data is processed asynchronously to ensure sub-350ms response times for critical API paths.
 
-## Notes
+## 📔 Notes
 
-### Protected Routes
+> [!TIP]  
+> **Authentication Guard**: Pay attention to the matcher regular expression in `proxy.ts` when creating new pages, as it defines which routes require authentication.
 
-Make sure to pay attention to the matcher regular expression from `proxy.ts` file when creating new pages, as it chooses which routes to protect with authentication.
+> [!NOTE]  
+> For detailed information about the project's development process and technical decisions, consult the [PROJECT-WALKTHROUGH.md](./documents/PROJECT-WALKTHROUGH.md) file.
