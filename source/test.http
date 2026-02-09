@@ -7,13 +7,12 @@ Content-Type: application/json
 
 {
   "email": "admin@dynamox.com",
-  "pass": "admin"
+  "pass": "admin1234"
 }
 
 ###
 
-# @token = {{login.response.body.access_token}}
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGR5bmFtb3guY29tIiwic3ViIjoiMiIsImlhdCI6MTc3MDU2NTkxOCwiZXhwIjoxNzczMTU3OTE4fQ.kU7rqX8J-jc0JLWNRi_2gWXmTFUzPK-uB0fDVA7F7tA
+@token = {{login.response.body.access_token}}
 
 ### 2. List Machines
 GET {{baseUrl}}/machines
@@ -88,4 +87,24 @@ Authorization: Bearer {{token}}
 
 ### 11. Delete Telemetry
 DELETE {{baseUrl}}/telemetry/1
+Authorization: Bearer {{token}}
+
+### 12. Dashboard Stats - Telemetry Count
+GET {{baseUrl}}/stats/telemetry
+Authorization: Bearer {{token}}
+
+### 13. Dashboard Stats - Machines Count
+GET {{baseUrl}}/stats/machines
+Authorization: Bearer {{token}}
+
+### 14. Dashboard Stats - Monitoring Points Count
+GET {{baseUrl}}/stats/monitoring-points
+Authorization: Bearer {{token}}
+
+### 15. Dashboard Stats - Active Sensors Count
+GET {{baseUrl}}/stats/active-sensors
+Authorization: Bearer {{token}}
+
+### 16. Dashboard Stats - Full Aggregated Stats
+GET {{baseUrl}}/stats/dashboard
 Authorization: Bearer {{token}}

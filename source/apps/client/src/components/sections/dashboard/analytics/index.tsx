@@ -1,36 +1,26 @@
 import Grid from '@mui/material/Grid';
-import Earnings from './Earnings';
-import Sales from './Sales';
-import Spend from './Spend';
-import Tasks from './Tasks';
-import Balance from './balance';
-import Projects from './Projects';
+import TotalTelemetry from './TotalTelemetry';
+import MachinesStats from './MachinesStats';
+import MonitoringPointsStats from './MonitoringPointsStats';
+import ActiveSensors from './ActiveSensors';
 
 const Analytics = () => {
   return (
     <Grid container spacing={2.5}>
-      <Grid item xs={12} sm={6} md={4} xl={2}>
-        <Earnings />
+      <Grid item xs={12} md={6} lg={3}>
+        <TotalTelemetry />
       </Grid>
 
-      <Grid item xs={12} sm={6} md={4} xl={2}>
-        <Spend />
+      <Grid item xs={12} md={6} lg={3}>
+        <MachinesStats />
       </Grid>
 
-      <Grid item xs={12} sm={6} md={4} xl={2}>
-        <Sales />
+      <Grid item xs={12} md={6} lg={3}>
+        <MonitoringPointsStats />
       </Grid>
 
-      <Grid item xs={12} sm={6} md={4} xl={2}>
-        <Balance />
-      </Grid>
-
-      <Grid item xs={12} sm={6} md={4} xl={2}>
-        <Tasks />
-      </Grid>
-
-      <Grid item xs={12} sm={6} md={4} xl={2}>
-        <Projects />
+      <Grid item xs={12} md={6} lg={3}>
+        <ActiveSensors />
       </Grid>
     </Grid>
   );

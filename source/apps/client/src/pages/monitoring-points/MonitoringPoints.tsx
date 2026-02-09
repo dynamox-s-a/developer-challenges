@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container, Typography, Stack, Box, Paper } from '@mui/material';
-import { io, Socket } from 'socket.io-client';
+import { socket } from 'utils/socket';
 import { AppDispatch, RootState } from 'store/store';
 import { fetchMonitoringPoints, updateTelemetry } from 'store/slices/monitoringPointsSlice';
 import PageTitle from 'components/common/PageTitle';
@@ -16,45 +16,21 @@ const MonitoringPoints = () => {
   const [page, setPage] = useState(1);
   const [connectionStatus, setConnectionStatus] = useState<'connected' | 'disconnected' | 'reconnecting' | 'failed'>('disconnected');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [socketInstance, setSocketInstance] = useState<Socket | null>(null);
 
-  const connectSocket = () => {
-    const socket: Socket = io('http://localhost:3000', {
-      transports: ['websocket'],
-      reconnectionDelay: 3000,
-      reconnectionAttempts: 5,
-    });
+  useEffect(() => {
+    dispatch(fetchMonitoringPoints({ page }));
+  }, [dispatch, page]);
 
-    setSocketInstance(socket);
-
-    socket.on('connect', () => {
-      console.log('Connected to Telemetry WebSocket');
+  useEffect(() => {
+    if (socket.connected) {
       setConnectionStatus('connected');
-    });
+    }
 
-    socket.on('disconnect', (reason) => {
-      console.log('Disconnected from Telemetry WebSocket:', reason);
-      if (reason === 'io server disconnect' || reason === 'io client disconnect') {
-         setConnectionStatus('disconnected');
-      } else {
-         setConnectionStatus('reconnecting');
-      }
-    });
-
-    socket.on('connect_error', (data) => {
-      console.warn('Failed to connect', data);
-      // Socket.io will automatically try to reconnect if reconnection is true (default)
-    });
-
-    socket.io.on('reconnect_attempt', (attempt) => {
-       setConnectionStatus('reconnecting');
-    });
-
-    socket.io.on('reconnect_failed', () => {
-       setConnectionStatus('failed');
-    });
-
-    socket.on('telemetry_update', (data) => {
+    const onConnect = () => setConnectionStatus('connected');
+    const onReconnectAttemp = () => setConnectionStatus('reconnecting');
+    const onDisconnect = () => setConnectionStatus('disconnected');
+    const onConnectError = () => setConnectionStatus('failed');
+    const onTelemetryUpdate = (data: any) => {
       dispatch(updateTelemetry({
         sensorId: data.sensorId,
         telemetry: {
@@ -64,27 +40,27 @@ const MonitoringPoints = () => {
           timestamp: data.timestamp,
         }
       }));
-    });
+    };
 
-    return socket;
-  };
-
-  const manualSocketRetry = () => {
-    socketInstance?.connect();
-    setConnectionStatus('reconnecting');
-  }
-
-  useEffect(() => {
-    dispatch(fetchMonitoringPoints({ page }));
-  }, [dispatch, page]);
-
-  useEffect(() => {
-    const socket = connectSocket();
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+    socket.on('connect_error', onConnectError);
+    socket.on('telemetry_update', onTelemetryUpdate);
+    socket.io.on('reconnect_failed', onConnectError);
+    socket.io.on('reconnect_attempt', onReconnectAttemp);
 
     return () => {
-      socket.disconnect();
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+      socket.off('connect_error', onConnectError);
+      socket.off('telemetry_update', onTelemetryUpdate);
     };
-  }, []); // Only once on mount
+  }, [dispatch]);
+
+  const manualSocketRetry = () => {
+    socket.connect();
+    setConnectionStatus('reconnecting');
+  }
 
   return (
     <>

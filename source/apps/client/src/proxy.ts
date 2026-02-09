@@ -40,8 +40,6 @@ export async function proxy(request: NextRequest) {
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
         const payload = JSON.parse(atob(base64));
         
-        console.log('Proxy: accessToken exp', payload);
-
         if (payload.exp && payload.exp < now) {
           console.log('Proxy: accessToken expired');
           return redirectToSignIn();

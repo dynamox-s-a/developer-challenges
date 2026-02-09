@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, UseGuards, Query, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Param, UseGuards, Query, ParseIntPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { MonitoringPointsService } from './monitoring-points.service';
 import { SensorModel } from '@source/persistence';
@@ -38,5 +38,10 @@ export class MonitoringPointsController {
     @Body() body: { id: string; model: SensorModel }
   ) {
     return this.mpService.associateSensor(id, body);
+  }
+
+  @Delete(':id')
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    return this.mpService.remove(id);
   }
 }

@@ -25,16 +25,11 @@ const menuItems: MenuItems[] = [
   },
   {
     id: 2,
-    title: 'Notifications',
-    icon: 'tabler:bell',
-  },
-  {
-    id: 3,
     title: 'GitHub Repo',
     icon: 'tabler:brand-github',
   },
   {
-    id: 4,
+    id: 3,
     title: 'Logout',
     icon: 'tabler:logout',
   },
@@ -116,6 +111,8 @@ const ProfileMenu = () => {
                 onClick={() => {
                   if (item.title === 'Logout') {
                     handleLogout();
+                  } else if (item.title === 'GitHub Repo') {
+                    window.open('https://github.com/henrybastos/developer-challenges/tree/henry-bastos', '_blank', 'noopener,noreferrer');
                   } else if (item.title === 'View Profile') {
                     console.log('Current Session:', session);
                   }

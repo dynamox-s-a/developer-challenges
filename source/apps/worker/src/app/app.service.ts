@@ -40,7 +40,10 @@ export class AppService {
       // 2. Update Global Counter in Redis
       await redis.incr('telemetry:global:total_count');
 
-      // 3. Update Latest State in Redis (Hash)
+      // 3. Update Active Sensors Set (TTL check later by API)
+      await redis.zadd('sensors:active', Date.now(), sensorId);
+
+      // 4. Update Latest State in Redis (Hash)
       await redis.hset(`telemetry:sensor:${sensorId}:latest`, {
         accelerationValue: accelerationValue.toString(),
         velocityValue: velocityValue.toString(),

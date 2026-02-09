@@ -15,7 +15,7 @@ import { PiChartData } from 'data/piChartData';
 import customShadows from 'theme/shadows';
 import PiChart from './PiChart';
 
-const YourPiChart = () => {
+const SensorDistributionChart = () => {
   const [timeline, setTimeline] = useState('monthly');
   const [chartData, setChartData] = useState(PiChartData);
   const chartRef = useRef<EChartsReactCore>(null);
@@ -67,25 +67,6 @@ const YourPiChart = () => {
         <Typography variant="body1" fontWeight={700}>
           Sensor Distribution
         </Typography>
-
-        <FormControl
-          variant="filled"
-          sx={{
-            minWidth: 110,
-            '& .MuiInputBase-root': {
-              '&:focus-within': {
-                borderColor: 'transparent !important',
-                boxShadow: 'none',
-              },
-            },
-          }}
-        >
-          <Select id="select-filled" value={timeline} onChange={handleSelectChange}>
-            <MenuItem value="weekly">Weekly</MenuItem>
-            <MenuItem value="monthly">Monthly</MenuItem>
-            <MenuItem value="yearly">Yearly</MenuItem>
-          </Select>
-        </FormControl>
       </Stack>
 
       <PiChart chartRef={chartRef} sx={{ height: '180px !important' }} />
@@ -136,4 +117,4 @@ const YourPiChart = () => {
   );
 };
 
-export default YourPiChart;
+export default SensorDistributionChart;

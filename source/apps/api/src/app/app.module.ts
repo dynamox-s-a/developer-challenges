@@ -5,6 +5,7 @@ import { MachinesModule } from './machines/machines.module';
 import { MonitoringPointsModule } from './monitoring-points/monitoring-points.module';
 import { TelemetryModule } from './telemetry/telemetry.module';
 import { RealTimeModule } from './real-time/real-time.module';
+import { StatsModule } from './stats/stats.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { RealTimeModule } from './real-time/real-time.module';
     MonitoringPointsModule,
     TelemetryModule,
     RealTimeModule,
+    StatsModule,
   ],
   controllers: [AppController],
 })

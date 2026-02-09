@@ -1,5 +1,6 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { prisma, MachineType, SensorModel } from '@source/persistence';
+import { StatsService } from '../stats/stats.service';
 
 interface SensorData {
   model: SensorModel;
@@ -19,6 +20,8 @@ interface MachineData {
 
 @Injectable()
 export class MachinesService {
+  constructor(private readonly statsService: StatsService) {}
+
   private validateMachineData(data: Partial<MachineData>) {
     if (data.monitoringPoints && data.monitoringPoints.length < 2) {
       throw new BadRequestException('A machine must have at least 2 monitoring points');
@@ -52,7 +55,7 @@ export class MachinesService {
   async create(data: MachineData) {
     this.validateMachineData(data);
 
-    return prisma.machine.create({
+    const machine = await prisma.machine.create({
       data: {
         name: data.name,
         type: data.type,
@@ -71,12 +74,17 @@ export class MachinesService {
       },
       include: { monitoringPoints: { include: { sensor: true } } },
     });
+
+    await this.statsService.broadcastMachinesCount();
+    await this.statsService.broadcastMonitoringPointsCount();
+
+    return machine;
   }
 
   async update(id: number, data: Partial<MachineData>) {
     this.validateMachineData(data);
 
-    return prisma.$transaction(async (tx) => {
+    const updateTx = await prisma.$transaction(async (tx) => {
       const existingMachine = await tx.machine.findUnique({
         where: { id },
         include: { monitoringPoints: { include: { sensor: true } } },
@@ -149,15 +157,22 @@ export class MachinesService {
         }
       }
 
-      return tx.machine.findUnique({
+      const result = await tx.machine.findUnique({
         where: { id },
         include: { monitoringPoints: { include: { sensor: true } } },
       });
+
+      return result;
     });
+
+    await this.statsService.broadcastMachinesCount();
+    await this.statsService.broadcastMonitoringPointsCount();
+
+    return updateTx;
   }
 
   async remove(id: number) {
-    return prisma.$transaction(async (tx) => {
+    const removeTx = await prisma.$transaction(async (tx) => {
       const monitoringPoints = await tx.monitoringPoint.findMany({
         where: { machineId: id },
         select: { id: true },
@@ -175,7 +190,14 @@ export class MachinesService {
       await tx.telemetry.deleteMany({ where: { sensorId: { in: sensorIds } } });
       await tx.sensor.deleteMany({ where: { monitoringPointId: { in: mpIds } } });
       await tx.monitoringPoint.deleteMany({ where: { machineId: id } });
-      return tx.machine.delete({ where: { id } });
+      const deletedMachine = await tx.machine.delete({ where: { id } });
+
+      return deletedMachine;
     });
+
+    await this.statsService.broadcastMachinesCount();
+    await this.statsService.broadcastMonitoringPointsCount();
+
+    return removeTx;
   }
 }

@@ -64,6 +64,14 @@ export const associateSensor = createAsyncThunk(
   }
 );
 
+export const deleteMonitoringPoint = createAsyncThunk(
+  'monitoringPoints/delete',
+  async (id: number) => {
+    await api.delete(`/monitoring-points/${id}`);
+    return id;
+  }
+);
+
 const monitoringPointsSlice = createSlice({
   name: 'monitoringPoints',
   initialState,
@@ -95,7 +103,11 @@ const monitoringPointsSlice = createSlice({
         // Optionally add to items if we want immediate feedback, 
         // but usually we re-fetch to ensure sorting/pagination is correct.
         state.items.unshift(action.payload);
-        state.total += 1;
+        state.total = state.items.length;
+      })
+      .addCase(deleteMonitoringPoint.fulfilled, (state, action) => {
+        state.items = state.items.filter((item) => item.id !== action.payload);
+        state.total = state.items.length;
       });
   },
 });

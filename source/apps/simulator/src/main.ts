@@ -5,6 +5,8 @@ export class Simulator {
   private RABBITMQ_URL = process.env['RABBITMQ_URL'] || 'amqp://localhost:5672';
   private QUEUE = 'telemetry_queue';
   private interval: NodeJS.Timeout | null = null;
+  private intervalMS: number = 2000;
+  private minimumSensorsTarget: number = 3;
 
   async start() {
     try {
@@ -22,14 +24,17 @@ export class Simulator {
         console.error('No sensors found in database. Please create some sensors first.');
         process.exit(1);
       }
+      
 
       const sensors = dbSensors.map(s => s.id);
-      console.log(`Simulator started with ${sensors.length} real sensors.`);
+      // If too few, it activates all the sensors
+      const activeSensors = sensors.length > this.minimumSensorsTarget ? this.getRandomArraySlice(sensors) : sensors;
 
-      console.log('Simulator started. Sending data every 2 seconds...');
+      console.log(`Simulator started with ${activeSensors.length} real sensors.`);
+      console.log(`Simulator started. Sending data every ${ this.intervalMS } milliseconds...`);
 
       this.interval = setInterval(async () => {
-        for (const sensorId of sensors) {
+        for (const sensorId of activeSensors) {
           const accelerationValue = parseFloat((Math.random() * 2).toFixed(2));
           const velocityValue = parseFloat((Math.random() * 10).toFixed(2));
           const temperatureValue = parseFloat((20 + Math.random() * 60).toFixed(2));
@@ -48,7 +53,7 @@ export class Simulator {
           channel.sendToQueue(this.QUEUE, Buffer.from(JSON.stringify(payload)));
           console.log(`Sent: ${sensorId} -> A:${accelerationValue} V:${velocityValue} T:${temperatureValue}`);
         }
-      }, 2000);
+      }, this.intervalMS);
 
     } catch (error) {
       console.error('Simulator error:', error);
@@ -60,9 +65,24 @@ export class Simulator {
       clearInterval(this.interval);
     }
   }
+
+  getRandomArraySlice (arr) {
+    // Determines how many sensors are going to activate and send data
+    const amount = Math.ceil(Math.random() * arr.length);
+    // Guarantees a small amount of randomness
+    const offset = Math.ceil(Math.random() * Math.floor(arr.length / 3));  
+
+    const slice = arr.slice(offset, amount + offset);
+    
+    // It'll try to get the minimum amount of sensors, if possible
+    if (arr.length > this.minimumSensorsTarget && slice.length < this.minimumSensorsTarget) {
+      console.warn('Array slice too short. Slicing again...');
+      return this.getRandomArraySlice(arr);
+    } else {
+      return slice;
+    }
+  }
 }
 
-if (require.main === module) {
-  const simulator = new Simulator();
-  simulator.start();
-}
+const simulator = new Simulator();
+simulator.start();

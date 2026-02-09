@@ -34,4 +34,20 @@ export class TelemetryGateway
   broadcastTelemetry(payload: any) {
     this.server.emit('telemetry_update', payload);
   }
+
+  broadcastTotalTelemetry(payload: { totalTelemetry: number }) {
+    this.server.emit('telemetry_count_update', payload);
+  }
+
+  broadcastMachinesCount(payload: { machinesCount: number }) {
+    this.server.emit('machines_count_update', payload);
+  }
+
+  broadcastMonitoringPointsCount(payload: { monitoringPointsCount: number }) {
+    this.server.emit('monitoring_points_count_update', payload);
+  }
+
+  broadcastActiveSensorsCount(payload: { activeSensorsCount: number }) {
+    this.server.emit('active_sensors_count_update', payload);
+  }
 }
