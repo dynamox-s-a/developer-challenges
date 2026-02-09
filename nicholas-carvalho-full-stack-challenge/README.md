@@ -43,7 +43,7 @@ cd nicholas-carvalho-full-stack-challenge
 
 2. Start the services:
 ```bash
-docker compose-up --build
+docker compose up --build
 ```
 
 3. Access points:
@@ -58,6 +58,11 @@ As solicitated, I documentated here the assumed premisses:
 - **Security:** The **JWT** authentication flow it's stored in **HttpOnly Cookies,** protecting private routes and mitigating XSS attacks.
 
 - **Sensor Constants:** The business rule that Sensors of model ``TcAg``/``TcAs`` in Machines of type ``Pump``, is not valid both in interface (Dinamic UI) and also in backend service layer (Data integrity).
+
+## 🔐 Authentication
+For evaluation purposes, the system uses a fixed credential to access private routes:
+- **Email:** admin@dynamox.com
+- **Password:** 123456
 
 ## 🧪 Test Coverage
 The project prioritize the confibility in unit tests in both of fronts:
