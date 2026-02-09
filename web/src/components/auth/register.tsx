@@ -7,7 +7,7 @@ import { Box, Button, TextField, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { ErrorModal } from '../errorModal'
 import { useState } from 'react'
-import { useRouter } from "next/compat/router";
+import { useRouter } from "next/navigation";
 
 export const customBox = {
   display: 'flex',
@@ -38,7 +38,7 @@ export default function RegisterComponent() {
     }
 
     if (response.success) {
-      router?.push('/dashboard')
+      router.push('/auth/login')
     }
   }
 
