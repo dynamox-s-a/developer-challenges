@@ -1,0 +1,36 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: dynamox-backend
+    ports:
+      - "3001:3001"
+    environment:
+      - JWT_SECRET=9140987134871907451452345
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/dynamox?schema=public
+    depends_on:
+      - db
+    command: >
+      sh -c "npx prisma db push && npx prisma db seed && 
+             npm run start"
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:3001
+    depends_on:
+      - backend
+
+  db:
+    image: postgres:15-alpine
+    container_name: dynamox-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=dynamox

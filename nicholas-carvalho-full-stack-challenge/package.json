@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "@nestjs/passport": "^11.0.5",
+    "@types/cors": "^2.8.19",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "passport-jwt": "^4.0.1"
+  },
+  "devDependencies": {
+    "@nestjs/jwt": "^11.0.2",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/passport-jwt": "^4.0.1",
+    "@types/pg": "^8.16.0"
+  }
+}
