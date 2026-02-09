@@ -5,7 +5,7 @@ import type {
   loginResponse,
   registerRequest,
   registerResponse,
-} from '@/utils/zod.types'
+} from '@/lib/http/auth/services/auth.types'
 
 class AuthService {
   private loginService: LoginService

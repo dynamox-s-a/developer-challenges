@@ -1,7 +1,7 @@
 'use client'
 
 import { authService } from '@/lib/http/auth'
-import { registerRequestSchema, type registerRequest } from '@/utils/zod.types'
+import { registerRequestSchema, type registerRequest } from '@/lib/http/auth/services/auth.types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Box, Button, TextField, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'

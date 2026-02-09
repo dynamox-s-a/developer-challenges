@@ -5,7 +5,6 @@ import User, {
 } from '@/lib/database/user/schema'
 import dbConnect from '@/lib/database/mongoose'
 import bcrypt from 'bcrypt'
-import { env } from '@/utils/env'
 
 export class UserRepository {
   async create(user: UserDTO): Promise<IUser | null> {
@@ -14,7 +13,7 @@ export class UserRepository {
     const validateUser = await User.findOne({ email: user.email })
     if (validateUser) return null
 
-    const hashedPassword = await bcrypt.hash(user.password, env.BCRYPT_PASS)
+    const hashedPassword = await bcrypt.hash(user.password, 10)
 
     const userData = {
       ...user,

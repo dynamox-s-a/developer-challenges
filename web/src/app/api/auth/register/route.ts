@@ -1,5 +1,5 @@
 import userRepository from '@/lib/database/user/repository'
-import { registerRequestSchema } from '@/utils/zod.types'
+import { registerRequestSchema } from '@/lib/http/auth/services/auth.types'
 import { type NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {

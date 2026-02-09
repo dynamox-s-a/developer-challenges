@@ -2,7 +2,7 @@ import {
   type registerResponse,
   registerResponseSchema,
   type registerRequest,
-} from '@/utils/zod.types'
+} from '@/lib/http/auth/services/auth.types'
 
 export class RegisterService {
   async registerPost(body: registerRequest): Promise<registerResponse> {
