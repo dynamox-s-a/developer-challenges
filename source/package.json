@@ -13,6 +13,7 @@
     "build:api": "pnpm exec nx build api",
     "build:worker": "pnpm exec nx build worker",
     "build:simulator": "pnpm exec nx build simulator",
+    "test:api": "pnpm exec nx test api --no-cache --verbose",
     "prisma:generate": "pnpm exec prisma generate",
     "prisma:migrate": "pnpm exec prisma migrate",
     "prisma:push": "pnpm exec prisma db push",

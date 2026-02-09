@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { MachinesModule } from './machines/machines.module';
 import { MonitoringPointsModule } from './monitoring-points/monitoring-points.module';
@@ -16,6 +15,5 @@ import { RealTimeModule } from './real-time/real-time.module';
     RealTimeModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
