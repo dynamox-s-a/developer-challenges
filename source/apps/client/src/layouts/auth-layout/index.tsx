@@ -58,9 +58,6 @@ const AuthLayout = () => {
       >
         <Stack my="auto" direction="column" spacing={3} alignItems="center" justifyContent="center">
           <Image src={'/images/logo-white.png'} height={180} width={180} />
-          <Link href="/">
-            <Image src={'/images/auth/horizon.png'} height={32} />
-          </Link>
         </Stack>
 
         <Stack mt="auto" height={80} spacing={5} alignItems="center" justifyContent="center">

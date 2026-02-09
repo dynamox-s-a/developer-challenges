@@ -1,5 +1,16 @@
 @baseUrl = http://localhost:3000/api
 
+### 0. Signup
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "email": "newuser@dynamox.com",
+  "pass": "newuser1234"
+}
+
+###
+
 ### 1. Login
 # @name login
 POST {{baseUrl}}/auth/login

@@ -74,7 +74,6 @@ export const fetchSensorsDistribution = createAsyncThunk('stats/fetchSensorsDist
 
 export const fetchTelemetryTrend = createAsyncThunk('stats/fetchTelemetryTrend', async () => {
   const response = await api.get('/stats/telemetry-trend');
-  console.log('Telemetry Trend:', response.data);
   return response.data;
 });
 

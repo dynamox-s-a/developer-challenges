@@ -11,9 +11,19 @@ export class AuthController {
   async login(@Body() body: { email: string; pass: string }) {
     const user = await this.authService.validateUser(body.email, body.pass);
     if (!user) {
-      return { message: 'Invalid credentials' };
+      throw new UnauthorizedException('Invalid credentials');
     }
     return this.authService.login(user);
+  }
+
+  @Post('signup')
+  async signup(@Body() body: { email: string; pass: string; name?: string }) {
+    try {
+      return await this.authService.signup(body.email, body.pass);
+    } catch (error) {
+      console.error('Signup error:', error);
+      return { message: error.message };
+    }
   }
 
 

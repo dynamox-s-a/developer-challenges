@@ -81,8 +81,6 @@ export class StatsService {
       ORDER BY minute ASC
     `;
 
-    console.log('TREND RESULT:', trend);
-
     return {
       timestamps: trend.map((t) => t.minute),
       acceleration: trend.map((t) => t.avgAcceleration),

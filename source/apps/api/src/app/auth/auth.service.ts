@@ -25,21 +25,21 @@ export class AuthService {
     };
   }
 
-  // Helper to create a default user if none exists (for dev/fixed credentials)
-  async ensureDefaultUser() {
-    const defaultEmail = 'admin@dynamox.com';
-    const defaultPassword = 'admin1234';
-    
-    const user = await prisma.user.findUnique({ where: { email: defaultEmail } });
-    if (!user) {
-      const hashedPassword = await bcrypt.hash(defaultPassword, 10);
-      await prisma.user.create({
-        data: {
-          email: defaultEmail,
-          password: hashedPassword,
-        },
-      });
-      console.log('Default user created: admin@dynamox.com / admin');
+  async signup(email: string, pass: string) {
+    const existingUser = await prisma.user.findUnique({ where: { email } });
+    if (existingUser) {
+      throw new Error('User already exists');
     }
+
+    const hashedPassword = await bcrypt.hash(pass, 10);
+    const user = await prisma.user.create({
+      data: {
+        email,
+        password: hashedPassword,
+      },
+    });
+
+    const { password, ...result } = user;
+    return result;
   }
 }
