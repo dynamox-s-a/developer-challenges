@@ -1,0 +1,91 @@
+@baseUrl = http://localhost:3000/api
+
+### 1. Login
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@dynamox.com",
+  "pass": "admin"
+}
+
+###
+
+# @token = {{login.response.body.access_token}}
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGR5bmFtb3guY29tIiwic3ViIjoiMiIsImlhdCI6MTc3MDU2NTkxOCwiZXhwIjoxNzczMTU3OTE4fQ.kU7rqX8J-jc0JLWNRi_2gWXmTFUzPK-uB0fDVA7F7tA
+
+### 2. List Machines
+GET {{baseUrl}}/machines
+Authorization: Bearer {{token}}
+
+### 3. Create Machine
+POST {{baseUrl}}/machines
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Cooling Fan 01",
+  "type": "Fan"
+}
+
+### 4. List Monitoring Points
+GET {{baseUrl}}/monitoring-points?page=1
+Authorization: Bearer {{token}}
+
+### 5. Create Monitoring Point
+POST {{baseUrl}}/monitoring-points
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Bearing A",
+  "machineId": 1
+}
+
+### 6. Associate Sensor
+POST {{baseUrl}}/monitoring-points/1/sensors
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id": "sensor_1",
+  "model": "HF_Plus"
+}
+
+### 7. Get Telemetry Metrics
+GET {{baseUrl}}/telemetry/metrics
+Authorization: Bearer {{token}}
+
+### 8. Get Sensor History
+GET {{baseUrl}}/telemetry/sensor_1
+Authorization: Bearer {{token}}
+
+### 9. Associate Illegal Sensor (Pump + TcAg)
+# This should fail with 400
+POST {{baseUrl}}/monitoring-points
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Point for Pump",
+  "machineId": 2
+}
+
+### (Assuming ID 2 is a Pump)
+POST {{baseUrl}}/monitoring-points/2/sensors
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id": "sensor_bad",
+  "model": "TcAg"
+}
+
+### 10. List All Telemetry
+GET {{baseUrl}}/telemetry?page=1&limit=10
+Authorization: Bearer {{token}}
+
+### 11. Delete Telemetry
+DELETE {{baseUrl}}/telemetry/1
+Authorization: Bearer {{token}}

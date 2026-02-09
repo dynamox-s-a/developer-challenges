@@ -1,0 +1,73 @@
+generator client {
+  provider    = "prisma-client"
+  output      = "./generated"
+  engineType  = "library"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum MachineType {
+  Pump
+  Fan
+}
+
+enum SensorModel {
+  TcAg
+  TcAs
+  HF_Plus
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Machine {
+  id               Int               @id @default(autoincrement())
+  name             String
+  type             MachineType
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime          @updatedAt @map("updated_at")
+  monitoringPoints MonitoringPoint[]
+
+  @@map("machines")
+}
+
+model MonitoringPoint {
+  id        Int      @id @default(autoincrement())
+  name      String
+  machineId Int      @map("machine_id")
+  machine   Machine  @relation(fields: [machineId], references: [id])
+  sensor    Sensor?
+
+  @@map("monitoring_points")
+}
+
+model Sensor {
+  id                String          @id @default(uuid())
+  model             SensorModel
+  monitoringPointId Int             @unique @map("monitoring_point_id")
+  monitoringPoint   MonitoringPoint @relation(fields: [monitoringPointId], references: [id])
+  telemetry         Telemetry[]
+
+  @@map("sensors")
+}
+
+model Telemetry {
+  id        BigInt   @id @default(autoincrement())
+  sensorId  String   @map("sensor_id")
+  sensor    Sensor   @relation(fields: [sensorId], references: [id])
+  accelerationValue     Float
+  velocityValue     Float
+  temperatureValue     Float
+  timestamp DateTime @default(now())
+
+  @@map("telemetry")
+}
