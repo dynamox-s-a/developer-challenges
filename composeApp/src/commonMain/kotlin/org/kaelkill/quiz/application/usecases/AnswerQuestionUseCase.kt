@@ -1,6 +1,5 @@
 package org.kaelkill.quiz.application.usecases
 
-import androidx.compose.ui.graphics.RectangleShape
 import org.kaelkill.quiz.domain.model.aggregates.QuizSession
 import org.kaelkill.quiz.domain.model.valueobjects.QuestionId
 import org.kaelkill.quiz.domain.model.valueobjects.QuizSessionId

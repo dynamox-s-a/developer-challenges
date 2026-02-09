@@ -5,7 +5,9 @@ import org.kaelkill.quiz.domain.model.valueobjects.PlayerName
 
 data class Player(
     val id: PlayerId,
-    val name: PlayerName
+    val name: PlayerName,
+    val scores: List<Int> = emptyList()
+
 ) {
     companion object {
         fun create(name: String): Result<Player> {
@@ -23,6 +25,11 @@ data class Player(
                 Player(playerId, playerName)
             }
         }
+    }
+
+
+    fun addScore(score: Int): Player {
+        return copy(scores = scores + score)
     }
 
 }
