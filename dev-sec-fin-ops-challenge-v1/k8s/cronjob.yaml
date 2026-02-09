@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: extractor-cronjob
+spec:
+  schedule: "*/15 * * * *" # Executes every 15 minutes
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: extractor
+            image: dev-sec-fin-ops-challenge-v1-backend:latest
+            imagePullPolicy: IfNotPresent
+            env:
+            - name: BACKEND_URL
+              value: "http://backend:5000" # Our backend service URL
+          restartPolicy: OnFailure

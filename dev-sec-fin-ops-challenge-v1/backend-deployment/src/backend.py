@@ -1,13 +1,14 @@
 from flask import Flask, jsonify, request
 import logging
 
-# Configuração de Logs (Essencial para DevSecOps/Observabilidade)
+# Logs configuration.
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 app = Flask(__name__)
 
 stats = {"successful_requests": 0}
 
+# Routes definition
 @app.route('/')
 def home():
     try:
@@ -18,7 +19,7 @@ def home():
         logging.error(f"Error processing request: {e}")
         return jsonify({"error": "Internal Server Error"}), 500
     
-# Metrics endpoint for cronjob scraping
+# Metrics endpoint where the cronjob will scrape the data.
 @app.route('/metrics', methods=['GET'])
 def metrics():
     if stats is None:
