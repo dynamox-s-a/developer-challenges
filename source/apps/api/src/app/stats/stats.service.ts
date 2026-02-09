@@ -56,14 +56,49 @@ export class StatsService {
 
     return distribution;
   }
+  async getTelemetryTrend() {
+    const totalCount = await prisma.telemetry.count();
+    if (totalCount === 0) {
+      return {
+        timestamps: [],
+        acceleration: [],
+        velocity: [],
+        temperature: [],
+      };
+    }
+
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+
+    const trend: any[] = await prisma.$queryRaw`
+      SELECT 
+        DATE_TRUNC('minute', "timestamp") AS minute,
+        AVG("accelerationValue")::FLOAT AS "avgAcceleration",
+        AVG("velocityValue")::FLOAT AS "avgVelocity",
+        AVG("temperatureValue")::FLOAT AS "avgTemperature"
+      FROM telemetry
+      WHERE "timestamp" >= ${oneHourAgo}
+      GROUP BY minute
+      ORDER BY minute ASC
+    `;
+
+    console.log('TREND RESULT:', trend);
+
+    return {
+      timestamps: trend.map((t) => t.minute),
+      acceleration: trend.map((t) => t.avgAcceleration),
+      velocity: trend.map((t) => t.avgVelocity),
+      temperature: trend.map((t) => t.avgTemperature),
+    };
+  }
 
   async getDashboardStats() {
-    const [telemetry, machines, points, active, distribution] = await Promise.all([
+    const [telemetry, machines, points, active, distribution, trend] = await Promise.all([
       this.getTotalTelemetry(),
       this.getMachinesCount(),
       this.getMonitoringPointsCount(),
       this.getActiveSensorsCount(),
       this.getSensorsDistribution(),
+      this.getTelemetryTrend(),
     ]);
 
     return {
@@ -72,6 +107,7 @@ export class StatsService {
       ...points,
       ...active,
       sensorsDistribution: distribution,
+      telemetryTrend: trend,
     };
   }
 

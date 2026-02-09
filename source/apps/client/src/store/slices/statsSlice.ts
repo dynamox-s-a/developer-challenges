@@ -9,6 +9,7 @@ interface StatsState {
   loading: boolean;
   error: string | null;
   sensorsDistribution: SensorsDistribution;
+  telemetryTrend: TelemetryTrend;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
 }
 
@@ -16,6 +17,13 @@ interface SensorsDistribution {
   TcAg: number;
   TcAs: number;
   HF_Plus: number;
+}
+
+interface TelemetryTrend {
+  timestamps: string[];
+  acceleration: number[];
+  velocity: number[];
+  temperature: number[];
 }
 
 const initialState: StatsState = {
@@ -29,6 +37,12 @@ const initialState: StatsState = {
     TcAg: 0,
     TcAs: 0,
     HF_Plus: 0,
+  },
+  telemetryTrend: {
+    timestamps: [],
+    acceleration: [],
+    velocity: [],
+    temperature: [],
   },
   status: 'idle',
 };
@@ -58,6 +72,12 @@ export const fetchSensorsDistribution = createAsyncThunk('stats/fetchSensorsDist
   return response.data;
 })
 
+export const fetchTelemetryTrend = createAsyncThunk('stats/fetchTelemetryTrend', async () => {
+  const response = await api.get('/stats/telemetry-trend');
+  console.log('Telemetry Trend:', response.data);
+  return response.data;
+});
+
 const statsSlice = createSlice({
   name: 'stats',
   initialState,
@@ -70,9 +90,10 @@ const statsSlice = createSlice({
       if (activeSensorsCount !== undefined) state.activeSensorsCount = activeSensorsCount;
     },
     updateSensorsDistribution(state, action) {
-      console.log('action.payload', action.payload);
-      
       state.sensorsDistribution = action.payload;
+    },
+    updateTelemetryTrend(state, action) {
+      state.telemetryTrend = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -89,19 +110,16 @@ const statsSlice = createSlice({
       .addCase(fetchActiveSensorsCount.fulfilled, (state, action) => {
         state.activeSensorsCount = action.payload.activeSensorsCount;
       })
-      .addCase(fetchSensorsDistribution.rejected, (state) => {
-        state.status = 'failed';
-      })
       .addCase(fetchSensorsDistribution.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.sensorsDistribution = action.payload;
       })
-      .addCase(fetchSensorsDistribution.pending, (state) => {
-        state.status = 'loading';
+      .addCase(fetchTelemetryTrend.fulfilled, (state, action) => {        
+        state.telemetryTrend = action.payload;
       });
   },
 });
 
-export const { updateStats, updateSensorsDistribution } = statsSlice.actions;
+export const { updateStats, updateSensorsDistribution, updateTelemetryTrend } = statsSlice.actions;
 
 export default statsSlice.reducer;

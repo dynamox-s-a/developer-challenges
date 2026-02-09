@@ -32,6 +32,11 @@ export class StatsController {
     return this.statsService.getSensorsDistribution();
   }
 
+  @Get('telemetry-trend')
+  async getTelemetryTrend() {
+    return this.statsService.getTelemetryTrend();
+  }
+
   @Get('dashboard')
   async getDashboardStats() {
     return this.statsService.getDashboardStats();

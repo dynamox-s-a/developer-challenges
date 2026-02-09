@@ -60,7 +60,7 @@ const SensorDistributionChart = () => {
   return (
     <Paper sx={{ py: 2.5, height: 350 }}>
       <Stack alignItems="center" justifyContent="space-between">
-        <Typography variant="body1" fontWeight={700}>
+        <Typography mt={0.35} variant="h4" color="text.primary">
           Sensor Distribution
         </Typography>
       </Stack>

@@ -35,9 +35,9 @@ export class Simulator {
 
       this.interval = setInterval(async () => {
         for (const sensorId of activeSensors) {
-          const accelerationValue = parseFloat((Math.random() * 2).toFixed(2));
-          const velocityValue = parseFloat((Math.random() * 10).toFixed(2));
-          const temperatureValue = parseFloat((20 + Math.random() * 60).toFixed(2));
+          const accelerationValue = parseFloat((Math.random() * 20).toFixed(2));
+          const velocityValue = parseFloat((Math.random() * 100).toFixed(2));
+          const temperatureValue = parseFloat((20 + Math.random() * 200).toFixed(2));
           
           const payload = {
             pattern: 'telemetry_data',

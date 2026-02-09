@@ -22,15 +22,21 @@ echarts.use([
 ]);
 
 interface SpentChartProps {
-  data?: {
-    line1: number[];
-    line2: number[];
-  };
+  categories: string[];
+  series: {
+    name: string;
+    data: number[];
+    color: string;
+  }[];
   sx?: SxProps;
 }
 
-const SpentChart = ({ data, ...rest }: SpentChartProps) => {
+const TelemetryTrendChart = ({ categories, series, ...rest }: SpentChartProps) => {
   const theme = useTheme();
+
+  const finalCategories = categories && categories.length > 0 ? categories.map(v => new Date(v).toLocaleTimeString()) : [];
+  const finalSeries = series && series.length > 0 ? series : [];
+
   const option = useMemo(
     () => ({
       grid: {
@@ -79,7 +85,7 @@ const SpentChart = ({ data, ...rest }: SpentChartProps) => {
       },
       xAxis: {
         type: 'category',
-        data: ['SEP', 'OCT', 'NOV', 'DEC', 'JAN', 'FEB'],
+        data: finalCategories,
         axisTick: {
           show: false,
         },
@@ -92,6 +98,17 @@ const SpentChart = ({ data, ...rest }: SpentChartProps) => {
           fontSize: theme.typography.caption.fontSize,
           fontFamily: theme.typography.fontFamily,
           fontWeight: 500,
+          formatter: (value: string) => {
+            if (!value) return '';
+            if (value.includes(':')) return value; // Already formatted or mock
+            try {
+              const date = new Date(value);
+              if (isNaN(date.getTime())) return value;
+              return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+            } catch {
+              return value;
+            }
+          }
         },
         splitLine: {
           show: false,
@@ -100,8 +117,7 @@ const SpentChart = ({ data, ...rest }: SpentChartProps) => {
       },
       yAxis: {
         type: 'value',
-        min: 1,
-        minInterval: 10,
+        min: 0,
         splitLine: {
           show: false,
         },
@@ -109,75 +125,42 @@ const SpentChart = ({ data, ...rest }: SpentChartProps) => {
           show: false,
         },
       },
-      series: [
-        {
-          name: 'Line 1',
-          data: data?.line1,
-          type: 'line',
-          smooth: true,
-          showSymbol: false,
+      series: finalSeries.map((s) => ({
+        name: s.name,
+        data: s.data,
+        type: 'line',
+        smooth: true,
+        showSymbol: false,
+        itemStyle: {
+          color: s.color,
+        },
+        lineStyle: {
+          width: 4,
+          type: 'solid',
+          cap: 'round',
+          color: s.color,
+        },
+        emphasis: {
+          focus: 'series',
+          scale: 3,
           itemStyle: {
-            color: theme.palette.primary.main,
+            borderWidth: 3,
+            borderColor: s.color,
           },
           lineStyle: {
             width: 4,
-            type: 'solid',
-            cap: 'round',
-            color: theme.palette.primary.main,
-          },
-          emphasis: {
-            focus: 'series',
-            scale: 3,
-            itemStyle: {
-              borderWidth: 3,
-              borderColor: theme.palette.primary.main,
-            },
-            lineStyle: {
-              width: 4,
-              shadowBlur: 25,
-              shadowColor: theme.palette.primary.main,
-              shadowOffsetX: 0,
-              shadowOffsetY: 20,
-            },
+            shadowBlur: 25,
+            shadowColor: s.color,
+            shadowOffsetX: 0,
+            shadowOffsetY: 20,
           },
         },
-        {
-          name: 'Line 2',
-          data: data?.line2,
-          type: 'line',
-          smooth: true,
-          showSymbol: false,
-          itemStyle: {
-            color: theme.palette.secondary.main,
-          },
-          lineStyle: {
-            width: 4,
-            type: 'solid',
-            cap: 'round',
-            color: theme.palette.secondary.main,
-          },
-          emphasis: {
-            focus: 'series',
-            scale: 3,
-            itemStyle: {
-              borderWidth: 3,
-              borderColor: theme.palette.secondary.main,
-            },
-            lineStyle: {
-              width: 4,
-              shadowBlur: 25,
-              shadowColor: theme.palette.secondary.main,
-              shadowOffsetX: 0,
-              shadowOffsetY: 20,
-            },
-          },
-        },
-      ],
+      })),
     }),
-    [theme, data],
+    [theme, finalCategories, finalSeries],
   );
 
   return <ReactEchart echarts={echarts} option={option} {...rest} />;
 };
 
-export default SpentChart;
+export default TelemetryTrendChart;
