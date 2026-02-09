@@ -7,7 +7,7 @@ import { Box, Button, TextField, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { ErrorModal } from '../errorModal'
 import { useState } from 'react'
-import { redirect } from 'next/navigation'
+import { useRouter } from "next/compat/router";
 
 export const customBox = {
   display: 'flex',
@@ -26,6 +26,7 @@ export default function RegisterComponent() {
     resolver: zodResolver(registerRequestSchema),
   })
 
+  const router = useRouter()
   const [modalOpen, setModalOpen] = useState(false);
   const [modalError, setModalError] = useState('');
 
@@ -37,7 +38,7 @@ export default function RegisterComponent() {
     }
 
     if (response.success) {
-      redirect("/auth/login")
+      router?.push('/dashboard')
     }
   }
 

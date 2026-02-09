@@ -1,5 +1,6 @@
 import z from 'zod'
 
 export const TokenSchema = z.object({
-  token: z.jwt(),
+  name: z.string(),
+  value: z.string(),
 })

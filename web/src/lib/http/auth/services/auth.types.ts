@@ -15,7 +15,7 @@ export const registerResponseSchema = z.object({
 
 export const loginRequestSchema = z.object({
   email: z.email().max(250),
-  password: z.string().min(6).max(20),
+  password: z.string().min(6),
 })
 
 export const loginResponseSchema = z.object({

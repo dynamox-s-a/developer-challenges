@@ -17,7 +17,8 @@ export class LoginService {
     })
 
     const responseJson = await response.json()
-    const validatedValue = loginResponseSchema.parse(responseJson.data)
+    console.log(responseJson)
+    const validatedValue = loginResponseSchema.parse(responseJson)
     return validatedValue
   }
 }

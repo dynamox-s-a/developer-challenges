@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema<IUser>(
   {
     name: String,
     email: { type: String, required: true },
-    password: { type: String, required: true, select: false },
+    password: { type: String, required: true },
   },
   { timestamps: true },
 )

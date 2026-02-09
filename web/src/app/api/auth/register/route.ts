@@ -1,14 +1,14 @@
+import dbConnect from '@/lib/database/mongoose'
 import userRepository from '@/lib/database/user/repository'
 import { registerRequestSchema } from '@/lib/http/auth/services/auth.types'
 import { type NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
   try {
+    await dbConnect()
     const body = await request.json()
     const validateData = registerRequestSchema.parse(body)
     const user = await userRepository.create(validateData)
-
-    console.log(user)
 
     if (user === null)
       return NextResponse.json(

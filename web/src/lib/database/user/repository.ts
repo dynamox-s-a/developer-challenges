@@ -3,13 +3,10 @@ import User, {
   type UserDocument,
   type UserDTO,
 } from '@/lib/database/user/schema'
-import dbConnect from '@/lib/database/mongoose'
 import bcrypt from 'bcrypt'
 
 export class UserRepository {
   async create(user: UserDTO): Promise<IUser | null> {
-    await dbConnect()
-
     const validateUser = await User.findOne({ email: user.email })
     if (validateUser) return null
 
@@ -27,7 +24,6 @@ export class UserRepository {
   }
 
   async findByEmail(user: UserDTOLogin): Promise<IUser | null> {
-    await dbConnect()
     const findUserByEmail = await User.findOne<UserDocument>({
       email: user.email,
     })

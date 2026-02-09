@@ -5,8 +5,9 @@ import { useForm } from "react-hook-form"
 import { loginRequestSchema, type loginRequest } from '../../lib/http/auth/services/auth.types';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authService } from "@/lib/http/auth";
-import { redirect } from "next/navigation";
-import { getUserSession } from "@/utils/jwt";
+import { useState } from "react";
+import { ErrorModal } from "../errorModal";
+import { useRouter } from "next/navigation";
 
 export const customBox = {
     display: "flex", 
@@ -16,9 +17,10 @@ export const customBox = {
     border: "2px solid grey"
 }
 
-export default async function LoginComponent() {
-  const result = await getUserSession()
-  if (result?.token) redirect("/dashboard/home")
+export default function LoginComponent() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalError, setModalError] = useState('');
+  const router = useRouter()
 
   const {
     register,
@@ -30,10 +32,17 @@ export default async function LoginComponent() {
 
   const onSubmit = async (data: loginRequest) => {
     const result = await authService.login(data)
-    if (!result) throw new Error("Resultados não foram retornados como deveriam.")
+    if (!result.success) {
+      setModalError(result.message)
+      setModalOpen(true)
+    }
+    if (result.success) {
+      router.push('/dashboard')
+    }
   }
 
   return (
+    <>
       <Box  
         component="form" 
         height={500}
@@ -75,6 +84,13 @@ export default async function LoginComponent() {
         >
           Submit
         </Button>
+
       </Box>
+      <ErrorModal 
+        open={modalOpen}
+        message={modalError}
+        onClose={() => setModalOpen(false)}
+      />
+    </>
   )
 }

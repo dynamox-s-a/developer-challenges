@@ -3,9 +3,18 @@ import { loginRequestSchema } from '@/lib/http/auth/services/auth.types'
 import userRepository from '@/lib/database/user/repository'
 import jwt from 'jsonwebtoken'
 import { env } from '@/utils/env'
+import dbConnect from '@/lib/database/mongoose'
+
+// export const loginResponseSchema = z.object({
+//   success: z.boolean(),
+//   data: loginRequestSchema.optional(),
+//   message: z.string(),
+//   error: z.string().optional(),
+// })
 
 export async function POST(request: NextRequest) {
   try {
+    await dbConnect()
     const body = await request.json()
     const validatedData = loginRequestSchema.parse(body)
     const user = await userRepository.findByEmail(validatedData)
@@ -14,7 +23,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          data: null,
           message: 'Erro na autenticação do usuário.',
         },
         { status: 400 },
@@ -27,7 +35,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          data: null,
           message: 'Variaveis de ambiente não foram carregadas devidamente',
         },
         { status: 400 },
@@ -43,8 +50,6 @@ export async function POST(request: NextRequest) {
         expiresIn: '1m',
       },
     )
-    console.log(user)
-
     const response = NextResponse.json(
       {
         success: true,

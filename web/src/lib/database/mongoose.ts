@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 const dbConnect = async () => {
   if (mongoose.connection.readyState >= 1) return
   try {
-    await mongoose.connect(env.MONGODB_URI, { dbName: 'todoApp' })
+    await mongoose.connect(env.MONGODB_URI, { dbName: 'SensoryData' })
     console.log('MongoDB Connected')
   } catch (error) {
     console.error('MongoDB Connection Error:', error)
