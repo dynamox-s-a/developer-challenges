@@ -82,14 +82,6 @@ kotlin {
     }
 }
 
-sqldelight {
-    databases {
-        create("QuizDatabase") {
-            packageName.set("org.kaelkill.quiz.infrastructure.db")
-        }
-    }
-}
-
 android {
     namespace = "org.kaelkill.quiz"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -121,3 +113,10 @@ dependencies {
     debugImplementation(libs.compose.uiTooling)
 }
 
+sqldelight {
+    databases {
+        create("QuizDatabase") {
+            packageName.set("org.kaelkill.quiz.infrastructure.db")
+        }
+    }
+}

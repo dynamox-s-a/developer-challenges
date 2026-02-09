@@ -12,9 +12,13 @@ import org.kaelkill.quiz.application.usecases.StartNewQuizSessionUseCase
 import org.kaelkill.quiz.domain.ports.repositories.PlayerRepository
 import org.kaelkill.quiz.domain.ports.repositories.QuestionRepository
 import org.kaelkill.quiz.domain.ports.repositories.QuizSessionRepository
+import org.kaelkill.quiz.infrastructure.db.DatabaseDriverFactory
+import org.kaelkill.quiz.infrastructure.db.QuizDatabase
 import org.kaelkill.quiz.infrastructure.repositories.HttpQuestionRepository
 import org.kaelkill.quiz.infrastructure.repositories.InMemoryPlayerRepository
 import org.kaelkill.quiz.infrastructure.repositories.InMemoryQuizSessionRepository
+import org.kaelkill.quiz.infrastructure.repositories.SqlDelightPlayerRepository
+import org.kaelkill.quiz.infrastructure.repositories.SqlDelightQuizSessionRepository
 import org.kaelkill.quiz.ui.viewmodel.QuizViewModel
 import org.koin.dsl.module
 
@@ -32,9 +36,17 @@ val appModule = module {
         }
     }
 
+    // Database
+    single { get<DatabaseDriverFactory>().createDriver() }
+    single { QuizDatabase(get()) }
+
     // Repositories
-    single<PlayerRepository> { InMemoryPlayerRepository() }
-    single<QuizSessionRepository> { InMemoryQuizSessionRepository() }
+    single<PlayerRepository> {
+        SqlDelightPlayerRepository(get())
+    }
+    single<QuizSessionRepository> {
+        SqlDelightQuizSessionRepository(get())
+    }
     single<QuestionRepository> { HttpQuestionRepository(get()) }
 
     // Use Cases
