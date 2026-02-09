@@ -12,7 +12,7 @@ services:
     depends_on:
       - db
     command: >
-      sh -c "npx prisma db push && npx prisma db seed && 
+      sh -c "npx prisma db push && npx prisma db seed && npx prisma generate && 
              npm run start"
   frontend:
     build:

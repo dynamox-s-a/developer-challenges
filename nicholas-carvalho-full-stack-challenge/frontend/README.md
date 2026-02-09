@@ -74,6 +74,8 @@ To facilitate evaluation, the project comes pre-configured for the local develop
 ```markdown
 1. Clone the Repository.
 2. Install dependencies: npm install
+3. Prisma: npx prisma db push
+4. Prisma: npx prisma generate
 3. Set enviroment variables: Create a .env pointing to the backend.
 4. Run development server: npm run dev
 ```
