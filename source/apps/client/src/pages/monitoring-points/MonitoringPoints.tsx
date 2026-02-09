@@ -14,12 +14,14 @@ const MonitoringPoints = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { items, total, status } = useSelector((state: RootState) => state.monitoringPoints);
   const [page, setPage] = useState(1);
+  const [sortBy, setSortBy] = useState<string>('name');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [connectionStatus, setConnectionStatus] = useState<'connected' | 'disconnected' | 'reconnecting' | 'failed'>('disconnected');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchMonitoringPoints({ page }));
-  }, [dispatch, page]);
+    dispatch(fetchMonitoringPoints({ page, sortBy, sortOrder }));
+  }, [dispatch, page, sortBy, sortOrder]);
 
   useEffect(() => {
     if (socket.connected) {
@@ -147,6 +149,12 @@ const MonitoringPoints = () => {
           total={total}
           page={page}
           onPaginationChange={setPage}
+          sortBy={sortBy}
+          sortOrder={sortOrder}
+          onSortChange={(field, order) => {
+            setSortBy(field);
+            setSortOrder(order);
+          }}
         />
 
         <AddMonitoringPointDialog 

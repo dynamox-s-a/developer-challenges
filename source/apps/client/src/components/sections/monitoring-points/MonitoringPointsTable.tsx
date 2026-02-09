@@ -26,6 +26,9 @@ interface MonitoringPointsTableProps {
   total: number;
   onPaginationChange: (page: number) => void;
   page: number;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+  onSortChange: (sortBy: string, sortOrder: 'asc' | 'desc') => void;
 }
 
 const MonitoringPointsTable = ({ 
@@ -33,7 +36,10 @@ const MonitoringPointsTable = ({
   loading, 
   total, 
   onPaginationChange, 
-  page 
+  page,
+  sortBy,
+  sortOrder,
+  onSortChange
 }: MonitoringPointsTableProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -96,6 +102,7 @@ const MonitoringPointsTable = ({
       headerName: 'Point Name',
       flex: 1.5,
       minWidth: 150,
+      sortable: false,
       renderHeader: () => (
         <Typography variant="body2" color="text.secondary" fontWeight={500}>
           Point Name
@@ -107,6 +114,7 @@ const MonitoringPointsTable = ({
       headerName: 'Machine',
       flex: 1.5,
       minWidth: 150,
+      sortable: false,
       valueGetter: (value, row: MonitoringPoint) => row.machine?.name || '-',
       renderHeader: () => (
         <Typography variant="body2" color="text.secondary" fontWeight={500}>
@@ -119,6 +127,7 @@ const MonitoringPointsTable = ({
       headerName: 'Machine Type',
       flex: 1.5,
       minWidth: 150,
+      sortable: false,
       valueGetter: (value, row: MonitoringPoint) => row.machine?.type || '-',
       renderHeader: () => (
         <Typography variant="body2" color="text.secondary" fontWeight={500}>
@@ -131,6 +140,7 @@ const MonitoringPointsTable = ({
       headerName: 'Model',
       flex: 1,
       minWidth: 100,
+      sortable: false,
       valueGetter: (value, row: MonitoringPoint) => row.sensor?.model || '-',
       renderCell: (params) => (
         <Chip 
@@ -152,6 +162,7 @@ const MonitoringPointsTable = ({
       headerName: 'Acc (m/s²)',
       flex: 1,
       minWidth: 100,
+      sortable: false,
       valueGetter: (value, row: MonitoringPoint) => row.sensor?.telemetry?.[0]?.accelerationValue ?? '-',
       renderCell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', height: '100%' }}>
@@ -171,6 +182,7 @@ const MonitoringPointsTable = ({
       headerName: 'Vel (mm/s)',
       flex: 1,
       minWidth: 100,
+      sortable: false,
       valueGetter: (value, row: MonitoringPoint) => row.sensor?.telemetry?.[0]?.velocityValue ?? '-',
       renderCell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', height: '100%' }}>
@@ -190,6 +202,7 @@ const MonitoringPointsTable = ({
       headerName: 'Temp (°C)',
       flex: 1,
       minWidth: 100,
+      sortable: false,
       valueGetter: (value, row: MonitoringPoint) => row.sensor?.telemetry?.[0]?.temperatureValue ?? '-',
       renderCell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', height: '100%' }}>
@@ -258,6 +271,13 @@ const MonitoringPointsTable = ({
         pageSizeOptions={[5]}
         paginationModel={{ page: page - 1, pageSize: 5 }}
         onPaginationModelChange={(model) => onPaginationChange(model.page + 1)}
+        sortingMode="server"
+        sortModel={sortBy ? [{ field: sortBy, sort: sortOrder }] : []}
+        onSortModelChange={(model) => {
+          if (model.length > 0) {
+            onSortChange(model[0].field, model[0].sort as 'asc' | 'desc');
+          }
+        }}
         sx={{
           border: 'none',
           '& .MuiDataGrid-columnHeader': {
