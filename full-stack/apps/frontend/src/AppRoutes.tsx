@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import { RequireAuth } from "./components/RequireAuth";
 import App from "./App";
+import MachinesPage from "./pages/Machines";
 
 export default function AppRoutes() {
   return (
@@ -14,6 +15,15 @@ export default function AppRoutes() {
           element={
             <RequireAuth>
               <App />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/machines"
+          element={
+            <RequireAuth>
+              <MachinesPage />
             </RequireAuth>
           }
         />

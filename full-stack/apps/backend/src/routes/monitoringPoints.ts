@@ -98,7 +98,7 @@ export async function monitoringPointsRoutes(app: FastifyInstance) {
     ]);
 
     return {
-      items: items.map((mp) => ({
+      items: items.map((mp: any) => ({
         id: mp.id,
         monitoringPointName: mp.name,
         machineName: mp.machine.name,

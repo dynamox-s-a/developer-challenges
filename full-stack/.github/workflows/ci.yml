@@ -8,7 +8,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
     services:
       postgres:
         image: postgres:16
@@ -64,4 +63,9 @@ jobs:
         run: |
           pnpm --filter backend build
           pnpm --filter frontend build
+        working-directory: full-stack
+
+      - name: Docker build test
+        run: |
+          docker compose -f docker-compose.prod.yml build
         working-directory: full-stack

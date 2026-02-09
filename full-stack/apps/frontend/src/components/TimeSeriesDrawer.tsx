@@ -1,43 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import {
-  Box,
-  Drawer,
-  Typography,
-  IconButton,
-  Stack,
-  Divider,
-  ToggleButton,
-  ToggleButtonGroup,
-  Alert,
-  CircularProgress,
-  Paper,
-  Chip,
-  Button,
-} from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
-} from "recharts";
-import { fetchTimeSeries, fetchTimeSeriesMetrics, type TimeSeriesPoint, createTimeSeriesPoint } from "../api/timeSeries";
-
-type RangePreset = "6h" | "24h" | "48h";
-
-function toISO(d: Date) {
-  return d.toISOString();
-}
-
-function rangeToFrom(preset: RangePreset): string {
-  const now = new Date();
-  const hours = preset === "6h" ? 6 : preset === "24h" ? 24 : 48;
-  const from = new Date(now.getTime() - hours * 60 * 60 * 1000);
-  return toISO(from);
-}
+import { Alert, Box, CircularProgress, Divider, Drawer, Stack, Typography, Button } from "@mui/material";
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { fetchTimeSeries, fetchTimeSeriesMetrics } from "../api/timeSeries";
+import type { TimeSeriesPoint } from "../api/timeSeries";
 
 type Props = {
   open: boolean;
@@ -46,236 +11,144 @@ type Props = {
   title?: string;
 };
 
-export default function TimeSeriesDrawer({ open, onClose, monitoringPointId, title }: Props) {
-  const [preset, setPreset] = useState<RangePreset>("24h");
+export default function MonitoringTimeSeriesDrawer({ open, onClose, monitoringPointId, title }: Props) {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [points, setPoints] = useState<TimeSeriesPoint[]>([]);
+  const [err, setErr] = useState<string | null>(null);
+  const [items, setItems] = useState<TimeSeriesPoint[]>([]);
   const [metrics, setMetrics] = useState<{ count: number; min: number | null; max: number | null; avg: number | null } | null>(null);
-  const [take] = useState(100);
+  const [take] = useState(200);
   const [skip, setSkip] = useState(0);
   const [total, setTotal] = useState(0);
-
-  const from = useMemo(() => rangeToFrom(preset), [preset]);
-
-  useEffect(() => {
-    setSkip(0);
-  }, [preset]);
 
   useEffect(() => {
     if (!open || !monitoringPointId) return;
 
-    let cancelled = false;
-    setLoading(true);
-    setError(null);
-
-    Promise.all([
-      fetchTimeSeries(monitoringPointId, { from, take, skip }),
-      fetchTimeSeriesMetrics(monitoringPointId, { from }),
-    ])
-      .then(([list, m]) => {
-        if (cancelled) return;
-
-        setPoints(
-          list.items.map((p) => ({
-            ...p,
-            timestamp: p.timestamp,
-          }))
-        );
-        setMetrics(m);
-        setTotal(list.total);
-      })
-      .catch((e: any) => {
-        if (cancelled) return;
-        setError(e?.response?.data?.message ?? e?.message ?? "Failed to load time-series");
-      })
-      .finally(() => {
-        if (cancelled) return;
-        setLoading(false);
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [open, monitoringPointId, from, take, skip]);
-
-  const handlePrev = () => {
-    setSkip(Math.max(0, skip - take));
-  };
-
-  const handleNext = () => {
-    setSkip(skip + take);
-  };
-
-  const canGoPrev = skip > 0;
-  const canGoNext = skip + take < total;
-
-  const handleGenerateSampleData = async () => {
-    if (!monitoringPointId) return;
-    
-    try {
+    (async () => {
       setLoading(true);
-      const now = new Date();
-      const promises = [];
-      
-      for (let i = 0; i < 10; i++) {
-        const timestamp = new Date(now.getTime() - (i * 2 * 60 * 60 * 1000));
-        const value = Math.random() * 100 + 20; 
-        
-        promises.push(
-          createTimeSeriesPoint(monitoringPointId, {
-            timestamp: timestamp.toISOString(),
-            value: Number(value.toFixed(2))
-          })
-        );
+      setErr(null);
+      try {
+        const [ts, m] = await Promise.all([
+          fetchTimeSeries(monitoringPointId, { take, skip }),
+          fetchTimeSeriesMetrics(monitoringPointId),
+        ]);
+        setItems(ts.items);
+        setMetrics(m);
+        setTotal(ts.total);
+      } catch (e: any) {
+        setErr(e?.message ?? "Failed to load time-series");
+      } finally {
+        setLoading(false);
       }
-      
-      await Promise.all(promises);
-      
-      const [list, m] = await Promise.all([
-        fetchTimeSeries(monitoringPointId, { from, take, skip }),
-        fetchTimeSeriesMetrics(monitoringPointId, { from }),
-      ]);
-      
-      setPoints(list.items.map((p) => ({ ...p, timestamp: p.timestamp })));
-      setMetrics(m);
-      setTotal(list.total);
-    } catch (error: any) {
-      setError(error?.response?.data?.message ?? error?.message ?? "Failed to generate sample data");
-    } finally {
-      setLoading(false);
-    }
-  };
+    })();
+  }, [open, monitoringPointId, take, skip]);
 
   const chartData = useMemo(
     () =>
-      points.map((p) => ({
-        timestamp: p.timestamp,
-        value: p.value,
-      })),
-    [points]
+      items
+        .slice()
+        .reverse()
+        .map((p) => ({
+          x: new Date(p.timestamp).toLocaleString(),
+          value: p.value,
+        })),
+    [items]
   );
 
   return (
-    <Drawer anchor="right" open={open} onClose={onClose} PaperProps={{ sx: { width: { xs: "100%", sm: 520 } } }}>
-      <Box sx={{ p: 2 }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Box>
-            <Typography variant="h6">Time series</Typography>
-            <Typography variant="body2" color="text.secondary">
-              {title ?? monitoringPointId ?? ""}
-            </Typography>
-          </Box>
-          <IconButton onClick={onClose}>
-            <CloseIcon />
-          </IconButton>
-        </Stack>
-
-        <Box sx={{ mt: 2 }}>
-          <ToggleButtonGroup
-            value={preset}
-            exclusive
-            onChange={(_, v) => v && setPreset(v)}
+    <Drawer anchor="right" open={open} onClose={onClose}>
+      <Box sx={{ width: { xs: 340, sm: 520 }, p: 2 }}>
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Typography variant="h6">{title ?? "Time-series"}</Typography>
+          <Button
             size="small"
+            onClick={() => {
+              if (monitoringPointId) {
+                setSkip(0);
+                // Trigger refresh by updating skip
+              }
+            }}
           >
-            <ToggleButton value="6h">Last 6h</ToggleButton>
-            <ToggleButton value="24h">Last 24h</ToggleButton>
-            <ToggleButton value="48h">Last 48h</ToggleButton>
-          </ToggleButtonGroup>
-        </Box>
+            Refresh
+          </Button>
+        </Stack>
+        <Typography variant="body2" sx={{ color: "text.secondary", mb: 1 }}>
+          Monitoring Point: {monitoringPointId}
+        </Typography>
 
-        <Divider sx={{ my: 2 }} />
+        <Divider sx={{ mb: 2 }} />
 
-        {loading && (
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <CircularProgress size={22} />
-            <Typography variant="body2">Loading time-series...</Typography>
-          </Box>
-        )}
+        {err && <Alert severity="error" sx={{ mb: 2 }}>{err}</Alert>}
 
-        {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {error}
-          </Alert>
-        )}
-
-        {metrics && (
-          <Stack direction="row" spacing={2} sx={{ mb: 2 }} flexWrap="wrap">
-            <Chip label={`Count: ${metrics.count}`} />
-            <Chip label={`Min: ${metrics.min?.toFixed(2) ?? "-"}`} />
-            <Chip label={`Max: ${metrics.max?.toFixed(2) ?? "-"}`} />
-            <Chip label={`Avg: ${metrics.avg?.toFixed(2) ?? "-"}`} />
+        {loading ? (
+          <Stack alignItems="center" sx={{ py: 6 }}>
+            <CircularProgress />
+            <Typography sx={{ mt: 2 }}>Loading time-series…</Typography>
           </Stack>
-        )}
+        ) : (
+          <>
+            {metrics && (
+              <Stack direction="row" spacing={2} sx={{ mb: 2, flexWrap: "wrap" }}>
+                <Typography variant="body2"><b>Count:</b> {metrics.count}</Typography>
+                <Typography variant="body2"><b>Min:</b> {metrics.min?.toFixed(2) ?? "-"}</Typography>
+                <Typography variant="body2"><b>Max:</b> {metrics.max?.toFixed(2) ?? "-"}</Typography>
+                <Typography variant="body2"><b>Avg:</b> {metrics.avg?.toFixed(2) ?? "-"}</Typography>
+              </Stack>
+            )}
 
-        {total > take && (
-          <Stack direction="row" spacing={2} sx={{ mb: 2 }} alignItems="center">
-            <Button 
-              variant="outlined" 
-              size="small"
-              onClick={handlePrev}
-              disabled={!canGoPrev}
-            >
-              Prev
-            </Button>
-            <Typography variant="body2" color="text.secondary">
-              {skip + 1}-{Math.min(skip + take, total)} of {total}
+            <Box sx={{ height: 320, width: "100%", minHeight: 320 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={chartData}>
+                  <XAxis dataKey="x" hide />
+                  <YAxis />
+                  <Tooltip />
+                  <Line type="monotone" dataKey="value" dot={false} />
+                </LineChart>
+              </ResponsiveContainer>
+            </Box>
+
+            {items.length === 0 && (
+              <Alert severity="info" sx={{ mt: 2 }}>
+                No time-series data found for this monitoring point.
+              </Alert>
+            )}
+
+            <Typography variant="subtitle2" sx={{ mt: 2, mb: 1 }}>
+              Latest points
             </Typography>
-            <Button 
-              variant="outlined" 
-              size="small"
-              onClick={handleNext}
-              disabled={!canGoNext}
-            >
-              Next
-            </Button>
-          </Stack>
-        )}
 
-        <Paper variant="outlined" sx={{ p: 1, height: 320 }}>
-          {total === 0 && !loading ? (
-            <Box sx={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 2 }}>
-              <Typography variant="body1" color="text.secondary" textAlign="center">
-                No time-series data yet
-              </Typography>
-              <Button 
-                variant="contained" 
-                onClick={handleGenerateSampleData}
-                disabled={loading}
+            <Box sx={{ maxHeight: 260, overflow: "auto" }}>
+              {items.map((p) => (
+                <Box key={p.id} sx={{ py: 1 }}>
+                  <Typography variant="body2">{new Date(p.timestamp).toLocaleString()}</Typography>
+                  <Typography variant="caption" sx={{ opacity: 0.8 }}>
+                    value: {p.value}
+                  </Typography>
+                  <Divider sx={{ mt: 1 }} />
+                </Box>
+              ))}
+            </Box>
+
+            <Stack direction="row" spacing={1} sx={{ mt: 2 }} alignItems="center" justifyContent="space-between">
+              <Button
+                disabled={skip <= 0 || loading}
+                onClick={() => setSkip(Math.max(0, skip - take))}
               >
-                Generate sample datapoint
+                Prev
               </Button>
-            </Box>
-          ) : chartData.length === 0 && !loading ? (
-            <Box sx={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <Typography variant="body2" color="text.secondary">
-                No data for selected range
+
+              <Typography variant="caption">
+                {total === 0 ? "0" : `${skip + 1}-${Math.min(skip + take, total)}`} of {total}
               </Typography>
-            </Box>
-          ) : (
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="timestamp"
-                  tickFormatter={(iso) => {
-                    const d = new Date(iso);
-                    return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-                  }}
-                  minTickGap={24}
-                />
-                <YAxis />
-                <Tooltip
-                  labelFormatter={(iso) => {
-                    const d = new Date(String(iso));
-                    return d.toLocaleString();
-                  }}
-                />
-                <Line type="monotone" dataKey="value" dot={false} />
-              </LineChart>
-            </ResponsiveContainer>
-          )}
-        </Paper>
+
+              <Button
+                disabled={skip + take >= total || loading}
+                onClick={() => setSkip(skip + take)}
+              >
+                Next
+              </Button>
+            </Stack>
+          </>
+        )}
       </Box>
     </Drawer>
   );

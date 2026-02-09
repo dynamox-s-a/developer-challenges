@@ -14,10 +14,9 @@ import {
   DataGrid,
   type GridColDef,
   type GridSortModel,
-  GridToolbar,
 } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import type { AppDispatch, RootState } from "./store";
 import {
   fetchMonitoringPoints,
@@ -26,7 +25,7 @@ import {
   setSort,
 } from "./store/monitoringPointsSlice";
 import { logout } from "./store/authSlice";
-import TimeSeriesDrawer from "./components/TimeSeriesDrawer";
+import MonitoringTimeSeriesDrawer from "./components/TimeSeriesDrawer";
 
 function sensorLabel(v: string | null) {
   if (!v) return "-";
@@ -38,18 +37,17 @@ export default function App() {
   const navigate = useNavigate();
   const { items, total, status, error, page, pageSize, sortBy, sortOrder } =
     useSelector((s: RootState) => s.monitoringPoints);
-  
+
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedMP, setSelectedMP] = useState<string | null>(null);
-  const [selectedTitle, setSelectedTitle] = useState<string | undefined>(undefined);
+  const [selected, setSelected] = useState<{ id: string; title: string } | null>(null);
 
   const handleLogout = () => {
     dispatch(logout());
     navigate("/login");
   };
 
-  function openTimeSeries(id: string) {
-    setSelectedMP(id);
+  function openTimeSeries(id: string, title: string) {
+    setSelected({ id, title });
     setDrawerOpen(true);
   }
 
@@ -101,8 +99,7 @@ export default function App() {
           <Button 
             size="small" 
             onClick={() => {
-              openTimeSeries(params.row.id);
-              setSelectedTitle(`${params.row.monitoringPointName} • ${params.row.machineName}`);
+              openTimeSeries(params.row.id, `${params.row.monitoringPointName} • ${params.row.machineName}`);
             }}
           >
             View
@@ -209,6 +206,13 @@ export default function App() {
         <Stack direction="row" spacing={2}>
           <Button
             variant="outlined"
+            component={Link}
+            to="/machines"
+          >
+            Machines
+          </Button>
+          <Button
+            variant="outlined"
             onClick={handleLogout}
           >
             Logout
@@ -242,15 +246,10 @@ export default function App() {
           sortModel={sortModel}
           onSortModelChange={(model) => {
             const next = model[0];
-            if (!next?.field || !next.sort) return;
-            dispatch(setSort({ sortBy: next.field as any, sortOrder: next.sort }));
+            dispatch(setSort({ sortBy: (next?.field as "machineName" | "machineType" | "monitoringPointName" | "sensorModel" | "createdAt") ?? "machineName", sortOrder: (next?.sort as "asc" | "desc") ?? "asc" }));
           }}
-          slots={{ toolbar: GridToolbar }}
-          slotProps={{
-            toolbar: {
-              showQuickFilter: true,
-              quickFilterProps: { debounceMs: 400 },
-            },
+          onRowClick={(params) => {
+            openTimeSeries(params.row.id, `${params.row.monitoringPointName} • ${params.row.machineName}`);
           }}
           localeText={{
             noRowsLabel: "No monitoring points found. Run the seed script to generate sample data.",
@@ -258,11 +257,11 @@ export default function App() {
         />
       </Box>
       
-      <TimeSeriesDrawer
+      <MonitoringTimeSeriesDrawer
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        monitoringPointId={selectedMP}
-        title={selectedTitle}
+        monitoringPointId={selected?.id ?? null}
+        title={selected?.title}
       />
     </Container>
   );

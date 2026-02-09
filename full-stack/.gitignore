@@ -5,3 +5,10 @@ dist
 !.env.example
 .DS_Store
 pnpm-debug.log*
+
+# Docker build artifacts
+docker-compose.prod.yml
+
+# Deploy artifacts
+deploy/
+*.log

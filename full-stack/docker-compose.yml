@@ -1,15 +1,41 @@
 services:
   postgres:
-    image: postgres:16-alpine
-    container_name: dynamox-postgres
+    image: postgres:16
     environment:
       POSTGRES_USER: dynamox
       POSTGRES_PASSWORD: dynamox
       POSTGRES_DB: dynamox
     ports:
       - "5433:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dynamox -d dynamox"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
-volumes:
-  pgdata:
+  backend:
+    build:
+      context: apps/backend
+      dockerfile: Dockerfile
+    environment:
+      PORT: 3001
+      DATABASE_URL: postgresql://dynamox:dynamox@postgres:5432/dynamox?schema=public
+      JWT_SECRET: prod_secret_change_me
+      SEED_ADMIN_USERNAME: admin
+      SEED_ADMIN_PASSWORD: admin
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "3001:3001"
+
+  frontend:
+    build:
+      context: apps/frontend
+      dockerfile: Dockerfile
+    args:
+      VITE_API_BASE_URL: http://localhost:3001
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
