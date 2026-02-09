@@ -16,6 +16,9 @@ export interface MonitoringPoint {
     id: number;
     name: string;
     type: string;
+    _count?: {
+      monitoringPoints: number;
+    };
   };
   sensor?: {
     id: string;

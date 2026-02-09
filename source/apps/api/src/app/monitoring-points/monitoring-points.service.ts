@@ -14,7 +14,13 @@ export class MonitoringPointsService {
         take: limit,
         orderBy: { [sortBy]: sortOrder },
         include: { 
-          machine: true, 
+          machine: {
+            include: {
+              _count: {
+                select: { monitoringPoints: true }
+              }
+            }
+          }, 
           sensor: {
             include: {
               telemetry: {
@@ -83,6 +89,15 @@ export class MonitoringPointsService {
     });
 
     if (!point) throw new NotFoundException('Monitoring point not found');
+
+    // Business Rule: A machine must have at least two monitoring points.
+    const count = await prisma.monitoringPoint.count({
+      where: { machineId: point.machineId },
+    });
+
+    if (count <= 2) {
+      throw new BadRequestException('A machine must have at least two monitoring points. Deletion prevented.');
+    }
 
     await prisma.$transaction(async (tx) => {
       if (point.sensor) {

@@ -12,7 +12,8 @@ import {
   DialogContentText,
   DialogActions,
   Button,
-  CircularProgress
+  CircularProgress,
+  Alert
 } from '@mui/material';
 import { MonitoringPoint, deleteMonitoringPoint } from 'store/slices/monitoringPointsSlice';
 import IconifyIcon from 'components/base/IconifyIcon';
@@ -38,9 +39,11 @@ const MonitoringPointsTable = ({
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [pointToDelete, setPointToDelete] = useState<MonitoringPoint | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleDeleteClick = (point: MonitoringPoint) => {
     setPointToDelete(point);
+    setError(null);
     setDeleteDialogOpen(true);
   };
 
@@ -48,13 +51,16 @@ const MonitoringPointsTable = ({
     if (!pointToDelete) return;
 
     setIsDeleting(true);
+    setError(null);
     try {
       await dispatch(deleteMonitoringPoint(pointToDelete.id)).unwrap();
       setDeleteDialogOpen(false);
       setPointToDelete(null);
-    } catch (error) {
-      console.error('Failed to delete monitoring point:', error);
-      // In a real app, you'd show a snackbar error here
+    } catch (err: any) {
+      console.error('Failed to delete monitoring point:', err);
+      // Capture the error message from the API if available
+      const message = err?.message || 'Failed to delete monitoring point';
+      setError(message);
     } finally {
       setIsDeleting(false);
     }
@@ -63,6 +69,7 @@ const MonitoringPointsTable = ({
   const handleDeleteCancel = () => {
     setDeleteDialogOpen(false);
     setPointToDelete(null);
+    setError(null);
   };
 
   const columns: GridColDef<MonitoringPoint>[] = useMemo(() => [
@@ -208,23 +215,30 @@ const MonitoringPointsTable = ({
           Actions
         </Typography>
       ),
-      renderCell: (params) => (
-        <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', gap: 1 }}>
-          <Tooltip title="Delete Monitoring Point">
-            <IconButton 
-              size="small" 
-              color="error" 
-              onClick={() => handleDeleteClick(params.row)}
-              sx={{ 
-                bgcolor: 'error.lighter',
-                '&:hover': { bgcolor: 'error.light' }
-              }}
-            >
-              <IconifyIcon icon="tabler:trash" width={18} />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      ),
+      renderCell: (params) => {
+        const isDeleteDisabled = (params.row.machine._count?.monitoringPoints ?? 0) <= 2;
+        
+        return (
+          <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', gap: 1 }}>
+            <Tooltip title={isDeleteDisabled ? "Cannot delete: machine must have at least 2 points" : "Delete Monitoring Point"}>
+              <span>
+                <IconButton 
+                  size="small" 
+                  color="error" 
+                  onClick={() => handleDeleteClick(params.row)}
+                  disabled={isDeleteDisabled}
+                  sx={{ 
+                    bgcolor: isDeleteDisabled ? 'neutral.lighter' : 'error.lighter',
+                    '&:hover': { bgcolor: isDeleteDisabled ? 'neutral.lighter' : 'error.light' }
+                  }}
+                >
+                  <IconifyIcon icon="tabler:trash" width={18} />
+                </IconButton>
+              </span>
+            </Tooltip>
+          </Box>
+        );
+      },
     },
   ], []);
 
@@ -273,6 +287,11 @@ const MonitoringPointsTable = ({
           Delete Monitoring Point?
         </DialogTitle>
         <DialogContent sx={{ px: 3 }}>
+          {error && (
+            <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>
+              {error}
+            </Alert>
+          )}
           <DialogContentText id="delete-dialog-description" sx={{ color: 'text.primary' }}>
             Are you sure you want to delete <strong>{pointToDelete?.name}</strong>? 
             This action cannot be undone and will also remove its associated sensor data.
@@ -292,7 +311,7 @@ const MonitoringPointsTable = ({
             color="error" 
             variant="contained"
             autoFocus
-            disabled={isDeleting}
+            disabled={isDeleting || !!error}
             startIcon={isDeleting ? <CircularProgress size={20} color="inherit" /> : <IconifyIcon icon="tabler:trash" />}
             sx={{ 
               fontWeight: 700,
