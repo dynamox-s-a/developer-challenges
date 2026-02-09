@@ -50,4 +50,8 @@ export class TelemetryGateway
   broadcastActiveSensorsCount(payload: { activeSensorsCount: number }) {
     this.server.emit('active_sensors_count_update', payload);
   }
+
+  broadcastSensorsDistribution(payload: any) {
+    this.server.emit('sensors_distribution_update', payload);
+  }
 }

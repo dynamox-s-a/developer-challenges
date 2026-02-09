@@ -1,65 +1,61 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
-import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
 import EChartsReactCore from 'echarts-for-react/lib/core';
-import { PiChartDataProps } from 'data/piChartData';
-import { PiChartData } from 'data/piChartData';
+import { AppDispatch, RootState } from 'store/store';
+import { fetchSensorsDistribution, updateSensorsDistribution } from 'store/slices/statsSlice';
+import { socket } from 'utils/socket';
 import customShadows from 'theme/shadows';
 import PiChart from './PiChart';
 
 const SensorDistributionChart = () => {
-  const [timeline, setTimeline] = useState('monthly');
-  const [chartData, setChartData] = useState(PiChartData);
+  const dispatch = useDispatch<AppDispatch>();
+  const { sensorsDistribution } = useSelector((state: RootState) => state.stats);
   const chartRef = useRef<EChartsReactCore>(null);
   const theme = useTheme();
 
-  const handleSelectChange = (event: SelectChangeEvent) => {
-    setTimeline(event.target.value);
-  };
+  useEffect(() => {
+    dispatch(fetchSensorsDistribution());
 
-  const toggleVisibility = (name: string) => {
-    const updatedData = chartData.map((item) =>
-      item.name === name ? { ...item, visible: !item.visible } : item,
-    );
-    setChartData(updatedData);
-    updateChart(updatedData);
-  };
+    const onDistributionUpdate = (data: any) => {
+      dispatch(updateSensorsDistribution(data));
+    };
 
-  const updateChart = (data: PiChartDataProps[]) => {
+    socket.on('sensors_distribution_update', onDistributionUpdate);
+
+    return () => {
+      socket.off('sensors_distribution_update', onDistributionUpdate);
+    };
+  }, [dispatch]);
+
+  const chartData = [
+    { id: 1, value: sensorsDistribution?.TcAg, name: 'TcAg', color: theme.palette.primary.main },
+    { id: 2, value: sensorsDistribution?.TcAs, name: 'TcAs', color: theme.palette.secondary.main },
+    { id: 3, value: sensorsDistribution?.HF_Plus, name: 'HF+', color: theme.palette.warning.main },
+  ];
+
+  useEffect(() => {
     const echartsInstance = chartRef.current?.getEchartsInstance();
     if (!echartsInstance) return;
-
-    const visibleData = data
-      .filter((item) => item.visible)
-      .map((item) => ({
-        value: item.value,
-        name: item.name,
-        itemStyle: {
-          color:
-            item.id === 1
-              ? theme.palette.primary.main
-              : item.id === 2
-                ? theme.palette.secondary.main
-                : theme.palette.warning.main,
-        },
-      }));
 
     echartsInstance.setOption({
       series: [
         {
-          data: visibleData,
+          data: chartData.map(item => ({
+            value: item.value,
+            name: item.name,
+            itemStyle: { color: item.color }
+          })),
         },
       ],
     });
-  };
+  }, [sensorsDistribution, theme]);
 
   return (
     <Paper sx={{ py: 2.5, height: 350 }}>
@@ -72,7 +68,7 @@ const SensorDistributionChart = () => {
       <PiChart chartRef={chartRef} sx={{ height: '180px !important' }} />
 
       <Stack px={2} py={1} alignItems="center" borderRadius={4} boxShadow={customShadows[1]}>
-        {chartData.map((item) => (
+        {chartData.map((item, index) => (
           <React.Fragment key={item.id}>
             <Stack
               component={ButtonBase}
@@ -81,22 +77,13 @@ const SensorDistributionChart = () => {
               spacing={0.75}
               alignItems="flex-start"
               justifyContent="center"
-              onClick={() => toggleVisibility(item.name)}
               disableRipple
             >
               <Box
                 height={10}
                 width={10}
                 borderRadius="50%"
-                bgcolor={
-                  item.visible
-                    ? item.id === 1
-                      ? 'primary.main'
-                      : item.id === 2
-                        ? 'secondary.main'
-                        : 'warning.main'
-                    : 'neutral.light'
-                }
+                bgcolor={item.color}
               />
               <Box mt={-0.55}>
                 <Typography variant="caption" color="text.disabled">
@@ -107,7 +94,7 @@ const SensorDistributionChart = () => {
                 </Typography>
               </Box>
             </Stack>
-            {item.id !== 3 && (
+            {index !== chartData.length - 1 && (
               <Divider sx={{ height: 50 }} orientation="vertical" variant="middle" flexItem />
             )}
           </React.Fragment>

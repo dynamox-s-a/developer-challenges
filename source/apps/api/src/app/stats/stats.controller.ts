@@ -27,6 +27,11 @@ export class StatsController {
     return this.statsService.getActiveSensorsCount();
   }
 
+  @Get('sensors-distribution')
+  async getSensorsDistribution() {
+    return this.statsService.getSensorsDistribution();
+  }
+
   @Get('dashboard')
   async getDashboardStats() {
     return this.statsService.getDashboardStats();

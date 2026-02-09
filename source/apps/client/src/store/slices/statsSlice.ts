@@ -8,6 +8,14 @@ interface StatsState {
   activeSensorsCount: number;
   loading: boolean;
   error: string | null;
+  sensorsDistribution: SensorsDistribution;
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+}
+
+interface SensorsDistribution {
+  TcAg: number;
+  TcAs: number;
+  HF_Plus: number;
 }
 
 const initialState: StatsState = {
@@ -17,11 +25,17 @@ const initialState: StatsState = {
   activeSensorsCount: 0,
   loading: false,
   error: null,
+  sensorsDistribution: {
+    TcAg: 0,
+    TcAs: 0,
+    HF_Plus: 0,
+  },
+  status: 'idle',
 };
 
 export const fetchTotalTelemetry = createAsyncThunk('stats/fetchTotalTelemetry', async () => {
   const response = await api.get('/stats/telemetry');
-  return response.data;
+    return response.data;
 });
 
 export const fetchMachinesCount = createAsyncThunk('stats/fetchMachinesCount', async () => {
@@ -39,6 +53,11 @@ export const fetchActiveSensorsCount = createAsyncThunk('stats/fetchActiveSensor
   return response.data;
 });
 
+export const fetchSensorsDistribution = createAsyncThunk('stats/fetchSensorsDistribution', async () => {
+  const response = await api.get('/stats/sensors-distribution');
+  return response.data;
+})
+
 const statsSlice = createSlice({
   name: 'stats',
   initialState,
@@ -49,6 +68,11 @@ const statsSlice = createSlice({
       if (machinesCount !== undefined) state.machinesCount = machinesCount;
       if (monitoringPointsCount !== undefined) state.monitoringPointsCount = monitoringPointsCount;
       if (activeSensorsCount !== undefined) state.activeSensorsCount = activeSensorsCount;
+    },
+    updateSensorsDistribution(state, action) {
+      console.log('action.payload', action.payload);
+      
+      state.sensorsDistribution = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -64,10 +88,20 @@ const statsSlice = createSlice({
       })
       .addCase(fetchActiveSensorsCount.fulfilled, (state, action) => {
         state.activeSensorsCount = action.payload.activeSensorsCount;
+      })
+      .addCase(fetchSensorsDistribution.rejected, (state) => {
+        state.status = 'failed';
+      })
+      .addCase(fetchSensorsDistribution.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.sensorsDistribution = action.payload;
+      })
+      .addCase(fetchSensorsDistribution.pending, (state) => {
+        state.status = 'loading';
       });
   },
 });
 
-export const { updateStats } = statsSlice.actions;
+export const { updateStats, updateSensorsDistribution } = statsSlice.actions;
 
 export default statsSlice.reducer;

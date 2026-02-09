@@ -42,6 +42,7 @@ export class MonitoringPointsService {
       data,
     });
     await this.statsService.broadcastMonitoringPointsCount();
+    await this.statsService.broadcastSensorsDistribution();
     return point;
   }
 
@@ -78,6 +79,7 @@ export class MonitoringPointsService {
     });
 
     await this.statsService.broadcastMonitoringPointsCount();
+    await this.statsService.broadcastSensorsDistribution();
 
     return sensor;
   }
@@ -119,6 +121,7 @@ export class MonitoringPointsService {
     });
 
     await this.statsService.broadcastMonitoringPointsCount();
+    await this.statsService.broadcastSensorsDistribution();
     return { success: true };
   }
 }
