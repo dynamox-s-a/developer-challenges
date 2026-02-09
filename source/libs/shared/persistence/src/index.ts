@@ -2,7 +2,7 @@ import 'dotenv/config';
 (BigInt.prototype as any).toJSON = function () {
   return this.toString();
 };
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '../prisma/generated/client'
 import Redis from 'ioredis';
 import * as amqp from 'amqplib';
 import { PrismaPg } from '@prisma/adapter-pg';
@@ -27,4 +27,4 @@ export async function createRabbitMQConnection() {
   return { connection, channel };
 }
 
-export * from '@prisma/client';
+export * from '../prisma/generated/client';
