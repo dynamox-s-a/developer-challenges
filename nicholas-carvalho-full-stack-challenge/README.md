@@ -38,6 +38,7 @@ With **Docker**, you can raise the ecossistem (Database, API & Client) with an u
 ```bash
 git clone https://github.com/nicholas-sc-08/developer-challenges.git
 cd developer-challenges
+cd nicholas-carvalho-full-stack-challenge
 ```
 
 2. Start the services:
