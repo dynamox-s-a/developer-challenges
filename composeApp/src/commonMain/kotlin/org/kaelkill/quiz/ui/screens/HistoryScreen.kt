@@ -21,9 +21,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.kaelkill.quiz.domain.model.entities.Player
+import org.kaelkill.quiz.ui.components.EmptyState
 
 @Composable
 fun HistoryScreen(
@@ -35,51 +35,39 @@ fun HistoryScreen(
             .fillMaxSize()
             .padding(24.dp)
     ) {
-        // Header
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = onBack) {
-                Text("←", style = MaterialTheme.typography.headlineSmall)
-            }
-            Text(
-                text = "Histórico",
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold
-            )
-        }
+        HistoryHeader(onBack)
 
         Spacer(modifier = Modifier.height(16.dp))
 
         if (players.isEmpty()) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = "📭",
-                    fontSize = androidx.compose.ui.unit.TextUnit.Unspecified,
-                    style = MaterialTheme.typography.displayLarge
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = "Nenhum quiz completado ainda",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center
-                )
-            }
+            EmptyState(
+                emoji = "📭",
+                message = "Nenhum quiz completado ainda"
+            )
         } else {
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
+            LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 items(players) { player ->
                     PlayerScoreCard(player)
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun HistoryHeader(onBack: () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(onClick = onBack) {
+            Text("←", style = MaterialTheme.typography.headlineSmall)
+        }
+        Text(
+            text = "Histórico",
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 
@@ -92,9 +80,7 @@ private fun PlayerScoreCard(player: Player) {
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         )
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
+        Column(modifier = Modifier.padding(16.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
