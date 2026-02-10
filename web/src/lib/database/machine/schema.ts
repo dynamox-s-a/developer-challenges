@@ -2,8 +2,8 @@ import mongoose from 'mongoose'
 import z from 'zod'
 
 enum MachineTypes {
-  Pump = 'pump',
-  Fan = 'fan',
+  Pump = 'Pump',
+  Fan = 'Fan',
 }
 
 const MachineModel = z.object({

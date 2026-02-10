@@ -2,13 +2,13 @@ import { objectIdValidator } from '@/utils/types'
 import mongoose from 'mongoose'
 import z from 'zod'
 
-const MonitoringPointModel = z.object({
+export const MonitoringPointModel = z.object({
   Name: z.string(),
-  Sensor: objectIdValidator.optional(),
-  Machine: objectIdValidator,
+  SensorId: objectIdValidator.optional(),
+  MachineId: objectIdValidator,
 })
 
-interface IMonitoringPoint extends mongoose.Document {
+export interface IMonitoringPoint extends mongoose.Document {
   Name: string
   Sensor?: mongoose.Types.ObjectId
   Machine: mongoose.Types.ObjectId

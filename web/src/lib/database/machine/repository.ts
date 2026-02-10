@@ -1,3 +1,5 @@
+import MonitoringPoint from '../monitoring_point/schema'
+import Sensor from '../sensor/schema'
 import { MachineResponse, type IMachineResponse } from './presenter'
 import type { IMachine, MachineDTO } from './schema'
 import Machine from './schema'
@@ -28,11 +30,25 @@ export class MachineRepository {
     // delete MonitoringPointsByMachineId
     // return true if OKAY, false if not
     const deletedMachine = await Machine.deleteOne({ _id: machineId })
-    // verify if mongoose received the delete process
+
     if (!deletedMachine.acknowledged)
       return MachineResponse(false, 'Erro ao deletar máquina.')
 
-    return MachineResponse(true, 'Máquina modificada com sucesso')
+    const deleteMonitoringPoints = await MonitoringPoint.deleteMany({
+      machine: machineId,
+    })
+
+    if (!deleteMonitoringPoints.acknowledged)
+      return MachineResponse(false, 'Erro ao deletar Monitoring points.')
+
+    const deleteSensors = await Sensor.deleteMany({
+      machine: machineId,
+    })
+
+    if (!deleteSensors.acknowledged)
+      return MachineResponse(false, 'Erro ao deletar máquina.')
+
+    return MachineResponse(true, 'Máquina deletada com sucesso')
   }
 
   async update(
@@ -60,3 +76,6 @@ export class MachineRepository {
     return MachineResponse(true, 'Máquina alterada com sucesso')
   }
 }
+
+const machineRepository = new MachineRepository()
+export default machineRepository
