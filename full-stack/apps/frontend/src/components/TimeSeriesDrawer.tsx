@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { Alert, Box, CircularProgress, Divider, Drawer, Stack, Typography, Button } from "@mui/material";
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { Alert, Box, CircularProgress, Drawer, Stack, Typography, Button, Divider } from "@mui/material";
 import { fetchTimeSeries, fetchTimeSeriesMetrics } from "../api/timeSeries";
 import type { TimeSeriesPoint } from "../api/timeSeries";
+import TimeSeriesChart from "./TimeSeriesChart";
 
 type Props = {
   open: boolean;
@@ -48,7 +48,7 @@ export default function MonitoringTimeSeriesDrawer({ open, onClose, monitoringPo
         .slice()
         .reverse()
         .map((p) => ({
-          x: new Date(p.timestamp).toLocaleString(),
+          timestamp: new Date(p.timestamp).toLocaleString(),
           value: p.value,
         })),
     [items]
@@ -59,93 +59,72 @@ export default function MonitoringTimeSeriesDrawer({ open, onClose, monitoringPo
       <Box sx={{ width: { xs: 340, sm: 520 }, p: 2 }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography variant="h6">{title ?? "Time-series"}</Typography>
-          <Button
-            size="small"
-            onClick={() => {
-              if (monitoringPointId) {
-                setSkip(0);
-                // Trigger refresh by updating skip
-              }
-            }}
-          >
-            Refresh
-          </Button>
+          <Button onClick={onClose}>×</Button>
         </Stack>
-        <Typography variant="body2" sx={{ color: "text.secondary", mb: 1 }}>
-          Monitoring Point: {monitoringPointId}
-        </Typography>
 
-        <Divider sx={{ mb: 2 }} />
-
-        {err && <Alert severity="error" sx={{ mb: 2 }}>{err}</Alert>}
+        <Divider sx={{ my: 2 }} />
 
         {loading ? (
-          <Stack alignItems="center" sx={{ py: 6 }}>
+          <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
             <CircularProgress />
-            <Typography sx={{ mt: 2 }}>Loading time-series…</Typography>
-          </Stack>
+          </Box>
+        ) : err ? (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {err}
+          </Alert>
         ) : (
           <>
-            {metrics && (
-              <Stack direction="row" spacing={2} sx={{ mb: 2, flexWrap: "wrap" }}>
-                <Typography variant="body2"><b>Count:</b> {metrics.count}</Typography>
-                <Typography variant="body2"><b>Min:</b> {metrics.min?.toFixed(2) ?? "-"}</Typography>
-                <Typography variant="body2"><b>Max:</b> {metrics.max?.toFixed(2) ?? "-"}</Typography>
-                <Typography variant="body2"><b>Avg:</b> {metrics.avg?.toFixed(2) ?? "-"}</Typography>
-              </Stack>
-            )}
+            <TimeSeriesChart 
+              monitoringPointId={monitoringPointId!} 
+              title={title || "Time Series Data"} 
+            />
+            
+            <Divider sx={{ my: 2 }} />
 
-            <Box sx={{ height: 320, width: "100%", minHeight: 320 }}>
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={chartData}>
-                  <XAxis dataKey="x" hide />
-                  <YAxis />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="value" dot={false} />
-                </LineChart>
-              </ResponsiveContainer>
-            </Box>
-
-            {items.length === 0 && (
-              <Alert severity="info" sx={{ mt: 2 }}>
-                No time-series data found for this monitoring point.
-              </Alert>
-            )}
-
-            <Typography variant="subtitle2" sx={{ mt: 2, mb: 1 }}>
-              Latest points
-            </Typography>
-
-            <Box sx={{ maxHeight: 260, overflow: "auto" }}>
-              {items.map((p) => (
-                <Box key={p.id} sx={{ py: 1 }}>
-                  <Typography variant="body2">{new Date(p.timestamp).toLocaleString()}</Typography>
-                  <Typography variant="caption" sx={{ opacity: 0.8 }}>
-                    value: {p.value}
+            <Stack spacing={2}>
+              <Typography variant="subtitle2">Data Summary</Typography>
+              
+              {metrics && (
+                <Stack direction="row" spacing={1} flexWrap="wrap">
+                  <Typography variant="body2" color="text.secondary">
+                    <strong>Total Points:</strong> {metrics.count}
                   </Typography>
-                  <Divider sx={{ mt: 1 }} />
-                </Box>
-              ))}
-            </Box>
+                  <Typography variant="body2" color="text.secondary">
+                    <strong>Min:</strong> {metrics.min?.toFixed(2)}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    <strong>Max:</strong> {metrics.max?.toFixed(2)}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    <strong>Avg:</strong> {metrics.avg?.toFixed(2)}
+                  </Typography>
+                </Stack>
+              )}
 
-            <Stack direction="row" spacing={1} sx={{ mt: 2 }} alignItems="center" justifyContent="space-between">
-              <Button
-                disabled={skip <= 0 || loading}
-                onClick={() => setSkip(Math.max(0, skip - take))}
-              >
-                Prev
-              </Button>
-
-              <Typography variant="caption">
-                {total === 0 ? "0" : `${skip + 1}-${Math.min(skip + take, total)}`} of {total}
+              <Typography variant="body2" color="text.secondary">
+                <strong>Showing:</strong> {items.length} of {total} points
               </Typography>
 
-              <Button
-                disabled={skip + take >= total || loading}
-                onClick={() => setSkip(skip + take)}
-              >
-                Next
-              </Button>
+              {items.length < total && (
+                <Stack direction="row" spacing={2}>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    disabled={skip === 0}
+                    onClick={() => setSkip(Math.max(0, skip - take))}
+                  >
+                    Previous
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    disabled={items.length < take}
+                    onClick={() => setSkip(skip + take)}
+                  >
+                    Next
+                  </Button>
+                </Stack>
+              )}
             </Stack>
           </>
         )}

@@ -47,25 +47,16 @@ export function buildApp() {
     });
   });
 
-  app.get("/health", async () => ({ ok: true }));
-  app.register(authRoutes);
-
-  app.addHook("onRequest", async (req, reply) => {
-    const url = req.url;
-
-    const isPublic =
-      url === "/health" ||
-      url === "/docs" ||
-      url.startsWith("/docs/") ||
-      url === "/auth/login";
-
-    if (isPublic) return;
-
-    await (app as any).authenticate(req, reply);
-
-    if (reply.sent) return;
+  app.get("/health", async () => {
+    const hostname = require('os').hostname();
+    const pid = process.pid;
+    return { 
+      ok: true, 
+      server: `${hostname}-${pid}`,
+      timestamp: new Date().toISOString()
+    };
   });
-
+  app.register(authRoutes);
   app.register(machinesRoutes);
   app.register(monitoringPointsRoutes);
   app.register(timeSeriesRoutes);

@@ -8,6 +8,10 @@ const paramsSchema = z.object({
   id: z.string().min(1),
 });
 
+const monitoringPointIdSchema = z.object({
+  id: z.string().min(1),
+});
+
 const listQuerySchema = z.object({
   take: z.coerce.number().int().min(1).max(50).default(5),
   skip: z.coerce.number().int().min(0).default(0),
@@ -35,9 +39,21 @@ function mapSort(sortBy: string, sortOrder: "asc" | "desc") {
 }
 
 export async function monitoringPointsRoutes(app: FastifyInstance) {
+  // Hook para medir tempo de resposta
+  app.addHook('onResponse', async (request: any, reply: any) => {
+    const responseTime = reply.getResponseTime();
+    console.log(`${request.method} ${request.url} - ${responseTime.toFixed(2)}ms`);
+  });
+
+  const machineIdSchema = z.object({
+    machineId: z.string().min(1),
+  });
+
   // Create monitoring point for a machine (with sensor)
-  app.post("/machines/:machineId/monitoring-points", async (req, reply) => {
-    const { machineId } = paramsSchema.parse(req.params);
+  app.post("/machines/:machineId/monitoring-points", {
+    preHandler: [app.authenticate],
+  }, async (req, reply) => {
+    const { machineId } = machineIdSchema.parse(req.params);
     const body = createMonitoringPointSchema.parse(req.body);
 
     const machine = await prisma.machine.findUnique({ where: { id: machineId } });
@@ -64,8 +80,9 @@ export async function monitoringPointsRoutes(app: FastifyInstance) {
     return reply.code(201).send(created);
   });
 
-  // List monitoring points with pagination + sorting (for the table)
-  app.get("/monitoring-points", async (req) => {
+  app.get("/monitoring-points", {
+    preHandler: [app.authenticate],
+  }, async (req) => {
     const query = listQuerySchema.parse(req.query);
 
     const { take, skip, sortBy, sortOrder } = query;
@@ -115,8 +132,10 @@ export async function monitoringPointsRoutes(app: FastifyInstance) {
     };
   });
 
-  app.patch("/monitoring-points/:id", async (req, reply) => {
-    const { id } = paramsSchema.parse(req.params);
+  app.patch("/monitoring-points/:id", {
+    preHandler: [app.authenticate],
+  }, async (req, reply) => {
+    const { id } = monitoringPointIdSchema.parse(req.params);
     const body = updateMonitoringPointSchema.parse(req.body);
 
     const current = await prisma.monitoringPoint.findUnique({
@@ -156,8 +175,10 @@ export async function monitoringPointsRoutes(app: FastifyInstance) {
     return reply.send(updated);
   });
 
-  app.delete("/monitoring-points/:id", async (req, reply) => {
-    const { id } = paramsSchema.parse(req.params);
+  app.delete("/monitoring-points/:id", {
+    preHandler: [app.authenticate],
+  }, async (req, reply) => {
+    const { id } = monitoringPointIdSchema.parse(req.params);
     await prisma.monitoringPoint.delete({ where: { id } });
     return reply.code(204).send();
   });

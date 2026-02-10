@@ -8,7 +8,9 @@ const paramsSchema = z.object({
 });
 
 export async function machinesRoutes(app: FastifyInstance) {
-  app.get("/machines", async () => {
+  app.get("/machines", {
+    preHandler: [app.authenticate],
+  }, async () => {
     return prisma.machine.findMany({
       orderBy: { createdAt: "desc" },
       include: { monitoringPoints: { include: { sensor: true } } },
@@ -18,6 +20,7 @@ export async function machinesRoutes(app: FastifyInstance) {
   app.post(
     "/machines",
     {
+      preHandler: [app.authenticate],
       schema: {
         tags: ["Machines"],
         summary: "Create a machine",
@@ -50,7 +53,9 @@ export async function machinesRoutes(app: FastifyInstance) {
     }
   );
 
-  app.patch("/machines/:id", async (req, reply) => {
+  app.patch("/machines/:id", {
+    preHandler: [app.authenticate],
+  }, async (req, reply) => {
     const { id } = paramsSchema.parse(req.params);
     const body = updateMachineSchema.parse(req.body);
 
@@ -62,7 +67,9 @@ export async function machinesRoutes(app: FastifyInstance) {
     return reply.send(updated);
   });
 
-  app.delete("/machines/:id", async (req, reply) => {
+  app.delete("/machines/:id", {
+    preHandler: [app.authenticate],
+  }, async (req, reply) => {
     const { id } = paramsSchema.parse(req.params);
 
     await prisma.machine.delete({ where: { id } });

@@ -12,7 +12,8 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "prisma:seed": "tsx prisma/seed.ts",
-    "migrate-seed": "tsx src/scripts/migrate-seed.ts"
+    "migrate-seed": "tsx src/scripts/migrate-seed.ts",
+    "benchmark": "node scripts/benchmark.js"
   },
   "dependencies": {
     "@fastify/cors": "^11.2.0",

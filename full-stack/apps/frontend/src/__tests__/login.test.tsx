@@ -60,16 +60,14 @@ describe("LoginPage", () => {
     return import("../pages/Login").then(({ default: Login }) => {
       render(<Login />, { wrapper: TestWrapper });
 
-      expect(screen.getByRole("heading", { name: /sign in/i })).toBeInTheDocument();
-
-      expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /sign in/i })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: /sign in/i })).toBeTruthy();
+      expect(screen.getByLabelText(/username/i)).toBeTruthy();
+      expect(screen.getByLabelText(/password/i)).toBeTruthy();
+      expect(screen.getByRole("button", { name: /sign in/i })).toBeTruthy();
     });
   });
 
   it("logs in and stores token", async () => {
-    // mock da resposta do login
     apiPostMock.mockResolvedValueOnce({ data: { token: "FAKE_TOKEN" } });
 
     const { default: Login } = await import("../pages/Login");
@@ -79,7 +77,6 @@ describe("LoginPage", () => {
     await userEvent.type(screen.getByLabelText(/password/i), "admin");
     await userEvent.click(screen.getByRole("button", { name: /sign in/i }));
 
-    // token persistido via helper
     expect(setTokenToStorageMock).toHaveBeenCalledWith("FAKE_TOKEN");
   });
 });

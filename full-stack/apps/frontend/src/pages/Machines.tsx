@@ -6,23 +6,30 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  MenuItem,
   Stack,
-  TextField,
   Typography,
-  Snackbar,
   Alert,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { addMachine, editMachine, loadMachines, removeMachine } from "../store/machinesSlice";
+import { logout } from "../store/authSlice";
+import { useNavigate } from "react-router-dom";
 import type { Machine, MachineType } from "../api/machines";
+import { MachineForm } from "../components/MachineForm";
+import { Toast } from "../components/Toast";
+import { Footer } from "../components/Footer";
 
 type FormState = { id?: string; name: string; type: MachineType };
 
 export default function MachinesPage() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const { items, loading, error } = useAppSelector((s: any) => s.machines);
 
   const [open, setOpen] = useState(false);
@@ -35,26 +42,29 @@ export default function MachinesPage() {
 
   const cols: GridColDef[] = useMemo(
     () => [
-      { field: "name", headerName: "Name", flex: 1, minWidth: 200 },
-      { field: "type", headerName: "Type", width: 120 },
+      { field: "name", headerName: "Name", flex: 1, minWidth: 150, align: 'center', headerAlign: 'center' },
+      { field: "type", headerName: "Type", width: isMobile ? 80 : 120, align: 'center', headerAlign: 'center' },
       {
         field: "actions",
         headerName: "Actions",
-        width: 220,
+        width: isMobile ? 120 : 220,
         sortable: false,
         filterable: false,
+        align: 'center',
+        headerAlign: 'center',
         renderCell: (params) => {
           const row = params.row as Machine;
           return (
-            <Stack direction="row" spacing={1}>
+            <Stack direction={isMobile ? "column" : "row"} spacing={0.5}>
               <Button
                 size="small"
                 onClick={() => {
                   setForm({ id: row.id, name: row.name, type: row.type });
                   setOpen(true);
                 }}
+                sx={{ minWidth: isMobile ? 50 : 'auto' }}
               >
-                Edit
+                {isMobile ? "Edit" : "Edit"}
               </Button>
               <Button
                 size="small"
@@ -68,15 +78,16 @@ export default function MachinesPage() {
                     setToast({ type: "error", msg: e?.message ?? "Failed to delete" });
                   }
                 }}
+                sx={{ minWidth: isMobile ? 50 : 'auto' }}
               >
-                Delete
+                {isMobile ? "Del" : "Delete"}
               </Button>
             </Stack>
           );
         },
       },
     ],
-    [dispatch]
+    [isMobile, dispatch]
   );
 
   async function onSave() {
@@ -101,23 +112,40 @@ export default function MachinesPage() {
   }
 
   return (
-    <Box sx={{ p: 2 }}>
+    <Box sx={{ p: 2, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
         <Typography variant="h5">Machines</Typography>
-        <Button
-          variant="contained"
-          onClick={() => {
-            setForm({ name: "", type: "Pump" });
-            setOpen(true);
-          }}
-        >
-          New Machine
-        </Button>
+        <Stack direction="row" spacing={2}>
+          <Button
+            variant="outlined"
+            onClick={() => navigate("/")}
+          >
+            Back to Monitoring Points
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setForm({ name: "", type: "Pump" });
+              setOpen(true);
+            }}
+          >
+            New Machine
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              dispatch(logout());
+              navigate("/login");
+            }}
+          >
+            Logout
+          </Button>
+        </Stack>
       </Stack>
 
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
-      <Box sx={{ height: 520 }}>
+      <Box sx={{ height: 520, flexGrow: 1 }}>
         <DataGrid
           rows={items}
           columns={cols}
@@ -125,29 +153,27 @@ export default function MachinesPage() {
           getRowId={(r) => r.id}
           slots={{ toolbar: GridToolbar }}
           disableRowSelectionOnClick
+          sx={{
+            '& .MuiDataGrid-root': {
+              border: '1px solid rgba(224, 224, 224, 1)',
+            },
+            '& .MuiDataGrid-cell': {
+              whiteSpace: 'normal',
+              lineHeight: '1.2',
+              textAlign: 'center',
+            }
+          }}
         />
       </Box>
 
       <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">
         <DialogTitle>{form.id ? "Edit Machine" : "Create Machine"}</DialogTitle>
         <DialogContent>
-          <Stack spacing={2} sx={{ mt: 1 }}>
-            <TextField
-              label="Name"
-              value={form.name}
-              onChange={(e) => setForm((s) => ({ ...s, name: e.target.value }))}
-              autoFocus
-            />
-            <TextField
-              label="Type"
-              select
-              value={form.type}
-              onChange={(e) => setForm((s) => ({ ...s, type: e.target.value as MachineType }))}
-            >
-              <MenuItem value="Pump">Pump</MenuItem>
-              <MenuItem value="Fan">Fan</MenuItem>
-            </TextField>
-          </Stack>
+          <MachineForm
+            data={form}
+            onChange={(data) => setForm(data as FormState)}
+            disabled={false}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)}>Cancel</Button>
@@ -157,9 +183,14 @@ export default function MachinesPage() {
         </DialogActions>
       </Dialog>
 
-      <Snackbar open={!!toast} autoHideDuration={2500} onClose={() => setToast(null)}>
-        <Alert severity={toast?.type || "success"}>{toast?.msg || ""}</Alert>
-      </Snackbar>
+      <Toast
+        open={!!toast}
+        message={toast?.msg || ""}
+        severity={toast?.type || "success"}
+        onClose={() => setToast(null)}
+      />
+      
+      <Footer />
     </Box>
   );
 }

@@ -112,6 +112,25 @@ export async function timeSeriesRoutes(app: FastifyInstance) {
     });
   });
 
+  app.get("/time-series/count", { preHandler: [app.authenticate] }, async (req, reply) => {
+    const query = z
+      .object({
+        monitoringPointId: z.string().optional(),
+      })
+      .parse(req.query);
+
+    const where = query.monitoringPointId 
+      ? { monitoringPointId: query.monitoringPointId }
+      : {};
+
+    const count = await prisma.timeSeries.count({ where });
+
+    return reply.send({ 
+      count,
+      ...(query.monitoringPointId ? { monitoringPointId: query.monitoringPointId } : {})
+    });
+  });
+
   app.delete("/monitoring-points/:id/time-series", { preHandler: [app.authenticate] }, async (req, reply) => {
     const { id } = paramsSchema.parse(req.params);
 
@@ -123,5 +142,71 @@ export async function timeSeriesRoutes(app: FastifyInstance) {
     });
 
     return reply.send({ deleted: result.count });
+  });
+
+  app.get("/monitoring-points/:id/time-series/predict", {
+    preHandler: [app.authenticate],
+  }, async (req, reply) => {
+    const { id } = paramsSchema.parse(req.params);
+    const query = z.object({
+      periods: z.coerce.number().int().min(1).max(100).default(10), 
+      interval: z.enum(["15min", "1hour", "1day"]).default("15min"),
+    }).parse(req.query);
+
+    const historicalData = await prisma.timeSeries.findMany({
+      where: { monitoringPointId: id },
+      orderBy: { timestamp: "asc" },
+      take: 100,
+    });
+
+    if (historicalData.length < 10) {
+      return reply.badRequest("Not enough historical data for prediction (minimum 10 points required)");
+    }
+
+    const values = historicalData.map(d => d.value);
+    const n = values.length;
+    
+    const sumX = Array.from({ length: n }, (_, i) => i).reduce((a, b) => a + b, 0);
+    const sumY = values.reduce((a, b) => a + b, 0);
+    const sumXY = Array.from({ length: n }, (_, i) => i * values[i]).reduce((a, b) => a + b, 0);
+    const sumX2 = Array.from({ length: n }, (_, i) => i * i).reduce((a, b) => a + b, 0);
+    
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+    
+    const predictions = [];
+    const lastTimestamp = historicalData[historicalData.length - 1].timestamp;
+    const intervalMs = query.interval === "15min" ? 15 * 60 * 1000 : 
+                      query.interval === "1hour" ? 60 * 60 * 1000 : 
+                      24 * 60 * 60 * 1000;
+    
+    for (let i = 1; i <= query.periods; i++) {
+      const futureValue = slope * (n + i - 1) + intercept;
+      const futureTimestamp = new Date(lastTimestamp.getTime() + i * intervalMs);
+      
+      const randomVariation = 0.95 + Math.random() * 0.1;
+      const adjustedValue = Math.max(0, futureValue * randomVariation);
+      
+      predictions.push({
+        timestamp: futureTimestamp.toISOString(),
+        predictedValue: Math.round(adjustedValue * 100) / 100,
+        confidence: Math.max(0.5, 1 - (i * 0.05)),
+      });
+    }
+
+    return reply.send({
+      monitoringPointId: id,
+      predictionInterval: query.interval,
+      periods: query.periods,
+      basedOnDataPoints: historicalData.length,
+      predictions,
+      metadata: {
+        algorithm: "Linear Regression",
+        slope: Math.round(slope * 1000) / 1000,
+        intercept: Math.round(intercept * 1000) / 1000,
+        lastActualValue: historicalData[historicalData.length - 1].value,
+        firstPredictedValue: predictions[0].predictedValue,
+      }
+    });
   });
 }
