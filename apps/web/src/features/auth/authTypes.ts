@@ -25,4 +25,22 @@ export interface LoginData {
   user: AuthUser
 }
 
+export interface RegisterInput {
+  email: string
+  password: string
+  name: string
+}
+
+export interface RegisterUser {
+  uuid: string
+  email: string
+  name: string
+  createdAt: string
+}
+
+export interface RegisterData {
+  user: RegisterUser
+}
+
+export type RegisterResponse = ApiResponse<RegisterData>
 export type LoginResponse = ApiResponse<LoginData>

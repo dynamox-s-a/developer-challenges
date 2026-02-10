@@ -39,19 +39,18 @@ export async function register(input: RegisterInput) {
   const user = await prisma.user.create({
     data: {
       email: input.email,
+      name: input.name,
       passwordHash
     },
     select: {
       uuid: true,
       email: true,
-      createdAt: true
+      createdAt: true,
+      name: true
     }
   })
 
-  const token = signAccessToken({ userUuid: user.uuid })
-
   return {
-    token,
     user
   }
 }

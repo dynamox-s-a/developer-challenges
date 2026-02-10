@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import { tokenStorage } from '../../services/tokenStorage'
 import type { AuthState } from './authTypes'
-import { loginThunk } from './authThunks'
+import { loginThunk, meThunk, registerThunk } from './authThunks'
 
 const initialState: AuthState = {
   status: tokenStorage.get() ? 'authenticated' : 'idle',
@@ -52,6 +52,41 @@ const authSlice = createSlice({
         state.user = null
         state.errorMessage = (action.payload as string) || 'Falha ao autenticar'
         tokenStorage.clear()
+      })
+      .addCase(meThunk.pending, (state) => {
+        state.status = 'loading'
+        state.errorMessage = null
+      })
+      .addCase(meThunk.fulfilled, (state, action) => {
+        state.status = 'authenticated'
+        state.user = action.payload
+      })
+      .addCase(meThunk.rejected, (state, action) => {
+        state.status = 'error'
+        state.token = null
+        state.user = null
+        state.errorMessage = (action.payload as string) || 'Sessão expirada'
+        tokenStorage.clear()
+      })
+      .addCase(registerThunk.pending, (state) => {
+        state.status = 'loading'
+        state.errorMessage = null
+      })
+      .addCase(registerThunk.fulfilled, (state, action) => {
+        if (action.payload.data) {
+          state.status = 'authenticated'
+          state.user = {
+            uuid: action.payload.data.user.uuid,
+            email: action.payload.data.user.email,
+            name: action.payload.data.user.name
+          }
+          state.errorMessage = null
+        }
+      })
+      .addCase(registerThunk.rejected, (state, action) => {
+        state.status = 'error'
+        state.user = null
+        state.errorMessage = (action.payload as string) || 'Falha ao registrar'
       })
   }
 })
