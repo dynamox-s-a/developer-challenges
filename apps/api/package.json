@@ -7,7 +7,8 @@
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "prisma:generate": "dotenv -e ../../.env -- prisma generate",
     "prisma:migrate": "dotenv -e ../../.env -- prisma migrate dev --config prisma.config.ts",
-    "prisma:studio": "dotenv -e ../../.env -- prisma studio --config prisma.config.ts"
+    "prisma:studio": "dotenv -e ../../.env -- prisma studio --config prisma.config.ts",
+    "prisma:seed": "dotenv -e ../../.env -- ts-node prisma/seed.ts"
   },
   "keywords": [],
   "author": "",

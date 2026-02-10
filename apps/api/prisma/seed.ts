@@ -1,25 +1,27 @@
 import 'dotenv/config'
 import bcrypt from 'bcrypt'
-import { prisma } from '../src/lib/prisma'
+import { prisma } from '../src/core/lib/prisma'
 
 async function main() {
-  const email = 'user@dynamox.com'
-  const password = 'dynamox123'
+  const email = 'admin@dynamox.com'
+  const password = 'admin123'
+  const name = 'Admin'
 
   const passwordHash = await bcrypt.hash(password, 10)
 
   await prisma.user.upsert({
     where: { email },
-    update: {},
-    create: { email, passwordHash }
+    update: { name },
+    create: { name, email, passwordHash }
   })
 
-  console.log('Seed user created:', { email, password })
+  console.log('✅ Seed executed')
+  console.log('User:', { email, password })
 }
 
 main()
   .catch((e) => {
-    console.error(e)
+    console.error('❌ Seed failed', e)
     process.exit(1)
   })
   .finally(async () => {
