@@ -1,11 +1,11 @@
 # Dynamox Full Stack Challenge
 
-Sistema completo de monitoramento industrial com gestão de máquinas, pontos de monitoramento e sensores, construído com React, Node.js e PostgreSQL.
+Sistema simples de monitoramento industrial com gestão de máquinas, pontos de monitoramento e sensores, construído com React, Node.js e PostgreSQL.
 
 ## Contexto do Projeto
 
 Solução full-stack para monitoramento industrial que permite:
-- Gestão completa de máquinas e sensores
+- Gestão de máquinas e sensores
 - Coleta e visualização de dados em tempo real
 - Regras de negócio específicas (Pump vs Fan sensors)
 - Performance otimizada (P95 < 350ms)
@@ -28,7 +28,7 @@ Solução full-stack para monitoramento industrial que permite:
 ### Acessar o Sistema
 - **Frontend**: http://localhost:5173
 - **Backend API**: http://localhost:3001
-- **Documentação API**: http://localhost:3001/docs
+- **Documentação API**: http://localhost:3001/docs (swagger)
 - **Banco de Dados**: localhost:5433
 
 **Credenciais padrão**: `admin/admin`
@@ -240,27 +240,6 @@ docker system prune -f
 # Reconstruir do zero
 ./scripts/up.sh
 ```
-
-## Contribuição
-
-### Fluxo de Trabalho
-1. Fork do projeto
-2. Branch feature/nome-da-feature
-3. Commits semânticos
-4. Pull request com testes
-
-### Padrões
-- **TypeScript**: Tipagem estrita em todo o código
-- **Convenções**: ESLint + Prettier configurados
-- **Testes**: Cobertura obrigatória para novas features
-- **Docs**: Atualizar documentação relevante
-
-## Licença
-
-MIT License - Ver arquivo LICENSE para detalhes.
-
 ---
 
 **Desenvolvido para o Desafio Técnico Dynamox**
-
-Para suporte ou dúvidas, consulte a documentação em `docs/` ou abra uma issue.
