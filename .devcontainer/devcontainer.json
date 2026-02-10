@@ -1,0 +1,17 @@
+{
+  "name": "Dynamox Challenge Dev",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "api",
+  "workspaceFolder": "/workspaces/dynamox-challenge",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "Prisma.prisma",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  },
+  "forwardPorts": [3000, 5173]
+}
