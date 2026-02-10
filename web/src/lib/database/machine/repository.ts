@@ -29,11 +29,6 @@ export class MachineRepository {
     // delete SensorsByMachineId
     // delete MonitoringPointsByMachineId
     // return true if OKAY, false if not
-    const deletedMachine = await Machine.deleteOne({ _id: machineId })
-
-    if (!deletedMachine.acknowledged)
-      return MachineResponse(false, 'Erro ao deletar máquina.')
-
     const deleteMonitoringPoints = await MonitoringPoint.deleteMany({
       machine: machineId,
     })
@@ -46,6 +41,11 @@ export class MachineRepository {
     })
 
     if (!deleteSensors.acknowledged)
+      return MachineResponse(false, 'Erro ao deletar Sensores.')
+
+    const deletedMachine = await Machine.deleteOne({ _id: machineId })
+
+    if (!deletedMachine.acknowledged)
       return MachineResponse(false, 'Erro ao deletar máquina.')
 
     return MachineResponse(true, 'Máquina deletada com sucesso')
