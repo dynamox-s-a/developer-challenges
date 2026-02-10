@@ -1,0 +1,8 @@
+{
+  "name": "dynamox-challenge",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "description": "Dynamox Challenge Full Stack Application"
+}
