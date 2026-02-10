@@ -17,6 +17,7 @@ export interface LoginInput {
 export interface AuthUser {
   uuid: string
   email: string
+  name?: string
 }
 
 export interface LoginData {
