@@ -17,10 +17,8 @@ Typography,
 import {
 Analytics,
 Dashboard,
-Mail,
 Menu,
 Person,
-Settings,
 } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 
@@ -38,10 +36,8 @@ const closeDrawer = () => {
 
 const menuItems = [
     { text: 'Dashboard', icon: <Dashboard />, path: '/dashboard' },
-    { text: 'Perfil', icon: <Person />, path: '/dashboard/profile' },
-    { text: 'Mensagens', icon: <Mail />, path: '/dashboard/messages' },
     { text: 'Analytics', icon: <Analytics />, path: '/dashboard/analytics' },
-    { text: 'Configurações', icon: <Settings />, path: '/dashboard/settings' },
+    { text: 'Perfil', icon: <Person />, path: '/dashboard/profile' },
 ];
 
 
