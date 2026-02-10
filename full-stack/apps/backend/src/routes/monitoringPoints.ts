@@ -15,7 +15,7 @@ const monitoringPointIdSchema = z.object({
 const listQuerySchema = z.object({
   take: z.coerce.number().int().min(1).max(50).default(5),
   skip: z.coerce.number().int().min(0).default(0),
-  sortBy: z.enum(["machineName", "machineType", "monitoringPointName", "sensorModel", "createdAt"]).default("createdAt"),
+  sortBy: z.enum(["machineName", "machineType", "monitoringPointName", "sensorModel", "createdAt", "id"]).default("createdAt"),
   sortOrder: z.enum(["asc", "desc"]).default("asc"),
 });
 
@@ -63,21 +63,28 @@ export async function monitoringPointsRoutes(app: FastifyInstance) {
       return reply.badRequest("Sensors TcAg and TcAs are not allowed for Pump machines");
     }
 
-    const created = await prisma.monitoringPoint.create({
-      data: {
-        name: body.name,
-        machineId,
-        sensor: {
-          create: {
-            uniqueId: body.sensor.uniqueId,
-            model: body.sensor.model,
+    try {
+      const created = await prisma.monitoringPoint.create({
+        data: {
+          name: body.name,
+          machineId,
+          sensor: {
+            create: {
+              uniqueId: body.sensor.uniqueId,
+              model: body.sensor.model,
+            },
           },
         },
-      },
-      include: { machine: true, sensor: true },
-    });
+        include: { machine: true, sensor: true },
+      });
 
-    return reply.code(201).send(created);
+      return reply.code(201).send(created);
+    } catch (error: any) {
+      if (error.code === 'P2002' && error.meta?.target?.includes('name')) {
+        return reply.badRequest(`A monitoring point with name "${body.name}" already exists for this machine`);
+      }
+      throw error;
+    }
   });
 
   app.get("/monitoring-points", {
@@ -90,17 +97,38 @@ export async function monitoringPointsRoutes(app: FastifyInstance) {
     const orderBy = (() => {
       switch (sortBy) {
         case "machineName":
-          return { machine: { name: sortOrder } } as const;
+          return [
+            { machine: { name: sortOrder } },
+            { id: sortOrder as "asc" | "desc" }
+          ];
         case "machineType":
-          return { machine: { type: sortOrder } } as const;
+          return [
+            { machine: { type: sortOrder } },
+            { id: sortOrder as "asc" | "desc" }
+          ];
         case "monitoringPointName":
-          return { name: sortOrder } as const;
+          return [
+            { name: sortOrder },
+            { id: sortOrder as "asc" | "desc" }
+          ];
         case "sensorModel":
-          return { sensor: { model: sortOrder } } as const;
+          return [
+            { sensor: { model: sortOrder } },
+            { id: sortOrder as "asc" | "desc" }
+          ];
         case "createdAt":
-          return { createdAt: sortOrder } as const;
+          return [
+            { createdAt: sortOrder },
+            { id: sortOrder as "asc" | "desc" }
+          ];
+        case "id":
+          return [
+            { id: sortOrder }
+          ];
         default:
-          return { machine: { name: "asc" } } as const;
+          return [
+            { id: "asc" as const }
+          ];
       }
     })();
 
@@ -149,30 +177,37 @@ export async function monitoringPointsRoutes(app: FastifyInstance) {
       return reply.badRequest("Sensors TcAg and TcAs are not allowed for Pump machines");
     }
 
-    const updated = await prisma.monitoringPoint.update({
-      where: { id },
-      data: {
-        name: body.name,
-        sensor: body.sensor
-          ? current.sensor
-            ? {
-                update: {
-                  uniqueId: body.sensor.uniqueId,
-                  model: body.sensor.model,
-                },
-              }
-            : {
-                create: {
-                  uniqueId: body.sensor.uniqueId ?? crypto.randomUUID(),
-                  model: body.sensor.model ?? "HF_plus",
-                },
-              }
-          : undefined,
-      },
-      include: { machine: true, sensor: true },
-    });
+    try {
+      const updated = await prisma.monitoringPoint.update({
+        where: { id },
+        data: {
+          name: body.name,
+          sensor: body.sensor
+            ? current.sensor
+              ? {
+                  update: {
+                    uniqueId: body.sensor.uniqueId,
+                    model: body.sensor.model,
+                  },
+                }
+              : {
+                  create: {
+                    uniqueId: body.sensor.uniqueId ?? crypto.randomUUID(),
+                    model: body.sensor.model ?? "HF_plus",
+                  },
+                }
+            : undefined,
+        },
+        include: { machine: true, sensor: true },
+      });
 
-    return reply.send(updated);
+      return reply.send(updated);
+    } catch (error: any) {
+      if (error.code === 'P2002' && error.meta?.target?.includes('name')) {
+        return reply.badRequest(`A monitoring point with name "${body.name}" already exists for this machine`);
+      }
+      throw error;
+    }
   });
 
   app.delete("/monitoring-points/:id", {

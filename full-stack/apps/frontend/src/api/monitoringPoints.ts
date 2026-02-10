@@ -5,8 +5,8 @@ export type MonitoringPointRow = {
   monitoringPointName: string;
   machineName: string;
   machineType: "Pump" | "Fan";
-  sensorModel: "HF_plus" | "TcAg" | "TcAs";
-  sensorUniqueId: string;
+  sensorModel: "HF_plus" | "TcAg" | "TcAs" | null;
+  sensorUniqueId: string | null;
   createdAt: string;
 };
 

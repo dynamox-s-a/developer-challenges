@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import { RequireAuth } from "./components/RequireAuth";
-import App from "./App";
 import MachinesPage from "./pages/Machines";
+import MonitoringPointsPage from "./pages/MonitoringPoints";
 
 export default function AppRoutes() {
   return (
@@ -14,7 +14,7 @@ export default function AppRoutes() {
           path="/"
           element={
             <RequireAuth>
-              <App />
+              <Navigate to="/monitoring-points" replace />
             </RequireAuth>
           }
         />
@@ -24,6 +24,15 @@ export default function AppRoutes() {
           element={
             <RequireAuth>
               <MachinesPage />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/monitoring-points"
+          element={
+            <RequireAuth>
+              <MonitoringPointsPage />
             </RequireAuth>
           }
         />

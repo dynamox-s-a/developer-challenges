@@ -32,9 +32,9 @@ if ! command -v npx &> /dev/null; then
     exit 1
 fi
 
-if [ ! -d "node_modules/cypress" ]; then
+if [ ! -d "node_modules/cypress" ] && [ ! -d "apps/frontend/node_modules/cypress" ]; then
     echo -e "${YELLOW}Installing Cypress...${NC}"
-    npx cypress install
+    pnpm --filter frontend exec cypress install
 fi
 
 echo -e "${YELLOW}Checking services...${NC}"
@@ -59,11 +59,11 @@ echo -e "${BLUE}Starting E2E tests...${NC}"
 case $MODE in
     "run")
         echo -e "${YELLOW}Mode: Headless (CI/CD)${NC}"
-        pnpm --filter frontend exec cypress run --e2e --config-file cypress.config.ts --browser electron
+        cd apps/frontend && pnpm exec cypress run --e2e --config-file cypress.config.ts --browser electron
         ;;
     "open")
         echo -e "${YELLOW}Mode: Interactive${NC}"
-        pnpm --filter frontend exec cypress open --e2e --config-file cypress.config.ts --browser electron
+        cd apps/frontend && pnpm exec cypress open --e2e --config-file cypress.config.ts --browser electron
         ;;
     *)
         echo -e "${RED}Invalid mode: $MODE${NC}"

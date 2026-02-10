@@ -42,7 +42,7 @@ const initialState: State = {
   status: "idle",
   error: null,
 
-  pageSize: 5,
+  pageSize: 10,
   page: 0,
   sortBy: "machineName",
   sortOrder: "asc",

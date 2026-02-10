@@ -10,10 +10,17 @@ import { monitoringPointsRoutes } from "./routes/monitoringPoints.js";
 import { authRoutes } from "./routes/auth.js";
 import { timeSeriesRoutes } from "./routes/timeSeries.js";
 
+import os from 'os';
+
 export function buildApp() {
   const app = Fastify({ logger: false });
 
-  app.register(cors, { origin: true });
+  app.register(cors, { 
+    origin: ['http://localhost:5173', 'http://localhost:3000'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+  });
   app.register(sensible);
 
   app.register(swagger, {
@@ -48,7 +55,7 @@ export function buildApp() {
   });
 
   app.get("/health", async () => {
-    const hostname = require('os').hostname();
+    const hostname = os.hostname();
     const pid = process.pid;
     return { 
       ok: true, 

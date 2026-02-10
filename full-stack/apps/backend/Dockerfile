@@ -9,14 +9,7 @@ RUN npm install -g typescript && npm install
 # Copy code and schema
 COPY . .
 
-# Generate Prisma Client
-ENV DATABASE_URL="file:./dev.db"
-RUN npx prisma generate
-
-# Build
-RUN npm run build
-
 ENV NODE_ENV=production
 EXPOSE 3001
 
-CMD sh -c "npx prisma migrate deploy && npx prisma db seed && node dist/server.js"
+CMD sh -c "npx prisma generate && npx prisma migrate deploy && npx prisma db seed && npx tsx src/server.ts"

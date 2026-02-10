@@ -20,7 +20,6 @@ import {
   DataGrid,
   type GridColDef,
   type GridSortModel,
-  GridToolbar,
 } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
@@ -98,7 +97,7 @@ export default function App() {
   const handleEditMonitoringPoint = (row: any) => {
     setCrudForm({
       id: row.id,
-      machineId: "", // Não vamos permitir editar máquina
+      machineId: "", 
       name: row.monitoringPointName,
       sensorUniqueId: row.sensorUniqueId,
       sensorModel: row.sensorModel,
@@ -369,12 +368,11 @@ export default function App() {
           <DataGrid
             rows={items}
             columns={columns}
-            loading={false}
+            loading={status === "loading"}
             getRowId={(r) => r.id}
-            slots={{ toolbar: isMobile ? undefined : GridToolbar }}
-            disableRowSelectionOnClick
-            density={isMobile ? "compact" : "standard"}
-            pageSizeOptions={isMobile ? [5, 10] : [5, 10, 20]}
+            rowCount={total}
+            paginationMode="server"
+            pageSizeOptions={[10, 20, 50]}
             paginationModel={{ page, pageSize }}
             onPaginationModelChange={(m) => {
               if (m.page !== page) dispatch(setPage(m.page));
