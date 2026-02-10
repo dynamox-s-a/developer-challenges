@@ -2,7 +2,7 @@ name: KMP CI
 
 on:
   push:
-    branches: [ "main", "master", "container" ]
+    branches: [ "main", "master", "kael-kill" ]
   pull_request:
     branches: [ "main", "master" ]
 
