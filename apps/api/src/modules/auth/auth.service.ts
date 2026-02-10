@@ -1,15 +1,19 @@
 import bcrypt from 'bcrypt'
 import { prisma } from '../../core/lib/prisma'
 import { signAccessToken } from '../../core/auth/jwt'
+import { AppError } from '../../core/base/AppError'
 import type { LoginInput, RegisterInput } from './auth.schemas'
 
 export async function login(input: LoginInput) {
   const user = await prisma.user.findUnique({ where: { email: input.email } })
-  if (!user) return null
+  if (!user) {
+    throw new AppError('Invalid credentials', 401)
+  }
 
   const valid = await bcrypt.compare(input.password, user.passwordHash)
-  if (!valid) return null
-
+  if (!valid) {
+    throw new AppError('Invalid credentials', 401)
+  }
   const token = signAccessToken({ userUuid: user.uuid })
 
   return {
@@ -19,10 +23,16 @@ export async function login(input: LoginInput) {
 }
 
 export async function getMe(userUuid: string) {
-  return prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: { uuid: userUuid },
     select: { uuid: true, name: true, email: true, createdAt: true }
   })
+
+  if (!user) {
+    throw new AppError('User not found', 404)
+  }
+
+  return user
 }
 
 export async function register(input: RegisterInput) {
@@ -31,7 +41,7 @@ export async function register(input: RegisterInput) {
   })
 
   if (existingUser) {
-    return null
+    throw new AppError('User already exists', 409)
   }
 
   const passwordHash = await bcrypt.hash(input.password, 10)

@@ -20,4 +20,65 @@ model User {
   @@map("users")
 }
 
+enum MachineType {
+  Pump
+  Fan
+}
+
+enum SensorModel {
+  TcAg
+  TcAs
+  HF_PLUS
+}
+
+model Machine {
+  id        Int         @id @default(autoincrement())
+  uuid      String      @unique @default(uuid())
+
+  name      String
+  type      MachineType
+
+  monitoringPoints MonitoringPoint[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("machines")
+}
+
+model MonitoringPoint {
+  id        Int      @id @default(autoincrement())
+  uuid      String   @unique @default(uuid())
+
+  name      String
+
+  machineId Int
+  machine   Machine  @relation(fields: [machineId], references: [id], onDelete: Cascade)
+
+  sensor    Sensor?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([machineId])
+  @@map("monitoring_points")
+}
+
+model Sensor {
+  id        Int      @id @default(autoincrement())
+  uuid      String   @unique @default(uuid())
+
+  sensorId  String   @unique
+  model     SensorModel
+
+  monitoringPointId Int    @unique
+  monitoringPoint   MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("sensors")
+}
+
+
 

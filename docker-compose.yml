@@ -33,6 +33,9 @@ services:
       - '3000:3000'
     volumes:
       - .:/workspaces/dynamox-challenge
+      - /workspaces/dynamox-challenge/node_modules
+      - /workspaces/dynamox-challenge/apps/api/node_modules
+      - /workspaces/dynamox-challenge/apps/web/node_modules
     working_dir: /workspaces/dynamox-challenge
     command: tail -f /dev/null
 
