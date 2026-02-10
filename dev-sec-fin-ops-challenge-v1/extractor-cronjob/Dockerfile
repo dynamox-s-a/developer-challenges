@@ -1,6 +1,6 @@
 FROM python:3.11-slim
 
-WORKDIR ./src
+WORKDIR /src
 
 # Instalation of dependencies for the cronjob.
 COPY requirements.txt .
