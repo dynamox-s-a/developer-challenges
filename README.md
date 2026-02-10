@@ -8,8 +8,8 @@ Resposta ao desafio técnico Dynamox:
 - Quiz com 10 perguntas de múltipla escolha
 - Sistema de pontuação e histórico
 - Múltiplos jogadores
-- Persistência de sessão (retomar quiz em andamento)
-- Interface Android (obrigatório) e iOS (bonus)
+- Persistência de sessão e scores (SQLDelight)
+- Interface Android (Jetpack Compose) e iOS (SwiftUI + Compose Multiplatform)
 
 ## Abordagem
 
@@ -27,7 +27,7 @@ Todo código é desenvolvido test-first, seguindo o ciclo red-green-refactor.
 ├─────────────────────────┤
 │   Domain (Core)         │  ← Regras de negócio
 ├─────────────────────────┤
-│   Infrastructure        │  ← API, DB, etc
+│   Infrastructure        │  ← API, DB (SQLDelight)
 └─────────────────────────┘
 ```
 
@@ -38,24 +38,57 @@ Dependências apontam para dentro. Core não conhece frameworks.
 ```
 src/
 ├── commonMain/kotlin/org/kaelkill/quiz/
-│   └── domain/              # Core
-├── commonTest/kotlin/org/kaelkill/quiz/
-│   └── domain/              # Testes
-├── androidMain/             # Android
-└── iosMain/                 # iOS
+│   ├── domain/              # Core (Value Objects, Entities, Aggregates, Ports)
+│   ├── application/         # Use Cases
+│   ├── infrastructure/      # Repositories (SQLDelight, HTTP)
+│   ├── di/                  # Dependency Injection (Koin)
+│   └── ui/                  # Screens + ViewModel
+├── commonTest/              # Testes unitários e de integração
+├── androidMain/             # Android (Driver SQLite, MainActivity)
+└── iosMain/                 # iOS (Driver nativo, MainViewController)
 ```
 
 ## Executar
 
-### Testes
+### Testes (local)
 ```bash
 ./gradlew test
+```
+
+### Testes (Docker)
+```bash
+docker build -t quiz-app .
+docker run quiz-app
 ```
 
 ### Android
 ```bash
 ./gradlew installDebug
 ```
+
+### iOS
+1. Abrir o projeto no Xcode: `iosApp/iosApp.xcodeproj`
+2. Selecionar um simulador ou dispositivo
+3. Build and Run (⌘R)
+
+> O `initKoin()` deve ser chamado no `iOSApp.swift` antes de criar o `MainViewController`.
+
+## Premissas
+
+- A API de perguntas (`quiz-api-bwi5hjqyaq-uc.a.run.app`) está disponível e retorna JSON válido
+- Perguntas possuem exatamente 5 alternativas
+- Scores são persistidos localmente via SQLDelight (não há backend de persistência)
+- Nomes de jogadores são únicos (case-sensitive)
+
+## Screenshots (iOS)
+
+| Login | Loading | Pergunta |
+|-------|---------|----------|
+| ![Login](docs/screenshots/ios/quiz_start.png) | ![Loading](docs/screenshots/ios/quiz_loading.png) | ![Pergunta](docs/screenshots/ios/quiz_question.png) |
+
+| Resposta | Resultado | Histórico |
+|----------|-----------|-----------|
+| ![Resposta](docs/screenshots/ios/quiz_answer.png) | ![Resultado](docs/screenshots/ios/quiz_finish.png) | ![Histórico](docs/screenshots/ios/quiz_history.png) |
 
 ## Documentação
 

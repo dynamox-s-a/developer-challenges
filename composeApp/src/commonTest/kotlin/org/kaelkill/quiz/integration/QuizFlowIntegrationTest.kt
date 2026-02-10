@@ -15,9 +15,10 @@ import org.kaelkill.quiz.application.usecases.AnswerQuestionUseCase
 import org.kaelkill.quiz.application.usecases.FillSessionUseCase
 import org.kaelkill.quiz.application.usecases.RegisterOrLoginPlayerUseCase
 import org.kaelkill.quiz.application.usecases.StartNewQuizSessionUseCase
+import org.kaelkill.quiz.domain.ports.repositories.QuizSessionRepository
+import org.kaelkill.quiz.infrastructure.repositories.HttpQuestionRepository
 import org.kaelkill.quiz.infrastructure.repositories.InMemoryPlayerRepository
 import org.kaelkill.quiz.infrastructure.repositories.InMemoryQuizSessionRepository
-import org.kaelkill.quiz.infrastructure.repositories.HttpQuestionRepository
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -65,35 +66,39 @@ class QuizFlowIntegrationTest {
 
         val registerOrLogin = RegisterOrLoginPlayerUseCase(playerRepository)
         val fillSession = FillSessionUseCase(sessionRepository, questionRepository)
-        val startSession = StartNewQuizSessionUseCase(sessionRepository, registerOrLogin, fillSession)
+
+        val startSession = StartNewQuizSessionUseCase(sessionRepository, registerOrLogin, questionRepository)
         val answerQuestion = AnswerQuestionUseCase(sessionRepository, questionRepository)
 
-        return TestDependencies(startSession, answerQuestion)
+        return TestDependencies(startSession, answerQuestion, fillSession, sessionRepository)
     }
 
     private data class TestDependencies(
         val startSession: StartNewQuizSessionUseCase,
-        val answerQuestion: AnswerQuestionUseCase
+        val answerQuestion: AnswerQuestionUseCase,
+        val fillSession: FillSessionUseCase,
+        val sessionRepository: QuizSessionRepository
     )
-
-    // ==================== Fluxo completo ====================
 
     @Test
     fun `should complete full quiz flow - login, start, answer all, get score`() = runTest {
         val deps = createDependencies()
 
-        // 1. Login + criar sessão + preencher com 10 perguntas
         val startResult = deps.startSession.execute("John")
         assertTrue(startResult.isSuccess)
 
-        val session = startResult.getOrThrow()
-        assertEquals(10, session.questions.size)
-        assertEquals(0, session.answers.size)
-        assertEquals(0, session.score.value)
+        val initialSession = startResult.getOrThrow()
+        assertEquals(1, initialSession.questions.size, "Start deve retornar apenas 1 pergunta imediatamente")
 
-        // 2. Responder todas as 10 perguntas
-        var currentSession = session
-        for (question in session.questions) {
+        deps.fillSession.execute(initialSession.id.value)
+
+        val fullSession = deps.sessionRepository.getById(initialSession.id).getOrThrow()
+        assertEquals(10, fullSession.questions.size)
+        assertEquals(0, fullSession.answers.size)
+        assertEquals(0, fullSession.score.value)
+
+        var currentSession = fullSession
+        for (question in fullSession.questions) {
             val answerResult = deps.answerQuestion.execute(
                 currentSession.id.value,
                 question.id.value,
@@ -103,7 +108,6 @@ class QuizFlowIntegrationTest {
             currentSession = answerResult.getOrThrow()
         }
 
-        // 3. Verificar resultado final
         assertEquals(10, currentSession.answers.size)
         assertTrue(currentSession.isFinished)
         assertEquals(10, currentSession.score.value) // todas corretas (mock retorna true)
@@ -114,10 +118,8 @@ class QuizFlowIntegrationTest {
         val playerRepository = InMemoryPlayerRepository()
         val registerOrLogin = RegisterOrLoginPlayerUseCase(playerRepository)
 
-        // Primeiro login
         val first = registerOrLogin.execute("John").getOrThrow()
 
-        // Segundo login com mesmo nome
         val second = registerOrLogin.execute("John").getOrThrow()
 
         assertEquals(first.id, second.id)
@@ -129,7 +131,6 @@ class QuizFlowIntegrationTest {
         val playerRepository = InMemoryPlayerRepository()
         val sessionRepository = InMemoryQuizSessionRepository()
 
-        // Mock que retorna sempre false para respostas
         val wrongClient = HttpClient(MockEngine { request ->
             var counter = 0
             when {
@@ -163,14 +164,18 @@ class QuizFlowIntegrationTest {
         val questionRepository = HttpQuestionRepository(wrongClient)
         val registerOrLogin = RegisterOrLoginPlayerUseCase(playerRepository)
         val fillSession = FillSessionUseCase(sessionRepository, questionRepository)
-        val startSession = StartNewQuizSessionUseCase(sessionRepository, registerOrLogin, fillSession)
+
+        val startSession = StartNewQuizSessionUseCase(sessionRepository, registerOrLogin, questionRepository)
         val answerQuestion = AnswerQuestionUseCase(sessionRepository, questionRepository)
 
-        // Fluxo completo
-        val session = startSession.execute("Jane").getOrThrow()
+        val initialSession = startSession.execute("Jane").getOrThrow()
 
-        var currentSession = session
-        for (question in session.questions) {
+        fillSession.execute(initialSession.id.value)
+
+        val fullSession = sessionRepository.getById(initialSession.id).getOrThrow()
+
+        var currentSession = fullSession
+        for (question in fullSession.questions) {
             currentSession = answerQuestion.execute(
                 currentSession.id.value,
                 question.id.value,

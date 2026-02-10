@@ -1,0 +1,15 @@
+CREATE TABLE QuizSessionEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    playerId TEXT NOT NULL,
+    questionsJson TEXT NOT NULL DEFAULT "[]",
+    answersJson TEXT NOT NULL DEFAULT "[]",
+    scoreValue INTEGER NOT NULL DEFAULT 0
+);
+
+insert:
+INSERT OR REPLACE INTO QuizSessionEntity(id, playerId, questionsJson, answersJson, scoreValue)
+VALUES (?, ?, ?, ?, ?);
+
+selectById:
+SELECT * FROM QuizSessionEntity
+WHERE id = ?;

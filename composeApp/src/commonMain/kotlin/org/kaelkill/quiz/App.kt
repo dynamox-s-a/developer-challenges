@@ -1,47 +1,72 @@
 package org.kaelkill.quiz
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import org.jetbrains.compose.resources.painterResource
-
-import quizapp.composeapp.generated.resources.Res
-import quizapp.composeapp.generated.resources.compose_multiplatform
+import org.kaelkill.quiz.di.appModule
+import org.kaelkill.quiz.ui.screens.HistoryScreen
+import org.kaelkill.quiz.ui.screens.LoginScreen
+import org.kaelkill.quiz.ui.screens.QuizScreen
+import org.kaelkill.quiz.ui.screens.ResultScreen
+import org.kaelkill.quiz.ui.viewmodel.QuizViewModel
+import org.kaelkill.quiz.ui.viewmodel.Screen
+import org.koin.compose.KoinApplication
+import org.koin.compose.koinInject
 
 @Composable
-@Preview
 fun App() {
-    MaterialTheme {
-        var showContent by remember { mutableStateOf(false) }
-        Column(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.primaryContainer)
-                .safeContentPadding()
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Button(onClick = { showContent = !showContent }) {
-                Text("Click me!")
-            }
-            AnimatedVisibility(showContent) {
-                val greeting = remember { Greeting().greet() }
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Image(painterResource(Res.drawable.compose_multiplatform), null)
-                    Text("Compose: $greeting")
+    KoinApplication(application = { modules(appModule) }) {
+        MaterialTheme {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                val viewModel: QuizViewModel = koinInject()
+                val state by viewModel.state.collectAsState()
+
+                when (state.screen) {
+                    Screen.LOGIN -> LoginScreen(
+                        playerName = state.playerName,
+                        isLoading = state.isLoading,
+                        error = state.error,
+                        onNameChanged = viewModel::onPlayerNameChanged,
+                        onStartQuiz = viewModel::onStartQuiz,
+                        onShowHistory = viewModel::onShowHistory
+                    )
+
+                    Screen.QUIZ -> QuizScreen(
+                        question = state.currentQuestion,
+                        progress = state.progress,
+                        questionIndex = state.currentQuestionIndex,
+                        selectedOption = state.selectedOption,
+                        answerResult = state.answerResult,
+                        isLoading = state.isLoading,
+                        isWaitingForQuestion = state.isWaitingForQuestion,
+                        score = state.session?.score?.value ?: 0,
+                        error = state.error,
+                        canRetry = state.canRetry,
+                        onSelectOption = viewModel::onSelectOption,
+                        onSubmitAnswer = viewModel::onSubmitAnswer,
+                        onNextQuestion = viewModel::onNextQuestion,
+                        onRetry = viewModel::onRetry
+                    )
+
+                    Screen.RESULT -> ResultScreen(
+                        playerName = state.player?.name?.value ?: "",
+                        score = state.session?.score?.value ?: 0,
+                        onRestartQuiz = viewModel::onRestartQuiz,
+                        onShowHistory = viewModel::onShowHistory,
+                        onBackToLogin = viewModel::onBackToLogin
+                    )
+
+                    Screen.HISTORY -> HistoryScreen(
+                        players = state.allPlayers,
+                        onBack = viewModel::onBackFromHistory
+                    )
                 }
             }
         }

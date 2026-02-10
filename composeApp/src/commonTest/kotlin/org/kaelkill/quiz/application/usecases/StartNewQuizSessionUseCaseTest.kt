@@ -18,7 +18,7 @@ import kotlin.test.assertTrue
 class StartNewQuizSessionUseCaseTest {
 
     @Test
-    fun `should register player, create session AND fill it with questions`() = runTest {
+    fun `should create session with AT LEAST ONE question initially`() = runTest {
         val sessionRepo = FakeQuizSessionRepository()
         val playerRepo = FakePlayerRepository()
         val questionRepo = GeneratorQuestionRepository()
@@ -31,7 +31,7 @@ class StartNewQuizSessionUseCaseTest {
         val session = result.getOrThrow()
 
         assertTrue(session.playerId.value.isNotEmpty())
-        assertEquals(10, session.questions.size)
+        assertEquals(1, session.questions.size)
         assertTrue(sessionRepo.wasSaveCalled)
     }
 
@@ -47,20 +47,9 @@ class StartNewQuizSessionUseCaseTest {
     }
 
     @Test
-    fun `should fail if saving the initial empty session fails`() = runTest {
+    fun `should fail if saving the session fails`() = runTest {
         val sessionRepo = FakeQuizSessionRepository(failOnSave = true)
         val startSessionUseCase = makeSUT(sessionRepo, FakePlayerRepository(), GeneratorQuestionRepository())
-
-        val result = startSessionUseCase.execute("John")
-
-        assertTrue(result.isFailure)
-        assertTrue(result.exceptionOrNull() is Exception) // Esperamos erro de DB
-    }
-
-    @Test
-    fun `should fail if filling session fails`() = runTest {
-        val questionRepo = GeneratorQuestionRepository(failOnGet = true)
-        val startSessionUseCase = makeSUT(FakeQuizSessionRepository(), FakePlayerRepository(), questionRepo)
 
         val result = startSessionUseCase.execute("John")
 
@@ -69,9 +58,9 @@ class StartNewQuizSessionUseCaseTest {
     }
 
     @Test
-    fun `should fail if retrieving the final session fails`() = runTest {
-        val sessionRepo = FakeQuizSessionRepository(failOnGet = true)
-        val startSessionUseCase = makeSUT(sessionRepo, FakePlayerRepository(), GeneratorQuestionRepository())
+    fun `should fail if fetching first question fails`() = runTest {
+        val questionRepo = GeneratorQuestionRepository(failOnGet = true)
+        val startSessionUseCase = makeSUT(FakeQuizSessionRepository(), FakePlayerRepository(), questionRepo)
 
         val result = startSessionUseCase.execute("John")
 
@@ -87,7 +76,7 @@ class StartNewQuizSessionUseCaseTest {
         return StartNewQuizSessionUseCase(
             sessionRepo,
             RegisterOrLoginPlayerUseCase(playerRepo),
-            FillSessionUseCase(sessionRepo, questionRepo)
+            questionRepo
         )
     }
 
@@ -127,7 +116,7 @@ class StartNewQuizSessionUseCaseTest {
         override suspend fun getRandomQuestion(): Result<Question> {
             if (failOnGet) return Result.failure(Exception("API Error"))
             i++
-            return Question.create("q$i", "Q", listOf("A","B","C","D","E"))
+            return Question.create("q$i", "Q", listOf("A", "B", "C", "D", "E"))
         }
         override suspend fun checkAnswer(questionId: String, answer: String): Result<Boolean> = Result.success(true)
     }
