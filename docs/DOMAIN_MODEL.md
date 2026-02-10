@@ -2,117 +2,121 @@
 
 ## Linguagem Ubíqua (Ubiquitous Language)
 
-- **Player**: Usuário que participa do quiz
-- **Quiz Session**: Uma sessão de quiz em andamento ou finalizada
-- **Question**: Pergunta com múltiplas opções de resposta
-- **Answer**: Resposta do jogador para uma pergunta específica
-- **Score**: Pontuação de uma sessão de quiz
-- **Quiz History**: Histórico de todas as sessões de um jogador
+- **Player**: Usuário que participa do quiz, identificado por nome único
+- **Quiz Session**: Sessão de quiz com até 10 perguntas vinculada a um jogador
+- **Question**: Pergunta com enunciado e exatamente 5 opções de resposta
+- **Answer**: Resposta do jogador — associa uma pergunta à opção selecionada
+- **Score**: Contador de acertos em uma sessão
 
-## Conceitos do Domínio
+## Value Objects
 
-### Value Objects (sem identidade, definidos pelo valor)
+Objetos imutáveis sem identidade, definidos pelo valor. Todos utilizam factory methods com `Result<T>` para validação segura.
+
+**PlayerId**
+- Identificador UUID do jogador
+- `generate()` cria um novo ID, `create(value)` valida existente
 
 **PlayerName**
 - Nome do jogador, entre 2 e 50 caracteres
-- Espaços extras no início/fim são removidos automaticamente
+- Trim automático de espaços no início/fim
+
+**QuizSessionId**
+- Identificador UUID da sessão
+- `generate()` cria um novo ID, `create(value)` valida existente
 
 **QuestionId**
-- Identificador único de uma pergunta
-- Não pode ser vazio
-
-**SessionId**
-- Identificador único de uma sessão
-- Gerado automaticamente
-
-**AnswerOption**
-- Uma opção de resposta para uma pergunta
-- Não pode ser vazia
+- Identificador da pergunta (string não vazia, com trim)
 
 **QuestionStatement**
-- O enunciado de uma pergunta
-- Não pode ser vazio
+- Texto/enunciado da pergunta (string não vazia, com trim)
+
+**AnswerOption**
+- Texto de uma alternativa de resposta (string não vazia, com trim)
 
 **Score**
-- Representa o resultado de uma sessão completada
-- Quantidade de acertos sobre o total de perguntas
-- Percentual é derivado dos acertos
+- Inteiro não-negativo representando acertos
+- `increment()` retorna novo Score com valor +1
 
-**Timestamp**
-- Momento em que algo ocorreu, sempre em UTC
-
-### Entidades (com identidade)
+## Entidades
 
 **Question**
-- Possui um enunciado e 5 opções de resposta
-- Identificada pelo seu QuestionId
+- Campos: `id: QuestionId`, `statement: QuestionStatement`, `options: List<AnswerOption>`
+- Invariante: exatamente 5 opções únicas
+- Factory method `create()` valida todas as regras
 
 **Player**
-- Identificado por um ID único
-- Possui nome e data de criação
+- Campos: `id: PlayerId`, `name: PlayerName`, `scores: List<Int>`
+- `create(name)` gera ID automático com scores vazio
+- `restore(id, name, scores)` reconstrói a partir da persistência
+- `addScore(value)` retorna novo Player com score adicionado (imutável)
 
 **Answer**
-- Registro de uma resposta dada pelo jogador
-- Contém a opção selecionada, se estava correta e quando foi respondida
+- Campos: `questionId: QuestionId`, `selectedOption: AnswerOption`
+- Registro simples da opção escolhida para uma pergunta
 
-**QuizSession** (conceito central)
-- Contém exatamente 10 perguntas
-- Pertence a um jogador
-- Registra as respostas conforme o jogador avança
-- Possui um status: em andamento, completada ou abandonada
-- O score só existe quando a sessão é completada
+## Agregados
 
-### Agregados
+**QuizSession** (Aggregate Root)
+- Campos: `id: QuizSessionId`, `playerId: PlayerId`, `questions: List<Question>`, `answers: List<Answer>`, `score: Score`
+- `MAX_QUESTIONS = 10`
+- `addNewQuestion(question)` — adiciona pergunta se não atingiu o limite e não é duplicada
+- `answerQuestion(questionId, selectedOption, isCorrect)` — registra resposta; incrementa score se correta; rejeita pergunta já respondida ou inexistente
+- `isFinished` — verdadeiro quando `questions.size == 10 && answers.size == 10`
+- `currentQuestionIndex` — número de respostas dadas (indica próxima pergunta)
 
-**Player Aggregate**
-- Raiz: Player
-- Gerencia identidade e histórico de sessões
+## Ports (Interfaces de Repositório)
 
-**QuizSession Aggregate**
-- Raiz: QuizSession
-- Gerencia o fluxo de perguntas e respostas
-- Garante todas as invariantes da sessão
+Definidas no domínio, implementadas na infraestrutura (Hexagonal Architecture).
 
-## Fluxos de Negócio
+**PlayerRepository**
+- `save(player)` — persiste jogador
+- `getByName(name)` — busca por nome (retorna null se não existe)
+- `getAll()` — lista todos os jogadores
 
-### Gestão de Jogadores
-- Registrar um novo jogador com nome válido
-- Buscar jogador existente ou criar novo
-- Listar todos os jogadores
+**QuestionRepository**
+- `getRandomQuestion()` — obtém pergunta aleatória da API
+- `checkAnswer(questionId, answer)` — verifica resposta via API (retorna `Boolean`)
 
-### Sessão de Quiz
-- Iniciar nova sessão buscando 10 perguntas únicas
-- Retomar sessão em andamento
-- Responder uma pergunta da sessão
-- Consultar a pergunta atual
-- Completar a sessão e calcular score
+**QuizSessionRepository**
+- `save(session)` — persiste sessão
+- `getById(id)` — busca sessão por ID
 
-### Histórico e Pontuações
-- Consultar histórico de sessões completadas de um jogador
-- Consultar pontuações de todos os jogadores com melhor score e média
+## Use Cases (Camada Application)
 
-## Regras de Negócio Invariantes
+**RegisterOrLoginPlayerUseCase**
+- Busca jogador por nome; se não existe, cria novo
+- Retorna `Result<Player>`
 
-1. Uma sessão de quiz tem exatamente 10 perguntas
+**StartNewQuizSessionUseCase**
+- Registra/busca jogador e cria nova sessão com a primeira pergunta
+- Retorna `Result<QuizSession>`
+
+**FillSessionUseCase**
+- Preenche a sessão até atingir 10 perguntas únicas
+- Retry com até 30 tentativas para lidar com duplicatas e falhas de rede
+- Retorna `Result<QuizSession>`
+
+**AnswerQuestionUseCase**
+- Carrega sessão, valida resposta via API, delega ao agregado
+- Persiste sessão e atualiza score do jogador se a sessão finalizou
+- Retorna `Result<Boolean>` (acertou ou não)
+
+## Regras de Negócio Implementadas
+
+1. Uma sessão tem no máximo 10 perguntas
 2. Cada pergunta só pode ser respondida uma vez por sessão
-3. Sessão só pode ser completada quando todas as perguntas forem respondidas
-4. Score é calculado apenas em sessões completadas
-5. Perguntas em uma sessão não podem se repetir
-6. Uma vez completada, uma sessão não pode ser modificada
-7. Um jogador pode ter apenas uma sessão em andamento por vez
-8. Timestamps são sempre em UTC
+3. Perguntas em uma sessão não se repetem (verificação por `QuestionId`)
+4. Nomes de jogadores têm entre 2 e 50 caracteres
+5. Cada pergunta deve ter exatamente 5 opções únicas
+6. Scores são acumulados por jogador (lista de resultados de cada quiz)
 
-## Serviços do Domínio
+## Evolução Futura
 
-**QuizSessionService**
-- Coordena a criação de sessões com busca de perguntas
+Ideias para evolução do domínio que não foram implementadas nesta versão:
 
-**ScoreCalculator**
-- Calcula o resultado a partir das respostas dadas
-
-## Eventos do Domínio (para extensibilidade futura)
-
-- Jogador registrado
-- Sessão de quiz iniciada
-- Pergunta respondida
-- Sessão de quiz completada
+- **Status de sessão** (em andamento / completada / abandonada) com máquina de estados
+- **Timestamp** em entidades (criação de jogador, momento de cada resposta)
+- **Retomada de sessão** — encontrar e continuar sessão interrompida
+- **Restrição de sessão ativa** — um jogador pode ter apenas uma sessão em andamento
+- **Domain Events** — `PlayerRegistered`, `QuestionAnswered`, `SessionCompleted` para extensibilidade
+- **Score enriquecido** — total de perguntas, percentual, tempo de resposta
