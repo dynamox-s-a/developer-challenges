@@ -2,7 +2,7 @@ name: KMP CI
 
 on:
   push:
-    branches: [ "main", "master", "add-persistance" ] # Ajuste para sua branch
+    branches: [ "main", "master", "container" ] # Ajuste para sua branch
   pull_request:
     branches: [ "main", "master" ]
 
