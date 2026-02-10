@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
   Alert,
   Box,
@@ -12,35 +12,40 @@ import {
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
-import { loginThunk } from '../features/auth/authThunks'
+import { registerThunk } from '../features/auth/authThunks'
 import {
   selectAuthError,
-  selectAuthStatus,
-  selectIsAuthenticated
+  selectAuthStatus
 } from '../features/auth/authSelectors'
 import { clearAuthError } from '../features/auth/authSlice'
 
-export function LoginPage() {
+export function RegisterPage() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const status = useAppSelector(selectAuthStatus)
   const error = useAppSelector(selectAuthError)
-  const isAuth = useAppSelector(selectIsAuthenticated)
 
-  const [email, setEmail] = useState('admin@dynamox.com')
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [success, setSuccess] = useState(false)
 
   const isLoading = status === 'loading'
-
-  useEffect(() => {
-    if (isAuth) navigate('/', { replace: true })
-  }, [isAuth, navigate])
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
     dispatch(clearAuthError())
-    await dispatch(loginThunk({ email, password }))
+    setSuccess(false)
+
+    const result = await dispatch(registerThunk({ name, email, password }))
+
+    if (registerThunk.fulfilled.match(result)) {
+      setSuccess(true)
+      setTimeout(() => {
+        navigate('/login')
+      }, 2000)
+    }
   }
 
   return (
@@ -54,7 +59,7 @@ export function LoginPage() {
         <Card sx={{ width: '100%' }}>
           <CardContent>
             <Typography variant='h5' fontWeight={700} gutterBottom>
-              Login
+              Criar Conta
             </Typography>
 
             <Box
@@ -65,6 +70,20 @@ export function LoginPage() {
               mt={2}
             >
               {error && <Alert severity='error'>{error}</Alert>}
+              {success && (
+                <Alert severity='success'>
+                  Conta criada com sucesso! Redirecionando para login...
+                </Alert>
+              )}
+
+              <TextField
+                label='Nome'
+                type='text'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                fullWidth
+                required
+              />
 
               <TextField
                 label='Email'
@@ -94,18 +113,19 @@ export function LoginPage() {
                 {isLoading ? (
                   <>
                     <CircularProgress size={18} sx={{ mr: 1 }} />
-                    Entrando...
+                    Criando conta...
                   </>
                 ) : (
-                  'Entrar'
+                  'Criar Conta'
                 )}
               </Button>
+
               <Button
                 variant='text'
-                onClick={() => navigate('/register')}
+                onClick={() => navigate('/login')}
                 fullWidth
               >
-                Não tem conta? Crie aqui
+                Já tem conta? Faça login
               </Button>
             </Box>
           </CardContent>

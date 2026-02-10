@@ -61,27 +61,19 @@ const authSlice = createSlice({
         state.status = 'authenticated'
         state.user = action.payload
       })
-      .addCase(meThunk.rejected, (state, action) => {
-        state.status = 'error'
+      .addCase(meThunk.rejected, (state) => {
+        state.status = 'idle'
         state.token = null
         state.user = null
-        state.errorMessage = (action.payload as string) || 'Sessão expirada'
         tokenStorage.clear()
       })
       .addCase(registerThunk.pending, (state) => {
         state.status = 'loading'
         state.errorMessage = null
       })
-      .addCase(registerThunk.fulfilled, (state, action) => {
-        if (action.payload.data) {
-          state.status = 'authenticated'
-          state.user = {
-            uuid: action.payload.data.user.uuid,
-            email: action.payload.data.user.email,
-            name: action.payload.data.user.name
-          }
-          state.errorMessage = null
-        }
+      .addCase(registerThunk.fulfilled, (state) => {
+        state.status = 'idle'
+        state.errorMessage = null
       })
       .addCase(registerThunk.rejected, (state, action) => {
         state.status = 'error'
