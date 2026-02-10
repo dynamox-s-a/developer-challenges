@@ -6,7 +6,7 @@ enum MachineTypes {
   Fan = 'Fan',
 }
 
-const MachineModel = z.object({
+export const MachineModel = z.object({
   Name: z.string().max(30),
   Type: z.enum(MachineTypes),
 })
