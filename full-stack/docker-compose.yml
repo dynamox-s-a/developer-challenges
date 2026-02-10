@@ -35,6 +35,8 @@ services:
         condition: service_healthy
     ports:
       - "3001:3001"
+    networks:
+      - dynamox-network
     restart: unless-stopped
 
   frontend:
