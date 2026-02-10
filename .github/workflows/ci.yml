@@ -2,13 +2,13 @@ name: KMP CI
 
 on:
   push:
-    branches: [ "main", "master", "container" ] # Ajuste para sua branch
+    branches: [ "main", "master", "container" ]
   pull_request:
     branches: [ "main", "master" ]
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest # Runner Linux oficial do GitHub
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout project
@@ -24,15 +24,18 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      # Roda os testes do common via Unit Tests do Android (JVM)
       - name: Run Common Tests
         run: ./gradlew :composeApp:testDebugUnitTest
 
-      # Compila o APK de Debug
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v4
+        if: always() 
+        with:
+          report_paths: '**/build/test-results/testDebugUnitTest/*.xml'
+
       - name: Build Debug APK
         run: ./gradlew :composeApp:assembleDebug
 
-      # Faz o upload do APK para você baixar direto do GitHub
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
