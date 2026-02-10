@@ -80,7 +80,19 @@ docker run quiz-app
 - Scores são persistidos localmente via SQLDelight (não há backend de persistência)
 - Nomes de jogadores são únicos (case-sensitive)
 
-## Screenshots (iOS)
+## Screenshots
+
+### Android
+
+| Login | Loading | Pergunta |
+|-------|---------|----------|
+| ![Login](docs/screenshots/android/aquizstart.jpg) | ![Loading](docs/screenshots/android/aquizloading.jpg) | ![Pergunta](docs/screenshots/android/aquizquestion.jpg) |
+
+| Resposta | Resultado | Histórico |
+|----------|-----------|-----------|
+| ![Resposta](docs/screenshots/android/aquizanswer.jpg) | ![Resultado](docs/screenshots/android/aquizfinish.jpg) | ![Histórico](docs/screenshots/android/aquizhistory.jpg) |
+
+### iOS
 
 | Login | Loading | Pergunta |
 |-------|---------|----------|
