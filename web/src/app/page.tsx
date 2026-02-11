@@ -1,6 +1,10 @@
-import { redirect } from "next/navigation";
+import { HomePage } from "@/components/home/HomePage";
 
 export default function Home() {
-  redirect("/auth/register")
+  return (
+    <div className="flex items-center justify-center h-screen">
+      <HomePage />
+    </div>
+  )
 }
 

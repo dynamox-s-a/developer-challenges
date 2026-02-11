@@ -1,12 +1,9 @@
-import User, {
-  type IUser,
-  type UserDocument,
-  type UserDTO,
-} from '@/lib/database/user/schema'
+import User, { type IUser, type UserDocument } from '@/lib/database/user/schema'
+import type { CreateUserDto } from '@/types/zod/user'
 import bcrypt from 'bcrypt'
 
 export class UserRepository {
-  async create(user: UserDTO): Promise<IUser | null> {
+  async create(user: CreateUserDto): Promise<IUser | null> {
     const validateUser = await User.findOne({ email: user.email })
     if (validateUser) return null
 
@@ -40,6 +37,6 @@ export class UserRepository {
   }
 }
 
-type UserDTOLogin = Omit<UserDTO, 'name'>
+type UserDTOLogin = Omit<CreateUserDto, 'name'>
 const userRepository = new UserRepository()
 export default userRepository

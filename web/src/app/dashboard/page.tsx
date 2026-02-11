@@ -1,4 +1,4 @@
-import MainTable from "@/components/dashboard/visualization/main.table";
+import DataTable from "@/components/dashboard/visualization/DataTable";
 import { getUserSession } from "@/utils/jwt"
 import { redirect } from "next/navigation"
 
@@ -11,7 +11,7 @@ export default async function DashboardPage() {
 
 return (
     <div className="flex items-center justify-center">
-      <MainTable />
+      <DataTable />
     </div>
   );
 }

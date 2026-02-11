@@ -6,13 +6,11 @@ import {
   DataGrid,
   type GridPaginationModel,
 } from '@mui/x-data-grid'
-import Button from '@mui/material/Button'
-import AddIcon from '@mui/icons-material/Add'
-import { columns, rawRows, stats } from './main.table.fake.data'
-import { SubTitle } from './sub.title'
-import MachineDialog from './forms/machine'
+import { columns, rawRows, stats } from './fakeData'
+import StatsCards from './StatsCards'
+import SimpleSplitButton from '@/components/ui/simple-split-button'
 
-export default function MainTable() {
+export default function DataTable() {
   const processedRows = useMemo(() => {
     return rawRows.map(row => ({
       ...row,
@@ -25,8 +23,6 @@ export default function MainTable() {
     page: 0,
     pageSize: 5,
   })
-
-  const [machineForm, setMachineForm] = useState(false)
 
   return (
     <>
@@ -44,13 +40,13 @@ export default function MainTable() {
           mb: 2,
         }}>
 
-        <SubTitle 
-          countSensors={stats.sensors}
-          countMachines={stats.machines}
-          countMP={stats.monitoringPoints}
-        />
+          <StatsCards 
+            countSensors={stats.sensors}
+            countMachines={stats.machines}
+            countMP={stats.monitoringPoints}
+          />
 
-        <Button
+        {/* <Button
           variant="contained"
           type="submit"
           startIcon={<AddIcon />}
@@ -62,7 +58,8 @@ export default function MainTable() {
           }}
           >
             Adicionar
-          </Button>
+          </Button> */}
+          <SimpleSplitButton />
         </Box>
 
         <Box sx={{ 
@@ -79,27 +76,25 @@ export default function MainTable() {
             pageSizeOptions={[5]} 
             autoHeight={false}
             sx={{
+              border: 1,
               '& .MuiDataGrid-columnHeaders': {
-                backgroundColor: 'primary.light',
+                backgroundColor: 'secondary.light',
                 color: 'white',
               },
               '& .MuiDataGrid-cell': {
                 borderRight: '1px solid',
-                borderColor: 'divider',
+                borderColor: 'secondary.light',
               },
               '& .MuiDataGrid-columnHeader': {
-                color: 'black',
+                color: 'white',
+                backgroundColor: 'secondary.light',
                 borderRight: '1px solid',
-                borderColor: 'divider',
+                borderColor: 'secondary.light',
               },
             }}
           />
         </Box>
       </Box>
-      <MachineDialog 
-        open={machineForm}
-        onClose={() => setMachineForm(false)}
-      />
     </>
   )
 }

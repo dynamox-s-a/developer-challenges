@@ -1,12 +1,12 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material"
 
-interface ErrorModalProps {
+interface ErrorDialogProps {
   open: boolean;
   message: string;
   onClose: () => void;
 }
 
-export function ErrorModal({ open, message, onClose }: ErrorModalProps) {
+export function ErrorDialog({ open, message, onClose }: ErrorDialogProps) {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
       <DialogTitle color="error">Erro</DialogTitle>

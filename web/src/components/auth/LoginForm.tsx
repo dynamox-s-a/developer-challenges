@@ -2,11 +2,11 @@
 
 import { Box, Button, TextField, Typography } from "@mui/material"
 import { useForm } from "react-hook-form"
-import { loginRequestSchema, type loginRequest } from '../../lib/http/auth/services/auth.types';
+import { loginRequestSchema, type loginRequest } from '@/lib/http/auth/types';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authService } from "@/lib/http/auth";
 import { useState } from "react";
-import { ErrorModal } from "../errorModal";
+import { ErrorDialog } from "@/components/ui/error-dialog";
 import { useRouter } from "next/navigation";
 
 export const customBox = {
@@ -17,7 +17,7 @@ export const customBox = {
     border: "2px solid grey"
 }
 
-export default function LoginComponent() {
+export default function LoginForm() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalError, setModalError] = useState('');
   const router = useRouter()
@@ -86,7 +86,7 @@ export default function LoginComponent() {
         </Button>
 
       </Box>
-      <ErrorModal 
+      <ErrorDialog 
         open={modalOpen}
         message={modalError}
         onClose={() => setModalOpen(false)}

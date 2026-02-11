@@ -80,7 +80,7 @@
         "editor.tabSize": 2,
         "editor.insertSpaces": true
     },
-    "[javascript]": {
+    "[javascript][typescript][typescriptreact]": {
         "editor.wordWrap": "wordWrapColumn",
         "editor.wordWrapColumn": 80,
         "editor.formatOnSave": true,

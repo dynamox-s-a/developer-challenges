@@ -1,6 +1,7 @@
 import z from 'zod'
 
 export const registerRequestSchema = z.object({
+  _id: z.string().optional(),
   name: z.string().min(3).max(20),
   email: z.email().max(250),
   password: z.string().min(6).max(20),
@@ -14,6 +15,7 @@ export const registerResponseSchema = z.object({
 })
 
 export const loginRequestSchema = z.object({
+  _id: z.string().optional(),
   email: z.email().max(250),
   password: z.string().min(6),
 })
