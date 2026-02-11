@@ -51,8 +51,7 @@ export const MonitoringPointsList = () => {
   const [chartOpen, setChartOpen] = useState(false);
 
   useEffect(() => {
-    const currentLimit = limit < 5 ? 5 : limit;
-    dispatch(fetchMonitoringPoints({ page, limit: currentLimit, sortBy, sortOrder }));
+    dispatch(fetchMonitoringPoints({ page, limit, sortBy, sortOrder }));
     dispatch(fetchMachines());
   }, [dispatch, page, limit, sortBy, sortOrder]);
 
@@ -238,7 +237,7 @@ export const MonitoringPointsList = () => {
           onPageChange={handlePageChange}
           rowsPerPage={limit}
           onRowsPerPageChange={handleLimitChange}
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[2, 5, 10, 25]}
         />
       </TableContainer>
 
