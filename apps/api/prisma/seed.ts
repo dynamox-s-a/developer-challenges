@@ -9,7 +9,7 @@ async function main() {
 
   const passwordHash = await bcrypt.hash(password, 10)
 
-  await prisma.user.upsert({
+  const user = await prisma.user.upsert({
     where: { email },
     update: { name },
     create: { name, email, passwordHash }
@@ -26,7 +26,8 @@ async function main() {
     const machine = await prisma.machine.create({
       data: {
         name: `Maquina ${i}`,
-        type: machineTypes[i - 1]
+        type: machineTypes[i - 1],
+        userId: user.id
       }
     })
 

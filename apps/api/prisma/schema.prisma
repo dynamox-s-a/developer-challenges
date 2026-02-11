@@ -14,6 +14,8 @@ model User {
   name         String?
   passwordHash String
 
+  machines Machine[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -38,11 +40,16 @@ model Machine {
   name String
   type MachineType
 
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   monitoringPoints MonitoringPoint[]
 
-  @@unique([name, type])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, name, type])
+  @@index([userId])
   @@map("machines")
 }
 

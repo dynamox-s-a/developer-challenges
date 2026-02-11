@@ -10,8 +10,7 @@ export async function login(req: Request, res: Response) {
 }
 
 export async function me(req: Request, res: Response) {
-  const { userUuid } = (req as any).auth
-  const user = await authService.getMe(userUuid)
+  const user = await authService.getMe(req.user.uuid)
   return res.json(ResponseBase.success(user, 'Authenticated user'))
 }
 

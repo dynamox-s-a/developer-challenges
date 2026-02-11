@@ -16,21 +16,31 @@ function validateSensorForMachine(
   }
 }
 
-export async function createSensor(input: {
-  sensorUniqueId: string
-  model: 'TcAg' | 'TcAs' | 'HF_PLUS'
-  monitoringPointUuid: string
-}) {
+export async function createSensor(
+  input: {
+    sensorUniqueId: string
+    model: 'TcAg' | 'TcAs' | 'HF_PLUS'
+    monitoringPointUuid: string
+  },
+  userId: number
+) {
   const monitoringPoint = await prisma.monitoringPoint.findUnique({
     where: { uuid: input.monitoringPointUuid },
     include: {
-      machine: true,
-      sensor: true
+      machine: { select: { type: true, userId: true } },
+      sensor: { select: { id: true } }
     }
   })
 
   if (!monitoringPoint) {
     throw new AppError('Monitoring point not found', 404)
+  }
+
+  if (monitoringPoint.machine.userId !== userId) {
+    throw new AppError(
+      'Forbidden: you can only create sensors for monitoring points from your own machines',
+      403
+    )
   }
 
   if (monitoringPoint.sensor) {
@@ -79,9 +89,14 @@ export async function createSensor(input: {
   })
 }
 
-export async function listSensors() {
+export async function listSensors(userId: number) {
   return prisma.sensor.findMany({
     orderBy: { createdAt: 'desc' },
+    where: {
+      monitoringPoint: {
+        machine: { userId }
+      }
+    },
     select: {
       uuid: true,
       sensorUniqueId: true,
@@ -139,7 +154,8 @@ export async function getSensorByUuid(uuid: string) {
 
 export async function updateSensor(
   uuid: string,
-  input: { sensorUniqueId?: string; model?: 'TcAg' | 'TcAs' | 'HF_PLUS' }
+  input: { sensorUniqueId?: string; model?: 'TcAg' | 'TcAs' | 'HF_PLUS' },
+  userId: number
 ) {
   const sensor = await prisma.sensor.findUnique({
     where: { uuid },
@@ -149,7 +165,7 @@ export async function updateSensor(
       monitoringPoint: {
         select: {
           machine: {
-            select: { type: true }
+            select: { type: true, userId: true }
           }
         }
       }
@@ -158,6 +174,13 @@ export async function updateSensor(
 
   if (!sensor) {
     throw new AppError('Sensor not found', 404)
+  }
+
+  if (sensor.monitoringPoint.machine.userId !== userId) {
+    throw new AppError(
+      'Forbidden: you can only update sensors from your own machines',
+      403
+    )
   }
 
   if (input.model) {
@@ -200,14 +223,30 @@ export async function updateSensor(
   })
 }
 
-export async function deleteSensor(uuid: string) {
+export async function deleteSensor(uuid: string, userId: number) {
   const sensor = await prisma.sensor.findUnique({
     where: { uuid },
-    select: { id: true }
+    select: {
+      id: true,
+      monitoringPoint: {
+        select: {
+          machine: {
+            select: { userId: true }
+          }
+        }
+      }
+    }
   })
 
   if (!sensor) {
     throw new AppError('Sensor not found', 404)
+  }
+
+  if (sensor.monitoringPoint.machine.userId !== userId) {
+    throw new AppError(
+      'Forbidden: you can only delete sensors from your own machines',
+      403
+    )
   }
 
   await prisma.sensor.delete({ where: { id: sensor.id } })
