@@ -1,88 +1,88 @@
 # Dynamox Full-Stack Challenge
 
-Sistema de monitoramento de máquinas e sensores desenvolvido com React, Fastify e PostgreSQL.
+Machine and sensor monitoring system developed with React, Fastify, and PostgreSQL.
 
 ---
 
-## Planejamento de 7 Dias
+## 7-Day Plan
 
-### Dia 1 (01/02) — Setup + Autenticação Backend ✅
-- [x] Configurar Git (branch `gabriel-leite-araujo`, remote)
-- [x] Limpar arquivos desnecessários do repo
-- [x] Corrigir tsconfig.spec.json faltante
-- [x] Configurar seed do usuário com bcryptjs
-- [x] Estrutura de camadas (repositories, services, routes)
-- [x] POST /auth/login com JWT funcionando
-- [x] Configurar ts-node-dev para hot reload
+### Day 1 (02/01) — Setup + Backend Authentication ✅
+- [x] Configure Git (branch `gabriel-leite-araujo`, remote)
+- [x] Clean up unnecessary repo files
+- [x] Fix missing tsconfig.spec.json
+- [x] Configure user seed with bcryptjs
+- [x] Layer structure (repositories, services, routes)
+- [x] POST /auth/login with JWT working
+- [x] Configure ts-node-dev for hot reload
 
-### Dia 2 (02/02) — Backend: Auth Middleware + Machines
-- [x] Criar middleware de autenticação JWT
-- [x] Decorator `authenticate` para rotas protegidas
+### Day 2 (02/02) — Backend: Auth Middleware + Machines
+- [x] Create JWT authentication middleware
+- [x] `authenticate` decorator for protected routes
 - [x] CRUD `/machines`:
-  - [x] POST /machines (criar)
-  - [x] GET /machines (listar)
-  - [x] GET /machines/:id (buscar)
-  - [x] PUT /machines/:id (atualizar)
-  - [x] DELETE /machines/:id (deletar)
-- [x] Validação: tipo deve ser "Pump" ou "Fan"
-- [x] Repository + Service de machines
-- [x] Testes unitários do service
+  - [x] POST /machines (create)
+  - [x] GET /machines (list)
+  - [x] GET /machines/:id (get one)
+  - [x] PUT /machines/:id (update)
+  - [x] DELETE /machines/:id (delete)
+- [x] Validation: type must be "Pump" or "Fan"
+- [x] Machine Repository + Service
+- [x] Unit tests for service
 
-### Dia 3 (03/02) — Backend: Monitoring Points + Sensors
+### Day 3 (02/03) — Backend: Monitoring Points + Sensors
 - [x] CRUD `/monitoring-points`
 - [x] CRUD `/sensors`
-- [x] Associar sensor a monitoring point
-- [x] **Regra:** TcAg e TcAs NÃO podem ser usados em máquinas tipo "Pump"
-- [x] Lista paginada (5/página) com ordenação por qualquer coluna
+- [x] Associate sensor with monitoring point
+- [x] **Rule:** TcAg and TcAs CANNOT be used on "Pump" machines
+- [x] Paginated list (5/page) sortable by any column
 - [x] Repository + Service
-- [x] Testes unitários
+- [x] Unit tests
 
-### Dia 4 (04/02) — Backend: Time-Series + Finalização API
+### Day 4 (02/04) — Backend: Time-Series + API Finalization
 - [x] CRUD `/time-series`:
-  - [x] POST (armazenar dados do sensor)
-  - [x] GET (buscar série completa)
-  - [x] GET /metrics (métricas: min, max, avg)
-  - [x] GET /count (quantidade de registros)
-  - [x] DELETE (remover)
-- [x] Garantir latência < 350ms
-- [x] Swagger documentação completa
-- [x] Testes de integração
+  - [x] POST (store sensor data)
+  - [x] GET (fetch full series)
+  - [x] GET /metrics (metrics: min, max, avg)
+  - [x] GET /count (record count)
+  - [x] DELETE (remove)
+- [x] Ensure latency < 350ms
+- [x] Complete Swagger documentation
+- [x] Integration tests
 
-### Dia 5 (05/02) — Frontend: Setup + Autenticação
-- [x] Configurar Material UI 5 (tema)
-- [x] Configurar Redux Toolkit + Thunk
-- [x] Tela de Login
-- [x] Proteção de rotas (PrivateRoute)
+### Day 5 (02/05) — Frontend: Setup + Authentication
+- [x] Configure Material UI 5 (theme)
+- [x] Configure Redux Toolkit + Thunk
+- [x] Login Screen
+- [x] Route Protection (PrivateRoute)
 - [x] Logout
-- [x] Layout base responsivo (sidebar, header)
-- [x] Axios interceptors para JWT
+- [x] Responsive base layout (sidebar, header)
+- [x] Axios interceptors for JWT
 
-### Dia 6 (06/02) — Frontend: CRUD Machines + Monitoring Points
-- [x] Dashboard inicial
-- [x] Listagem de Machines (tabela)
-- [x] Modal criar/editar Machine
-- [x] Deletar Machine
-- [x] Listagem de Monitoring Points (paginada, ordenável)
-- [x] Associar/visualizar sensor
-- [x] Integração completa com API
+### Day 6 (02/06) — Frontend: CRUD Machines + Monitoring Points
+- [x] Initial Dashboard
+- [x] Machines List (table)
+- [x] Create/Edit Machine Modal
+- [x] Delete Machine
+- [x] Monitoring Points List (paginated, sortable)
+- [x] Associate/view sensor
+- [x] Complete API integration
 
-### Dia 7 (07/02) — Frontend: Time-Series + Polimento + Entrega
-- [x] Tela de visualização de time-series
-- [x] Gráfico com Recharts
-- [x] Upload/input de dados de sensores
-- [x] Testes unitários frontend
-- [x] Revisão de código
-- [x] README com assumptions finais
-- [x] Commits semânticos organizados
-- [x] PR final para dynamox-s-a/developer-challenges
+### Day 7 (02/07) — Frontend: Time-Series + Polish + Delivery
+- [x] Time-series visualization screen
+- [x] Chart with Recharts
+- [x] Upload/input sensor data
+- [x] Frontend unit tests
+- [x] Code review
+- [x] README with final assumptions
+- [x] Organized semantic commits
+- [x] Final PR to dynamox-s-a/developer-challenges
 
-### Bônus Implementados
+### Implemented Bonuses
 - [x] Nx Monorepo
-- [x] Predição Futura de Dados
+- [x] Future Data Prediction
 - [x] Load Balancer (Nginx)
 - [x] Load Tests (k6)
-- [x] Deploy (Docker/Containerização)
-- [ ] Testes E2E com Cypress (Configuração iniciada)
+- [x] Deploy (Docker/Containerization)
+- [ ] E2E Tests with Cypress (Configuration started)
 
 ---
 
@@ -101,9 +101,9 @@ Sistema de monitoramento de máquinas e sensores desenvolvido com React, Fastify
 - Prisma ORM
 - PostgreSQL
 - JWT Authentication
-- Regressão Linear para Predição
+- Linear Regression for Prediction
 
-**Infraestrutura:**
+**Infrastructure:**
 - Docker & Docker Compose
 - Nginx (Load Balancer & Web Server)
 - k6 (Load Testing)
@@ -111,42 +111,42 @@ Sistema de monitoramento de máquinas e sensores desenvolvido com React, Fastify
 **Monorepo:**
 - Nx
 
-## Pré-requisitos
+## Prerequisites
 
 - Node.js 18+
-- Docker e Docker Compose
+- Docker and Docker Compose
 - npm
-- k6 (opcional, para testes de carga)
+- k6 (optional, for load testing)
 
 ## Setup
 
-1. Configurar variáveis de ambiente:
+1. Configure environment variables:
 
 ```bash
 cp .env.example .env
 ```
 
-> **Atenção:** Após copiar, edite o arquivo `.env` com as seguintes configurações:
+> **Attention:** After copying, edit the `.env` file with the following settings:
 >
-> *   **JWT_SECRET**: Gere uma string aleatória segura (ex: `openssl rand -base64 32`) ou use `supersecret` apenas para testes locais.
+> *   **JWT_SECRET**: Generate a secure random string (e.g., `openssl rand -base64 32`) or use `supersecret` for local testing only.
 > *   **DATABASE_URL**:
->     *   Se for usar o banco via Docker (`npm run db:up`), altere a porta para **5433**:
+>     *   If using the database via Docker (`npm run db:up`), change the port to **5433**:
 >         `postgresql://dynamox:dynamox123@localhost:5433/dynamox?schema=public`
->     *   Se tiver um Postgres local rodando, mantenha a porta **5432** e ajuste usuário/senha conforme sua instalação.
+>     *   If you have a local Postgres running, keep port **5432** and adjust user/password according to your installation.
 
-2. Instalar dependências:
+2. Install dependencies:
 
 ```bash
 npm install
 ```
 
-2. Subir o banco de dados:
+3. Start the database:
 
 ```bash
 npm run db:up
 ```
 
-3. Gerar Prisma Client e rodar migrations:
+4. Generate Prisma Client and run migrations:
 
 ```bash
 npm run db:generate
@@ -154,7 +154,7 @@ npm run db:migrate
 npx prisma db seed
 ```
 
-4. Rodar a aplicação (Modo Desenvolvimento):
+5. Run the application (Development Mode):
 
 ```bash
 npm run dev
@@ -163,11 +163,11 @@ npm run dev
 - Frontend: http://localhost:4200
 - Backend: http://localhost:3000
 
-## Setup Completo com Docker (Bônus: Deploy & Load Balancer)
+## Full Docker Setup (Bonus: Deploy & Load Balancer)
 
-Para simular um ambiente de produção com Load Balancer e múltiplas réplicas da API:
+To simulate a production environment with Load Balancer and multiple API replicas:
 
-> **Nota:** Se você estiver usando Linux, pode ser necessário usar `docker compose` (com espaço) em vez de `docker-compose` (com hífen), dependendo da sua versão do Docker.
+> **Note:** If you are using Linux, you might need to use `docker compose` (with space) instead of `docker-compose` (with hyphen), depending on your Docker version.
 
 ```bash
 docker-compose -f docker-compose.full.yml up --build
@@ -175,20 +175,20 @@ docker-compose -f docker-compose.full.yml up --build
 
 - **Frontend (Nginx)**: http://localhost:4200
 - **API (Load Balanced)**: http://localhost:3000
-- **Réplicas API**: 3 instâncias rodando internamente
+- **API Replicas**: 3 instances running internally
 
-## Testes de Carga (Bônus)
+## Load Tests (Bonus)
 
-Com o ambiente rodando (dev ou docker), execute:
+With the environment running (dev or docker), execute:
 
 ```bash
-# Requer k6 instalado
+# Requires k6 installed
 k6 run load-test.js
 ```
 
-### Evidência de Performance (Exemplo)
+### Performance Evidence (Example)
 
-Execute o comando acima para gerar o relatório. O resultado esperado deve ser similar a:
+Run the command above to generate the report. The expected result should be similar to:
 
 ```
      ✓ logged in successfully
@@ -213,115 +213,114 @@ Execute o comando acima para gerar o relatório. O resultado esperado deve ser s
      vus_max........................: 20      min=20     max=20
 ```
 
-> **Nota:** O requisito de latência < 350ms é validado pela métrica `http_req_duration`.
+> **Note:** The latency requirement < 350ms is validated by the `http_req_duration` metric.
 
+## Available Scripts
 
-## Scripts Disponíveis
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Runs frontend and backend |
+| `npm run dev:web` | Runs only frontend |
+| `npm run dev:api` | Runs only backend |
+| `npm run build` | Production build |
+| `npm run test` | Runs unit tests |
+| `npm run db:up` | Starts PostgreSQL |
+| `npm run db:down` | Stops PostgreSQL |
+| `npm run db:migrate` | Runs migrations |
+| `npm run db:generate` | Generates Prisma Client |
+| `npm run db:studio` | Opens Prisma Studio |
 
-| Script | Descrição |
-|--------|-----------|
-| `npm run dev` | Roda frontend e backend |
-| `npm run dev:web` | Roda apenas o frontend |
-| `npm run dev:api` | Roda apenas o backend |
-| `npm run build` | Build de produção |
-| `npm run test` | Executa os testes unitários |
-| `npm run db:up` | Sobe o PostgreSQL |
-| `npm run db:down` | Para o PostgreSQL |
-| `npm run db:migrate` | Roda as migrations |
-| `npm run db:generate` | Gera o Prisma Client |
-| `npm run db:studio` | Abre o Prisma Studio |
-
-## Estrutura do Projeto
+## Project Structure
 
 ```
 ├── apps/
 │   ├── web/          # Frontend React + Vite
 │   └── api/          # Backend Fastify
 ├── libs/
-│   └── shared/       # Types compartilhados
+│   └── shared/       # Shared Types
 ├── prisma/
-│   └── schema.prisma # Schema do banco
-├── infra/            # Configurações de infra (Nginx)
-├── docker-compose.yml # DB apenas (Dev)
-├── docker-compose.full.yml # Ambiente completo (Prod Simulado)
-├── load-test.js      # Script de teste de carga k6
+│   └── schema.prisma # Database Schema
+├── infra/            # Infra Configs (Nginx)
+├── docker-compose.yml # DB only (Dev)
+├── docker-compose.full.yml # Full Environment (Simulated Prod)
+├── load-test.js      # k6 Load Test Script
 └── package.json
 ```
 
 ## Reviewer Feedback & Implementation Details
 
-Esta seção detalha como cada ponto do feedback da revisão foi endereçado e como validar a implementação.
+This section details how each point of the review feedback was addressed and how to validate the implementation.
 
-### 1. Autenticação e Configuração
-- **Feedback:** Faltava informação sobre qual usuário usar e como configurar o `.env`.
-- **Implementação:**
-  - Adicionada seção **Credenciais de Teste** com email/senha padrão.
-  - Adicionada seção de **Atenção** no Setup explicando como gerar o `JWT_SECRET` e configurar a `DATABASE_URL` correta para Docker (porta 5433).
-- **Verificação:** Siga os passos de [Setup](#setup) e tente logar com as credenciais fornecidas.
+### 1. Authentication & Configuration
+- **Feedback:** Missing information about which user to use and how to configure `.env`.
+- **Implementation:**
+  - Added **Test Credentials** section with default email/password.
+  - Added **Attention** section in Setup explaining how to generate `JWT_SECRET` and configure the correct `DATABASE_URL` for Docker (port 5433).
+- **Verification:** Follow the [Setup](#setup) steps and try to log in with the provided credentials.
 
-### 2. Paginação (Monitoring Points)
-- **Feedback:** Não era possível reduzir o número de itens por página.
-- **Implementação:** O componente de tabela foi atualizado para permitir opções de tamanho de página: `[2, 5, 10, 25]`.
-- **Verificação:** Na tela de Monitoring Points, use o seletor no rodapé da tabela para alterar a quantidade de linhas.
+### 2. Pagination (Monitoring Points)
+- **Feedback:** Unable to reduce the number of items per page.
+- **Implementation:** The table component was updated to allow page size options: `[2, 5, 10, 25]`.
+- **Verification:** On the Monitoring Points screen, use the selector at the bottom of the table to change the number of rows.
 
-### 3. Restrição de Sensores (Máquinas Pump)
-- **Feedback:** Garantir que TcAg/TcAs não sejam usados em Pump.
-- **Implementação:**
-  - **Frontend:** Ao selecionar uma máquina "Pump", o dropdown de sensores desabilita as opções inválidas e seleciona "HF+" automaticamente.
-  - **Backend:** O serviço valida o tipo da máquina antes de criar/atualizar e lança erro 400 se a regra for violada.
-- **Verificação:** Tente criar um sensor TcAg para uma máquina Pump via UI (deve estar bloqueado) ou via API (deve retornar erro).
+### 3. Sensor Restrictions (Pump Machines)
+- **Feedback:** Ensure TcAg/TcAs are not used on Pump machines.
+- **Implementation:**
+  - **Frontend:** When selecting a "Pump" machine, the sensor dropdown disables invalid options and automatically selects "HF+".
+  - **Backend:** The service validates the machine type before creating/updating and throws a 400 error if the rule is violated.
+- **Verification:** Try to create a TcAg sensor for a Pump machine via UI (should be blocked) or via API (should return error).
 
-### 4. Testes Unitários
+### 4. Unit Tests
 - **Feedback:** "Not all tests are implemented".
-- **Implementação:** Foram adicionados testes unitários abrangentes para o Backend (`monitoring-point.service.spec.ts`, etc.) e Frontend (`monitoringPointsSlice.spec.ts`).
-- **Verificação:** Execute `npm run test` e verifique se todos os testes passam.
+- **Implementation:** Comprehensive unit tests were added for Backend (`monitoring-point.service.spec.ts`, etc.) and Frontend (`monitoringPointsSlice.spec.ts`).
+- **Verification:** Run `npm run test` and verify that all tests pass.
 
-### 5. Latência e Performance
-- **Feedback:** Falta de evidência sobre o requisito de < 350ms.
-- **Implementação:** Configurado script de teste de carga com k6.
-- **Verificação:** Execute `npm run test:load`. O relatório final mostrará a métrica `http_req_duration` (p95) tipicamente abaixo de 20ms, superando largamente o requisito.
+### 5. Latency & Performance
+- **Feedback:** Missing evidence regarding the < 350ms requirement.
+- **Implementation:** Configured load test script with k6.
+- **Verification:** Run `npm run test:load`. The final report will show the `http_req_duration` (p95) metric typically below 20ms, largely surpassing the requirement.
 
 ### 6. Delete Time-Series
-- **Feedback:** Usuário deve poder deletar dados enviados.
-- **Implementação:** Endpoint `DELETE /time-series?sensorId=...` implementado.
-- **Verificação:** Pode ser testado via Swagger ou chamadas API diretas.
+- **Feedback:** User should be able to delete sent data.
+- **Implementation:** Endpoint `DELETE /time-series?sensorId=...` implemented.
+- **Verification:** Can be tested via Swagger or direct API calls.
 
-### 7. Load Balancer (Bônus)
-- **Feedback:** Adicionar Load Balancer.
-- **Implementação:** Ambiente Docker completo com Nginx atuando como Load Balancer distribuindo tráfego para 3 réplicas da API.
-- **Verificação:** Rode `docker-compose -f docker-compose.full.yml up` e acesse a aplicação. O Nginx gerencia o tráfego na porta 3000.
+### 7. Load Balancer (Bonus)
+- **Feedback:** Add Load Balancer.
+- **Implementation:** Full Docker environment with Nginx acting as a Load Balancer distributing traffic to 3 API replicas.
+- **Verification:** Run `docker-compose -f docker-compose.full.yml up` and access the application. Nginx manages traffic on port 3000.
 
 ---
 
-## Assumptions (Ambiguidades Resolvidas)
+## Assumptions (Resolved Ambiguities)
 
-Esta seção documenta as decisões técnicas tomadas para resolver ambiguidades ou requisitos abertos do desafio.
+This section documents the technical decisions made to resolve ambiguities or open requirements of the challenge.
 
-1.  **Autenticação Simplificada**:
-    *   **Decisão:** Uso de credenciais fixas no seed (`admin@dynamox.com`) e autenticação via JWT.
-    *   **Porquê:** O foco do desafio é a arquitetura e o fluxo de dados, não um sistema complexo de gestão de usuários (cadastro, recuperação de senha, etc.). Isso simplifica o setup para avaliação.
+1.  **Simplified Authentication**:
+    *   **Decision:** Use of fixed credentials in seed (`admin@dynamox.com`) and JWT authentication.
+    *   **Why:** The challenge focus is on architecture and data flow, not a complex user management system (registration, password recovery, etc.). This simplifies setup for evaluation.
 
-2.  **Mapeamento de Sensores (HF+)**:
-    *   **Decisão:** O modelo "HF+" é armazenado internamente no banco/enum como "HFPlus".
-    *   **Porquê:** Muitos sistemas e ORMs têm restrições com caracteres especiais em enums ou identificadores. O frontend faz a conversão visual de volta para "HF+".
+2.  **Sensor Mapping (HF+)**:
+    *   **Decision:** The "HF+" model is stored internally in the database/enum as "HFPlus".
+    *   **Why:** Many systems and ORMs have restrictions with special characters in enums or identifiers. The frontend handles the visual conversion back to "HF+".
 
-3.  **Validação de Regra de Negócio (Pump vs TcAg/TcAs)**:
-    *   **Decisão:** A validação ocorre tanto no Frontend (UX) quanto no Backend (Segurança/Integridade).
-    *   **Porquê:** Bloquear no frontend melhora a experiência do usuário, mas a validação no backend é obrigatória para garantir a integridade dos dados caso a API seja acessada diretamente.
+3.  **Business Rule Validation (Pump vs TcAg/TcAs)**:
+    *   **Decision:** Validation occurs in both Frontend (UX) and Backend (Security/Integrity).
+    *   **Why:** Blocking in the frontend improves user experience, but backend validation is mandatory to ensure data integrity if the API is accessed directly.
 
-4.  **Armazenamento de Time-Series**:
-    *   **Decisão:** Tabela relacional com índice composto `(sensorId, timestamp)`.
-    *   **Porquê:** Para o volume de dados esperado em um teste, o PostgreSQL lida perfeitamente bem. O índice composto otimiza as queries mais comuns: "busque os últimos dados *deste* sensor".
+4.  **Time-Series Storage**:
+    *   **Decision:** Relational table with composite index `(sensorId, timestamp)`.
+    *   **Why:** For the expected data volume in a test, PostgreSQL handles it perfectly well. The composite index optimizes the most common queries: "fetch the latest data *for this* sensor".
 
-5.  **Estratégia de Paginação**:
-    *   **Decisão:** Paginação Server-Side (skip/take).
-    *   **Porquê:** Embora a paginação no frontend fosse viável para poucos dados, a paginação no servidor é a única solução escalável para quando o número de pontos de monitoramento crescer.
+5.  **Pagination Strategy**:
+    *   **Decision:** Server-Side Pagination (skip/take).
+    *   **Why:** Although frontend pagination was feasible for little data, server-side pagination is the only scalable solution for when the number of monitoring points grows.
 
-6.  **Algoritmo de Predição**:
-    *   **Decisão:** Regressão Linear Simples baseada nos últimos 50 pontos.
-    *   **Porquê:** É uma abordagem determinística, leve e rápida de implementar sem necessidade de bibliotecas pesadas de ML (como TensorFlow/Python), atendendo ao requisito de "prever o próximo valor" dentro do ecossistema Node.js solicitado.
+6.  **Prediction Algorithm**:
+    *   **Decision:** Simple Linear Regression based on the last 50 points.
+    *   **Why:** It is a deterministic, lightweight, and fast-to-implement approach without needing heavy ML libraries (like TensorFlow/Python), meeting the requirement to "predict the next value" within the requested Node.js ecosystem.
 
-## Credenciais de Teste
+## Test Credentials
 
 - Email: `admin@dynamox.com`
-- Senha: `admin123`
+- Password: `admin123`
