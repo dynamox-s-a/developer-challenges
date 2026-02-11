@@ -5,7 +5,7 @@ import { registerRequestSchema, type registerRequest } from '@/lib/http/auth/typ
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Box, Button, TextField, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
-import { ErrorDialog } from '@/components/ui/dialogs/ErrorDialog'
+import { ErrorDialog } from '@/components/ui/error-dialog'
 import { useState } from 'react'
 import { useRouter } from "next/navigation";
 

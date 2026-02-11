@@ -1,5 +1,6 @@
 import ThemeRegistry from "@/components/auth/ThemeRegistry";
-import Sidebar from "@/components/dashboard/sidebar";
+import { AuroraText } from "@/components/ui/aurora-text";
+import Sidebar from "@/components/ui/sidebar";
 import { AppBar, Box, CssBaseline, Toolbar, Typography } from "@mui/material";
 
 export default function dashboardLayout({
@@ -14,8 +15,8 @@ export default function dashboardLayout({
       <AppBar position="fixed">
         <Toolbar>
           <Sidebar />
-          <Typography variant="h6" noWrap component="div">
-            Sensory Application
+          <Typography variant="h6" noWrap component="div" className="font-bold tracking-tighter">
+            Sensory <AuroraText>Application</AuroraText> 
           </Typography>
         </Toolbar>
       </AppBar>

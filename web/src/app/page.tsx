@@ -1,6 +1,10 @@
+import { HomePage } from "@/components/home/HomePage";
+
 export default function Home() {
   return (
-    <h1>Hello</h1>
+    <div className="flex items-center justify-center h-screen">
+      <HomePage />
+    </div>
   )
 }
 

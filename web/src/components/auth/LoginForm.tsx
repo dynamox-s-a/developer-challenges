@@ -6,7 +6,7 @@ import { loginRequestSchema, type loginRequest } from '@/lib/http/auth/types';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authService } from "@/lib/http/auth";
 import { useState } from "react";
-import { ErrorDialog } from "@/components/ui/dialogs/ErrorDialog";
+import { ErrorDialog } from "@/components/ui/error-dialog";
 import { useRouter } from "next/navigation";
 
 export const customBox = {

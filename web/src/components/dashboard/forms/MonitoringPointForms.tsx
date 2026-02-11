@@ -1,38 +1,35 @@
-/** biome-ignore-all lint/correctness/useUniqueElementIds: need to have Id */
-'use client'
-
-import { useState, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  Dialog, DialogTitle, DialogContent, DialogActions,
-  Button, TextField, Box, Typography, IconButton, FormControl, InputLabel, Select, MenuItem
-} from '@mui/material'
+import { CreateMonitoringPointDto, CreateMonitoringPointSchema } from "@/types/zod/monitoring-point"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField, Typography } from "@mui/material"
+import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
 import CloseIcon from '@mui/icons-material/Close'
-import { ErrorDialog } from '@/components/ui/error-dialog'
-import { type CreateMachineDto, CreateMachineSchema } from '@/types/zod/machine'
-import { useCreateMachine } from '@/hooks/api/machine/useCreateMachine'
+import { ErrorDialog } from "@/components/ui/error-dialog"
+import { useCreateMonitoringPoint } from "@/hooks/api/monitoring-point/useCreateMonitoringPoint"
 
-interface MachineFormProps {
+
+
+interface MonitoringPointProps {
   open: boolean
   onClose: () => void
 }
 
-export default function MachineForm({ open, onClose }: MachineFormProps) {
+export default function MonitoringPointForm({ open, onClose }: MonitoringPointProps) {
   const {
     register,
     handleSubmit,
     formState: { errors, isDirty },
     reset,
-  } = useForm<CreateMachineDto>({
-    resolver: zodResolver(CreateMachineSchema),
+  } = useForm<CreateMonitoringPointDto>({
+    resolver: zodResolver(CreateMonitoringPointSchema),
     defaultValues: {
       name: '',
-      type: 'Pump'
+      machine: '',
+      sensor: ''
     }
   })
 
-  const { createMachine, error: hookError, loading } = useCreateMachine()
+  const { createMonitoringPoint, error: hookError, loading } = useCreateMonitoringPoint()
 
   const [modalOpen, setModalOpen] = useState(false)
   const [modalError, setModalError] = useState('')
@@ -43,8 +40,8 @@ export default function MachineForm({ open, onClose }: MachineFormProps) {
     }
   }, [open, reset])
 
-  const onSubmit = async (data: CreateMachineDto) => {
-    const response = await createMachine(data)
+  const onSubmit = async (data: CreateMonitoringPointDto) => {
+    const response = await createMonitoringPoint(data)
 
     if (response.success) {
       reset()
@@ -72,7 +69,7 @@ export default function MachineForm({ open, onClose }: MachineFormProps) {
         }}
           component="div"
         >
-          <Typography variant="h5">Registrar Máquina</Typography>
+          <Typography variant="h5">Registrar Ponto de Monitoramento</Typography>
           <IconButton onClick={onClose} disabled={loading}>
             <CloseIcon />
           </IconButton>
@@ -89,21 +86,23 @@ export default function MachineForm({ open, onClose }: MachineFormProps) {
                 disabled={loading}
                 fullWidth
               />
-              
-              <FormControl fullWidth error={!!errors.type} disabled={loading}>
+            </Box>
+              {/* <FormControl fullWidth error={!!errors.type} disabled={loading}>
                 <InputLabel>Tipo</InputLabel>
                 <Select label="Tipo" {...register('type')} required={true}>
                   <MenuItem value="Pump">Pump</MenuItem>
                   <MenuItem value="Fan">Fan</MenuItem>
                 </Select>
               </FormControl>
-            </Box>
+            </Box> 
+                NEED HAVE SENSOR FORM CONTROL AND MACHINE FORM CONTROL!!!
+            */}
 
-            {hookError && (
+            {/* {hookError && (
               <Typography color="error" sx={{ mt: 2 }}>
                 {hookError}
               </Typography>
-            )}
+            )} */}
           </DialogContent>
 
           <DialogActions sx={{ p: 2 }}>

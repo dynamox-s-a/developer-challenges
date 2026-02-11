@@ -5,7 +5,7 @@ import {
   type CreateMonitoringPointDto,
   type MonitoringPointResponse,
   type UpdateMonitoringPointDto,
-} from '@/types/zod/monitoring_point'
+} from '@/types/zod/monitoring-point'
 
 class MonitoringPointRepository {
   async validateMonitoringPoint(

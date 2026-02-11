@@ -48,7 +48,7 @@ const Sidebar = () => {
   const drawerContent = (
     <Box sx={{ width: 250 }}>
       <Toolbar>
-        <Typography variant="h6" component="div">
+        <Typography variant="h6" component="div" sx={{color: "secondary"}}>
           Sensory Application
         </Typography>
       </Toolbar>
@@ -72,7 +72,7 @@ const Sidebar = () => {
   return (
     <>
       <IconButton
-        color="inherit"
+        color="secondary"
         aria-label="open drawer"
         onClick={toggleDrawer}
         edge="start"

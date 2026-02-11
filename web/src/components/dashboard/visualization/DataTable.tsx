@@ -6,11 +6,9 @@ import {
   DataGrid,
   type GridPaginationModel,
 } from '@mui/x-data-grid'
-import Button from '@mui/material/Button'
-import AddIcon from '@mui/icons-material/Add'
-import { columns, rawRows, stats } from './main.table.fake.data'
+import { columns, rawRows, stats } from './fakeData'
 import StatsCards from './StatsCards'
-import MachineForm from '../forms/MachineForms'
+import SimpleSplitButton from '@/components/ui/simple-split-button'
 
 export default function DataTable() {
   const processedRows = useMemo(() => {
@@ -25,8 +23,6 @@ export default function DataTable() {
     page: 0,
     pageSize: 5,
   })
-
-  const [machineForm, setMachineForm] = useState(false)
 
   return (
     <>
@@ -50,7 +46,7 @@ export default function DataTable() {
           countMP={stats.monitoringPoints}
         />
 
-        <Button
+        {/* <Button
           variant="contained"
           type="submit"
           startIcon={<AddIcon />}
@@ -62,7 +58,8 @@ export default function DataTable() {
           }}
           >
             Adicionar
-          </Button>
+          </Button> */}
+          <SimpleSplitButton />
         </Box>
 
         <Box sx={{ 
@@ -80,26 +77,23 @@ export default function DataTable() {
             autoHeight={false}
             sx={{
               '& .MuiDataGrid-columnHeaders': {
-                backgroundColor: 'primary.light',
+                backgroundColor: 'secondary.light',
                 color: 'white',
               },
               '& .MuiDataGrid-cell': {
                 borderRight: '1px solid',
-                borderColor: 'divider',
+                borderColor: 'secondary.light',
               },
               '& .MuiDataGrid-columnHeader': {
-                color: 'black',
+                color: 'white',
+                backgroundColor: 'secondary.light',
                 borderRight: '1px solid',
-                borderColor: 'divider',
+                borderColor: 'secondary.light',
               },
             }}
           />
         </Box>
       </Box>
-      <MachineForm 
-        open={machineForm}
-        onClose={() => setMachineForm(false)}
-      />
     </>
   )
 }

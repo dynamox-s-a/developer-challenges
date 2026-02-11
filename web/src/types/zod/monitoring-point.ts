@@ -14,7 +14,7 @@ export const MonitoringPointPresenterSchema = z.object({
   Sensor: z.string().optional(),
 })
 
-export const MonitoringResponseSchema = createResponseSchema(
+export const MonitoringPointResponseSchema = createResponseSchema(
   MonitoringPointPresenterSchema,
 )
 
@@ -27,4 +27,4 @@ export type MonitoringPointPresenter = z.infer<
 >
 
 export type UpdateMonitoringPointDto = Partial<CreateMonitoringPointDto>
-export type MonitoringPointResponse = z.infer<typeof MonitoringResponseSchema>
+export type MonitoringPointResponse = z.infer<typeof MonitoringPointResponseSchema>
