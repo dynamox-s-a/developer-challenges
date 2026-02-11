@@ -1,0 +1,70 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "admin@events.com",
+      "password": "admin123",
+      "role": "admin",
+      "name": "Admin User"
+    },
+    {
+      "id": 2,
+      "email": "reader@events.com",
+      "password": "reader123",
+      "role": "reader",
+      "name": "Reader User"
+    }
+  ],
+  "events": [
+    {
+      "id": 2,
+      "name": "React Workshop: Advanced Patterns",
+      "dateTime": "2026-02-20T14:00:00",
+      "location": "Online - Zoom",
+      "description": "Deep dive into advanced React patterns including custom hooks, render props, compound components, and performance optimization techniques. This hands-on workshop will transform your React development skills.",
+      "category": "Workshop",
+      "createdAt": "2026-01-15T08:00:00",
+      "updatedAt": "2026-01-15T08:00:00"
+    },
+    {
+      "id": 3,
+      "name": "AI and Machine Learning Webinar",
+      "dateTime": "2026-04-10T16:00:00",
+      "location": "Online - Microsoft Teams",
+      "description": "Explore the latest trends in artificial intelligence and machine learning. Learn about practical applications, ethical considerations, and how AI is transforming various industries in today's digital landscape.",
+      "category": "Webinar",
+      "createdAt": "2026-02-05T12:00:00",
+      "updatedAt": "2026-02-05T12:00:00"
+    },
+    {
+      "id": 4,
+      "name": "Startup Networking Night",
+      "dateTime": "2026-02-28T18:00:00",
+      "location": "TechHub Coworking Space, New York",
+      "description": "Connect with entrepreneurs, investors, and innovators in the startup ecosystem. This evening event offers opportunities to share ideas, build partnerships, and discover potential collaborations.",
+      "category": "Networking",
+      "createdAt": "2026-02-08T09:00:00",
+      "updatedAt": "2026-02-08T09:00:00"
+    },
+    {
+      "id": 5,
+      "name": "DevOps Best Practices Summit",
+      "dateTime": "2026-05-22T10:00:00",
+      "location": "Austin Convention Center",
+      "description": "Learn from DevOps experts about CI/CD pipelines, containerization, infrastructure as code, monitoring strategies, and automation tools that will streamline your development and operations workflow.",
+      "category": "Conference",
+      "createdAt": "2026-02-10T11:00:00",
+      "updatedAt": "2026-02-10T11:00:00"
+    },
+    {
+      "id": 6,
+      "name": "Past Event: JavaScript Fundamentals",
+      "dateTime": "2026-01-15T10:00:00",
+      "location": "Community Center, Boston",
+      "description": "A comprehensive workshop covering JavaScript fundamentals including ES6+ features, async programming, closures, and modern development practices. Perfect for developers looking to solidify their JavaScript knowledge.",
+      "category": "Workshop",
+      "createdAt": "2025-12-20T10:00:00",
+      "updatedAt": "2025-12-20T10:00:00"
+    }
+  ]
+}

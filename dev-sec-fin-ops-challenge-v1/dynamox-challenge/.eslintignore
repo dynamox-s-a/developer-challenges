@@ -1,0 +1,19 @@
+# Build outputs
+.next
+out
+build
+dist
+
+# Config files
+*.config.js
+*.config.mjs
+server.js
+
+# Dependencies
+node_modules
+
+# Test files
+coverage
+
+# Environment files
+.env*.local
