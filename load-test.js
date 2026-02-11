@@ -14,8 +14,8 @@ const BASE_URL = 'http://localhost:3000'; // Or http://localhost:80 for LB
 export default function () {
   // Login
   const loginPayload = JSON.stringify({
-    email: 'test@example.com',
-    password: 'password123',
+    email: 'admin@dynamox.com',
+    password: 'admin123',
   });
 
   const loginParams = {

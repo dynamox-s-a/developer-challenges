@@ -120,7 +120,13 @@ Sistema de monitoramento de máquinas e sensores desenvolvido com React, Fastify
 
 ## Setup
 
-1. Instalar dependências:
+1. Configurar variáveis de ambiente:
+
+```bash
+cp .env.example .env
+```
+
+2. Instalar dependências:
 
 ```bash
 npm install
@@ -152,6 +158,8 @@ npm run dev
 ## Setup Completo com Docker (Bônus: Deploy & Load Balancer)
 
 Para simular um ambiente de produção com Load Balancer e múltiplas réplicas da API:
+
+> **Nota:** Se você estiver usando Linux, pode ser necessário usar `docker compose` (com espaço) em vez de `docker-compose` (com hífen), dependendo da sua versão do Docker.
 
 ```bash
 docker-compose -f docker-compose.full.yml up --build
