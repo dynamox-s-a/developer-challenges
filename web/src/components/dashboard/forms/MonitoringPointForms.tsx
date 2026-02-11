@@ -87,22 +87,6 @@ export default function MonitoringPointForm({ open, onClose }: MonitoringPointPr
                 fullWidth
               />
             </Box>
-              {/* <FormControl fullWidth error={!!errors.type} disabled={loading}>
-                <InputLabel>Tipo</InputLabel>
-                <Select label="Tipo" {...register('type')} required={true}>
-                  <MenuItem value="Pump">Pump</MenuItem>
-                  <MenuItem value="Fan">Fan</MenuItem>
-                </Select>
-              </FormControl>
-            </Box> 
-                NEED HAVE SENSOR FORM CONTROL AND MACHINE FORM CONTROL!!!
-            */}
-
-            {/* {hookError && (
-              <Typography color="error" sx={{ mt: 2 }}>
-                {hookError}
-              </Typography>
-            )} */}
           </DialogContent>
 
           <DialogActions sx={{ p: 2 }}>
@@ -110,6 +94,7 @@ export default function MonitoringPointForm({ open, onClose }: MonitoringPointPr
               onClick={onClose}
               disabled={loading}
               variant="outlined"
+              color='secondary'
             >
               Cancelar
             </Button>
@@ -118,6 +103,7 @@ export default function MonitoringPointForm({ open, onClose }: MonitoringPointPr
               form="machine-form"
               variant="contained"
               disabled={loading || !isDirty}
+              color='secondary'
             >
               {loading ? 'Enviando...' : 'Registrar'}
             </Button>

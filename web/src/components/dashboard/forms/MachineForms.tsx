@@ -2,7 +2,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Dialog, DialogTitle, DialogContent, DialogActions,
@@ -21,6 +21,7 @@ interface MachineFormProps {
 export default function MachineForm({ open, onClose }: MachineFormProps) {
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors, isDirty },
     reset,
@@ -90,13 +91,25 @@ export default function MachineForm({ open, onClose }: MachineFormProps) {
                 fullWidth
               />
               
-              <FormControl fullWidth error={!!errors.type} disabled={loading}>
-                <InputLabel>Tipo</InputLabel>
-                <Select label="Tipo" {...register('type')} required={true}>
-                  <MenuItem value="Pump">Pump</MenuItem>
-                  <MenuItem value="Fan">Fan</MenuItem>
-                </Select>
-              </FormControl>
+              <Controller
+                name="type"
+                control={control}
+                render={({field, fieldState: {error}}) => (
+                  <FormControl fullWidth error={!!error} disabled={loading}>
+                    <InputLabel>Model</InputLabel>
+                    <Select 
+                      label="Type" 
+                      {...field}
+                      required
+                    >
+                      <MenuItem value="Pump">Pump</MenuItem>
+                      <MenuItem value="Fan">Fan</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
+              >
+
+              </Controller>
             </Box>
 
             {hookError && (
@@ -111,6 +124,7 @@ export default function MachineForm({ open, onClose }: MachineFormProps) {
               onClick={onClose}
               disabled={loading}
               variant="outlined"
+              color='secondary'
             >
               Cancelar
             </Button>
@@ -119,6 +133,7 @@ export default function MachineForm({ open, onClose }: MachineFormProps) {
               form="machine-form"
               variant="contained"
               disabled={loading || !isDirty}
+              color='secondary'
             >
               {loading ? 'Enviando...' : 'Registrar'}
             </Button>
