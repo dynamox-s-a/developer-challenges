@@ -2,9 +2,11 @@
 
 Machine and sensor monitoring system developed with React, Fastify, and PostgreSQL.
 
+This project uses **Nx** as a monorepo tool to manage both the Frontend (`apps/web`) and Backend (`apps/api`).
+
 ---
 
-## 7-Day Plan
+## 7-Day Plan (Development Log)
 
 ### Day 1 (02/01) — Setup + Backend Authentication ✅
 - [x] Configure Git (branch `gabriel-leite-araujo`, remote)
@@ -113,214 +115,195 @@ Machine and sensor monitoring system developed with React, Fastify, and PostgreS
 
 ## Prerequisites
 
-- Node.js 18+
-- Docker and Docker Compose
-- npm
-- k6 (optional, for load testing)
+Before starting, ensure you have the following installed:
 
-## Setup
+- **Node.js**: Version 18 or higher.
+- **Docker & Docker Compose**: Essential for running the database and the full production simulation.
+- **Git**: To clone the repository.
+- **npm**: (Usually comes with Node.js).
+- **k6** (Optional): Only if you want to run load tests manually outside of Docker.
 
-1. Configure environment variables:
+## Step-by-Step Setup
+
+Follow these steps to get the application running in **Development Mode**.
+
+### 1. Environment Configuration
+
+First, create the `.env` file from the example.
 
 ```bash
 cp .env.example .env
 ```
 
-> **Attention:** After copying, edit the `.env` file with the following settings:
->
-> *   **JWT_SECRET**: Generate a secure random string (e.g., `openssl rand -base64 32`) or use `supersecret` for local testing only.
-> *   **DATABASE_URL**:
->     *   If using the database via Docker (`npm run db:up`), change the port to **5433**:
->         `postgresql://dynamox:dynamox123@localhost:5433/dynamox?schema=public`
->     *   If you have a local Postgres running, keep port **5432** and adjust user/password according to your installation.
+**CRITICAL STEP:** Open the `.env` file and configure it as follows:
 
-2. Install dependencies:
+*   **JWT_SECRET**: Set this to any secure string.
+    *   *Example:* `JWT_SECRET="my-super-secure-secret-key-123"`
+*   **DATABASE_URL**:
+    *   **Option A (Recommended - Docker DB):** If you will use `npm run db:up` to start the database via Docker, set the port to **5433**.
+        *   `postgresql://dynamox:dynamox123@localhost:5433/dynamox?schema=public`
+    *   **Option B (Local Postgres):** If you already have Postgres running locally on port 5432, keep the default port and update the username/password.
+
+### 2. Install Dependencies
+
+This command installs all dependencies for both Frontend and Backend (Nx handles the workspace).
 
 ```bash
 npm install
 ```
 
-3. Start the database:
+### 3. Start Database
+
+This command spins up a PostgreSQL container on port **5433** (to avoid conflicts with local Postgres instances).
 
 ```bash
 npm run db:up
 ```
 
-4. Generate Prisma Client and run migrations:
+> *Tip: If you see an error about port conflict, ensure nothing is running on port 5433.*
+
+### 4. Database Setup (Migrations & Seed)
+
+This step creates the tables and populates the database with the initial **Admin User**.
 
 ```bash
+# Generate Prisma Client types
 npm run db:generate
+
+# Run migrations to create tables
 npm run db:migrate
+
+# Seed the database with the admin user
 npx prisma db seed
 ```
 
-5. Run the application (Development Mode):
+### 5. Run Application
+
+This starts both the Frontend (Vite) and Backend (Fastify) in watch mode.
 
 ```bash
 npm run dev
 ```
 
-- Frontend: http://localhost:4200
-- Backend: http://localhost:3000
+**Access the Application:**
+- **Frontend:** [http://localhost:4200](http://localhost:4200)
+- **Backend API:** [http://localhost:3000](http://localhost:3000)
+
+---
 
 ## Full Docker Setup (Bonus: Deploy & Load Balancer)
 
-To simulate a production environment with Load Balancer and multiple API replicas:
+This mode simulates a **Real Production Environment**. It spins up:
+1.  **PostgreSQL** Database.
+2.  **3 Replicas** of the API (Backend).
+3.  **Nginx Load Balancer** (distributing traffic among the 3 APIs).
+4.  **Nginx Web Server** (serving the Frontend static build).
 
-> **Note:** If you are using Linux, you might need to use `docker compose` (with space) instead of `docker-compose` (with hyphen), depending on your Docker version.
+**How to Run:**
 
 ```bash
+# Stop any running dev containers first
+npm run db:down
+
+# Start the full environment
 docker-compose -f docker-compose.full.yml up --build
 ```
 
-- **Frontend (Nginx)**: http://localhost:4200
-- **API (Load Balanced)**: http://localhost:3000
-- **API Replicas**: 3 instances running internally
+> **Note for Linux Users:** You might need to use `docker compose` (with a space) instead of `docker-compose`.
+
+**Access:**
+- **Application:** [http://localhost:4200](http://localhost:4200) (Served by Nginx)
+- **API:** [http://localhost:3000](http://localhost:3000) (Load Balanced)
+
+---
 
 ## Load Tests (Bonus)
 
-With the environment running (dev or docker), execute:
+We use **k6** to verify the performance requirement (Latency < 350ms).
+
+**How to Run:**
+With the application running (either Dev or Docker mode):
 
 ```bash
-# Requires k6 installed
-k6 run load-test.js
+# Run using the k6 Docker image (no installation required)
+npm run test:load
 ```
 
-### Performance Evidence (Example)
+**Expected Output:**
+Look for the `http_req_duration` metric. The `p(95)` value should be significantly lower than 350ms (typically around 10-20ms).
 
-Run the command above to generate the report. The expected result should be similar to:
-
-```
-     ✓ logged in successfully
-     ✓ machines status is 200
-
-     checks.........................: 100.00% ✓ 836      ✗ 0
-     data_received..................: 2.4 MB  23 kB/s
-     data_sent......................: 260 kB  2.5 kB/s
-     http_req_blocked...............: avg=24.5µs min=1µs    med=4µs    max=1.56ms p(90)=9µs    p(95)=13µs
-     http_req_connecting............: avg=7.83µs min=0s     med=0s     max=1.07ms p(90)=0s     p(95)=0s
-     http_req_duration..............: avg=7.84ms min=2.08ms med=6.86ms max=56.2ms p(90)=12.4ms p(95)=15.7ms
-       { expected_response:true }...: avg=7.84ms min=2.08ms med=6.86ms max=56.2ms p(90)=12.4ms p(95)=15.7ms
-     http_req_failed................: 0.00%   ✓ 0        ✗ 836
-     http_req_receiving.............: avg=58.6µs min=9µs    med=40µs   max=1.45ms p(90)=101µs  p(95)=135.25µs
-     http_req_sending...............: avg=18.4µs min=3µs    med=12µs   max=478µs  p(90)=31µs   p(95)=41µs
-     http_req_tls_handshaking.......: avg=0s     min=0s     med=0s     max=0s     p(90)=0s     p(95)=0s
-     http_req_waiting...............: avg=7.76ms min=2.01ms med=6.78ms max=56.09ms p(90)=12.33ms p(95)=15.54ms
-     http_reqs......................: 836     8.070087/s
-     iteration_duration.............: avg=1.01s  min=1s     med=1.01s  max=1.06s  p(90)=1.01s  p(95)=1.02s
-     iterations.....................: 418     4.035044/s
-     vus............................: 1       min=1      max=20
-     vus_max........................: 20      min=20     max=20
-```
-
-> **Note:** The latency requirement < 350ms is validated by the `http_req_duration` metric.
-
-## Available Scripts
-
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | Runs frontend and backend |
-| `npm run dev:web` | Runs only frontend |
-| `npm run dev:api` | Runs only backend |
-| `npm run build` | Production build |
-| `npm run test` | Runs unit tests |
-| `npm run db:up` | Starts PostgreSQL |
-| `npm run db:down` | Stops PostgreSQL |
-| `npm run db:migrate` | Runs migrations |
-| `npm run db:generate` | Generates Prisma Client |
-| `npm run db:studio` | Opens Prisma Studio |
-
-## Project Structure
-
-```
-├── apps/
-│   ├── web/          # Frontend React + Vite
-│   └── api/          # Backend Fastify
-├── libs/
-│   └── shared/       # Shared Types
-├── prisma/
-│   └── schema.prisma # Database Schema
-├── infra/            # Infra Configs (Nginx)
-├── docker-compose.yml # DB only (Dev)
-├── docker-compose.full.yml # Full Environment (Simulated Prod)
-├── load-test.js      # k6 Load Test Script
-└── package.json
-```
+---
 
 ## Reviewer Feedback & Implementation Details
 
-This section details how each point of the review feedback was addressed and how to validate the implementation.
+This section details exactly how each point of the review feedback was addressed and how you can verify it.
 
 ### 1. Authentication & Configuration
-- **Feedback:** Missing information about which user to use and how to configure `.env`.
-- **Implementation:**
-  - Added **Test Credentials** section with default email/password.
-  - Added **Attention** section in Setup explaining how to generate `JWT_SECRET` and configure the correct `DATABASE_URL` for Docker (port 5433).
-- **Verification:** Follow the [Setup](#setup) steps and try to log in with the provided credentials.
+- **Feedback:** Missing info on which user to use and `.env` config.
+- **Implementation:** Added explicit instructions in the [Setup](#step-by-step-setup) section and the [Test Credentials](#test-credentials) section below.
+- **Verification:** Use the credentials below to log in.
 
 ### 2. Pagination (Monitoring Points)
-- **Feedback:** Unable to reduce the number of items per page.
-- **Implementation:** The table component was updated to allow page size options: `[2, 5, 10, 25]`.
-- **Verification:** On the Monitoring Points screen, use the selector at the bottom of the table to change the number of rows.
+- **Feedback:** Unable to reduce items per page.
+- **Implementation:** Updated the table component to support page sizes of `[2, 5, 10, 25]`.
+- **Verification:** Go to "Monitoring Points", scroll to the bottom of the table, and change "Rows per page".
 
 ### 3. Sensor Restrictions (Pump Machines)
-- **Feedback:** Ensure TcAg/TcAs are not used on Pump machines.
+- **Feedback:** Prevent TcAg/TcAs on Pump machines.
 - **Implementation:**
-  - **Frontend:** When selecting a "Pump" machine, the sensor dropdown disables invalid options and automatically selects "HF+".
-  - **Backend:** The service validates the machine type before creating/updating and throws a 400 error if the rule is violated.
-- **Verification:** Try to create a TcAg sensor for a Pump machine via UI (should be blocked) or via API (should return error).
+  - **Frontend:** Dropdown automatically disables invalid options for Pump machines.
+  - **Backend:** API throws `400 Bad Request` if you try to bypass the UI.
+- **Verification:** Create a Machine with type "Pump", then try to add a Sensor. Only "HF+" will be available.
 
 ### 4. Unit Tests
 - **Feedback:** "Not all tests are implemented".
-- **Implementation:** Comprehensive unit tests were added for Backend (`monitoring-point.service.spec.ts`, etc.) and Frontend (`monitoringPointsSlice.spec.ts`).
-- **Verification:** Run `npm run test` and verify that all tests pass.
+- **Implementation:** Added unit tests for Services (Backend) and Redux Slices (Frontend).
+- **Verification:** Run `npm run test` to see all tests passing.
 
 ### 5. Latency & Performance
-- **Feedback:** Missing evidence regarding the < 350ms requirement.
-- **Implementation:** Configured load test script with k6.
-- **Verification:** Run `npm run test:load`. The final report will show the `http_req_duration` (p95) metric typically below 20ms, largely surpassing the requirement.
+- **Feedback:** Missing evidence of < 350ms latency.
+- **Implementation:** Added `load-test.js` and a script to run it.
+- **Verification:** Run `npm run test:load` and check the report.
 
 ### 6. Delete Time-Series
-- **Feedback:** User should be able to delete sent data.
-- **Implementation:** Endpoint `DELETE /time-series?sensorId=...` implemented.
-- **Verification:** Can be tested via Swagger or direct API calls.
+- **Feedback:** User wants to delete sent data.
+- **Implementation:** Added `DELETE /time-series` endpoint.
+- **Verification:** This can be tested via API calls or Swagger.
 
 ### 7. Load Balancer (Bonus)
 - **Feedback:** Add Load Balancer.
-- **Implementation:** Full Docker environment with Nginx acting as a Load Balancer distributing traffic to 3 API replicas.
-- **Verification:** Run `docker-compose -f docker-compose.full.yml up` and access the application. Nginx manages traffic on port 3000.
+- **Implementation:** Implemented via Nginx in `docker-compose.full.yml`.
+- **Verification:** Run the "Full Docker Setup" and observe the logs; requests will be distributed across `api-1`, `api-2`, and `api-3`.
 
 ---
 
 ## Assumptions (Resolved Ambiguities)
 
-This section documents the technical decisions made to resolve ambiguities or open requirements of the challenge.
-
-1.  **Simplified Authentication**:
-    *   **Decision:** Use of fixed credentials in seed (`admin@dynamox.com`) and JWT authentication.
-    *   **Why:** The challenge focus is on architecture and data flow, not a complex user management system (registration, password recovery, etc.). This simplifies setup for evaluation.
-
-2.  **Sensor Mapping (HF+)**:
-    *   **Decision:** The "HF+" model is stored internally in the database/enum as "HFPlus".
-    *   **Why:** Many systems and ORMs have restrictions with special characters in enums or identifiers. The frontend handles the visual conversion back to "HF+".
-
-3.  **Business Rule Validation (Pump vs TcAg/TcAs)**:
-    *   **Decision:** Validation occurs in both Frontend (UX) and Backend (Security/Integrity).
-    *   **Why:** Blocking in the frontend improves user experience, but backend validation is mandatory to ensure data integrity if the API is accessed directly.
-
-4.  **Time-Series Storage**:
-    *   **Decision:** Relational table with composite index `(sensorId, timestamp)`.
-    *   **Why:** For the expected data volume in a test, PostgreSQL handles it perfectly well. The composite index optimizes the most common queries: "fetch the latest data *for this* sensor".
-
-5.  **Pagination Strategy**:
-    *   **Decision:** Server-Side Pagination (skip/take).
-    *   **Why:** Although frontend pagination was feasible for little data, server-side pagination is the only scalable solution for when the number of monitoring points grows.
-
-6.  **Prediction Algorithm**:
-    *   **Decision:** Simple Linear Regression based on the last 50 points.
-    *   **Why:** It is a deterministic, lightweight, and fast-to-implement approach without needing heavy ML libraries (like TensorFlow/Python), meeting the requirement to "predict the next value" within the requested Node.js ecosystem.
+1.  **Simplified Authentication**: Used fixed seed credentials (`admin@dynamox.com`) and standard JWT for simplicity.
+2.  **Sensor Mapping**: "HF+" is stored as "HFPlus" in the DB to avoid special character issues in Enums.
+3.  **Validation**: Business rules (Pump vs TcAg) are enforced on both Frontend (UX) and Backend (Security).
+4.  **Time-Series Storage**: Relational table with composite index `(sensorId, timestamp)` for efficient querying.
+5.  **Pagination**: Server-side pagination was chosen to ensure scalability.
+6.  **Prediction**: Used Simple Linear Regression (last 50 points) as a lightweight, deterministic solution for the "predict next value" requirement.
 
 ## Test Credentials
 
-- Email: `admin@dynamox.com`
-- Password: `admin123`
+Use these credentials to log in to the application:
+
+- **Email:** `admin@dynamox.com`
+- **Password:** `admin123`
+
+---
+
+## Available Scripts
+
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Runs Frontend + Backend (Watch Mode) |
+| `npm run build` | Builds both apps for production |
+| `npm run test` | Runs all unit tests |
+| `npm run test:load` | Runs k6 load tests via Docker |
+| `npm run lint` | Runs linting checks |
+| `npm run db:up` | Starts DB container |
+| `npm run db:migrate` | Runs DB migrations |
+| `npm run db:seed` | Seeds DB with admin user |
