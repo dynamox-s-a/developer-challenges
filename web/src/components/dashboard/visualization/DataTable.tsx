@@ -40,11 +40,11 @@ export default function DataTable() {
           mb: 2,
         }}>
 
-        <StatsCards 
-          countSensors={stats.sensors}
-          countMachines={stats.machines}
-          countMP={stats.monitoringPoints}
-        />
+          <StatsCards 
+            countSensors={stats.sensors}
+            countMachines={stats.machines}
+            countMP={stats.monitoringPoints}
+          />
 
         {/* <Button
           variant="contained"
@@ -76,6 +76,7 @@ export default function DataTable() {
             pageSizeOptions={[5]} 
             autoHeight={false}
             sx={{
+              border: 1,
               '& .MuiDataGrid-columnHeaders': {
                 backgroundColor: 'secondary.light',
                 color: 'white',

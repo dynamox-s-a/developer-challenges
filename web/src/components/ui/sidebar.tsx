@@ -48,7 +48,7 @@ const Sidebar = () => {
   const drawerContent = (
     <Box sx={{ width: 250 }}>
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{color: "secondary"}}>
+        <Typography variant="h6" component="div">
           Sensory Application
         </Typography>
       </Toolbar>

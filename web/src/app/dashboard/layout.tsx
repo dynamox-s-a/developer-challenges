@@ -12,7 +12,7 @@ export default function dashboardLayout({
     <ThemeRegistry>
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed">
+      <AppBar position="fixed" sx={{backgroundColor: 'white'}}>
         <Toolbar>
           <Sidebar />
           <Typography variant="h6" noWrap component="div" className="font-bold tracking-tighter">
@@ -22,7 +22,7 @@ export default function dashboardLayout({
       </AppBar>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, mt: 8 }}
+        sx={{ flexGrow: 1, p: 3, mt: 8}}
       >
         {children}
       </Box>
