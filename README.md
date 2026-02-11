@@ -178,6 +178,36 @@ Com o ambiente rodando (dev ou docker), execute:
 k6 run load-test.js
 ```
 
+### Evidência de Performance (Exemplo)
+
+Execute o comando acima para gerar o relatório. O resultado esperado deve ser similar a:
+
+```
+     ✓ logged in successfully
+     ✓ machines status is 200
+
+     checks.........................: 100.00% ✓ 836      ✗ 0
+     data_received..................: 2.4 MB  23 kB/s
+     data_sent......................: 260 kB  2.5 kB/s
+     http_req_blocked...............: avg=24.5µs min=1µs    med=4µs    max=1.56ms p(90)=9µs    p(95)=13µs
+     http_req_connecting............: avg=7.83µs min=0s     med=0s     max=1.07ms p(90)=0s     p(95)=0s
+     http_req_duration..............: avg=7.84ms min=2.08ms med=6.86ms max=56.2ms p(90)=12.4ms p(95)=15.7ms
+       { expected_response:true }...: avg=7.84ms min=2.08ms med=6.86ms max=56.2ms p(90)=12.4ms p(95)=15.7ms
+     http_req_failed................: 0.00%   ✓ 0        ✗ 836
+     http_req_receiving.............: avg=58.6µs min=9µs    med=40µs   max=1.45ms p(90)=101µs  p(95)=135.25µs
+     http_req_sending...............: avg=18.4µs min=3µs    med=12µs   max=478µs  p(90)=31µs   p(95)=41µs
+     http_req_tls_handshaking.......: avg=0s     min=0s     med=0s     max=0s     p(90)=0s     p(95)=0s
+     http_req_waiting...............: avg=7.76ms min=2.01ms med=6.78ms max=56.09ms p(90)=12.33ms p(95)=15.54ms
+     http_reqs......................: 836     8.070087/s
+     iteration_duration.............: avg=1.01s  min=1s     med=1.01s  max=1.06s  p(90)=1.01s  p(95)=1.02s
+     iterations.....................: 418     4.035044/s
+     vus............................: 1       min=1      max=20
+     vus_max........................: 20      min=20     max=20
+```
+
+> **Nota:** O requisito de latência < 350ms é validado pela métrica `http_req_duration`.
+
+
 ## Scripts Disponíveis
 
 | Script | Descrição |
