@@ -16,65 +16,65 @@ Sistema de monitoramento de máquinas e sensores desenvolvido com React, Fastify
 - [x] Configurar ts-node-dev para hot reload
 
 ### Dia 2 (02/02) — Backend: Auth Middleware + Machines
-- [ ] Criar middleware de autenticação JWT
-- [ ] Decorator `authenticate` para rotas protegidas
-- [ ] CRUD `/machines`:
-  - [ ] POST /machines (criar)
-  - [ ] GET /machines (listar)
-  - [ ] GET /machines/:id (buscar)
-  - [ ] PUT /machines/:id (atualizar)
-  - [ ] DELETE /machines/:id (deletar)
-- [ ] Validação: tipo deve ser "Pump" ou "Fan"
-- [ ] Repository + Service de machines
-- [ ] Testes unitários do service
+- [x] Criar middleware de autenticação JWT
+- [x] Decorator `authenticate` para rotas protegidas
+- [x] CRUD `/machines`:
+  - [x] POST /machines (criar)
+  - [x] GET /machines (listar)
+  - [x] GET /machines/:id (buscar)
+  - [x] PUT /machines/:id (atualizar)
+  - [x] DELETE /machines/:id (deletar)
+- [x] Validação: tipo deve ser "Pump" ou "Fan"
+- [x] Repository + Service de machines
+- [x] Testes unitários do service
 
 ### Dia 3 (03/02) — Backend: Monitoring Points + Sensors
-- [ ] CRUD `/monitoring-points`
-- [ ] CRUD `/sensors`
-- [ ] Associar sensor a monitoring point
-- [ ] **Regra:** TcAg e TcAs NÃO podem ser usados em máquinas tipo "Pump"
-- [ ] Lista paginada (5/página) com ordenação por qualquer coluna
-- [ ] Repository + Service
-- [ ] Testes unitários
+- [x] CRUD `/monitoring-points`
+- [x] CRUD `/sensors`
+- [x] Associar sensor a monitoring point
+- [x] **Regra:** TcAg e TcAs NÃO podem ser usados em máquinas tipo "Pump"
+- [x] Lista paginada (5/página) com ordenação por qualquer coluna
+- [x] Repository + Service
+- [x] Testes unitários
 
 ### Dia 4 (04/02) — Backend: Time-Series + Finalização API
-- [ ] CRUD `/time-series`:
-  - [ ] POST (armazenar dados do sensor)
-  - [ ] GET (buscar série completa)
-  - [ ] GET /metrics (métricas: min, max, avg)
-  - [ ] GET /count (quantidade de registros)
-  - [ ] DELETE (remover)
-- [ ] Garantir latência < 350ms
-- [ ] Swagger documentação completa
-- [ ] Testes de integração
+- [x] CRUD `/time-series`:
+  - [x] POST (armazenar dados do sensor)
+  - [x] GET (buscar série completa)
+  - [x] GET /metrics (métricas: min, max, avg)
+  - [x] GET /count (quantidade de registros)
+  - [x] DELETE (remover)
+- [x] Garantir latência < 350ms
+- [x] Swagger documentação completa
+- [x] Testes de integração
 
 ### Dia 5 (05/02) — Frontend: Setup + Autenticação
-- [ ] Configurar Material UI 5 (tema)
-- [ ] Configurar Redux Toolkit + Thunk
-- [ ] Tela de Login
-- [ ] Proteção de rotas (PrivateRoute)
-- [ ] Logout
-- [ ] Layout base responsivo (sidebar, header)
-- [ ] Axios interceptors para JWT
+- [x] Configurar Material UI 5 (tema)
+- [x] Configurar Redux Toolkit + Thunk
+- [x] Tela de Login
+- [x] Proteção de rotas (PrivateRoute)
+- [x] Logout
+- [x] Layout base responsivo (sidebar, header)
+- [x] Axios interceptors para JWT
 
 ### Dia 6 (06/02) — Frontend: CRUD Machines + Monitoring Points
-- [ ] Dashboard inicial
-- [ ] Listagem de Machines (tabela)
-- [ ] Modal criar/editar Machine
-- [ ] Deletar Machine
-- [ ] Listagem de Monitoring Points (paginada, ordenável)
-- [ ] Associar/visualizar sensor
-- [ ] Integração completa com API
+- [x] Dashboard inicial
+- [x] Listagem de Machines (tabela)
+- [x] Modal criar/editar Machine
+- [x] Deletar Machine
+- [x] Listagem de Monitoring Points (paginada, ordenável)
+- [x] Associar/visualizar sensor
+- [x] Integração completa com API
 
 ### Dia 7 (07/02) — Frontend: Time-Series + Polimento + Entrega
-- [ ] Tela de visualização de time-series
-- [ ] Gráfico com Recharts
-- [ ] Upload/input de dados de sensores
-- [ ] Testes unitários frontend
-- [ ] Revisão de código
-- [ ] README com assumptions finais
-- [ ] Commits semânticos organizados
-- [ ] PR final para dynamox-s-a/developer-challenges
+- [x] Tela de visualização de time-series
+- [x] Gráfico com Recharts
+- [x] Upload/input de dados de sensores
+- [x] Testes unitários frontend
+- [x] Revisão de código
+- [x] README com assumptions finais
+- [x] Commits semânticos organizados
+- [x] PR final para dynamox-s-a/developer-challenges
 
 ### Bônus Implementados
 - [x] Nx Monorepo
@@ -125,6 +125,14 @@ Sistema de monitoramento de máquinas e sensores desenvolvido com React, Fastify
 ```bash
 cp .env.example .env
 ```
+
+> **Atenção:** Após copiar, edite o arquivo `.env` com as seguintes configurações:
+>
+> *   **JWT_SECRET**: Gere uma string aleatória segura (ex: `openssl rand -base64 32`) ou use `supersecret` apenas para testes locais.
+> *   **DATABASE_URL**:
+>     *   Se for usar o banco via Docker (`npm run db:up`), altere a porta para **5433**:
+>         `postgresql://dynamox:dynamox123@localhost:5433/dynamox?schema=public`
+>     *   Se tiver um Postgres local rodando, mantenha a porta **5432** e ajuste usuário/senha conforme sua instalação.
 
 2. Instalar dependências:
 
