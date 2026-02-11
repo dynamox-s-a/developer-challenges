@@ -248,19 +248,78 @@ Execute o comando acima para gerar o relatório. O resultado esperado deve ser s
 └── package.json
 ```
 
+## Reviewer Feedback & Implementation Details
+
+Esta seção detalha como cada ponto do feedback da revisão foi endereçado e como validar a implementação.
+
+### 1. Autenticação e Configuração
+- **Feedback:** Faltava informação sobre qual usuário usar e como configurar o `.env`.
+- **Implementação:**
+  - Adicionada seção **Credenciais de Teste** com email/senha padrão.
+  - Adicionada seção de **Atenção** no Setup explicando como gerar o `JWT_SECRET` e configurar a `DATABASE_URL` correta para Docker (porta 5433).
+- **Verificação:** Siga os passos de [Setup](#setup) e tente logar com as credenciais fornecidas.
+
+### 2. Paginação (Monitoring Points)
+- **Feedback:** Não era possível reduzir o número de itens por página.
+- **Implementação:** O componente de tabela foi atualizado para permitir opções de tamanho de página: `[2, 5, 10, 25]`.
+- **Verificação:** Na tela de Monitoring Points, use o seletor no rodapé da tabela para alterar a quantidade de linhas.
+
+### 3. Restrição de Sensores (Máquinas Pump)
+- **Feedback:** Garantir que TcAg/TcAs não sejam usados em Pump.
+- **Implementação:**
+  - **Frontend:** Ao selecionar uma máquina "Pump", o dropdown de sensores desabilita as opções inválidas e seleciona "HF+" automaticamente.
+  - **Backend:** O serviço valida o tipo da máquina antes de criar/atualizar e lança erro 400 se a regra for violada.
+- **Verificação:** Tente criar um sensor TcAg para uma máquina Pump via UI (deve estar bloqueado) ou via API (deve retornar erro).
+
+### 4. Testes Unitários
+- **Feedback:** "Not all tests are implemented".
+- **Implementação:** Foram adicionados testes unitários abrangentes para o Backend (`monitoring-point.service.spec.ts`, etc.) e Frontend (`monitoringPointsSlice.spec.ts`).
+- **Verificação:** Execute `npm run test` e verifique se todos os testes passam.
+
+### 5. Latência e Performance
+- **Feedback:** Falta de evidência sobre o requisito de < 350ms.
+- **Implementação:** Configurado script de teste de carga com k6.
+- **Verificação:** Execute `npm run test:load`. O relatório final mostrará a métrica `http_req_duration` (p95) tipicamente abaixo de 20ms, superando largamente o requisito.
+
+### 6. Delete Time-Series
+- **Feedback:** Usuário deve poder deletar dados enviados.
+- **Implementação:** Endpoint `DELETE /time-series?sensorId=...` implementado.
+- **Verificação:** Pode ser testado via Swagger ou chamadas API diretas.
+
+### 7. Load Balancer (Bônus)
+- **Feedback:** Adicionar Load Balancer.
+- **Implementação:** Ambiente Docker completo com Nginx atuando como Load Balancer distribuindo tráfego para 3 réplicas da API.
+- **Verificação:** Rode `docker-compose -f docker-compose.full.yml up` e acesse a aplicação. O Nginx gerencia o tráfego na porta 3000.
+
+---
+
 ## Assumptions (Ambiguidades Resolvidas)
 
-1. **Autenticação**: Implementada com JWT e credenciais fixas para simplificação do teste.
+Esta seção documenta as decisões técnicas tomadas para resolver ambiguidades ou requisitos abertos do desafio.
 
-2. **Sensores HF+**: O modelo "HF+" foi mapeado como "HFPlus" no enum do banco por restrições de caracteres especiais.
+1.  **Autenticação Simplificada**:
+    *   **Decisão:** Uso de credenciais fixas no seed (`admin@dynamox.com`) e autenticação via JWT.
+    *   **Porquê:** O foco do desafio é a arquitetura e o fluxo de dados, não um sistema complexo de gestão de usuários (cadastro, recuperação de senha, etc.). Isso simplifica o setup para avaliação.
 
-3. **Restrição de Sensores**: Sensores TcAg e TcAs não podem ser associados a máquinas do tipo "Pump" - esta validação é feita tanto no frontend quanto no backend.
+2.  **Mapeamento de Sensores (HF+)**:
+    *   **Decisão:** O modelo "HF+" é armazenado internamente no banco/enum como "HFPlus".
+    *   **Porquê:** Muitos sistemas e ORMs têm restrições com caracteres especiais em enums ou identificadores. O frontend faz a conversão visual de volta para "HF+".
 
-4. **Time-Series**: Dados são armazenados por sensor individual, com índice composto (sensorId, timestamp) para queries eficientes.
+3.  **Validação de Regra de Negócio (Pump vs TcAg/TcAs)**:
+    *   **Decisão:** A validação ocorre tanto no Frontend (UX) quanto no Backend (Segurança/Integridade).
+    *   **Porquê:** Bloquear no frontend melhora a experiência do usuário, mas a validação no backend é obrigatória para garantir a integridade dos dados caso a API seja acessada diretamente.
 
-5. **Paginação**: Lista de monitoring points usa paginação server-side com 5 itens por página.
+4.  **Armazenamento de Time-Series**:
+    *   **Decisão:** Tabela relacional com índice composto `(sensorId, timestamp)`.
+    *   **Porquê:** Para o volume de dados esperado em um teste, o PostgreSQL lida perfeitamente bem. O índice composto otimiza as queries mais comuns: "busque os últimos dados *deste* sensor".
 
-6. **Predição**: Utilizada Regressão Linear Simples baseada nos últimos 50 pontos para prever o próximo valor.
+5.  **Estratégia de Paginação**:
+    *   **Decisão:** Paginação Server-Side (skip/take).
+    *   **Porquê:** Embora a paginação no frontend fosse viável para poucos dados, a paginação no servidor é a única solução escalável para quando o número de pontos de monitoramento crescer.
+
+6.  **Algoritmo de Predição**:
+    *   **Decisão:** Regressão Linear Simples baseada nos últimos 50 pontos.
+    *   **Porquê:** É uma abordagem determinística, leve e rápida de implementar sem necessidade de bibliotecas pesadas de ML (como TensorFlow/Python), atendendo ao requisito de "prever o próximo valor" dentro do ecossistema Node.js solicitado.
 
 ## Credenciais de Teste
 
