@@ -1,0 +1,27 @@
+import z from 'zod'
+import { createResponseSchema } from '@/utils/createResponse'
+
+export const MachineTypeSchema = z.enum(['Pump', 'Fan'])
+
+export const CreateMachineSchema = z.object({
+  name: z.string().min(1).max(30),
+  type: MachineTypeSchema,
+})
+
+export const MachinePresenterSchema = z.object({
+  _id: z.string(),
+  Name: z.string(),
+  Type: MachineTypeSchema,
+  createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
+})
+
+export const MachineResponseSchema = createResponseSchema(
+  MachinePresenterSchema,
+)
+
+export type MachinePresenter = z.infer<typeof MachinePresenterSchema>
+export type MachineType = z.infer<typeof MachineTypeSchema>
+export type CreateMachineDto = z.infer<typeof CreateMachineSchema>
+export type UpdateMachineDto = Partial<CreateMachineDto>
+export type MachineResponse = z.infer<typeof MachineResponseSchema>

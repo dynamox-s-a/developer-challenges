@@ -1,30 +1,51 @@
+import {
+  MachinePresenterSchema,
+  type CreateMachineDto,
+  type MachineResponse,
+} from '@/types/zod/machine'
 import MonitoringPoint from '../monitoring_point/schema'
 import Sensor from '../sensor/schema'
-import { MachineResponse, type IMachineResponse } from './presenter'
-import type { IMachine, MachineDTO } from './schema'
-import Machine from './schema'
+import Machine, { type IMachine } from './schema'
+import { toMachinePresenter } from '@/types/zod/presenter/toMachine'
 
 export class MachineRepository {
-  async create(machineDto: MachineDTO): Promise<IMachineResponse> {
+  async getById(machineId: string): Promise<MachineResponse> {
+    const machine = await Machine.findOne({ _id: machineId })
+
+    if (!machine) return { success: false, message: 'Maquina não encontrada.' }
+
+    const parsedMachine = MachinePresenterSchema.safeParse(machine.toObject())
+
+    if (!parsedMachine.success)
+      return { success: false, message: 'Erro ao parsear o valor' }
+
+    return {
+      success: true,
+      message: 'Máquina encontrada com sucesso',
+      data: parsedMachine.data,
+    }
+  }
+
+  async create(dto: CreateMachineDto): Promise<MachineResponse> {
     // pass DTO
     // validate same name
     // create machine
     // return createdDocument
-    const validateMachine = await Machine.findOne({ name: machineDto.Name })
-    if (validateMachine)
-      return MachineResponse(false, 'Máquina com esse nome já existe.')
-
-    const machine = await new Machine(machineDto)
+    const machine = await new Machine({ Name: dto.name, Type: dto.type })
     const savedMachine = await machine.save()
 
-    return MachineResponse(
-      true,
-      'Máquina criada com sucesso',
-      savedMachine.toObject() as IMachine,
-    )
+    const machineObj = savedMachine.toObject()
+
+    const machinePresenter = toMachinePresenter(machineObj as IMachine)
+
+    return {
+      success: true,
+      message: 'Máquina cadastrada com sucesso',
+      data: machinePresenter,
+    }
   }
 
-  async delete(machineId: string): Promise<IMachineResponse> {
+  async delete(machineId: string): Promise<MachineResponse> {
     // pass MachineId
     // delete SensorsByMachineId
     // delete MonitoringPointsByMachineId
@@ -34,46 +55,42 @@ export class MachineRepository {
     })
 
     if (!deleteMonitoringPoints.acknowledged)
-      return MachineResponse(false, 'Erro ao deletar Monitoring points.')
+      return { success: false, message: 'Monitoring points não deletados' }
 
     const deleteSensors = await Sensor.deleteMany({
-      machine: machineId,
+      Machine: machineId,
     })
 
     if (!deleteSensors.acknowledged)
-      return MachineResponse(false, 'Erro ao deletar Sensores.')
+      return { success: false, message: 'Sensores não deletados' }
 
     const deletedMachine = await Machine.deleteOne({ _id: machineId })
 
     if (!deletedMachine.acknowledged)
-      return MachineResponse(false, 'Erro ao deletar máquina.')
+      return { success: false, message: 'Máquina não deletada.' }
 
-    return MachineResponse(true, 'Máquina deletada com sucesso')
+    return { success: true, message: 'Máquina deletada com sucesso' }
   }
 
   async update(
     oldMachineId: string,
-    machineDto: MachineDTO,
-  ): Promise<IMachineResponse> {
+    machineDto: CreateMachineDto,
+  ): Promise<MachineResponse> {
     // pass new machine DTO
     // find old machine document
     // verify if old machine has conflitant types with
     //sensor and MP's:
     // [1] Machine PUMP CANT have Sensors with type TcAg OR TcAs, must be HF+
     // return new machine document
-    const validateNewMachine = await Machine.findOne({ name: machineDto.Name })
-    if (validateNewMachine)
-      return MachineResponse(false, 'Máquina já existente')
-
     const updateOldMachine = await Machine.updateOne(
       { _id: oldMachineId },
       machineDto,
     )
 
     if (!updateOldMachine.acknowledged)
-      return MachineResponse(false, 'Máquina não alterada')
+      return { success: false, message: 'Falha ao atualizar máquina.' }
 
-    return MachineResponse(true, 'Máquina alterada com sucesso')
+    return { success: true, message: 'Máquina atualizada com sucesso!' }
   }
 }
 

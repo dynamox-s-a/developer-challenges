@@ -1,12 +1,12 @@
 import { Box, Paper, Typography } from "@mui/material";
 
-interface SubtitleProps {
+interface StatsCardsProps {
   countMachines: number,
   countSensors: number,
   countMP: number
 }
 
-export function SubTitle({countMachines, countSensors, countMP}: SubtitleProps) {
+export default function StatsCards({countMachines, countSensors, countMP}: StatsCardsProps) {
   return (
     <Box sx={{ display: 'flex', gap: 3 }}>
       <Paper 

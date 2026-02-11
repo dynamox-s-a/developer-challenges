@@ -1,7 +1,7 @@
 'use server'
 
 import { cookies } from 'next/headers'
-import { TokenSchema } from './types'
+import { TokenSchema } from './validation'
 
 export async function getUserSession(): Promise<string | null> {
   const cookieStore = await cookies()

@@ -9,10 +9,10 @@ import {
 import Button from '@mui/material/Button'
 import AddIcon from '@mui/icons-material/Add'
 import { columns, rawRows, stats } from './main.table.fake.data'
-import { SubTitle } from './sub.title'
-import MachineDialog from './forms/machine'
+import StatsCards from './StatsCards'
+import MachineForm from '../forms/MachineForms'
 
-export default function MainTable() {
+export default function DataTable() {
   const processedRows = useMemo(() => {
     return rawRows.map(row => ({
       ...row,
@@ -44,7 +44,7 @@ export default function MainTable() {
           mb: 2,
         }}>
 
-        <SubTitle 
+        <StatsCards 
           countSensors={stats.sensors}
           countMachines={stats.machines}
           countMP={stats.monitoringPoints}
@@ -96,7 +96,7 @@ export default function MainTable() {
           />
         </Box>
       </Box>
-      <MachineDialog 
+      <MachineForm 
         open={machineForm}
         onClose={() => setMachineForm(false)}
       />

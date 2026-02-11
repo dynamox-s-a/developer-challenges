@@ -1,11 +1,11 @@
 'use client'
 
 import { authService } from '@/lib/http/auth'
-import { registerRequestSchema, type registerRequest } from '@/lib/http/auth/services/auth.types'
+import { registerRequestSchema, type registerRequest } from '@/lib/http/auth/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Box, Button, TextField, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
-import { ErrorModal } from '../errorModal'
+import { ErrorDialog } from '@/components/ui/dialogs/ErrorDialog'
 import { useState } from 'react'
 import { useRouter } from "next/navigation";
 
@@ -17,7 +17,7 @@ export const customBox = {
   border: '2px solid grey',
 }
 
-export default function RegisterComponent() {
+export default function RegisterForm() {
   const {
     register,
     handleSubmit,
@@ -96,7 +96,7 @@ export default function RegisterComponent() {
         Submit
       </Button>
     </Box>
-    <ErrorModal 
+    <ErrorDialog 
       open={modalOpen}
       message={modalError}
       onClose={() => setModalOpen(false)}

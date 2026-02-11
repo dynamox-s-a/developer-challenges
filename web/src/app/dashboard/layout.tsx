@@ -1,3 +1,4 @@
+import ThemeRegistry from "@/components/auth/ThemeRegistry";
 import Sidebar from "@/components/dashboard/sidebar";
 import { AppBar, Box, CssBaseline, Toolbar, Typography } from "@mui/material";
 
@@ -7,6 +8,7 @@ export default function dashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <ThemeRegistry>
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed">
@@ -24,5 +26,6 @@ export default function dashboardLayout({
         {children}
       </Box>
     </Box>
+    </ThemeRegistry>
   );
 }

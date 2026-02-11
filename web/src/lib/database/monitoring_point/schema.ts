@@ -1,12 +1,4 @@
-import { objectIdValidator } from '@/utils/types'
 import mongoose from 'mongoose'
-import z from 'zod'
-
-export const MonitoringPointModel = z.object({
-  Name: z.string(),
-  SensorId: objectIdValidator.optional(),
-  MachineId: objectIdValidator,
-})
 
 export interface IMonitoringPoint extends mongoose.Document {
   Name: string
@@ -35,7 +27,6 @@ const MonitoringPointSchema = new mongoose.Schema<IMonitoringPoint>(
   { timestamps: true },
 )
 
-export type MonitoringPointDTO = z.infer<typeof MonitoringPointModel>
 export type MonitoringPointDocument =
   mongoose.HydratedDocument<IMonitoringPoint>
 

@@ -1,20 +1,10 @@
-import { objectIdValidator } from '@/utils/types'
 import mongoose from 'mongoose'
-import z from 'zod'
+import { SensorTypeSchema, type SensorType } from '../../../types/zod/sensor'
 
-enum SensorTypes {
-  TCAG = 'TcAg',
-  TCAS = 'TcAs',
-  HF = 'HF+',
-}
-
-const SensorModel = z.object({
-  Model: z.enum(SensorTypes),
-  Machine: objectIdValidator,
-})
+const sensorTypeValues = SensorTypeSchema.options as string[]
 
 export interface ISensor extends mongoose.Document {
-  Model: SensorTypes
+  Model: SensorType
   Machine: mongoose.Types.ObjectId
   createdAt: Date
   updatedAt: Date
@@ -22,7 +12,7 @@ export interface ISensor extends mongoose.Document {
 
 const SensorSchema = new mongoose.Schema<ISensor>(
   {
-    Model: { type: String, required: true, enum: Object.values(SensorTypes) },
+    Model: { type: String, required: true, enum: sensorTypeValues },
     Machine: {
       type: mongoose.Types.ObjectId,
       ref: 'Machine',
@@ -33,10 +23,7 @@ const SensorSchema = new mongoose.Schema<ISensor>(
   { timestamps: true },
 )
 
-export type SensorDTO = z.infer<typeof SensorModel>
 export type SensorDocument = mongoose.HydratedDocument<ISensor>
-
 const Sensor =
   mongoose.models.Sensor || mongoose.model<ISensor>('Sensor', SensorSchema)
-
 export default Sensor

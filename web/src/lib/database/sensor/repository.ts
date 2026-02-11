@@ -1,46 +1,66 @@
-import Machine, { type IMachine } from '../machine/schema'
-import { SensorResponse, type ISensorResponse } from './presenter'
-import type { ISensor, SensorDTO } from './schema'
+import {
+  type CreateSensorDto,
+  SensorPresenterSchema,
+  type SensorResponse,
+} from '@/types/zod/sensor'
 import Sensor from './schema'
+import machineRepository from '../machine/repository'
+import { toSensorPresenters } from '@/types/zod/presenter/toSensor'
 
 class SensorRepository {
-  async validate(dto: SensorDTO): Promise<IMachine | null> {
-    const validation = await Machine.findOne({ _id: dto.Machine })
-    return validation ? validation.toObject() : null
-  }
+  async create(dto: CreateSensorDto): Promise<SensorResponse> {
+    const validate = await machineRepository.getById(dto.machine)
 
-  async create(dto: SensorDTO): Promise<ISensorResponse> {
-    const validate = await this.validate(dto)
-    if (!validate) return SensorResponse(false, 'Erro ao retornar Machine')
+    if (!validate.data)
+      return { success: false, message: 'Dados da máquina não recebidos' }
 
-    if (validate.Type === 'Pump' && dto.Model !== 'HF+')
-      return SensorResponse(
-        false,
-        'Máquina do tipo PUMP não pode ter sensores: TcAg e TcAs',
-      )
+    if (!validate.success) return { success: false, message: validate.message }
+
+    if (Array.isArray(validate.data))
+      return { success: false, message: 'Formato de dados incorreto' }
+
+    if (validate.data.Type === 'Pump' && dto.model !== 'HF+')
+      return {
+        success: false,
+        message: 'Máquina do tipo PUMP não pode ter sensores: TcAg e TcAs',
+      }
 
     const newSensor = new Sensor(dto)
     const savedSensor = await newSensor.save()
-    return SensorResponse(
-      true,
-      'Sensor criado com sucesso',
-      savedSensor.toObject() as ISensor,
-    )
+    const parsedSensor = SensorPresenterSchema.safeParse(savedSensor.toObject())
+
+    if (!parsedSensor.success)
+      return { success: false, message: 'Erro ao parsear os dados do sensor' }
+
+    return {
+      success: true,
+      message: 'Sensor criado com sucesso',
+      data: parsedSensor.data,
+    }
   }
 
-  async getByMachineId(id: string): Promise<ISensorResponse> {
+  async getMachineSensors(id: string): Promise<SensorResponse> {
     try {
       const sensors = await Sensor.find({ Machine: id }).lean()
       if (!sensors.length) {
-        return SensorResponse(
-          false,
-          'Nenhum sensor encontrado para esta máquina.',
-        )
+        return {
+          success: false,
+          message: 'Nenhum sensor encontrado para essa máquina',
+        }
       }
-      return SensorResponse(true, 'Sensores encontrados', sensors as ISensor[])
+
+      const parsedSensors = toSensorPresenters(sensors)
+
+      return {
+        success: true,
+        message: 'Sensores encontrados',
+        data: parsedSensors,
+      }
     } catch (error) {
-      console.error('Erro ao buscar sensores:', error)
-      return SensorResponse(false, 'Erro ao buscar sensores.')
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : 'Erro geral',
+      }
     }
   }
 }

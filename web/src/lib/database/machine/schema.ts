@@ -1,19 +1,11 @@
+import { MachineTypeSchema, type MachineType } from '@/types/zod/machine'
 import mongoose from 'mongoose'
-import z from 'zod'
 
-enum MachineTypes {
-  Pump = 'Pump',
-  Fan = 'Fan',
-}
-
-export const MachineModel = z.object({
-  Name: z.string().max(30),
-  Type: z.enum(MachineTypes),
-})
+const valuesMachineType = MachineTypeSchema.options as string[]
 
 export interface IMachine extends mongoose.Document {
   Name: string
-  Type: MachineTypes
+  Type: MachineType
   createdAt: Date
   updatedAt: Date
 }
@@ -21,12 +13,11 @@ export interface IMachine extends mongoose.Document {
 const MachineSchema = new mongoose.Schema<IMachine>(
   {
     Name: { type: String, required: true },
-    Type: { type: String, required: true, enum: Object.values(MachineTypes) },
+    Type: { type: String, required: true, enum: valuesMachineType },
   },
   { timestamps: true },
 )
 
-export type MachineDTO = z.infer<typeof MachineModel>
 export type MachineDocument = mongoose.HydratedDocument<IMachine>
 
 const Machine =

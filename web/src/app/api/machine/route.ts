@@ -1,13 +1,13 @@
 import machineRepository from '@/lib/database/machine/repository'
-import { MachineModel } from '@/lib/database/machine/schema'
 import dbConnect from '@/lib/database/mongoose'
+import { CreateMachineSchema } from '@/types/zod/machine'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function POST(req: NextRequest) {
   try {
     await dbConnect()
     const jsonReq = await req.json()
-    const validateJson = MachineModel.safeParse(jsonReq)
+    const validateJson = CreateMachineSchema.safeParse(jsonReq)
 
     if (!validateJson.success)
       return NextResponse.json(

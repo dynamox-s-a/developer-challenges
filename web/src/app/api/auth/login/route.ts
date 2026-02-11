@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server'
-import { loginRequestSchema } from '@/lib/http/auth/services/auth.types'
+import { loginRequestSchema } from '@/lib/http/auth/types'
 import userRepository from '@/lib/database/user/repository'
 import jwt from 'jsonwebtoken'
 import { env } from '@/utils/env'
