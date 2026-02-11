@@ -141,7 +141,24 @@ export async function updateSensor(
   uuid: string,
   input: { sensorUniqueId?: string; model?: 'TcAg' | 'TcAs' | 'HF_PLUS' }
 ) {
-  const sensor = await getSensorByUuid(uuid)
+  const sensor = await prisma.sensor.findUnique({
+    where: { uuid },
+    select: {
+      id: true,
+      sensorUniqueId: true,
+      monitoringPoint: {
+        select: {
+          machine: {
+            select: { type: true }
+          }
+        }
+      }
+    }
+  })
+
+  if (!sensor) {
+    throw new AppError('Sensor not found', 404)
+  }
 
   if (input.model) {
     validateSensorForMachine(sensor.monitoringPoint.machine.type, input.model)
@@ -158,7 +175,7 @@ export async function updateSensor(
   }
 
   return prisma.sensor.update({
-    where: { uuid },
+    where: { id: sensor.id },
     data: input,
     select: {
       uuid: true,
@@ -184,6 +201,14 @@ export async function updateSensor(
 }
 
 export async function deleteSensor(uuid: string) {
-  await getSensorByUuid(uuid)
-  await prisma.sensor.delete({ where: { uuid } })
+  const sensor = await prisma.sensor.findUnique({
+    where: { uuid },
+    select: { id: true }
+  })
+
+  if (!sensor) {
+    throw new AppError('Sensor not found', 404)
+  }
+
+  await prisma.sensor.delete({ where: { id: sensor.id } })
 }

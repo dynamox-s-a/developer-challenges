@@ -45,16 +45,7 @@ export async function listMachines() {
 }
 
 export async function getMachineByUuid(uuid: string) {
-  const machine = await prisma.machine.findUnique({
-    where: { uuid },
-    select: {
-      uuid: true,
-      name: true,
-      type: true,
-      createdAt: true,
-      updatedAt: true
-    }
-  })
+  const machine = await prisma.machine.findUnique({ where: { uuid } })
   if (!machine) throw new AppError('Machine not found', 404)
   return machine
 }
@@ -74,7 +65,7 @@ export async function updateMachine(
       where: {
         name: nextName,
         type: nextType,
-        NOT: { uuid }
+        NOT: { id: current.id }
       },
       select: { uuid: true }
     })
@@ -92,7 +83,7 @@ export async function updateMachine(
   if (input.type !== undefined) data.type = nextType
 
   return prisma.machine.update({
-    where: { uuid },
+    where: { id: current.id },
     data,
     select: {
       uuid: true,
@@ -105,6 +96,14 @@ export async function updateMachine(
 }
 
 export async function deleteMachine(uuid: string) {
-  await getMachineByUuid(uuid)
-  await prisma.machine.delete({ where: { uuid } })
+  const machine = await prisma.machine.findUnique({
+    where: { uuid },
+    select: { id: true }
+  })
+
+  if (!machine) {
+    throw new AppError('Machine not found', 404)
+  }
+
+  await prisma.machine.delete({ where: { id: machine.id } })
 }

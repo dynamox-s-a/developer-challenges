@@ -76,7 +76,11 @@ export async function listMonitoringPoints(query: {
       skip,
       take: limit,
       orderBy,
-      include: {
+      select: {
+        uuid: true,
+        name: true,
+        createdAt: true,
+        updatedAt: true,
         machine: {
           select: {
             uuid: true,
@@ -110,9 +114,25 @@ export async function listMonitoringPoints(query: {
 export async function getMonitoringPointByUuid(uuid: string) {
   const monitoringPoint = await prisma.monitoringPoint.findUnique({
     where: { uuid },
-    include: {
-      machine: true,
-      sensor: true
+    select: {
+      uuid: true,
+      name: true,
+      createdAt: true,
+      updatedAt: true,
+      machine: {
+        select: {
+          uuid: true,
+          name: true,
+          type: true
+        }
+      },
+      sensor: {
+        select: {
+          uuid: true,
+          sensorUniqueId: true,
+          model: true
+        }
+      }
     }
   })
 
@@ -127,19 +147,50 @@ export async function updateMonitoringPoint(
   uuid: string,
   input: { name?: string }
 ) {
-  await getMonitoringPointByUuid(uuid)
+  const current = await prisma.monitoringPoint.findUnique({
+    where: { uuid },
+    select: { id: true }
+  })
+
+  if (!current) {
+    throw new AppError('Monitoring point not found', 404)
+  }
 
   return prisma.monitoringPoint.update({
-    where: { uuid },
+    where: { id: current.id },
     data: input,
-    include: {
-      machine: true,
-      sensor: true
+    select: {
+      uuid: true,
+      name: true,
+      createdAt: true,
+      updatedAt: true,
+      machine: {
+        select: {
+          uuid: true,
+          name: true,
+          type: true
+        }
+      },
+      sensor: {
+        select: {
+          uuid: true,
+          sensorUniqueId: true,
+          model: true
+        }
+      }
     }
   })
 }
 
 export async function deleteMonitoringPoint(uuid: string) {
-  await getMonitoringPointByUuid(uuid)
-  await prisma.monitoringPoint.delete({ where: { uuid } })
+  const monitoringPoint = await prisma.monitoringPoint.findUnique({
+    where: { uuid },
+    select: { id: true }
+  })
+
+  if (!monitoringPoint) {
+    throw new AppError('Monitoring point not found', 404)
+  }
+
+  await prisma.monitoringPoint.delete({ where: { id: monitoringPoint.id } })
 }
