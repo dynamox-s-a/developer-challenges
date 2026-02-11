@@ -33,7 +33,7 @@ export async function createMonitoringPoint(input: {
       // sensor: {
       //   select: {
       //     uuid: true,
-      //     sensorId: true,
+      //     sensorUniqueId : true,
       //     model: true
       //   }
       // }
@@ -76,11 +76,7 @@ export async function listMonitoringPoints(query: {
       skip,
       take: limit,
       orderBy,
-      select: {
-        uuid: true,
-        name: true,
-        createdAt: true,
-        updatedAt: true,
+      include: {
         machine: {
           select: {
             uuid: true,
@@ -91,7 +87,7 @@ export async function listMonitoringPoints(query: {
         sensor: {
           select: {
             uuid: true,
-            sensorId: true,
+            sensorUniqueId: true,
             model: true
           }
         }
@@ -114,25 +110,9 @@ export async function listMonitoringPoints(query: {
 export async function getMonitoringPointByUuid(uuid: string) {
   const monitoringPoint = await prisma.monitoringPoint.findUnique({
     where: { uuid },
-    select: {
-      uuid: true,
-      name: true,
-      createdAt: true,
-      updatedAt: true,
-      machine: {
-        select: {
-          uuid: true,
-          name: true,
-          type: true
-        }
-      },
-      sensor: {
-        select: {
-          uuid: true,
-          sensorId: true,
-          model: true
-        }
-      }
+    include: {
+      machine: true,
+      sensor: true
     }
   })
 
@@ -152,25 +132,9 @@ export async function updateMonitoringPoint(
   return prisma.monitoringPoint.update({
     where: { uuid },
     data: input,
-    select: {
-      uuid: true,
-      name: true,
-      createdAt: true,
-      updatedAt: true,
-      machine: {
-        select: {
-          uuid: true,
-          name: true,
-          type: true
-        }
-      },
-      sensor: {
-        select: {
-          uuid: true,
-          sensorId: true,
-          model: true
-        }
-      }
+    include: {
+      machine: true,
+      sensor: true
     }
   })
 }

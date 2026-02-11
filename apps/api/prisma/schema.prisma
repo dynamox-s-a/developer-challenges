@@ -7,15 +7,15 @@ datasource db {
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
-  uuid         String   @unique @default(uuid())
+  id   Int    @id @default(autoincrement())
+  uuid String @unique @default(uuid())
 
-  email        String   @unique
+  email        String  @unique
   name         String?
   passwordHash String
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("users")
 }
@@ -32,30 +32,30 @@ enum SensorModel {
 }
 
 model Machine {
-  id        Int         @id @default(autoincrement())
-  uuid      String      @unique @default(uuid())
+  id   Int    @id @default(autoincrement())
+  uuid String @unique @default(uuid())
 
-  name      String
-  type      MachineType
+  name String
+  type MachineType
 
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
   monitoringPoints MonitoringPoint[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  @@unique([name, type])
   @@map("machines")
 }
 
 model MonitoringPoint {
-  id        Int      @id @default(autoincrement())
-  uuid      String   @unique @default(uuid())
+  id   Int    @id @default(autoincrement())
+  uuid String @unique @default(uuid())
 
-  name      String
+  name String
 
   machineId Int
-  machine   Machine  @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  machine   Machine @relation(fields: [machineId], references: [id], onDelete: Cascade)
 
-  sensor    Sensor?
+  sensor Sensor?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -65,13 +65,13 @@ model MonitoringPoint {
 }
 
 model Sensor {
-  id        Int      @id @default(autoincrement())
-  uuid      String   @unique @default(uuid())
+  id   Int    @id @default(autoincrement())
+  uuid String @unique @default(uuid())
 
-  sensorId  String   @unique
-  model     SensorModel
+  sensorUniqueId String      @unique
+  model          SensorModel
 
-  monitoringPointId Int    @unique
+  monitoringPointId Int             @unique
   monitoringPoint   MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
@@ -79,6 +79,3 @@ model Sensor {
 
   @@map("sensors")
 }
-
-
-

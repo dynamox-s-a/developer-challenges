@@ -5,8 +5,22 @@ export async function createMachine(input: {
   name: string
   type: 'Pump' | 'Fan'
 }) {
+  const name = input.name.trim()
+
+  const existing = await prisma.machine.findFirst({
+    where: { name, type: input.type },
+    select: { uuid: true }
+  })
+
+  if (existing) {
+    throw new AppError(
+      'A machine with the same name and type already exists',
+      400
+    )
+  }
+
   return prisma.machine.create({
-    data: input,
+    data: { name, type: input.type },
     select: {
       uuid: true,
       name: true,
@@ -49,10 +63,37 @@ export async function updateMachine(
   uuid: string,
   input: { name?: string; type?: 'Pump' | 'Fan' }
 ) {
-  await getMachineByUuid(uuid)
+  const current = await getMachineByUuid(uuid)
+
+  const nextName = input.name !== undefined ? input.name.trim() : current.name
+  const nextType = input.type !== undefined ? input.type : current.type
+
+  const changed = nextName !== current.name || nextType !== current.type
+  if (changed) {
+    const conflict = await prisma.machine.findFirst({
+      where: {
+        name: nextName,
+        type: nextType,
+        NOT: { uuid }
+      },
+      select: { uuid: true }
+    })
+
+    if (conflict) {
+      throw new AppError(
+        'A machine with the same name and type already exists',
+        400
+      )
+    }
+  }
+
+  const data: { name?: string; type?: 'Pump' | 'Fan' } = {}
+  if (input.name !== undefined) data.name = nextName
+  if (input.type !== undefined) data.type = nextType
+
   return prisma.machine.update({
     where: { uuid },
-    data: input,
+    data,
     select: {
       uuid: true,
       name: true,
