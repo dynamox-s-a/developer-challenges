@@ -47,3 +47,23 @@ export async function POST(req: NextRequest) {
     )
   }
 }
+
+export async function GET() {
+  await dbConnect()
+  const machines = await machineRepository.getAllMachines()
+
+  if (!machines.success)
+    return NextResponse.json(
+      { success: false, message: machines.message },
+      { status: 400 },
+    )
+
+  return NextResponse.json(
+    {
+      success: true,
+      message: machines.message,
+      data: machines.data,
+    },
+    { status: 200 },
+  )
+}

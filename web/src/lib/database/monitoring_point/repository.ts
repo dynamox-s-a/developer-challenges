@@ -6,6 +6,10 @@ import {
   type MonitoringPointResponse,
   type UpdateMonitoringPointDto,
 } from '@/types/zod/monitoring-point'
+import {
+  MonitoringAnalysisPresenterSchema,
+  type MonitoringAnalysisResponse,
+} from '@/types/zod/monitoring-analysis'
 
 class MonitoringPointRepository {
   async validateMonitoringPoint(
@@ -22,6 +26,25 @@ class MonitoringPointRepository {
         message: 'Já existe um monitoring point com esse nome.',
       }
     return { success: true, message: 'Monitoring point validado com sucesso' }
+  }
+
+  async getAllPopulate(): Promise<MonitoringAnalysisResponse> {
+    const analyses = await MonitoringPoint.find()
+      .populate('Machine')
+      .populate('Sensor')
+
+    if (!analyses.length) return { success: false, message: 'Nenhum dado' }
+
+    const parsedData = MonitoringAnalysisPresenterSchema.safeParse(analyses)
+
+    if (!parsedData.success)
+      return { success: false, message: parsedData.error.message }
+
+    return {
+      success: true,
+      message: 'Dados retornados com sucesso',
+      data: parsedData.data,
+    }
   }
 
   async create(

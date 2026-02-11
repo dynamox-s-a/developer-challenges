@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/style/useTemplate: Nada a ver */
 import {
   MachinePresenterSchema,
   type CreateMachineDto,
@@ -6,9 +7,26 @@ import {
 import MonitoringPoint from '../monitoring_point/schema'
 import Sensor from '../sensor/schema'
 import Machine, { type IMachine } from './schema'
-import { toMachinePresenter } from '@/types/zod/presenter/toMachine'
+import {
+  toMachinePresenter,
+  toMachinePresenters,
+} from '@/types/zod/presenter/toMachine'
 
 export class MachineRepository {
+  async getAllMachines(): Promise<MachineResponse> {
+    const machines = await Machine.find().lean({ getters: true })
+    if (!machines.length)
+      return { success: false, message: 'Nenhum dado retornado.' }
+
+    const parsed = toMachinePresenters(machines as IMachine[])
+
+    return {
+      success: true,
+      message: 'Dados recebidos com sucesso',
+      data: parsed,
+    }
+  }
+
   async getById(machineId: string): Promise<MachineResponse> {
     const machine = await Machine.findOne({ _id: machineId })
 
