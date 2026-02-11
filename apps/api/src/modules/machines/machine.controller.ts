@@ -20,7 +20,7 @@ export async function create(req: Request, res: Response) {
 
 export async function list(req: Request, res: Response) {
   const machines = await listMachines()
-  return res.json(ResponseBase.success(machines, 'Machines'))
+  return res.json(ResponseBase.success(machines, 'Get All Machines'))
 }
 
 export async function update(req: Request, res: Response) {
