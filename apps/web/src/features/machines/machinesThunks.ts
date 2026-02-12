@@ -1,7 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { AxiosError } from 'axios'
 import { api } from '../../services/api'
-import type { ApiErrorResponse } from '../../types/api.types'
+import { getApiErrorMessage } from '../../utils/apiError'
 import type {
   CreateMachineInput,
   Machine,
@@ -15,16 +14,11 @@ export const fetchMachinesThunk = createAsyncThunk<Machine[]>(
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await api.get<MachinesResponse>('/machines')
-      console.log(data)
       return data.data
     } catch (error) {
-      if (error instanceof AxiosError) {
-        const apiError = error.response?.data as ApiErrorResponse
-        const message =
-          apiError?.message || error.message || 'Falha ao carregar máquinas'
-        return rejectWithValue(message)
-      }
-      return rejectWithValue('Erro desconhecido ao carregar máquinas')
+      return rejectWithValue(
+        getApiErrorMessage(error, 'Falha ao carregar máquinas')
+      )
     }
   }
 )
@@ -36,13 +30,9 @@ export const fetchMachineByIdThunk = createAsyncThunk<Machine, string>(
       const { data } = await api.get<MachineResponse>(`/machines/${uuid}`)
       return data.data
     } catch (error) {
-      if (error instanceof AxiosError) {
-        const apiError = error.response?.data as ApiErrorResponse
-        const message =
-          apiError?.message || error.message || 'Falha ao carregar máquina'
-        return rejectWithValue(message)
-      }
-      return rejectWithValue('Erro desconhecido ao carregar máquina')
+      return rejectWithValue(
+        getApiErrorMessage(error, 'Falha ao carregar máquina')
+      )
     }
   }
 )
@@ -54,13 +44,7 @@ export const createMachineThunk = createAsyncThunk<Machine, CreateMachineInput>(
       const { data } = await api.post<MachineResponse>('/machines', payload)
       return data.data
     } catch (error) {
-      if (error instanceof AxiosError) {
-        const apiError = error.response?.data as ApiErrorResponse
-        const message =
-          apiError?.message || error.message || 'Falha ao criar máquina'
-        return rejectWithValue(message)
-      }
-      return rejectWithValue('Erro desconhecido ao criar máquina')
+      return rejectWithValue(getApiErrorMessage(error, 'Falha ao criar máquina'))
     }
   }
 )
@@ -76,13 +60,9 @@ export const updateMachineThunk = createAsyncThunk<
     )
     return data.data
   } catch (error) {
-    if (error instanceof AxiosError) {
-      const apiError = error.response?.data as ApiErrorResponse
-      const message =
-        apiError?.message || error.message || 'Falha ao atualizar máquina'
-      return rejectWithValue(message)
-    }
-    return rejectWithValue('Erro desconhecido ao atualizar máquina')
+    return rejectWithValue(
+      getApiErrorMessage(error, 'Falha ao atualizar máquina')
+    )
   }
 })
 
@@ -93,13 +73,9 @@ export const deleteMachineThunk = createAsyncThunk<string, string>(
       await api.delete(`/machines/${uuid}`)
       return uuid
     } catch (error) {
-      if (error instanceof AxiosError) {
-        const apiError = error.response?.data as ApiErrorResponse
-        const message =
-          apiError?.message || error.message || 'Falha ao deletar máquina'
-        return rejectWithValue(message)
-      }
-      return rejectWithValue('Erro desconhecido ao deletar máquina')
+      return rejectWithValue(
+        getApiErrorMessage(error, 'Falha ao deletar máquina')
+      )
     }
   }
 )
