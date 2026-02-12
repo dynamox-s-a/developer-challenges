@@ -75,10 +75,10 @@ const authSlice = createSlice({
         state.status = 'idle'
         state.errorMessage = null
       })
-      .addCase(registerThunk.rejected, (state, action) => {
+      .addCase(registerThunk.rejected, (state) => {
         state.status = 'error'
         state.user = null
-        state.errorMessage = (action.payload as string) || 'Falha ao registrar'
+        state.errorMessage = 'Senha deve ter no mínimo 8 caracteres'
       })
   }
 })

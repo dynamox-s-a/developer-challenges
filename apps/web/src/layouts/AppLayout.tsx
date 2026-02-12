@@ -208,12 +208,20 @@ export function AppLayout() {
           }}
         >
           <Box sx={{ p: 2 }}>
+            <Button
+              fullWidth
+              variant='outlined'
+              onClick={() => navigate('/app/monitoring-points')}
+            >
+              Pontos de monitoramento
+            </Button>
             <TextField
               fullWidth
               size='small'
               placeholder='Buscar máquina…'
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              sx={{ mt: 1.5 }}
             />
             <Button
               fullWidth

@@ -3,7 +3,6 @@ import { PrivateRoute } from './PrivateRoute'
 import { LoginPage } from '../pages/LoginPage'
 import { RegisterPage } from '../pages/RegisterPage'
 import { AppLayout } from '../layouts/AppLayout'
-import { SelectMachinePage } from '../pages/SelectMachinePage'
 import { MonitoringPointsPage } from '../pages/MonitoringPointsPage'
 import { SensorsPage } from '../pages/SensorsPage'
 import { TelemetryPage } from '../pages/TelemetryPage'
@@ -15,7 +14,8 @@ export function AppRoutes() {
       <Route path='/register' element={<RegisterPage />} />
       <Route element={<PrivateRoute />}>
         <Route path='/app' element={<AppLayout />}>
-          <Route index element={<SelectMachinePage />} />
+          <Route index element={<Navigate to='monitoring-points' replace />} />
+          <Route path='monitoring-points' element={<MonitoringPointsPage />} />
           <Route
             path='machines/:machineId/monitoring-points'
             element={<MonitoringPointsPage />}

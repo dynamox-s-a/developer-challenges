@@ -32,8 +32,9 @@ export function RegisterPage() {
   const [success, setSuccess] = useState(false)
 
   const isLoading = status === 'loading'
+  const isFormValid = name.trim() && email.trim() && password.length >= 8
 
-  async function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault()
     dispatch(clearAuthError())
     setSuccess(false)
@@ -97,6 +98,7 @@ export function RegisterPage() {
               <TextField
                 label='Senha'
                 type='password'
+                placeholder='Senha deve ter no mínimo 8 caracteres'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 fullWidth
@@ -106,7 +108,7 @@ export function RegisterPage() {
               <Button
                 type='submit'
                 variant='contained'
-                disabled={isLoading}
+                disabled={isLoading || !isFormValid}
                 fullWidth
                 sx={{ py: 1.2 }}
               >

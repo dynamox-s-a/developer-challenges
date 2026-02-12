@@ -32,12 +32,13 @@ export function LoginPage() {
   const [password, setPassword] = useState('')
 
   const isLoading = status === 'loading'
+  const isFormValid = email.trim() && password.length >= 8
 
   useEffect(() => {
-    if (isAuth) navigate('/', { replace: true })
+    if (isAuth) navigate('/app/monitoring-points', { replace: true })
   }, [isAuth, navigate])
 
-  async function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault()
     dispatch(clearAuthError())
     await dispatch(loginThunk({ email, password }))
@@ -87,7 +88,7 @@ export function LoginPage() {
               <Button
                 type='submit'
                 variant='contained'
-                disabled={isLoading}
+                disabled={isLoading || !isFormValid}
                 fullWidth
                 sx={{ py: 1.2 }}
               >
