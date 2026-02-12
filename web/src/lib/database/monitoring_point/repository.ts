@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/correctness/noUnusedImports: idk */
 import z from 'zod'
 import MonitoringPoint from './schema'
 import {
@@ -10,14 +11,21 @@ import {
   MonitoringAnalysisPresenterSchema,
   type MonitoringAnalysisResponse,
 } from '@/types/zod/monitoring-analysis'
+import {
+  toMonitoringAnalysisArray,
+  toMonitoringPointPresenter,
+  toMonitoringPointsPresenters,
+} from '@/types/zod/presenter/toMonitoring'
+import '../machine/schema'
+import '../sensor/schema'
 
 class MonitoringPointRepository {
   async validateMonitoringPoint(
     dto: CreateMonitoringPointDto | UpdateMonitoringPointDto,
   ): Promise<MonitoringPointResponse> {
     const existing = await MonitoringPoint.findOne({
-      Machine: dto.machine,
-      Name: dto.name,
+      Machine: dto.Machine,
+      Name: dto.Name,
     }).lean()
 
     if (existing)
@@ -35,7 +43,10 @@ class MonitoringPointRepository {
 
     if (!analyses.length) return { success: false, message: 'Nenhum dado' }
 
-    const parsedData = MonitoringAnalysisPresenterSchema.safeParse(analyses)
+    const presenterData = toMonitoringAnalysisArray(analyses)
+    const parsedData = z
+      .array(MonitoringAnalysisPresenterSchema)
+      .safeParse(presenterData)
 
     if (!parsedData.success)
       return { success: false, message: parsedData.error.message }
@@ -53,14 +64,15 @@ class MonitoringPointRepository {
     const validation = await this.validateMonitoringPoint(dto)
 
     if (!validation.success) return validation
+    if (dto.Sensor === '') delete dto.Sensor
 
     const newMonitoringPoint = new MonitoringPoint(dto)
     const savedMonitoringPoint = await newMonitoringPoint.save()
-    const presenter = MonitoringPointPresenterSchema.safeParse(
-      savedMonitoringPoint.toObject(),
-    )
+    const presenter = toMonitoringPointPresenter(savedMonitoringPoint)
 
-    if (!presenter.success)
+    console.log(presenter)
+
+    if (!presenter)
       return {
         success: false,
         message:
@@ -70,7 +82,7 @@ class MonitoringPointRepository {
     return {
       success: true,
       message: 'Cadastro do ponto realizado.',
-      data: presenter.data,
+      data: presenter,
     }
   }
 
@@ -102,8 +114,8 @@ class MonitoringPointRepository {
 
     const update = await MonitoringPoint.updateOne(
       {
-        machine: dto.machine,
-        name: dto.name,
+        machine: dto.Machine,
+        name: dto.Name,
       },
       dto,
     )

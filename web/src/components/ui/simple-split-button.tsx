@@ -1,68 +1,85 @@
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import Popper from '@mui/material/Popper';
-import Paper from '@mui/material/Paper';
-import MenuList from '@mui/material/MenuList';
-import MenuItem from '@mui/material/MenuItem';
-import Grow from '@mui/material/Grow';
-import MachineForm from '../dashboard/forms/MachineForms';
-import { useRef, useState } from 'react';
-import MonitoringPointForm from '../dashboard/forms/MonitoringPointForms';
-import SensorForm from '../dashboard/forms/SensorForms';
+import Button from '@mui/material/Button'
+import ButtonGroup from '@mui/material/ButtonGroup'
+import Popper from '@mui/material/Popper'
+import Paper from '@mui/material/Paper'
+import MenuList from '@mui/material/MenuList'
+import MenuItem from '@mui/material/MenuItem'
+import Grow from '@mui/material/Grow'
+import { useRef, useState } from 'react'
+import MachineForm from '../dashboard/forms/MachineForms'
+import MonitoringPointForm from '../dashboard/forms/MonitoringPointForms'
+import SensorForm from '../dashboard/forms/SensorForms'
 
-const options = [
-  'Create Machine', 
-  'Create Monitoring Point', 
-  'Create Sensor'
-];
+const options = ['Create Machine', 'Create Monitoring Point', 'Create Sensor']
 
-export default function SimpleSplitButton() {
-  const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState(options[0]);
-  const anchorRef = useRef(null);
+// 👇 Interface para as props
+interface SimpleSplitButtonProps {
+  onMachineCreated?: () => void
+  onMonitoringPointCreated?: () => void
+  onSensorCreated?: () => void
+}
 
-  const [openMachine, setOpenMachine] = useState(false) 
-  const [openMonitoringPoint, setOpenMonitoringPoint] = useState(false)  
+export default function SimpleSplitButton({
+  onMachineCreated,
+  onMonitoringPointCreated,
+  onSensorCreated,
+}: SimpleSplitButtonProps) {
+  const [open, setOpen] = useState(false)
+  const [selected, setSelected] = useState(options[0])
+  const anchorRef = useRef(null)
+
+  const [openMachine, setOpenMachine] = useState(false)
+  const [openMonitoringPoint, setOpenMonitoringPoint] = useState(false)
   const [openSensor, setOpenSensor] = useState(false)
 
-
   const handleToggle = () => {
-    setOpen((prev) => !prev);
-  };
+    setOpen(prev => !prev)
+  }
 
   const handleSelect = (option: string) => {
-    setSelected(option);
-    setOpen(false);
-    
-    switch(option) {
+    setSelected(option)
+    setOpen(false)
+
+    switch (option) {
       case 'Create Machine':
         setOpenMachine(true)
-        break;
+        break
       case 'Create Monitoring Point':
         setOpenMonitoringPoint(true)
-        break;
+        break
       case 'Create Sensor':
-        setOpenSensor(true);
-        break;
+        setOpenSensor(true)
+        break
     }
-  };
+  }
 
   return (
     <>
-      <ButtonGroup variant="contained" ref={anchorRef}>
-        <Button color="secondary" size="small" onClick={handleToggle}>
+      <ButtonGroup
+        variant="contained"
+        ref={anchorRef}
+      >
+        <Button
+          color="secondary"
+          size="small"
+          onClick={handleToggle}
+        >
           ▼
         </Button>
       </ButtonGroup>
 
-      <Popper open={open} anchorEl={anchorRef.current} transition>
+      <Popper
+        open={open}
+        anchorEl={anchorRef.current}
+        transition
+      >
         {({ TransitionProps }) => (
           <Grow {...TransitionProps}>
             <Paper sx={{ minWidth: 200 }}>
               <MenuList>
-                {options.map((option) => (
-                  <MenuItem 
-                    key={option} 
+                {options.map(option => (
+                  <MenuItem
+                    key={option}
                     onClick={() => handleSelect(option)}
                     selected={option === selected}
                   >
@@ -74,18 +91,28 @@ export default function SimpleSplitButton() {
           </Grow>
         )}
       </Popper>
-      <MachineForm 
+
+      <MachineForm
         open={openMachine}
-        onClose={() => setOpenMachine(false)}
+        onClose={() => {
+          setOpenMachine(false)
+          onMachineCreated?.()
+        }}
       />
-      <MonitoringPointForm 
+      <MonitoringPointForm
         open={openMonitoringPoint}
-        onClose={() => setOpenMonitoringPoint(false)}
+        onClose={() => {
+          setOpenMonitoringPoint(false)
+          onMonitoringPointCreated?.()
+        }}
       />
-      <SensorForm 
+      <SensorForm
         open={openSensor}
-        onClose={() => setOpenSensor(false)}
+        onClose={() => {
+          setOpenSensor(false)
+          onSensorCreated?.()
+        }}
       />
     </>
-  );
+  )
 }

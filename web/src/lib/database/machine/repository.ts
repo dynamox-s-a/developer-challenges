@@ -3,6 +3,7 @@ import {
   MachinePresenterSchema,
   type CreateMachineDto,
   type MachineResponse,
+  type UpdateMachineDto,
 } from '@/types/zod/machine'
 import MonitoringPoint from '../monitoring_point/schema'
 import Sensor from '../sensor/schema'
@@ -28,19 +29,16 @@ export class MachineRepository {
   }
 
   async getById(machineId: string): Promise<MachineResponse> {
-    const machine = await Machine.findOne({ _id: machineId })
+    const machine = await Machine.findOne({ _id: machineId }).lean()
 
     if (!machine) return { success: false, message: 'Maquina não encontrada.' }
 
-    const parsedMachine = MachinePresenterSchema.safeParse(machine.toObject())
-
-    if (!parsedMachine.success)
-      return { success: false, message: 'Erro ao parsear o valor' }
+    const parsedMachine = toMachinePresenter(machine as IMachine)
 
     return {
       success: true,
       message: 'Máquina encontrada com sucesso',
-      data: parsedMachine.data,
+      data: parsedMachine,
     }
   }
 
@@ -49,7 +47,7 @@ export class MachineRepository {
     // validate same name
     // create machine
     // return createdDocument
-    const machine = await new Machine({ Name: dto.name, Type: dto.type })
+    const machine = await new Machine({ Name: dto.Name, Type: dto.Type })
     const savedMachine = await machine.save()
 
     const machineObj = savedMachine.toObject()
@@ -69,7 +67,7 @@ export class MachineRepository {
     // delete MonitoringPointsByMachineId
     // return true if OKAY, false if not
     const deleteMonitoringPoints = await MonitoringPoint.deleteMany({
-      machine: machineId,
+      Machine: machineId,
     })
 
     if (!deleteMonitoringPoints.acknowledged)
@@ -91,24 +89,57 @@ export class MachineRepository {
   }
 
   async update(
-    oldMachineId: string,
-    machineDto: CreateMachineDto,
+    machineId: string,
+    machineDto: UpdateMachineDto,
   ): Promise<MachineResponse> {
-    // pass new machine DTO
-    // find old machine document
-    // verify if old machine has conflitant types with
-    //sensor and MP's:
-    // [1] Machine PUMP CANT have Sensors with type TcAg OR TcAs, must be HF+
-    // return new machine document
-    const updateOldMachine = await Machine.updateOne(
-      { _id: oldMachineId },
-      machineDto,
-    )
+    if (Object.keys(machineDto).length === 0) {
+      return {
+        success: false,
+        message: 'Nenhum dado enviado para atualização.',
+      }
+    }
 
-    if (!updateOldMachine.acknowledged)
-      return { success: false, message: 'Falha ao atualizar máquina.' }
+    try {
+      const updatedMachine = await Machine.findByIdAndUpdate(
+        machineId,
+        { $set: machineDto },
+        {
+          after: true,
+          runValidators: true,
+          lean: true,
+        },
+      )
 
-    return { success: true, message: 'Máquina atualizada com sucesso!' }
+      if (!updatedMachine) {
+        return {
+          success: false,
+          message: 'Máquina não encontrada.',
+        }
+      }
+
+      const presenter = toMachinePresenter(updatedMachine as IMachine)
+      const parsed = MachinePresenterSchema.safeParse(presenter)
+
+      if (!parsed.success)
+        return {
+          success: false,
+          message: 'Erro ao parsear os dados: ' + parsed.error.message,
+        }
+
+      return {
+        success: true,
+        message: 'Máquina atualizada com sucesso!',
+        data: presenter,
+      }
+    } catch (error) {
+      return {
+        success: false,
+        message:
+          error instanceof Error
+            ? error.message
+            : 'Erro ao atualizar a máquina',
+      }
+    }
   }
 }
 

@@ -3,6 +3,7 @@ import type { SensorPresenter } from '../sensor'
 
 export const toSensorPresenter = (sensor: ISensor): SensorPresenter => ({
   _id: sensor._id.toString(),
+  Code: sensor.Code,
   Machine: sensor.Machine.toString(),
   Model: sensor.Model,
   createdAt: sensor.createdAt,

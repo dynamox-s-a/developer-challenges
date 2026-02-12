@@ -2,9 +2,9 @@ import { createResponseSchema } from '@/utils/createResponse'
 import z from 'zod'
 
 export const CreateMonitoringPointSchema = z.object({
-  name: z.string().max(20),
-  sensor: z.string().optional(),
-  machine: z.string(),
+  Name: z.string().max(20),
+  Sensor: z.string().optional(),
+  Machine: z.string(),
 })
 
 export const MonitoringPointPresenterSchema = z.object({
@@ -12,6 +12,8 @@ export const MonitoringPointPresenterSchema = z.object({
   Name: z.string().max(20),
   Machine: z.string(),
   Sensor: z.string().optional(),
+  createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
 })
 
 export const MonitoringPointResponseSchema = createResponseSchema(
@@ -27,4 +29,6 @@ export type MonitoringPointPresenter = z.infer<
 >
 
 export type UpdateMonitoringPointDto = Partial<CreateMonitoringPointDto>
-export type MonitoringPointResponse = z.infer<typeof MonitoringPointResponseSchema>
+export type MonitoringPointResponse = z.infer<
+  typeof MonitoringPointResponseSchema
+>

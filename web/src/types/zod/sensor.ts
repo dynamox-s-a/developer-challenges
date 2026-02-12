@@ -6,16 +6,18 @@ import z from 'zod'
 export const SensorTypeSchema = z.enum(['TcAs', 'HF+', 'TcAg'])
 
 export const CreateSensorSchema = z.object({
-  model: SensorTypeSchema,
-  machine: z.string(),
+  Code: z.string(),
+  Model: SensorTypeSchema,
+  Machine: z.string(),
 })
 
 export const SensorPresenterSchema = z.object({
   _id: z.string(),
+  Code: z.string(),
   Model: SensorTypeSchema,
   Machine: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
 })
 
 export const SensorResponseSchema = createResponseSchema(SensorPresenterSchema)

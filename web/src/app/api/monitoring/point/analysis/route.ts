@@ -5,6 +5,7 @@ import { NextResponse } from 'next/server'
 export async function GET() {
   await dbConnect()
   const analysis = await monitoringPointRepository.getAllPopulate()
+  console.log(analysis)
   if (!analysis.success)
     return NextResponse.json(
       {
