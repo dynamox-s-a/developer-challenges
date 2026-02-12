@@ -10,3 +10,8 @@ export async function getUserSession(): Promise<string | null> {
   if (!result.success) return null
   return result.data.value
 }
+
+export async function endUserSession() {
+  const cookieStore = await cookies()
+  cookieStore.delete('user')
+}
