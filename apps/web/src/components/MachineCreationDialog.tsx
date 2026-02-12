@@ -29,7 +29,7 @@ interface MachineDialogProps {
   onTypeChange: (value: MachineType) => void
 }
 
-export function MachineDialog({
+export function MachineCreationDialog({
   open,
   editingMachine,
   formName,
@@ -42,11 +42,19 @@ export function MachineDialog({
   onTypeChange
 }: MachineDialogProps) {
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth='xs'>
-      <DialogTitle>{editingMachine ? 'Editar máquina' : 'Criar máquina'}</DialogTitle>
-      <DialogContent sx={{ paddingTop: '20px !important' }}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth='sm'
+      slotProps={{ paper: { sx: { p: 2 } } }}
+    >
+      <DialogTitle sx={{ p: 0, pb: 1.5 }}>
+        {editingMachine ? 'Editar máquina' : 'Criar máquina'}{' '}
+      </DialogTitle>{' '}
+      <DialogContent sx={{ p: 0, pb: 1.5, paddingTop: '5px !important' }}>
         <Stack spacing={2.5}>
-          {formError && <Alert severity='error'>{formError}</Alert>}
+          {formError && <Alert severity='error'>{formError}</Alert>}{' '}
           <TextField
             autoFocus
             fullWidth
@@ -59,14 +67,16 @@ export function MachineDialog({
             fullWidth
             label='Tipo'
             value={formType}
-            onChange={(event) => onTypeChange(event.target.value as MachineType)}
+            onChange={(event) =>
+              onTypeChange(event.target.value as MachineType)
+            }
           >
             <MenuItem value='Pump'>Pump</MenuItem>
             <MenuItem value='Fan'>Fan</MenuItem>
           </TextField>
         </Stack>
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{ p: 0 }}>
         <Button onClick={onClose} disabled={actionLoading}>
           Cancelar
         </Button>

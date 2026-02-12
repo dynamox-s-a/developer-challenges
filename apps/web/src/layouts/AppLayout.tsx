@@ -33,10 +33,9 @@ import {
   fetchMachinesThunk,
   updateMachineThunk
 } from '../features/machines/machinesThunks'
-import {
-  selectMachines
-} from '../features/machines/machinesSelectors'
-import { MachineDialog } from '../components/MachineDialog'
+import { selectMachines } from '../features/machines/machinesSelectors'
+import { MachineCreationDialog } from '../components/MachineCreationDialog'
+import { ConfirmDialog } from '../components/ConfirmDialog'
 
 const DRAWER_WIDTH = 280
 
@@ -54,6 +53,8 @@ export function AppLayout() {
   const [actionLoading, setActionLoading] = useState(false)
   const [listLoading, setListLoading] = useState(true)
   const [listError, setListError] = useState<string | null>(null)
+  const [machineToDelete, setMachineToDelete] = useState<Machine | null>(null)
+  const [deleteLoading, setDeleteLoading] = useState(false)
 
   const machines = useAppSelector(selectMachines)
 
@@ -146,20 +147,33 @@ export function AppLayout() {
   }
 
   const removeMachine = async (machine: Machine) => {
-    const confirmed = window.confirm(
-      `Deseja excluir a máquina "${machine.name}"?`
-    )
-    if (!confirmed) return
-
+    setDeleteLoading(true)
     try {
       await dispatch(deleteMachineThunk(machine.uuid)).unwrap()
       if (machine.uuid === machineId) navigate('/app')
     } catch (error) {
-      setFormError(
-        typeof error === 'string' ? error : 'Erro ao deletar máquina'
+      setListError(
+        typeof error === 'string' ? error : 'Falha ao deletar máquina'
       )
-      setDialogOpen(true)
+    } finally {
+      setDeleteLoading(false)
+      setMachineToDelete(null)
     }
+  }
+
+  const requestDeleteMachine = (machine: Machine) => {
+    setMachineToDelete(machine)
+    setListError(null)
+  }
+
+  const closeDeleteDialog = () => {
+    if (deleteLoading) return
+    setMachineToDelete(null)
+  }
+
+  const confirmDeleteMachine = async () => {
+    if (!machineToDelete) return
+    await removeMachine(machineToDelete)
   }
 
   return (
@@ -246,7 +260,7 @@ export function AppLayout() {
                         size='small'
                         onClick={(event) => {
                           event.stopPropagation()
-                          void removeMachine(machine)
+                          requestDeleteMachine(machine)
                         }}
                       >
                         <DeleteIcon fontSize='small' />
@@ -288,7 +302,7 @@ export function AppLayout() {
         </Box>
       </Box>
 
-      <MachineDialog
+      <MachineCreationDialog
         open={dialogOpen}
         editingMachine={editingMachine}
         formName={formName}
@@ -299,6 +313,20 @@ export function AppLayout() {
         onSave={() => void saveMachine()}
         onNameChange={setFormName}
         onTypeChange={setFormType}
+      />
+      <ConfirmDialog
+        open={!!machineToDelete}
+        title='Excluir máquina'
+        description={
+          machineToDelete
+            ? `Deseja excluir a máquina "${machineToDelete.name}"?`
+            : ''
+        }
+        confirmLabel='Excluir'
+        cancelLabel='Cancelar'
+        loading={deleteLoading}
+        onClose={closeDeleteDialog}
+        onConfirm={() => void confirmDeleteMachine()}
       />
     </Box>
   )
