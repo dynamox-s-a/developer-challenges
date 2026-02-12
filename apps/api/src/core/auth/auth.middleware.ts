@@ -36,6 +36,6 @@ export async function requireAuth(
     req.user = user
     next()
   } catch (err) {
-    return res.status(401).json(ResponseBase.error(err, 'Invalid token'))
+    return res.status(401).json(ResponseBase.error(null, 'Invalid token'))
   }
 }
