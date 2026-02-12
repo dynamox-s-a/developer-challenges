@@ -18,13 +18,15 @@ export async function create(req: Request, res: Response) {
   const monitoringPoint = await createMonitoringPoint(body, req.user.id)
   return res
     .status(201)
-    .json(ResponseBase.success(monitoringPoint, 'Monitoring point created'))
+    .json(
+      ResponseBase.success(monitoringPoint, 'Ponto de monitoramento criado')
+    )
 }
 
 export async function list(req: Request, res: Response) {
   const query = monitoringPointListQuerySchema.parse(req.query)
   const result = await listMonitoringPoints(query, req.user.id)
-  return res.json(ResponseBase.success(result, 'Monitoring points'))
+  return res.json(ResponseBase.success(result, 'Pontos de monitoramento'))
 }
 
 export async function update(req: Request, res: Response) {
@@ -32,12 +34,12 @@ export async function update(req: Request, res: Response) {
   const body = monitoringPointUpdateSchema.parse(req.body)
   const monitoringPoint = await updateMonitoringPoint(uuid, body, req.user.id)
   return res.json(
-    ResponseBase.success(monitoringPoint, 'Monitoring point updated')
+    ResponseBase.success(monitoringPoint, 'Ponto de monitoramento atualizado')
   )
 }
 
 export async function remove(req: Request, res: Response) {
   const { uuid } = uuidParamSchema.parse(req.params)
   await deleteMonitoringPoint(uuid, req.user.id)
-  return res.json(ResponseBase.success(null, 'Monitoring point deleted'))
+  return res.json(ResponseBase.success(null, 'Ponto de monitoramento deletado'))
 }

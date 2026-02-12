@@ -7,12 +7,12 @@ import type { LoginInput, RegisterInput } from './auth.schemas'
 export async function login(input: LoginInput) {
   const user = await prisma.user.findUnique({ where: { email: input.email } })
   if (!user) {
-    throw new AppError('Invalid credentials', 401)
+    throw new AppError('Credenciais inválidas', 401)
   }
 
   const valid = await bcrypt.compare(input.password, user.passwordHash)
   if (!valid) {
-    throw new AppError('Invalid credentials', 401)
+    throw new AppError('Credenciais inválidas', 401)
   }
   const token = signAccessToken({ userUuid: user.uuid })
 
@@ -29,7 +29,7 @@ export async function getMe(userUuid: string) {
   })
 
   if (!user) {
-    throw new AppError('User not found', 404)
+    throw new AppError('Usuário não encontrado', 404)
   }
 
   return user
@@ -41,7 +41,7 @@ export async function register(input: RegisterInput) {
   })
 
   if (existingUser) {
-    throw new AppError('User already exists', 409)
+    throw new AppError('Usuário já existe', 409)
   }
 
   const passwordHash = await bcrypt.hash(input.password, 10)

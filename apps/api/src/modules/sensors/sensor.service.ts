@@ -10,7 +10,7 @@ function validateSensorForMachine(
     (sensorModel === 'TcAg' || sensorModel === 'TcAs')
   ) {
     throw new AppError(
-      `Sensors of model ${sensorModel} cannot be configured for machines of type Pump`,
+      `Sensores do modelo ${sensorModel} não podem ser configurados para máquinas do tipo Pump`,
       400
     )
   }
@@ -33,19 +33,19 @@ export async function createSensor(
   })
 
   if (!monitoringPoint) {
-    throw new AppError('Monitoring point not found', 404)
+    throw new AppError('Ponto de monitoramento não encontrado', 404)
   }
 
   if (monitoringPoint.machine.userId !== userId) {
     throw new AppError(
-      'Forbidden: you can only create sensors for monitoring points from your own machines',
+      'Proibido: você só pode criar sensores para pontos de monitoramento de suas próprias máquinas',
       403
     )
   }
 
   if (monitoringPoint.sensor) {
     throw new AppError(
-      'This monitoring point already has a sensor associated',
+      'Este ponto de monitoramento já possui um sensor associado',
       400
     )
   }
@@ -57,7 +57,7 @@ export async function createSensor(
   })
 
   if (existingSensor) {
-    throw new AppError('Sensor Unique ID already exists', 400)
+    throw new AppError('ID único do sensor já existe', 400)
   }
 
   return prisma.sensor.create({
@@ -146,7 +146,7 @@ export async function getSensorByUuid(uuid: string) {
   })
 
   if (!sensor) {
-    throw new AppError('Sensor not found', 404)
+    throw new AppError('Sensor não encontrado', 404)
   }
 
   return sensor
@@ -173,12 +173,12 @@ export async function updateSensor(
   })
 
   if (!sensor) {
-    throw new AppError('Sensor not found', 404)
+    throw new AppError('Sensor não encontrado', 404)
   }
 
   if (sensor.monitoringPoint.machine.userId !== userId) {
     throw new AppError(
-      'Forbidden: you can only update sensors from your own machines',
+      'Proibido: você só pode atualizar sensores de suas próprias máquinas',
       403
     )
   }
@@ -193,7 +193,7 @@ export async function updateSensor(
     })
 
     if (existingSensor) {
-      throw new AppError('Sensor Unique ID already exists', 400)
+      throw new AppError('ID único do sensor já existe', 400)
     }
   }
 
@@ -239,12 +239,12 @@ export async function deleteSensor(uuid: string, userId: number) {
   })
 
   if (!sensor) {
-    throw new AppError('Sensor not found', 404)
+    throw new AppError('Sensor não encontrado', 404)
   }
 
   if (sensor.monitoringPoint.machine.userId !== userId) {
     throw new AppError(
-      'Forbidden: you can only delete sensors from your own machines',
+      'Proibido: você só pode deletar sensores de suas próprias máquinas',
       403
     )
   }

@@ -13,10 +13,7 @@ export async function createMachine(
   })
 
   if (existing) {
-    throw new AppError(
-      'A machine with the same name and type already exists',
-      400
-    )
+    throw new AppError('Uma máquina com o mesmo nome e tipo já existe', 400)
   }
 
   return prisma.machine.create({
@@ -45,9 +42,22 @@ export async function listMachines(userId: number) {
   })
 }
 
-export async function getMachineByUuid(uuid: string) {
-  const machine = await prisma.machine.findUnique({ where: { uuid } })
-  if (!machine) throw new AppError('Machine not found', 404)
+export async function getMachineByUuid(uuid: string, userId: number) {
+  const machine = await prisma.machine.findFirst({
+    where: { uuid, userId },
+    select: {
+      uuid: true,
+      name: true,
+      type: true,
+      createdAt: true,
+      updatedAt: true
+    }
+  })
+
+  if (!machine) {
+    throw new AppError('Máquina não encontrada', 404)
+  }
+
   return machine
 }
 
@@ -62,11 +72,14 @@ export async function updateMachine(
   })
 
   if (!current) {
-    throw new AppError('Machine not found', 404)
+    throw new AppError('Máquina não encontrada', 404)
   }
 
   if (current.userId !== userId) {
-    throw new AppError('Forbidden: you can only update your own machines', 403)
+    throw new AppError(
+      'Proibido: você só pode atualizar suas próprias máquinas',
+      403
+    )
   }
 
   const nextName = input.name !== undefined ? input.name.trim() : current.name
@@ -85,10 +98,7 @@ export async function updateMachine(
     })
 
     if (conflict) {
-      throw new AppError(
-        'A machine with the same name and type already exists',
-        400
-      )
+      throw new AppError('Uma máquina com o mesmo nome e tipo já existe', 400)
     }
   }
 
@@ -116,11 +126,14 @@ export async function deleteMachine(uuid: string, userId: number) {
   })
 
   if (!machine) {
-    throw new AppError('Machine not found', 404)
+    throw new AppError('Máquina não encontrada', 404)
   }
 
   if (machine.userId !== userId) {
-    throw new AppError('Forbidden: you can only delete your own machines', 403)
+    throw new AppError(
+      'Proibido: você só pode deletar suas próprias máquinas',
+      403
+    )
   }
 
   await prisma.machine.delete({ where: { id: machine.id } })

@@ -15,7 +15,7 @@ export async function ensureAuth(
   next: NextFunction
 ) {
   const header = req.headers.authorization
-  if (!header?.startsWith('Bearer ')) throw new AppError('Unauthorized', 401)
+  if (!header?.startsWith('Bearer ')) throw new AppError('Não autorizado', 401)
 
   const token = header.substring('Bearer '.length)
 
@@ -28,7 +28,7 @@ export async function ensureAuth(
     })
 
     if (!user) {
-      throw new AppError('User not found', 401)
+      throw new AppError('Usuário não encontrado', 401)
     }
 
     req.user = user
@@ -36,6 +36,6 @@ export async function ensureAuth(
     return next()
   } catch (error) {
     if (error instanceof AppError) throw error
-    throw new AppError('Unauthorized', 401)
+    throw new AppError('Não autorizado', 401)
   }
 }

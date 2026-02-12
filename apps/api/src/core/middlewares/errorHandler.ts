@@ -20,7 +20,7 @@ function toStartCase(input: string) {
 function getIssueMessage(issue: z.core.$ZodIssue): string {
   const field = issue.path.length
     ? toStartCase(String(issue.path[issue.path.length - 1]))
-    : 'Value'
+    : 'Valor'
 
   if (issue.message && !issue.message.startsWith('Too ')) {
     return issue.message
@@ -28,27 +28,27 @@ function getIssueMessage(issue: z.core.$ZodIssue): string {
 
   switch (issue.code) {
     case 'invalid_type':
-      return `${field} has invalid type`
+      return `${field} possui tipo inválido`
     case 'too_small':
       if (issue.origin === 'string') {
-        return `${field} must have at least ${issue.minimum} characters`
+        return `${field} deve ter no mínimo ${issue.minimum} caracteres`
       }
       if (issue.origin === 'array') {
-        return `${field} must have at least ${issue.minimum} items`
+        return `${field} deve ter no mínimo ${issue.minimum} itens`
       }
-      return `${field} is too short`
+      return `${field} é muito curto`
     case 'too_big':
       if (issue.origin === 'string') {
-        return `${field} must have at most ${issue.maximum} characters`
+        return `${field} deve ter no máximo ${issue.maximum} caracteres`
       }
       if (issue.origin === 'array') {
-        return `${field} must have at most ${issue.maximum} items`
+        return `${field} deve ter no máximo ${issue.maximum} itens`
       }
-      return `${field} is too long`
+      return `${field} é muito longo`
     case 'invalid_format':
-      return `${field} has invalid format`
+      return `${field} possui formato inválido`
     default:
-      return issue.message || 'Invalid value'
+      return issue.message || 'Valor inválido'
   }
 }
 
@@ -108,16 +108,20 @@ export function errorHandler(
         .json(
           ResponseBase.error(
             { target: err.meta?.target },
-            'Unique constraint violation'
+            'Violação de restrição única'
           )
         )
     }
 
     if (err.code === 'P2025') {
-      return res.status(404).json(ResponseBase.error(null, 'Record not found'))
+      return res
+        .status(404)
+        .json(ResponseBase.error(null, 'Registro não encontrado'))
     }
   }
 
   console.error(err)
-  return res.status(500).json(ResponseBase.error(null, 'Internal server error'))
+  return res
+    .status(500)
+    .json(ResponseBase.error(null, 'Erro interno do servidor'))
 }

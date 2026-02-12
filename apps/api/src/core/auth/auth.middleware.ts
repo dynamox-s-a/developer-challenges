@@ -17,7 +17,7 @@ export async function requireAuth(
   if (!header?.startsWith('Bearer ')) {
     return res
       .status(401)
-      .json(ResponseBase.error(null, 'Missing Bearer token'))
+      .json(ResponseBase.error(null, 'Token Bearer ausente'))
   }
 
   try {
@@ -30,12 +30,14 @@ export async function requireAuth(
     })
 
     if (!user) {
-      return res.status(401).json(ResponseBase.error(null, 'User not found'))
+      return res
+        .status(401)
+        .json(ResponseBase.error(null, 'Usuário não encontrado'))
     }
 
     req.user = user
     next()
   } catch (err) {
-    return res.status(401).json(ResponseBase.error(null, 'Invalid token'))
+    return res.status(401).json(ResponseBase.error(null, 'Token inválido'))
   }
 }

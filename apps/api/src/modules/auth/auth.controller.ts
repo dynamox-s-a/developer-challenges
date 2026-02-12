@@ -6,12 +6,12 @@ import * as authService from './auth.service'
 export async function login(req: Request, res: Response) {
   const input = loginSchema.parse(req.body)
   const result = await authService.login(input)
-  return res.json(ResponseBase.success(result, 'Login successful'))
+  return res.json(ResponseBase.success(result, 'Login realizado com sucesso'))
 }
 
 export async function me(req: Request, res: Response) {
   const user = await authService.getMe(req.user.uuid)
-  return res.json(ResponseBase.success(user, 'Authenticated user'))
+  return res.json(ResponseBase.success(user, 'Usuário autenticado'))
 }
 
 export async function register(req: Request, res: Response) {
@@ -19,5 +19,5 @@ export async function register(req: Request, res: Response) {
   const result = await authService.register(input)
   return res
     .status(201)
-    .json(ResponseBase.success(result, 'Registration successful'))
+    .json(ResponseBase.success(result, 'Registro realizado com sucesso'))
 }

@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const machineCreateSchema = z
   .object({
-    name: z.string().trim().min(1),
+    name: z.string().trim().min(5),
     type: z.enum(['Pump', 'Fan'])
   })
   .strict()

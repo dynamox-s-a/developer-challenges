@@ -8,5 +8,6 @@ machineRoutes.use(ensureAuth)
 
 machineRoutes.post('/', controller.create)
 machineRoutes.get('/', controller.list)
+machineRoutes.get('/:uuid', controller.getById)
 machineRoutes.patch('/:uuid', controller.update)
 machineRoutes.delete('/:uuid', controller.remove)

@@ -15,23 +15,23 @@ import { ResponseBase } from '../../core/base/response.base'
 export async function create(req: Request, res: Response) {
   const body = sensorCreateSchema.parse(req.body)
   const sensor = await createSensor(body, req.user.id)
-  return res.status(201).json(ResponseBase.success(sensor, 'Sensor created'))
+  return res.status(201).json(ResponseBase.success(sensor, 'Sensor criado'))
 }
 
 export async function list(req: Request, res: Response) {
   const sensors = await listSensors(req.user.id)
-  return res.json(ResponseBase.success(sensors, 'Sensors'))
+  return res.json(ResponseBase.success(sensors, 'Sensores'))
 }
 
 export async function update(req: Request, res: Response) {
   const { uuid } = uuidParamSchema.parse(req.params)
   const body = sensorUpdateSchema.parse(req.body)
   const sensor = await updateSensor(uuid, body, req.user.id)
-  return res.json(ResponseBase.success(sensor, 'Sensor updated'))
+  return res.json(ResponseBase.success(sensor, 'Sensor atualizado'))
 }
 
 export async function remove(req: Request, res: Response) {
   const { uuid } = uuidParamSchema.parse(req.params)
   await deleteSensor(uuid, req.user.id)
-  return res.json(ResponseBase.success(null, 'Sensor deleted'))
+  return res.json(ResponseBase.success(null, 'Sensor deletado'))
 }

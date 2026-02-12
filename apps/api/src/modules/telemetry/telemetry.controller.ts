@@ -32,7 +32,7 @@ export async function create(req: Request, res: Response) {
 
   return res
     .status(201)
-    .json(ResponseBase.success(result, 'Time-series stored'))
+    .json(ResponseBase.success(result, 'Série temporal armazenada'))
 }
 
 export async function list(req: Request, res: Response) {
@@ -73,7 +73,7 @@ export async function remove(req: Request, res: Response) {
   const result = await deleteSensorTimeSeries({ userId, sensorUuid, ...query })
   return res
     .status(200)
-    .json(ResponseBase.success(result, 'Time-series deleted'))
+    .json(ResponseBase.success(result, 'Série temporal deletada'))
 }
 
 export async function removeBatch(req: Request, res: Response) {
@@ -81,5 +81,5 @@ export async function removeBatch(req: Request, res: Response) {
   const userId = req.user?.id
 
   const result = await deleteTelemetryBatch({ userId, batchUuid })
-  return res.status(200).json(ResponseBase.success(result, 'Batch deleted'))
+  return res.status(200).json(ResponseBase.success(result, 'Lote deletado'))
 }

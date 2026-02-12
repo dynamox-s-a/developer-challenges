@@ -20,9 +20,8 @@ async function getSensorOrThrow(sensorUuid: string) {
     }
   })
 
-  if (!sensor) throw new AppError('Sensor not found', 404)
+  if (!sensor) throw new AppError('Sensor não encontrado', 404)
   return sensor
-
 }
 
 function assertOwnership(
@@ -30,7 +29,7 @@ function assertOwnership(
   machineUserId: number | undefined
 ) {
   if (userId && machineUserId && userId !== machineUserId) {
-    throw new AppError('Forbidden', 403)
+    throw new AppError('Proibido', 403)
   }
 }
 
@@ -134,10 +133,10 @@ export async function listSensorTimeSeries(input: {
     }
   })
 
-  if (!sensor) throw new AppError('Sensor not found', 404)
+  if (!sensor) throw new AppError('Sensor não encontrado', 404)
 
   if (input.userId && sensor.monitoringPoint.machine.userId !== input.userId) {
-    throw new AppError('Forbidden', 403)
+    throw new AppError('Proibido', 403)
   }
 
   const order: 'asc' | 'desc' = input.order ?? 'asc'
@@ -180,7 +179,6 @@ export async function listSensorTimeSeries(input: {
   }
 }
 
-
 export async function countSensorTimeSeries(input: {
   userId?: number
   sensorUuid: string
@@ -197,10 +195,10 @@ export async function countSensorTimeSeries(input: {
     }
   })
 
-  if (!sensor) throw new AppError('Sensor not found', 404)
+  if (!sensor) throw new AppError('Sensor não encontrado', 404)
 
   if (input.userId && sensor.monitoringPoint.machine.userId !== input.userId) {
-    throw new AppError('Forbidden', 403)
+    throw new AppError('Proibido', 403)
   }
 
   const [timeSeriesCount, pointsCount] = await prisma.$transaction([
@@ -209,11 +207,10 @@ export async function countSensorTimeSeries(input: {
   ])
 
   return {
-    timeSeriesCount, 
-    pointsCount 
+    timeSeriesCount,
+    pointsCount
   }
 }
-
 
 export async function getSensorTimeSeriesMetrics(input: {
   userId?: number
@@ -233,10 +230,10 @@ export async function getSensorTimeSeriesMetrics(input: {
     }
   })
 
-  if (!sensor) throw new AppError('Sensor not found', 404)
+  if (!sensor) throw new AppError('Sensor não encontrado', 404)
 
   if (input.userId && sensor.monitoringPoint.machine.userId !== input.userId) {
-    throw new AppError('Forbidden', 403)
+    throw new AppError('Proibido', 403)
   }
 
   const timestampFilter: { gte?: Date; lte?: Date } = {}
@@ -333,7 +330,6 @@ export async function getSensorTimeSeriesMetrics(input: {
   }
 }
 
-
 export async function deleteSensorTimeSeries(input: {
   userId?: number
   sensorUuid: string
@@ -353,10 +349,10 @@ export async function deleteSensorTimeSeries(input: {
     }
   })
 
-  if (!sensor) throw new AppError('Sensor not found', 404)
+  if (!sensor) throw new AppError('Sensor não encontrado', 404)
 
   if (input.userId && sensor.monitoringPoint.machine.userId !== input.userId) {
-    throw new AppError('Forbidden', 403)
+    throw new AppError('Proibido', 403)
   }
 
   const wantsAll = input.all === true
@@ -364,7 +360,7 @@ export async function deleteSensorTimeSeries(input: {
 
   if (!wantsAll && !wantsRange) {
     throw new AppError(
-      'Provide all=true or a from/to range to delete time-series',
+      'Forneça all=true ou um intervalo from/to para deletar séries temporais',
       400
     )
   }
@@ -398,7 +394,6 @@ export async function deleteSensorTimeSeries(input: {
   }
 }
 
-
 export async function deleteTelemetryBatch(input: {
   userId?: number
   batchUuid: string
@@ -418,13 +413,13 @@ export async function deleteTelemetryBatch(input: {
     }
   })
 
-  if (!batch) throw new AppError('Telemetry batch not found', 404)
+  if (!batch) throw new AppError('Lote de telemetria não encontrado', 404)
 
   if (
     input.userId &&
     batch.sensor.monitoringPoint.machine.userId !== input.userId
   ) {
-    throw new AppError('Forbidden', 403)
+    throw new AppError('Proibido', 403)
   }
 
   const pointsInBatch = await prisma.telemetryPoint.count({
@@ -440,4 +435,3 @@ export async function deleteTelemetryBatch(input: {
     deletedPoints: pointsInBatch
   }
 }
-

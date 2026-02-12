@@ -11,19 +11,19 @@ export async function createMonitoringPoint(
   })
 
   if (!machine) {
-    throw new AppError('Machine not found', 404)
+    throw new AppError('Máquina não encontrada', 404)
   }
 
   if (machine.userId !== userId) {
     throw new AppError(
-      'Forbidden: you can only create monitoring points for your own machines',
+      'Proibido: você só pode criar pontos de monitoramento para suas próprias máquinas',
       403
     )
   }
 
   return prisma.monitoringPoint.create({
     data: {
-      name: input.name,
+      name: input.name.trim(),
       machineId: machine.id
     },
     select: {
@@ -37,6 +37,13 @@ export async function createMonitoringPoint(
           name: true,
           type: true
         }
+      },
+      sensor: {
+        select: {
+          uuid: true,
+          sensorUniqueId: true,
+          model: true
+        }
       }
     }
   })
@@ -48,11 +55,19 @@ export async function listMonitoringPoints(
     limit: number
     sortBy: string
     sortOrder: 'asc' | 'desc'
+    machineUuid?: string
   },
   userId: number
 ) {
-  const { page, limit, sortBy, sortOrder } = query
+  const { page, limit, sortBy, sortOrder, machineUuid } = query
   const skip = (page - 1) * limit
+
+  const where = {
+    machine: {
+      userId,
+      ...(machineUuid ? { uuid: machineUuid } : {})
+    }
+  }
 
   let orderBy: any = {}
 
@@ -80,9 +95,7 @@ export async function listMonitoringPoints(
       skip,
       take: limit,
       orderBy,
-      where: {
-        machine: { userId }
-      },
+      where,
       select: {
         uuid: true,
         name: true,
@@ -104,11 +117,7 @@ export async function listMonitoringPoints(
         }
       }
     }),
-    prisma.monitoringPoint.count({
-      where: {
-        machine: { userId }
-      }
-    })
+    prisma.monitoringPoint.count({ where })
   ])
 
   return {
@@ -148,7 +157,7 @@ export async function getMonitoringPointByUuid(uuid: string) {
   })
 
   if (!monitoringPoint) {
-    throw new AppError('Monitoring point not found', 404)
+    throw new AppError('Ponto de monitoramento não encontrado', 404)
   }
 
   return monitoringPoint
@@ -170,19 +179,22 @@ export async function updateMonitoringPoint(
   })
 
   if (!current) {
-    throw new AppError('Monitoring point not found', 404)
+    throw new AppError('Ponto de monitoramento não encontrado', 404)
   }
 
   if (current.machine.userId !== userId) {
     throw new AppError(
-      'Forbidden: you can only update monitoring points from your own machines',
+      'Proibido: você só pode atualizar pontos de monitoramento de suas próprias máquinas',
       403
     )
   }
 
+  const data: { name?: string } = {}
+  if (input.name !== undefined) data.name = input.name.trim()
+
   return prisma.monitoringPoint.update({
     where: { id: current.id },
-    data: input,
+    data,
     select: {
       uuid: true,
       name: true,
@@ -218,12 +230,12 @@ export async function deleteMonitoringPoint(uuid: string, userId: number) {
   })
 
   if (!monitoringPoint) {
-    throw new AppError('Monitoring point not found', 404)
+    throw new AppError('Ponto de monitoramento não encontrado', 404)
   }
 
   if (monitoringPoint.machine.userId !== userId) {
     throw new AppError(
-      'Forbidden: you can only delete monitoring points from your own machines',
+      'Proibido: você só pode deletar pontos de monitoramento de suas próprias máquinas',
       403
     )
   }
