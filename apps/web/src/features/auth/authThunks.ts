@@ -14,7 +14,7 @@ export const loginThunk = createAsyncThunk<LoginResponse, LoginInput>(
   'auth/login',
   async (payload, { rejectWithValue }) => {
     try {
-      const { data } = await api.post<LoginResponse>('/api/auth/login', payload)
+      const { data } = await api.post<LoginResponse>('/auth/login', payload)
       return data
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -33,7 +33,7 @@ export const meThunk = createAsyncThunk<AuthUser>(
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await api.get<{ success: boolean; data: AuthUser }>(
-        '/api/auth/me'
+        '/auth/me'
       )
       return data.data
     } catch (err) {
@@ -53,7 +53,7 @@ export const registerThunk = createAsyncThunk<RegisterResponse, RegisterInput>(
   async (payload, { rejectWithValue }) => {
     try {
       const { data } = await api.post<RegisterResponse>(
-        '/api/auth/register',
+        '/auth/register',
         payload
       )
       return data

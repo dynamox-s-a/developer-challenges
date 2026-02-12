@@ -1,8 +1,14 @@
 import axios from 'axios'
 import { tokenStorage } from './tokenStorage'
 
+const rawBaseUrl = import.meta.env.VITE_API_URL ?? ''
+const normalizedBaseUrl = rawBaseUrl.replace(/\/+$/, '')
+const apiBaseUrl = normalizedBaseUrl.endsWith('/api')
+  ? normalizedBaseUrl
+  : `${normalizedBaseUrl}/api`
+
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: apiBaseUrl,
   timeout: 15000
 })
 
