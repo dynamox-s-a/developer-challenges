@@ -1,0 +1,22 @@
+{
+  "name": "qa-challenges",
+  "version": "1.0.0",
+  "description": "## About Dynamox",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DevDouglasFigueiredo/qa-challenges.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DevDouglasFigueiredo/qa-challenges/issues"
+  },
+  "homepage": "https://github.com/DevDouglasFigueiredo/qa-challenges#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.2.3"
+  }
+}
