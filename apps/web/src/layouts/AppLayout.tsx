@@ -1,26 +1,42 @@
 import { useState, useMemo, useEffect } from 'react'
 import {
+  Alert,
   AppBar,
   Box,
   Button,
   CircularProgress,
   Drawer,
+  IconButton,
   List,
+  ListItem,
   ListItemButton,
   ListItemText,
+  Stack,
   TextField,
   Toolbar,
   Typography
 } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
+import DeleteIcon from '@mui/icons-material/DeleteOutline'
+import EditIcon from '@mui/icons-material/EditOutlined'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { logout } from '../features/auth/authSlice'
 import { selectAuthUser } from '../features/auth/authSelectors'
-import { fetchMachinesThunk } from '../features/machines/machinesThunks'
+import type {
+  CreateMachineInput,
+  Machine
+} from '../features/machines/machinesTypes'
 import {
-  selectMachines,
-  selectMachinesLoading
+  createMachineThunk,
+  deleteMachineThunk,
+  fetchMachinesThunk,
+  updateMachineThunk
+} from '../features/machines/machinesThunks'
+import {
+  selectMachines
 } from '../features/machines/machinesSelectors'
+import { MachineDialog } from '../components/MachineDialog'
 
 const DRAWER_WIDTH = 280
 
@@ -30,12 +46,40 @@ export function AppLayout() {
   const navigate = useNavigate()
   const { machineId } = useParams()
   const [searchQuery, setSearchQuery] = useState('')
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [editingMachine, setEditingMachine] = useState<Machine | null>(null)
+  const [formName, setFormName] = useState('')
+  const [formType, setFormType] = useState<CreateMachineInput['type']>('Pump')
+  const [formError, setFormError] = useState<string | null>(null)
+  const [actionLoading, setActionLoading] = useState(false)
+  const [listLoading, setListLoading] = useState(true)
+  const [listError, setListError] = useState<string | null>(null)
 
   const machines = useAppSelector(selectMachines)
-  const loading = useAppSelector(selectMachinesLoading)
 
   useEffect(() => {
-    dispatch(fetchMachinesThunk())
+    let active = true
+
+    const loadMachines = async () => {
+      setListLoading(true)
+      setListError(null)
+      try {
+        await dispatch(fetchMachinesThunk()).unwrap()
+      } catch (error) {
+        if (!active) return
+        setListError(
+          typeof error === 'string' ? error : 'Falha ao carregar máquinas'
+        )
+      } finally {
+        if (active) setListLoading(false)
+      }
+    }
+
+    void loadMachines()
+
+    return () => {
+      active = false
+    }
   }, [dispatch])
 
   const filteredMachines = useMemo(() => {
@@ -50,6 +94,72 @@ export function AppLayout() {
 
   const handleMachineClick = (id: string) => {
     navigate(`/app/machines/${id}/monitoring-points`)
+  }
+
+  const openCreateDialog = () => {
+    setEditingMachine(null)
+    setFormName('')
+    setFormType('Pump')
+    setFormError(null)
+    setDialogOpen(true)
+  }
+
+  const openEditDialog = (machine: Machine) => {
+    setEditingMachine(machine)
+    setFormName(machine.name)
+    setFormType(machine.type as CreateMachineInput['type'])
+    setFormError(null)
+    setDialogOpen(true)
+  }
+
+  const closeDialog = () => {
+    if (actionLoading) return
+    setDialogOpen(false)
+  }
+
+  const saveMachine = async () => {
+    setFormError(null)
+    setActionLoading(true)
+
+    try {
+      if (editingMachine) {
+        const updated = await dispatch(
+          updateMachineThunk({
+            uuid: editingMachine.uuid,
+            data: { name: formName, type: formType }
+          })
+        ).unwrap()
+        setDialogOpen(false)
+        navigate(`/app/machines/${updated.uuid}/monitoring-points`)
+      } else {
+        const created = await dispatch(
+          createMachineThunk({ name: formName, type: formType })
+        ).unwrap()
+        setDialogOpen(false)
+        navigate(`/app/machines/${created.uuid}/monitoring-points`)
+      }
+    } catch (error) {
+      setFormError(typeof error === 'string' ? error : 'Erro ao salvar máquina')
+    } finally {
+      setActionLoading(false)
+    }
+  }
+
+  const removeMachine = async (machine: Machine) => {
+    const confirmed = window.confirm(
+      `Deseja excluir a máquina "${machine.name}"?`
+    )
+    if (!confirmed) return
+
+    try {
+      await dispatch(deleteMachineThunk(machine.uuid)).unwrap()
+      if (machine.uuid === machineId) navigate('/app')
+    } catch (error) {
+      setFormError(
+        typeof error === 'string' ? error : 'Erro ao deletar máquina'
+      )
+      setDialogOpen(true)
+    }
   }
 
   return (
@@ -91,29 +201,74 @@ export function AppLayout() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
+            <Button
+              fullWidth
+              sx={{ mt: 1.5 }}
+              variant='contained'
+              startIcon={<AddIcon />}
+              onClick={openCreateDialog}
+            >
+              Nova máquina
+            </Button>
           </Box>
-          {loading ? (
+
+          {listError && (
+            <Box sx={{ px: 2, pb: 1 }}>
+              <Alert severity='error'>{listError}</Alert>
+            </Box>
+          )}
+          {listLoading ? (
             <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
               <CircularProgress size={24} />
             </Box>
           ) : (
             <List sx={{ pt: 0, overflow: 'auto', minHeight: 0 }}>
               {filteredMachines.map((machine) => (
-                <ListItemButton
+                <ListItem
                   key={machine.uuid}
-                  selected={machine.uuid === machineId}
-                  onClick={() => handleMachineClick(machine.uuid)}
+                  disablePadding
+                  secondaryAction={
+                    <Stack direction='row' spacing={0.5}>
+                      <IconButton
+                        edge='end'
+                        aria-label='Editar máquina'
+                        size='small'
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          openEditDialog(machine)
+                        }}
+                      >
+                        <EditIcon fontSize='small' />
+                      </IconButton>
+                      <IconButton
+                        edge='end'
+                        aria-label='Excluir máquina'
+                        size='small'
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          void removeMachine(machine)
+                        }}
+                      >
+                        <DeleteIcon fontSize='small' />
+                      </IconButton>
+                    </Stack>
+                  }
                 >
-                  <ListItemText
-                    primary={machine.name}
-                    secondary={machine.type}
-                  />
-                </ListItemButton>
+                  <ListItemButton
+                    selected={machine.uuid === machineId}
+                    onClick={() => handleMachineClick(machine.uuid)}
+                  >
+                    <ListItemText
+                      primary={machine.name}
+                      secondary={machine.type}
+                    />
+                  </ListItemButton>
+                </ListItem>
               ))}
             </List>
           )}
 
-          {!loading && filteredMachines.length === 0 && (
+          {!listLoading && filteredMachines.length === 0 && (
             <Box sx={{ p: 2 }}>
               <Typography variant='body2' color='text.secondary' align='center'>
                 Nenhuma máquina encontrada
@@ -132,6 +287,19 @@ export function AppLayout() {
           <Outlet />
         </Box>
       </Box>
+
+      <MachineDialog
+        open={dialogOpen}
+        editingMachine={editingMachine}
+        formName={formName}
+        formType={formType}
+        formError={formError}
+        actionLoading={actionLoading}
+        onClose={closeDialog}
+        onSave={() => void saveMachine()}
+        onNameChange={setFormName}
+        onTypeChange={setFormType}
+      />
     </Box>
   )
 }
