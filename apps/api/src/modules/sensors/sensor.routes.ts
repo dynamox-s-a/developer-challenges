@@ -1,5 +1,4 @@
 import { Router } from 'express'
-
 import * as controller from './sensor.controller'
 import { ensureAuth } from '../../core/middlewares/ensureAuth'
 

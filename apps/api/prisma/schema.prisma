@@ -81,8 +81,60 @@ model Sensor {
   monitoringPointId Int             @unique
   monitoringPoint   MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
 
+  telemetryBatches TelemetryBatch[]
+  telemetryPoints  TelemetryPoint[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("sensors")
+}
+
+model TelemetryBatch {
+  id   Int    @id @default(autoincrement())
+  uuid String @unique @default(uuid())
+
+  sensorId Int
+  sensor   Sensor @relation(fields: [sensorId], references: [id], onDelete: Cascade)
+
+  intervalMinutes Int? 
+  pointsCount     Int
+  receivedAt      DateTime @default(now())
+
+  fromTimestamp DateTime?
+  toTimestamp   DateTime?
+
+  points TelemetryPoint[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sensorId])
+  @@map("telemetry_batches")
+}
+
+model TelemetryPoint {
+  id   Int    @id @default(autoincrement())
+  uuid String @unique @default(uuid())
+
+  sensorId Int
+  sensor   Sensor @relation(fields: [sensorId], references: [id], onDelete: Cascade)
+
+  batchId Int?
+  batch   TelemetryBatch? @relation(fields: [batchId], references: [id], onDelete: Cascade)
+
+  timestamp   DateTime
+  x           Float
+  y           Float
+  z           Float
+  temperature Float
+
+  accelerationRms Float?
+
+  createdAt DateTime @default(now())
+
+  @@unique([sensorId, timestamp])
+  @@index([sensorId, timestamp])
+  @@index([batchId])
+  @@map("telemetry_points")
 }
