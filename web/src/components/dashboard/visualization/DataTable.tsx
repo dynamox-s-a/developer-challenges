@@ -1,71 +1,191 @@
-"use client"
+/** biome-ignore-all lint/complexity/noUselessFragments: idk */
+/** biome-ignore-all lint/correctness/useExhaustiveDependencies: lol*/
+'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import Box from '@mui/material/Box'
 import {
   DataGrid,
   type GridPaginationModel,
+  type GridColDef,
 } from '@mui/x-data-grid'
-import { columns, rawRows, stats } from './fakeData'
+import { Alert, CircularProgress, IconButton } from '@mui/material'
+import EditIcon from '@mui/icons-material/Edit'
+import { columns as importedColumns } from './fakeData'
 import StatsCards from './StatsCards'
 import SimpleSplitButton from '@/components/ui/simple-split-button'
+import { useMonitoringAnalysis } from './../../../hooks/api/analisys/useMonitoringAnalysis'
+import MachineForm from '../forms/MachineForms'
+
+interface TableRow {
+  id: string
+  machineId: string
+  machineName: string
+  machineType: string
+  monitoringPoint: string
+  sensorModel: string
+}
 
 export default function DataTable() {
-  const processedRows = useMemo(() => {
-    return rawRows.map(row => ({
-      ...row,
-      monitoringPoint: row.monitoringPoint || 'Não especificado',
-      sensorModel: row.sensorModel || 'N/A',
-    }))
-  }, [])
+  const { useAnalysis: fetchData, loading, error } = useMonitoringAnalysis()
+  const [rows, setRows] = useState<TableRow[]>([])
+  const [refreshTrigger, setRefreshTrigger] = useState(0)
+  const [stats, setStats] = useState({
+    machines: 0,
+    sensors: 0,
+    monitoringPoints: 0,
+  })
 
-  const [paginationModel, setPaginationModel]= useState<GridPaginationModel>({
+  const [formOpen, setFormOpen] = useState(false)
+  const [editingMachineId, setEditingMachineId] = useState<string | undefined>()
+  const [_editingMachineData, setEditingMachineData] = useState<
+    { Name: string; Type: string } | undefined
+  >()
+
+  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
     page: 0,
     pageSize: 5,
   })
 
+  useEffect(() => {
+    const loadData = async () => {
+      const response = await fetchData()
+      if (response.success && response.data) {
+        const items = Array.isArray(response.data)
+          ? response.data
+          : [response.data]
+
+        const tableRows: TableRow[] = items.map(item => ({
+          id: item._id,
+          machineId: item.Machine._id,
+          machineName: item.Machine?.Name || 'N/A',
+          machineType: item.Machine?.Type || 'N/A',
+          monitoringPoint: item.Name || 'Não especificado',
+          sensorModel: item.Sensor?.Model || 'N/A',
+        }))
+        setRows(tableRows)
+
+        const uniqueMachines = new Set(
+          items.map(i => i.Machine?._id).filter(Boolean),
+        )
+        const uniqueSensors = new Set(
+          items.map(i => i.Sensor?._id).filter(Boolean),
+        )
+        setStats({
+          machines: uniqueMachines.size,
+          sensors: uniqueSensors.size,
+          monitoringPoints: items.length,
+        })
+      } else {
+        setRows([])
+        setStats({ machines: 0, sensors: 0, monitoringPoints: 0 })
+      }
+    }
+    loadData()
+  }, [fetchData, refreshTrigger])
+
+  const processedRows = useMemo(() => {
+    return rows.map(row => ({
+      ...row,
+      monitoringPoint: row.monitoringPoint || 'Não especificado',
+      sensorModel: row.sensorModel || 'N/A',
+    }))
+  }, [rows])
+
+  const columns: GridColDef[] = [
+    ...importedColumns,
+    {
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Ações',
+      width: 80,
+      getActions: ({ row }) => [
+        <IconButton
+          key="edit"
+          color="primary"
+          onClick={() => {
+            setEditingMachineId(row.machineId)
+            setEditingMachineData({
+              Name: row.machineName,
+              Type: row.machineType,
+            })
+            setFormOpen(true)
+          }}
+        >
+          <EditIcon />
+        </IconButton>,
+      ],
+    },
+  ]
+
+  const handleRefresh = () => {
+    setRefreshTrigger(prev => prev + 1)
+  }
+
+  const handleCloseForm = () => {
+    setFormOpen(false)
+    setEditingMachineId(undefined)
+    setEditingMachineData(undefined)
+  }
+
+  const handleSuccess = () => {
+    handleRefresh()
+    handleCloseForm()
+  }
+
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <CircularProgress />
+      </Box>
+    )
+  }
+
+  const showError = error && error !== 'Nenhum dado'
+
   return (
     <>
-      <Box sx={{ 
-        width: '70%', 
-        alignSelf: 'center',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 3,
-      }}>
-        <Box sx={{
+      <Box
+        sx={{
+          width: '70%',
+          alignSelf: 'center',
           display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mb: 2,
-        }}>
+          flexDirection: 'column',
+          gap: 3,
+        }}
+      >
+        {showError && (
+          <Alert
+            severity="error"
+            sx={{ width: '100%' }}
+          >
+            {error}
+          </Alert>
+        )}
 
-          <StatsCards 
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: 2,
+            mb: 2,
+          }}
+        >
+          <StatsCards
             countSensors={stats.sensors}
             countMachines={stats.machines}
             countMP={stats.monitoringPoints}
           />
-
-        {/* <Button
-          variant="contained"
-          type="submit"
-          startIcon={<AddIcon />}
-          onClick={() => setMachineForm(true)}
-          sx={{
-            height: 50,
-            minWidth: 50,
-            borderRadius: 1,
-          }}
-          >
-            Adicionar
-          </Button> */}
-          <SimpleSplitButton />
+          <SimpleSplitButton
+            onMachineCreated={handleRefresh}
+            onMonitoringPointCreated={handleRefresh}
+            onSensorCreated={handleRefresh}
+          />
         </Box>
 
-        <Box sx={{ 
-          height: 400,
-          width: '100%',
-        }}>
+        <Box sx={{ height: 400, width: '100%' }}>
           <DataGrid
             rows={processedRows}
             columns={columns}
@@ -73,8 +193,10 @@ export default function DataTable() {
             disableRowSelectionOnClick
             paginationModel={paginationModel}
             onPaginationModelChange={setPaginationModel}
-            pageSizeOptions={[5]} 
+            pageSizeOptions={[5, 10, 25]}
             autoHeight={false}
+            loading={loading}
+            localeText={{ noRowsLabel: 'Nenhum dado encontrado' }}
             sx={{
               border: 1,
               '& .MuiDataGrid-columnHeaders': {
@@ -95,6 +217,13 @@ export default function DataTable() {
           />
         </Box>
       </Box>
+
+      <MachineForm
+        open={formOpen}
+        onClose={handleCloseForm}
+        machineId={editingMachineId}
+        onSuccess={handleSuccess}
+      />
     </>
   )
 }

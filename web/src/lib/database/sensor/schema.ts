@@ -4,6 +4,7 @@ import { SensorTypeSchema, type SensorType } from '../../../types/zod/sensor'
 const sensorTypeValues = SensorTypeSchema.options as string[]
 
 export interface ISensor extends mongoose.Document {
+  Code: string
   Model: SensorType
   Machine: mongoose.Types.ObjectId
   createdAt: Date
@@ -12,6 +13,7 @@ export interface ISensor extends mongoose.Document {
 
 const SensorSchema = new mongoose.Schema<ISensor>(
   {
+    Code: { type: String, required: true, unique: true },
     Model: { type: String, required: true, enum: sensorTypeValues },
     Machine: {
       type: mongoose.Types.ObjectId,

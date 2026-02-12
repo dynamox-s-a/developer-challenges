@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
     response.cookies.set({
       name: 'user',
       value: token,
-      maxAge: 60,
+      maxAge: 3600,
     })
 
     return response

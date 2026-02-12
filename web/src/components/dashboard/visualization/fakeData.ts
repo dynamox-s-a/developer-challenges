@@ -32,9 +32,3 @@ export const columns: GridColDef[] = [
     editable: false,
   },
 ]
-
-export const stats = {
-  machines: 10,
-  sensors: 25,
-  monitoringPoints: 15,
-}

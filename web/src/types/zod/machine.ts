@@ -4,9 +4,11 @@ import { createResponseSchema } from '@/utils/createResponse'
 export const MachineTypeSchema = z.enum(['Pump', 'Fan'])
 
 export const CreateMachineSchema = z.object({
-  name: z.string().min(1).max(30),
-  type: MachineTypeSchema,
+  Name: z.string().min(1).max(30),
+  Type: MachineTypeSchema,
 })
+
+export const UpdateMachineSchema = CreateMachineSchema.partial()
 
 export const MachinePresenterSchema = z.object({
   _id: z.string(),
@@ -16,10 +18,13 @@ export const MachinePresenterSchema = z.object({
   updatedAt: z.coerce.date(),
 })
 
+export const MachinesPresentersSchema = z.array(MachinePresenterSchema)
+
 export const MachineResponseSchema = createResponseSchema(
   MachinePresenterSchema,
 )
 
+export type MachinesPresenters = z.infer<typeof MachinesPresentersSchema>
 export type MachinePresenter = z.infer<typeof MachinePresenterSchema>
 export type MachineType = z.infer<typeof MachineTypeSchema>
 export type CreateMachineDto = z.infer<typeof CreateMachineSchema>

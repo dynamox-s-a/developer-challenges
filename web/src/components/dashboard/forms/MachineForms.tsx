@@ -1,24 +1,74 @@
-/** biome-ignore-all lint/correctness/useUniqueElementIds: need to have Id */
+/** biome-ignore-all lint/suspicious/noImplicitAnyLet: idk*/
+/** biome-ignore-all lint/correctness/useUniqueElementIds: idk */
 'use client'
 
 import { useState, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
-  Dialog, DialogTitle, DialogContent, DialogActions,
-  Button, TextField, Box, Typography, IconButton, FormControl, InputLabel, Select, MenuItem
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
+  Box,
+  Typography,
+  IconButton,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { ErrorDialog } from '@/components/ui/error-dialog'
-import { type CreateMachineDto, CreateMachineSchema } from '@/types/zod/machine'
+import {
+  type CreateMachineDto,
+  CreateMachineSchema,
+  type UpdateMachineDto,
+} from '@/types/zod/machine'
 import { useCreateMachine } from '@/hooks/api/machine/useCreateMachine'
+import { useUpdateMachine } from '@/hooks/api/machine/useUpdateMachine'
+import { useDeleteMachine } from '@/hooks/api/machine/useDeleteMachine'
 
 interface MachineFormProps {
   open: boolean
   onClose: () => void
+  machineId?: string
+  initialData?: CreateMachineDto
+  onSuccess?: () => void
 }
 
-export default function MachineForm({ open, onClose }: MachineFormProps) {
+export default function MachineForm({
+  open,
+  onClose,
+  machineId,
+  initialData,
+  onSuccess,
+}: MachineFormProps) {
+  const isEditing = !!machineId
+
+  const {
+    createMachine,
+    loading: createLoading,
+    error: createError,
+  } = useCreateMachine()
+  const {
+    updateMachine,
+    loading: updateLoading,
+    error: updateError,
+  } = useUpdateMachine()
+  const {
+    deleteMachine,
+    loading: deleteLoading,
+    error: deleteError,
+  } = useDeleteMachine()
+
+  const submitLoading = isEditing ? updateLoading : createLoading
+  const hookError = isEditing ? updateError : createError
+
+  const isAnyLoading = submitLoading || deleteLoading
+
   const {
     register,
     control,
@@ -28,33 +78,62 @@ export default function MachineForm({ open, onClose }: MachineFormProps) {
   } = useForm<CreateMachineDto>({
     resolver: zodResolver(CreateMachineSchema),
     defaultValues: {
-      name: '',
-      type: 'Pump'
-    }
+      Name: '',
+      Type: 'Pump',
+    },
   })
-
-  const { createMachine, error: hookError, loading } = useCreateMachine()
 
   const [modalOpen, setModalOpen] = useState(false)
   const [modalError, setModalError] = useState('')
 
   useEffect(() => {
-    if (!open) {
+    if (open && isEditing && initialData) {
+      reset(initialData)
+    }
+  }, [open, isEditing, initialData, reset])
+
+  useEffect(() => {
+    if (!open && !isEditing) {
       reset()
     }
-  }, [open, reset])
+  }, [open, isEditing, reset])
 
   const onSubmit = async (data: CreateMachineDto) => {
-    const response = await createMachine(data)
+    let response
+
+    if (isEditing && machineId) {
+      response = await updateMachine(machineId, data)
+    } else {
+      response = await createMachine(data)
+    }
 
     if (response.success) {
       reset()
+      onSuccess?.()
       onClose()
       return
     }
 
     setModalError(response.message || 'Erro desconhecido')
     setModalOpen(true)
+  }
+
+  const handleDelete = async () => {
+    if (!machineId) return
+
+    if (!window.confirm('Tem certeza que deseja deletar esta máquina?')) {
+      return
+    }
+
+    const response = await deleteMachine(machineId)
+
+    if (response.success) {
+      onSuccess?.()
+      onClose()
+    } else {
+      setModalError(response.message || 'Erro ao deletar máquina')
+      setModalOpen(true)
+    }
   }
 
   return (
@@ -65,40 +144,56 @@ export default function MachineForm({ open, onClose }: MachineFormProps) {
         fullWidth
         PaperProps={{ sx: { minHeight: '500px' } }}
       >
-        <DialogTitle sx={{ 
-          m: 0, p: 2, 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center' 
-        }}
+        <DialogTitle
+          sx={{
+            m: 0,
+            p: 2,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
           component="div"
         >
-          <Typography variant="h5">Registrar Máquina</Typography>
-          <IconButton onClick={onClose} disabled={loading}>
+          <Typography variant="h5">
+            {isEditing ? 'Editar Máquina' : 'Registrar Máquina'}
+          </Typography>
+          <IconButton
+            onClick={onClose}
+            disabled={isAnyLoading}
+          >
             <CloseIcon />
           </IconButton>
         </DialogTitle>
 
-        <form onSubmit={handleSubmit(onSubmit)} id="machine-form">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          id="machine-form"
+        >
           <DialogContent dividers>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
+            <Box
+              sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}
+            >
               <TextField
                 label="Nome"
-                {...register('name')}
-                error={!!errors.name}
-                helperText={errors.name?.message}
-                disabled={loading}
+                {...register('Name')}
+                error={!!errors.Name}
+                helperText={errors.Name?.message}
+                disabled={isAnyLoading}
                 fullWidth
               />
-              
+
               <Controller
-                name="type"
+                name="Type"
                 control={control}
-                render={({field, fieldState: {error}}) => (
-                  <FormControl fullWidth error={!!error} disabled={loading}>
+                render={({ field, fieldState: { error } }) => (
+                  <FormControl
+                    fullWidth
+                    error={!!error}
+                    disabled={isAnyLoading}
+                  >
                     <InputLabel>Model</InputLabel>
-                    <Select 
-                      label="Type" 
+                    <Select
+                      label="Type"
                       {...field}
                       required
                     >
@@ -107,36 +202,65 @@ export default function MachineForm({ open, onClose }: MachineFormProps) {
                     </Select>
                   </FormControl>
                 )}
-              >
-
-              </Controller>
+              />
             </Box>
 
-            {hookError && (
-              <Typography color="error" sx={{ mt: 2 }}>
-                {hookError}
+            {(hookError || deleteError) && (
+              <Typography
+                color="error"
+                sx={{ mt: 2 }}
+              >
+                {hookError || deleteError}
               </Typography>
             )}
           </DialogContent>
 
           <DialogActions sx={{ p: 2 }}>
-            <Button
-              onClick={onClose}
-              disabled={loading}
-              variant="outlined"
-              color='secondary'
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                width: '100%',
+              }}
             >
-              Cancelar
-            </Button>
-            <Button
-              type="submit"
-              form="machine-form"
-              variant="contained"
-              disabled={loading || !isDirty}
-              color='secondary'
-            >
-              {loading ? 'Enviando...' : 'Registrar'}
-            </Button>
+              {isEditing && (
+                <Button
+                  onClick={handleDelete}
+                  disabled={isAnyLoading}
+                  color="error"
+                  variant="outlined"
+                >
+                  {deleteLoading ? 'Deletando...' : 'Deletar'}
+                </Button>
+              )}
+
+              <Box>
+                <Button
+                  onClick={onClose}
+                  disabled={isAnyLoading}
+                  variant="outlined"
+                  color="secondary"
+                  sx={{ mr: 1 }}
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  type="submit"
+                  form="machine-form"
+                  variant="contained"
+                  disabled={isAnyLoading || !isDirty}
+                  color="secondary"
+                >
+                  {submitLoading
+                    ? isEditing
+                      ? 'Atualizando...'
+                      : 'Enviando...'
+                    : isEditing
+                      ? 'Atualizar'
+                      : 'Registrar'}
+                </Button>
+              </Box>
+            </Box>
           </DialogActions>
         </form>
       </Dialog>

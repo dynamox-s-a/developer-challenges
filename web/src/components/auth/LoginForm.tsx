@@ -1,33 +1,28 @@
-"use client"
+'use client'
 
-import { Box, Button, TextField, Typography } from "@mui/material"
-import { useForm } from "react-hook-form"
-import { loginRequestSchema, type loginRequest } from '@/lib/http/auth/types';
-import { zodResolver } from "@hookform/resolvers/zod";
-import { authService } from "@/lib/http/auth";
-import { useState } from "react";
-import { ErrorDialog } from "@/components/ui/error-dialog";
-import { useRouter } from "next/navigation";
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Paper, Button, TextField, Typography } from '@mui/material'
 
-export const customBox = {
-    display: "flex", 
-    flexDirection: "column", 
-    justifyContent: "center", 
-    alignItems: "center", 
-    border: "2px solid grey"
-}
+import { authService } from '@/lib/http/auth'
+import { loginRequestSchema, type loginRequest } from '@/lib/http/auth/types'
+import { BlurFade } from '@/components/ui/blur-fade'
+import { AuroraText } from '@/components/ui/aurora-text'
+import { ErrorDialog } from '@/components/ui/error-dialog'
 
 export default function LoginForm() {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalError, setModalError] = useState('');
   const router = useRouter()
+  const [modalOpen, setModalOpen] = useState(false)
+  const [modalError, setModalError] = useState('')
 
   const {
     register,
     handleSubmit,
-    formState: {errors}
+    formState: { errors },
   } = useForm<loginRequest>({
-    resolver: zodResolver(loginRequestSchema)
+    resolver: zodResolver(loginRequestSchema),
   })
 
   const onSubmit = async (data: loginRequest) => {
@@ -35,58 +30,86 @@ export default function LoginForm() {
     if (!result.success) {
       setModalError(result.message)
       setModalOpen(true)
+      return
     }
-    if (result.success) {
-      router.push('/dashboard')
-    }
+    router.push('/dashboard')
   }
 
   return (
     <>
-      <Box  
-        component="form" 
-        height={500}
-        width={400}
-        display={'flex'}
-        my={4}
-        alignItems={"center"}
-        sx={customBox}
-        onSubmit={handleSubmit(onSubmit)}
-        >
-        <Typography variant="h5" component="div" sx={{mb: 2}}>
-          Sign In
-        </Typography>
-
-        <TextField 
-          label="Email"
-          variant="outlined"
+      <BlurFade
+        delay={0.25}
+        inView
+      >
+        <Paper
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
+          elevation={6}
           sx={{
-            mb: 2
+            width: { xs: '90%', sm: 440 },
+            maxWidth: '100%',
+            mx: 'auto',
+            my: 4,
+            p: { xs: 3, sm: 5 },
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            borderRadius: 3,
+            background: 'rgba(255, 255, 255, 0.7)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255,255,255,0.3)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
           }}
-          {...register("email")}
-          error={!!errors.email}
-          helperText={errors.email?.message}
-        />
-        <TextField 
-          label="Password"
-          variant="outlined"
-          type="password"
-          sx={{
-            mb: 2
-          }}
-          {...register("password")}
-          error={!!errors.password}
-          helperText={errors.password?.message}
-        />
-        <Button
-          variant="contained"
-          type="submit"
         >
-          Submit
-        </Button>
+          <Typography
+            variant="h4"
+            component="h1"
+            sx={{ mb: 3, fontWeight: 700 }}
+          >
+            Sign <AuroraText>In</AuroraText>
+          </Typography>
 
-      </Box>
-      <ErrorDialog 
+          <TextField
+            label="Email"
+            variant="outlined"
+            fullWidth
+            sx={{ mb: 2.5 }}
+            {...register('email')}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+          />
+
+          <TextField
+            label="Password"
+            variant="outlined"
+            type="password"
+            fullWidth
+            sx={{ mb: 3 }}
+            {...register('password')}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+          />
+
+          <Button
+            type="submit"
+            variant="contained"
+            color="secondary"
+            size="large"
+            fullWidth
+            sx={{
+              py: 1.8,
+              fontSize: '1.1rem',
+              boxShadow: 3,
+              borderRadius: 2,
+              textTransform: 'none',
+            }}
+          >
+            Sign In
+          </Button>
+        </Paper>
+      </BlurFade>
+
+      <ErrorDialog
         open={modalOpen}
         message={modalError}
         onClose={() => setModalOpen(false)}

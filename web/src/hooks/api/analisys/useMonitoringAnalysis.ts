@@ -1,38 +1,36 @@
 import {
-  type CreateSensorDto,
-  type SensorResponse,
-  SensorResponseSchema,
-} from '@/types/zod/sensor'
+  MonitoringAnalysisResponseSchema,
+  type MonitoringAnalysisResponse,
+} from '@/types/zod/monitoring-analysis'
 import { useCallback, useState } from 'react'
 
-type UseSensorHook = {
-  createSensor: (dto: CreateSensorDto) => Promise<SensorResponse>
+type UseAnalysisHook = {
+  useAnalysis: () => Promise<MonitoringAnalysisResponse>
   loading: boolean
   error: string | null
   success: boolean
 }
 
-export const useCreateSensor = (): UseSensorHook => {
+export const useMonitoringAnalysis = (): UseAnalysisHook => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 
-  const createSensor = useCallback(async (dto: CreateSensorDto) => {
+  const useAnalysis = useCallback(async () => {
     setLoading(true)
     setError(null)
     setSuccess(false)
 
     try {
-      const response = await fetch('/api/sensor', {
-        method: 'POST',
+      const response = await fetch('/api/monitoring/point/analysis', {
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(dto),
       })
 
       const resp = await response.json()
-      const parsed = SensorResponseSchema.parse(resp)
+      const parsed = MonitoringAnalysisResponseSchema.parse(resp)
 
       if (!parsed.success) {
         setError(parsed.message)
@@ -44,11 +42,14 @@ export const useCreateSensor = (): UseSensorHook => {
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'Erro desconhecido'
       setError(errorMsg)
-      return SensorResponseSchema.parse({ success: false, message: errorMsg })
+      return MonitoringAnalysisResponseSchema.parse({
+        success: false,
+        message: errorMsg,
+      })
     } finally {
       setLoading(false)
     }
   }, [])
 
-  return { createSensor, loading, error, success }
+  return { useAnalysis, loading, error, success }
 }

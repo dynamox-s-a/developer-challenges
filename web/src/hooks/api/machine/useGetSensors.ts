@@ -1,34 +1,30 @@
-import {
-  type CreateSensorDto,
-  type SensorResponse,
-  SensorResponseSchema,
-} from '@/types/zod/sensor'
+import { type SensorResponse, SensorResponseSchema } from '@/types/zod/sensor'
 import { useCallback, useState } from 'react'
 
 type UseSensorHook = {
-  createSensor: (dto: CreateSensorDto) => Promise<SensorResponse>
+  getSensors: (id: string) => Promise<SensorResponse>
   loading: boolean
   error: string | null
   success: boolean
 }
 
-export const useCreateSensor = (): UseSensorHook => {
+export const useGetSensors = (): UseSensorHook => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 
-  const createSensor = useCallback(async (dto: CreateSensorDto) => {
+  const getSensors = useCallback(async (id: string) => {
     setLoading(true)
     setError(null)
     setSuccess(false)
 
     try {
-      const response = await fetch('/api/sensor', {
+      const response = await fetch('/api/machine/sensors', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(dto),
+        body: JSON.stringify(id),
       })
 
       const resp = await response.json()
@@ -50,5 +46,5 @@ export const useCreateSensor = (): UseSensorHook => {
     }
   }, [])
 
-  return { createSensor, loading, error, success }
+  return { getSensors, loading, error, success }
 }
