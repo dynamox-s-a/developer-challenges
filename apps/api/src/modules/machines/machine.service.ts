@@ -102,6 +102,26 @@ export async function updateMachine(
     }
   }
 
+  const changedToPump = current.type !== 'Pump' && nextType === 'Pump'
+  if (changedToPump) {
+    const incompatibleSensor = await prisma.sensor.findFirst({
+      where: {
+        model: { in: ['TcAg', 'TcAs'] },
+        monitoringPoint: {
+          machineId: current.id
+        }
+      },
+      select: { model: true }
+    })
+
+    if (incompatibleSensor) {
+      throw new AppError(
+        `Não é possível alterar a máquina para Pump: já existe sensor ${incompatibleSensor.model} associado aos seus pontos de monitoramento`,
+        400
+      )
+    }
+  }
+
   const data: { name?: string; type?: 'Pump' | 'Fan' } = {}
   if (input.name !== undefined) data.name = nextName
   if (input.type !== undefined) data.type = nextType

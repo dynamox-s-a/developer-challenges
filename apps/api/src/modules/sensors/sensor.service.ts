@@ -57,7 +57,10 @@ export async function createSensor(
   })
 
   if (existingSensor) {
-    throw new AppError('ID único do sensor já existe', 400)
+    throw new AppError(
+      'Este identificador de sensor já está cadastrado no sistema',
+      400
+    )
   }
 
   return prisma.sensor.create({
@@ -193,7 +196,10 @@ export async function updateSensor(
     })
 
     if (existingSensor) {
-      throw new AppError('ID único do sensor já existe', 400)
+      throw new AppError(
+        'Este identificador de sensor já está cadastrado no sistema',
+        400
+      )
     }
   }
 
