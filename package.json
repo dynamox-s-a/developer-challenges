@@ -1,0 +1,16 @@
+{
+  "name": "dynamox",
+  "version": "1.0.0",
+  "description": "Desafio Dynamox",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Julio Anggas Saenz",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cypress": "^15.10.0"
+  }
+}
