@@ -1,7 +1,7 @@
 /** biome-ignore-all lint/style/useTemplate: idk */
 import machineRepository from '@/lib/database/machine/repository'
 import dbConnect from '@/lib/database/mongoose'
-import { CreateMachineSchema, UpdateMachineSchema } from '@/types/zod/machine'
+import { CreateMachineSchema } from '@/types/zod/machine'
 import { NextResponse, type NextRequest } from 'next/server'
 import z from 'zod'
 

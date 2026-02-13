@@ -3,6 +3,7 @@
 'use client'
 
 import { useState, useMemo, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import Box from '@mui/material/Box'
 import {
   DataGrid,
@@ -11,7 +12,8 @@ import {
 } from '@mui/x-data-grid'
 import { Alert, CircularProgress, IconButton } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
-import { columns as importedColumns } from './fakeData'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import { columns as importedColumns } from './DataTableColumns'
 import StatsCards from './StatsCards'
 import SimpleSplitButton from '@/components/ui/simple-split-button'
 import { useMonitoringAnalysis } from './../../../hooks/api/analisys/useMonitoringAnalysis'
@@ -27,6 +29,7 @@ interface TableRow {
 }
 
 export default function DataTable() {
+  const router = useRouter()
   const { useAnalysis: fetchData, loading, error } = useMonitoringAnalysis()
   const [rows, setRows] = useState<TableRow[]>([])
   const [refreshTrigger, setRefreshTrigger] = useState(0)
@@ -98,8 +101,19 @@ export default function DataTable() {
       field: 'actions',
       type: 'actions',
       headerName: 'Ações',
-      width: 80,
+      width: 130,
       getActions: ({ row }) => [
+        <IconButton
+          key="view"
+          color="info"
+          onClick={() =>
+            router.push(
+              `/dashboard/analytics/monitoring-points/${row.id}/time-series`,
+            )
+          }
+        >
+          <VisibilityIcon />
+        </IconButton>,
         <IconButton
           key="edit"
           color="primary"

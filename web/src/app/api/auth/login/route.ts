@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server'
 import { loginRequestSchema } from '@/lib/http/auth/types'
 import userRepository from '@/lib/database/user/repository'
 import jwt from 'jsonwebtoken'
-import { env } from '@/utils/env'
+import '@/utils/env'
 import dbConnect from '@/lib/database/mongoose'
 
 // export const loginResponseSchema = z.object({
@@ -28,8 +28,8 @@ export async function POST(request: NextRequest) {
         { status: 400 },
       )
 
-    const JWT_SECRET = env.JWT_SECRET
-    const JWT_EXPIRES = env.JWT_EXPIRES_IN
+    const JWT_SECRET = process.env.NEXT_PUBLIC_JWT_SECRET
+    const JWT_EXPIRES = process.env.NEXT_PUBLIC_JWT_EXPIRES_IN
 
     if (!JWT_EXPIRES || !JWT_SECRET)
       return NextResponse.json(

@@ -14,7 +14,7 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material'
-import { Analytics, Dashboard, Logout, Menu, Person } from '@mui/icons-material'
+import { Dashboard, Logout, Menu } from '@mui/icons-material'
 import { useRouter } from 'next/navigation'
 import { endUserSession } from '@/utils/jwt'
 
@@ -32,8 +32,6 @@ const Sidebar = () => {
 
   const menuItems = [
     { text: 'Dashboard', icon: <Dashboard />, path: '/dashboard' },
-    { text: 'Analytics', icon: <Analytics />, path: '/dashboard/analytics' },
-    { text: 'Perfil', icon: <Person />, path: '/dashboard/profile' },
   ]
 
   const handleNavigation = (path: string) => {

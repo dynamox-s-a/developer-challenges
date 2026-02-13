@@ -22,11 +22,7 @@ import {
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { ErrorDialog } from '@/components/ui/error-dialog'
-import {
-  type CreateMachineDto,
-  CreateMachineSchema,
-  type UpdateMachineDto,
-} from '@/types/zod/machine'
+import { type CreateMachineDto, CreateMachineSchema } from '@/types/zod/machine'
 import { useCreateMachine } from '@/hooks/api/machine/useCreateMachine'
 import { useUpdateMachine } from '@/hooks/api/machine/useUpdateMachine'
 import { useDeleteMachine } from '@/hooks/api/machine/useDeleteMachine'
