@@ -9,10 +9,26 @@ export interface Machine {
 }
 
 export interface MachinesState {
-  machines: Machine[]
-  selectedMachine: Machine | null
-  loading: boolean
-  error: string | null
+  items: Machine[]
+  selected: Machine | null
+  status: {
+    fetch: {
+      loading: boolean
+      error: string | null
+    }
+    create: {
+      loading: boolean
+      error: string | null
+    }
+    update: {
+      loading: boolean
+      error: string | null
+    }
+    remove: {
+      loading: boolean
+      error: string | null
+    }
+  }
 }
 
 export interface CreateMachineInput {

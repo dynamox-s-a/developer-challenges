@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   Alert,
   Box,
@@ -22,97 +22,75 @@ import {
 import EditIcon from '@mui/icons-material/EditOutlined'
 import DeleteIcon from '@mui/icons-material/DeleteOutline'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
-import { api } from '../services/api'
-import type { ApiResponse } from '../types/api.types'
-import type { Machine } from '../features/machines/machinesTypes'
-import { getApiErrorMessage } from '../utils/apiError'
-import { useAppSelector } from '../app/hooks'
+import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { selectMachines } from '../features/machines/machinesSelectors'
 import { ConfirmDialog } from '../components/ConfirmDialog'
 import { MonitoringPointEditDialog } from '../components/MonitoringPointEditDialog'
-
-interface Sensor {
-  uuid: string
-  sensorUniqueId: string
-  model: string
-}
-
-interface MonitoringPoint {
-  uuid: string
-  name: string
-  machine: {
-    uuid: string
-    name: string
-    type: string
-  }
-  sensor: Sensor | null
-}
-
-interface MonitoringPointsPayload {
-  data: MonitoringPoint[]
-  pagination: {
-    page: number
-    limit: number
-    total: number
-    totalPages: number
-  }
-}
-
-interface MonitoringPointResponse {
-  uuid: string
-  name: string
-}
-
-type MachineResponse = ApiResponse<Machine>
-type MonitoringPointsResponse = ApiResponse<MonitoringPointsPayload>
-type CreateMonitoringPointResponse = ApiResponse<MonitoringPointResponse>
-type MonitoringSortBy =
-  | 'machineName'
-  | 'machineType'
-  | 'name'
-  | 'sensorModel'
-  | 'createdAt'
-type SortOrder = 'asc' | 'desc'
+import {
+  deleteMonitoringPointThunk,
+  fetchMonitoringPointsThunk,
+  updateMonitoringPointThunk,
+  createMonitoringPointThunk
+} from '../features/monitoring-points/monitoringPointsThunks'
+import { clearMonitoringPointsMutationErrors } from '../features/monitoring-points/monitoringPointsSlice'
+import {
+  selectMonitoringPointCreateError,
+  selectMonitoringPointCreating,
+  selectMonitoringPointDeleteError,
+  selectMonitoringPointDeleting,
+  selectMonitoringPointUpdateError,
+  selectMonitoringPointUpdating,
+  selectMonitoringPoints,
+  selectMonitoringPointsListError,
+  selectMonitoringPointsPagination
+} from '../features/monitoring-points/monitoringPointsSelectors'
+import type {
+  MonitoringPoint,
+  MonitoringSortBy,
+  SortOrder
+} from '../features/monitoring-points/monitoringPointsTypes'
 
 const PAGE_SIZE = 5
 const DEFAULT_SORT_BY: MonitoringSortBy = 'createdAt'
 const DEFAULT_SORT_ORDER: SortOrder = 'desc'
 
 export function MonitoringPointsPage() {
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
   const { machineId } = useParams<{ machineId: string }>()
+
   const machines = useAppSelector(selectMachines)
-  const machinesVersion = machines
-    .map((machine) => `${machine.uuid}:${machine.name}:${machine.type}`)
-    .join('|')
-  const [machine, setMachine] = useState<Machine | null>(null)
-  const [monitoringPoints, setMonitoringPoints] = useState<MonitoringPoint[]>(
-    []
+  const monitoringPoints = useAppSelector(selectMonitoringPoints)
+  const pagination = useAppSelector(selectMonitoringPointsPagination)
+  const error = useAppSelector(selectMonitoringPointsListError)
+  const creating = useAppSelector(selectMonitoringPointCreating)
+  const createError = useAppSelector(selectMonitoringPointCreateError)
+  const editLoading = useAppSelector(selectMonitoringPointUpdating)
+  const editError = useAppSelector(selectMonitoringPointUpdateError)
+  const deleteLoading = useAppSelector(selectMonitoringPointDeleting)
+  const deleteError = useAppSelector(selectMonitoringPointDeleteError)
+
+  const machine = useMemo(
+    () =>
+      machineId
+        ? (machines.find(
+            (currentMachine) => currentMachine.uuid === machineId
+          ) ?? null)
+        : null,
+    [machineId, machines]
   )
+
   const [loadingMode, setLoadingMode] = useState<'initial' | 'table' | null>(
     'initial'
   )
   const [hasLoadedOnce, setHasLoadedOnce] = useState(false)
-  const [error, setError] = useState<string | null>(null)
   const [newPointName, setNewPointName] = useState('')
-  const [creating, setCreating] = useState(false)
-  const [createError, setCreateError] = useState<string | null>(null)
   const [monitoringPointToDelete, setMonitoringPointToDelete] =
     useState<MonitoringPoint | null>(null)
-  const [deleteLoading, setDeleteLoading] = useState(false)
-  const [deleteError, setDeleteError] = useState<string | null>(null)
   const [editingMonitoringPoint, setEditingMonitoringPoint] =
     useState<MonitoringPoint | null>(null)
   const [editName, setEditName] = useState('')
-  const [editError, setEditError] = useState<string | null>(null)
-  const [editLoading, setEditLoading] = useState(false)
-  const [pagination, setPagination] = useState({
-    page: 1,
-    limit: PAGE_SIZE,
-    total: 0,
-    totalPages: 0
-  })
 
   const rawPage = Number(searchParams.get('page') ?? '1')
   const page = Number.isNaN(rawPage) || rawPage < 1 ? 1 : rawPage
@@ -159,47 +137,42 @@ export function MonitoringPointsPage() {
     async (activeCheck: () => boolean) => {
       const isInitialLoad = !hasLoadedOnce
       setLoadingMode(isInitialLoad ? 'initial' : 'table')
-      setError(null)
 
       try {
-        const [machineData, monitoringPointsData] = await Promise.all([
-          machineId
-            ? api.get<MachineResponse>(`/machines/${machineId}`)
-            : Promise.resolve(null),
-          api.get<MonitoringPointsResponse>('/monitoring-points', {
-            params: {
-              ...(machineId ? { machineUuid: machineId } : {}),
-              page,
-              limit: PAGE_SIZE,
-              sortBy,
-              sortOrder
-            }
+        const response = await dispatch(
+          fetchMonitoringPointsThunk({
+            ...(machineId ? { machineUuid: machineId } : {}),
+            page,
+            limit: PAGE_SIZE,
+            sortBy,
+            sortOrder
           })
-        ])
+        ).unwrap()
 
         if (!activeCheck()) return
 
-        const responsePagination = monitoringPointsData.data.data.pagination
         if (
-          responsePagination.totalPages > 0 &&
-          page > responsePagination.totalPages
+          response.pagination.totalPages > 0 &&
+          page > response.pagination.totalPages
         ) {
-          setTableParams({ page: responsePagination.totalPages })
+          setTableParams({ page: response.pagination.totalPages })
           return
         }
 
-        setMachine(machineData?.data.data ?? null)
-        setMonitoringPoints(monitoringPointsData.data.data.data)
-        setPagination(responsePagination)
         setHasLoadedOnce(true)
-      } catch (requestError) {
-        if (!activeCheck()) return
-        setError(getApiErrorMessage(requestError, 'Erro ao carregar dados'))
       } finally {
         if (activeCheck()) setLoadingMode(null)
       }
     },
-    [hasLoadedOnce, machineId, page, sortBy, sortOrder, setTableParams]
+    [
+      dispatch,
+      hasLoadedOnce,
+      machineId,
+      page,
+      setTableParams,
+      sortBy,
+      sortOrder
+    ]
   )
 
   useEffect(() => {
@@ -210,68 +183,34 @@ export function MonitoringPointsPage() {
     return () => {
       active = false
     }
-  }, [machineId, loadData])
-
-  useEffect(() => {
-    if (!machineId) {
-      void loadData(() => true)
-      return
-    }
-
-    const selectedMachine =
-      machines.find((currentMachine) => currentMachine.uuid === machineId) ??
-      null
-
-    if (selectedMachine) {
-      setMachine(selectedMachine)
-    }
-
-    setMonitoringPoints((currentPoints) =>
-      currentPoints.map((point) =>
-        point.machine.uuid === machineId
-          ? {
-              ...point,
-              machine: {
-                ...point.machine,
-                name: selectedMachine?.name ?? point.machine.name,
-                type: selectedMachine?.type ?? point.machine.type
-              }
-            }
-          : point
-      )
-    )
-  }, [machineId, machines, machinesVersion, loadData])
+  }, [loadData])
 
   const createMonitoringPoint = async () => {
     if (!machineId || !newPointName.trim()) return
 
-    setCreating(true)
-    setCreateError(null)
-
     try {
-      await api.post<CreateMonitoringPointResponse>('/monitoring-points', {
-        name: newPointName.trim(),
-        machineUuid: machineId
-      })
+      await dispatch(
+        createMonitoringPointThunk({
+          name: newPointName.trim(),
+          machineUuid: machineId
+        })
+      ).unwrap()
+
       setNewPointName('')
       if (page !== 1) {
         setTableParams({ page: 1 })
       } else {
         await loadData(() => true)
       }
-    } catch (requestError) {
-      setCreateError(
-        getApiErrorMessage(requestError, 'Erro ao criar ponto de monitoramento')
-      )
-    } finally {
-      setCreating(false)
+    } catch {
+      /* empty */
     }
   }
 
   const openEditDialog = (monitoringPoint: MonitoringPoint) => {
+    dispatch(clearMonitoringPointsMutationErrors())
     setEditingMonitoringPoint(monitoringPoint)
     setEditName(monitoringPoint.name)
-    setEditError(null)
   }
 
   const closeEditDialog = () => {
@@ -282,57 +221,42 @@ export function MonitoringPointsPage() {
   const updateMonitoringPoint = async () => {
     if (!editingMonitoringPoint || !editName.trim()) return
 
-    setEditLoading(true)
-    setEditError(null)
-
     try {
-      await api.patch(`/monitoring-points/${editingMonitoringPoint.uuid}`, {
-        name: editName.trim()
-      })
+      await dispatch(
+        updateMonitoringPointThunk({
+          uuid: editingMonitoringPoint.uuid,
+          name: editName.trim()
+        })
+      ).unwrap()
+
       setEditingMonitoringPoint(null)
       await loadData(() => true)
-    } catch (requestError) {
-      setEditError(
-        getApiErrorMessage(
-          requestError,
-          'Erro ao atualizar ponto de monitoramento'
-        )
-      )
-    } finally {
-      setEditLoading(false)
+    } catch {
+      /* empty */
     }
   }
 
   const requestDeleteMonitoringPoint = (monitoringPoint: MonitoringPoint) => {
+    dispatch(clearMonitoringPointsMutationErrors())
     setMonitoringPointToDelete(monitoringPoint)
-    setDeleteError(null)
   }
 
   const closeDeleteDialog = () => {
     if (deleteLoading) return
     setMonitoringPointToDelete(null)
-    setDeleteError(null)
   }
 
   const confirmDeleteMonitoringPoint = async () => {
     if (!monitoringPointToDelete) return
 
-    setDeleteLoading(true)
-    setDeleteError(null)
-
     try {
-      await api.delete(`/monitoring-points/${monitoringPointToDelete.uuid}`)
+      await dispatch(
+        deleteMonitoringPointThunk(monitoringPointToDelete.uuid)
+      ).unwrap()
       setMonitoringPointToDelete(null)
       await loadData(() => true)
-    } catch (requestError) {
-      setDeleteError(
-        getApiErrorMessage(
-          requestError,
-          'Erro ao deletar ponto de monitoramento'
-        )
-      )
-    } finally {
-      setDeleteLoading(false)
+    } catch {
+      /* empty */
     }
   }
 

@@ -1,8 +1,8 @@
 import type { RootState } from '../../app/store'
 
-export const selectAuthStatus = (s: RootState) => s.auth.status
-export const selectAuthToken = (s: RootState) => s.auth.token
-export const selectAuthUser = (s: RootState) => s.auth.user
-export const selectAuthError = (s: RootState) => s.auth.errorMessage
-export const selectIsAuthenticated = (s: RootState) =>
-  s.auth.status === 'authenticated' && !!s.auth.token
+export const selectAuthStatus = (state: RootState) => state.auth.status
+export const selectAuthToken = (state: RootState) => state.auth.token
+export const selectAuthUser = (state: RootState) => state.auth.user
+export const selectAuthError = (state: RootState) => state.auth.errorMessage
+export const selectIsAuthenticated = (state: RootState) =>
+  state.auth.status === 'authenticated' && !!state.auth.token
