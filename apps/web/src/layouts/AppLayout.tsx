@@ -34,8 +34,8 @@ import {
   updateMachineThunk
 } from '../features/machines/machinesThunks'
 import { selectMachines } from '../features/machines/machinesSelectors'
-import { MachineCreationDialog } from '../components/MachineCreationDialog'
-import { ConfirmDialog } from '../components/ConfirmDialog'
+import { MachineCreationDialog } from '../dialogs/MachineCreationDialog'
+import { ConfirmDialog } from '../dialogs/ConfirmDialog'
 
 const DRAWER_WIDTH = 280
 

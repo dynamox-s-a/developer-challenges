@@ -26,8 +26,8 @@ import ShowChartIcon from '@mui/icons-material/ShowChart'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { selectMachines } from '../features/machines/machinesSelectors'
-import { ConfirmDialog } from '../components/ConfirmDialog'
-import { MonitoringPointEditDialog } from '../components/MonitoringPointEditDialog'
+import { ConfirmDialog } from '../dialogs/ConfirmDialog'
+import { MonitoringPointEditDialog } from '../dialogs/MonitoringPointEditDialog'
 import {
   deleteMonitoringPointThunk,
   fetchMonitoringPointsThunk,

@@ -7,10 +7,6 @@ import {
   CardContent,
   Chip,
   CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   FormControl,
   FormControlLabel,
   Grid,
@@ -19,8 +15,6 @@ import {
   Select,
   Stack,
   Switch,
-  Tab,
-  Tabs,
   Table,
   TableBody,
   TableCell,
@@ -44,6 +38,8 @@ import {
   YAxis
 } from 'recharts'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
+import { CreateTimeSeriesDialog } from '../dialogs/CreateTimeSeriesDialog'
+import { DeleteTelemetryDialog } from '../dialogs/DeleteTelemetryDialog'
 import {
   fetchTelemetryCountThunk,
   fetchTelemetryMetricsThunk,
@@ -69,7 +65,6 @@ import {
   selectTelemetrySeries
 } from '../features/telemetry/telemetrySelectors'
 import type {
-  CreateTelemetrySeriesInput,
   TelemetryOrder,
   TelemetryPoint,
   TelemetryPointInput,
@@ -77,11 +72,8 @@ import type {
 } from '../features/telemetry/telemetryTypes'
 
 const DEFAULT_LIMIT = 1000
-const MAX_FAKE_POINTS = 500
 
 type ChartMetric = 'accelerationRms' | 'temperature' | 'x' | 'y' | 'z'
-
-type CreateMode = 'fake' | 'json'
 
 function formatDateTime(value?: string | null) {
   if (!value) return '-'
@@ -93,32 +85,6 @@ function toApiIso(value: string) {
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return undefined
   return date.toISOString()
-}
-
-function generateFakeTcAgSeries(params: {
-  intervalMinutes: number
-  pointsCount: number
-}): CreateTelemetrySeriesInput['points'] {
-  const now = Date.now()
-  const intervalMs = params.intervalMinutes * 60 * 1000
-  const amplitude = 0.6
-
-  return Array.from({ length: params.pointsCount }).map((_, index) => {
-    const time = now - (params.pointsCount - index) * intervalMs
-    const noise = () => (Math.random() - 0.5) * 0.08
-    const x = amplitude * Math.sin(index / 12) + noise()
-    const y = amplitude * Math.cos(index / 15) + noise()
-    const z = amplitude * Math.sin(index / 18) + noise()
-    const temperature = 30 + Math.sin(index / 45) * 4 + Math.random() * 0.4
-
-    return {
-      timestamp: new Date(time).toISOString(),
-      x: Number(x.toFixed(4)),
-      y: Number(y.toFixed(4)),
-      z: Number(z.toFixed(4)),
-      temperature: Number(temperature.toFixed(2))
-    }
-  })
 }
 
 function TelemetryFiltersCard(props: {
@@ -540,192 +506,6 @@ function TelemetryPointsTable(props: {
   )
 }
 
-function CreateTimeSeriesDialog(props: {
-  open: boolean
-  loading: boolean
-  error: string | null
-  onClose: () => void
-  onSubmit: (payload: {
-    intervalMinutes: number
-    points: TelemetryPointInput[]
-  }) => Promise<void>
-}) {
-  const [mode, setMode] = useState<CreateMode>('fake')
-  const [intervalMinutes, setIntervalMinutes] = useState(5)
-  const [pointsCount, setPointsCount] = useState(120)
-  const [jsonPayload, setJsonPayload] = useState(
-    '{\n  "intervalMinutes": 5,\n  "points": []\n}'
-  )
-  const [localError, setLocalError] = useState<string | null>(null)
-
-  const submit = async () => {
-    setLocalError(null)
-
-    if (mode === 'fake') {
-      if (pointsCount < 1 || pointsCount > MAX_FAKE_POINTS) {
-        setLocalError(
-          `Quantidade de pontos deve estar entre 1 e ${MAX_FAKE_POINTS}`
-        )
-        return
-      }
-
-      const points = generateFakeTcAgSeries({ intervalMinutes, pointsCount })
-      await props.onSubmit({ intervalMinutes, points })
-      return
-    }
-
-    try {
-      const parsed = JSON.parse(jsonPayload) as {
-        intervalMinutes: number
-        points: TelemetryPointInput[]
-      }
-
-      if (!parsed.intervalMinutes || !Array.isArray(parsed.points)) {
-        setLocalError('JSON inválido. Esperado: { intervalMinutes, points }')
-        return
-      }
-
-      await props.onSubmit(parsed)
-    } catch {
-      setLocalError('JSON inválido')
-    }
-  }
-
-  return (
-    <Dialog
-      open={props.open}
-      onClose={props.loading ? undefined : props.onClose}
-      maxWidth='md'
-      fullWidth
-    >
-      <DialogTitle>Enviar Série Temporal</DialogTitle>
-      <DialogContent>
-        <Tabs
-          value={mode}
-          onChange={(_event, value) => setMode(value)}
-          sx={{ mb: 2 }}
-        >
-          <Tab value='fake' label='Gerar dados fake TcAg' />
-          <Tab value='json' label='Colar JSON' />
-        </Tabs>
-
-        {mode === 'fake' ? (
-          <Grid container spacing={1.5}>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                label='intervalMinutes'
-                type='number'
-                value={intervalMinutes}
-                onChange={(event) =>
-                  setIntervalMinutes(Number(event.target.value) || 5)
-                }
-                slotProps={{ htmlInput: { min: 1, max: 60 } }}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                label='Quantidade de pontos'
-                type='number'
-                value={pointsCount}
-                onChange={(event) =>
-                  setPointsCount(Number(event.target.value) || 120)
-                }
-                slotProps={{ htmlInput: { min: 1, max: MAX_FAKE_POINTS } }}
-              />
-            </Grid>
-          </Grid>
-        ) : (
-          <TextField
-            fullWidth
-            multiline
-            minRows={12}
-            label='Payload JSON'
-            value={jsonPayload}
-            onChange={(event) => setJsonPayload(event.target.value)}
-          />
-        )}
-
-        {(localError || props.error) && (
-          <Alert severity='error' sx={{ mt: 2 }}>
-            {localError ?? props.error}
-          </Alert>
-        )}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.onClose} disabled={props.loading}>
-          Cancelar
-        </Button>
-        <Button
-          variant='contained'
-          onClick={() => void submit()}
-          disabled={props.loading}
-        >
-          {props.loading ? 'Enviando...' : 'Enviar'}
-        </Button>
-      </DialogActions>
-    </Dialog>
-  )
-}
-
-function DeleteConfirmDialog(props: {
-  open: boolean
-  from: string
-  to: string
-  loading: boolean
-  error: string | null
-  onClose: () => void
-  onConfirm: (params: { all: boolean }) => Promise<void>
-}) {
-  const [all, setAll] = useState(!props.from && !props.to)
-
-  const handleClose = () => {
-    setAll(!props.from && !props.to)
-    props.onClose()
-  }
-
-  return (
-    <Dialog open={props.open} onClose={props.loading ? undefined : handleClose}>
-      <DialogTitle>Deletar dados de telemetria</DialogTitle>
-      <DialogContent>
-        <Stack spacing={1.5} mt={0.5}>
-          <Typography variant='body2'>
-            Você pode deletar todos os pontos (`all=true`) ou apenas do
-            intervalo de filtros.
-          </Typography>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={all}
-                onChange={(event) => setAll(event.target.checked)}
-              />
-            }
-            label='Deletar tudo (all=true)'
-          />
-          <Typography variant='body2' color='text.secondary'>
-            Intervalo atual: {props.from || '-'} até {props.to || '-'}
-          </Typography>
-          {props.error && <Alert severity='error'>{props.error}</Alert>}
-        </Stack>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} disabled={props.loading}>
-          Cancelar
-        </Button>
-        <Button
-          variant='contained'
-          color='error'
-          onClick={() => void props.onConfirm({ all })}
-          disabled={props.loading}
-        >
-          {props.loading ? 'Deletando...' : 'Confirmar exclusão'}
-        </Button>
-      </DialogActions>
-    </Dialog>
-  )
-}
-
 export function TimeSeriesPage() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -836,7 +616,11 @@ export function TimeSeriesPage() {
     }
   }
 
-  const handleDelete = async (params: { all: boolean }) => {
+  const handleDelete = async (params: {
+    all: boolean
+    from?: string
+    to?: string
+  }) => {
     if (!sensorUuid) return
 
     try {
@@ -844,8 +628,8 @@ export function TimeSeriesPage() {
         deleteTelemetrySeriesThunk({
           sensorUuid,
           all: params.all,
-          from: params.all ? undefined : toApiIso(from),
-          to: params.all ? undefined : toApiIso(to)
+          from: params.all ? undefined : toApiIso(params.from ?? from),
+          to: params.all ? undefined : toApiIso(params.to ?? to)
         })
       ).unwrap()
       setDeleteOpen(false)
@@ -944,7 +728,8 @@ export function TimeSeriesPage() {
         onSubmit={handleCreate}
       />
 
-      <DeleteConfirmDialog
+      <DeleteTelemetryDialog
+        key={`${deleteOpen}-${from}-${to}`}
         open={deleteOpen}
         from={from}
         to={to}

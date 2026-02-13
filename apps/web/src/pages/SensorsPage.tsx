@@ -18,8 +18,7 @@ import DeleteIcon from '@mui/icons-material/DeleteOutline'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
-import { SensorEditDialog } from '../components/SensorEditDialog'
-import { ConfirmDialog } from '../components/ConfirmDialog'
+
 import { selectMachines } from '../features/machines/machinesSelectors'
 import { fetchMonitoringPointsThunk } from '../features/monitoring-points/monitoringPointsThunks'
 import {
@@ -42,6 +41,8 @@ import {
   selectSensorUpdating
 } from '../features/sensors/sensorsSelectors'
 import type { Sensor, SensorModel } from '../features/sensors/sensorsTypes'
+import { ConfirmDialog } from '../dialogs/ConfirmDialog'
+import { SensorEditDialog } from '../dialogs/SensorEditDialog'
 
 const SENSOR_MODEL_OPTIONS: Array<{ value: SensorModel; label: string }> = [
   { value: 'TcAg', label: 'TcAg' },
@@ -105,7 +106,7 @@ export function SensorsPage() {
         if (!activeCheck()) return
         setHasLoadedOnce(true)
       } catch {
-        // slice stores the API error.
+        /* empty */
       }
     },
     [dispatch, machineId]
@@ -127,7 +128,9 @@ export function SensorsPage() {
   const existingSensors = useMemo(
     () =>
       monitoringPoints
-        .filter((item): item is typeof item & { sensor: Sensor } => !!item.sensor)
+        .filter(
+          (item): item is typeof item & { sensor: Sensor } => !!item.sensor
+        )
         .map((item) => ({
           monitoringPointUuid: item.uuid,
           monitoringPointName: item.name,
@@ -140,7 +143,8 @@ export function SensorsPage() {
     if (!monitoringPointUuid && availablePoints.length > 0) {
       setMonitoringPointUuid(availablePoints[0].uuid)
     }
-  }, [availablePoints, monitoringPointUuid])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [availablePoints])
 
   const formatSensorUniqueId = (value: string): string => {
     const cleaned = value.replace(/[^A-Za-z0-9]/g, '')
@@ -256,7 +260,9 @@ export function SensorsPage() {
     <Box>
       <Stack direction='row' alignItems='center' spacing={1} mb={1}>
         <IconButton
-          onClick={() => navigate(`/app/machines/${machineId}/monitoring-points`)}
+          onClick={() =>
+            navigate(`/app/machines/${machineId}/monitoring-points`)
+          }
           size='small'
         >
           <ArrowBackIcon />
@@ -316,7 +322,9 @@ export function SensorsPage() {
           <Button
             variant='contained'
             onClick={() => void createSensor()}
-            disabled={submitting || sensorUniqueId.length !== 10 || !monitoringPointUuid}
+            disabled={
+              submitting || sensorUniqueId.length !== 10 || !monitoringPointUuid
+            }
           >
             Salvar
           </Button>
@@ -349,7 +357,10 @@ export function SensorsPage() {
                 divider
                 secondaryAction={
                   <Stack direction='row' spacing={0.5}>
-                    <IconButton size='small' onClick={() => openEditDialog(item.sensor)}>
+                    <IconButton
+                      size='small'
+                      onClick={() => openEditDialog(item.sensor)}
+                    >
                       <EditIcon fontSize='small' />
                     </IconButton>
                     <IconButton
@@ -387,7 +398,9 @@ export function SensorsPage() {
         open={!!sensorToDelete}
         title='Excluir sensor'
         description={
-          sensorToDelete ? `Deseja excluir o sensor "${sensorToDelete.sensorUniqueId}"?` : ''
+          sensorToDelete
+            ? `Deseja excluir o sensor "${sensorToDelete.sensorUniqueId}"?`
+            : ''
         }
         confirmLabel='Excluir'
         cancelLabel='Cancelar'
