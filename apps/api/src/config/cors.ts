@@ -1,9 +1,9 @@
 import cors from 'cors'
 
 const devOrigins = [
-  'http://localhost:5173',
-  'http://localhost:3000',
-  'http://127.0.0.1:3000'
+  'http://localhost:5000',
+  'http://localhost:5174',
+  'http://172.19.0.3:5000'
 ]
 
 const prodOrigins = ['https://app.dynamox.com']
@@ -25,7 +25,10 @@ export const getCorsMiddleware = () =>
         return callback(null, true)
       }
 
-      return callback(new Error(`CORS blocked for origin: ${origin}`), undefined)
+      return callback(
+        new Error(`CORS blocked for origin: ${origin}`),
+        undefined
+      )
     },
     credentials: true
   })

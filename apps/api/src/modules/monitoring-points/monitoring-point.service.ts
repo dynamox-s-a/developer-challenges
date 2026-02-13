@@ -1,6 +1,17 @@
 import { AppError } from '../../core/base/AppError'
 import { prisma } from '../../core/lib/prisma'
 
+function mapSensorWithTelemetry(sensor: any) {
+  if (!sensor) return null
+
+  return {
+    uuid: sensor.uuid,
+    sensorUniqueId: sensor.sensorUniqueId,
+    model: sensor.model,
+    hasTelemetry: sensor._count.telemetryPoints > 0
+  }
+}
+
 export async function createMonitoringPoint(
   input: { name: string; machineUuid: string },
   userId: number
@@ -21,7 +32,7 @@ export async function createMonitoringPoint(
     )
   }
 
-  return prisma.monitoringPoint.create({
+  const created = await prisma.monitoringPoint.create({
     data: {
       name: input.name.trim(),
       machineId: machine.id
@@ -42,11 +53,21 @@ export async function createMonitoringPoint(
         select: {
           uuid: true,
           sensorUniqueId: true,
-          model: true
+          model: true,
+          _count: {
+            select: {
+              telemetryPoints: true
+            }
+          }
         }
       }
     }
   })
+
+  return {
+    ...created,
+    sensor: mapSensorWithTelemetry(created.sensor)
+  }
 }
 
 export async function listMonitoringPoints(
@@ -112,7 +133,12 @@ export async function listMonitoringPoints(
           select: {
             uuid: true,
             sensorUniqueId: true,
-            model: true
+            model: true,
+            _count: {
+              select: {
+                telemetryPoints: true
+              }
+            }
           }
         }
       }
@@ -120,8 +146,13 @@ export async function listMonitoringPoints(
     prisma.monitoringPoint.count({ where })
   ])
 
+  const dataWithTelemetry = data.map((item) => ({
+    ...item,
+    sensor: mapSensorWithTelemetry(item.sensor)
+  }))
+
   return {
-    data,
+    data: dataWithTelemetry,
     pagination: {
       page,
       limit,
@@ -150,7 +181,12 @@ export async function getMonitoringPointByUuid(uuid: string) {
         select: {
           uuid: true,
           sensorUniqueId: true,
-          model: true
+          model: true,
+          _count: {
+            select: {
+              telemetryPoints: true
+            }
+          }
         }
       }
     }
@@ -160,7 +196,10 @@ export async function getMonitoringPointByUuid(uuid: string) {
     throw new AppError('Ponto de monitoramento não encontrado', 404)
   }
 
-  return monitoringPoint
+  return {
+    ...monitoringPoint,
+    sensor: mapSensorWithTelemetry(monitoringPoint.sensor)
+  }
 }
 
 export async function updateMonitoringPoint(
@@ -192,7 +231,7 @@ export async function updateMonitoringPoint(
   const data: { name?: string } = {}
   if (input.name !== undefined) data.name = input.name.trim()
 
-  return prisma.monitoringPoint.update({
+  const updated = await prisma.monitoringPoint.update({
     where: { id: current.id },
     data,
     select: {
@@ -211,11 +250,21 @@ export async function updateMonitoringPoint(
         select: {
           uuid: true,
           sensorUniqueId: true,
-          model: true
+          model: true,
+          _count: {
+            select: {
+              telemetryPoints: true
+            }
+          }
         }
       }
     }
   })
+
+  return {
+    ...updated,
+    sensor: mapSensorWithTelemetry(updated.sensor)
+  }
 }
 
 export async function deleteMonitoringPoint(uuid: string, userId: number) {
