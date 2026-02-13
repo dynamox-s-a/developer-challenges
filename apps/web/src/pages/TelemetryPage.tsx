@@ -75,9 +75,19 @@ const DEFAULT_LIMIT = 1000
 
 type ChartMetric = 'accelerationRms' | 'temperature' | 'x' | 'y' | 'z'
 
+const METRIC_LABELS = {
+  x: 'Aceleração X (g)',
+  y: 'Aceleração Y (g)',
+  z: 'Aceleração Z (g)',
+  temperature: 'Temperatura (°C)',
+  accelerationRms: 'Aceleração RMS (g)'
+} as const
+
+const ACCELERATION_RMS_RESULTANT_LABEL = 'Aceleração resultante RMS (g)'
+
 function formatDateTime(value?: string | null) {
   if (!value) return '-'
-  return new Date(value).toLocaleString()
+  return new Date(value).toLocaleString('pt-BR')
 }
 
 function toApiIso(value: string) {
@@ -85,6 +95,17 @@ function toApiIso(value: string) {
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return undefined
   return date.toISOString()
+}
+
+function formatNumber(value: number | null | undefined, decimals: number) {
+  if (value == null || Number.isNaN(value)) return '-'
+  return value.toFixed(decimals)
+}
+
+function getMetricLabel(metric: string | undefined) {
+  if (!metric) return '-'
+  if (metric === 'accelerationRms') return ACCELERATION_RMS_RESULTANT_LABEL
+  return METRIC_LABELS[metric as ChartMetric] ?? metric
 }
 
 function TelemetryFiltersCard(props: {
@@ -123,7 +144,7 @@ function TelemetryFiltersCard(props: {
               color='primary'
             />
             <Chip
-              label={`Time-series: ${props.countData?.timeSeriesCount ?? 0}`}
+              label={`Séries temporais: ${props.countData?.timeSeriesCount ?? 0}`}
               size='small'
               color='secondary'
             />
@@ -256,31 +277,17 @@ function TelemetryMetricsCards(props: {
       <Grid size={{ xs: 12, md: 3 }}>
         <Card variant='outlined'>
           <CardContent>
-            <Typography variant='subtitle2'>Acceleration RMS</Typography>
-            <Typography variant='body2'>
-              Min: {metrics.accelerationRms.min ?? '-'}
+            <Typography variant='subtitle2'>
+              {ACCELERATION_RMS_RESULTANT_LABEL}
             </Typography>
             <Typography variant='body2'>
-              Max: {metrics.accelerationRms.max ?? '-'}
+              Mín: {formatNumber(metrics.accelerationRms.min, 4)}
             </Typography>
             <Typography variant='body2'>
-              Avg: {metrics.accelerationRms.avg ?? '-'}
-            </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
-      <Grid size={{ xs: 12, md: 3 }}>
-        <Card variant='outlined'>
-          <CardContent>
-            <Typography variant='subtitle2'>Temperature</Typography>
-            <Typography variant='body2'>
-              Min: {metrics.temperature.min ?? '-'}
+              Máx: {formatNumber(metrics.accelerationRms.max, 4)}
             </Typography>
             <Typography variant='body2'>
-              Max: {metrics.temperature.max ?? '-'}
-            </Typography>
-            <Typography variant='body2'>
-              Avg: {metrics.temperature.avg ?? '-'}
+              Média: {formatNumber(metrics.accelerationRms.avg, 4)}
             </Typography>
           </CardContent>
         </Card>
@@ -288,15 +295,35 @@ function TelemetryMetricsCards(props: {
       <Grid size={{ xs: 12, md: 3 }}>
         <Card variant='outlined'>
           <CardContent>
-            <Typography variant='subtitle2'>Eixos X / Y / Z</Typography>
-            <Typography variant='body2'>
-              X avg: {metrics.x.avg ?? '-'}
+            <Typography variant='subtitle2'>
+              {METRIC_LABELS.temperature}
             </Typography>
             <Typography variant='body2'>
-              Y avg: {metrics.y.avg ?? '-'}
+              Mín: {formatNumber(metrics.temperature.min, 2)}
             </Typography>
             <Typography variant='body2'>
-              Z avg: {metrics.z.avg ?? '-'}
+              Máx: {formatNumber(metrics.temperature.max, 2)}
+            </Typography>
+            <Typography variant='body2'>
+              Média: {formatNumber(metrics.temperature.avg, 2)}
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid size={{ xs: 12, md: 3 }}>
+        <Card variant='outlined'>
+          <CardContent>
+            <Typography variant='subtitle2'>
+              Acelerações por eixo (g)
+            </Typography>
+            <Typography variant='body2'>
+              {METRIC_LABELS.x} Média: {formatNumber(metrics.x.avg, 4)}
+            </Typography>
+            <Typography variant='body2'>
+              {METRIC_LABELS.y} Média: {formatNumber(metrics.y.avg, 4)}
+            </Typography>
+            <Typography variant='body2'>
+              {METRIC_LABELS.z} Média: {formatNumber(metrics.z.avg, 4)}
             </Typography>
           </CardContent>
         </Card>
@@ -346,11 +373,15 @@ function TelemetryChartCard(props: {
                   props.onMetricChange(event.target.value as ChartMetric)
                 }
               >
-                <MenuItem value='accelerationRms'>accelerationRms</MenuItem>
-                <MenuItem value='temperature'>temperature</MenuItem>
-                <MenuItem value='x'>x</MenuItem>
-                <MenuItem value='y'>y</MenuItem>
-                <MenuItem value='z'>z</MenuItem>
+                <MenuItem value='accelerationRms'>
+                  {METRIC_LABELS.accelerationRms}
+                </MenuItem>
+                <MenuItem value='temperature'>
+                  {METRIC_LABELS.temperature}
+                </MenuItem>
+                <MenuItem value='x'>{METRIC_LABELS.x}</MenuItem>
+                <MenuItem value='y'>{METRIC_LABELS.y}</MenuItem>
+                <MenuItem value='z'>{METRIC_LABELS.z}</MenuItem>
               </Select>
             </FormControl>
             <FormControlLabel
@@ -380,37 +411,40 @@ function TelemetryChartCard(props: {
                   type='number'
                   domain={['auto', 'auto']}
                   tickFormatter={(value) =>
-                    new Date(value).toLocaleTimeString()
+                    new Date(value).toLocaleTimeString('pt-BR')
                   }
                 />
                 <YAxis />
                 <Tooltip
                   labelFormatter={(value) =>
-                    new Date(Number(value)).toLocaleString()
+                    new Date(Number(value)).toLocaleString('pt-BR')
                   }
-                  formatter={(value: number | string | undefined) => [
-                    Number(value ?? 0).toFixed(4),
-                    props.plotXYZTogether ? 'axis' : props.metric
-                  ]}
+                  formatter={(
+                    value: string | number | undefined,
+                    name: string | undefined
+                  ) => [Number(value ?? 0).toFixed(2), getMetricLabel(name)]}
                 />
-                <Legend />
+                <Legend formatter={(value: string) => getMetricLabel(value)} />
                 {props.plotXYZTogether ? (
                   <>
                     <Line
                       type='monotone'
                       dataKey='x'
+                      name={METRIC_LABELS.x}
                       stroke='#0288d1'
                       dot={false}
                     />
                     <Line
                       type='monotone'
                       dataKey='y'
+                      name={METRIC_LABELS.y}
                       stroke='#f57c00'
                       dot={false}
                     />
                     <Line
                       type='monotone'
                       dataKey='z'
+                      name={METRIC_LABELS.z}
                       stroke='#2e7d32'
                       dot={false}
                     />
@@ -419,6 +453,11 @@ function TelemetryChartCard(props: {
                   <Line
                     type='monotone'
                     dataKey={props.metric}
+                    name={
+                      props.metric === 'accelerationRms'
+                        ? ACCELERATION_RMS_RESULTANT_LABEL
+                        : METRIC_LABELS[props.metric]
+                    }
                     stroke='#1976d2'
                     dot={false}
                   />
@@ -467,12 +506,12 @@ function TelemetryPointsTable(props: {
               <Table size='small'>
                 <TableHead>
                   <TableRow>
-                    <TableCell>timestamp</TableCell>
-                    <TableCell>x</TableCell>
-                    <TableCell>y</TableCell>
-                    <TableCell>z</TableCell>
-                    <TableCell>temperature</TableCell>
-                    <TableCell>accelerationRms</TableCell>
+                    <TableCell>Timestamp</TableCell>
+                    <TableCell>{METRIC_LABELS.x}</TableCell>
+                    <TableCell>{METRIC_LABELS.y}</TableCell>
+                    <TableCell>{METRIC_LABELS.z}</TableCell>
+                    <TableCell>{METRIC_LABELS.temperature}</TableCell>
+                    <TableCell>{METRIC_LABELS.accelerationRms}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

@@ -1,5 +1,15 @@
 import { z } from 'zod'
 
+const booleanQueryParamSchema = z.preprocess((value) => {
+  if (typeof value === 'boolean') return value
+  if (typeof value === 'string') {
+    const normalized = value.trim().toLowerCase()
+    if (normalized === 'true') return true
+    if (normalized === 'false') return false
+  }
+  return value
+}, z.boolean())
+
 export const uuidParamSchema = z.object({
   uuid: z.uuid()
 })
@@ -42,5 +52,5 @@ export const timeSeriesMetricsQuerySchema = z
 export const timeSeriesDeleteQuerySchema = z.object({
   from: z.coerce.date().optional(),
   to: z.coerce.date().optional(),
-  all: z.coerce.boolean().optional()
+  all: booleanQueryParamSchema.optional()
 })
