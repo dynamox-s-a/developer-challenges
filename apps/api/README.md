@@ -8,6 +8,8 @@
 
 ## Test database setup
 
+Safety guard: destructive integration-test operations are blocked unless `DATABASE_URL` points to a database name that contains `test` (for example, `dynamox_test`).
+
 1. Start PostgreSQL:
 
 ```bash

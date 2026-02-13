@@ -1,19 +1,13 @@
 import { Client } from 'pg'
+import { assertSafeTestDatabase } from './test-db-safety'
 
 async function ensureTestDatabase() {
   const databaseUrl = process.env.DATABASE_URL
-  if (!databaseUrl) {
-    throw new Error('DATABASE_URL is not set')
-  }
+  const dbName = assertSafeTestDatabase(databaseUrl)
 
-  const target = new URL(databaseUrl)
-  const dbName = target.pathname.replace(/^\//, '')
+  const target = new URL(databaseUrl!)
 
-  if (!dbName) {
-    throw new Error('DATABASE_URL must include a database name')
-  }
-
-  const adminUrl = new URL(databaseUrl)
+  const adminUrl = new URL(databaseUrl!)
   adminUrl.pathname = '/postgres'
 
   const client = new Client({ connectionString: adminUrl.toString() })

@@ -1,6 +1,9 @@
 import { prisma } from '../../src/core/lib/prisma'
+import { assertSafeTestDatabase } from './test-db-safety'
 
 export async function truncateAll() {
+  assertSafeTestDatabase(process.env.DATABASE_URL)
+
   const tables = await prisma.$queryRaw<Array<{ tablename: string }>>`
     SELECT tablename
     FROM pg_tables

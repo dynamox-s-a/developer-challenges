@@ -33,7 +33,7 @@ export const timeSeriesListQuerySchema = z
   .object({
     from: z.coerce.date().optional(),
     to: z.coerce.date().optional(),
-    limit: z.coerce.number().int().min(1).max(10000).default(1000),
+    limit: z.coerce.number().int().min(1).max(10000).default(500),
     order: z.enum(['asc', 'desc']).default('desc')
   })
   .refine((q) => !(q.from && q.to) || q.from <= q.to, {
