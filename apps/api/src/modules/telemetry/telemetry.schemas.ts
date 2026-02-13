@@ -14,7 +14,7 @@ const pointSchema = z.object({
 
 export const timeSeriesCreateSchema = z
   .object({
-    intervalMinutes: z.number().int().min(1).max(60).optional(),
+    intervalMinutes: z.number().int().min(1).max(60),
     points: z.array(pointSchema).min(1).max(5000)
   })
   .strict()

@@ -3,13 +3,15 @@ import authReducer from '../features/auth/authSlice'
 import machinesReducer from '../features/machines/machinesSlice'
 import monitoringPointsReducer from '../features/monitoring-points/monitoringPointsSlice'
 import sensorsReducer from '../features/sensors/sensorsSlice'
+import telemetryReducer from '../features/telemetry/telemetrySlice'
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     machines: machinesReducer,
     monitoringPoints: monitoringPointsReducer,
-    sensors: sensorsReducer
+    sensors: sensorsReducer,
+    telemetry: telemetryReducer
   }
 })
 

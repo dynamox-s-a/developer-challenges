@@ -17,10 +17,12 @@ import {
   TableRow,
   TableSortLabel,
   TextField,
+  Tooltip,
   Typography
 } from '@mui/material'
 import EditIcon from '@mui/icons-material/EditOutlined'
 import DeleteIcon from '@mui/icons-material/DeleteOutline'
+import ShowChartIcon from '@mui/icons-material/ShowChart'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { selectMachines } from '../features/machines/machinesSelectors'
@@ -437,6 +439,24 @@ export function MonitoringPointsPage() {
                             spacing={0.5}
                             justifyContent='flex-end'
                           >
+                            {monitoringPoint.sensor?.hasTelemetry ? (
+                              <Tooltip title='Visualizar telemetria'>
+                                <IconButton
+                                  size='small'
+                                  onClick={() =>
+                                    navigate(
+                                      `/app/machines/${machineId}/telemetry?sensorUuid=${monitoringPoint.sensor?.uuid}`
+                                    )
+                                  }
+                                >
+                                  <ShowChartIcon fontSize='small' />
+                                </IconButton>
+                              </Tooltip>
+                            ) : (
+                              <IconButton size='small' disabled>
+                                <ShowChartIcon fontSize='small' />
+                              </IconButton>
+                            )}
                             <IconButton
                               size='small'
                               onClick={() => openEditDialog(monitoringPoint)}
@@ -477,12 +497,6 @@ export function MonitoringPointsPage() {
             disabled={pagination.total === 0}
           >
             Gerenciar sensores
-          </Button>
-          <Button
-            variant='outlined'
-            onClick={() => navigate(`/app/machines/${machineId}/telemetry`)}
-          >
-            Ir para telemetria
           </Button>
         </Stack>
       )}
