@@ -50,4 +50,5 @@ Uma aplicação frontend utilizando das técnologias especificadas no desafio pa
 2. Configuração das variaveis de ambiente do banco de dados e autenticação.
 3. Rodar em desenvolvimentoo: `pnpm run dev`
 4. Rodar em produção: `pnpm run build | pnpm start`
-5. Caso queira acessar a aplicação com maior facilidade: https://dynamox-phi.vercel.app?_vercel_share=YmUMOk14ESTfjPJrZWlGyX3LkDZ64WY6
+5. Caso queira acessar a aplicação com maior facilidade: [clique aqui para entrar na aplicação!](https://fullstack-dynamox.vercel.app?_vercel_share=NupmsUzpJQt90nw5sVsHFxc5vWbwjLzL)
+
