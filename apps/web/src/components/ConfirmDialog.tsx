@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -14,6 +15,7 @@ interface ConfirmDialogProps {
   confirmLabel?: string
   cancelLabel?: string
   loading?: boolean
+  errorMessage?: string | null
   onConfirm: () => void
   onClose: () => void
 }
@@ -25,6 +27,7 @@ export function ConfirmDialog({
   confirmLabel = 'Confirmar',
   cancelLabel = 'Cancelar',
   loading = false,
+  errorMessage = null,
   onConfirm,
   onClose
 }: ConfirmDialogProps) {
@@ -38,6 +41,11 @@ export function ConfirmDialog({
     >
       <DialogTitle sx={{ p: 0, pb: 1.5 }}>{title}</DialogTitle>
       <DialogContent sx={{ p: 0, py: 1.5 }}>
+        {errorMessage && (
+          <Alert severity='error' sx={{ mb: 1.5 }}>
+            {errorMessage}
+          </Alert>
+        )}
         <Typography variant='body2' color='text.secondary'>
           {description}
         </Typography>

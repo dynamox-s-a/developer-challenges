@@ -4,10 +4,6 @@ import {
   Box,
   Button,
   CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   IconButton,
   List,
   ListItem,
@@ -19,11 +15,14 @@ import {
 } from '@mui/material'
 import EditIcon from '@mui/icons-material/EditOutlined'
 import DeleteIcon from '@mui/icons-material/DeleteOutline'
-import { useParams } from 'react-router-dom'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { useNavigate, useParams } from 'react-router-dom'
 import { api } from '../services/api'
 import type { ApiResponse } from '../types/api.types'
 import type { Machine } from '../features/machines/machinesTypes'
 import { getApiErrorMessage } from '../utils/apiError'
+import { SensorEditDialog } from '../components/SensorEditDialog'
+import { ConfirmDialog } from '../components/ConfirmDialog'
 
 type SensorModel = 'TcAg' | 'TcAs' | 'HF_PLUS'
 
@@ -53,6 +52,7 @@ const SENSOR_MODEL_OPTIONS: Array<{ value: SensorModel; label: string }> = [
 ]
 
 export function SensorsPage() {
+  const navigate = useNavigate()
   const { machineId } = useParams<{ machineId: string }>()
   const [machine, setMachine] = useState<Machine | null>(null)
   const [monitoringPoints, setMonitoringPoints] = useState<MonitoringPoint[]>(
@@ -72,6 +72,10 @@ export function SensorsPage() {
   const [editModel, setEditModel] = useState<SensorModel>('HF_PLUS')
   const [editError, setEditError] = useState<string | null>(null)
   const [editLoading, setEditLoading] = useState(false)
+
+  const [sensorToDelete, setSensorToDelete] = useState<Sensor | null>(null)
+  const [deleteLoading, setDeleteLoading] = useState(false)
+  const [deleteError, setDeleteError] = useState<string | null>(null)
 
   const loadData = useCallback(
     async (activeCheck: () => boolean) => {
@@ -139,6 +143,29 @@ export function SensorsPage() {
     }
   }, [availablePoints, monitoringPointUuid])
 
+  const formatSensorUniqueId = (value: string): string => {
+    const cleaned = value.replace(/[^A-Za-z0-9]/g, '')
+
+    const letters = cleaned
+      .slice(0, 6)
+      .replace(/[^A-Za-z]/g, '')
+      .toUpperCase()
+    const numbers = cleaned.slice(6, 9).replace(/[^0-9]/g, '')
+
+    if (letters.length === 6) {
+      return `${letters}-${numbers}`
+    }
+
+    return letters
+  }
+
+  const handleSensorUniqueIdChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const formatted = formatSensorUniqueId(event.target.value)
+    setSensorUniqueId(formatted)
+  }
+
   const createSensor = async () => {
     if (!monitoringPointUuid || !sensorUniqueId.trim()) return
 
@@ -148,7 +175,7 @@ export function SensorsPage() {
     try {
       await api.post('/sensors', {
         monitoringPointUuid,
-        sensorUniqueId: sensorUniqueId.trim().toUpperCase(),
+        sensorUniqueId: sensorUniqueId.trim(),
         model
       })
 
@@ -193,17 +220,31 @@ export function SensorsPage() {
     }
   }
 
-  const deleteSensor = async (uuid: string) => {
-    const confirmed = window.confirm('Deseja excluir este sensor?')
-    if (!confirmed) return
+  const requestDeleteSensor = (sensor: Sensor) => {
+    setSensorToDelete(sensor)
+    setDeleteError(null)
+  }
 
-    setSubmitError(null)
+  const closeDeleteDialog = () => {
+    if (deleteLoading) return
+    setSensorToDelete(null)
+    setDeleteError(null)
+  }
+
+  const confirmDeleteSensor = async () => {
+    if (!sensorToDelete) return
+
+    setDeleteLoading(true)
+    setDeleteError(null)
 
     try {
-      await api.delete(`/sensors/${uuid}`)
+      await api.delete(`/sensors/${sensorToDelete.uuid}`)
+      setSensorToDelete(null)
       await loadData(() => true)
     } catch (requestError) {
-      setSubmitError(getApiErrorMessage(requestError, 'Erro ao deletar sensor'))
+      setDeleteError(getApiErrorMessage(requestError, 'Erro ao deletar sensor'))
+    } finally {
+      setDeleteLoading(false)
     }
   }
 
@@ -221,9 +262,17 @@ export function SensorsPage() {
 
   return (
     <Box>
-      <Typography variant='h5' gutterBottom>
-        Sensores - {machine?.name}
-      </Typography>
+      <Stack direction='row' alignItems='center' spacing={1} mb={1}>
+        <IconButton
+          onClick={() =>
+            navigate(`/app/machines/${machineId}/monitoring-points`)
+          }
+          size='small'
+        >
+          <ArrowBackIcon />
+        </IconButton>
+        <Typography variant='h5'>Sensores - {machine?.name}</Typography>
+      </Stack>
       <Typography color='text.secondary' gutterBottom>
         Tipo: {machine?.type}
       </Typography>
@@ -235,7 +284,8 @@ export function SensorsPage() {
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={1.5}>
           <TextField
             select
-            label='Monitoring Point'
+            label='Ponto de Monitoramento'
+            placeholder='Selecione um ponto'
             value={monitoringPointUuid}
             onChange={(event) => setMonitoringPointUuid(event.target.value)}
             sx={{ minWidth: 260 }}
@@ -251,7 +301,8 @@ export function SensorsPage() {
             label='Sensor Unique ID'
             placeholder='AAAAAA-999'
             value={sensorUniqueId}
-            onChange={(event) => setSensorUniqueId(event.target.value)}
+            onChange={handleSensorUniqueIdChange}
+            slotProps={{ htmlInput: { maxLength: 10 } }}
           />
           <TextField
             select
@@ -270,7 +321,7 @@ export function SensorsPage() {
             variant='contained'
             onClick={() => void createSensor()}
             disabled={
-              submitting || !sensorUniqueId.trim() || !monitoringPointUuid
+              submitting || sensorUniqueId.length !== 10 || !monitoringPointUuid
             }
           >
             Salvar
@@ -312,7 +363,7 @@ export function SensorsPage() {
                     </IconButton>
                     <IconButton
                       size='small'
-                      onClick={() => void deleteSensor(item.sensor.uuid)}
+                      onClick={() => requestDeleteSensor(item.sensor)}
                     >
                       <DeleteIcon fontSize='small' />
                     </IconButton>
@@ -329,51 +380,33 @@ export function SensorsPage() {
         )}
       </Box>
 
-      <Dialog
+      <SensorEditDialog
         open={!!editingSensor}
+        sensorUniqueId={editUniqueId}
+        model={editModel}
+        error={editError}
+        loading={editLoading}
         onClose={closeEditDialog}
-        fullWidth
-        maxWidth='xs'
-      >
-        <DialogTitle>Editar Sensor</DialogTitle>
-        <DialogContent sx={{ pt: 1.5 }}>
-          <Stack spacing={2}>
-            {editError && <Alert severity='error'>{editError}</Alert>}
-            <TextField
-              label='Sensor Unique ID'
-              placeholder='AAAAAA-999'
-              value={editUniqueId}
-              onChange={(event) => setEditUniqueId(event.target.value)}
-            />
-            <TextField
-              select
-              label='Modelo'
-              value={editModel}
-              onChange={(event) =>
-                setEditModel(event.target.value as SensorModel)
-              }
-            >
-              {SENSOR_MODEL_OPTIONS.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Stack>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={closeEditDialog} disabled={editLoading}>
-            Cancelar
-          </Button>
-          <Button
-            variant='contained'
-            onClick={() => void updateSensor()}
-            disabled={editLoading || !editUniqueId.trim()}
-          >
-            Salvar
-          </Button>
-        </DialogActions>
-      </Dialog>
+        onSave={() => void updateSensor()}
+        onSensorUniqueIdChange={setEditUniqueId}
+        onModelChange={setEditModel}
+      />
+
+      <ConfirmDialog
+        open={!!sensorToDelete}
+        title='Excluir sensor'
+        description={
+          sensorToDelete
+            ? `Deseja excluir o sensor "${sensorToDelete.sensorUniqueId}"?`
+            : ''
+        }
+        confirmLabel='Excluir'
+        cancelLabel='Cancelar'
+        loading={deleteLoading}
+        errorMessage={deleteError}
+        onClose={closeDeleteDialog}
+        onConfirm={() => void confirmDeleteSensor()}
+      />
     </Box>
   )
 }

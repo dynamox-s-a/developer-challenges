@@ -4,12 +4,9 @@ import {
   Box,
   Button,
   CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   IconButton,
   Paper,
+  Skeleton,
   Stack,
   Table,
   TableBody,
@@ -31,6 +28,8 @@ import type { Machine } from '../features/machines/machinesTypes'
 import { getApiErrorMessage } from '../utils/apiError'
 import { useAppSelector } from '../app/hooks'
 import { selectMachines } from '../features/machines/machinesSelectors'
+import { ConfirmDialog } from '../components/ConfirmDialog'
+import { MonitoringPointEditDialog } from '../components/MonitoringPointEditDialog'
 
 interface Sensor {
   uuid: string
@@ -91,12 +90,18 @@ export function MonitoringPointsPage() {
   const [monitoringPoints, setMonitoringPoints] = useState<MonitoringPoint[]>(
     []
   )
-  const [loading, setLoading] = useState(true)
+  const [loadingMode, setLoadingMode] = useState<'initial' | 'table' | null>(
+    'initial'
+  )
+  const [hasLoadedOnce, setHasLoadedOnce] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [newPointName, setNewPointName] = useState('')
   const [creating, setCreating] = useState(false)
   const [createError, setCreateError] = useState<string | null>(null)
-  const [actionsError, setActionsError] = useState<string | null>(null)
+  const [monitoringPointToDelete, setMonitoringPointToDelete] =
+    useState<MonitoringPoint | null>(null)
+  const [deleteLoading, setDeleteLoading] = useState(false)
+  const [deleteError, setDeleteError] = useState<string | null>(null)
   const [editingMonitoringPoint, setEditingMonitoringPoint] =
     useState<MonitoringPoint | null>(null)
   const [editName, setEditName] = useState('')
@@ -152,7 +157,8 @@ export function MonitoringPointsPage() {
 
   const loadData = useCallback(
     async (activeCheck: () => boolean) => {
-      setLoading(true)
+      const isInitialLoad = !hasLoadedOnce
+      setLoadingMode(isInitialLoad ? 'initial' : 'table')
       setError(null)
 
       try {
@@ -185,14 +191,15 @@ export function MonitoringPointsPage() {
         setMachine(machineData?.data.data ?? null)
         setMonitoringPoints(monitoringPointsData.data.data.data)
         setPagination(responsePagination)
+        setHasLoadedOnce(true)
       } catch (requestError) {
         if (!activeCheck()) return
         setError(getApiErrorMessage(requestError, 'Erro ao carregar dados'))
       } finally {
-        if (activeCheck()) setLoading(false)
+        if (activeCheck()) setLoadingMode(null)
       }
     },
-    [machineId, page, sortBy, sortOrder, setTableParams]
+    [hasLoadedOnce, machineId, page, sortBy, sortOrder, setTableParams]
   )
 
   useEffect(() => {
@@ -296,24 +303,36 @@ export function MonitoringPointsPage() {
     }
   }
 
-  const deleteMonitoringPoint = async (uuid: string) => {
-    const confirmed = window.confirm(
-      'Deseja excluir este ponto de monitoramento?'
-    )
-    if (!confirmed) return
+  const requestDeleteMonitoringPoint = (monitoringPoint: MonitoringPoint) => {
+    setMonitoringPointToDelete(monitoringPoint)
+    setDeleteError(null)
+  }
 
-    setActionsError(null)
+  const closeDeleteDialog = () => {
+    if (deleteLoading) return
+    setMonitoringPointToDelete(null)
+    setDeleteError(null)
+  }
+
+  const confirmDeleteMonitoringPoint = async () => {
+    if (!monitoringPointToDelete) return
+
+    setDeleteLoading(true)
+    setDeleteError(null)
 
     try {
-      await api.delete(`/monitoring-points/${uuid}`)
+      await api.delete(`/monitoring-points/${monitoringPointToDelete.uuid}`)
+      setMonitoringPointToDelete(null)
       await loadData(() => true)
     } catch (requestError) {
-      setActionsError(
+      setDeleteError(
         getApiErrorMessage(
           requestError,
           'Erro ao deletar ponto de monitoramento'
         )
       )
+    } finally {
+      setDeleteLoading(false)
     }
   }
 
@@ -331,7 +350,7 @@ export function MonitoringPointsPage() {
     setTableParams({ page: nextPageZeroBased + 1 })
   }
 
-  if (loading) {
+  if (loadingMode === 'initial') {
     return (
       <Box display='flex' justifyContent='center' p={4}>
         <CircularProgress />
@@ -339,9 +358,12 @@ export function MonitoringPointsPage() {
     )
   }
 
-  if (error) {
+  if (error && !hasLoadedOnce) {
     return <Alert severity='error'>{error}</Alert>
   }
+
+  const isTableLoading = loadingMode === 'table'
+  const skeletonRows = 3
 
   return (
     <Box>
@@ -382,13 +404,12 @@ export function MonitoringPointsPage() {
         <Typography variant='h6' gutterBottom>
           Lista de Pontos de Monitoramento ({pagination.total})
         </Typography>
-        {actionsError && (
+        {error && (
           <Alert severity='error' sx={{ mb: 1.5 }}>
-            {actionsError}
+            {error}
           </Alert>
         )}
-
-        {monitoringPoints.length === 0 ? (
+        {!isTableLoading && monitoringPoints.length === 0 ? (
           <Typography color='text.secondary'>
             {machineId
               ? 'Nenhum ponto de monitoramento cadastrado para esta máquina.'
@@ -443,40 +464,73 @@ export function MonitoringPointsPage() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {monitoringPoints.map((monitoringPoint) => (
-                  <TableRow key={monitoringPoint.uuid} hover>
-                    {!machineId && <TableCell>{monitoringPoint.machine.name}</TableCell>}
-                    {!machineId && <TableCell>{monitoringPoint.machine.type}</TableCell>}
-                    <TableCell>{monitoringPoint.name}</TableCell>
-                    <TableCell>
-                      {monitoringPoint.sensor
-                        ? monitoringPoint.sensor.model
-                        : 'Sem sensor'}
-                    </TableCell>
-                    <TableCell align='right'>
-                      <Stack
-                        direction='row'
-                        spacing={0.5}
-                        justifyContent='flex-end'
-                      >
-                        <IconButton
-                          size='small'
-                          onClick={() => openEditDialog(monitoringPoint)}
-                        >
-                          <EditIcon fontSize='small' />
-                        </IconButton>
-                        <IconButton
-                          size='small'
-                          onClick={() =>
-                            void deleteMonitoringPoint(monitoringPoint.uuid)
-                          }
-                        >
-                          <DeleteIcon fontSize='small' />
-                        </IconButton>
-                      </Stack>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {isTableLoading
+                  ? Array.from({ length: skeletonRows }).map((_, index) => (
+                      <TableRow key={`monitoring-skeleton-${index}`}>
+                        {!machineId && (
+                          <TableCell>
+                            <Skeleton variant='text' width='85%' />
+                          </TableCell>
+                        )}
+                        {!machineId && (
+                          <TableCell>
+                            <Skeleton variant='text' width='65%' />
+                          </TableCell>
+                        )}
+                        <TableCell>
+                          <Skeleton variant='text' width='80%' />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton variant='text' width='70%' />
+                        </TableCell>
+                        <TableCell align='right'>
+                          <Skeleton
+                            variant='rounded'
+                            width={64}
+                            height={24}
+                            sx={{ ml: 'auto' }}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  : monitoringPoints.map((monitoringPoint) => (
+                      <TableRow key={monitoringPoint.uuid} hover>
+                        {!machineId && (
+                          <TableCell>{monitoringPoint.machine.name}</TableCell>
+                        )}
+                        {!machineId && (
+                          <TableCell>{monitoringPoint.machine.type}</TableCell>
+                        )}
+                        <TableCell>{monitoringPoint.name}</TableCell>
+                        <TableCell>
+                          {monitoringPoint.sensor
+                            ? monitoringPoint.sensor.model
+                            : 'Sem sensor'}
+                        </TableCell>
+                        <TableCell align='right'>
+                          <Stack
+                            direction='row'
+                            spacing={0.5}
+                            justifyContent='flex-end'
+                          >
+                            <IconButton
+                              size='small'
+                              onClick={() => openEditDialog(monitoringPoint)}
+                            >
+                              <EditIcon fontSize='small' />
+                            </IconButton>
+                            <IconButton
+                              size='small'
+                              onClick={() =>
+                                requestDeleteMonitoringPoint(monitoringPoint)
+                              }
+                            >
+                              <DeleteIcon fontSize='small' />
+                            </IconButton>
+                          </Stack>
+                        </TableCell>
+                      </TableRow>
+                    ))}
               </TableBody>
             </Table>
             <TablePagination
@@ -496,6 +550,7 @@ export function MonitoringPointsPage() {
           <Button
             variant='outlined'
             onClick={() => navigate(`/app/machines/${machineId}/sensors`)}
+            disabled={pagination.total === 0}
           >
             Gerenciar sensores
           </Button>
@@ -508,36 +563,31 @@ export function MonitoringPointsPage() {
         </Stack>
       )}
 
-      <Dialog
+      <MonitoringPointEditDialog
         open={!!editingMonitoringPoint}
+        name={editName}
+        error={editError}
+        loading={editLoading}
         onClose={closeEditDialog}
-        fullWidth
-        maxWidth='xs'
-      >
-        <DialogTitle>Editar Ponto de Monitoramento</DialogTitle>
-        <DialogContent sx={{ pt: 1.5 }}>
-          <Stack spacing={2}>
-            {editError && <Alert severity='error'>{editError}</Alert>}
-            <TextField
-              label='Nome do ponto de monitoramento'
-              value={editName}
-              onChange={(event) => setEditName(event.target.value)}
-            />
-          </Stack>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={closeEditDialog} disabled={editLoading}>
-            Cancelar
-          </Button>
-          <Button
-            variant='contained'
-            onClick={() => void updateMonitoringPoint()}
-            disabled={editLoading || !editName.trim()}
-          >
-            Salvar
-          </Button>
-        </DialogActions>
-      </Dialog>
+        onSave={() => void updateMonitoringPoint()}
+        onNameChange={setEditName}
+      />
+
+      <ConfirmDialog
+        open={!!monitoringPointToDelete}
+        title='Excluir ponto de monitoramento'
+        description={
+          monitoringPointToDelete
+            ? `Deseja excluir o ponto "${monitoringPointToDelete.name}"?`
+            : ''
+        }
+        confirmLabel='Excluir'
+        cancelLabel='Cancelar'
+        loading={deleteLoading}
+        errorMessage={deleteError}
+        onClose={closeDeleteDialog}
+        onConfirm={() => void confirmDeleteMonitoringPoint()}
+      />
     </Box>
   )
 }

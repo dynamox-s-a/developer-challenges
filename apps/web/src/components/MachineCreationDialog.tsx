@@ -50,11 +50,11 @@ export function MachineCreationDialog({
       slotProps={{ paper: { sx: { p: 2 } } }}
     >
       <DialogTitle sx={{ p: 0, pb: 1.5 }}>
-        {editingMachine ? 'Editar máquina' : 'Criar máquina'}{' '}
-      </DialogTitle>{' '}
+        {editingMachine ? 'Editar máquina' : 'Criar máquina'}
+      </DialogTitle>
       <DialogContent sx={{ p: 0, pb: 1.5, paddingTop: '5px !important' }}>
         <Stack spacing={2.5}>
-          {formError && <Alert severity='error'>{formError}</Alert>}{' '}
+          {formError && <Alert severity='error'>{formError}</Alert>}
           <TextField
             autoFocus
             fullWidth
