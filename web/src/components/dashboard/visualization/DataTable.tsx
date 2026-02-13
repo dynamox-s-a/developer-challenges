@@ -13,7 +13,7 @@ import {
 import { Alert, CircularProgress, IconButton } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import VisibilityIcon from '@mui/icons-material/Visibility'
-import { columns as importedColumns } from './fakeData'
+import { columns as importedColumns } from './DataTableColumns'
 import StatsCards from './StatsCards'
 import SimpleSplitButton from '@/components/ui/simple-split-button'
 import { useMonitoringAnalysis } from './../../../hooks/api/analisys/useMonitoringAnalysis'
