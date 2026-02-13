@@ -8,16 +8,46 @@ Uma aplicação frontend utilizando das técnologias especificadas no desafio pa
 
 ```sh
 <root>
-|- src/ # Arquivos principais relacionados à aplicação de fato.
-|-|-- app/ # Estrutura App Router seguindo os padrões NextJS
-|--|--|-- api/ # Criação de APIs através do NextJS
-|--|--|-- auth/ # Páginas relacionadas a autenticação
-|-- components/ # Componentes separados por feature da aplicação
-|-- lib/ # Pacotes com serviços que serão utilizados pea aplicação
-|--|-- http/ # Lib para requisições à API de forma estruturada e modular
-|-- utils/ # Funções utilitárias
+├── src/
+│   ├── app/                    # App Router do Next.js (páginas e API)
+│   │   ├── api/                # Rotas de API (backend)
+│   │   │   ├── auth/           # Endpoints de autenticação (login, register)
+│   │   │   ├── machine/        # CRUD de máquinas e sensores associados
+│   │   │   ├── monitoring/     # Pontos de monitoramento e análises
+│   │   │   ├── sensor/         # Gerenciamento de sensores
+│   │   │   └── time-series/    # Dados de séries temporais
+│   │   ├── auth/               # Páginas de login e registro
+│   │   ├── dashboard/          # Página principal com visualizações
+│   │   └── ...                 # Demais rotas e layouts
+│   ├── components/             # Componentes React reutilizáveis
+│   │   ├── ui/                # Componentes base (botões, inputs, cards)
+│   │   ├── charts/            # Gráficos (Recharts)
+│   │   ├── forms/             # Formulários complexos
+│   │   └── layout/            # Header, Sidebar, etc.
+│   ├── hooks/                 # Hooks customizados (integração com API)
+│   ├── lib/                   # Configurações de serviços (MongoDB, auth)
+│   ├── types/                 # Tipagens globais do TypeScript
+│   └── utils/                 # Funções utilitárias (formatação, helpers)
+├── public/                    # Arquivos estáticos (favicon, imagens)
+├── .env.example               # Exemplo de variáveis de ambiente
+├── next.config.ts            # Configuração do Next.js
+├── tailwind.config.ts        # Configuração do Tailwind CSS
+├── Dockerfile               # Configuração da imagem docker
+├── docker-compose.yaml        # Configuração dos serviços de container docker
+├── vercel.json               # Configuração para deploy na Vercel (opcional)
+└── package.json
 ```
 
 ## Ferramentas
 
-## Build
+- Typescript
+- NextJS
+- React
+- MongoDB
+
+## Deploy Local
+1. Instalar das dependencias (npm, yarn ou pnpm): `pnpm install.`
+2. Configuração das variaveis de ambiente do banco de dados e autenticação.
+3. Rodar em desenvolvimentoo: `pnpm run dev`
+4. Rodar em produção: `pnpm run build | pnpm start`
+5. Caso queira acessar a aplicação com maior facilidade: https://dynamox-phi.vercel.app?_vercel_share=YmUMOk14ESTfjPJrZWlGyX3LkDZ64WY6
