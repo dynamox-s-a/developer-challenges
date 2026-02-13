@@ -127,7 +127,12 @@ export async function listSensorTimeSeries(input: {
       model: true,
       monitoringPoint: {
         select: {
-          machine: { select: { userId: true } }
+          machine: {
+            select: {
+              userId: true,
+              name: true
+            }
+          }
         }
       }
     }
@@ -168,6 +173,9 @@ export async function listSensorTimeSeries(input: {
       uuid: sensor.uuid,
       sensorUniqueId: sensor.sensorUniqueId,
       model: sensor.model
+    },
+    machine: {
+      name: sensor.monitoringPoint.machine.name
     },
     query: {
       from: input.from ?? null,

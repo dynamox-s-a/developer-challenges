@@ -34,6 +34,9 @@ export interface TelemetrySeriesQuery {
 
 export interface TelemetrySeriesResult {
   sensor: TelemetrySensorSummary
+  machine: {
+    name: string
+  }
   query: {
     from: string | null
     to: string | null
@@ -129,7 +132,15 @@ export interface TelemetryState {
     deletedBatch: DeleteTelemetryBatchResult | null
   }
   status: {
-    fetch: {
+    points: {
+      loading: boolean
+      error: string | null
+    }
+    metrics: {
+      loading: boolean
+      error: string | null
+    }
+    count: {
       loading: boolean
       error: string | null
     }
@@ -137,11 +148,7 @@ export interface TelemetryState {
       loading: boolean
       error: string | null
     }
-    update: {
-      loading: boolean
-      error: string | null
-    }
-    remove: {
+    delete: {
       loading: boolean
       error: string | null
     }
@@ -149,8 +156,11 @@ export interface TelemetryState {
 }
 
 export type TelemetrySeriesResponse = ApiResponse<TelemetrySeriesResult>
-export type CreateTelemetrySeriesResponse = ApiResponse<CreateTelemetrySeriesResult>
+export type CreateTelemetrySeriesResponse =
+  ApiResponse<CreateTelemetrySeriesResult>
 export type TelemetryCountResponse = ApiResponse<TelemetryCountResult>
 export type TelemetryMetricsResponse = ApiResponse<TelemetryMetricsResult>
-export type DeleteTelemetrySeriesResponse = ApiResponse<DeleteTelemetrySeriesResult>
-export type DeleteTelemetryBatchResponse = ApiResponse<DeleteTelemetryBatchResult>
+export type DeleteTelemetrySeriesResponse =
+  ApiResponse<DeleteTelemetrySeriesResult>
+export type DeleteTelemetryBatchResponse =
+  ApiResponse<DeleteTelemetryBatchResult>

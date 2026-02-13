@@ -21,7 +21,15 @@ const initialState: TelemetryState = {
     deletedBatch: null
   },
   status: {
-    fetch: {
+    points: {
+      loading: false,
+      error: null
+    },
+    metrics: {
+      loading: false,
+      error: null
+    },
+    count: {
       loading: false,
       error: null
     },
@@ -29,11 +37,7 @@ const initialState: TelemetryState = {
       loading: false,
       error: null
     },
-    update: {
-      loading: false,
-      error: null
-    },
-    remove: {
+    delete: {
       loading: false,
       error: null
     }
@@ -45,10 +49,11 @@ const telemetrySlice = createSlice({
   initialState,
   reducers: {
     clearTelemetryErrors(state) {
-      state.status.fetch.error = null
+      state.status.points.error = null
+      state.status.metrics.error = null
+      state.status.count.error = null
       state.status.create.error = null
-      state.status.update.error = null
-      state.status.remove.error = null
+      state.status.delete.error = null
     },
     clearTelemetryData(state) {
       state.items = []
@@ -64,44 +69,44 @@ const telemetrySlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchTelemetrySeriesThunk.pending, (state) => {
-        state.status.fetch.loading = true
-        state.status.fetch.error = null
+        state.status.points.loading = true
+        state.status.points.error = null
       })
       .addCase(fetchTelemetrySeriesThunk.fulfilled, (state, action) => {
-        state.status.fetch.loading = false
+        state.status.points.loading = false
         state.meta.series = action.payload
         state.items = action.payload.points
         state.selected = { sensorUuid: action.payload.sensor.uuid }
       })
       .addCase(fetchTelemetrySeriesThunk.rejected, (state, action) => {
-        state.status.fetch.loading = false
-        state.status.fetch.error =
+        state.status.points.loading = false
+        state.status.points.error =
           (action.payload as string) || 'Erro ao carregar série temporal'
       })
       .addCase(fetchTelemetryCountThunk.pending, (state) => {
-        state.status.fetch.loading = true
-        state.status.fetch.error = null
+        state.status.count.loading = true
+        state.status.count.error = null
       })
       .addCase(fetchTelemetryCountThunk.fulfilled, (state, action) => {
-        state.status.fetch.loading = false
+        state.status.count.loading = false
         state.meta.count = action.payload
       })
       .addCase(fetchTelemetryCountThunk.rejected, (state, action) => {
-        state.status.fetch.loading = false
-        state.status.fetch.error =
+        state.status.count.loading = false
+        state.status.count.error =
           (action.payload as string) || 'Erro ao carregar contagem de telemetria'
       })
       .addCase(fetchTelemetryMetricsThunk.pending, (state) => {
-        state.status.fetch.loading = true
-        state.status.fetch.error = null
+        state.status.metrics.loading = true
+        state.status.metrics.error = null
       })
       .addCase(fetchTelemetryMetricsThunk.fulfilled, (state, action) => {
-        state.status.fetch.loading = false
+        state.status.metrics.loading = false
         state.meta.metrics = action.payload
       })
       .addCase(fetchTelemetryMetricsThunk.rejected, (state, action) => {
-        state.status.fetch.loading = false
-        state.status.fetch.error =
+        state.status.metrics.loading = false
+        state.status.metrics.error =
           (action.payload as string) || 'Erro ao carregar métricas de telemetria'
       })
       .addCase(createTelemetrySeriesThunk.pending, (state) => {
@@ -118,29 +123,29 @@ const telemetrySlice = createSlice({
           (action.payload as string) || 'Erro ao criar série temporal'
       })
       .addCase(deleteTelemetrySeriesThunk.pending, (state) => {
-        state.status.remove.loading = true
-        state.status.remove.error = null
+        state.status.delete.loading = true
+        state.status.delete.error = null
       })
       .addCase(deleteTelemetrySeriesThunk.fulfilled, (state, action) => {
-        state.status.remove.loading = false
+        state.status.delete.loading = false
         state.meta.deleted = action.payload
       })
       .addCase(deleteTelemetrySeriesThunk.rejected, (state, action) => {
-        state.status.remove.loading = false
-        state.status.remove.error =
+        state.status.delete.loading = false
+        state.status.delete.error =
           (action.payload as string) || 'Erro ao deletar série temporal'
       })
       .addCase(deleteTelemetryBatchThunk.pending, (state) => {
-        state.status.remove.loading = true
-        state.status.remove.error = null
+        state.status.delete.loading = true
+        state.status.delete.error = null
       })
       .addCase(deleteTelemetryBatchThunk.fulfilled, (state, action) => {
-        state.status.remove.loading = false
+        state.status.delete.loading = false
         state.meta.deletedBatch = action.payload
       })
       .addCase(deleteTelemetryBatchThunk.rejected, (state, action) => {
-        state.status.remove.loading = false
-        state.status.remove.error =
+        state.status.delete.loading = false
+        state.status.delete.error =
           (action.payload as string) || 'Erro ao deletar lote de telemetria'
       })
   }
