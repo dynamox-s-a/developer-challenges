@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import '@/utils/env'
 
 const dbConnect = async () => {
-  const mongodbUri = process.env.NEXT_PUBLIC_MONGODB_URI
+  const mongodbUri = process.env.MONGODB_URI
   if (!mongodbUri) throw new Error('Envs não carregadas')
 
   if (mongoose.connection.readyState >= 1) return

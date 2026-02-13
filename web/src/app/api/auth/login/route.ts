@@ -28,8 +28,8 @@ export async function POST(request: NextRequest) {
         { status: 400 },
       )
 
-    const JWT_SECRET = process.env.NEXT_PUBLIC_JWT_SECRET
-    const JWT_EXPIRES = process.env.NEXT_PUBLIC_JWT_EXPIRES_IN
+    const JWT_SECRET = process.env.JWT_SECRET
+    const JWT_EXPIRES = process.env.JWT_EXPIRES_IN
 
     if (!JWT_EXPIRES || !JWT_SECRET)
       return NextResponse.json(
