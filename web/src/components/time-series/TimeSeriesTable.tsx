@@ -47,6 +47,10 @@ export default function TimeSeriesTable({
       field: 'unit',
       headerName: 'Unidade',
       width: 100,
+      valueFormatter: ({ value }: { value: string | null }) => {
+        if (!value || value === '') return '--'
+        return value
+      },
     },
     {
       field: 'actions',

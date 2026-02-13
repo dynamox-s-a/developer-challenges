@@ -71,7 +71,7 @@ export default function AddTimeSeriesDataForm({
         monitoringPointId: formData.monitoringPointId,
         timestamp: new Date(formData.timestamp),
         value: parseFloat(formData.value),
-        unit: formData.unit || undefined,
+        unit: formData.unit,
       }
 
       const result = await createPoints(dto)

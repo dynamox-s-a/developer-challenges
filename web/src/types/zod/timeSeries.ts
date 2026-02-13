@@ -17,7 +17,7 @@ export const CreateTimeSeriesPointSchema = z.object({
   monitoringPointId: z.string(),
   timestamp: z.coerce.date(),
   value: z.coerce.number(),
-  unit: z.string().optional(),
+  unit: z.string().nullable().default('').optional(),
 })
 
 export const CreateTimeSeriesBatchSchema = z.array(CreateTimeSeriesPointSchema)

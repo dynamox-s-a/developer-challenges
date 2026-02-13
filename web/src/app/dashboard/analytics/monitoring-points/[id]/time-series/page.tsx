@@ -91,12 +91,6 @@ export default function MonitoringPointTimeSeriesPage() {
         alignItems="center"
         mb={3}
       >
-        <Typography
-          variant="h4"
-          gutterBottom
-        >
-          Série Temporal
-        </Typography>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
