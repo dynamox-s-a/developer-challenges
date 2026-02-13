@@ -1,9 +1,6 @@
 import { AppError } from '../../core/base/AppError'
 import { prisma } from '../../core/lib/prisma'
-
-function computeAccelerationRms(x: number, y: number, z: number) {
-  return Math.sqrt(x * x + y * y + z * z)
-}
+import { computeAccelerationRms } from './telemetry.domain'
 
 async function getSensorOrThrow(sensorUuid: string) {
   const sensor = await prisma.sensor.findUnique({
