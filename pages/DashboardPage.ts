@@ -13,7 +13,9 @@ export class DashboardPage {
 
   get locators() {
     return {
-      chartContainer: this.page.locator('.highcharts-container').first(),
+      chartAccelaration: this.page.locator('.highcharts-container').first(),
+      chartTemperature: this.page.locator('.highcharts-container').nth(1),
+      chartVelocity: this.page.locator('.highcharts-container').nth(2),
       plotBackground: this.page.locator('.highcharts-plot-background').first(),
       tooltip: this.page.locator('.highcharts-tooltip'),
       chartTitle: this.page.locator('.highcharts-title'),
@@ -36,9 +38,9 @@ export class DashboardPage {
     });
   }
 
-  async hoverOverChart() {
-    const chart = this.locators.chartContainer;
-
+  async hoverOverChart(index: number = 0) {
+    const chart = this.page.locator('.highcharts-container').nth(index);
+    await chart.scrollIntoViewIfNeeded();
     await expect(chart).toBeVisible({ timeout: 1000 });
 
     await this.page.waitForTimeout(1000);
@@ -55,9 +57,17 @@ export class DashboardPage {
   }
 
   async validateTooltipContent(expectedText: string) {
-    const tooltip = this.locators.tooltip;
+    const tooltips = this.page.locator('.highcharts-tooltip');
+    const visibleTooltip = tooltips.locator('visible=true').first();
 
-    await expect(tooltip).toBeVisible();
-    await expect(tooltip).toContainText(expectedText);
+    if (await visibleTooltip.count() > 0) {
+      const text = await visibleTooltip.textContent();
+      console.log(`>>> Tooltip Visível Encontrado: "${text}"`);
+    } else {
+      console.log(">>> BUG: Nenhum tooltip visível foi encontrado.");
+    }
+
+    await expect(visibleTooltip).toBeVisible({ timeout: 5000 });
+    await expect(visibleTooltip).toContainText(expectedText);
   }
 }

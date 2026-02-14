@@ -57,11 +57,9 @@ test.describe('Dashboard', () => {
         await expect(page.getByText(metadataBody.dynamicRange)).toBeVisible();
     });
 
-    test('deve exibir o tooltip com os valores corretos ao repousar o mouse sobre o gráfico', async ({ page }) => {
+    test('deve exibir o tooltip com os valores ao repousar o mouse sobre o gráfico de Aceleração', async ({ page }) => {
 
-        const fixedDate = '2026-02-13T12:00:00.000Z'; 
-
-
+        const fixedDate = '2026-02-13T12:00:00.000Z';
         const mockData = {
             data: [
                 {
@@ -75,8 +73,50 @@ test.describe('Dashboard', () => {
 
         await dashboardPage.mockChartData(mockData);
         await dashboardPage.visit();
-        await expect(dashboardPage.locators.chartContainer).toBeVisible({ timeout: 10000 });
+        await expect(dashboardPage.locators.chartAccelaration).toBeVisible({ timeout: 10000 });
         await dashboardPage.hoverOverChart();
         await dashboardPage.validateTooltipContent('Friday, Feb 13, 2026​● Axial: 0.888 g​');
+    });
+
+    test('deve exibir o tooltip com os valores ao repousar o mouse sobre o gráfico de Temperatura', async ({ page }) => {
+
+        const fixedDate = '2026-02-13T12:00:00.000Z';
+        const mockData = {
+            data: [
+                {
+                    name: "Temperature/x",
+                    data: [
+                        { datetime: fixedDate, max: 35.5 }
+                    ]
+                }
+            ]
+        };
+
+        await dashboardPage.mockChartData(mockData);
+        await dashboardPage.visit();
+        await expect(dashboardPage.locators.chartTemperature).toBeVisible({ timeout: 10000 });
+        await dashboardPage.hoverOverChart(1);
+        await dashboardPage.validateTooltipContent('Friday, Feb 13, 2026​● Axial: 35.5°C');
+    });
+
+    test('deve exibir o tooltip com os valores ao repousar o mouse sobre o gráfico de Velocidade', async ({ page }) => {
+
+        const fixedDate = '2026-02-13T12:00:00.000Z';
+        const mockData = {
+            data: [
+                {
+                    name: "velocityRms/x",
+                    data: [
+                        { datetime: fixedDate, max: 600 }
+                    ]
+                }
+            ]
+        };
+
+        await dashboardPage.mockChartData(mockData);
+        await dashboardPage.visit();
+        await expect(dashboardPage.locators.chartVelocity).toBeVisible({ timeout: 10000 });
+        await dashboardPage.hoverOverChart(2);
+        await dashboardPage.validateTooltipContent('Friday, Feb 13, 2026​● Axial: 600 mm/s​');
     });
 });
