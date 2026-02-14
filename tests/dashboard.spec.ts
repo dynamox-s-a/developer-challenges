@@ -10,7 +10,6 @@ test.describe('Dashboard', () => {
     })
 
     test('deve exibir um cabeçalho com informações das maquinas', async () => {
-        test.fail(true, 'Bug reportado: O cabeçalho não está sendo exibido corretamente,faltando informações de intervalo de tempo.')
         const headerTitle = dashboardPage.locators.headerTitle;
         const idMachine = dashboardPage.locators.idMachine;
         const spot = dashboardPage.locators.spot;

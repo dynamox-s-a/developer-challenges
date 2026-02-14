@@ -49,3 +49,27 @@ Devido à importância do tooltip para a compreensão dos dados e para a tomada 
 
 ### Evidências
 ![Tooltip não exibido no gráfico de temperatura](./screenshots-bugs/grafico-temp.png)
+
+---
+
+# [Bug #03] Erro 404 no console ao tentar carregar /vite.svg
+
+### Descrição
+Ao abrir a aplicação, é possível observar um erro 404 no console do navegador relacionado ao arquivo `/vite.svg`. Este erro indica que o arquivo não foi encontrado no servidor.
+
+### Passos para reproduzir
+1. Abrir a aplicação.
+2. Abrir o console do navegador (pressionando F12)
+3. Observar o erro 404 relacionado ao arquivo `/vite.svg`
+
+### Resultado Atual
+`Failed to load resource: the server responded with a status of 404 (/vite.svg)`
+
+### Resultado Esperado
+A aplicação não deve tentar carregar recursos inexistentes.
+
+### Severidade - Baixa
+O bug não afeta diretamente a funcionalidade da aplicação.
+
+### Prioridade - Baixa
+Baixo impacto — não afeta funcionalidades da aplicação, apenas o carregamento de um recurso estático.
