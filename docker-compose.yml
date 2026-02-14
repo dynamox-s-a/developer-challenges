@@ -1,0 +1,9 @@
+services:
+  playwright-tests:
+    build: .
+    container_name: douglas-figueiredo
+    volumes:
+      - ./playwright-report:/app/playwright-report
+      - ./test-results:/app/test-results
+    stdin_open: true
+    tty: true
