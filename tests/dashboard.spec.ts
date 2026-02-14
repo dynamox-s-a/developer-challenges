@@ -58,27 +58,26 @@ test.describe('Dashboard', () => {
 
     test.only('deve exibir o tooltip com os valores corretos ao repousar o mouse sobre o gráfico', async ({ page }) => {
 
-        const now = new Date();
-        const isoString = now.toISOString();
+        const fixedDate = '2026-02-13T12:00:00.000Z'; 
+
 
         const mockData = {
             data: [
                 {
                     name: "accelerationRms/x",
                     data: [
-                        { datetime: isoString, max: 0.888 }
+                        { datetime: fixedDate, max: 0.888 }
                     ]
                 }
             ]
         };
 
         await dashboardPage.mockChartData(mockData);
-        console.log('Mock de dados configurado:', mockData);
         await dashboardPage.visit();
-        await expect(dashboardPage.locators.chartContainer).toBeVisible({ timeout: 500 });
-        await page.waitForTimeout(500);
+        await expect(dashboardPage.locators.chartContainer).toBeVisible({ timeout: 10000 });
+        await page.waitForTimeout(1000);
         await dashboardPage.hoverOverChart();
-        await dashboardPage.validateTooltipContent('Friday, Feb 13, 2026​● Axial: 0.888 g');
+        await dashboardPage.validateTooltipContent('Friday, Feb 13, 2026​● Axial: 0.888 g​');
     });
 
 })

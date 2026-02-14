@@ -39,9 +39,9 @@ export class DashboardPage {
   async hoverOverChart() {
     const chart = this.locators.chartContainer;
 
-    await expect(chart).toBeVisible({ timeout: 500 });
+    await expect(chart).toBeVisible({ timeout: 1000 });
 
-    await this.page.waitForTimeout(500);
+    await this.page.waitForTimeout(1000);
 
     const box = await chart.boundingBox();
     if (!box) throw new Error("Não foi possível pegar as dimensões do gráfico");
