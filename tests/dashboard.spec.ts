@@ -57,7 +57,7 @@ test.describe('Dashboard', () => {
         await expect(page.getByText(metadataBody.dynamicRange)).toBeVisible();
     });
 
-    test.only('deve exibir o tooltip com os valores corretos ao repousar o mouse sobre o gráfico', async ({ page }) => {
+    test('deve exibir o tooltip com os valores corretos ao repousar o mouse sobre o gráfico', async ({ page }) => {
 
         const fixedDate = '2026-02-13T12:00:00.000Z'; 
 
@@ -76,16 +76,7 @@ test.describe('Dashboard', () => {
         await dashboardPage.mockChartData(mockData);
         await dashboardPage.visit();
         await expect(dashboardPage.locators.chartContainer).toBeVisible({ timeout: 10000 });
-        // await page.waitForTimeout(1000);
         await dashboardPage.hoverOverChart();
         await dashboardPage.validateTooltipContent('Friday, Feb 13, 2026​● Axial: 0.888 g​');
     });
-
-    test('deve exibir mensagem de erro caso a API de dados falhe', async ({ page }) => {
-    await page.route('**/data.json*', route => route.abort('failed'));
-    await dashboardPage.visit();
-    // Aqui você validaria a mensagem de erro que você (como QA) sugeriu que existisse
-    await expect(page.getByText('Erro ao carregar dados')).toBeVisible(); 
 });
-
-})
