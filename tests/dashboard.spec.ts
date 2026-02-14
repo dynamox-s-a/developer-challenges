@@ -25,11 +25,11 @@ test.describe('Dashboard', () => {
         await expect(interval).toBeVisible();
     })
 
-    test('deve exibir os títulos dos gráficos', async ({ page }) => {
-        await expect(page.locator('h6', { hasText: /RMS|Temperatura/ })).toHaveCount(3);
+    test('deve exibir 3 gráficos ao acessar a pagina', async ({ page }) => {
+        await expect(page.locator('.highcharts-series-group')).toHaveCount(3);
     })
 
-    test('deve buscar os dados ao acessar a página', async ({ page }) => {
+    test('deve buscar os dados dos graficos ao acessar a página', async ({ page }) => {
 
         const dataPromise = page.waitForResponse(response =>
             response.url().endsWith('/data.json') && response.status() === 200
@@ -47,7 +47,6 @@ test.describe('Dashboard', () => {
         ]);
 
         const metadataBody = await metadataResponse.json();
-        console.log(metadataBody);
 
         expect(dataResponse.status()).toBe(200);
         expect(metadataResponse.status()).toBe(200);
@@ -57,7 +56,7 @@ test.describe('Dashboard', () => {
         await expect(page.getByText(metadataBody.dynamicRange)).toBeVisible();
     });
 
-    test('deve exibir o tooltip com os valores corretos ao repousar o mouse sobre o gráfico', async ({ page }) => {
+    test.only('deve exibir o tooltip com os valores corretos ao repousar o mouse sobre o gráfico', async ({ page }) => {
 
         const now = new Date();
         const isoString = now.toISOString();
@@ -67,7 +66,6 @@ test.describe('Dashboard', () => {
                 {
                     name: "accelerationRms/x",
                     data: [
-                        // Usamos a data atual e um valor alto para ser visível visualmente
                         { datetime: isoString, max: 0.888 }
                     ]
                 }
@@ -75,15 +73,11 @@ test.describe('Dashboard', () => {
         };
 
         await dashboardPage.mockChartData(mockData);
-
+        console.log('Mock de dados configurado:', mockData);
         await dashboardPage.visit();
-
         await expect(dashboardPage.locators.chartContainer).toBeVisible({ timeout: 500 });
-
         await page.waitForTimeout(500);
-
         await dashboardPage.hoverOverChart();
-
         await dashboardPage.validateTooltipContent('Friday, Feb 13, 2026​● Axial: 0.888 g');
     });
 

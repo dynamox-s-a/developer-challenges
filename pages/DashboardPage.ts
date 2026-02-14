@@ -43,7 +43,6 @@ export class DashboardPage {
 
     await this.page.waitForTimeout(500);
 
-    // 2. Cálculos matemáticos para o movimento do mouse
     const box = await chart.boundingBox();
     if (!box) throw new Error("Não foi possível pegar as dimensões do gráfico");
 
@@ -51,8 +50,6 @@ export class DashboardPage {
     const startX = box.x + 10;
     const endX = box.x + box.width - 10;
 
-    // 3. Executa o movimento suave da esquerda para a direita
-    // Isso "acorda" o tracker do gráfico
     await this.page.mouse.move(startX, centerY);
     await this.page.mouse.move(endX, centerY, { steps: 25 });
   }
