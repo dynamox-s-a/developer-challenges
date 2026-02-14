@@ -13,6 +13,12 @@ A interface apresenta o tempo como `null min`.
 ### Resultado Esperado
 O campo deveria exibir o tempo corretamente.
 
+### Severidade - Média
+O bug afeta a usabilidade e a percepção de qualidade da aplicação, mas não impede o acesso às funcionalidades principais. No entanto, a omissão pode causar confusão para os usuários, pois o tempo é uma informação importante para o monitoramento e análise dos dados apresentados no dashboard.
+
+## Prioridade - Alta
+Devido à importância do tempo para a compreensão dos dados e para a tomada de decisões, é recomendado que este bug seja corrigido com alta prioridade para garantir uma melhor experiência do usuário e a confiabilidade da aplicação.
+
 ### Evidências
 ![Tempo exibido como null](./screenshots-bugs/tempo-null.png)
 
@@ -34,6 +40,12 @@ O Grafico de temperatura não apresenta o tooltip com as informações de temper
 
 ### Resultado Esperado
 Ao repousar o mouse sob o grafico é esperado que as informações de temperatura sejam exibidas para o usuario
+
+### Severidade - Média
+O bug afeta a percepção de qualidade da aplicação, mas não impede o acesso às funcionalidades principais. Porém, a ausência do tooltip pode causar incomodo para os usuários, pois eles não conseguem acessar informações detalhadas sobre a temperatura, o que é essencial para a análise dos dados apresentados no grafico.
+
+### Prioridade - Alta
+Devido à importância do tooltip para a compreensão dos dados e para a tomada de decisões, é recomendado que este bug seja corrigido com alta prioridade.
 
 ### Evidências
 ![Tooltip não exibido no gráfico de temperatura](./screenshots-bugs/grafico-temp.png)

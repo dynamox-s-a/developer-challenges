@@ -26,6 +26,7 @@ test.describe('Dashboard', () => {
     })
 
     test('deve exibir 3 gráficos ao acessar a pagina', async ({ page }) => {
+        await expect(page.locator('h6', { hasText: /RMS|Temperatura/ })).toHaveCount(3);
         await expect(page.locator('.highcharts-series-group')).toHaveCount(3);
     })
 
@@ -75,9 +76,16 @@ test.describe('Dashboard', () => {
         await dashboardPage.mockChartData(mockData);
         await dashboardPage.visit();
         await expect(dashboardPage.locators.chartContainer).toBeVisible({ timeout: 10000 });
-        await page.waitForTimeout(1000);
+        // await page.waitForTimeout(1000);
         await dashboardPage.hoverOverChart();
         await dashboardPage.validateTooltipContent('Friday, Feb 13, 2026​● Axial: 0.888 g​');
     });
+
+    test('deve exibir mensagem de erro caso a API de dados falhe', async ({ page }) => {
+    await page.route('**/data.json*', route => route.abort('failed'));
+    await dashboardPage.visit();
+    // Aqui você validaria a mensagem de erro que você (como QA) sugeriu que existisse
+    await expect(page.getByText('Erro ao carregar dados')).toBeVisible(); 
+});
 
 })
