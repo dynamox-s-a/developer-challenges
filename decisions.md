@@ -1,4 +1,4 @@
-## Decisões de Arquitetura e Suposições (versão resumida e “avaliador-friendly”)
+## Decisões de Arquitetura e Suposições
 
 Alguns pontos do desafio são ambíguos. As decisões abaixo foram feitas pra manter o domínio consistente, UX boa e backend confiável — sem inventar coisa demais fora do escopo.
 
@@ -109,6 +109,11 @@ O desafio pede: salvar série, contar séries, ler série, métricas e deletar �
 
 - `x`, `y`, `z` (triaxial)
 - `temperature` (temperatura de contato)
+
+**Base para a decisão:**
+
+- Foi feita uma análise da documentação pública dos sensores da Dynamox (`https://dynamox.net/sensors`) e dos PDFs técnicos disponíveis nessa página.
+- A escolha de usar `x`, `y`, `z` e `temperature`, além do cálculo de `accelerationRms`, foi alinhada com os sinais e leituras apresentados nesses materiais.
 
 **Além disso:** a API calcula e persiste:
 
@@ -235,20 +240,20 @@ BENCH_API_BASE_URL=http://localhost:3000 npm run bench:telemetry --workspace app
 
 GETs gerais:
 
-| Endpoint | p50 (ms) | p95 (ms) | p99 (ms) | req/s | p95 < 350ms |
-|---|---:|---:|---:|---:|---:|
-| `/auth/me` | 53.0 | 81.0 | 87.0 | 182.8 | YES |
-| `/machines` | 49.0 | 72.0 | 79.0 | 196.1 | YES |
-| `/monitoring-points?page=1&limit=10&sortBy=createdAt&sortOrder=desc` | 84.0 | 107.0 | 116.0 | 116.9 | YES |
-| `/sensors` | 68.0 | 85.0 | 92.0 | 145.6 | YES |
+| Endpoint                                                             | p50 (ms) | p95 (ms) | p99 (ms) | req/s | p95 < 350ms |
+| -------------------------------------------------------------------- | -------: | -------: | -------: | ----: | ----------: |
+| `/auth/me`                                                           |     53.0 |     81.0 |     87.0 | 182.8 |         YES |
+| `/machines`                                                          |     49.0 |     72.0 |     79.0 | 196.1 |         YES |
+| `/monitoring-points?page=1&limit=10&sortBy=createdAt&sortOrder=desc` |     84.0 |    107.0 |    116.0 | 116.9 |         YES |
+| `/sensors`                                                           |     68.0 |     85.0 |     92.0 | 145.6 |         YES |
 
 GETs de telemetria:
 
-| Endpoint | p50 (ms) | p95 (ms) | p99 (ms) | req/s | p95 < 350ms |
-|---|---:|---:|---:|---:|---:|
-| `/sensors/:uuid/time-series?limit=500&order=desc` | 159.0 | 199.0 | 206.0 | 62.0 | YES |
-| `/sensors/:uuid/time-series/metrics` | 131.0 | 196.0 | 239.0 | 72.8 | YES |
-| `/sensors/:uuid/time-series/count` | 119.0 | 158.0 | 168.0 | 80.6 | YES |
+| Endpoint                                          | p50 (ms) | p95 (ms) | p99 (ms) | req/s | p95 < 350ms |
+| ------------------------------------------------- | -------: | -------: | -------: | ----: | ----------: |
+| `/sensors/:uuid/time-series?limit=500&order=desc` |    159.0 |    199.0 |    206.0 |  62.0 |         YES |
+| `/sensors/:uuid/time-series/metrics`              |    131.0 |    196.0 |    239.0 |  72.8 |         YES |
+| `/sensors/:uuid/time-series/count`                |    119.0 |    158.0 |    168.0 |  80.6 |         YES |
 
 Resultado consolidado: com `connections=10`, `duration=20s` e `pointsSeeded=1000`, todos os endpoints GET medidos ficaram com **p95 abaixo de 350ms**. Resultado geral do benchmark: **PASSED**.
 

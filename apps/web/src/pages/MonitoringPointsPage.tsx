@@ -23,6 +23,7 @@ import {
 import EditIcon from '@mui/icons-material/EditOutlined'
 import DeleteIcon from '@mui/icons-material/DeleteOutline'
 import ShowChartIcon from '@mui/icons-material/ShowChart'
+import TimelineIcon from '@mui/icons-material/Timeline'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { selectMachines } from '../features/machines/machinesSelectors'
@@ -48,13 +49,21 @@ import {
 } from '../features/monitoring-points/monitoringPointsSelectors'
 import type {
   MonitoringPoint,
+  MonitoringPointSensor,
   MonitoringSortBy,
   SortOrder
 } from '../features/monitoring-points/monitoringPointsTypes'
+import { CreateTimeSeriesDialog } from '../dialogs/CreateTimeSeriesDialog'
+import { createTelemetrySeriesThunk } from '../features/telemetry/telemetryThunks'
 
 const PAGE_SIZE = 5
 const DEFAULT_SORT_BY: MonitoringSortBy = 'createdAt'
 const DEFAULT_SORT_ORDER: SortOrder = 'desc'
+const FAKE_TELEMETRY_ICON_COLOR: Record<'TcAg' | 'TcAs' | 'HF_PLUS', string> = {
+  TcAg: '#e53935',
+  TcAs: '#00c853',
+  HF_PLUS: '#0abab5'
+}
 
 export function MonitoringPointsPage() {
   const dispatch = useAppDispatch()
@@ -93,6 +102,12 @@ export function MonitoringPointsPage() {
   const [editingMonitoringPoint, setEditingMonitoringPoint] =
     useState<MonitoringPoint | null>(null)
   const [editName, setEditName] = useState('')
+  const [fakeTelemetryTarget, setFakeTelemetryTarget] =
+    useState<MonitoringPointSensor | null>(null)
+  const [fakeTelemetryLoading, setFakeTelemetryLoading] = useState(false)
+  const [fakeTelemetryError, setFakeTelemetryError] = useState<string | null>(
+    null
+  )
 
   const rawPage = Number(searchParams.get('page') ?? '1')
   const page = Number.isNaN(rawPage) || rawPage < 1 ? 1 : rawPage
@@ -259,6 +274,52 @@ export function MonitoringPointsPage() {
       await loadData(() => true)
     } catch {
       /* empty */
+    }
+  }
+
+  const openFakeTelemetryDialog = (sensor: MonitoringPointSensor) => {
+    setFakeTelemetryError(null)
+    setFakeTelemetryTarget(sensor)
+  }
+
+  const closeFakeTelemetryDialog = () => {
+    if (fakeTelemetryLoading) return
+    setFakeTelemetryTarget(null)
+    setFakeTelemetryError(null)
+  }
+
+  const submitFakeTelemetry = async (payload: {
+    intervalMinutes: number
+    points: Array<{
+      timestamp: string
+      x: number
+      y: number
+      z: number
+      temperature: number
+    }>
+  }) => {
+    if (!fakeTelemetryTarget) return
+
+    setFakeTelemetryLoading(true)
+    setFakeTelemetryError(null)
+
+    try {
+      await dispatch(
+        createTelemetrySeriesThunk({
+          sensorUuid: fakeTelemetryTarget.uuid,
+          intervalMinutes: payload.intervalMinutes,
+          points: payload.points
+        })
+      ).unwrap()
+
+      setFakeTelemetryTarget(null)
+      await loadData(() => true)
+    } catch (error) {
+      setFakeTelemetryError(
+        typeof error === 'string' ? error : 'Falha ao gerar telemetria fake'
+      )
+    } finally {
+      setFakeTelemetryLoading(false)
     }
   }
 
@@ -457,6 +518,30 @@ export function MonitoringPointsPage() {
                                 <ShowChartIcon fontSize='small' />
                               </IconButton>
                             )}
+                            {monitoringPoint.sensor ? (
+                              <Tooltip
+                                title={`Gerar telemetria fake (${monitoringPoint.sensor.model === 'HF_PLUS' ? 'HF+' : monitoringPoint.sensor.model})`}
+                              >
+                                <IconButton
+                                  size='small'
+                                  onClick={() =>
+                                    openFakeTelemetryDialog(monitoringPoint.sensor!)
+                                  }
+                                  sx={{
+                                    color:
+                                      FAKE_TELEMETRY_ICON_COLOR[
+                                        monitoringPoint.sensor.model
+                                      ]
+                                  }}
+                                >
+                                  <TimelineIcon fontSize='small' />
+                                </IconButton>
+                              </Tooltip>
+                            ) : (
+                              <IconButton size='small' disabled>
+                                <TimelineIcon fontSize='small' />
+                              </IconButton>
+                            )}
                             <IconButton
                               size='small'
                               onClick={() => openEditDialog(monitoringPoint)}
@@ -525,6 +610,15 @@ export function MonitoringPointsPage() {
         errorMessage={deleteError}
         onClose={closeDeleteDialog}
         onConfirm={() => void confirmDeleteMonitoringPoint()}
+      />
+
+      <CreateTimeSeriesDialog
+        open={!!fakeTelemetryTarget}
+        loading={fakeTelemetryLoading}
+        error={fakeTelemetryError}
+        sensorModel={fakeTelemetryTarget?.model}
+        onClose={closeFakeTelemetryDialog}
+        onSubmit={submitFakeTelemetry}
       />
     </Box>
   )

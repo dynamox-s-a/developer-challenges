@@ -9,6 +9,11 @@ import {
   Grid,
   TextField
 } from '@mui/material'
+import {
+  generateFakeHfSeries,
+  generateFakeTcAgSeries,
+  generateFakeTcAsSeries
+} from '../utils/fakeSensors'
 
 interface TelemetryPointInput {
   timestamp: string
@@ -22,6 +27,7 @@ interface CreateTimeSeriesDialogProps {
   open: boolean
   loading: boolean
   error: string | null
+  sensorModel?: 'TcAg' | 'TcAs' | 'HF_PLUS'
   onClose: () => void
   onSubmit: (payload: {
     intervalMinutes: number
@@ -31,36 +37,11 @@ interface CreateTimeSeriesDialogProps {
 
 const MAX_FAKE_POINTS = 500
 
-function generateFakeTcAgSeries(params: {
-  intervalMinutes: number
-  pointsCount: number
-}): TelemetryPointInput[] {
-  const now = Date.now()
-  const intervalMs = params.intervalMinutes * 60 * 1000
-  const amplitude = 0.6
-
-  return Array.from({ length: params.pointsCount }).map((_, index) => {
-    const time = now - (params.pointsCount - index) * intervalMs
-    const noise = () => (Math.random() - 0.5) * 0.08
-    const x = amplitude * Math.sin(index / 12) + noise()
-    const y = amplitude * Math.cos(index / 15) + noise()
-    const z = amplitude * Math.sin(index / 18) + noise()
-    const temperature = 30 + Math.sin(index / 45) * 4 + Math.random() * 0.4
-
-    return {
-      timestamp: new Date(time).toISOString(),
-      x: Number(x.toFixed(4)),
-      y: Number(y.toFixed(4)),
-      z: Number(z.toFixed(4)),
-      temperature: Number(temperature.toFixed(2))
-    }
-  })
-}
-
 export function CreateTimeSeriesDialog({
   open,
   loading,
   error,
+  sensorModel = 'TcAg',
   onClose,
   onSubmit
 }: CreateTimeSeriesDialogProps) {
@@ -78,7 +59,17 @@ export function CreateTimeSeriesDialog({
       return
     }
 
-    const points = generateFakeTcAgSeries({ intervalMinutes, pointsCount })
+    const points =
+      sensorModel === 'TcAs'
+        ? generateFakeTcAsSeries({ intervalMinutes, pointsCount })
+        : sensorModel === 'HF_PLUS'
+          ? generateFakeHfSeries({
+              intervalMinutes,
+              pointsCount,
+              variant: 'HF+'
+            })
+          : generateFakeTcAgSeries({ intervalMinutes, pointsCount })
+
     await onSubmit({ intervalMinutes, points })
   }
 
@@ -90,7 +81,9 @@ export function CreateTimeSeriesDialog({
       fullWidth
       slotProps={{ paper: { sx: { p: 2 } } }}
     >
-      <DialogTitle sx={{ p: 0, pb: 1.5 }}>Enviar Série Temporal</DialogTitle>
+      <DialogTitle sx={{ p: 0, pb: 1.5 }}>
+        Enviar Série Temporal ({sensorModel === 'HF_PLUS' ? 'HF+' : sensorModel})
+      </DialogTitle>
       <DialogContent sx={{ p: 0, pb: 1.5, paddingTop: '5px !important' }}>
         <Grid container spacing={1.5}>
           <Grid size={{ xs: 12, md: 6 }}>
