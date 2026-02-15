@@ -24,25 +24,25 @@ Devido à importância do tempo para a compreensão dos dados e para a tomada de
 
 ---
 
-# [Bug #02] Tooltip não exibido no grafico de Temperatura
+# [Bug #02] Tooltip não exibido no gráfico de Temperatura
 
 ### Descrição
-Ao navegar com o mouse sobre o grafico de temperatura, não é exbido o tooltip com as informações para o usuario como nos demais graficos
+Ao navegar com o mouse sobrere o gráfico de temperatura, não é exbido o tooltip com as informações para o usuario como nos demais gráficos
 
 ### Passos para reproduzir
 1. Abrir a aplicação.
-2. Observe o segundo grafico de temperatura
-3. Repouse o mouse sob o grafico
+2. Observe o segundo gráfico de temperatura
+3. Repouse o mouse sobre o gráfico
 4. Observe que o tooltip com as informações de temperatura não exibidos
 
 ### Resultado Atual
-O Grafico de temperatura não apresenta o tooltip com as informações de temperatura
+O gráfico de temperatura não apresenta o tooltip com as informações de temperatura
 
 ### Resultado Esperado
-Ao repousar o mouse sob o grafico é esperado que as informações de temperatura sejam exibidas para o usuario
+Ao repousar o mouse sobre o gráfico é esperado que as informações de temperatura sejam exibidas para o usuario
 
 ### Severidade - Média
-O bug afeta a percepção de qualidade da aplicação, mas não impede o acesso às funcionalidades principais. Porém, a ausência do tooltip pode causar incomodo para os usuários, pois eles não conseguem acessar informações detalhadas sobre a temperatura, o que é essencial para a análise dos dados apresentados no grafico.
+O bug afeta a percepção de qualidade da aplicação, mas não impede o acesso às funcionalidades principais. Porém, a ausência do tooltip pode causar incomodo para os usuários, pois eles não conseguem acessar informações detalhadas sobrere a temperatura, o que é essencial para a análise dos dados apresentados no gráfico.
 
 ### Prioridade - Alta
 Devido à importância do tooltip para a compreensão dos dados e para a tomada de decisões, é recomendado que este bug seja corrigido com alta prioridade.

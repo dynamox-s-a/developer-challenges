@@ -30,7 +30,7 @@ test.describe('Dashboard', () => {
         await expect(page.locator('.highcharts-series-group')).toHaveCount(3);
     })
 
-    test('deve buscar os dados dos graficos ao acessar a página', async ({ page }) => {
+    test('deve buscar os dados dos gráficos ao acessar a página', async ({ page }) => {
 
         const dataPromise = page.waitForResponse(response =>
             response.url().endsWith('/data.json') && response.status() === 200
@@ -73,13 +73,14 @@ test.describe('Dashboard', () => {
 
         await dashboardPage.mockChartData(mockData);
         await dashboardPage.visit();
-        await expect(dashboardPage.locators.chartAccelaration).toBeVisible({ timeout: 10000 });
+        await expect(dashboardPage.locators.chartAcceleration).toBeVisible({ timeout: 10000 });
         await dashboardPage.hoverOverChart();
         await dashboardPage.validateTooltipContent('Friday, Feb 13, 2026​● Axial: 0.888 g​');
     });
 
     test('deve exibir o tooltip com os valores ao repousar o mouse sobre o gráfico de Temperatura', async ({ page }) => {
 
+        const indexChartTemperature = 1;
         const fixedDate = '2026-02-13T12:00:00.000Z';
         const mockData = {
             data: [
@@ -95,12 +96,13 @@ test.describe('Dashboard', () => {
         await dashboardPage.mockChartData(mockData);
         await dashboardPage.visit();
         await expect(dashboardPage.locators.chartTemperature).toBeVisible({ timeout: 10000 });
-        await dashboardPage.hoverOverChart(1);
+        await dashboardPage.hoverOverChart(indexChartTemperature);
         await dashboardPage.validateTooltipContent('Friday, Feb 13, 2026​● Axial: 35.5°C');
     });
 
-    test('deve exibir o tooltip com os valores ao repousar o mouse sobre o gráfico de Velocidade', async ({ page }) => {
+    test('deve exibir o tooltip com os valores ao repousar o mouse sobrere o gráfico de Velocidade', async ({ page }) => {
 
+        const indexChartVelocity = 2;
         const fixedDate = '2026-02-13T12:00:00.000Z';
         const mockData = {
             data: [
@@ -116,7 +118,7 @@ test.describe('Dashboard', () => {
         await dashboardPage.mockChartData(mockData);
         await dashboardPage.visit();
         await expect(dashboardPage.locators.chartVelocity).toBeVisible({ timeout: 10000 });
-        await dashboardPage.hoverOverChart(2);
+        await dashboardPage.hoverOverChart(indexChartVelocity);
         await dashboardPage.validateTooltipContent('Friday, Feb 13, 2026​● Axial: 600 mm/s​');
     });
 });

@@ -13,7 +13,7 @@ export class DashboardPage {
 
   get locators() {
     return {
-      chartAccelaration: this.page.locator('.highcharts-container').first(),
+      chartAcceleration: this.page.locator('.highcharts-container').first(),
       chartTemperature: this.page.locator('.highcharts-container').nth(1),
       chartVelocity: this.page.locator('.highcharts-container').nth(2),
       plotBackground: this.page.locator('.highcharts-plot-background').first(),
@@ -59,13 +59,6 @@ export class DashboardPage {
   async validateTooltipContent(expectedText: string) {
     const tooltips = this.page.locator('.highcharts-tooltip');
     const visibleTooltip = tooltips.locator('visible=true').first();
-
-    if (await visibleTooltip.count() > 0) {
-      const text = await visibleTooltip.textContent();
-      console.log(`>>> Tooltip Visível Encontrado: "${text}"`);
-    } else {
-      console.log(">>> BUG: Nenhum tooltip visível foi encontrado.");
-    }
 
     await expect(visibleTooltip).toBeVisible({ timeout: 5000 });
     await expect(visibleTooltip).toContainText(expectedText);
