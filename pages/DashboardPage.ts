@@ -7,10 +7,6 @@ export class DashboardPage {
     this.page = page
   }
 
-  async visit() {
-    await this.page.goto('/')
-  }
-
   get locators() {
     return {
       chartAcceleration: this.page.locator('.highcharts-container').first(),
@@ -24,8 +20,16 @@ export class DashboardPage {
       spot: this.page.locator('span.MuiTypography-caption').filter({ hasText: /^Ponto\s+\d+$/ }),
       RPM: this.page.locator('span.MuiTypography-caption').filter({ hasText: /^\d+$/ }),
       dynamicRange: this.page.locator('span.MuiTypography-caption').filter({ hasText: /^\d+g$/ }),
-      interval: this.page.locator('span.MuiTypography-caption').filter({ hasText: /^\d+\s*min$/i })
+      interval: this.page.locator('span.MuiTypography-caption').filter({ hasText: /^\d+\s*min$/i }),
+      axialLegend: this.page.locator('g.highcharts-legend-item', { has: this.page.locator('text=Axial') }),
+      horizontalLegend: this.page.locator('g.highcharts-legend-item', { has: this.page.locator('text=Horizontal') }),
+      verticalLegend: this.page.locator('g.highcharts-legend-item', { has: this.page.locator('text=Vertical') }),
+      legends: 'g.highcharts-legend-item text'
     };
+  }
+  
+  async visit() {
+    await this.page.goto('/')
   }
 
   async mockChartData(data: object) {
@@ -38,7 +42,7 @@ export class DashboardPage {
     });
   }
 
-  async hoverOverChart(index: number = 0) {
+  async hoverOverChart(index: number) {
     const chart = this.page.locator('.highcharts-container').nth(index);
     await chart.scrollIntoViewIfNeeded();
     await expect(chart).toBeVisible({ timeout: 1000 });
