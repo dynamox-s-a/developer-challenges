@@ -4,6 +4,40 @@ Alguns pontos do desafio são ambíguos. As decisões abaixo foram feitas pra ma
 
 ---
 
+## 0) Como rodar
+
+### Dev Container (recomendado)
+
+Este projeto foi desenvolvido usando **Dev Containers**. Para rodar:
+Após inicializar, abra 2 terminais:
+
+```bash
+# Terminal 1 - API
+cd apps/api
+npm install
+npm run prisma:generate
+npm run prisma:migrate
+npm run prisma:seed
+npm run dev
+
+# Terminal 2 - Web
+cd apps/web
+npm install
+npm run dev
+```
+
+**Credenciais de teste (após seed):**
+
+- Email: `admin@dynamox.com`
+- Senha: `admin123`
+
+**Produção (Vercel):**  
+https://developer-challenge-full-stack-web.vercel.app/login
+
+**Testes:** `npm run test --workspace apps/api`
+
+---
+
 ## 1) Organização modular (backend e frontend)
 
 ### Backend (API)
@@ -256,8 +290,3 @@ GETs de telemetria:
 | `/sensors/:uuid/time-series/count`                |    119.0 |    158.0 |    168.0 |  80.6 |         YES |
 
 Resultado consolidado: com `connections=10`, `duration=20s` e `pointsSeeded=1000`, todos os endpoints GET medidos ficaram com **p95 abaixo de 350ms**. Resultado geral do benchmark: **PASSED**.
-
-### Observação
-
-Os números variam conforme ambiente (máquina local, Docker, cloud, volume de dados e concorrência).  
-No relatório final, registrar contexto do teste (CPU/RAM, banco local/remoto e parâmetros de carga).
