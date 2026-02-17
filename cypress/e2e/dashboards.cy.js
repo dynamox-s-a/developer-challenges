@@ -8,14 +8,14 @@ describe('Monitoramento Dashboards', () => {
     DashboardPage.visit();
   });
 
-  it('Deve renderizar os 3 gráficos Highcharts', () => {
+  it('Deve renderizar os 3 gráficos', { grepTags: ['@smoke', '@graphs'] }, () => {
     cy.wait(['@getMetadata', '@getData'], { timeout: 10000 });
 
     DashboardPage.charts.should('have.length', 3);
     cy.log('Os 3 gráficos Encontrados!');
   });
 
-  it('Deve exibir tooltip ao passar o mouse', () => {
+  it('Deve exibir tooltip ao passar o mouse', { grepTags: ['@smoke', '@tooltip'] }, () => {
     cy.wait(['@getMetadata', '@getData'], { timeout: 10000 });
 
     DashboardPage.hoverGraph(0);
@@ -27,7 +27,7 @@ describe('Monitoramento Dashboards', () => {
     DashboardPage.tooltipText.should('exist');
   });
 
-  it('Deve exibir os dados do cabeçalho idênticos ao metadata.json', () => {
+  it('Deve exibir os dados do cabeçalho idênticos ao metadata.json', { grepTags: ['@smoke', '@header'] }, () => {
     cy.wait('@getMetadata').then((interception) => {
 
       const apiData = interception.response.body;
@@ -52,7 +52,7 @@ describe('Monitoramento Dashboards', () => {
     });
   });
 
-  it('Deve atualizar os dados ao recarregar a página', () => {
+  it('Deve atualizar os dados ao recarregar a página', { grepTags: ['@smoke', '@reload'] }, () => {
     DashboardPage.charts.should('have.length', 3);
 
     DashboardPage.reload();
@@ -63,5 +63,19 @@ describe('Monitoramento Dashboards', () => {
     DashboardPage.headerContainer.should('be.visible');
 
     DashboardPage.charts.should('have.length', 3);
+  });
+
+  it('Deve tratar erro 500 na API de dados', { grepTags: ['@smoke', '@error'] }, () => {
+    cy.intercept('GET', '**/data**', {
+      statusCode: 500,
+      body: { error: 'Internal Server Error' }
+    }).as('getDataError');
+
+    DashboardPage.reload();
+
+    cy.wait('@getDataError');
+
+    DashboardPage.headerContainer.should('be.visible');
+    cy.get('body').should('be.visible');
   });
 });

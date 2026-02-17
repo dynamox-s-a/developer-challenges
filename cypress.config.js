@@ -6,7 +6,8 @@ module.exports = defineConfig({
   e2e: {
     baseUrl: "https://frontend-test-for-qa.vercel.app",
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      require('@cypress/grep/src/plugin')(config);
+      return config;
     },
   },
 });

@@ -4,20 +4,23 @@
   "description": "## About Dynamox",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "cy:open": "cypress open",
+    "cy:run": "cypress run --browser chrome",
+    "test": "npm run cy:run"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/FernandoLauChaves/developer-challenges.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Fernando Chaves",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/FernandoLauChaves/developer-challenges/issues"
   },
   "homepage": "https://github.com/FernandoLauChaves/developer-challenges#readme",
   "devDependencies": {
+    "@cypress/grep": "^6.0.0",
     "cypress": "^15.10.0"
   }
 }
