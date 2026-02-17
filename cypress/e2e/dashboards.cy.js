@@ -51,4 +51,17 @@ describe('Monitoramento Dashboards', () => {
         .should('have.text', expectedInterval);
     });
   });
+
+  it('Deve atualizar os dados ao recarregar a página', () => {
+    DashboardPage.charts.should('have.length', 3);
+
+    DashboardPage.reload();
+
+    cy.wait('@getMetadata').its('response.statusCode').should('eq', 200);
+    cy.wait('@getData').its('response.statusCode').should('eq', 200);
+
+    DashboardPage.headerContainer.should('be.visible');
+
+    DashboardPage.charts.should('have.length', 3);
+  });
 });

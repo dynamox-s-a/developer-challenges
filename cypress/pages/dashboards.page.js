@@ -4,7 +4,7 @@ class DashboardPage {
   get seriesGroup() { return cy.get('.highcharts-series-group'); }
   get tooltip() { return cy.get('.highcharts-tooltip'); }
   get tooltipText() { return cy.get('.highcharts-tooltip text'); }
-  get headerContainer() { return cy.contains('Sensor').parent(); }
+  get headerContainer() { return cy.get('.MuiTypography-caption').first().parent().parent(); }
   get metadataLabels() { return cy.get('.MuiTypography-caption'); }
 
 
@@ -32,6 +32,10 @@ class DashboardPage {
 
   validateHeaderInfo(text) {
     this.headerContainer.should('contain.text', text);
+  }
+
+  reload() {
+    cy.reload();
   }
 }
 
