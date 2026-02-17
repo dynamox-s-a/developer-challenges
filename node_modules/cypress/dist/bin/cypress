@@ -1,5 +1,0 @@
-#!/usr/bin/env node
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-// declared here in order to avoid consumers who are looking for the binary to be available relative to the dist directory
-require("../../bin/cypress");
