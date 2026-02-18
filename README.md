@@ -92,12 +92,6 @@ Para filtrar os testes por tag na linha de comando, utilize a opção `--env gre
 npm run cy:run -- --env grepTags=@smoke
 ```
 
-Também é possível usar a variável de ambiente `CYPRESS_grepTags`:
-
-```bash
-CYPRESS_grepTags=@smoke npm run cy:run
-```
-
 ---
 
 ## Tags disponíveis e cenários cobertos
@@ -113,56 +107,6 @@ Atualmente o arquivo `cypress/e2e/dashboards.cy.js` define os seguintes cenário
 
 ---
 
-## Como rodar cada tag individualmente
+## Feedbacks
 
-Todos os comandos abaixo devem ser executados a partir do diretório `developer-challenges` depois de rodar `npm install`.
-
-- Rodar apenas os testes de fumaça (`@smoke`):
-
-```bash
-npm run cy:run -- --env grepTags=@smoke
-```
-
-- Rodar apenas o cenário de gráficos (`@graphs`):
-
-```bash
-npm run cy:run -- --env grepTags=@graphs
-```
-
-- Rodar apenas o cenário de tooltip (`@tooltip`):
-
-```bash
-npm run cy:run -- --env grepTags=@tooltip
-```
-
-- Rodar apenas o cenário de cabeçalho/metadata (`@header`):
-
-```bash
-npm run cy:run -- --env grepTags=@header
-```
-
-- Rodar apenas o cenário de recarregamento (`@reload`):
-
-```bash
-npm run cy:run -- --env grepTags=@reload
-```
-
-- Rodar apenas o cenário de erro 500 na API de dados (`@error`):
-
-```bash
-npm run cy:run -- --env grepTags=@error
-```
-
-> Observação: como todos os testes também estão marcados com `@smoke`, utilizar `grepTags=@smoke` executa a suíte inteira de cenários críticos.
-
----
-
-## Boas práticas adotadas nos testes
-
-- Page Objects: encapsulam seletores e ações em `dashboards.page.js`, evitando duplicação e facilitando manutenção.
-- Interceptação de APIs: uso de `cy.intercept` para controlar respostas das APIs de `metadata` e `data`, permitindo validar comportamentos em sucesso e erro.
-- Tags funcionais e de fumaça: `@smoke` para o conjunto essencial de cenários e tags específicas por comportamento, permitindo execuções rápidas e direcionadas.
-- Validação direta contra a API: comparação de valores exibidos no cabeçalho com o payload retornado, garantindo alinhamento entre front‑end e backend.
-- Testes resilientes: uso de timeouts e esperas explícitas apenas quando necessário, mantendo os testes estáveis sem depender de sleeps fixos.
-
-Essas práticas ajudam a manter a suíte de testes legível, escalável e fácil de rodar tanto localmente quanto em pipelines de CI.
+- Dentro do arquivo REPORT.md está um pequeno feedback encontrados durante os testes da aplicação.
