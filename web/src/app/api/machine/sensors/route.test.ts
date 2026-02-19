@@ -1,9 +1,5 @@
 /** biome-ignore-all lint/style/useTemplate: idk */
-import { POST } from './route'
-import type { NextRequest } from 'next/server'
-import dbConnect from '@/lib/database/mongoose'
-import sensorRepository from '@/lib/database/sensor/repository'
-import z from 'zod'
+
 
 jest.mock('@/lib/database/mongoose', () => ({
   default: jest.fn(() => Promise.resolve()),
@@ -19,6 +15,12 @@ jest.mock('zod', () => ({
 
 jest.spyOn(console, 'log').mockImplementation(() => {})
 jest.spyOn(console, 'error').mockImplementation(() => {})
+
+import { POST } from './route'
+import type { NextRequest } from 'next/server'
+import dbConnect from '@/lib/database/mongoose'
+import sensorRepository from '@/lib/database/sensor/repository'
+import z from 'zod'
 
 const mockMachineId = '507f1f77bcf86cd799439011'
 const mockSensors = [

@@ -1,9 +1,5 @@
 /** biome-ignore-all lint/complexity/useOptionalChain: idk*/
-import { POST } from './route'
-import type { NextRequest } from 'next/server'
-import dbConnect from '@/lib/database/mongoose'
-import sensorRepository from '@/lib/database/sensor/repository'
-import { CreateSensorSchema } from '@/types/zod/sensor'
+
 
 jest.mock('@/lib/database/mongoose', () => ({
   __esModule: true,
@@ -22,6 +18,12 @@ jest.mock('@/types/zod/sensor', () => ({
     safeParse: jest.fn(),
   },
 }))
+
+import { POST } from './route'
+import type { NextRequest } from 'next/server'
+import dbConnect from '@/lib/database/mongoose'
+import sensorRepository from '@/lib/database/sensor/repository'
+import { CreateSensorSchema } from '@/types/zod/sensor'
 
 const mockSensorData = {
   name: 'Sensor T1',

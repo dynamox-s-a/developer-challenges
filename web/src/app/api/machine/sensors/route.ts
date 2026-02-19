@@ -2,7 +2,7 @@
 import dbConnect from '@/lib/database/mongoose'
 import sensorRepository from '@/lib/database/sensor/repository'
 import { NextResponse, type NextRequest } from 'next/server'
-import z from 'zod'
+import * as z from 'zod'
 
 export async function POST(req: NextRequest) {
   try {

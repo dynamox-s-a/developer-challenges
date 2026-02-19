@@ -3,7 +3,7 @@ import machineRepository from '@/lib/database/machine/repository'
 import dbConnect from '@/lib/database/mongoose'
 import { CreateMachineSchema } from '@/types/zod/machine'
 import { NextResponse, type NextRequest } from 'next/server'
-import z from 'zod'
+import * as z from 'zod'
 
 export async function POST(req: NextRequest) {
   try {

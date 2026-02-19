@@ -17,7 +17,7 @@ const customJestConfig: Config = {
   },
 
   transformIgnorePatterns: [
-    '[/\\\\]node_modules[/\\\\](?!(?:\\.pnpm/)?(?:mongoose|mongodb|bson|mongodb-driver-core)[/\\\\].*)',
+    '[/\\\\]node_modules[/\\\\](?!(?:\\.pnpm/)?(?:mongoose|mongodb|bson|mongodb-driver-core)[/\\\\].*)', '/node_modules/(?!(zod)/)',
   ],
 }
 

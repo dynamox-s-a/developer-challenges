@@ -1,8 +1,5 @@
 /** biome-ignore-all lint/complexity/useOptionalChain: kek*/
-import { POST } from './route'
-import type { NextRequest } from 'next/server'
-import monitoringPointRepository from '@/lib/database/monitoring_point/repository'
-import { CreateMonitoringPointSchema } from '@/types/zod/monitoring-point'
+
 
 jest.mock('@/lib/database/monitoring_point/repository')
 jest.mock('@/types/zod/monitoring-point', () => ({
@@ -10,6 +7,11 @@ jest.mock('@/types/zod/monitoring-point', () => ({
     safeParse: jest.fn(),
   },
 }))
+
+import { POST } from './route'
+import type { NextRequest } from 'next/server'
+import monitoringPointRepository from '@/lib/database/monitoring_point/repository'
+import { CreateMonitoringPointSchema } from '@/types/zod/monitoring-point'
 
 const mockValidBody = {
   name: 'Ponto A',

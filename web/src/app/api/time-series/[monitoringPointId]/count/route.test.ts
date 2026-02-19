@@ -1,7 +1,4 @@
-import { GET } from './route'
-import type { NextRequest } from 'next/server'
-import dbConnect from '@/lib/database/mongoose'
-import timeSeriesRepository from '@/lib/database/timeSeries/repository'
+
 
 jest.mock('@/lib/database/mongoose', () => ({
   __esModule: true,
@@ -14,6 +11,11 @@ jest.mock('@/lib/database/timeSeries/repository', () => ({
     getCount: jest.fn(),
   },
 }))
+
+import { GET } from './route'
+import type { NextRequest } from 'next/server'
+import dbConnect from '@/lib/database/mongoose'
+import timeSeriesRepository from '@/lib/database/timeSeries/repository'
 
 const mockMonitoringPointId = '507f1f77bcf86cd799439011'
 const mockCount = 42

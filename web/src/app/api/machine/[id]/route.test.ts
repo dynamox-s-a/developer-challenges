@@ -1,9 +1,5 @@
 /** biome-ignore-all lint/style/useTemplate: idk */
-import { PUT } from './route'
-import type { NextRequest } from 'next/server'
-import dbConnect from '@/lib/database/mongoose'
-import machineRepository from '@/lib/database/machine/repository'
-import { UpdateMachineSchema } from '@/types/zod/machine'
+
 
 jest.mock('@/lib/database/mongoose', () => ({
   default: jest.fn(() => Promise.resolve()),
@@ -14,6 +10,12 @@ jest.mock('@/types/zod/machine', () => ({
     safeParse: jest.fn(),
   },
 }))
+
+import { PUT } from './route'
+import type { NextRequest } from 'next/server'
+import dbConnect from '@/lib/database/mongoose'
+import machineRepository from '@/lib/database/machine/repository'
+import { UpdateMachineSchema } from '@/types/zod/machine'
 
 const mockId = '507f1f77bcf86cd799439011'
 const mockValidBody = { name: 'Updated Machine', status: 'active' }

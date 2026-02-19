@@ -8,8 +8,8 @@ import {
 
 export async function POST(req: NextRequest) {
   try {
-    await dbConnect()
     const body = await req.json()
+    await dbConnect()
 
     const isArray = Array.isArray(body)
     const schema = isArray

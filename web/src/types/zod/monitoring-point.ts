@@ -1,5 +1,5 @@
 import { createResponseSchema } from '@/utils/createResponse'
-import z from 'zod'
+import * as z from 'zod'
 
 export const CreateMonitoringPointSchema = z.object({
   Name: z.string().max(20),

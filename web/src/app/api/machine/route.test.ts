@@ -1,10 +1,5 @@
 /** biome-ignore-all lint/style/useTemplate: idk */
-import { POST, GET, DELETE } from './route'
-import type { NextRequest } from 'next/server'
-import dbConnect from '@/lib/database/mongoose'
-import machineRepository from '@/lib/database/machine/repository'
-import { CreateMachineSchema } from '@/types/zod/machine'
-import z from 'zod'
+
 
 jest.mock('@/lib/database/mongoose', () => ({
   default: jest.fn(() => Promise.resolve()),
@@ -23,6 +18,13 @@ jest.mock('zod', () => ({
     safeParse: jest.fn(),
   })),
 }))
+
+import { POST, GET, DELETE } from './route'
+import type { NextRequest } from 'next/server'
+import dbConnect from '@/lib/database/mongoose'
+import machineRepository from '@/lib/database/machine/repository'
+import { CreateMachineSchema } from '@/types/zod/machine'
+import z from 'zod'
 
 const mockMachineId = '507f1f77bcf86cd799439011'
 const mockMachineData = {

@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import *  as z from 'zod'
 import { createResponseSchema } from '@/utils/createResponse'
 
 export const TimeSeriesDataPointSchema = z.object({

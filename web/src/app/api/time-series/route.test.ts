@@ -1,11 +1,4 @@
-import { POST } from './route'
-import type { NextRequest } from 'next/server'
-import dbConnect from '@/lib/database/mongoose'
-import timeSeriesRepository from '@/lib/database/timeSeries/repository'
-import {
-  CreateTimeSeriesPointSchema,
-  CreateTimeSeriesBatchSchema,
-} from '@/types/zod/timeSeries'
+
 
 // Mocks das dependências
 jest.mock('@/lib/database/mongoose', () => ({
@@ -28,6 +21,15 @@ jest.mock('@/types/zod/timeSeries', () => ({
     safeParse: jest.fn(),
   },
 }))
+
+import { POST } from './route'
+import type { NextRequest } from 'next/server'
+import dbConnect from '@/lib/database/mongoose'
+import timeSeriesRepository from '@/lib/database/timeSeries/repository'
+import {
+  CreateTimeSeriesPointSchema,
+  CreateTimeSeriesBatchSchema,
+} from '@/types/zod/timeSeries'
 
 // Dados mockados
 const mockSinglePoint = {

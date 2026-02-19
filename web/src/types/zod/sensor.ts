@@ -1,7 +1,7 @@
 // import mongoose from 'mongoose'
 
 import { createResponseSchema } from '@/utils/createResponse'
-import z from 'zod'
+import {z} from 'zod'
 
 export const SensorTypeSchema = z.enum(['TcAs', 'HF+', 'TcAg'])
 

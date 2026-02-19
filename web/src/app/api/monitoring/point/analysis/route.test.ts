@@ -1,6 +1,4 @@
-import { GET } from './route'
-import dbConnect from '@/lib/database/mongoose'
-import monitoringPointRepository from '@/lib/database/monitoring_point/repository'
+
 
 jest.mock('@/lib/database/mongoose', () => ({
   default: jest.fn(() => Promise.resolve()),
@@ -9,6 +7,10 @@ jest.mock('@/lib/database/mongoose', () => ({
 jest.mock('@/lib/database/monitoring_point/repository')
 
 jest.spyOn(console, 'log').mockImplementation(() => {})
+
+import { GET } from './route'
+import dbConnect from '@/lib/database/mongoose'
+import monitoringPointRepository from '@/lib/database/monitoring_point/repository'
 
 const mockAnalysisData = [
   {
@@ -76,12 +78,20 @@ describe('GET /api/monitoring-point', () => {
     })
   })
 
-  it('deve lançar erro quando a conexão com o banco falhar', async () => {
+  it('deve retornar 500 quando a conexão com o banco falhar', async () => {
     const dbError = new Error('Falha na conexão')
     ;(dbConnect as jest.Mock).mockRejectedValueOnce(dbError)
 
-    await expect(GET()).rejects.toThrow('Falha na conexão')
+    const response = await GET()
+    const json = await response.json()
+
     expect(dbConnect).toHaveBeenCalledTimes(1)
     expect(monitoringPointRepository.getAllPopulate).not.toHaveBeenCalled()
+    expect(response.status).toBe(500)
+    expect(json).toEqual({
+      success: false,
+      message: 'Falha na conexão',
+      data: null,
+    })
   })
 })
