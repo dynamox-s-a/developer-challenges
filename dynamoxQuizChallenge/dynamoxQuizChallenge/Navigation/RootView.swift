@@ -24,9 +24,15 @@ struct RootView: View {
             .navigationBarHidden(true)
             .navigationDestination(for: QuizRoute.self) { route in
                 switch route {
-                case .quiz(let username):
-                    QuizView(name: username)
-                        .navigationBarBackButtonHidden(true)
+                case .quiz(let userName):
+                    let repository = QuizRepository()
+                    let viewModel = QuizViewModel(
+                        repository: repository,
+                        userName: userName)
+                    QuizView(viewModel: viewModel) { _, _ in
+                        
+                    }
+                    .navigationBarBackButtonHidden(true)
                 }
             }
         }
