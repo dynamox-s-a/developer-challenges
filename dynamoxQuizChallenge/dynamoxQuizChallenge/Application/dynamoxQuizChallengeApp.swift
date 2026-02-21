@@ -12,7 +12,7 @@ import SwiftData
 struct dynamoxQuizChallengeApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            
+            GameResultEntity.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -25,7 +25,7 @@ struct dynamoxQuizChallengeApp: App {
 
     var body: some Scene {
         WindowGroup {
-          
+            RootView()
         }
         .modelContainer(sharedModelContainer)
     }
