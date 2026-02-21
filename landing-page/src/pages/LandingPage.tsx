@@ -11,12 +11,16 @@ const LandingPage = () => {
 	return (
         <>
             <main className="container">
-                {contentSections.map((section, index) => (
-                    <ContentSection key={index} {...section} />
-                ))}
-                {contentImageSections.map((section, index) => (
-                    <ContentImageSection key={index} {...section} />
-                ))}
+                <div className="marginBlock">
+                    {contentSections.map((section, index) => (
+                        <ContentSection key={index} {...section} />
+                    ))}
+                </div>
+                <div className="container--contentImageSections">
+                    {contentImageSections.map((section, index) => (
+                        <ContentImageSection key={index} {...section} />
+                    ))}
+                </div>
             </main>
             <Footer />
         </>

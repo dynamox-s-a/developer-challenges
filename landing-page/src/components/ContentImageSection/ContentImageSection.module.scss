@@ -4,8 +4,7 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: $spacing-xl;
-  padding: 2rem;
-  margin-block: 3.5rem;
+  padding:$spacing-xl;
   border-radius: $radius-lg;
   background-color: $color-neutral-100;
   border: $border-color-50;
@@ -95,7 +94,7 @@
     border: none;
     cursor: pointer;
     transition: transform 0.2s ease;
-    padding: 0;
+    padding: $spacing-none;
 
     &::before {
       content: '+';

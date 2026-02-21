@@ -82,10 +82,25 @@ a {
 }
 
 .container {
-    margin: 60px 40px 40px;
+  margin-inline: 40px;
 
   @media (min-width: 1440px) {
-      margin: 120px 80px 80px;
+    margin-inline: 80px;
+  }
+}
+
+
+.container--contentImageSections {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+
+.marginBlock {
+  margin-block: 80px;
+
+  @media (min-width: 1440px) {
+    margin-block: 120px;
   }
 }
 
