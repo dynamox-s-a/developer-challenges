@@ -14,7 +14,11 @@ struct PlayerRegisterView: View {
     var body: some View {
         ZStack {
             LinearGradient(
-                stops: viewModel.backgroundGradientStops,
+                stops: [
+                    .init(color: Color(hex: 0x25101A), location: 0.0),
+                    .init(color: Color(hex: 0x160A12), location: 0.55),
+                    .init(color: Color(hex: 0x0F070D), location: 1.0)
+                ],
                 startPoint: .top,
                 endPoint: .bottom
             )

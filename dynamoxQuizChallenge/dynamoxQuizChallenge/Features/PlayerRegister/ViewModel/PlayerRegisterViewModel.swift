@@ -30,12 +30,6 @@ final class PlayerRegisterViewModel {
     let namePlaceholder: String = "Digite seu nome"
     let startButtonTitle: String = "Start Quiz!"
     let maxLength: Int  = 18
-    
-    let backgroundGradientStops: [Gradient.Stop] = [
-        .init(color: Color(hex: 0x25101A), location: 0.0),
-        .init(color: Color(hex: 0x160A12), location: 0.55),
-        .init(color: Color(hex: 0x0F070D), location: 1.0)
-    ]
 
     let accentColor: Color = Color(hex: 0xD60C77)
     
