@@ -8,6 +8,11 @@
   padding: 0;
 }
 
+:root {
+  --font-family-brand: 'Gilroy', 'Inter', system-ui, sans-serif;
+  --font-family-utility: 'Inter', system-ui, -apple-system, BlinkMacSystemFont,'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
+}
+
 html,
 body {
   width: 100%;
@@ -15,7 +20,7 @@ body {
 }
 
 body {
-  font-family: $font-family-brand;
+  font-family: var(--font-family-brand);
   font-size: $fontSize-text-sm;
   font-weight: $fontWeight-regular;
   line-height: $line-height-text-sm;
@@ -29,7 +34,7 @@ body {
 }
 
 h1 {
-    font-family: $font-family-brand;
+    font-family: var(--font-family-brand);
     font-weight: $fontWeight-regular;
     font-size: $fontSize-heading-md;
 
@@ -39,7 +44,7 @@ h1 {
 }
 
 h2 {
-    font-family: $font-family-brand;
+    font-family: var(--font-family-brand);
     font-weight: $fontWeight-regular;
     line-height: $line-height-heading-md;
     font-size: $fontSize-heading-sm;
@@ -53,7 +58,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: $font-family-brand;
+    font-family: var(--font-family-brand);
     font-weight: $fontWeight-regular;
     line-height: $line-height-heading-sm;
     font-size: $fontSize-heading-xs;
