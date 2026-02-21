@@ -1,0 +1,88 @@
+@use '../../styles/_theme' as *;
+
+.footer {
+    background-color: $color-brand-50;
+    border-radius: $radius-xl;
+    padding: $spacing-xxl;
+    color: $color-neutral-100;
+    margin: 1.5rem 1rem;
+    
+    &__top {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+    }
+
+    &__logo {
+        width: 10.4375rem;
+        height: auto;
+    }
+
+    &__social {
+        display: flex;
+        gap: 1rem;
+    
+      a {
+        display: inline-flex;
+        &:hover {
+            opacity: 0.7;
+        }
+      }
+    }
+
+    &__divider {
+      border: 0;
+      height: 1px;
+      background-color: $color-neutral-100;
+      margin: 1.5rem 0;
+    }
+
+    &__links a,
+    &__bottom span {
+        font-family: var(--font-family-utility);
+        font-size: $fontSize-footer-sm;
+    }
+
+    &__bottom {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__links {
+        display: flex;
+        align-items: center;
+
+        a {
+            position: relative;
+            padding: 0 16.5px;
+            color: inherit;
+        }
+        
+        a + a::before {
+            content: '•';
+            position: absolute;
+            left: -2px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        &:hover {
+            text-decoration: none;
+            opacity: 0.7;
+        }
+      }
+
+
+    @media (min-width: 1024px) {
+        &__bottom {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
+}
+
+
+
+
+
