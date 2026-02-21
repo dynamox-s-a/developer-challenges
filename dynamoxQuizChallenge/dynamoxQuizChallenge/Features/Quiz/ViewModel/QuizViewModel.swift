@@ -20,9 +20,11 @@ final class QuizViewModel {
         case finished
     }
     
-    private let repository: QuizRepositoryProtocol
+    private var repository: QuizRepositoryProtocol
+    private var scoreStore: ScoreStoreProtocol
     private let totalQuestions: Int = 10
     private var lastSubmit: (questionId: String, answer: String)? = nil
+    private var didPersistScore: Bool = false
     
     var screenState: ScreenState = .idle
     var currentQuestion: QuizDTO? = nil
@@ -35,9 +37,13 @@ final class QuizViewModel {
     
     let userName: String
     
-    init(repository: QuizRepositoryProtocol, userName: String) {
+    init(
+        repository: QuizRepositoryProtocol,
+        scoreStore: ScoreStoreProtocol,
+        userName: String) {
         self.repository = repository
         self.userName = userName
+        self.scoreStore = scoreStore
     }
     
     var progressFraction: Double {
@@ -135,7 +141,13 @@ final class QuizViewModel {
             try? await Task.sleep(nanoseconds: 850_000_000)
             
             if questionIndex >= totalQuestions {
+                saveScoreLocal()
                 screenState = .finished
+                currentQuestion = nil
+                questionIndex = 0
+                score = 0
+                didPersistScore = false
+                selectedIndex = nil
             } else {
                 questionIndex += 1
                 await loadQuestions()
@@ -157,6 +169,20 @@ final class QuizViewModel {
             screenState = .idle
         } else {
             screenState = .showingQuestion
+        }
+    }
+
+    private func saveScoreLocal() {
+        guard !didPersistScore else { return }
+        didPersistScore = true
+        
+        do {
+            let finalScore = score
+            try scoreStore.recordGame(username: userName, score: finalScore)
+        } catch {
+            #if DEBUG
+            print("ERROR: Failed to save score: \(error)")
+            #endif
         }
     }
 }

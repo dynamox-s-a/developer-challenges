@@ -27,20 +27,41 @@ struct QuizView: View {
                 
                 DividerLine()
                     .padding(.top, 18)
-                
-                content
-                    .padding(.horizontal, 18)
-                    .padding(.top, 26)
-                
+                ScrollView {
+                    content
+                        .padding(.bottom, 18)
+                    
+                }
                 Spacer()
+                
+                bottomButton
+                    .padding(.horizontal, 18)
+                    .padding(.bottom, 18)
             }
-//            .ignoresSafeArea(edges: .top)
+            
+            if viewModel.screenState == .loading {
+                LoadingOverlay()
+            }
+            
+            if case let .showingFeedBack(isCorrect) = viewModel.screenState {
+                FeedbackOverlay(isCorrect: isCorrect)
+            }
         }
         .onAppear {
             viewModel.start()
             withAnimation(.easeInOut(duration: 1.2).repeatForever(autoreverses: true)) {
                 animateHeader = true
             }
+        }
+        .onChange(of: viewModel.screenState) { _, newValue in
+            if newValue == .finished {
+                onFinish(viewModel.userName, viewModel.score)
+            }
+        }
+        .alert("Erro", isPresented: $viewModel.isShowingErrorAlert) {
+            Button("Ok", role: .cancel) {}
+        } message: {
+            Text(viewModel.errorMessage)
         }
     }
     
@@ -109,9 +130,12 @@ struct QuizView: View {
         if let question  = viewModel.currentQuestion {
             VStack(spacing: 22) {
                 Text(question.statement)
+                    .lineLimit(nil)
                     .font(.system(size: 34, weight: .heavy, design: .rounded))
                     .foregroundStyle(.white.opacity(0.92))
                     .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .minimumScaleFactor(0.7)
                     .padding(.horizontal, 6)
                     .padding(.top, 6)
                 
@@ -133,21 +157,43 @@ struct QuizView: View {
                 }
                 .padding(.top, 6)
             }
-        } else {
-            VStack(spacing: 12) {
-                ProgressView().tint(.white)
-                Text("Carregando pergunta...")
-                    .foregroundStyle(.white.opacity(0.7))
-            }
-            .padding(.top, 60)
         }
+    }
+
+    var bottomButton: some View {
+        Button {
+            viewModel.submit()
+        } label: {
+            HStack {
+                Text("Responder")
+                    .font(.system(size: 18, weight: .bold, design: .rounded))
+                Image(systemName: "arrow.right")
+                    .font(.system(size: 18, weight: .bold))
+            }
+            .foregroundStyle(.white)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 18)
+            .background(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(QuizColors.magenta)
+                    .shadow(
+                        color: QuizColors.magenta.opacity(0.35),
+                        radius: 18,
+                        x: 0,
+                        y: 10
+                    )
+            )
+            .opacity(viewModel.canSubmit ? 1.0 : 0.45)
+        }
+        .buttonStyle(.plain)
+        .disabled(!viewModel.canSubmit)
     }
 }
 
-#Preview {
-    let repository = QuizRepository()
-    let viewModel = QuizViewModel(repository: repository, userName: "Teste")
-    QuizView(viewModel: viewModel, onFinish: { _, _ in
-        
-    })
-}
+//#Preview {
+//    let repository = QuizRepository()
+//    let viewModel = QuizViewModel(repository: repository, scoreStore: <#any ScoreStoreProtocol#>, userName: "Teste")
+//    QuizView(viewModel: viewModel, onFinish: { _, _ in
+//        
+//    })
+//}

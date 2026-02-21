@@ -18,7 +18,7 @@ final class URLURLSessionNetworkClient: NetworkClientProtocol {
     private let session: URLSession
     let baseURL: URL
     
-    init(baseURL: URL = URL(string: "https://quiz-api-bwi5hjqyaq-uc.a.run.app")!, session: URLSession = .shared) {
+    init(baseURL: URL, session: URLSession = .shared) {
         self.baseURL = baseURL
         self.session = session
     }

@@ -18,7 +18,7 @@ final class QuizRepository: QuizRepositoryProtocol {
     private let decoder: JSONDecoder
     
     init(
-        apiClient: NetworkClientProtocol = URLURLSessionNetworkClient(),
+        apiClient: NetworkClientProtocol,
         encoder: JSONEncoder = .init(),
         decoder: JSONDecoder = .init()
     ) {

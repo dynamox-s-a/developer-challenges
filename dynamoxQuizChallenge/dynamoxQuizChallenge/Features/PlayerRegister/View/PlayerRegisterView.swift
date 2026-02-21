@@ -10,7 +10,7 @@ import SwiftUI
 struct PlayerRegisterView: View {
     @State private var viewModel = PlayerRegisterViewModel()
     let onStart: (String) -> Void
-    @State private var animateGlow = false
+    let onOpenResults: () -> Void
     var body: some View {
         ZStack {
             LinearGradient(
@@ -21,6 +21,7 @@ struct PlayerRegisterView: View {
             .ignoresSafeArea()
             
             VStack(spacing: 0) {
+                header
                 Spacer().frame(height: 36)
                 logo
                     .padding(.bottom, 28)
@@ -36,11 +37,6 @@ struct PlayerRegisterView: View {
                 Spacer()
             }
         }
-        .onAppear {
-            withAnimation(.easeInOut(duration: 1.6).repeatForever(autoreverses: true)) {
-                animateGlow = true
-            }
-        }
         .alert("Invalid Name", isPresented: $viewModel.isShowingAlert) {
             Button("OK", role: .cancel) { }
         } message: {
@@ -48,13 +44,40 @@ struct PlayerRegisterView: View {
         }
     }
 
+    var header: some View {
+        HStack {
+            // Placeholder para ficar com o titulo alinhado.
+            Image(systemName: "")
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundStyle(Color.clear) // invisível
+                .padding(10)
+                .frame(width: 44, height: 44)
+            Spacer()
+            Text(viewModel.headerTitle)
+                .font(.system(size: 16, weight: .semibold, design: .rounded))
+                .foregroundStyle(.white.opacity(0.92))
+            Spacer()
+            Button {
+                onOpenResults()
+            } label : {
+                Image(systemName: "trophy.fill")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(viewModel.accentColor)
+                    .padding(10)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(.vertical, 10)
+        .padding(.horizontal, 22)
+        .padding(.top, 14)
+    }
     var logo: some View {
         ZStack {
             Circle()
                 .fill(viewModel.accentColor.opacity(0.28))
                 .frame(width: 128, height: 128)
                 .blur(radius: 18)
-                .scaleEffect(animateGlow ? 1.06 : 0.96)
             Circle()
                 .fill(.white)
                 .frame(width: 118, height: 118)
@@ -153,7 +176,10 @@ struct PlayerRegisterView: View {
 }
 
 #Preview {
-    PlayerRegisterView() { text in
-        print(text)
+    PlayerRegisterView { string in
+        
+    } onOpenResults: {
+    
     }
+
 }
