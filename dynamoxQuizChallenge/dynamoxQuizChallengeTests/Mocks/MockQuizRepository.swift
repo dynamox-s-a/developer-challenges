@@ -25,6 +25,7 @@ final class MockQuizRepository: QuizRepositoryProtocol {
     }
 
     func fetchQuiz() async throws -> dynamoxQuizChallenge.QuizDTO {
+        try await Task.sleep(nanoseconds: 1_000_000_000)
         switch mode {
         case .successSequence(let questions, _):
             guard fetchIndex < questions.count else {
@@ -41,6 +42,7 @@ final class MockQuizRepository: QuizRepositoryProtocol {
     }
     
     func submitAnswer(_ questionId: String, answer: String) async throws -> dynamoxQuizChallenge.AnswerResponseDTO {
+        try await Task.sleep(nanoseconds: 1_000_000_000)
         switch mode {
         case .successSequence(_, let results):
             guard !results.isEmpty else {

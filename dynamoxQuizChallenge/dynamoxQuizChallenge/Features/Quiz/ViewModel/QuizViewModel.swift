@@ -22,7 +22,7 @@ final class QuizViewModel {
     
     private var repository: QuizRepositoryProtocol
     private var scoreStore: ScoreStoreProtocol
-    private let totalQuestions: Int = 10
+    private(set) var totalQuestions: Int = 10
     private var lastSubmit: (questionId: String, answer: String)? = nil
     private var didPersistScore: Bool = false
     
@@ -40,10 +40,12 @@ final class QuizViewModel {
     init(
         repository: QuizRepositoryProtocol,
         scoreStore: ScoreStoreProtocol,
-        userName: String) {
+        userName: String,
+        totalQuestions: Int = 10) {
         self.repository = repository
         self.userName = userName
         self.scoreStore = scoreStore
+        self.totalQuestions = totalQuestions
     }
     
     var progressFraction: Double {
@@ -136,9 +138,10 @@ final class QuizViewModel {
                 score += 1
             }
             
-            screenState = .showingFeedBack(isCorrect: response.result)
             lastSubmit = nil
-            try? await Task.sleep(nanoseconds: 850_000_000)
+
+            screenState = .showingFeedBack(isCorrect: response.result)
+            try? await Task.sleep(nanoseconds: 300_000_000)
             
             if questionIndex >= totalQuestions {
                 saveScoreLocal()
