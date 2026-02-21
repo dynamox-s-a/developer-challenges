@@ -1,4 +1,4 @@
-@use '@/styles/theme' as *;
+@use './_theme' as *;
 
 *,
 *::before,
@@ -16,24 +16,37 @@ body {
 
 body {
   font-family: $font-family-brand;
-  font-size: $fontSize-text-lg;
+  font-size: $fontSize-text-sm;
   font-weight: $fontWeight-regular;
-  line-height: $line-height-text-md;
+  line-height: $line-height-text-sm;
   color: $color-text-100;
   background-color: $color-neutral-50;
+
+  @media (min-width: 1024px) {
+    font-size: $fontSize-text-lg;
+    line-height: $line-height-text-md;
+  }
 }
 
 h1 {
     font-family: $font-family-brand;
     font-weight: $fontWeight-regular;
-    font-size: $fontSize-heading-lg;
+    font-size: $fontSize-heading-md;
+
+    @media (min-width: 1024px) {
+        font-size: $fontSize-heading-lg;
+    }
 }
 
 h2 {
     font-family: $font-family-brand;
     font-weight: $fontWeight-regular;
-    font-size: $fontSize-heading-md;
     line-height: $line-height-heading-md;
+    font-size: $fontSize-heading-sm;
+
+    @media (min-width: 1024px) {
+      font-size: $fontSize-heading-md;
+    }
 }
 
 h3,
@@ -42,8 +55,12 @@ h5,
 h6 {
     font-family: $font-family-brand;
     font-weight: $fontWeight-regular;
-    font-size: $fontSize-heading-sm;
     line-height: $line-height-heading-sm;
+    font-size: $fontSize-heading-xs;
+
+    @media (min-width: 1024px) {
+      font-size: $fontSize-heading-sm;
+    }
 }
 
 img {
@@ -53,20 +70,18 @@ img {
 }
 
 a {
-  color: inherit;
+  color: $color-text-200;
+  font-family: inherit;
+  font-size: $fontSize-text-sm;
   text-decoration: none;
 }
 
 .container {
     margin: 60px 40px 40px;
 
-    @media (min-width: 1024px) {
-        margin: 80px 60px 60px;
-    }
-
-    @media (min-width: 1440px) {
-        margin: 120px 80px 80px;
-    }
+  @media (min-width: 1440px) {
+      margin: 120px 80px 80px;
+  }
 }
 
 
