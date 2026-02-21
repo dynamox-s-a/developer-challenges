@@ -7,6 +7,19 @@ import ZoomIcon from '@/assets/icons/zoom-icon.svg?react';
 import LayerIcon from '@/assets/icons/layer-icon.svg?react';
 import ChatIcon from '@/assets/icons/chat-icon.svg?react';
 import ConectionIcon from '@/assets/icons/conection-icon.svg?react';
+import type { ContentSectionProps } from "@/components/ContentSection/ContentSection.types";
+
+
+export const contentSections: ContentSectionProps[] = [
+  {
+    title: 'Dynamox',
+    titleHighlight: ', por uma indústria mais segura e produtiva',
+    textContent: ['Em um mundo em que há crescimento na oferta de sensores e hardwares é normal que a escolha entre diferentes produtos seja um processo trabalhoso. Afinal, pesquisas e comparações tornam-se necessárias para entender as melhores opções para as respectivas aplicações. ',
+     'Se essa escolha já parece complicada, ao acrescentarmos a questão da análise do software, a comparação se torna ainda mais complexa.',
+      'Uma forma de simplificar este processo é basear os critérios de análise em um sistema de referência.  Esse manifesto é a consolidação da visão Dynamox: ser referência em tecnologias eficientes e eficazes para monitoramento, manutenção e performance de ativos.'
+    ]
+  }
+]
 
 export const contentImageSections: ContentImageSectionProps[] = [
   {
@@ -56,3 +69,4 @@ export const contentImageSections: ContentImageSectionProps[] = [
     reverse: true
   }
 ]
+

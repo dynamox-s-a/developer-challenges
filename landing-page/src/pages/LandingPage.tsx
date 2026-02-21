@@ -1,24 +1,19 @@
-import React from 'react';
 import './LandingPage.styles.scss';
+
+import { contentSections } from './LandingPage.data';
 import { contentImageSections } from './LandingPage.data';
+
+import { ContentSection } from '@/components/ContentSection';
 import { ContentImageSection } from '@/components/ContentImageSection/index';
 
-const LandingPage: React.FC = () => {
+const LandingPage = () => {
 	return (
 		<div className="container">
+            {contentSections.map((section, index) => (
+                <ContentSection key={index} {...section} />
+            ))}
             {contentImageSections.map((section, index) => (
-                <ContentImageSection
-                    key={index}
-                    imageSrc={section.imageSrc}
-                    imageAlt={section.imageAlt}
-                    icon={section.icon}
-                    titleHighlight={section.titleHighlight}
-                    title={section.title}
-                    items={section.items}
-                    textContent={section.textContent}
-                    linkLabel={section.linkLabel}
-                    linkUrl={section.linkUrl}
-                    reverse={section.reverse} />
+                <ContentImageSection key={index} {...section} />
             ))}
 		</div>
 	);

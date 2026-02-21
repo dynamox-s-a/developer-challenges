@@ -1,0 +1,39 @@
+
+@use '../../styles/_theme' as *;
+
+.content-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-xl;
+  padding: 2rem;
+  margin-block: 3.5rem;
+  max-height: 55rem;
+  height: 100%;
+
+  &__title {
+    color: $color-text-200;
+    font-weight: $fontWeight-bold;
+  }
+
+  &__title-highlight {
+    color: $color-text-50;
+  }
+
+  &__text-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__text {
+    font-size: $fontSize-text-sm;
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 1fr 1fr;
+
+      &__text-wrapper {
+        gap: $spacing-lg;
+    }
+  }
+}

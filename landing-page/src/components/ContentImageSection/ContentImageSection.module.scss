@@ -3,7 +3,7 @@
 .content-image-section {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 3rem;
+  gap: $spacing-xl;
   padding: 2rem;
   margin-block: 3.5rem;
   border-radius: $radius-lg;
@@ -72,7 +72,7 @@
   &__list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: $spacing-sm;
     list-style: disc;
     padding-left: 1.25rem;
     color: $color-text-200;
@@ -90,7 +90,7 @@
   &__link {
     display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: $spacing-md;
     background: none;
     border: none;
     cursor: pointer;
@@ -136,7 +136,7 @@
   @media (min-width: 1024px) {
     grid-template-columns: 1fr 1fr;
     max-height: 34rem;
-    gap: 6rem;
+    gap: $spacing-xxl;
 
   
     &--reverse {
