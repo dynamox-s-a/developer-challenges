@@ -13,5 +13,30 @@
       "role": "reader"
     }
   ],
-  "events": []
+  "events": [
+    {
+      "id": 1,
+      "name": "Frontend Conference",
+      "date": "2026-08-10T14:00:00.000Z",
+      "location": "Online",
+      "description": "A conference focused on modern frontend development practices and tools.",
+      "category": "Conference"
+    },
+    {
+      "id": 2,
+      "name": "React Workshop",
+      "date": "2026-09-05T18:00:00.000Z",
+      "location": "São Paulo",
+      "description": "Hands-on workshop covering advanced React patterns and state management.",
+      "category": "Workshop"
+    },
+    {
+      "id": 3,
+      "name": "Past JavaScript Meetup",
+      "date": "2024-01-15T19:00:00.000Z",
+      "location": "Remote",
+      "description": "A past meetup discussing JavaScript trends and best practices.",
+      "category": "Networking"
+    }
+  ]
 }
