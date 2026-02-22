@@ -4,7 +4,7 @@ Built by **Hyago Henrique**
 LinkedIn: https://www.linkedin.com/in/hyagohlm/
 
 A SwiftUI quiz app that fetches questions from a backend, submits answers, shows feedback (correct/incorrect), and stores match results locally using SwiftData.
-
+The project also includes **CocoaPods** and **Firebase Crashlytics + Analytics** integration.
 ---
 
 ## Features
@@ -23,6 +23,13 @@ A SwiftUI quiz app that fetches questions from a backend, submits answers, shows
 - **SwiftData persistence**
   - Stores match results (username, score, date)
   - Results screen lists previous matches and can reset history
+- **Firebase**
+  - **Crashlytics** for crash reporting
+  - **Analytics** for event tracking
+- **CocoaPods**
+  - Dependency management for Firebase SDKs
+- **Unit tests with Swift Testing**
+  - ViewModel tests using mocks (no real network/database)
 - **Unit tests with Swift Testing**
   - ViewModel tests using mocks (no real network/database)
 
@@ -31,8 +38,8 @@ A SwiftUI quiz app that fetches questions from a backend, submits answers, shows
 ## Requirements
 
 - **Xcode 26.0+** (recommended for Swift Testing)
-- **Minimum iOS version:** **26.2**
-- Swift 5.9+ / Swift 6 mode supported
+- **Minimum iOS version:** **17.6**
+- Swift 5+ / Swift 6 mode supported
 
 ---
 
@@ -54,8 +61,16 @@ A SwiftUI quiz app that fetches questions from a backend, submits answers, shows
 
 1. Clone the repository
 
-2. Open the project in Xcode - > dynamoxQuizChallenge.xcodeproj
+1.2 - Install CocoaPods if not installed
+    sudo gem install cocoapods
 
-3. Select a simulator (e.g. iPhone 17) and run: Press Run (⌘R)
+2 - Install dependencies:
+    pod install
+    
+3. Open the project in Xcode - > dynamoxQuizChallenge.xcworkspace
+
+5. Select a simulator (e.g. iPhone 17) and run: Press Run (⌘R), for Run Tests (⌘U)
 
 The app starts on the name entry screen. Enter a username and press Start Quiz.
+
+
