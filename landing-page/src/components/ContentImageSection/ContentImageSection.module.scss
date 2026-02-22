@@ -41,20 +41,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: $color-brand-100;
+    color: $color-brand-50;
 
     &::before {
       content: '';
       position: absolute;
       inset: 0;
       border-radius: $radius-lg;
-      background: $color-brand-100;
+      background: radial-gradient( circle at top right, $color-brand-100, $color-brand-50);
       padding: 2px;
       -webkit-mask:
         linear-gradient($color-neutral-100 0 0) content-box,
         linear-gradient($color-neutral-100 0 0);
-      -webkit-mask-composite: xor;
-              mask-composite: exclude;
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
     }
   }
 
