@@ -21,7 +21,7 @@ export default function EventsDashboardPage() {
         Events Dashboard
       </Typography>
 
-      <Button variant="outlined" color="error" onClick={onLogout}>
+      <Button variant="contained" color="secondary" onClick={onLogout}>
         Logout
       </Button>
     </Box>

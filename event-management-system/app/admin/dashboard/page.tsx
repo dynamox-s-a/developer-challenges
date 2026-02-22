@@ -21,7 +21,7 @@ export default function AdminDashboardPage() {
         Admin Dashboard
       </Typography>
 
-      <Button variant="outlined" color="error" onClick={onLogout}>
+      <Button variant="contained" color="primary" onClick={onLogout}>
         Logout
       </Button>
     </Box>
