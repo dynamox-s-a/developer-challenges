@@ -143,8 +143,10 @@ final class QuizViewModel {
             screenState = .showingFeedBack(isCorrect: response.result)
             try? await Task.sleep(nanoseconds: 300_000_000)
             
+            AnalyticsTacker.log(.questionAnswered(answer: answer, user: userName, questionId: questionId))
             if questionIndex >= totalQuestions {
                 saveScoreLocal()
+                AnalyticsTacker.log(.quizFinished(score: String(score), user: userName))
                 screenState = .finished
                 currentQuestion = nil
                 questionIndex = 0

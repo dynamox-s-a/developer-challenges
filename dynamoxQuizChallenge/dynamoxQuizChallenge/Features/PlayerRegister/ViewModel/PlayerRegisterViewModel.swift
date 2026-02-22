@@ -8,6 +8,7 @@
 import SwiftUI
 import Observation
 import Foundation
+import FirebaseCrashlytics
 
 
 @Observable
@@ -65,7 +66,7 @@ final class PlayerRegisterViewModel {
         withAnimation(.spring(response: 0.30, dampingFraction: 0.75)) {
             isStartPressed = false
         }
-        
+        AnalyticsTacker.log(.quizStarted(name))
         return name
     }
 

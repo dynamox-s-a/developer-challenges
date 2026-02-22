@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		340EEDC4A46999F2B720C5A3 /* Pods_dynamoxQuizChallengeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B26527EF28C81CADDF4DBA1 /* Pods_dynamoxQuizChallengeTests.framework */; };
+		AF80E83E5AD33FFC9677FEED /* Pods_dynamoxQuizChallenge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4A895FA1715C56BEB328F4D /* Pods_dynamoxQuizChallenge.framework */; };
+		F1A460416D7225CA288B87C4 /* Pods_dynamoxQuizChallenge_dynamoxQuizChallengeUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A9A08D3B2F788963E0A4470 /* Pods_dynamoxQuizChallenge_dynamoxQuizChallengeUITests.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		9A4DEF262F4919760051B154 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,9 +30,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		422AD78ED41B787FC20C6B80 /* Pods-dynamoxQuizChallengeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dynamoxQuizChallengeTests.debug.xcconfig"; path = "Target Support Files/Pods-dynamoxQuizChallengeTests/Pods-dynamoxQuizChallengeTests.debug.xcconfig"; sourceTree = "<group>"; };
+		4EDC5924246BC0231ADA320A /* Pods-dynamoxQuizChallengeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dynamoxQuizChallengeTests.release.xcconfig"; path = "Target Support Files/Pods-dynamoxQuizChallengeTests/Pods-dynamoxQuizChallengeTests.release.xcconfig"; sourceTree = "<group>"; };
+		564B4C8A0CA966E9597FDF1D /* Pods-dynamoxQuizChallenge-dynamoxQuizChallengeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dynamoxQuizChallenge-dynamoxQuizChallengeUITests.debug.xcconfig"; path = "Target Support Files/Pods-dynamoxQuizChallenge-dynamoxQuizChallengeUITests/Pods-dynamoxQuizChallenge-dynamoxQuizChallengeUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		6A9A08D3B2F788963E0A4470 /* Pods_dynamoxQuizChallenge_dynamoxQuizChallengeUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_dynamoxQuizChallenge_dynamoxQuizChallengeUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E3B0F0376C35EA223EEC57A /* Pods-dynamoxQuizChallenge-dynamoxQuizChallengeUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dynamoxQuizChallenge-dynamoxQuizChallengeUITests.release.xcconfig"; path = "Target Support Files/Pods-dynamoxQuizChallenge-dynamoxQuizChallengeUITests/Pods-dynamoxQuizChallenge-dynamoxQuizChallengeUITests.release.xcconfig"; sourceTree = "<group>"; };
 		9A4DEF162F4919750051B154 /* dynamoxQuizChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dynamoxQuizChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A4DEF252F4919760051B154 /* dynamoxQuizChallengeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = dynamoxQuizChallengeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A4DEF2F2F4919760051B154 /* dynamoxQuizChallengeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = dynamoxQuizChallengeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9B26527EF28C81CADDF4DBA1 /* Pods_dynamoxQuizChallengeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_dynamoxQuizChallengeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2131F160F2437667DD26FFB /* Pods-dynamoxQuizChallenge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dynamoxQuizChallenge.release.xcconfig"; path = "Target Support Files/Pods-dynamoxQuizChallenge/Pods-dynamoxQuizChallenge.release.xcconfig"; sourceTree = "<group>"; };
+		D4A895FA1715C56BEB328F4D /* Pods_dynamoxQuizChallenge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_dynamoxQuizChallenge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F51FE34324DF158547F02F47 /* Pods-dynamoxQuizChallenge.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dynamoxQuizChallenge.debug.xcconfig"; path = "Target Support Files/Pods-dynamoxQuizChallenge/Pods-dynamoxQuizChallenge.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -65,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF80E83E5AD33FFC9677FEED /* Pods_dynamoxQuizChallenge.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				340EEDC4A46999F2B720C5A3 /* Pods_dynamoxQuizChallengeTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,12 +96,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1A460416D7225CA288B87C4 /* Pods_dynamoxQuizChallenge_dynamoxQuizChallengeUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		65EE543C5AD670F190EA283D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D4A895FA1715C56BEB328F4D /* Pods_dynamoxQuizChallenge.framework */,
+				6A9A08D3B2F788963E0A4470 /* Pods_dynamoxQuizChallenge_dynamoxQuizChallengeUITests.framework */,
+				9B26527EF28C81CADDF4DBA1 /* Pods_dynamoxQuizChallengeTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		9A4DEF0D2F4919750051B154 = {
 			isa = PBXGroup;
 			children = (
@@ -92,6 +120,8 @@
 				9A4DEF282F4919760051B154 /* dynamoxQuizChallengeTests */,
 				9A4DEF322F4919760051B154 /* dynamoxQuizChallengeUITests */,
 				9A4DEF172F4919750051B154 /* Products */,
+				D653E692D97AE0A5E5AAF527 /* Pods */,
+				65EE543C5AD670F190EA283D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -105,6 +135,19 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		D653E692D97AE0A5E5AAF527 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F51FE34324DF158547F02F47 /* Pods-dynamoxQuizChallenge.debug.xcconfig */,
+				B2131F160F2437667DD26FFB /* Pods-dynamoxQuizChallenge.release.xcconfig */,
+				564B4C8A0CA966E9597FDF1D /* Pods-dynamoxQuizChallenge-dynamoxQuizChallengeUITests.debug.xcconfig */,
+				8E3B0F0376C35EA223EEC57A /* Pods-dynamoxQuizChallenge-dynamoxQuizChallengeUITests.release.xcconfig */,
+				422AD78ED41B787FC20C6B80 /* Pods-dynamoxQuizChallengeTests.debug.xcconfig */,
+				4EDC5924246BC0231ADA320A /* Pods-dynamoxQuizChallengeTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -112,9 +155,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9A4DEF392F4919760051B154 /* Build configuration list for PBXNativeTarget "dynamoxQuizChallenge" */;
 			buildPhases = (
+				74CA91BA6629A78EC9F5FFCB /* [CP] Check Pods Manifest.lock */,
 				9A4DEF122F4919750051B154 /* Sources */,
 				9A4DEF132F4919750051B154 /* Frameworks */,
 				9A4DEF142F4919750051B154 /* Resources */,
+				44F6D36987383713FA4903B0 /* [CP] Embed Pods Frameworks */,
+				9A9E7B052F4B55FA00A6D733 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -124,8 +170,6 @@
 				9A4DEF182F4919750051B154 /* dynamoxQuizChallenge */,
 			);
 			name = dynamoxQuizChallenge;
-			packageProductDependencies = (
-			);
 			productName = dynamoxQuizChallenge;
 			productReference = 9A4DEF162F4919750051B154 /* dynamoxQuizChallenge.app */;
 			productType = "com.apple.product-type.application";
@@ -134,6 +178,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9A4DEF3C2F4919760051B154 /* Build configuration list for PBXNativeTarget "dynamoxQuizChallengeTests" */;
 			buildPhases = (
+				AB618C580A388E1BCF42271F /* [CP] Check Pods Manifest.lock */,
 				9A4DEF212F4919760051B154 /* Sources */,
 				9A4DEF222F4919760051B154 /* Frameworks */,
 				9A4DEF232F4919760051B154 /* Resources */,
@@ -147,8 +192,6 @@
 				9A4DEF282F4919760051B154 /* dynamoxQuizChallengeTests */,
 			);
 			name = dynamoxQuizChallengeTests;
-			packageProductDependencies = (
-			);
 			productName = dynamoxQuizChallengeTests;
 			productReference = 9A4DEF252F4919760051B154 /* dynamoxQuizChallengeTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -157,9 +200,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9A4DEF3F2F4919760051B154 /* Build configuration list for PBXNativeTarget "dynamoxQuizChallengeUITests" */;
 			buildPhases = (
+				07225D4ACCB86C22F107DF5D /* [CP] Check Pods Manifest.lock */,
 				9A4DEF2B2F4919760051B154 /* Sources */,
 				9A4DEF2C2F4919760051B154 /* Frameworks */,
 				9A4DEF2D2F4919760051B154 /* Resources */,
+				E6B3E04F2743FBBEEE7D7026 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -170,8 +215,6 @@
 				9A4DEF322F4919760051B154 /* dynamoxQuizChallengeUITests */,
 			);
 			name = dynamoxQuizChallengeUITests;
-			packageProductDependencies = (
-			);
 			productName = dynamoxQuizChallengeUITests;
 			productReference = 9A4DEF2F2F4919760051B154 /* dynamoxQuizChallengeUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -243,6 +286,134 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		07225D4ACCB86C22F107DF5D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-dynamoxQuizChallenge-dynamoxQuizChallengeUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		44F6D36987383713FA4903B0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-dynamoxQuizChallenge/Pods-dynamoxQuizChallenge-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-dynamoxQuizChallenge/Pods-dynamoxQuizChallenge-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-dynamoxQuizChallenge/Pods-dynamoxQuizChallenge-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		74CA91BA6629A78EC9F5FFCB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-dynamoxQuizChallenge-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9A9E7B052F4B55FA00A6D733 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
+		};
+		AB618C580A388E1BCF42271F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-dynamoxQuizChallengeTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E6B3E04F2743FBBEEE7D7026 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-dynamoxQuizChallenge-dynamoxQuizChallengeUITests/Pods-dynamoxQuizChallenge-dynamoxQuizChallengeUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-dynamoxQuizChallenge-dynamoxQuizChallengeUITests/Pods-dynamoxQuizChallenge-dynamoxQuizChallengeUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-dynamoxQuizChallenge-dynamoxQuizChallengeUITests/Pods-dynamoxQuizChallenge-dynamoxQuizChallengeUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		9A4DEF122F4919750051B154 /* Sources */ = {
@@ -316,11 +487,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = GFA6FPM6N8;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -379,12 +550,12 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
+				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = GFA6FPM6N8;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -405,6 +576,7 @@
 		};
 		9A4DEF3A2F4919760051B154 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F51FE34324DF158547F02F47 /* Pods-dynamoxQuizChallenge.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -421,6 +593,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -440,6 +613,7 @@
 		};
 		9A4DEF3B2F4919760051B154 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B2131F160F2437667DD26FFB /* Pods-dynamoxQuizChallenge.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -456,6 +630,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -475,6 +650,7 @@
 		};
 		9A4DEF3D2F4919760051B154 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 422AD78ED41B787FC20C6B80 /* Pods-dynamoxQuizChallengeTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -497,6 +673,7 @@
 		};
 		9A4DEF3E2F4919760051B154 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4EDC5924246BC0231ADA320A /* Pods-dynamoxQuizChallengeTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -519,6 +696,7 @@
 		};
 		9A4DEF402F4919760051B154 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 564B4C8A0CA966E9597FDF1D /* Pods-dynamoxQuizChallenge-dynamoxQuizChallengeUITests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -539,6 +717,7 @@
 		};
 		9A4DEF412F4919760051B154 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8E3B0F0376C35EA223EEC57A /* Pods-dynamoxQuizChallenge-dynamoxQuizChallengeUITests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

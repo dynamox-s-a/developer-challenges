@@ -7,9 +7,15 @@
 
 import SwiftUI
 import SwiftData
+import FirebaseCore
 
 @main
 struct dynamoxQuizChallengeApp: App {
+
+    init() {
+        FirebaseApp.configure()
+    }
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             GameResultEntity.self,
