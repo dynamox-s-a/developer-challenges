@@ -189,11 +189,3 @@ struct QuizView: View {
         .disabled(!viewModel.canSubmit)
     }
 }
-
-//#Preview {
-//    let repository = QuizRepository()
-//    let viewModel = QuizViewModel(repository: repository, scoreStore: <#any ScoreStoreProtocol#>, userName: "Teste")
-//    QuizView(viewModel: viewModel, onFinish: { _, _ in
-//        
-//    })
-//}

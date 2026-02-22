@@ -137,7 +137,7 @@ struct MatchResultView: View {
             .padding(.horizontal, 18)
             
             VStack(spacing: 12) {
-                ForEach(viewModel.previous.prefix(10)) { game in
+                ForEach(viewModel.previous) { game in
                     HistoryCard(
                         name: game.userName,
                         date: viewModel.dateLabel(for: game.playedAt),

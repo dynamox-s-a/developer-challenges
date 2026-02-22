@@ -22,14 +22,14 @@ final class QuizViewModel {
     
     private var repository: QuizRepositoryProtocol
     private var scoreStore: ScoreStoreProtocol
-    private(set) var totalQuestions: Int = 10
+    private(set) var totalQuestions: Int
     private var lastSubmit: (questionId: String, answer: String)? = nil
     private var didPersistScore: Bool = false
     
     var screenState: ScreenState = .idle
     var currentQuestion: QuizDTO? = nil
     var selectedIndex: Int? = nil
-    var questionIndex: Int = 1
+    var questionIndex: Int = 0
     var score: Int = 0
     var isShowingErrorAlert: Bool = false
     var errorMessage: String = ""
@@ -41,7 +41,7 @@ final class QuizViewModel {
         repository: QuizRepositoryProtocol,
         scoreStore: ScoreStoreProtocol,
         userName: String,
-        totalQuestions: Int = 10) {
+        totalQuestions: Int = 9) {
         self.repository = repository
         self.userName = userName
         self.scoreStore = scoreStore
@@ -49,7 +49,7 @@ final class QuizViewModel {
     }
     
     var progressFraction: Double {
-        return Double(questionIndex) / Double(totalQuestions)
+        return Double(questionIndex + 1) / Double(totalQuestions + 1)
     }
     
     var progressPercentText: String {
@@ -58,7 +58,7 @@ final class QuizViewModel {
     }
     
     var questionHeaderText: String {
-        "Pergunta \(questionIndex) de \(totalQuestions)"
+        "Pergunta \(questionIndex + 1) de \(totalQuestions + 1)"
     }
     
     var canSubmit: Bool {
