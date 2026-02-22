@@ -32,6 +32,9 @@ export default function LoginPage() {
 
       dispatch(loginSuccess({ user, token }));
 
+      document.cookie = `token=${token}; path=/`;
+      document.cookie = `user=${JSON.stringify(user)}; path=/`;
+
       if (user.role === 'admin') {
         router.push('/admin/dashboard');
       } else {
