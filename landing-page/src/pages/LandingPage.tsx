@@ -6,10 +6,12 @@ import { contentImageSections } from './LandingPage.data';
 import { ContentSection } from '@/components/ContentSection';
 import { ContentImageSection } from '@/components/ContentImageSection/index';
 import { Footer } from '@/components/Footer/Footer';
+import { Hero } from '@/components/Hero/Hero';
 
 const LandingPage = () => {
 	return (
         <>
+            <Hero />
             <main className="container">
                 <div className="marginBlock">
                     {contentSections.map((section, index) => (
