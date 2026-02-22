@@ -5,7 +5,7 @@
     border-radius: $radius-xl;
     padding: $spacing-xxl;
     color: $color-neutral-100;
-    margin: 1.5rem 1rem;
+    margin: 0 1rem;
     
     &__top {
         display: flex;
@@ -55,7 +55,7 @@
 
         a {
             position: relative;
-            padding: 0 16.5px;
+            padding: 0 1.0313rem;
             color: inherit;
             &:hover {
                 text-decoration: none;
@@ -66,7 +66,7 @@
         a + a::before {
             content: '•';
             position: absolute;
-            left: -2px;
+            left: -0.125rem;
             top: 50%;
             transform: translateY(-50%);
         }

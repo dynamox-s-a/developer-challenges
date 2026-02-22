@@ -49,7 +49,7 @@
       inset: 0;
       border-radius: $radius-lg;
       background: radial-gradient( circle at top right, $color-brand-100, $color-brand-50);
-      padding: 2px;
+      padding: 0.125rem;
       -webkit-mask:
         linear-gradient($color-neutral-100 0 0) content-box,
         linear-gradient($color-neutral-100 0 0);
@@ -82,7 +82,7 @@
       line-height: $line-height-text-md;
 
     &::marker {
-      font-size: 16px;
+      font-size: $fontSize-text-xs;
     }
   }
 
@@ -113,7 +113,7 @@
     }
 
     &:hover {
-      transform: translateX(4px);
+      transform: translateX(0.25rem);
     }
   }
 

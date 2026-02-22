@@ -82,10 +82,13 @@ a {
 }
 
 .container {
-  margin: 40px;
+    margin: 0 auto;
+    max-width: 1348px;
+    padding: 0 1.25rem;
 
   @media (min-width: 1440px) {
-    margin-inline: 80px;
+    padding: 0;
+    margin-top: 6.25rem;
   }
 }
 
@@ -97,15 +100,15 @@ a {
 }
 
 .marginBlock {
-  margin-block: 80px;
+  margin-block: 5rem;
 
-  @media (min-width: 1440px) {
-    margin-block: 120px;
+  @media (min-width: 90rem) {
+    margin-block: 7.5rem;
   }
 }
 
 
 :focus-visible {
-  outline: 2px solid $color-text-200;
-  outline-offset: 4px;
+  outline: 0.125rem solid $color-text-200;
+  outline-offset: 0.25rem;
 }

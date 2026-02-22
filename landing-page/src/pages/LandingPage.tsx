@@ -12,10 +12,10 @@ import { carouselItems } from '@/components/Carousel/Carousel.data';
 
 const LandingPage = () => {
 	return (
-        <>
+        <main className="landing-page">
             <Hero />
             <ImageCarousel items={carouselItems} ariaLabel="Image carousel" />
-            <main className="container">
+            <div className="container">
                 <div className="marginBlock">
                     {contentSections.map((section, index) => (
                         <ContentSection key={index} {...section} />
@@ -26,9 +26,9 @@ const LandingPage = () => {
                         <ContentImageSection key={index} {...section} />
                     ))}
                 </div>
-            </main>
+            </div>
             <Footer />
-        </>
+        </main>
 	);
 };
 
