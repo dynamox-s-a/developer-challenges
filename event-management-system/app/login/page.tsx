@@ -36,7 +36,7 @@ export default function LoginPage() {
       document.cookie = `user=${JSON.stringify(user)}; path=/`;
 
       if (user.role === 'admin') {
-        router.push('/admin/dashboard');
+        router.push('/admin');
       } else {
         router.push('/events');
       }
