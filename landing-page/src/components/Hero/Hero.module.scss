@@ -7,8 +7,8 @@
     gap: 2.5rem;
     max-width: 30rem;
     width: 100%;
-    margin: 0 auto;
-    
+    padding: 4rem 1.25rem;
+    margin: 1.5rem auto 0;
 
     &__image {
         max-width: 153px;
@@ -28,17 +28,21 @@
     }
 
     &__titleHighlight {
-        display: block;
+        display: inline-block;
         color: $color-brand-50;
         font-weight: $fontWeight-bold;
-        animation: slideUpAndBounce 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        min-width: 10ch; 
+    }
+
+    .animate {
+        animation: slideUpAndBounce 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     }
 
     @keyframes slideUpAndBounce {
         0% {
             opacity: 0;
             transform: translateY(1.875rem);
-            filter: blur(0.3125rem);
+            filter: blur(5px);
         }
         60% {
             opacity: 1;
@@ -53,13 +57,12 @@
 
     @media (min-width: 1024px) {
         max-width: 58.625rem;
+        padding-block: 4rem;
     }
 
     @media (prefers-reduced-motion: reduce) {
-    .hero__titleHighlight {
-        animation: none;
-    }
+        .animate {
+            animation: none;
+        }
     }
 }
-
-
