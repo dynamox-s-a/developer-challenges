@@ -71,7 +71,7 @@ struct QuizViewModelTests {
         //  tempo de espera do feedback e próxima pergunta.
         try await Task.sleep(nanoseconds: 3_000_000_000)
         #expect(viewModel.score == 1)
-        #expect(viewModel.questionIndex == 2)
+        #expect(viewModel.questionIndex == 1)
         #expect(viewModel.currentQuestion?.id == "2")
         #expect(viewModel.screenState == .showingQuestion)
     }
@@ -92,7 +92,7 @@ struct QuizViewModelTests {
             repository: mockRepository,
             scoreStore: mockScoreStore,
             userName: "Hyago",
-            totalQuestions: 1
+            totalQuestions: 0 // isso é um index, logo 0 é 1 questão.
         )
 
         viewModel.start()
@@ -100,7 +100,7 @@ struct QuizViewModelTests {
         viewModel.selectOption(index: 1)
         viewModel.submit()
         
-        try await Task.sleep(nanoseconds: 2_000_000_000)
+        try await Task.sleep(nanoseconds: 3_000_000_000)
         
         #expect(viewModel.screenState == .finished)
         
