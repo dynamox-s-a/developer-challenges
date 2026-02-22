@@ -7,11 +7,14 @@ import { ContentSection } from '@/components/ContentSection';
 import { ContentImageSection } from '@/components/ContentImageSection/index';
 import { Footer } from '@/components/Footer/Footer';
 import { Hero } from '@/components/Hero/Hero';
+import { ImageCarousel } from '@/components/Carousel/Carousel';
+import { carouselItems } from '@/components/Carousel/Carousel.data';
 
 const LandingPage = () => {
 	return (
         <>
             <Hero />
+            <ImageCarousel items={carouselItems} ariaLabel="Image carousel" />
             <main className="container">
                 <div className="marginBlock">
                     {contentSections.map((section, index) => (
