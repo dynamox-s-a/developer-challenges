@@ -57,6 +57,10 @@
             position: relative;
             padding: 0 16.5px;
             color: inherit;
+            &:hover {
+                text-decoration: none;
+                opacity: 0.7;
+            }
         }
         
         a + a::before {
@@ -66,12 +70,7 @@
             top: 50%;
             transform: translateY(-50%);
         }
-
-        &:hover {
-            text-decoration: none;
-            opacity: 0.7;
-        }
-      }
+    }
 
 
     @media (min-width: 1024px) {
