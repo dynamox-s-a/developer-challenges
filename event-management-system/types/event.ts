@@ -1,7 +1,7 @@
 export type EventCategory = 'Conference' | 'Workshop' | 'Webinar' | 'Networking' | 'Other';
 
 export interface Event {
-  id: string;
+  id: number;
   name: string;
   description: string;
   date: string;

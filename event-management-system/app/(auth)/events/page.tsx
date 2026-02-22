@@ -1,10 +1,16 @@
 'use client';
 
-import { useEffect } from 'react';
-
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { loadEvents } from '@/store/eventsSlice';
 import { EventCard } from '@/components/EventCard';
+import { EventForm } from '@/components/EventForm';
+import { Event } from '@/types/event';
+import {
+  createEvent,
+  updateEvent,
+  deleteEvent,
+} from '@/services/eventsService';
 
 import Grid from '@mui/material/Grid';
 import {
@@ -15,15 +21,23 @@ import {
   FormControl,
   InputLabel,
   Box,
+  Button,
 } from '@mui/material';
-
 import {
   setSearch,
   setCategory,
   setSortBy,
 } from '@/store/eventsSlice';
 
+
 export default function EventsPage() {
+  const { user } = useAppSelector((state) => state.auth);
+  const isAdmin = user?.role === 'admin';
+
+  const [openCreate, setOpenCreate] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+
   const dispatch = useAppDispatch();
   const { items, loading, search, category, sortBy } = useAppSelector((state) => state.events);
 
@@ -63,6 +77,18 @@ export default function EventsPage() {
     (event) => new Date(event.date) < now
   );
 
+  const handleCreate = async (data: Omit<Event, 'id'>) => {
+    await createEvent(data);
+    dispatch(loadEvents());
+  };
+
+  const handleUpdate = async (data: Omit<Event, 'id'>) => {
+    if (!selectedEvent) return;
+
+    await updateEvent(selectedEvent.id, data);
+    dispatch(loadEvents());
+  };
+
   return (
     <Box>
       <Typography variant="h4" mb={3}>
@@ -73,7 +99,16 @@ export default function EventsPage() {
           No events available.
         </Typography>
       )}
-
+      {isAdmin && (
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ mb: 3 }}
+          onClick={() => setOpenCreate(true)}
+        >
+          Create Event
+        </Button>
+      )}
       <TextField
         label="Search events"
         fullWidth
@@ -116,7 +151,18 @@ export default function EventsPage() {
           <Grid container spacing={2}>
             {upcomingEvents.map((event) => (
               <Grid size={{ xs: 12, md: 6, lg: 4 }} key={event.id}>
-                <EventCard event={event} />
+                <EventCard 
+                  event={event} 
+                  isAdmin={isAdmin} 
+                  onEdit={(event) => {
+                    setSelectedEvent(event);
+                    setOpenEdit(true);
+                  }}
+                  onDelete={async (id) => {
+                    await deleteEvent(id);
+                    dispatch(loadEvents());
+                  }} 
+                />
               </Grid>
             ))}
           </Grid>
@@ -131,7 +177,9 @@ export default function EventsPage() {
           <Grid container spacing={2}>
             {pastEvents.map((event) => (
               <Grid size={{ xs: 12, md: 6, lg: 4 }} key={event.id}>
-                <EventCard event={event} />
+                <EventCard 
+                  event={event} 
+                />
               </Grid>
             ))}
           </Grid>
@@ -139,6 +187,24 @@ export default function EventsPage() {
       )}
 
       {loading && <Typography>Loading...</Typography>}
+
+      {/* CREATE EVENT */}
+      <EventForm
+        open={openCreate}
+        onClose={() => setOpenCreate(false)}
+        onSubmit={handleCreate}
+      />
+
+      {/* EDIT EVENT */}
+      <EventForm
+        open={openEdit}
+        initialData={selectedEvent}
+        onClose={() => {
+          setOpenEdit(false);
+          setSelectedEvent(null);
+        }}
+        onSubmit={handleUpdate}
+      />
     </Box>
   );
 }
