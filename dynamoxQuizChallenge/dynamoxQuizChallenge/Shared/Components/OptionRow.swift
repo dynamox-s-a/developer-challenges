@@ -41,7 +41,7 @@ struct OptionRow: View {
                     .font(.system(size: 18, weight: .semibold, design: .rounded))
                     .foregroundStyle(.white.opacity(0.90))
                     .multilineTextAlignment(.leading)
-                    .lineLimit(2)
+                    .lineLimit(nil)
                     .fixedSize(horizontal: false, vertical: true)
 
                 Spacer()
