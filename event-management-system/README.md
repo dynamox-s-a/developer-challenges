@@ -1,20 +1,20 @@
 # 🎟️ Event Management System
 
-This project is a Front-end challenge that implements an Event Management System with role-based access control, built using Next.js (App Router) and TypeScript.
+This project is a Front-end challenge that implements an Event Management System with role-based access control, built using Next.js, TypeScript and Redux Toolkit.
 
-The application allows administrators to manage events (create, edit, delete) while readers can view, search, filter, and sort events.
+The application allows administrators to manage events (create, edit, delete) while readers can browser (view, search, filter, and sort events).
 
 ---
 
 ## Tech Stack
 
-- **Next.js** (App Router)
+- **Next.js**
 - **React**
 - **TypeScript**
-- **Redux Toolkit** (state management)
-- **Material UI 6** (UI components & theming)
-- **json-server** (mock REST API)
-- **Jest & Testing Library** (unit tests)
+- **Redux Toolkit**
+- **Material UI 6**
+- **json-server**
+- **ESLint**
 
 ---
 
@@ -35,16 +35,33 @@ The system uses two pre-configured users stored in a mock API:
 ---
 
 ## Authentication & Authorization
-
+- Login using pre-configured users
 - Fake JWT token generation
-- Token stored in `localStorage`
-- Protected routes based on authentication
-- Role-based access control (admin / reader)
-- Automatic redirection after login:
-  - Admin → Admin Dashboard
-  - Reader → Events List
+- Token persisted in localStorage
+- Global authentication state handled by Redux
+- Route protection with reusable AuthGuard
+- Role-based access control
 
 ---
+
+## Admin Capabilities
+- Create new events
+- Edit existing events (including past events)
+- Delete events
+- View all events
+- Event Validation Rules
+- Name, location, category, and description are required
+- Description must have at least 50 characters
+- Event date must be in the future when creating
+- Editing past events is allowed
+- Editing a future event to a past date is not allowed
+
+## Reader Capabilities
+- View events
+- View upcoming and past events separately
+- Search events by name or description
+- Filter events by category
+- Sort events by date or name
 
 ## Project Structure
 
@@ -52,31 +69,19 @@ event-management-system/
 ├─ app/
 │  ├─ (public)/
 │  │  └─ login/
-│  │     └─ page.tsx
 │  ├─ (private)/
 │  │  └─ events/
-│  │     ├─ page.tsx
-│  │     └─ layout.tsx
-│  ├─ layout.tsx
-│  ├─ page.tsx
-│  └─ not-found.tsx
+│  │   └─ admin/events
 │
 ├─ components/
 │  ├─ app/
-│  │  └─ AppInitializer.tsx
 │  ├─ auth/
-│  │  └─ AuthGuard.tsx
 │  ├─ events/
-│  │  ├─ EventCard.tsx
-│  │  └─ EventForm.tsx
 │  ├─ layout/
-│  │  └─ Header.tsx
 │  └─ Providers.tsx
 │
 ├─ store/
 │  ├─ auth/
-│  │  ├─ authSlice.ts
-│  │  └─ authTypes.ts
 │  ├─ eventsSlice.ts
 │  ├─ hooks.ts
 │  └─ index.ts
@@ -90,3 +95,17 @@ event-management-system/
 │
 └─ server/
    └─ db.json
+
+
+## Getting Started
+$ git clone https://github.com/patiregina89/event-management-system.git
+$ cd event-management-system
+$ npm install
+$ npx json-server server/db.json --port 3001
+$ npm run dev
+
+
+
+## Author
+Patricia Regina Rodrigues
+Front-end Developer
