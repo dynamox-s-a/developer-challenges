@@ -6,15 +6,29 @@ export function middleware(request: NextRequest) {
   const userCookie = request.cookies.get('user')?.value;
   const { pathname } = request.nextUrl;
 
-  if (pathname.startsWith('/login')) {
-    return NextResponse.next();
-  }
-
   if (!token || !userCookie) {
+    if (pathname.startsWith('/login')) {
+      return NextResponse.next();
+    }
+
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  const user = JSON.parse(userCookie);
+  let user;
+
+  try {
+    user = JSON.parse(userCookie);
+  } catch {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  if (pathname.startsWith('/login')) {
+    if (user.role === 'admin') {
+      return NextResponse.redirect(new URL('/admin', request.url));
+    }
+
+    return NextResponse.redirect(new URL('/events', request.url));
+  }
 
   if (pathname.startsWith('/admin') && user.role !== 'admin') {
     return NextResponse.redirect(new URL('/events', request.url));
@@ -24,5 +38,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/events', '/events/:path*', '/admin', '/admin/:path*'],
+  matcher: ['/login', '/events', '/events/:path*', '/admin', '/admin/:path*'],
 };

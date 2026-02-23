@@ -22,26 +22,34 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
+    setLoading(true);
 
     try {
       const { user, token } = await loginRequest(email, password);
 
+      // Atualiza Redux
       dispatch(loginSuccess({ user, token }));
 
-      document.cookie = `token=${token}; path=/`;
-      document.cookie = `user=${JSON.stringify(user)}; path=/`;
+      // Salva cookies para o middleware
+      document.cookie = `token=${token}; path=/;`;
+      document.cookie = `user=${JSON.stringify(user)}; path=/;`;
 
+      // Redirecionamento por role
       if (user.role === 'admin') {
         router.push('/admin');
       } else {
         router.push('/events');
       }
+
     } catch {
       setError('Invalid email or password');
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -81,8 +89,9 @@ export default function LoginPage() {
             variant="contained"
             fullWidth
             sx={{ mt: 3 }}
+            disabled={loading}
           >
-            Login
+            {loading ? 'Logging in...' : 'Login'}
           </Button>
         </form>
       </Box>
