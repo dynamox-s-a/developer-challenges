@@ -72,6 +72,12 @@ export function EventForm({
       newErrors.date = 'Invalid date format';
     } else if (eventDate < now) {
       newErrors.date = 'Date must be in the future';
+    } else {
+      const isCreating = !initialData;
+
+      if (isCreating && eventDate < now) {
+        newErrors.date = 'Date must be in the future';
+      }
     }
     if (!form.location.trim()) newErrors.location = 'Location is required';
     if (!form.description.trim()) {
@@ -119,7 +125,9 @@ export function EventForm({
           onChange={(e) => handleChange('date', e.target.value)}
           slotProps={{
             htmlInput: {
-              min: new Date().toISOString().slice(0, 16),
+              min: initialData 
+              ? undefined
+              : new Date().toISOString().slice(0, 16),
             },
             inputLabel: {shrink: true},
           }}
