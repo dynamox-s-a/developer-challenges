@@ -28,15 +28,29 @@ import {
   setCategory,
   setSortBy,
 } from '@/store/eventsSlice';
+import { AuthLayout } from '@/components/AuthLayout';
+import { useRouter } from 'next/navigation';
+import { Header } from '@/components/Header';
 
 
 export default function EventsPage() {
   const { user } = useAppSelector((state) => state.auth);
+  const router = useRouter();
   const isAdmin = user?.role === 'admin';
 
   const [openCreate, setOpenCreate] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+
+  const { isAuthenticated } = useAppSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.replace('/login');
+    }
+  }, [isAuthenticated, router]);
 
   const dispatch = useAppDispatch();
   const { items, loading, search, category, sortBy } = useAppSelector((state) => state.events);
@@ -90,7 +104,7 @@ export default function EventsPage() {
   };
 
   return (
-    <Box>
+    <Box component="main" p={3}>
       <Typography variant="h4" mb={3}>
         Events
       </Typography>
