@@ -62,8 +62,17 @@ export function EventForm({
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
+    const now = new Date();
+    const eventDate = new Date(form.date);
+
     if (!form.name.trim()) newErrors.name = 'Name is required';
-    if (!form.date) newErrors.date = 'Date is required';
+    if (!form.date) { 
+      newErrors.date = 'Date is required';
+    } else if (isNaN(eventDate.getTime())) {
+      newErrors.date = 'Invalid date format';
+    } else if (eventDate < now) {
+      newErrors.date = 'Date must be in the future';
+    }
     if (!form.location.trim()) newErrors.location = 'Location is required';
     if (!form.description.trim()) {
     newErrors.description = 'Description is required';
@@ -104,11 +113,16 @@ export function EventForm({
           fullWidth
           required
           margin="dense"
-          InputLabelProps={{ shrink: true }}
           value={form.date}
           error={!!errors.date}
           helperText={errors.date}
           onChange={(e) => handleChange('date', e.target.value)}
+          slotProps={{
+            htmlInput: {
+              min: new Date().toISOString().slice(0, 16),
+            },
+            inputLabel: {shrink: true},
+          }}
         />
 
         <TextField
