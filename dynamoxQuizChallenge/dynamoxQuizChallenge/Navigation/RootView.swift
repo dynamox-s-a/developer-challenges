@@ -22,7 +22,9 @@ struct RootView: View {
     var body: some View {
         NavigationStack(path: $path) {
             if let container {
-                PlayerRegisterView { name in
+                PlayerRegisterView(
+                    viewModel: container.makePlayerRegisterViewModel()
+                ) { name in
                     path.append(.quiz(userName: name))
                 } onOpenResults: {
                     path.append(.matchResult)
@@ -32,7 +34,9 @@ struct RootView: View {
                     switch route {
                     case .quiz(let userName):
                         let viewModel = container.makeQuizViewModel(userName: userName)
-                        QuizView(viewModel: viewModel) { userName, score in
+                        QuizView(
+                            viewModel: viewModel
+                        ) { userName, score in
                             lastName = userName
                             path.append(.matchResult)
                         }

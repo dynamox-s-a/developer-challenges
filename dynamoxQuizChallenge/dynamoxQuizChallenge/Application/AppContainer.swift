@@ -34,4 +34,8 @@ struct AppContainer {
     func makeMatchResultViewModel() -> MatchResultViewModel {
         MatchResultViewModel(scoreStore: scoreStore)
     }
+
+    func makePlayerRegisterViewModel() -> PlayerRegisterViewModel {
+        PlayerRegisterViewModel()
+    }
 }

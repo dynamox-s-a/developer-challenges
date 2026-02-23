@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PlayerRegisterView: View {
-    @State private var viewModel = PlayerRegisterViewModel()
+    @State var viewModel: PlayerRegisterViewModel
     let onStart: (String) -> Void
     let onOpenResults: () -> Void
     var body: some View {
