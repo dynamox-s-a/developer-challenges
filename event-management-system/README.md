@@ -48,18 +48,45 @@ The system uses two pre-configured users stored in a mock API:
 
 ## Project Structure
 
-```txt
-app/
- ├─ login/
- ├─ admin/
- │   ├─ dashboard/
- │   └─ events/
- ├─ events/
- └─ layout.tsx
-
-components/
-store/
-services/
-theme/
-types/
-utils/
+event-management-system/
+├─ app/
+│  ├─ (public)/
+│  │  └─ login/
+│  │     └─ page.tsx
+│  ├─ (private)/
+│  │  └─ events/
+│  │     ├─ page.tsx
+│  │     └─ layout.tsx
+│  ├─ layout.tsx
+│  ├─ page.tsx
+│  └─ not-found.tsx
+│
+├─ components/
+│  ├─ app/
+│  │  └─ AppInitializer.tsx
+│  ├─ auth/
+│  │  └─ AuthGuard.tsx
+│  ├─ events/
+│  │  ├─ EventCard.tsx
+│  │  └─ EventForm.tsx
+│  ├─ layout/
+│  │  └─ Header.tsx
+│  └─ Providers.tsx
+│
+├─ store/
+│  ├─ auth/
+│  │  ├─ authSlice.ts
+│  │  └─ authTypes.ts
+│  ├─ eventsSlice.ts
+│  ├─ hooks.ts
+│  └─ index.ts
+│
+├─ services/
+│  ├─ authService.ts
+│  └─ eventsService.ts
+│
+├─ theme/
+│  └─ index.ts
+│
+└─ server/
+   └─ db.json

@@ -1,30 +1,19 @@
-'use client';
+'use client'
 
-import { Provider } from 'react-redux';
-import { ThemeProvider, CssBaseline } from '@mui/material';
-import { useEffect } from 'react';
-import { loadFromStorage } from '@/store/auth/authSlice';
-import { store } from '@/store';
-import { theme } from '@/theme';
-
-
+import { Provider } from 'react-redux'
+import { ThemeProvider, CssBaseline } from '@mui/material'
+import { store } from '@/store'
+import { theme } from '@/theme'
+import { AppInitializer } from './app/AppInitializer'
 
 export function Providers({ children }: { children: React.ReactNode }) {
-    useEffect(() => {
-    store.dispatch(loadFromStorage());
-  }, []);
-
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <AppInitializer />
         {children}
       </ThemeProvider>
     </Provider>
-  );
+  )
 }
-
-
-
-
-

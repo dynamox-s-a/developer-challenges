@@ -1,12 +1,19 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import type { User } from './authTypes'
 
-import type { AuthState, User } from './authTypes';
+interface AuthState {
+  user: User | null
+  token: string | null
+  isAuthenticated: boolean
+  isLoading: boolean
+}
 
 const initialState: AuthState = {
   user: null,
   token: null,
   isAuthenticated: false,
-};
+  isLoading: true
+}
 
 const authSlice = createSlice({
   name: 'auth',
@@ -16,33 +23,45 @@ const authSlice = createSlice({
       state,
       action: PayloadAction<{ user: User; token: string }>
     ) {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
-      state.isAuthenticated = true;
+      state.user = action.payload.user
+      state.token = action.payload.token
+      state.isAuthenticated = true
+      state.isLoading = false
 
-      localStorage.setItem('token', action.payload.token);
-      localStorage.setItem('user', JSON.stringify(action.payload.user));
+      localStorage.setItem(
+        'auth',
+        JSON.stringify({
+          user: action.payload.user,
+          token: action.payload.token
+        })
+      )
     },
+
     logout(state) {
-      state.user = null;
-      state.token = null;
-      state.isAuthenticated = false;
+      state.user = null
+      state.token = null
+      state.isAuthenticated = false
+      state.isLoading = false
 
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
+      localStorage.removeItem('auth')
     },
+
     loadFromStorage(state) {
-      const token = localStorage.getItem('token');
-      const user = localStorage.getItem('user');
+      const data = localStorage.getItem('auth')
 
-      if (token && user) {
-        state.token = token;
-        state.user = JSON.parse(user);
-        state.isAuthenticated = true;
+      if (data) {
+        const parsed = JSON.parse(data)
+        state.user = parsed.user
+        state.token = parsed.token
+        state.isAuthenticated = true
       }
-    },
-  },
-});
 
-export const { loginSuccess, logout, loadFromStorage } = authSlice.actions;
-export default authSlice.reducer;
+      state.isLoading = false
+    }
+  }
+})
+
+export const { loginSuccess, logout, loadFromStorage } =
+  authSlice.actions
+
+export default authSlice.reducer
