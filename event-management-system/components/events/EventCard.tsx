@@ -16,50 +16,95 @@ interface Props {
   onDelete?: (id: number) => void;
 }
 
-export function EventCard({ 
-  event, 
-  isAdmin, 
-  onEdit, 
-  onDelete 
+export function EventCard({
+  event,
+  isAdmin,
+  onEdit,
+  onDelete,
 }: Props) {
+  const formattedDate = new Date(event.date).toLocaleString(
+    'en-US',
+    {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    }
+  );
+
+  const handleDelete = () => {
+    if (
+      window.confirm(
+        'Are you sure you want to delete this event?'
+      )
+    ) {
+      onDelete?.(event.id);
+    }
+  };
+
   return (
-      <Card sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
-        <CardContent sx={{ flexGrow: 1, display:'flex', flexDirection: 'column'}}>
-          <Box display="flex" justifyContent="space-between" mb={1}>
-            <Typography variant="h6">{event.name}</Typography>
-            <Chip label={event.category} size="small" />
+    <Card
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+      }}
+    >
+      <CardContent
+        sx={{
+          flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          mb={1}
+        >
+          <Typography variant="h6">
+            {event.name}
+          </Typography>
+          <Chip label={event.category} size="small" />
+        </Box>
+
+        <Typography
+          variant="body2"
+          color="text.secondary"
+        >
+          {formattedDate}
+        </Typography>
+
+        <Typography variant="body2" mt={1}>
+          {event.location}
+        </Typography>
+
+        <Typography variant="body2" mt={2}>
+          {event.description}
+        </Typography>
+
+        {isAdmin && (
+          <Box
+            mt="auto"
+            display="flex"
+            gap={1}
+          >
+            <Button
+              size="small"
+              aria-label={`Edit event ${event.name}`}
+              onClick={() => onEdit?.(event)}
+            >
+              Edit
+            </Button>
+            <Button
+              size="small"
+              color="error"
+              aria-label={`Delete event ${event.name}`}
+              onClick={handleDelete}
+            >
+              Delete
+            </Button>
           </Box>
-
-          <Typography variant="body2" color="text.secondary">
-            {new Date(event.date).toLocaleString()}
-          </Typography>
-
-          <Typography variant="body2" mt={1}>
-            {event.location}
-          </Typography>
-
-          <Typography variant="body2" mt={2}>
-            {event.description}
-          </Typography>
-
-            {isAdmin && (
-            <Box mt='auto' display="flex" gap={1}>
-              <Button
-                size="small"
-                onClick={() => onEdit?.(event)}
-              >
-                Edit
-              </Button>
-              <Button
-                size="small"
-                color="error"
-                onClick={() => onDelete?.(event.id)}
-              >
-                Delete
-              </Button>
-            </Box>
-            )}
-        </CardContent>
-      </Card>
+        )}
+      </CardContent>
+    </Card>
   );
 }

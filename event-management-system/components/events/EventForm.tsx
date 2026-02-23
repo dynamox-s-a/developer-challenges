@@ -10,7 +10,7 @@ import {
   MenuItem,
 } from '@mui/material';
 import { Event } from '@/types/event';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface Props {
   open: boolean;
@@ -19,84 +19,107 @@ interface Props {
   onSubmit: (data: Omit<Event, 'id'>) => void;
 }
 
+const defaultForm: Omit<Event, 'id'> = {
+  name: '',
+  date: '',
+  location: '',
+  description: '',
+  category: 'Conference',
+};
+
+function getInitialForm(
+  initialData?: Event | null
+): Omit<Event, 'id'> {
+  if (!initialData) return defaultForm;
+
+  return {
+    name: initialData.name,
+    date: initialData.date,
+    location: initialData.location,
+    description: initialData.description,
+    category: initialData.category,
+  };
+}
+
 export function EventForm({
   open,
   onClose,
   initialData,
   onSubmit,
 }: Props) {
-  const [form, setForm] = useState<Omit<Event, 'id'>>({
-    name: '',
-    date: '',
-    location: '',
-    description: '',
-    category: 'Conference',
-  });
+  const [form, setForm] = useState<Omit<Event, 'id'>>(
+    () => getInitialForm(initialData)
+  );
 
-  useEffect(() => {
-    if (initialData) {
-      const { id, ...rest } = initialData;
-      setForm(rest);
-    } else if (open) {
-        setForm({
-            name: '',
-            date: '',
-            location: '',
-            description: '',
-            category: 'Conference',
-        });
-    }
-  }, [initialData, open]);
+  const [errors, setErrors] = useState<Record<string, string>>(
+    {}
+  );
 
-  const handleChange = (field: string, value: string) => {
+  const handleChange = (
+    field: keyof typeof form,
+    value: string
+  ) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
-
-  const handleSubmit = () => {
-    if (!validate()) return;
-    onSubmit(form);
-    onClose();
-  };
-
-  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
     const now = new Date();
     const eventDate = new Date(form.date);
+    const isCreating = !initialData;
 
-    if (!form.name.trim()) newErrors.name = 'Name is required';
-    if (!form.date) { 
+    if (!form.name.trim())
+      newErrors.name = 'Name is required';
+
+    if (!form.date) {
       newErrors.date = 'Date is required';
     } else if (isNaN(eventDate.getTime())) {
       newErrors.date = 'Invalid date format';
-    } else if (eventDate < now) {
-      newErrors.date = 'Date must be in the future';
     } else {
-      const isCreating = !initialData;
-
       if (isCreating && eventDate < now) {
         newErrors.date = 'Date must be in the future';
       }
+
+      if (
+        !isCreating &&
+        initialData &&
+        new Date(initialData.date) >= now &&
+        eventDate < now
+      ) {
+        newErrors.date =
+          'You cannot change a future event to a past date';
+      }
     }
-    if (!form.location.trim()) newErrors.location = 'Location is required';
+
+    if (!form.location.trim())
+      newErrors.location = 'Location is required';
+
     if (!form.description.trim()) {
-    newErrors.description = 'Description is required';
+      newErrors.description = 'Description is required';
     } else if (form.description.length < 50) {
       newErrors.description =
         'Description must be at least 50 characters';
     }
-    if (!form.category) {
+
+    if (!form.category)
       newErrors.category = 'Category is required';
-    }
 
     setErrors(newErrors);
-
     return Object.keys(newErrors).length === 0;
   };
 
+  const handleSubmit = () => {
+    if (!validate()) return;
+    onSubmit(form);
+  };
+
   return (
-    <Dialog open={open} onClose={onClose} fullWidth>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      key={initialData?.id ?? 'create'}
+    >
       <DialogTitle>
         {initialData ? 'Edit Event' : 'Create Event'}
       </DialogTitle>
@@ -110,7 +133,9 @@ export function EventForm({
           value={form.name}
           error={!!errors.name}
           helperText={errors.name}
-          onChange={(e) => handleChange('name', e.target.value)}
+          onChange={(e) =>
+            handleChange('name', e.target.value)
+          }
         />
 
         <TextField
@@ -122,14 +147,16 @@ export function EventForm({
           value={form.date}
           error={!!errors.date}
           helperText={errors.date}
-          onChange={(e) => handleChange('date', e.target.value)}
+          onChange={(e) =>
+            handleChange('date', e.target.value)
+          }
           slotProps={{
             htmlInput: {
-              min: initialData 
-              ? undefined
-              : new Date().toISOString().slice(0, 16),
+              min: initialData
+                ? undefined
+                : new Date().toISOString().slice(0, 16),
             },
-            inputLabel: {shrink: true},
+            inputLabel: { shrink: true },
           }}
         />
 
@@ -141,7 +168,9 @@ export function EventForm({
           value={form.location}
           error={!!errors.location}
           helperText={errors.location}
-          onChange={(e) => handleChange('location', e.target.value)}
+          onChange={(e) =>
+            handleChange('location', e.target.value)
+          }
         />
 
         <TextField

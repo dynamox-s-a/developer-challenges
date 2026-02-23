@@ -1,6 +1,7 @@
 import { User } from '@/store/auth/authTypes';
 
-const API_URL = 'http://localhost:3001';
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 export async function loginRequest(
   email: string,
@@ -9,6 +10,10 @@ export async function loginRequest(
   const response = await fetch(
     `${API_URL}/users?email=${email}&password=${password}`
   );
+
+  if (!response.ok) {
+    throw new Error('Failed to authenticate');
+  }
 
   const users = await response.json();
 
@@ -24,7 +29,9 @@ export async function loginRequest(
     role,
   };
 
-  const token = btoa(`${userEmail}-${Date.now()}`);
+  const token = `fake-jwt-${btoa(
+    `${userEmail}-${Date.now()}`
+  )}`;
 
   return { user, token };
 }

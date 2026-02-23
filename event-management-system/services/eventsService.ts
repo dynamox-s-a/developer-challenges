@@ -1,13 +1,29 @@
 import { Event } from '@/types/event';
 
-const API_URL = 'http://localhost:3001';
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+
+function getAuthHeaders() {
+  const auth = localStorage.getItem('auth');
+  const token = auth ? JSON.parse(auth).token : null;
+
+  return {
+    'Content-Type': 'application/json',
+    ...(token && {
+      Authorization: `Bearer ${token}`,
+    }),
+  };
+}
 
 export async function fetchEvents(): Promise<Event[]> {
-  const response = await fetch(`${API_URL}/events`);
+  const response = await fetch(`${API_URL}/events`, {
+    headers: getAuthHeaders(),
+  });
 
   if (!response.ok) {
     throw new Error('Failed to fetch events');
   }
+
   return response.json();
 }
 
@@ -16,7 +32,7 @@ export async function createEvent(
 ): Promise<Event> {
   const response = await fetch(`${API_URL}/events`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: getAuthHeaders(),
     body: JSON.stringify(data),
   });
 
@@ -33,7 +49,7 @@ export async function updateEvent(
 ): Promise<Event> {
   const response = await fetch(`${API_URL}/events/${id}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
+    headers: getAuthHeaders(),
     body: JSON.stringify(data),
   });
 
@@ -47,6 +63,7 @@ export async function updateEvent(
 export async function deleteEvent(id: number): Promise<void> {
   const response = await fetch(`${API_URL}/events/${id}`, {
     method: 'DELETE',
+    headers: getAuthHeaders(),
   });
 
   if (!response.ok) {

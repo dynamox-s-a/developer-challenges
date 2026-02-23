@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import {
   Button,
@@ -18,21 +18,37 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 export default function LoginPage() {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const redirect = searchParams.get('redirect');
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { isAuthenticated } = useAppSelector(
+  const { isAuthenticated, user } = useAppSelector(
     (state) => state.auth
   );
 
+  const getRedirectPath = useCallback(
+    (role?: string) => {
+      if (redirect) return redirect;
+
+      if (role === 'admin') {
+        return '/admin/events';
+      }
+
+      return '/events';
+    },
+    [redirect]
+  );
+
   useEffect(() => {
-    if (isAuthenticated === true) {
-      router.replace('/events');
+    if (isAuthenticated) {
+      router.replace(getRedirectPath(user?.role));
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, user, router, getRedirectPath]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -44,11 +60,7 @@ export default function LoginPage() {
 
       dispatch(loginSuccess({ user, token }));
 
-      document.cookie = `token=${token}; path=/;`;
-      document.cookie = `user=${JSON.stringify(user)}; path=/;`;
-
-      router.replace('/events');
-
+      router.replace(getRedirectPath(user.role));
     } catch {
       setError('Invalid email or password');
     } finally {
@@ -70,6 +82,7 @@ export default function LoginPage() {
             margin="normal"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            disabled={loading}
           />
 
           <TextField
@@ -79,6 +92,7 @@ export default function LoginPage() {
             margin="normal"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            disabled={loading}
           />
 
           {error && (

@@ -1,4 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  PayloadAction,
+} from '@reduxjs/toolkit';
 import { Event } from '@/types/event';
 import { fetchEvents } from '@/services/eventsService';
 
@@ -8,7 +12,7 @@ interface EventsState {
   error: string | null;
 
   search: string;
-  category: string;
+  category: 'all' | Event['category'];
   sortBy: 'date' | 'name';
 }
 
@@ -17,31 +21,64 @@ const initialState: EventsState = {
   loading: false,
   error: null,
   search: '',
-  category: '',
+  category: 'all',
   sortBy: 'date',
 };
 
-export const loadEvents = createAsyncThunk(
-  'events/loadEvents',
-  async () => {
-    return fetchEvents();
+export const loadEvents = createAsyncThunk<
+  Event[],
+  void,
+  { rejectValue: string }
+>('events/loadEvents', async (_, { rejectWithValue }) => {
+  try {
+    return await fetchEvents();
+  } catch {
+    return rejectWithValue('Failed to load events');
   }
-);
+});
 
 const eventsSlice = createSlice({
   name: 'events',
   initialState,
   reducers: {
-    setSearch(state, action) {
+    setSearch(state, action: PayloadAction<string>) {
       state.search = action.payload;
     },
-    setCategory(state, action) {
+    setCategory(
+      state,
+      action: PayloadAction<'all' | Event['category']>
+    ) {
       state.category = action.payload;
     },
-    setSortBy(state, action) {
+    setSortBy(
+      state,
+      action: PayloadAction<'date' | 'name'>
+    ) {
       state.sortBy = action.payload;
     },
+
+    addEvent(state, action: PayloadAction<Event>) {
+      state.items.push(action.payload);
+    },
+
+    updateEventInState(
+      state,
+      action: PayloadAction<Event>
+    ) {
+      state.items = state.items.map((event) =>
+        event.id === action.payload.id
+          ? action.payload
+          : event
+      );
+    },
+
+    removeEvent(state, action: PayloadAction<number>) {
+      state.items = state.items.filter(
+        (event) => event.id !== action.payload
+      );
+    },
   },
+
   extraReducers: (builder) => {
     builder
       .addCase(loadEvents.pending, (state) => {
@@ -54,10 +91,19 @@ const eventsSlice = createSlice({
       })
       .addCase(loadEvents.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Error';
+        state.error =
+          action.payload ?? action.error.message ?? 'Error';
       });
   },
 });
 
-export const { setSearch, setCategory, setSortBy } = eventsSlice.actions;
+export const {
+  setSearch,
+  setCategory,
+  setSortBy,
+  addEvent,
+  updateEventInState,
+  removeEvent,
+} = eventsSlice.actions;
+
 export default eventsSlice.reducer;

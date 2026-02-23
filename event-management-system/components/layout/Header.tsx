@@ -3,7 +3,7 @@
 import { AppBar, Toolbar, Typography, Box, Button } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { handleLogout } from '@/utils/logout';
+import { logout } from '@/store/auth/authSlice';
 
 export function Header() {
   const dispatch = useAppDispatch();
@@ -12,8 +12,8 @@ export function Header() {
   const user = useAppSelector((state) => state.auth.user);
 
   function onLogout() {
-    handleLogout(dispatch);
-    router.push('/login');
+    dispatch(logout());
+    router.replace('/login');
   }
 
   return (
@@ -23,21 +23,21 @@ export function Header() {
           Event Management
         </Typography>
 
-        <Box display="flex" alignItems="center" gap={2}>
-          {user && (
+        {user && (
+          <Box display="flex" alignItems="center" gap={2}>
             <Typography variant="body2">
               {user.email}
             </Typography>
-          )}
 
-          <Button
-            color="secondary"
-            variant="contained"
-            onClick={onLogout}
-          >
-            Logout
-          </Button>
-        </Box>
+            <Button
+              color="secondary"
+              variant="contained"
+              onClick={onLogout}
+            >
+              Logout
+            </Button>
+          </Box>
+        )}
       </Toolbar>
     </AppBar>
   );
