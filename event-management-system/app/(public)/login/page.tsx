@@ -79,6 +79,12 @@ export default function LoginPage() {
           <TextField
             fullWidth
             label="Email"
+            name='email'
+            slotProps={{
+              htmlInput: {
+                'data-cy': 'email',
+              },
+            }}
             margin="normal"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -87,8 +93,14 @@ export default function LoginPage() {
 
           <TextField
             fullWidth
+            slotProps={{
+              htmlInput: {
+                'data-cy': 'password',
+              },
+            }}
             type="password"
             label="Password"
+            name='password'
             margin="normal"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -104,6 +116,7 @@ export default function LoginPage() {
           <Button
             type="submit"
             variant="contained"
+            data-testid="login-button"
             fullWidth
             sx={{ mt: 3 }}
             disabled={loading}
