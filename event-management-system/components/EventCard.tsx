@@ -23,8 +23,8 @@ export function EventCard({
   onDelete 
 }: Props) {
   return (
-      <Card>
-        <CardContent>
+      <Card sx={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
+        <CardContent sx={{ flexGrow: 1, display:'flex', flexDirection: 'column'}}>
           <Box display="flex" justifyContent="space-between" mb={1}>
             <Typography variant="h6">{event.name}</Typography>
             <Chip label={event.category} size="small" />
@@ -43,7 +43,7 @@ export function EventCard({
           </Typography>
 
             {isAdmin && (
-            <Box mt={2} display="flex" gap={1}>
+            <Box mt='auto' display="flex" gap={1}>
               <Button
                 size="small"
                 onClick={() => onEdit?.(event)}

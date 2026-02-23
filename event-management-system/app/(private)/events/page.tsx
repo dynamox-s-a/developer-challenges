@@ -164,7 +164,7 @@ export default function EventsPage() {
           </Typography>
           <Grid container spacing={2}>
             {upcomingEvents.map((event) => (
-              <Grid size={{ xs: 12, md: 6, lg: 4 }} key={event.id}>
+              <Grid size={{ xs: 12, md: 6, lg: 4 }} sx={{display: 'flex'}} key={event.id}>
                 <EventCard 
                   event={event} 
                   isAdmin={isAdmin} 
@@ -185,14 +185,23 @@ export default function EventsPage() {
 
       {pastEvents.length > 0 && (
         <>
-          <Typography variant="h5" mb={2}>
+          <Typography variant="h5" mt={4} mb={2}>
             Past Events
           </Typography>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} >
             {pastEvents.map((event) => (
               <Grid size={{ xs: 12, md: 6, lg: 4 }} key={event.id}>
-                <EventCard 
+               <EventCard 
                   event={event} 
+                  isAdmin={isAdmin} 
+                  onEdit={(event) => {
+                    setSelectedEvent(event);
+                    setOpenEdit(true);
+                  }}
+                  onDelete={async (id) => {
+                    await deleteEvent(id);
+                    dispatch(loadEvents());
+                  }} 
                 />
               </Grid>
             ))}
