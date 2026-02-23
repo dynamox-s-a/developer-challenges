@@ -7,13 +7,13 @@ The application allows administrators to manage events (create, edit, delete) wh
 ---
 
 ## Tech Stack
-
 - **Next.js**
 - **React**
 - **TypeScript**
 - **Redux Toolkit**
 - **Material UI 6**
 - **json-server**
+- **Cypress (E2E Testing)**
 - **ESLint**
 
 ---
@@ -41,6 +41,7 @@ The system uses two pre-configured users stored in a mock API:
 - Global authentication state handled by Redux
 - Route protection with reusable AuthGuard
 - Role-based access control
+- Redirect handling after login
 
 ---
 
@@ -49,7 +50,8 @@ The system uses two pre-configured users stored in a mock API:
 - Edit existing events (including past events)
 - Delete events
 - View all events
-- Event Validation Rules
+
+## Event Validation Rules
 - Name, location, category, and description are required
 - Description must have at least 50 characters
 - Event date must be in the future when creating
@@ -64,14 +66,13 @@ The system uses two pre-configured users stored in a mock API:
 - Sort events by date or name
 
 ## Project Structure
-
 event-management-system/
 ├─ app/
 │  ├─ (public)/
 │  │  └─ login/
 │  ├─ (private)/
-│  │  └─ events/
-│  │   └─ admin/events
+│  │  ├─ events/
+│  │  └─ admin/events/
 │
 ├─ components/
 │  ├─ app/
@@ -90,6 +91,11 @@ event-management-system/
 │  ├─ authService.ts
 │  └─ eventsService.ts
 │
+├─ cypress/
+│  ├─ e2e/
+│  │  └─ auth.cy.ts
+│  └─ support/
+│
 ├─ theme/
 │  └─ index.ts
 │
@@ -102,10 +108,28 @@ $ git clone https://github.com/patiregina89/event-management-system.git
 $ cd event-management-system
 $ npm install
 $ npx json-server server/db.json --port 3001
-$ npm run dev
+  npm run dev
 
 
+## End-to-End Tests (Cypress)
+   This project includes real E2E tests using Cypress covering authentication flows.
+   Implemented Test Scenarios
+   ✔ Route protection (unauthenticated access)
+   ✔ Successful login as admin
+   ✔ Successful login as reader
+   Example Covered Flow
+   Attempt to access /admin/events without authentication
+   Verify redirection to /login
+   Perform login
+   Validate correct redirection based on user role
 
-## Author
-Patricia Regina Rodrigues
-Front-end Developer
+### Running E2E Tests
+   First, make sure the app and mock API are running:
+   npx json-server server/db.json --port 3001
+   npm run dev
+   Then run Cypress:
+   npx cypress open
+   Or run in headless mode:
+   npx cypress run
+   Tests are located at:
+   cypress/e2e/auth.cy.ts
