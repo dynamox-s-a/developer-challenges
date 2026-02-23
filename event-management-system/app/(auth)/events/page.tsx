@@ -188,14 +188,12 @@ export default function EventsPage() {
 
       {loading && <Typography>Loading...</Typography>}
 
-      {/* CREATE EVENT */}
       <EventForm
         open={openCreate}
         onClose={() => setOpenCreate(false)}
         onSubmit={handleCreate}
       />
 
-      {/* EDIT EVENT */}
       <EventForm
         open={openEdit}
         initialData={selectedEvent}

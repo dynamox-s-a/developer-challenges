@@ -32,19 +32,12 @@ export default function LoginPage() {
     try {
       const { user, token } = await loginRequest(email, password);
 
-      // Atualiza Redux
       dispatch(loginSuccess({ user, token }));
 
-      // Salva cookies para o middleware
       document.cookie = `token=${token}; path=/;`;
       document.cookie = `user=${JSON.stringify(user)}; path=/;`;
 
-      // Redirecionamento por role
-      if (user.role === 'admin') {
-        router.push('/admin');
-      } else {
-        router.push('/events');
-      }
+      router.replace('/events');
 
     } catch {
       setError('Invalid email or password');
