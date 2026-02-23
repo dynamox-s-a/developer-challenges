@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "server": "json-server --watch server/db.json --port 3001"
+    "server": "json-server --watch server/db.json --port 3001",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -24,6 +26,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "cypress": "^15.10.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "json-server": "^1.0.0-beta.9",
