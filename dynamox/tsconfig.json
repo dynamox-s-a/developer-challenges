@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./apps/dyna-predict-api"
+    },
+    {
+      "path": "./apps/dyna-predict-web-e2e"
+    },
+    {
+      "path": "./apps/dyna-predict-web"
+    },
+    {
+      "path": "./libs/shared/types"
+    }
+  ]
+}

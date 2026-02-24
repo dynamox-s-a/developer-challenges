@@ -1,0 +1,10 @@
+{
+  "name": "@dynamox/dyna-predict-web-e2e",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "implicitDependencies": [
+      "@dynamox/dyna-predict-web"
+    ]
+  }
+}
