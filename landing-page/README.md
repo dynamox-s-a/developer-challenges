@@ -6,6 +6,11 @@ The goal of this project is to demonstrate clean architecture, reusable componen
 
 ---
 
+## Vercel Link
+https://developer-challenges-delta.vercel.app/
+
+---
+
 ## 🚀 Tech Stack
 
 - React
@@ -21,9 +26,3 @@ The goal of this project is to demonstrate clean architecture, reusable componen
 ```bash
 npm install
 npm run dev
-
----
-
-## Vercel link
-
-https://developer-challenges-delta.vercel.app/
