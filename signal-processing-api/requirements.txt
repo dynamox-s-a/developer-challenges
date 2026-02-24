@@ -1,0 +1,4 @@
+aiosqlite==0.22.1
+greenlet==3.3.2
+SQLAlchemy==2.0.47
+typing_extensions==4.15.0
