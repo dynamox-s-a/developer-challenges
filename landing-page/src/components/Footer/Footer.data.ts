@@ -6,7 +6,7 @@ import YoutubeIcon from '@/assets/icons/youtube-icon.svg?react';
 export const footerData = {
   year: 2024,
   brand: {
-    logoSrc: '../../../public/assets/images/logo-dynamox.webp',
+    logoSrc: '../../assets/images/logo-dynamox.webp',
     logoAlt: 'Dynamox logo',
   },
   socialLinks: [

@@ -2,6 +2,9 @@
   display: flex;
   flex-direction: column;
   margin-block: 4rem 1rem;
-  gap: 4rem;
+  gap: 2rem;
 
+    @media (min-width: 1024px) {
+      gap: 4rem;
+    }
 }

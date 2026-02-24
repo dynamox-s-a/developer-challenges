@@ -3,9 +3,11 @@
 .image-carousel {
   &__list {
     position: relative;
-    height: 300px;
     width: 100%;
     overflow: hidden;;
+    aspect-ratio: 1060 / 600;
+    min-height: 200px;
+    max-height: 600px;
   }
   
   &__item {
@@ -91,10 +93,6 @@
   }
 
   @media (min-width: 768px) {
-    &__list {
-      height: 500px;
-    }
-
     &__position {
       &--center {
         max-width: 900px;
@@ -112,10 +110,6 @@
 
   @media (min-width: 1024px) {
     margin: 1.5rem 1.25rem;
-
-    &__list {
-      height: 600px;
-    }
 
     &__position {
       &--center {

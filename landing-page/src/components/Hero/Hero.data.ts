@@ -1,6 +1,6 @@
 export const heroData = {
   brand: {
-    logoSrc: '../../../public/assets/images/logo-dynamox-color.webp',
+    logoSrc: '../../assets/images/logo-dynamox-color.webp',
     logoAlt: 'Dynamox logo',
   },
   title: 'Juntos por uma indústria',

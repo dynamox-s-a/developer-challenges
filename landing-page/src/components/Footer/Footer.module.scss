@@ -7,10 +7,17 @@
     color: $color-neutral-100;
     margin: 0 1rem;
     
+    &__container {
+        max-width: 1348px;
+        margin: 0 auto;
+    }
+    
     &__top {
         display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: $spacing-lg;
     }
 
     &__logo {
@@ -20,7 +27,7 @@
 
     &__social {
         display: flex;
-        gap: 1rem;
+        gap: $spacing-lg;
     
       a {
         display: inline-flex;
@@ -51,32 +58,47 @@
 
     &__links {
         display: flex;
-        align-items: center;
+        flex-direction: column;
+        gap: $spacing-md;
+        margin-top: $spacing-lg;
 
         a {
             position: relative;
             padding: 0 1.0313rem;
             color: inherit;
+            text-align: center;
+            line-height: 1rem;
             &:hover {
                 text-decoration: none;
                 opacity: 0.7;
             }
         }
-        
-        a + a::before {
-            content: '•';
-            position: absolute;
-            left: -0.125rem;
-            top: 50%;
-            transform: translateY(-50%);
-        }
     }
 
 
     @media (min-width: 1024px) {
+        &__top {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        
         &__bottom {
             flex-direction: row;
             justify-content: space-between;
+        }
+
+        &__links {
+            flex-direction: row;
+            gap: 0;
+            margin-top: 0;
+            
+            a + a::before {
+                content: '•';
+                position: absolute;
+                left: -0.125rem;
+                top: 50%;
+                transform: translateY(-50%);
+            }
         }
     }
 }
