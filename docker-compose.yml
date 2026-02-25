@@ -1,0 +1,16 @@
+services:
+  timescaledb:
+    image: timescale/timescaledb:latest-pg15
+    container_name: dynamox_timescaledb
+    environment:
+      - POSTGRES_USER=dynamox_user
+      - POSTGRES_PASSWORD=dynamox_password
+      - POSTGRES_DB=timeseries_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - timescaledb_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  timescaledb_data:
