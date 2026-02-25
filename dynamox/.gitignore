@@ -44,3 +44,11 @@ Thumbs.db
 vite.config.*.timestamp*
 vitest.config.*.timestamp*
 test-output
+
+# ENV variables
+.env
+.env.*
+!.env.example
+
+# HTTP files
+*.http
