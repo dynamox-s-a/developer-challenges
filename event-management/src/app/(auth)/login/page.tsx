@@ -38,20 +38,28 @@ const LoginPage = () => {
           Login
         </Typography>
         <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <TextField label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <TextField
+            label="Email"
+            type="email"
+            data-testid="email-input"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
           <TextField
             label="Password"
             type="password"
+            data-testid="password-input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <Button variant="contained" type="submit">
+          <Button variant="contained" type="submit" data-testid="login-button">
             Login
           </Button>
         </Box>
         {loginError && (
-          <Typography align="center" color="error">
+          <Typography align="center" color="error" data-testid="error-message">
             {loginError}
           </Typography>
         )}

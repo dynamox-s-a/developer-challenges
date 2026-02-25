@@ -49,6 +49,7 @@ const SearchBar = ({
         <TextField
           label="Search events by name"
           variant="outlined"
+          data-testid="search-input"
           size="small"
           sx={{ width: { xs: '100%', lg: '50%' } }}
           slotProps={{ input: { endAdornment: <SearchIcon /> } }}
@@ -64,7 +65,7 @@ const SearchBar = ({
           width: { xs: '100%', lg: 'auto' },
         }}
       >
-        <Button variant="contained" color="primary" onClick={onCreateEvent}>
+        <Button variant="contained" color="primary" onClick={onCreateEvent} data-testid="create-event-button">
           Create event
         </Button>
       </Box>

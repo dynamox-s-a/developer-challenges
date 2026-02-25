@@ -50,6 +50,7 @@ const EventForm = ({ initialData, onSubmit }: EventFormProps) => {
         <TextField
           label="Name"
           variant="outlined"
+          data-testid="name-input"
           {...register('name')}
           error={!!errors.name}
           helperText={errors.name?.message}
@@ -58,6 +59,7 @@ const EventForm = ({ initialData, onSubmit }: EventFormProps) => {
         <TextField
           label="Description"
           variant="outlined"
+          data-testid="description-input"
           multiline
           rows={3}
           {...register('description')}
@@ -71,6 +73,7 @@ const EventForm = ({ initialData, onSubmit }: EventFormProps) => {
               type="datetime-local"
               label="Date"
               variant="outlined"
+              data-testid="date-input"
               slotProps={{ inputLabel: { shrink: true } }}
               {...register('dateTime')}
               error={!!errors.dateTime}
@@ -83,6 +86,7 @@ const EventForm = ({ initialData, onSubmit }: EventFormProps) => {
             <TextField
               label="Location"
               variant="outlined"
+              data-testid="location-input"
               {...register('location')}
               sx={{ width: '100%' }}
               error={!!errors.location}
@@ -95,6 +99,7 @@ const EventForm = ({ initialData, onSubmit }: EventFormProps) => {
               select
               label="Category"
               variant="outlined"
+              data-testid="category-input"
               defaultValue={initialData?.category || 'Conference'}
               {...register('category')}
               sx={{ width: '100%' }}
@@ -111,10 +116,10 @@ const EventForm = ({ initialData, onSubmit }: EventFormProps) => {
           </Grid2>
         </Grid2>
         <Box component="footer" sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 10 }}>
-          <Button variant="outlined" color="primary" onClick={handleCancel}>
+          <Button variant="outlined" color="primary" onClick={handleCancel} data-testid="cancel-button">
             Cancel
           </Button>
-          <Button variant="contained" color="secondary" type="submit">
+          <Button variant="contained" color="secondary" type="submit" data-testid="save-button">
             Save
           </Button>
         </Box>

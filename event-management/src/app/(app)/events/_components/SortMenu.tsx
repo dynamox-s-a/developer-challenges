@@ -24,7 +24,7 @@ const SortMenu = ({ sortName, setSortName, sortType, setSortType }: SortMenuProp
   };
   return (
     <>
-      <Button variant="outlined" color="primary" onClick={handleOpenMenu}>
+      <Button variant="outlined" color="primary" onClick={handleOpenMenu} data-testid="sort-button">
         <Typography sx={{ display: { xs: 'block', lg: 'none' } }}>Sort</Typography>
         <Typography sx={{ display: { xs: 'none', lg: 'block' } }}>Sort By</Typography>
         <ArrowDropDown />
@@ -38,6 +38,7 @@ const SortMenu = ({ sortName, setSortName, sortType, setSortType }: SortMenuProp
       >
         <MenuItem
           selected={sortName === 'date'}
+          data-testid="sort-date"
           onClick={() => {
             setSortName('date');
             handleCloseMenu();
@@ -47,6 +48,7 @@ const SortMenu = ({ sortName, setSortName, sortType, setSortType }: SortMenuProp
         </MenuItem>
         <MenuItem
           selected={sortName === 'name'}
+          data-testid="sort-name"
           onClick={() => {
             setSortName('name');
             handleCloseMenu();
@@ -57,6 +59,7 @@ const SortMenu = ({ sortName, setSortName, sortType, setSortType }: SortMenuProp
         <Divider orientation="horizontal" flexItem />
         <MenuItem
           selected={sortType === 'asc'}
+          data-testid="sort-asc"
           onClick={() => {
             setSortType('asc');
             handleCloseMenu();
@@ -66,6 +69,7 @@ const SortMenu = ({ sortName, setSortName, sortType, setSortType }: SortMenuProp
         </MenuItem>
         <MenuItem
           selected={sortType === 'desc'}
+          data-testid="sort-desc"
           onClick={() => {
             setSortType('desc');
             handleCloseMenu();

@@ -16,21 +16,33 @@ const EventCard = React.memo(({ event, isAdmin, deleteEvent }: EventProps) => {
     <Card sx={{ margin: 3 }}>
       <CardContent>
         <header>
-          <Typography variant="h5">{event.name}</Typography>
+          <Typography variant="h5" data-testid="event-name">
+            {event.name}
+          </Typography>
         </header>
         <main>
-          <Typography>Date: {formatDate(event.dateTime)}</Typography>
-          <Typography>Time: {formatTime(event.dateTime)}</Typography>
-          <Typography>Location: {event.location}</Typography>
-          <Typography>Description: {event.description}</Typography>
-          <Typography>Category: {event.category}</Typography>
+          <Typography data-testid="event-date">Date: {formatDate(event.dateTime)}</Typography>
+          <Typography data-testid="event-time">Time: {formatTime(event.dateTime)}</Typography>
+          <Typography data-testid="event-location">Location: {event.location}</Typography>
+          <Typography data-testid="event-description">Description: {event.description}</Typography>
+          <Typography data-testid="event-category">Category: {event.category}</Typography>
         </main>
         {isAdmin && (
           <footer style={{ display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
-            <Button variant="outlined" color="primary" onClick={() => router.push(`/admin/${event.id}/edit`)}>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => router.push(`/admin/${event.id}/edit`)}
+              data-testid={`edit-button-${event.id}`}
+            >
               Edit
             </Button>
-            <Button variant="contained" color="secondary" onClick={() => deleteEvent(event.id)}>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => deleteEvent(event.id)}
+              data-testid={`delete-button-${event.id}`}
+            >
               Delete
             </Button>
           </footer>
