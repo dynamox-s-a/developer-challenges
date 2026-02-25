@@ -44,6 +44,17 @@ npm run test:coverage # run with coverage report
 npx jest <filename>   # run a specific test file
 ```
 
+### End-to-End (E2E) Tests with Cypress
+
+To run the Cypress E2E tests, ensure you have both the frontend (`npm run dev`) and the mock API (`npm run server`) running simultaneously in separate terminals.
+
+Then, you can run Cypress tests visually or in headless mode:
+
+```bash
+npx cypress open      # open the Cypress UI for interactive testing
+npm run test:e2e      # run all E2E tests in headless mode
+```
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
