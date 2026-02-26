@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import insert, select, func
+from sqlalchemy import insert, select, func, delete
 from uuid import UUID
 import logging
 
@@ -117,7 +117,7 @@ async def get_series_metrics(
     if metrics.count == 0:
         series_exists = await db.execute(select(Series).where(Series.id == series_id))
         if not series_exists.scalar_one_or_none():
-            raise HTTPException(status_code=404, detail="Série não encontrada.")
+            raise HTTPException(status_code=404, detail="Série temporal não encontrada.")
         
         return MetricsResponse(series_id=series_id, count=0)
 
@@ -128,3 +128,31 @@ async def get_series_metrics(
         "max_value": metrics.max_value,
         "min_value": metrics.min_value
     }
+
+@router.delete("/{series_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_series(
+    series_id: UUID, 
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Remove uma série e todos os seus dados associados via CASCADE.
+    Retorna '204 No Content' em caso de sucesso.
+    """
+
+    # Verifica se a série existe
+    result = await db.execute(select(Series).where(Series.id == series_id))
+    series = result.scalar_one_or_none()
+
+    if not series:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail="Série temporal não encontrada."
+        )
+
+    # Comando de deletar os registros associados ao ID
+    await db.execute(delete(Series).where(Series.id == series_id))
+    
+    await db.commit()
+
+    # Retorna 'Status 204' sem corpo de resposta
+    return None
