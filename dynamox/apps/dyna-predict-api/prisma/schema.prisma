@@ -1,0 +1,96 @@
+datasource db {
+  provider = "postgresql"
+}
+
+// NOTE (@eric-reis): moduleFormat is set to "commonjs" to match the esbuild output format
+//                    configured in the Nx build pipeline.
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/prisma/generated"
+  moduleFormat = "commonjs"
+}
+
+enum Role {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum MachineType {
+  Pump
+  Fan
+}
+
+enum SensorModel {
+  TcAg
+  TcAs
+  HFPlus
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  uuid      String    @unique @default(uuid())
+  email     String    @unique
+  name      String
+  password  String
+  role      Role      @default(USER)
+  machines  Machine[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Machine {
+  id               Int               @id @default(autoincrement())
+  uuid             String            @unique @default(uuid())
+  name             String
+  type             MachineType
+  userId           Int
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  monitoringPoints MonitoringPoint[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  @@index([userId])
+  @@unique([name, type, userId])
+}
+
+model MonitoringPoint {
+  id        Int      @id @default(autoincrement())
+  uuid      String   @unique @default(uuid())
+  name      String
+  machineId Int
+  machine   Machine  @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  sensor    Sensor?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([machineId])
+  @@unique([machineId, name])
+}
+
+model Sensor {
+  id                Int             @id @default(autoincrement())
+  uuid              String          @unique @default(uuid())
+  model             SensorModel
+  monitoringPointId Int             @unique
+  monitoringPoint   MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
+  timeSeries        TimeSeries[]
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+}
+
+model TimeSeries {
+  id          Int      @id @default(autoincrement())
+  uuid        String   @unique @default(uuid())
+  temperature     Float
+  accelerationRms Float
+  velocityRms     Float
+  timestamp   DateTime @default(now())
+  sensorId    Int
+  sensor      Sensor   @relation(fields: [sensorId], references: [id], onDelete: Cascade)
+  // NOTE (@eric-reis): No updatedAt — time-series data is immutable by nature.
+
+  @@index([sensorId])
+  @@index([timestamp])
+  @@unique([sensorId, timestamp])
+}
