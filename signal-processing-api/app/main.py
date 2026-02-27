@@ -19,6 +19,7 @@ app = FastAPI(
 )
 
 try:
+    logger.info("Connecting to the database...")
     Base.metadata.create_all(bind=engine)
     logger.info("Database tables created successfully.")
 except Exception as e:
