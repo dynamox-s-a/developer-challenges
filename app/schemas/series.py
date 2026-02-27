@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime
 from typing import List, Optional
 from uuid import UUID
@@ -12,7 +12,7 @@ class SeriesCreate(BaseModel):
     """Esquema principal para o payload de criação de uma nova série"""
     name: str = Field(..., min_length=1, max_length=100, description="Nome identificador do sensor/equipamento")
     unit: str = Field(..., min_length=1, max_length=20, description="Unidade de medida (ex: °C, mm/s, Hz)")
-    data_points: List[DataPointCreate] = Field(..., min_items=1, description="Lista de pontos de dados a serem inseridos")
+    data_points: List[DataPointCreate] = Field(..., min_length=1, description="Lista de pontos de dados a serem inseridos")
 
 class SeriesResponse(BaseModel):
     """Esquema para devolver os metadados de uma série"""
@@ -21,17 +21,15 @@ class SeriesResponse(BaseModel):
     unit: str
     created_at: datetime
 
-    class Config:
-        # Habilitado para ler dos modelos SQLAlchemy
-        from_attributes = True 
+    # Habilitado para ler dos modelos SQLAlchemy
+    model_config = ConfigDict(from_attributes=True)
 
 class DataPointResponse(BaseModel):
     """Esquema para devolver os dados brutos de uma série"""
     timestamp: datetime
     value: float
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class SeriesFullResponse(SeriesResponse):
     """Esquema para devolver a série completa"""

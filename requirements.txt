@@ -2,3 +2,5 @@ fastapi==0.112.0
 uvicorn==0.41.0
 sqlalchemy==2.0.47
 asyncpg==0.31.0
+pytest-asyncio==0.21.1
+httpx==0.28.1
