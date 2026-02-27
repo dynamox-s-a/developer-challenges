@@ -38,7 +38,7 @@ def list_signal_metrics(
     start_time: datetime | None = None,
     end_time: datetime | None = None,
     metric_type: str | None = None,
-    order: str = Query("desc", regex="^(asc|desc)$"),
+    order: str = Query("desc", pattern="^(asc|desc)$"),
     limit: int = Query(50, ge=1, le=1000),
     offset: int = Query(0, ge=0),
     db: Session = Depends(get_db)

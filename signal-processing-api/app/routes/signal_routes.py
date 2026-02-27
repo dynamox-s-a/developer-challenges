@@ -5,7 +5,11 @@ from uuid import UUID
 from app.core.dependencies import get_db
 from app.models.machine import Machine
 from app.models.signal import Signal
-from app.schemas.signal_schema import SignalCreate, SignalResponse
+from app.schemas.signal_schema import (
+    SignalCreate, 
+    SignalResponse, 
+    FullTimeSeriesResponse 
+)
 from app.schemas.pagination import PaginatedResponseSchema
 from app.enums.signal_type import SignalType
 from app.services.signal_service import SignalService

@@ -1,13 +1,21 @@
 from itertools import count
+from typing import Optional
+from datetime import datetime
 
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from sqlalchemy import asc, desc
 from uuid import UUID
 
+from app.enums.signal_type import SignalType
+from app.models import machine
 from app.models.machine import Machine
 from app.models.signal import Signal
-from app.models.metrics import Metric
+from app.models.metric import Metric
+from app.schemas.machine_schema import MachineResponse
+from app.schemas.machine_schema import MachineResponse
+from app.schemas.signal_schema import SignalResponse
+from app.services.pagination_service import PaginationService
 
 class MachineService:
     @staticmethod
@@ -38,21 +46,17 @@ class MachineService:
     @staticmethod
     def list_machines(
         db: Session, 
-        limit: int, 
-        offset: int
+        limit: int = 10, 
+        offset: int = 0
     ):
-        query = db.query(Machine)
-        items = query.offset(offset).limit(limit + 1).all()
+        query = db.query(Machine).order_by(asc(Machine.created_at.desc()))
 
-        has_next = len(items) > limit
-        data = items[:limit]
-
-        return {
-            "limit": limit,
-            "offset": offset,
-            "has_next": has_next,
-            "data": data
-        }
+        return PaginationService.paginate(
+            query=query,
+            limit=limit,
+            offset=offset,
+            schema_class=MachineResponse,
+        )
 
     @staticmethod
     def delete_machine(
@@ -115,12 +119,33 @@ class MachineService:
     @staticmethod
     def get_machine_signals(
         db: Session,
-        machine_id: UUID
+        machine_id: UUID,
+        limit: int = 50,
+        offset: int = 0,
+        signal_type: Optional[SignalType] = None,
+        start_time: Optional[datetime] = None,
+        end_time: Optional[datetime] = None
     ):
-        MachineService.get_machine_by_id(db, machine_id)
+        machine = MachineService.get_machine_by_id(db, machine_id)
 
-        signals = db.query(Signal).filter(Signal.machine_id == machine_id).all()
-        return signals
+        query = db.query(Signal).filter(Signal.machine_id == machine_id)
+
+        # filters
+        if signal_type:
+            query = query.filter(Signal.signal_type == signal_type)
+        if start_time:
+            query = query.filter(Signal.timestamp >= start_time)
+        if end_time:
+            query = query.filter(Signal.timestamp <= end_time)
+
+        query = query.order_by(desc(Signal.timestamp))
+
+        return PaginationService.paginate_query(
+            query=query,
+            limit=limit,
+            offset=offset,
+            schema_class=SignalResponse,
+        )
     
     @staticmethod
     def count_machine_signals(

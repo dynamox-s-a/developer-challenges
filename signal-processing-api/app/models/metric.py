@@ -1,6 +1,6 @@
 import uuid
 
-from sqlalchemy import Column, Float, ForeignKey, DateTime, Enum, Index
+from sqlalchemy import Column, Float, ForeignKey, DateTime, Enum, Index, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from datetime import datetime, timezone
@@ -37,6 +37,7 @@ class Metric(Base):
     timestamp = Column(
         DateTime(timezone=True), 
         nullable=False,
+        server_default=func.now(),
         index=True
     )
     created_at = Column(
