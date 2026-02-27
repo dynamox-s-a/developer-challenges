@@ -1,23 +1,53 @@
+/**
+ * @fileoverview Application entry point. Initializes the Fastify server with
+ * TypeBox type provider for automatic type inference from schemas.
+ */
+
+// NOTE (@eric-reis): dotenv must be imported first to ensure environment
+// variables are available when all subsequent modules are loaded.
+import 'dotenv/config';
+
 import Fastify from 'fastify';
-import { app } from './app/app';
+import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
+import { app } from './app';
 
-const host = process.env.HOST ?? 'localhost';
-const port = process.env.PORT ? Number(process.env.PORT) : 3000;
-
-// Instantiate Fastify with some config
+// NOTE (@eric-reis): TypeBox type provider applied globally so all routes automatically get
+//                    TypeScript types inferred from their TypeBox schemas, eliminating the need to
+//                    manually specify generics on each route handler.
 const server = Fastify({
-  logger: true,
-});
+  logger: {
+    level: process.env.LOG_LEVEL || (process.env.NODE_ENV === 'development' ? 'debug' : 'info'),
+    transport: {
+      target: 'pino-pretty',
+      options: {
+        colorize: true,
+        translateTime: 'SYS:HH:MM:ss - dd/mm/yyyy',
+        ignore: 'pid,hostname',
+        levelFirst: true,
+        singleLine: false,
+        messageFormat: '{msg}',
+        errorLikeObjectKeys: 'err,error',
+      },
+    },
+  },
+}).withTypeProvider<TypeBoxTypeProvider>();
 
-// Register your application as a normal plugin.
+if (!process.env.JWT_SECRET) {
+  server.log.error('JWT_SECRET environment variable is required. Shutting down.');
+  process.exit(1);
+}
+
 server.register(app);
 
-// Start listening.
-server.listen({ port, host }, (err) => {
-  if (err) {
+const PORT = Number(process.env.PORT) || 3000;
+const HOST = process.env.HOST || '0.0.0.0';
+
+server
+  .listen({ port: PORT, host: HOST })
+  .then(() => {
+    server.log.info(`Server running at http://${HOST}:${PORT}`);
+  })
+  .catch((err) => {
     server.log.error(err);
     process.exit(1);
-  } else {
-    console.log(`[ ready ] http://${host}:${port}`);
-  }
-});
+  });
