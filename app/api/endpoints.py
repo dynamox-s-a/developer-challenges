@@ -12,6 +12,15 @@ router = APIRouter(prefix="/series", tags=["Series de Tempo"])
 
 logger = logging.getLogger(__name__)
 
+@router.get("/count")
+async def get_series_count(db: AsyncSession = Depends(get_db)):
+    """
+    Retorna a quantidade total de séries armazenadas no servidor.
+    """
+    result = await db.execute(select(func.count(Series.id)))
+    total = result.scalar() or 0
+    return {"total_series": total}
+
 @router.post("/", response_model=SeriesResponse, status_code=status.HTTP_201_CREATED)
 async def create_time_series(
     payload: SeriesCreate, 
@@ -61,40 +70,6 @@ async def create_time_series(
             detail="Erro interno ao tentar salvar os dados da série temporal."
         )
     
-@router.get("/{series_id}", response_model=SeriesFullResponse)
-async def get_series_details(
-    series_id: UUID, 
-    db: AsyncSession = Depends(get_db)
-):
-    """
-    Retorna os metadados de uma série e todos os seus pontos de dados.
-    """
-    
-    result = await db.execute(select(Series).where(Series.id == series_id))
-    series = result.scalar_one_or_none()
-
-    if not series:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, 
-            detail="Série temporal não encontrada."
-        )
-
-    # Busca dos pontos de dados ordenados por tempo
-    data_result = await db.execute(
-        select(SeriesData)
-        .where(SeriesData.series_id == series_id)
-        .order_by(SeriesData.timestamp.asc())
-    )
-    data_points = data_result.scalars().all()
-
-    return {
-        "id": series.id,
-        "name": series.name,
-        "unit": series.unit,
-        "created_at": series.created_at,
-        "data": data_points
-    }
-
 @router.get("/{series_id}/metrics", response_model=MetricsResponse)
 async def get_series_metrics(
     series_id: UUID, 
@@ -127,6 +102,41 @@ async def get_series_metrics(
         "average": metrics.average,
         "max_value": metrics.max_value,
         "min_value": metrics.min_value
+    }
+
+@router.get("/{series_id}", response_model=SeriesFullResponse)
+async def get_full_series(
+    series_id: UUID, 
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Retorna a série temporal completa, incluindo todos os pontos de dados armazenados.
+    """
+
+    # Busca aos metadados da série
+    result = await db.execute(select(Series).where(Series.id == series_id))
+    series = result.scalar_one_or_none()
+
+    if not series:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail="Série não encontrada."
+        )
+
+    # Busca os pontos de dados associados a série, ordenados por tempo
+    data_result = await db.execute(
+        select(SeriesData)
+        .where(SeriesData.series_id == series_id)
+        .order_by(SeriesData.timestamp.asc())
+    )
+    data_points = data_result.scalars().all()
+
+    return {
+        "id": series.id,
+        "name": series.name,
+        "unit": series.unit,
+        "created_at": series.created_at,
+        "data": data_points
     }
 
 @router.delete("/{series_id}", status_code=status.HTTP_204_NO_CONTENT)
