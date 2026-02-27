@@ -1,5 +1,6 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from datetime import datetime
+from uuid import UUID
 
 class MachineBase(BaseModel):
     name: str
@@ -9,7 +10,7 @@ class MachineCreate(MachineBase):
     pass
 
 class Machine(MachineBase):
-    id: str
+    id: UUID
     created_at: datetime
 
     class Config:

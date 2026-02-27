@@ -1,24 +1,43 @@
 import uuid
-import enum
-from sqlalchemy import Column, String, Float, DateTime, ForeignKey, Enum
+from sqlalchemy import Column, Float, DateTime, ForeignKey, Enum, Index
 from sqlalchemy.orm import relationship
-from datetime import datetime
+from sqlalchemy.dialects.postgresql import UUID
+from datetime import datetime, timezone
 
 from app.core.database import Base
 
-class SignalType(enum.Enum):
-    VIBRATION = "vibration"
-    TEMPERATURE = "temperature"
-    PRESSURE = "pressure"
+from app.enums.signal_type import SignalType
 
 class Signal(Base):
-    __tablename__ = "signal"
+    __tablename__ = "signals"
 
-    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
-    machine_id = Column(String, ForeignKey("machine.id"), nullable=False)
-    signal_type = Column(Enum(SignalType), nullable=False)
+    __table_args__ = (
+        Index("idx_machine_timestamp", "machine_id", "timestamp"),
+    )
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    machine_id = Column(
+        UUID(as_uuid=True), 
+        ForeignKey("machines.id", ondelete="CASCADE"), 
+        nullable=False,
+        index=True
+    )
+    signal_type = Column(
+        Enum(SignalType, name="signal_type_enum"), 
+        nullable=False,
+        index=True
+    )
     value = Column(Float, nullable=False)
-    timestamp = Column(DateTime, default=datetime.now())
+    timestamp = Column(
+        DateTime(timezone=True), 
+        nullable=False,
+        index=True
+    )
+    created_at = Column(
+        DateTime(timezone=True), 
+        default=lambda: datetime.now(timezone.utc),
+        index=True
+    )
     machine = relationship(
         "Machine", 
         back_populates="signals"

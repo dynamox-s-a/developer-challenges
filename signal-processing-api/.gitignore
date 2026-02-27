@@ -1,3 +1,38 @@
-signal_processing.db
+# Virtual environment
 venv/
+.venv/
+
+# Environment variables
+.env
+.env.*
+
+# Python cache
 __pycache__/
+*.py[cod]
+*$py.class
+
+# SQLite
+*.db
+*.sqlite3
+
+# Pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Mypy
+.mypy_cache/
+
+# IDEs
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Alembic cache
+alembic/versions/__pycache__/
+
+# OS
+.DS_Store
+Thumbs.db

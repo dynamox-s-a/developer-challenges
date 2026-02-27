@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  db: 
+    image: postgres:15
+    container_name: signal_processing_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: signal_processing
+    ports:
+      - "5432:5432"
+    volumes:
+      # - ./db_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
