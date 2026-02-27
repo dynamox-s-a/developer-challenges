@@ -6,7 +6,9 @@
   "private": true,
   "devDependencies": {
     "@eslint/js": "^9.8.0",
+    "@faker-js/faker": "^10.3.0",
     "@nx/cypress": "^22.5.2",
+    "@nx/docker": "22.5.2",
     "@nx/esbuild": "^22.5.2",
     "@nx/eslint": "^22.5.2",
     "@nx/eslint-plugin": "22.5.2",
