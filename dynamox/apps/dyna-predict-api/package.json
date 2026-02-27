@@ -130,5 +130,28 @@
     "prisma": "^7.4.1",
     "tsx": "^4.21.0"
   },
+  "scripts": {
+    "dev:build:types": "npx nx build @dynamox/types",
+    "dev:db:generate": "prisma generate",
+    "dev:db:migrate": "prisma migrate dev",
+    "dev:db:reset": "prisma migrate reset",
+    "dev:db:seed": "tsx prisma/seed.ts",
+    "dev:db:seed:time-series": "tsx prisma/seed-time-series.ts",
+    "dev:db:studio": "prisma studio",
+    "prod:db:migrate": "prisma migrate deploy",
+    "prod:db:seed": "NODE_ENV=production tsx prisma/seed.ts",
+    "format": "prettier --write \"src/**/*.ts\""
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
   }
 }
