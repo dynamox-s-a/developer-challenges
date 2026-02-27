@@ -1,0 +1,4 @@
+node_modules
+
+# Prisma generated client - rebuilt locally via `npx prisma generate`
+src/prisma/generated/
