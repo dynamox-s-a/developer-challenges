@@ -43,7 +43,7 @@ export function mockJwtPayload() {
     sub: 1,
     uuid: faker.string.uuid(),
     email: faker.internet.email(),
-    role: 'USER' as const
+    role: 'USER' as const,
   };
 }
 

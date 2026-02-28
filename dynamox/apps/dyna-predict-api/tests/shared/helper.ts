@@ -9,7 +9,7 @@ import jwtPlugin from '../../src/auth/plugins/jwt';
 import authRoutes from '../../src/auth/routes/auth';
 import { faker } from '@faker-js/faker';
 import health from '../../src/shared/routes/health';
-import machinesRoutes from '../../src/machines/routes/machines'
+import machinesRoutes from '../../src/machines/routes/machines';
 
 type AuthenticatedUser = { sub: number; uuid: string; email: string; role: string };
 

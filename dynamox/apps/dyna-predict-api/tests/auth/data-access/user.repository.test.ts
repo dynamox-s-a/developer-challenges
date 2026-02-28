@@ -42,7 +42,7 @@ describe('user repository', () => {
           email: fake.email,
           name: fake.name,
           password: fake.password,
-          role: 'USER'
+          role: 'USER',
         };
 
         fastify.prisma.user = { findUnique: vi.fn().mockResolvedValue(mockResult) };
@@ -51,9 +51,10 @@ describe('user repository', () => {
 
         expect(result).toEqual(mockResult);
 
-        expect(fastify.prisma.user.findUnique).toHaveBeenCalledWith(
-          { where: { email: fake.email }, select: expect.objectContaining({ email: true }) }
-        );
+        expect(fastify.prisma.user.findUnique).toHaveBeenCalledWith({
+          where: { email: fake.email },
+          select: expect.objectContaining({ email: true }),
+        });
       });
     });
   });
@@ -91,7 +92,7 @@ describe('user repository', () => {
           uuid: fake.uuid,
           email: fake.email,
           name: fake.name,
-          role: 'USER'
+          role: 'USER',
         };
 
         fastify.prisma.user = { findUnique: vi.fn().mockResolvedValue(mockResult) };
@@ -100,9 +101,10 @@ describe('user repository', () => {
 
         expect(result).toEqual(mockResult);
 
-        expect(fastify.prisma.user.findUnique).toHaveBeenCalledWith(
-          { where: { id: fake.userId }, select: expect.objectContaining({ id: true }) }
-        );
+        expect(fastify.prisma.user.findUnique).toHaveBeenCalledWith({
+          where: { id: fake.userId },
+          select: expect.objectContaining({ id: true }),
+        });
       });
     });
   });

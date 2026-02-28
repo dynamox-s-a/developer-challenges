@@ -17,8 +17,9 @@ describe('validateUserCredentials', () => {
 
       const spy = vi.spyOn(userRepository, 'findUserByEmail').mockResolvedValue(null);
 
-      await expect(validateUserCredentials(fastify, payload.email, payload.password))
-        .rejects.toThrow(AUTH_ERR_INVALID_CREDENTIALS);
+      await expect(
+        validateUserCredentials(fastify, payload.email, payload.password),
+      ).rejects.toThrow(AUTH_ERR_INVALID_CREDENTIALS);
 
       expect(spy).toHaveBeenCalledWith(expect.anything(), payload.email);
     });
@@ -30,8 +31,9 @@ describe('validateUserCredentials', () => {
 
       const spy = vi.spyOn(userRepository, 'findUserByEmail').mockResolvedValue(mockUser);
 
-      await expect(validateUserCredentials(fastify, mockUser.email, faker.internet.password()))
-        .rejects.toThrow(AUTH_ERR_INVALID_CREDENTIALS);
+      await expect(
+        validateUserCredentials(fastify, mockUser.email, faker.internet.password()),
+      ).rejects.toThrow(AUTH_ERR_INVALID_CREDENTIALS);
 
       expect(spy).toHaveBeenCalledWith(expect.anything(), mockUser.email);
     });

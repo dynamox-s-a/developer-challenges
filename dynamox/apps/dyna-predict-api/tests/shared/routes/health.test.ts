@@ -2,7 +2,6 @@ import { describe, expect } from 'vitest';
 import { StatusCodes } from 'http-status-codes';
 import { test } from '../../fixtures/fastify.fixture';
 
-
 describe('GET/HEAD /health', () => {
   describe('when receiving a valid health check request', () => {
     (['GET', 'HEAD'] as const).forEach((method) => {

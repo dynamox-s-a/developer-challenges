@@ -29,7 +29,9 @@ describe('error handler plugin', () => {
 
   describe('when a 4xx error is thrown', () => {
     test('should respond with the error shape and not report to Sentry', async () => {
-      fastify.get('/test', async () => { throw new AUTH_ERR_TOKEN_EXPIRED(); });
+      fastify.get('/test', async () => {
+        throw new AUTH_ERR_TOKEN_EXPIRED();
+      });
       await fastify.ready();
 
       const response = await fastify.inject({ method: 'GET', url: '/test' });
@@ -43,7 +45,9 @@ describe('error handler plugin', () => {
 
   describe('when a 5xx error is thrown', () => {
     test('should respond with the error shape and report to Sentry', async () => {
-      fastify.get('/test', async () => { throw new INTERNAL_SERVER_ERROR(); });
+      fastify.get('/test', async () => {
+        throw new INTERNAL_SERVER_ERROR();
+      });
       await fastify.ready();
 
       const response = await fastify.inject({ method: 'GET', url: '/test' });
@@ -57,7 +61,9 @@ describe('error handler plugin', () => {
 
   describe('when an unexpected error is thrown', () => {
     test('should respond with 500 and report to Sentry', async () => {
-      fastify.get('/test', async () => { throw new Error('something broke'); });
+      fastify.get('/test', async () => {
+        throw new Error('something broke');
+      });
       await fastify.ready();
 
       const response = await fastify.inject({ method: 'GET', url: '/test' });
@@ -80,7 +86,9 @@ describe('error handler plugin', () => {
         const retryAfter = '60';
         fastify.get('/test', async (request, reply) => {
           reply.header('Retry-After', retryAfter);
-          throw Object.assign(new Error('rate limit'), { statusCode: StatusCodes.TOO_MANY_REQUESTS });
+          throw Object.assign(new Error('rate limit'), {
+            statusCode: StatusCodes.TOO_MANY_REQUESTS,
+          });
         });
         await fastify.ready();
 
@@ -100,7 +108,9 @@ describe('error handler plugin', () => {
     describe('without a Retry-After header', () => {
       test('should respond with 429 and a generic message', async () => {
         fastify.get('/test', async () => {
-          throw Object.assign(new Error('rate limit'), { statusCode: StatusCodes.TOO_MANY_REQUESTS });
+          throw Object.assign(new Error('rate limit'), {
+            statusCode: StatusCodes.TOO_MANY_REQUESTS,
+          });
         });
         await fastify.ready();
 

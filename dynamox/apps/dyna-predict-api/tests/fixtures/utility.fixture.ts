@@ -5,7 +5,7 @@ export interface Fake {
   id: number;
   uuid: string;
   userId: number;
-  machineUuid: string,
+  machineUuid: string;
   name: string;
   email: string;
   password: string;

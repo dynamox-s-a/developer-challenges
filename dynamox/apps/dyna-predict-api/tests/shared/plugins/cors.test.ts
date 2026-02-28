@@ -53,18 +53,15 @@ describe('CORS plugin', () => {
   });
 
   describe('when receiving a request from the configured origin', () => {
-    test.each(ACCEPTED_CORS_METHODS)(
-      'should set CORS headers for %s',
-      async (method) => {
-        const response = await fastify.inject({
-          method,
-          url: '/test',
-          headers: { origin: originUrl },
-        });
+    test.each(ACCEPTED_CORS_METHODS)('should set CORS headers for %s', async (method) => {
+      const response = await fastify.inject({
+        method,
+        url: '/test',
+        headers: { origin: originUrl },
+      });
 
-        expect(response.headers['access-control-allow-origin']).toBe(originUrl);
-        expect(response.headers['access-control-allow-credentials']).toBe('true');
-      },
-    );
+      expect(response.headers['access-control-allow-origin']).toBe(originUrl);
+      expect(response.headers['access-control-allow-credentials']).toBe('true');
+    });
   });
 });

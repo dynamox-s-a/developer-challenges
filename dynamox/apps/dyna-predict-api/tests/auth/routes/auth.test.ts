@@ -3,11 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import * as authService from '../../../src/auth/domain/auth.service';
 import * as userRepository from '../../../src/auth/data-access/user.repository';
 import { test, authenticatedTest } from '../../fixtures/fastify.fixture';
-import {
-  createLoginPayload,
-  createMockUser,
-  JWT_PATTERN,
-} from '../../fixtures/auth.fixture';
+import { createLoginPayload, createMockUser, JWT_PATTERN } from '../../fixtures/auth.fixture';
 import { createErrorResponse, createPartialErrorResponse } from '../../shared/errors';
 import {
   AUTH_ERR_INVALID_CREDENTIALS,
@@ -19,9 +15,9 @@ import { LOGIN_RATE_LIMIT, TOKEN_COOKIE_OPTIONS } from '../../../src/auth/domain
 describe('POST /v1/auth/login', () => {
   describe('when credentials are invalid', () => {
     test('should return 401 unauthorized', async ({ fastify }) => {
-      const spy = vi.spyOn(authService, 'validateUserCredentials').mockRejectedValue(
-        new AUTH_ERR_INVALID_CREDENTIALS(),
-      );
+      const spy = vi
+        .spyOn(authService, 'validateUserCredentials')
+        .mockRejectedValue(new AUTH_ERR_INVALID_CREDENTIALS());
 
       const response = await fastify.inject({
         method: 'POST',
@@ -38,9 +34,9 @@ describe('POST /v1/auth/login', () => {
 
   describe('when rate limit is exceeded', () => {
     test('should return 429 after max attempts', async ({ fastify }) => {
-      const spy = vi.spyOn(authService, 'validateUserCredentials').mockRejectedValue(
-        new AUTH_ERR_INVALID_CREDENTIALS(),
-      );
+      const spy = vi
+        .spyOn(authService, 'validateUserCredentials')
+        .mockRejectedValue(new AUTH_ERR_INVALID_CREDENTIALS());
 
       const responses = [];
       for (let i = 0; i < LOGIN_RATE_LIMIT.MAX + 1; i++) {
@@ -59,7 +55,9 @@ describe('POST /v1/auth/login', () => {
       const blockedResponse = responses[LOGIN_RATE_LIMIT.MAX];
 
       expect(blockedResponse.statusCode).toBe(StatusCodes.TOO_MANY_REQUESTS);
-      expect(blockedResponse.json()).toEqual(createPartialErrorResponse(AUTH_ERR_TOO_MANY_REQUESTS));
+      expect(blockedResponse.json()).toEqual(
+        createPartialErrorResponse(AUTH_ERR_TOO_MANY_REQUESTS),
+      );
       expect(blockedResponse.headers['x-ratelimit-remaining']).toBe('0');
 
       expect(spy).toHaveBeenCalledTimes(LOGIN_RATE_LIMIT.MAX);
@@ -135,34 +133,37 @@ describe('GET /v1/auth/me', () => {
   });
 
   describe('when authenticated', () => {
-    authenticatedTest('should return 200 with user data', async ({ fastify, authenticatedUser }) => {
-      const mockUserData = {
-        id: authenticatedUser.sub,
-        uuid: authenticatedUser.uuid,
-        email: authenticatedUser.email,
-        name: 'Test User',
-        role: authenticatedUser.role,
-      };
+    authenticatedTest(
+      'should return 200 with user data',
+      async ({ fastify, authenticatedUser }) => {
+        const mockUserData = {
+          id: authenticatedUser.sub,
+          uuid: authenticatedUser.uuid,
+          email: authenticatedUser.email,
+          name: 'Test User',
+          role: authenticatedUser.role,
+        };
 
-      const spy = vi.spyOn(userRepository, 'findUserById').mockResolvedValue(mockUserData);
+        const spy = vi.spyOn(userRepository, 'findUserById').mockResolvedValue(mockUserData);
 
-      const response = await fastify.inject({
-        method: 'GET',
-        url: '/v1/auth/me',
-      });
+        const response = await fastify.inject({
+          method: 'GET',
+          url: '/v1/auth/me',
+        });
 
-      expect(response.statusCode).toBe(StatusCodes.OK);
+        expect(response.statusCode).toBe(StatusCodes.OK);
 
-      const { user } = response.json();
-      expect(user).toMatchObject({
-        id: authenticatedUser.sub,
-        uuid: authenticatedUser.uuid,
-        email: authenticatedUser.email,
-        role: authenticatedUser.role,
-      });
-      expect(user.password).toBeUndefined();
+        const { user } = response.json();
+        expect(user).toMatchObject({
+          id: authenticatedUser.sub,
+          uuid: authenticatedUser.uuid,
+          email: authenticatedUser.email,
+          role: authenticatedUser.role,
+        });
+        expect(user.password).toBeUndefined();
 
-      expect(spy).toHaveBeenCalledOnce();
-    });
+        expect(spy).toHaveBeenCalledOnce();
+      },
+    );
   });
 });

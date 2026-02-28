@@ -43,7 +43,9 @@ describe('machine repository', () => {
 
     describe('when machines are found', () => {
       test('should return the list', async ({ fastify, fake }) => {
-        const mockResult = [{ id: fake.id, uuid: fake.uuid, name: fake.name, type: 'PUMP', userId: fake.userId }];
+        const mockResult = [
+          { id: fake.id, uuid: fake.uuid, name: fake.name, type: 'PUMP', userId: fake.userId },
+        ];
 
         fastify.prisma.machine = { findMany: vi.fn().mockResolvedValue(mockResult) };
 
@@ -51,7 +53,9 @@ describe('machine repository', () => {
 
         expect(result).toEqual(mockResult);
 
-        expect(fastify.prisma.machine.findMany).toHaveBeenCalledWith(expect.objectContaining({ where: { userId: fake.userId } }));
+        expect(fastify.prisma.machine.findMany).toHaveBeenCalledWith(
+          expect.objectContaining({ where: { userId: fake.userId } }),
+        );
       });
     });
   });
@@ -61,7 +65,12 @@ describe('machine repository', () => {
       test('should rethrow as INTERNAL_SERVER_ERROR with cause', async ({ fastify, fake }) => {
         fastify.prisma.machine = { findFirst: vi.fn().mockRejectedValue(fake.dbError) };
 
-        const thrownError = await findExistingMachine(fastify, fake.name, 'PUMP', fake.userId).catch((error) => error);
+        const thrownError = await findExistingMachine(
+          fastify,
+          fake.name,
+          'PUMP',
+          fake.userId,
+        ).catch((error) => error);
 
         expect(thrownError).toBeInstanceOf(INTERNAL_SERVER_ERROR);
         expect(thrownError.cause).toBe(fake.dbError);
@@ -102,7 +111,9 @@ describe('machine repository', () => {
       test('should rethrow as INTERNAL_SERVER_ERROR with cause', async ({ fastify, fake }) => {
         fastify.prisma.machine = { findUnique: vi.fn().mockRejectedValue(fake.dbError) };
 
-        const thrownError = await findExistingMachineByUuid(fastify, fake.uuid, fake.userId).catch((error) => error);
+        const thrownError = await findExistingMachineByUuid(fastify, fake.uuid, fake.userId).catch(
+          (error) => error,
+        );
 
         expect(thrownError).toBeInstanceOf(INTERNAL_SERVER_ERROR);
         expect(thrownError.cause).toBe(fake.dbError);
@@ -133,7 +144,9 @@ describe('machine repository', () => {
 
         expect(result).toEqual(mockResult);
 
-        expect(fastify.prisma.machine.findUnique).toHaveBeenCalledWith(expect.objectContaining({ where: { uuid: fake.uuid, userId: fake.userId } }));
+        expect(fastify.prisma.machine.findUnique).toHaveBeenCalledWith(
+          expect.objectContaining({ where: { uuid: fake.uuid, userId: fake.userId } }),
+        );
       });
     });
   });
@@ -143,7 +156,9 @@ describe('machine repository', () => {
       test('should rethrow as INTERNAL_SERVER_ERROR with cause', async ({ fastify, fake }) => {
         fastify.prisma.machine = { create: vi.fn().mockRejectedValue(fake.dbError) };
 
-        const thrownError = await createMachine(fastify, fake.name, 'PUMP', fake.userId).catch((error) => error);
+        const thrownError = await createMachine(fastify, fake.name, 'PUMP', fake.userId).catch(
+          (error) => error,
+        );
 
         expect(thrownError).toBeInstanceOf(INTERNAL_SERVER_ERROR);
         expect(thrownError.cause).toBe(fake.dbError);
@@ -155,7 +170,13 @@ describe('machine repository', () => {
     describe('when machine is created', () => {
       test('should return the created machine', async ({ fastify, fake }) => {
         const type = 'PUMP';
-        const mockResult = { id: fake.id, uuid: fake.uuid, name: fake.name, type, userId: fake.userId };
+        const mockResult = {
+          id: fake.id,
+          uuid: fake.uuid,
+          name: fake.name,
+          type,
+          userId: fake.userId,
+        };
 
         fastify.prisma.machine = { create: vi.fn().mockResolvedValue(mockResult) };
 
@@ -163,7 +184,9 @@ describe('machine repository', () => {
 
         expect(result).toEqual(mockResult);
 
-        expect(fastify.prisma.machine.create).toHaveBeenCalledWith({ data: { name: fake.name, type, userId: fake.userId } });
+        expect(fastify.prisma.machine.create).toHaveBeenCalledWith({
+          data: { name: fake.name, type, userId: fake.userId },
+        });
       });
     });
   });
@@ -173,7 +196,9 @@ describe('machine repository', () => {
       test('should rethrow as INTERNAL_SERVER_ERROR with cause', async ({ fastify, fake }) => {
         fastify.prisma.machine = { update: vi.fn().mockRejectedValue(fake.dbError) };
 
-        const thrownError = await updateMachine(fastify, fake.uuid, fake.userId, fake.name).catch((error) => error);
+        const thrownError = await updateMachine(fastify, fake.uuid, fake.userId, fake.name).catch(
+          (error) => error,
+        );
 
         expect(thrownError).toBeInstanceOf(INTERNAL_SERVER_ERROR);
         expect(thrownError.cause).toBe(fake.dbError);
@@ -190,7 +215,10 @@ describe('machine repository', () => {
 
         await updateMachine(fastify, fake.uuid, fake.userId, fake.name, type);
 
-        expect(fastify.prisma.machine.update).toHaveBeenCalledWith({ where: { uuid: fake.uuid, userId: fake.userId }, data: { name: fake.name, type } });
+        expect(fastify.prisma.machine.update).toHaveBeenCalledWith({
+          where: { uuid: fake.uuid, userId: fake.userId },
+          data: { name: fake.name, type },
+        });
       });
     });
 
@@ -200,7 +228,10 @@ describe('machine repository', () => {
 
         await updateMachine(fastify, fake.uuid, fake.userId, fake.name);
 
-        expect(fastify.prisma.machine.update).toHaveBeenCalledWith({ where: { uuid: fake.uuid, userId: fake.userId }, data: { name: fake.name } });
+        expect(fastify.prisma.machine.update).toHaveBeenCalledWith({
+          where: { uuid: fake.uuid, userId: fake.userId },
+          data: { name: fake.name },
+        });
       });
     });
   });

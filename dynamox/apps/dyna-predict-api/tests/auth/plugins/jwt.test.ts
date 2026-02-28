@@ -17,9 +17,13 @@ async function buildJwtApp(): Promise<FastifyInstance> {
   await fastify.register(errorHandler);
   await fastify.register(jwtPlugin);
 
-  fastify.get('/protected', {
-    preValidation: async (request, reply) => fastify.authenticate(request, reply),
-  }, async () => ({ ok: true }));
+  fastify.get(
+    '/protected',
+    {
+      preValidation: async (request, reply) => fastify.authenticate(request, reply),
+    },
+    async () => ({ ok: true }),
+  );
 
   await fastify.ready();
   return fastify;
