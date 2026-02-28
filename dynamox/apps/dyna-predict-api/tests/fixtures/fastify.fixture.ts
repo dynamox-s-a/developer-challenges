@@ -1,4 +1,4 @@
-import { test as baseTest, vi } from 'vitest';
+import { vi } from 'vitest';
 import { type FastifyInstance } from 'fastify';
 import { build, buildAuthenticated } from '../shared/helper';
 import { createMockUser } from './auth.fixture';
@@ -8,7 +8,7 @@ interface FastifyFixtures {
   fastify: FastifyInstance;
 }
 
-export const test = baseTest.extend<FastifyFixtures>({
+export const test = utilityTest.extend<FastifyFixtures>({
   // eslint-disable-next-line no-empty-pattern
   fastify: async ({}, use) => {
     const app = await build();
@@ -26,7 +26,7 @@ interface AuthenticatedFixtures {
   fastify: FastifyInstance;
 }
 
-export const authenticatedTest = baseTest.extend<AuthenticatedFixtures>({
+export const authenticatedTest = utilityTest.extend<AuthenticatedFixtures>({
   // eslint-disable-next-line no-empty-pattern
   authenticatedUser: async ({}, use) => {
     const user = await createMockUser();
@@ -36,7 +36,7 @@ export const authenticatedTest = baseTest.extend<AuthenticatedFixtures>({
     const app = await buildAuthenticated(authenticatedUser);
 
     await use(app);
-    console.log('buildei')
+
     await app.close();
   },
 });
