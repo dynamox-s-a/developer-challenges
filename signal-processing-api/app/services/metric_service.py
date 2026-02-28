@@ -17,10 +17,11 @@ class MetricService:
     @staticmethod
     def create_metric(
         db: Session,
-        signal_id: UUID, 
+        signal_id: UUID,
         data
     ):
         signal = db.query(Signal).filter(Signal.id == signal_id).first()
+
         if not signal:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, 
@@ -39,8 +40,8 @@ class MetricService:
     
     @staticmethod
     def get_metric_by_id(
-        db: Session, 
-        metric_id: UUID
+        metric_id: UUID,
+        db: Session
     ):
         metric = db.query(Metric).filter(Metric.id == metric_id).first()
         if not metric:
@@ -52,10 +53,10 @@ class MetricService:
     
     @staticmethod
     def delete_metric(
+        metric_id: UUID,
         db: Session, 
-        metric_id: UUID
     ):
-        metric = MetricService.get_metric_by_id(db, metric_id)
+        metric = MetricService.get_metric_by_id(metric_id, db)
         db.delete(metric)
         db.commit()
 
@@ -93,11 +94,11 @@ class MetricService:
             query = query.filter(Metric.metric_type == metric_type)
 
         if order == "desc":
-            query = query.order_by(desc(Metric.timestamp.desc()))
+            query = query.order_by(Metric.timestamp.desc())
         else:
             query = query.order_by(Metric.timestamp.asc())
 
-        return PaginationService.paginate_query(
+        return PaginationService.paginate(
             query=query,
             limit=limit,
             offset=offset,

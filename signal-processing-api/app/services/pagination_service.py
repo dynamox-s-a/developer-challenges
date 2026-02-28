@@ -6,7 +6,7 @@ from app.schemas.pagination import PaginatedResponseSchema
 
 class PaginationService:
     @staticmethod
-    def paginate_query(
+    def paginate(
         query: Query, 
         limit: int, 
         offset: int,

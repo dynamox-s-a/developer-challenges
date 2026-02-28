@@ -43,7 +43,7 @@ class Signal(Base):
         back_populates="signals"
     )
     metrics = relationship(
-        "Metrics", 
+        "Metric", 
         back_populates="signal",
         cascade="all, delete"
     )

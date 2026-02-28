@@ -6,11 +6,13 @@ from uuid import UUID
 
 from app.core.dependencies import get_db
 from app.schemas.metric_schema import MetricsCreate
-from app.services.metrics_service import MetricService
+from app.services.metric_service import MetricService
 
-router = APIRouter(prefix="/signals", tags=["Metrics"])
+signals_router = APIRouter(prefix="/signals", tags=["Signal Metrics"])
 
-@router.post("/signals/{signal_id}/metrics")
+metrics_router = APIRouter(prefix="/metrics", tags=["Metrics"])
+
+@signals_router.post("/{signal_id}/metrics", response_model=MetricsCreate)
 def create_metric(
     signal_id: UUID,
     data: MetricsCreate,
@@ -18,21 +20,7 @@ def create_metric(
 ):
     return MetricService.create_metric(db, signal_id, data)
 
-@router.get("/metrics/{metric_id}")
-def get_metric(
-    metric_id: UUID,
-    db: Session = Depends(get_db)
-):
-    return MetricService.get_metric_by_id(db, metric_id)
-
-@router.delete("/metrics/{metric_id}")
-def delete_metric(
-    metric_id: UUID,
-    db: Session = Depends(get_db)
-):
-    return MetricService.delete_metric(db, metric_id)
-
-@router.get("/signals/{signal_id}/metrics")
+@signals_router.get("/{signal_id}/metrics")
 def list_signal_metrics(
     signal_id: UUID,
     start_time: datetime | None = None,
@@ -53,3 +41,18 @@ def list_signal_metrics(
         limit, 
         offset
     )
+
+@metrics_router.get("/{metric_id}")
+def get_metric_by_id(
+    metric_id: UUID,
+    db: Session = Depends(get_db)
+):
+    return MetricService.get_metric_by_id(metric_id, db)
+
+@metrics_router.delete("/{metric_id}")
+def delete_metric_by_id(
+    metric_id: UUID,
+    db: Session = Depends(get_db)
+):
+    return MetricService.delete_metric(metric_id, db)
+

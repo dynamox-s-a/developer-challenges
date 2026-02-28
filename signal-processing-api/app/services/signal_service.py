@@ -10,9 +10,9 @@ from app.schemas.signal_schema import FullTimeSeriesResponse, SignalCreate
 class SignalService:
     @staticmethod
     def create_signal(
-        db: Session,
-        machine_id: UUID, 
-        data: SignalCreate
+        machine_id: UUID,   
+        data: SignalCreate, 
+        db: Session
     ):
         machine = db.query(Machine).filter(Machine.id == machine_id).first()
         if not machine:
@@ -33,8 +33,8 @@ class SignalService:
     
     @staticmethod
     def get_signal_by_id(
-        db: Session, 
-        signal_id: UUID
+        signal_id: UUID,
+        db: Session
     ):
         
         signal = db.query(Signal).filter(Signal.id == signal_id).first()
@@ -47,10 +47,10 @@ class SignalService:
     
     @staticmethod
     def delete_signal(
-        db: Session, 
-        signal_id: UUID
+        signal_id: UUID,
+        db: Session
     ):
-        signal = SignalService.get_signal_by_id(db, signal_id)
+        signal = SignalService.get_signal_by_id(signal_id, db)
         db.delete(signal)
         db.commit()
 

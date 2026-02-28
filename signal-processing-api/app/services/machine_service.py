@@ -13,27 +13,25 @@ from app.models.machine import Machine
 from app.models.signal import Signal
 from app.models.metric import Metric
 from app.schemas.machine_schema import MachineResponse
-from app.schemas.machine_schema import MachineResponse
 from app.schemas.signal_schema import SignalResponse
 from app.services.pagination_service import PaginationService
 
 class MachineService:
     @staticmethod
     def create_machine(
-        db: Session,
-        name: str, 
-        location: str
+        data: MachineResponse,
+        db: Session        
     ) -> Machine:
-        machine = Machine(name=name, location=location)
+        machine = Machine(name=data.name, location=data.location)
         db.add(machine)
         db.commit()
         db.refresh(machine)
         return machine
 
     @staticmethod
-    def get_machine_by_id(
-        db: Session, 
-        machine_id: UUID
+    def get_machine_by_id( 
+        machine_id: UUID,
+        db: Session,
     ) -> Machine:
         machine = db.query(Machine).filter(Machine.id == machine_id).first()
         if not machine:
@@ -49,21 +47,28 @@ class MachineService:
         limit: int = 10, 
         offset: int = 0
     ):
-        query = db.query(Machine).order_by(asc(Machine.created_at.desc()))
+        query = db.query(Machine).order_by(Machine.created_at.desc())
 
         return PaginationService.paginate(
             query=query,
             limit=limit,
             offset=offset,
             schema_class=MachineResponse,
+            count_total=True
         )
 
     @staticmethod
     def delete_machine(
-        db: Session, 
-        machine_id: UUID
+        machine_id: UUID,
+        db: Session        
     ):
-        machine = MachineService.get_by_id(db, machine_id)
+        machine = db.query(Machine).filter(Machine.id == machine_id).first()
+        if not machine:
+            raise HTTPException(
+                status_code=404, 
+                detail="Machine not found"
+            )
+        
         db.delete(machine)
         db.commit()
         return {
@@ -80,7 +85,7 @@ class MachineService:
         offset,
         order
     ):
-        MachineService.get_by_id(db, machine_id)
+        MachineService.get_machine_by_id(machine_id, db)
 
         query = (
             db.query(Metric)
@@ -126,7 +131,7 @@ class MachineService:
         start_time: Optional[datetime] = None,
         end_time: Optional[datetime] = None
     ):
-        machine = MachineService.get_machine_by_id(db, machine_id)
+        machine = MachineService.get_machine_by_id(machine_id, db)
 
         query = db.query(Signal).filter(Signal.machine_id == machine_id)
 
@@ -140,7 +145,7 @@ class MachineService:
 
         query = query.order_by(desc(Signal.timestamp))
 
-        return PaginationService.paginate_query(
+        return PaginationService.paginate(
             query=query,
             limit=limit,
             offset=offset,
@@ -149,8 +154,8 @@ class MachineService:
     
     @staticmethod
     def count_machine_signals(
+        machine_id: UUID,
         db: Session,
-        machine_id: UUID
     ):
         #retrives signals count for a given machine
         machine = db.query(Machine).filter(Machine.id == machine_id).first()

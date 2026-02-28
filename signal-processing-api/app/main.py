@@ -5,7 +5,7 @@ from app.core.database import Base
 
 from app.routes.machine_routes import router as machine_router
 from app.routes.signal_routes import router as signal_router
-from app.routes.metric_routes import router as metric_router
+from app.routes.metric_routes import signals_router, metrics_router
 
 import logging
 
@@ -38,4 +38,5 @@ async def health_check():
 
 app.include_router(machine_router)
 app.include_router(signal_router)
-app.include_router(metric_router)
+app.include_router(signals_router)
+app.include_router(metrics_router)
