@@ -5,6 +5,7 @@ export interface Fake {
   id: number;
   uuid: string;
   userId: number;
+  machineUuid: string,
   name: string;
   email: string;
   password: string;
@@ -22,6 +23,7 @@ export const utilityTest = baseTest.extend<UtilityFixtures>({
       id: faker.number.int({ min: 1 }),
       uuid: faker.string.uuid(),
       userId: faker.number.int({ min: 1 }),
+      machineUuid: faker.string.uuid(),
       name: faker.person.fullName(),
       email: faker.internet.email(),
       password: faker.internet.password(),
