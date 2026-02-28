@@ -57,7 +57,7 @@ describe('sentry plugin', () => {
       test('should initialize Sentry with the correct DSN', async () => {
         await fastify.register(sentryPlugin);
 
-        expect(Sentry.init).toHaveBeenCalledWith(expect.objectContaining({ dsn: sentryDsn }));
+        expect(Sentry.init).toHaveBeenCalledWith(expect.objectContaining({ dsn: sentryDsn, environment: 'production' }));
       });
     });
   });
