@@ -4,3 +4,4 @@ sqlalchemy==2.0.47
 asyncpg==0.31.0
 pytest-asyncio==0.21.1
 httpx==0.28.1
+locust==2.43.3
