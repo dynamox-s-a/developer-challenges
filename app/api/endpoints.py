@@ -2,11 +2,12 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import insert, select, func, delete
 from uuid import UUID
+from datetime import timedelta
 import logging
 
 from app.core.database import get_db
 from app.models.series import Series, SeriesData
-from app.schemas.series import SeriesCreate, SeriesResponse, SeriesFullResponse, MetricsResponse
+from app.schemas.series import SeriesCreate, SeriesResponse, SeriesFullResponse, MetricsResponse, PredictionResponse
 
 router = APIRouter(prefix="/series", tags=["Series de Tempo"])
 
@@ -166,3 +167,81 @@ async def delete_series(
 
     # Retorna 'Status 204' sem corpo de resposta
     return None
+
+@router.get("/{series_id}/predict", response_model=PredictionResponse)
+async def predict_series(
+    series_id: UUID,
+    steps: int = 5,
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Prevê os próximos pontos ('steps') da série temporal usando Regressão Linear Simples.
+    """
+    
+    result = await db.execute(select(Series).where(Series.id == series_id))
+    series = result.scalar_one_or_none()
+    
+    if not series:
+        raise HTTPException(status_code=404, detail="Série não encontrada.")
+
+    data_result = await db.execute(
+        select(SeriesData)
+        .where(SeriesData.series_id == series_id)
+        .order_by(SeriesData.timestamp.asc())
+    )
+    data_points = data_result.scalars().all()
+
+    # Requisito mínimo de 2 pontos para traçar uma reta
+    n = len(data_points)
+    if n < 2:
+        raise HTTPException(status_code=400, detail="Pontos insuficientes para predição. Necessário pelo menos 2.")
+
+    # Tornando o timestamp em segundos relativos
+    t0 = data_points[0].timestamp
+    x_vals = [(pt.timestamp - t0).total_seconds() for pt in data_points]
+    y_vals = [pt.value for pt in data_points]
+
+    # Cálculo da Regressão Linear
+    sum_x = sum(x_vals)
+    sum_y = sum(y_vals)
+    sum_xy = sum(x * y for x, y in zip(x_vals, y_vals))
+    sum_x2 = sum(x**2 for x in x_vals)
+
+    denominator = (n * sum_x2) - (sum_x ** 2)
+    
+    # Evita divisão por zero (teórico para caso todos os pontos tenham exatamente o mesmo timestamp)
+    if denominator == 0:
+        m = 0.0
+        b = sum_y / n
+    else:
+        m = ((n * sum_xy) - (sum_x * sum_y)) / denominator
+        b = (sum_y - (m * sum_x)) / n
+
+    # Cálculo do intervalo médio de tempo para saber quando serão os pontos futuros
+    avg_interval_seconds = (x_vals[-1] - x_vals[0]) / (n - 1)
+    if avg_interval_seconds == 0:
+        avg_interval_seconds = 1.0
+
+    # Gera os pontos previstos
+    last_x = x_vals[-1]
+    last_time = data_points[-1].timestamp
+    predictions = []
+
+    for i in range(1, steps + 1):
+        next_x = last_x + (avg_interval_seconds * i)
+        next_time = last_time + timedelta(seconds=avg_interval_seconds * i)
+        
+        # Fórmula da reta: y = mx + b
+        next_y = (m * next_x) + b
+
+        predictions.append({
+            "timestamp": next_time,
+            "predicted_value": round(next_y, 4)
+        })
+
+    return {
+        "series_id": series.id,
+        "name": series.name,
+        "unit": series.unit,
+        "predictions": predictions
+    }

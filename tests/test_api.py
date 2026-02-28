@@ -127,3 +127,67 @@ async def test_get_full_series_not_found(client, setup_db):
     
     assert response.status_code == 404
     assert response.json()["detail"] == "Série não encontrada."
+
+@pytest.mark.asyncio
+async def test_predict_series_success(client, setup_db):
+    """Teste para validar sucesso verificando a precisão matemática da predição."""
+    
+    # Criando uma série temporal com tendência "óbvia" de 2.0 por degrau
+    base_time = datetime.now(timezone.utc)
+    payload = {
+        "name": "Sensor de Temperatura Crescente",
+        "unit": "°C",
+        "data_points": [
+            {"timestamp": base_time.isoformat(), "value": 10.0},                            # Segundo 0
+            {"timestamp": (base_time + timedelta(seconds=1)).isoformat(), "value": 12.0},   # Segundo 1
+            {"timestamp": (base_time + timedelta(seconds=2)).isoformat(), "value": 14.0}    # Segundo 2
+        ]
+    }
+    create_res = await client.post("/api/series/", json=payload)
+    series_id = create_res.json()["id"]
+
+    # Chama o endpoint de predição pedindo 2 passos (steps) no futuro
+    predict_res = await client.get(f"/api/series/{series_id}/predict?steps=2")
+
+    assert predict_res.status_code == 200
+    data = predict_res.json()
+    
+    assert len(data["predictions"]) == 2
+    # Previsão 1 (Segundo 3): Deve ser 16.0
+    assert data["predictions"][0]["predicted_value"] == 16.0
+    # Previsão 2 (Segundo 4): Deve ser 18.0
+    assert data["predictions"][1]["predicted_value"] == 18.0
+
+
+@pytest.mark.asyncio
+async def test_predict_series_insufficient_data(client, setup_db):
+    """Teste garantindo que a API recusa prever com menos de 2 pontos."""
+    
+    # Cria uma série temporal com apenas 1 ponto
+    payload = {
+        "name": "Sensor Novo",
+        "unit": "Hz",
+        "data_points": [
+            {"timestamp": "2026-01-01T10:00:00Z", "value": 50.0}
+        ]
+    }
+    create_res = await client.post("/api/series/", json=payload)
+    series_id = create_res.json()["id"]
+
+    # Tenta prever
+    predict_res = await client.get(f"/api/series/{series_id}/predict")
+
+    # Deve retornar '400 Bad Request' com a mensagem correta
+    assert predict_res.status_code == 400
+    assert "menos 2" in predict_res.json()["detail"]
+
+
+@pytest.mark.asyncio
+async def test_predict_series_not_found(client, setup_db):
+    """Teste garantindo o erro '404' para IDs inexistentes na predição."""
+    
+    fake_id = str(uuid4())
+    predict_res = await client.get(f"/api/series/{fake_id}/predict")
+    
+    assert predict_res.status_code == 404
+    assert predict_res.json()["detail"] == "Série não encontrada."

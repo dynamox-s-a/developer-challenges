@@ -42,3 +42,15 @@ class MetricsResponse(BaseModel):
     average: Optional[float] = Field(None, description="Média de todos os valores")
     max_value: Optional[float] = Field(None, description="Valor máximo registado")
     min_value: Optional[float] = Field(None, description="Valor mínimo registado")
+
+class PredictedPoint(BaseModel):
+    """Esquema para representar um ponto previsto no tempo"""
+    timestamp: datetime = Field(description="Data e hora da previsão")
+    predicted_value: float = Field(description="Valor previsto para a série no instante informado")
+
+class PredictionResponse(BaseModel):
+    """Esquema para devolver as previsões geradas para uma série temporal"""
+    series_id: UUID = Field(description="Identificador único da série")
+    name: str = Field(description="Nome da série temporal")
+    unit: str = Field(description="Unidade de medida da série")
+    predictions: list[PredictedPoint] = Field(description="Lista de pontos previstos ordenados cronologicamente")
