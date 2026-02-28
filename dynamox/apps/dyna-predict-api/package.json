@@ -140,7 +140,7 @@
     "dev:db:studio": "prisma studio",
     "prod:db:migrate": "prisma migrate deploy",
     "prod:db:seed": "NODE_ENV=production tsx prisma/seed.ts",
-    "format": "prettier --write \"src/**/*.ts\""
+    "format": "prettier --write \"{src,tests}/**/*.ts\""
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
