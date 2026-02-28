@@ -100,7 +100,7 @@ describe('POST /v1/machines', () => {
           ...mockMachine,
           createdAt,
           updatedAt: createdAt,
-        } as never);
+        });
 
         const response = await fastify.inject({
           method: 'POST',
@@ -213,7 +213,7 @@ describe('PATCH /v1/machines/:uuid', () => {
           ...mockMachine,
           name: updatedName,
           updatedAt,
-        } as never);
+        });
 
         const response = await fastify.inject({
           method: 'PATCH',
