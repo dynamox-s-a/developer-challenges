@@ -9,6 +9,7 @@ import jwtPlugin from '../../src/auth/plugins/jwt';
 import authRoutes from '../../src/auth/routes/auth';
 import { faker } from '@faker-js/faker';
 import health from '../../src/shared/routes/health';
+import machinesRoutes from '../../src/machines/routes/machines'
 
 type AuthenticatedUser = { sub: number; uuid: string; email: string; role: string };
 
@@ -31,7 +32,8 @@ export async function build(): Promise<FastifyInstance> {
   const fastify = await createApp();
 
   await fastify.register(authRoutes, { prefix: '/v1' });
-  await fastify.register(health)
+  await fastify.register(machinesRoutes, { prefix: '/v1' });
+  await fastify.register(health);
 
   await fastify.ready();
   vi.clearAllMocks();
@@ -51,6 +53,7 @@ export async function buildAuthenticated(user: AuthenticatedUser): Promise<Fasti
   );
 
   await fastify.register(authRoutes, { prefix: '/v1' });
+  await fastify.register(machinesRoutes, { prefix: '/v1' });
   await fastify.ready();
   vi.clearAllMocks();
 
