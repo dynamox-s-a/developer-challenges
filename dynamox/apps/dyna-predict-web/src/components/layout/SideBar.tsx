@@ -19,8 +19,8 @@ interface SideBarProps {
 
 const NAVIGATION_ITEMS = [
   { label: 'Dashboard', icon: <DashboardIcon />, path: routePaths.dashboard, disabled: false },
-  { label: 'Máquinas', icon: <PrecisionManufacturingIcon />, path: routePaths.machines, disabled: true },
-  { label: 'Pontos de Monitoramento', icon: <RadarIcon />, path: routePaths.monitoringPoints, disabled: true },
+  { label: 'Máquinas', icon: <PrecisionManufacturingIcon />, path: routePaths.machines, disabled: false },
+  { label: 'Pontos de Monitoramento', icon: <RadarIcon />, path: routePaths.monitoringPoints, disabled: false },
 ];
 
 function SideBar({ width, mobileOpen, onClose, onTransitionEnd }: SideBarProps) {
