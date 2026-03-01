@@ -4,6 +4,7 @@
  * for Machine request/response contracts.
  */
 import { Type, Static } from '@sinclair/typebox';
+import { SensorModelSchema } from '../sensors/sensor.schema.js';
 import { MonitoringPointWithSensorSchema } from '../monitoring-points/monitoring-point.schema.js';
 
 // Shared Schemas
@@ -50,13 +51,28 @@ export const CreateMachineRequestSchema = Type.Object({
   type: MachineTypeSchema,
 });
 
-export const CreateMachineResponseSchema = Type.Intersect([
-  Type.Pick(MachineSchema, ['id', 'uuid', 'name', 'type', 'userId', 'createdAt', 'updatedAt']),
-  Type.Object({
-    monitoringPoints: Type.Array(MonitoringPointWithSensorSchema),
-    unassignedSensorCount: Type.Number(),
-  }),
-]);
+export const CreateMachineResponseSchema = Type.Object({
+  id: Type.Number(),
+  uuid: Type.String(),
+  name: Type.String(),
+  type: MachineTypeSchema,
+  userId: Type.Number(),
+  createdAt: Type.String({ format: 'date-time' }),
+  updatedAt: Type.String({ format: 'date-time' }),
+  monitoringPoints: Type.Array(
+    Type.Object({
+      id: Type.Number(),
+      uuid: Type.String(),
+      name: Type.String(),
+      createdAt: Type.String({ format: 'date-time' }),
+      updatedAt: Type.String({ format: 'date-time' }),
+      sensor: Type.Optional(
+        Type.Object({ uuid: Type.String(), model: SensorModelSchema }),
+      ),
+    }),
+  ),
+  unassignedSensorCount: Type.Number(),
+});
 
 export const PatchMachineRequestSchema = Type.Partial(
   Type.Pick(MachineSchema, ['name', 'type']),

@@ -99,6 +99,11 @@ export const DeleteTimeSeriesByUuidsResponseSchema = Type.Object({
   deleted: Type.Number(),
 });
 
+export const CreateTimeSeriesBatchResponseSchema = Type.Object({
+  timeSeries: Type.Array(TimeSeriesEntrySchema),
+  metrics: TimeSeriesMetricsResponseSchema,
+});
+
 // Types
 
 export type TimeSeries = Static<typeof TimeSeriesSchema>;
@@ -114,3 +119,4 @@ export type TimeSeriesMetricsQuery = Static<typeof TimeSeriesMetricsQuerySchema>
 export type DeleteTimeSeriesByRangeQuery = Static<typeof DeleteTimeSeriesByRangeQuerySchema>;
 export type DeleteTimeSeriesByUuidsRequest = Static<typeof DeleteTimeSeriesByUuidsRequestSchema>;
 export type DeleteTimeSeriesByUuidsResponse = Static<typeof DeleteTimeSeriesByUuidsResponseSchema>;
+export type CreateTimeSeriesBatchResponse = Static<typeof CreateTimeSeriesBatchResponseSchema>;
