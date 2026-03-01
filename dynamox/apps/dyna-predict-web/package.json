@@ -1,5 +1,18 @@
 {
   "name": "@dynamox/dyna-predict-web",
   "version": "0.0.1",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@fontsource/roboto": "^5.2.10",
+    "@hookform/resolvers": "^5.2.2",
+    "@mui/icons-material": "^5.18.0",
+    "@mui/material": "^5.18.0",
+    "@reduxjs/toolkit": "^2.11.2",
+    "axios": "^1.13.6",
+    "react-hook-form": "^7.71.2",
+    "react-redux": "^9.2.0",
+    "recharts": "^3.7.0"
+  }
 }
