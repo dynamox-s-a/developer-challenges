@@ -93,6 +93,7 @@ export const PatchMonitoringPointResponseSchema = Type.Intersect([
 
 export type MonitoringPointSortBy = Static<typeof MonitoringPointSortBySchema>;
 export type MonitoringPointsQuery = Static<typeof MonitoringPointsQuerySchema>;
+export type CreateMonitoringPointRequest = Static<typeof CreateMonitoringPointRequestSchema>;
 export type MonitoringPoint = Static<typeof MonitoringPointSchema>;
 export type MonitoringPointWithSensor = Static<typeof MonitoringPointWithSensorSchema>;
 export type MonitoringPointWithMachineAndSensor = Static<typeof MonitoringPointWithMachineAndSensorSchema>;
