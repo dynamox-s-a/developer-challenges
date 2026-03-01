@@ -37,7 +37,8 @@ const authRoutes: FastifyPluginAsyncTypebox = async function (fastify) {
       },
     },
     async (request, reply) => {
-      const { email, password } = request.body;
+      const email = request.body.email.trim().toLowerCase();
+      const { password } = request.body;
 
       const user = await validateUserCredentials(fastify, email, password);
 
