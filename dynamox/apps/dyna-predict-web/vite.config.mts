@@ -1,8 +1,12 @@
 /// <reference types='vitest' />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { sentryVitePlugin } from '@sentry/vite-plugin';
 
-export default defineConfig(() => ({
+export default defineConfig(({ mode }) => {
+  const isProd = mode === 'production';
+
+  return {
   root: import.meta.dirname,
   cacheDir: '../../node_modules/.vite/apps/dyna-predict-web',
   server: {
@@ -13,7 +17,16 @@ export default defineConfig(() => ({
     port: 5173,
     host: 'localhost',
   },
-  plugins: [react()],
+  plugins: [
+    react(),
+    isProd && sentryVitePlugin({
+      org: 'eric-reis-ltda',
+      project: 'dyna-predict-web',
+      sourcemaps: {
+        filesToDeleteAfterUpload: ['./**/*.map'],
+      },
+    }),
+  ].filter(Boolean),
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [],
@@ -25,6 +38,7 @@ export default defineConfig(() => ({
     commonjsOptions: {
       transformMixedEsModules: true,
     },
+    sourcemap: isProd ? 'hidden' as const : false,
   },
   test: {
     name: '@dynamox/dyna-predict-web',
@@ -38,4 +52,5 @@ export default defineConfig(() => ({
       provider: 'v8' as const,
     },
   },
-}));
+  };
+});
