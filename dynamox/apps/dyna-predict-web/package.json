@@ -10,9 +10,13 @@
     "@mui/icons-material": "^5.18.0",
     "@mui/material": "^5.18.0",
     "@reduxjs/toolkit": "^2.11.2",
+    "@sentry/react": "^10.40.0",
     "axios": "^1.13.6",
     "react-hook-form": "^7.71.2",
     "react-redux": "^9.2.0",
     "recharts": "^3.7.0"
+  },
+  "devDependencies": {
+    "@sentry/vite-plugin": "^5.1.1"
   }
 }
