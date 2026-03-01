@@ -33,7 +33,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <StrictMode>
-      <ThemeProvider theme={theme}>...
+      <ThemeProvider theme={theme}>
          <CssBaseline />
         <Provider store={store}>
           <RouterProvider router={router} />
