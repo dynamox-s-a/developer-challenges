@@ -25,7 +25,7 @@ export default fp(async function sentryPlugin(fastify: FastifyInstance) {
       Sentry.onUnhandledRejectionIntegration(),
     ],
     release: process.env.npm_package_version,
-    sendDefaultPii: true,
+    sendDefaultPii: false,
   });
 
   fastify.log.info('Sentry initialized');
