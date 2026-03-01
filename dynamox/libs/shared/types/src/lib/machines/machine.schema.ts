@@ -50,7 +50,13 @@ export const CreateMachineRequestSchema = Type.Object({
   type: MachineTypeSchema,
 });
 
-export const CreateMachineResponseSchema = Type.Pick(MachineSchema, ['id', 'uuid', 'name', 'type', 'createdAt']);
+export const CreateMachineResponseSchema = Type.Intersect([
+  Type.Pick(MachineSchema, ['id', 'uuid', 'name', 'type', 'userId', 'createdAt', 'updatedAt']),
+  Type.Object({
+    monitoringPoints: Type.Array(MonitoringPointWithSensorSchema),
+    unassignedSensorCount: Type.Number(),
+  }),
+]);
 
 export const PatchMachineRequestSchema = Type.Partial(
   Type.Pick(MachineSchema, ['name', 'type']),

@@ -90,7 +90,11 @@ const machinesRoutes: FastifyPluginAsyncTypebox = async function (fastify) {
         uuid: machine.uuid,
         name: machine.name,
         type: machine.type,
+        userId: machine.userId,
         createdAt: machine.createdAt.toISOString(),
+        updatedAt: machine.updatedAt.toISOString(),
+        monitoringPoints: [],
+        unassignedSensorCount: 0,
       });
     },
   );
