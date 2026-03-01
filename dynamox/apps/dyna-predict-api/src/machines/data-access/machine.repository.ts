@@ -53,7 +53,7 @@ export async function findExistingMachine(
 ) {
   try {
     return await fastify.prisma.machine.findFirst({
-      where: { userId, name, type },
+      where: { userId, type, name: { equals: name, mode: 'insensitive' } },
       select: {
         id: true,
       },

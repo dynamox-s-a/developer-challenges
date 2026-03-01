@@ -75,7 +75,8 @@ const machinesRoutes: FastifyPluginAsyncTypebox = async function (fastify) {
       },
     },
     async (request, reply) => {
-      const { name, type } = request.body;
+      const name = request.body.name.trim();
+      const { type } = request.body;
       const { sub: userId } = request.user;
 
       const existingMachine = await findExistingMachine(fastify, name, type, userId);
@@ -110,7 +111,8 @@ const machinesRoutes: FastifyPluginAsyncTypebox = async function (fastify) {
     },
     async (request, reply) => {
       const { uuid } = request.params;
-      const { name, type } = request.body;
+      const name = request.body.name?.trim();
+      const { type } = request.body;
       const { sub: userId } = request.user;
 
       const machine = await findExistingMachineByUuid(fastify, uuid, userId);
