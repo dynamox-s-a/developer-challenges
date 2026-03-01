@@ -3,7 +3,6 @@ import { StatusCodes } from 'http-status-codes';
 import type { createBrowserRouter } from 'react-router-dom';
 
 import type { AppStore } from '../store/store';
-import { logError } from '../utils/logging';
 
 type RemixRouter = ReturnType<typeof createBrowserRouter>;
 
@@ -40,17 +39,6 @@ api.interceptors.response.use(
       store.dispatch({ type: 'auth/logout/fulfilled' });
       router.navigate('/auth/login');
     }
-
-    logError(error, {
-      tags: { section: 'axios-response' },
-      extra: {
-        url: error.config?.url,
-        method: error.config?.method,
-        requestData: error.config?.data,
-        responseData: error.response?.data,
-        status: error.response?.status,
-      },
-    });
 
     return Promise.reject(error);
   },
