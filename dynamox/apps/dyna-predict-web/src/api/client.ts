@@ -36,6 +36,7 @@ api.interceptors.response.use(
 
       if (isAuthRequest) return Promise.reject(error);
 
+      // HACK (@eric-reis): dispatching the action type as a string to avoid a circular dependency.
       store.dispatch({ type: 'auth/logout/fulfilled' });
       router.navigate('/auth/login');
     }
