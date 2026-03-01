@@ -28,9 +28,11 @@ import {
 import type { MonitoringPointSortBy } from '../../store/features/monitoring-points/monitoring-points.slice';
 import type { MonitoringPointWithMachineAndSensor } from '@dynamox/types';
 import MonitoringPointFormDialog from '../../components/MonitoringPointFormDialog';
+import TimeSeriesModal from '../../components/TimeSeriesModal';
 import ConfirmDialog from '../../components/ConfirmDialog';
 import { useConfirmDialog } from '../../utils/useConfirmDialog';
 import { notify } from '../../utils/notifications';
+import BarChartIcon from '@mui/icons-material/BarChart';
 
 const PAGE_SIZE = 5;
 
@@ -54,6 +56,9 @@ function MonitoringPointsPage() {
   const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedPoint, setSelectedPoint] = useState<
+    MonitoringPointWithMachineAndSensor | undefined
+  >();
+  const [timeSeriesPoint, setTimeSeriesPoint] = useState<
     MonitoringPointWithMachineAndSensor | undefined
   >();
   const { confirm, dialogProps } = useConfirmDialog();
@@ -138,6 +143,7 @@ function MonitoringPointsPage() {
                   </TableSortLabel>
                 </TableCell>
               ))}
+              <TableCell>Dados do Sensor</TableCell>
               <TableCell align="right">Ações</TableCell>
             </TableRow>
           </TableHead>
@@ -150,6 +156,7 @@ function MonitoringPointsPage() {
                         <Skeleton />
                       </TableCell>
                     ))}
+                    <TableCell><Skeleton width={60} /></TableCell>
                     <TableCell align="right">
                       <Skeleton width={80} />
                     </TableCell>
@@ -171,6 +178,21 @@ function MonitoringPointsPage() {
                         </Typography>
                       )}
                     </TableCell>
+                    <TableCell>
+                      {point.sensor?.model ? (
+                        <Button
+                          size="small"
+                          variant="text"
+                          startIcon={<BarChartIcon fontSize="small" />}
+                          onClick={() => setTimeSeriesPoint(point)}
+                          sx={{ textTransform: 'none' }}
+                        >
+                          Ver
+                        </Button>
+                      ) : (
+                        <Typography variant="body2" color="text.disabled">—</Typography>
+                      )}
+                    </TableCell>
                     <TableCell align="right">
                       <IconButton size="small" sx={{ mr: 0.5 }} onClick={() => handleEdit(point)}>
                         <EditIcon fontSize="small" />
@@ -190,7 +212,7 @@ function MonitoringPointsPage() {
                 rowsPerPage={PAGE_SIZE}
                 rowsPerPageOptions={[PAGE_SIZE]}
                 onPageChange={handlePageChange}
-                colSpan={COLUMNS.length + 1}
+                colSpan={COLUMNS.length + 2}
               />
             </TableRow>
           </TableFooter>
@@ -202,6 +224,11 @@ function MonitoringPointsPage() {
         onClose={handleClose}
         point={selectedPoint}
         fetchParams={fetchParams}
+      />
+      <TimeSeriesModal
+        open={!!timeSeriesPoint}
+        onClose={() => setTimeSeriesPoint(undefined)}
+        point={timeSeriesPoint}
       />
       <ConfirmDialog {...dialogProps} />
     </Box>
