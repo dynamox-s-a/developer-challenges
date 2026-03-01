@@ -3,6 +3,7 @@ import authReducer from './features/auth/auth.slice'
 import reportsReducer from './features/reports/report.slice'
 import machinesReducer from './features/machines/machine.slice'
 import monitoringPointsReducer from './features/monitoring-points/monitoring-points.slice'
+import timeSeriesReducer from './features/time-series/time-series.slice'
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     reports: reportsReducer,
     machines: machinesReducer,
     monitoringPoints: monitoringPointsReducer,
+    timeSeries: timeSeriesReducer,
   },
 })
 
