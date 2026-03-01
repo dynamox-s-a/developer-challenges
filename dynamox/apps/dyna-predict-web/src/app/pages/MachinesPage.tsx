@@ -94,7 +94,6 @@ function MachinesPage() {
               <TableCell>Nome</TableCell>
               <TableCell>Tipo</TableCell>
               <TableCell align="center">Pontos de Monitoramento</TableCell>
-              <TableCell>Criado em</TableCell>
               <TableCell align="right">Ações</TableCell>
             </TableRow>
           </TableHead>
@@ -105,7 +104,6 @@ function MachinesPage() {
                     <TableCell><Skeleton /></TableCell>
                     <TableCell><Skeleton width={60} /></TableCell>
                     <TableCell align="center"><Skeleton /></TableCell>
-                    <TableCell><Skeleton width={80} /></TableCell>
                     <TableCell align="right"><Skeleton width={80} /></TableCell>
                   </TableRow>
                 ))
@@ -122,9 +120,6 @@ function MachinesPage() {
                           <VisibilityIcon fontSize="small" />
                         </IconButton>
                       </Box>
-                    </TableCell>
-                    <TableCell>
-                      {new Date(machine.createdAt).toLocaleDateString('pt-BR')}
                     </TableCell>
                     <TableCell align="right">
                       <IconButton size="small" sx={{ mr: 0.5 }} onClick={() => handleEdit(machine)}>
