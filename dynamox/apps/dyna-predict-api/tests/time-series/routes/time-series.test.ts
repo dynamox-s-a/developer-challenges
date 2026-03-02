@@ -90,17 +90,42 @@ describe('POST /v1/time-series/:sensorUuid', () => {
         expect(response.json()).toEqual({
           timeSeries: [{ uuid: fake.uuid, ...requestEntry, timestamp: timestamp.toISOString() }],
           metrics: {
-            temperature: { min: mockMetrics._min.temperature, max: mockMetrics._max.temperature, avg: mockMetrics._avg.temperature },
-            accelerationRms: { min: mockMetrics._min.accelerationRms, max: mockMetrics._max.accelerationRms, avg: mockMetrics._avg.accelerationRms },
-            velocityRms: { min: mockMetrics._min.velocityRms, max: mockMetrics._max.velocityRms, avg: mockMetrics._avg.velocityRms },
+            temperature: {
+              min: mockMetrics._min.temperature,
+              max: mockMetrics._max.temperature,
+              avg: mockMetrics._avg.temperature,
+            },
+            accelerationRms: {
+              min: mockMetrics._min.accelerationRms,
+              max: mockMetrics._max.accelerationRms,
+              avg: mockMetrics._avg.accelerationRms,
+            },
+            velocityRms: {
+              min: mockMetrics._min.velocityRms,
+              max: mockMetrics._max.velocityRms,
+              avg: mockMetrics._avg.velocityRms,
+            },
             count: mockMetrics._count,
           },
         });
 
-        expect(findSensorByUuidSpy).toHaveBeenCalledExactlyOnceWith(expect.anything(), fake.uuid, authenticatedUser.sub);
-        expect(createTimeSeriesEntriesSpy).toHaveBeenCalledExactlyOnceWith(expect.anything(), mockSensor.id, [requestEntry]);
+        expect(findSensorByUuidSpy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          fake.uuid,
+          authenticatedUser.sub,
+        );
+        expect(createTimeSeriesEntriesSpy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          mockSensor.id,
+          [requestEntry],
+        );
         expect(resolveTimeSeriesDateRangeSpy).toHaveBeenCalledExactlyOnceWith();
-        expect(getTimeSeriesMetricsSpy).toHaveBeenCalledExactlyOnceWith(expect.anything(), fake.uuid, authenticatedUser.sub, mockDateRange);
+        expect(getTimeSeriesMetricsSpy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          fake.uuid,
+          authenticatedUser.sub,
+          mockDateRange,
+        );
       },
     );
   });
@@ -156,15 +181,36 @@ describe('GET /v1/time-series/:sensorUuid/metrics', () => {
 
         expect(response.statusCode).toBe(StatusCodes.OK);
         expect(response.json()).toEqual({
-          temperature: { min: mockMetrics._min.temperature, max: mockMetrics._max.temperature, avg: mockMetrics._avg.temperature },
-          accelerationRms: { min: mockMetrics._min.accelerationRms, max: mockMetrics._max.accelerationRms, avg: mockMetrics._avg.accelerationRms },
-          velocityRms: { min: mockMetrics._min.velocityRms, max: mockMetrics._max.velocityRms, avg: mockMetrics._avg.velocityRms },
+          temperature: {
+            min: mockMetrics._min.temperature,
+            max: mockMetrics._max.temperature,
+            avg: mockMetrics._avg.temperature,
+          },
+          accelerationRms: {
+            min: mockMetrics._min.accelerationRms,
+            max: mockMetrics._max.accelerationRms,
+            avg: mockMetrics._avg.accelerationRms,
+          },
+          velocityRms: {
+            min: mockMetrics._min.velocityRms,
+            max: mockMetrics._max.velocityRms,
+            avg: mockMetrics._avg.velocityRms,
+          },
           count: mockMetrics._count,
         });
 
-        expect(findSensorByUuidSpy).toHaveBeenCalledExactlyOnceWith(expect.anything(), fake.uuid, authenticatedUser.sub);
+        expect(findSensorByUuidSpy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          fake.uuid,
+          authenticatedUser.sub,
+        );
         expect(resolveTimeSeriesDateRangeSpy).toHaveBeenCalledExactlyOnceWith(undefined, undefined);
-        expect(getTimeSeriesMetricsSpy).toHaveBeenCalledExactlyOnceWith(expect.anything(), fake.uuid, authenticatedUser.sub, mockDateRange);
+        expect(getTimeSeriesMetricsSpy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          fake.uuid,
+          authenticatedUser.sub,
+          mockDateRange,
+        );
       },
     );
   });
@@ -227,18 +273,29 @@ describe('GET /v1/time-series/:sensorUuid', () => {
 
         expect(response.statusCode).toBe(StatusCodes.OK);
         expect(response.json()).toEqual({
-          timeSeries: [{
-            uuid: mockEntry.uuid,
-            temperature: mockEntry.temperature,
-            accelerationRms: mockEntry.accelerationRms,
-            velocityRms: mockEntry.velocityRms,
-            timestamp: timestamp.toISOString(),
-          }],
+          timeSeries: [
+            {
+              uuid: mockEntry.uuid,
+              temperature: mockEntry.temperature,
+              accelerationRms: mockEntry.accelerationRms,
+              velocityRms: mockEntry.velocityRms,
+              timestamp: timestamp.toISOString(),
+            },
+          ],
         });
 
-        expect(findSensorByUuidSpy).toHaveBeenCalledExactlyOnceWith(expect.anything(), fake.uuid, authenticatedUser.sub);
+        expect(findSensorByUuidSpy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          fake.uuid,
+          authenticatedUser.sub,
+        );
         expect(resolveTimeSeriesDateRangeSpy).toHaveBeenCalledExactlyOnceWith(undefined, undefined);
-        expect(getTimeSeriesBySensorSpy).toHaveBeenCalledExactlyOnceWith(expect.anything(), fake.uuid, authenticatedUser.sub, mockDateRange);
+        expect(getTimeSeriesBySensorSpy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          fake.uuid,
+          authenticatedUser.sub,
+          mockDateRange,
+        );
       },
     );
   });
@@ -271,26 +328,31 @@ describe('DELETE /v1/time-series/:sensorUuid/all', () => {
   });
 
   describe('when all time series are deleted', () => {
-    authenticatedTest(
-      'should return 204',
-      async ({ fastify, fake, authenticatedUser }) => {
-        const findSensorByUuidSpy = vi
-          .spyOn(timeSeriesRepository, 'findSensorByUuid')
-          .mockResolvedValue({ id: fake.id });
-        const deleteAllTimeSeriesBySensorSpy = vi
-          .spyOn(timeSeriesRepository, 'deleteAllTimeSeriesBySensor')
-          .mockResolvedValue(0);
+    authenticatedTest('should return 204', async ({ fastify, fake, authenticatedUser }) => {
+      const findSensorByUuidSpy = vi
+        .spyOn(timeSeriesRepository, 'findSensorByUuid')
+        .mockResolvedValue({ id: fake.id });
+      const deleteAllTimeSeriesBySensorSpy = vi
+        .spyOn(timeSeriesRepository, 'deleteAllTimeSeriesBySensor')
+        .mockResolvedValue(0);
 
-        const response = await fastify.inject({
-          method: 'DELETE',
-          url: `/v1/time-series/${fake.uuid}/all`,
-        });
+      const response = await fastify.inject({
+        method: 'DELETE',
+        url: `/v1/time-series/${fake.uuid}/all`,
+      });
 
-        expect(response.statusCode).toBe(StatusCodes.NO_CONTENT);
+      expect(response.statusCode).toBe(StatusCodes.NO_CONTENT);
 
-        expect(findSensorByUuidSpy).toHaveBeenCalledExactlyOnceWith(expect.anything(), fake.uuid, authenticatedUser.sub);
-        expect(deleteAllTimeSeriesBySensorSpy).toHaveBeenCalledExactlyOnceWith(expect.anything(), fake.uuid, authenticatedUser.sub);
-      },
-    );
+      expect(findSensorByUuidSpy).toHaveBeenCalledExactlyOnceWith(
+        expect.anything(),
+        fake.uuid,
+        authenticatedUser.sub,
+      );
+      expect(deleteAllTimeSeriesBySensorSpy).toHaveBeenCalledExactlyOnceWith(
+        expect.anything(),
+        fake.uuid,
+        authenticatedUser.sub,
+      );
+    });
   });
 });

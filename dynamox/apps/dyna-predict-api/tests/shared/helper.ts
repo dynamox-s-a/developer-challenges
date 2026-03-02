@@ -14,7 +14,7 @@ import monitoringPointsRoutes from '../../src/monitoring-points/routes/monitorin
 import reportsRoutes from '../../src/reports/routes/reports';
 import timeSeriesRoutes from '../../src/time-series/routes/time-series';
 
-type AuthenticatedUser = { sub: number; uuid: string; email: string; };
+type AuthenticatedUser = { sub: number; uuid: string; email: string };
 
 async function createApp(): Promise<FastifyInstance> {
   const fastify = Fastify({ logger: false });

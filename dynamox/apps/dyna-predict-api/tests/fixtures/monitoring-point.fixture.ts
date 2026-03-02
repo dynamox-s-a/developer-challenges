@@ -18,7 +18,12 @@ interface MonitoringPointFixtures {
 
 export const monitoringPointTest = repositoryTest.extend<MonitoringPointFixtures>({
   mockMonitoringPoint: async ({ fake }, use) => {
-    await use({ id: fake.id, uuid: fake.uuid, name: fake.name, sensor: { uuid: fake.uuid, model: 'HFPlus' } });
+    await use({
+      id: fake.id,
+      uuid: fake.uuid,
+      name: fake.name,
+      sensor: { uuid: fake.uuid, model: 'HFPlus' },
+    });
   },
   mockMonitoringPointWithoutSensor: async ({ fake }, use) => {
     await use({ id: fake.id, uuid: fake.uuid, name: fake.name, sensor: null });

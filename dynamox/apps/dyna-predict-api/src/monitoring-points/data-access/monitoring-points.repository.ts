@@ -151,7 +151,9 @@ export async function updateMonitoringPoint(
     let sensorUpdateData;
 
     if (sensorModel) {
-      sensorUpdateData = { upsert: { create: { model: sensorModel }, update: { model: sensorModel } } };
+      sensorUpdateData = {
+        upsert: { create: { model: sensorModel }, update: { model: sensorModel } },
+      };
     } else if (deleteSensor) {
       sensorUpdateData = { delete: true };
     }

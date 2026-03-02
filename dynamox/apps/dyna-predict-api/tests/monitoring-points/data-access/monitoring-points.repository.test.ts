@@ -15,7 +15,7 @@ import { INTERNAL_SERVER_ERROR } from '../../../src/shared/errors/errors';
 describe('monitoring points repository', () => {
   describe('buildOrderBy', () => {
     const cases = {
-      name:        (order: string) => ({ name: order }),
+      name: (order: string) => ({ name: order }),
       machineName: (order: string) => ({ machine: { name: order } }),
       machineType: (order: string) => ({ machine: { type: order } }),
       sensorModel: (order: string) => ({ sensor: { model: order } }),
@@ -48,7 +48,9 @@ describe('monitoring points repository', () => {
           count: vi.fn().mockResolvedValue(0),
         };
 
-        const thrownError = await getPaginatedMonitoringPoints(fastify, fake.userId, 1, 5).catch((error) => error);
+        const thrownError = await getPaginatedMonitoringPoints(fastify, fake.userId, 1, 5).catch(
+          (error) => error,
+        );
 
         expect(thrownError).toBeInstanceOf(INTERNAL_SERVER_ERROR);
         expect(thrownError.cause).toBe(fake.dbError);
@@ -99,7 +101,9 @@ describe('monitoring points repository', () => {
       test('should rethrow as INTERNAL_SERVER_ERROR with cause', async ({ fastify, fake }) => {
         fastify.prisma.monitoringPoint = { findFirst: vi.fn().mockRejectedValue(fake.dbError) };
 
-        const thrownError = await findMonitoringPointByUuid(fastify, fake.uuid, fake.userId).catch((error) => error);
+        const thrownError = await findMonitoringPointByUuid(fastify, fake.uuid, fake.userId).catch(
+          (error) => error,
+        );
 
         expect(thrownError).toBeInstanceOf(INTERNAL_SERVER_ERROR);
         expect(thrownError.cause).toBe(fake.dbError);
@@ -122,7 +126,12 @@ describe('monitoring points repository', () => {
 
     describe('when monitoring point is found', () => {
       test('should return the monitoring point', async ({ fastify, fake }) => {
-        const mockResult = { id: fake.id, name: fake.name, machine: { id: fake.id, type: 'Pump' }, sensor: null };
+        const mockResult = {
+          id: fake.id,
+          name: fake.name,
+          machine: { id: fake.id, type: 'Pump' },
+          sensor: null,
+        };
 
         fastify.prisma.monitoringPoint = { findFirst: vi.fn().mockResolvedValue(mockResult) };
 
@@ -142,7 +151,9 @@ describe('monitoring points repository', () => {
       test('should rethrow as INTERNAL_SERVER_ERROR with cause', async ({ fastify, fake }) => {
         fastify.prisma.monitoringPoint = { findUnique: vi.fn().mockRejectedValue(fake.dbError) };
 
-        const thrownError = await findExistingMonitoringPoint(fastify, fake.name, fake.id).catch((error) => error);
+        const thrownError = await findExistingMonitoringPoint(fastify, fake.name, fake.id).catch(
+          (error) => error,
+        );
 
         expect(thrownError).toBeInstanceOf(INTERNAL_SERVER_ERROR);
         expect(thrownError.cause).toBe(fake.dbError);
@@ -187,7 +198,9 @@ describe('monitoring points repository', () => {
       test('should rethrow as INTERNAL_SERVER_ERROR with cause', async ({ fastify, fake }) => {
         fastify.prisma.monitoringPoint = { create: vi.fn().mockRejectedValue(fake.dbError) };
 
-        const thrownError = await createMonitoringPoint(fastify, fake.name, fake.id).catch((error) => error);
+        const thrownError = await createMonitoringPoint(fastify, fake.name, fake.id).catch(
+          (error) => error,
+        );
 
         expect(thrownError).toBeInstanceOf(INTERNAL_SERVER_ERROR);
         expect(thrownError.cause).toBe(fake.dbError);
@@ -197,8 +210,14 @@ describe('monitoring points repository', () => {
     });
 
     describe('when created without a sensor', () => {
-      test('should create without sensor data', async ({ fastify, fake, mockMonitoringPointWithoutSensor }) => {
-        fastify.prisma.monitoringPoint = { create: vi.fn().mockResolvedValue(mockMonitoringPointWithoutSensor) };
+      test('should create without sensor data', async ({
+        fastify,
+        fake,
+        mockMonitoringPointWithoutSensor,
+      }) => {
+        fastify.prisma.monitoringPoint = {
+          create: vi.fn().mockResolvedValue(mockMonitoringPointWithoutSensor),
+        };
 
         const result = await createMonitoringPoint(fastify, fake.name, fake.id);
 
@@ -214,7 +233,12 @@ describe('monitoring points repository', () => {
       test('should create with sensor data', async ({ fastify, fake, mockMonitoringPoint }) => {
         fastify.prisma.monitoringPoint = { create: vi.fn().mockResolvedValue(mockMonitoringPoint) };
 
-        const result = await createMonitoringPoint(fastify, fake.name, fake.id, mockMonitoringPoint.sensor.model);
+        const result = await createMonitoringPoint(
+          fastify,
+          fake.name,
+          fake.id,
+          mockMonitoringPoint.sensor.model,
+        );
 
         expect(result).toEqual(mockMonitoringPoint);
 
@@ -236,7 +260,9 @@ describe('monitoring points repository', () => {
       test('should rethrow as INTERNAL_SERVER_ERROR with cause', async ({ fastify, fake }) => {
         fastify.prisma.monitoringPoint = { update: vi.fn().mockRejectedValue(fake.dbError) };
 
-        const thrownError = await updateMonitoringPoint(fastify, fake.uuid, fake.name).catch((error) => error);
+        const thrownError = await updateMonitoringPoint(fastify, fake.uuid, fake.name).catch(
+          (error) => error,
+        );
 
         expect(thrownError).toBeInstanceOf(INTERNAL_SERVER_ERROR);
         expect(thrownError.cause).toBe(fake.dbError);
@@ -306,7 +332,9 @@ describe('monitoring points repository', () => {
       test('should rethrow as INTERNAL_SERVER_ERROR with cause', async ({ fastify, fake }) => {
         fastify.prisma.sensor = { deleteMany: vi.fn().mockRejectedValue(fake.dbError) };
 
-        const thrownError = await deleteMonitoringPointSensor(fastify, fake.uuid).catch((error) => error);
+        const thrownError = await deleteMonitoringPointSensor(fastify, fake.uuid).catch(
+          (error) => error,
+        );
 
         expect(thrownError).toBeInstanceOf(INTERNAL_SERVER_ERROR);
         expect(thrownError.cause).toBe(fake.dbError);

@@ -26,7 +26,9 @@ describe('time series repository', () => {
         const p2002Error = Object.assign(new Error('Unique constraint failed'), { code: 'P2002' });
         fastify.prisma.timeSeries = { createManyAndReturn: vi.fn().mockRejectedValue(p2002Error) };
 
-        const thrownError = await createTimeSeriesEntries(fastify, fake.id, []).catch((error) => error);
+        const thrownError = await createTimeSeriesEntries(fastify, fake.id, []).catch(
+          (error) => error,
+        );
 
         expect(thrownError).toBeInstanceOf(TIME_SERIES_ERR_DUPLICATE_TIMESTAMP);
 
@@ -36,9 +38,13 @@ describe('time series repository', () => {
 
     describe('when Prisma throws a generic error', () => {
       test('should rethrow as INTERNAL_SERVER_ERROR with cause', async ({ fastify, fake }) => {
-        fastify.prisma.timeSeries = { createManyAndReturn: vi.fn().mockRejectedValue(fake.dbError) };
+        fastify.prisma.timeSeries = {
+          createManyAndReturn: vi.fn().mockRejectedValue(fake.dbError),
+        };
 
-        const thrownError = await createTimeSeriesEntries(fastify, fake.id, []).catch((error) => error);
+        const thrownError = await createTimeSeriesEntries(fastify, fake.id, []).catch(
+          (error) => error,
+        );
 
         expect(thrownError).toBeInstanceOf(INTERNAL_SERVER_ERROR);
         expect(thrownError.cause).toBe(fake.dbError);
@@ -48,7 +54,11 @@ describe('time series repository', () => {
     });
 
     describe('when entries are created without a timestamp', () => {
-      test('should call createManyAndReturn without the timestamp field', async ({ fastify, fake, mockTimeSeriesEntry }) => {
+      test('should call createManyAndReturn without the timestamp field', async ({
+        fastify,
+        fake,
+        mockTimeSeriesEntry,
+      }) => {
         const entry = {
           temperature: mockTimeSeriesEntry.temperature,
           accelerationRms: mockTimeSeriesEntry.accelerationRms,
@@ -65,19 +75,25 @@ describe('time series repository', () => {
 
         expect(fastify.prisma.timeSeries.createManyAndReturn).toHaveBeenCalledWith(
           expect.objectContaining({
-            data: [{
-              sensorId: fake.id,
-              temperature: entry.temperature,
-              accelerationRms: entry.accelerationRms,
-              velocityRms: entry.velocityRms,
-            }],
+            data: [
+              {
+                sensorId: fake.id,
+                temperature: entry.temperature,
+                accelerationRms: entry.accelerationRms,
+                velocityRms: entry.velocityRms,
+              },
+            ],
           }),
         );
       });
     });
 
     describe('when entries are created with a timestamp', () => {
-      test('should call createManyAndReturn with timestamp as Date', async ({ fastify, fake, mockTimeSeriesEntry }) => {
+      test('should call createManyAndReturn with timestamp as Date', async ({
+        fastify,
+        fake,
+        mockTimeSeriesEntry,
+      }) => {
         const timestamp = dayjs(mockTimeSeriesEntry.timestamp).toISOString();
         const entry = {
           temperature: mockTimeSeriesEntry.temperature,
@@ -96,13 +112,15 @@ describe('time series repository', () => {
 
         expect(fastify.prisma.timeSeries.createManyAndReturn).toHaveBeenCalledWith(
           expect.objectContaining({
-            data: [{
-              sensorId: fake.id,
-              temperature: entry.temperature,
-              accelerationRms: entry.accelerationRms,
-              velocityRms: entry.velocityRms,
-              timestamp: dayjs(timestamp).toDate(),
-            }],
+            data: [
+              {
+                sensorId: fake.id,
+                temperature: entry.temperature,
+                accelerationRms: entry.accelerationRms,
+                velocityRms: entry.velocityRms,
+                timestamp: dayjs(timestamp).toDate(),
+              },
+            ],
           }),
         );
       });
@@ -114,7 +132,11 @@ describe('time series repository', () => {
       test('should rethrow as INTERNAL_SERVER_ERROR with cause', async ({ fastify, fake }) => {
         fastify.prisma.timeSeries = { deleteMany: vi.fn().mockRejectedValue(fake.dbError) };
 
-        const thrownError = await deleteAllTimeSeriesBySensor(fastify, fake.uuid, fake.userId).catch((error) => error);
+        const thrownError = await deleteAllTimeSeriesBySensor(
+          fastify,
+          fake.uuid,
+          fake.userId,
+        ).catch((error) => error);
 
         expect(thrownError).toBeInstanceOf(INTERNAL_SERVER_ERROR);
         expect(thrownError.cause).toBe(fake.dbError);
@@ -124,7 +146,10 @@ describe('time series repository', () => {
     });
 
     describe('when time series are deleted', () => {
-      test('should call deleteMany with correct filter and return count', async ({ fastify, fake }) => {
+      test('should call deleteMany with correct filter and return count', async ({
+        fastify,
+        fake,
+      }) => {
         const count = faker.number.int({ min: 1, max: 100 });
         fastify.prisma.timeSeries = { deleteMany: vi.fn().mockResolvedValue({ count }) };
 
@@ -133,7 +158,9 @@ describe('time series repository', () => {
         expect(result).toBe(count);
 
         expect(fastify.prisma.timeSeries.deleteMany).toHaveBeenCalledWith({
-          where: { sensor: { uuid: fake.uuid, monitoringPoint: { machine: { userId: fake.userId } } } },
+          where: {
+            sensor: { uuid: fake.uuid, monitoringPoint: { machine: { userId: fake.userId } } },
+          },
         });
       });
     });
@@ -144,7 +171,9 @@ describe('time series repository', () => {
       test('should rethrow as INTERNAL_SERVER_ERROR with cause', async ({ fastify, fake }) => {
         fastify.prisma.sensor = { findFirst: vi.fn().mockRejectedValue(fake.dbError) };
 
-        const thrownError = await findSensorByUuid(fastify, fake.uuid, fake.userId).catch((error) => error);
+        const thrownError = await findSensorByUuid(fastify, fake.uuid, fake.userId).catch(
+          (error) => error,
+        );
 
         expect(thrownError).toBeInstanceOf(INTERNAL_SERVER_ERROR);
         expect(thrownError.cause).toBe(fake.dbError);
@@ -189,7 +218,12 @@ describe('time series repository', () => {
       test('should rethrow as INTERNAL_SERVER_ERROR with cause', async ({ fastify, fake }) => {
         fastify.prisma.timeSeries = { aggregate: vi.fn().mockRejectedValue(fake.dbError) };
 
-        const thrownError = await getTimeSeriesMetrics(fastify, fake.uuid, fake.userId, dateRange).catch((error) => error);
+        const thrownError = await getTimeSeriesMetrics(
+          fastify,
+          fake.uuid,
+          fake.userId,
+          dateRange,
+        ).catch((error) => error);
 
         expect(thrownError).toBeInstanceOf(INTERNAL_SERVER_ERROR);
         expect(thrownError.cause).toBe(fake.dbError);
@@ -219,7 +253,11 @@ describe('time series repository', () => {
     });
 
     describe('when metrics are returned', () => {
-      test('should return the aggregate result', async ({ fastify, fake, mockTimeSeriesMetrics }) => {
+      test('should return the aggregate result', async ({
+        fastify,
+        fake,
+        mockTimeSeriesMetrics,
+      }) => {
         const expectedResult = structuredClone(mockTimeSeriesMetrics);
 
         fastify.prisma.timeSeries = { aggregate: vi.fn().mockResolvedValue(mockTimeSeriesMetrics) };
@@ -247,7 +285,12 @@ describe('time series repository', () => {
       test('should rethrow as INTERNAL_SERVER_ERROR with cause', async ({ fastify, fake }) => {
         fastify.prisma.timeSeries = { findMany: vi.fn().mockRejectedValue(fake.dbError) };
 
-        const thrownError = await getTimeSeriesBySensor(fastify, fake.uuid, fake.userId, dateRange).catch((error) => error);
+        const thrownError = await getTimeSeriesBySensor(
+          fastify,
+          fake.uuid,
+          fake.userId,
+          dateRange,
+        ).catch((error) => error);
 
         expect(thrownError).toBeInstanceOf(INTERNAL_SERVER_ERROR);
         expect(thrownError.cause).toBe(fake.dbError);
@@ -269,7 +312,11 @@ describe('time series repository', () => {
     });
 
     describe('when time series are found', () => {
-      test('should return entries ordered by timestamp', async ({ fastify, fake, mockTimeSeriesEntry }) => {
+      test('should return entries ordered by timestamp', async ({
+        fastify,
+        fake,
+        mockTimeSeriesEntry,
+      }) => {
         const mockResult = [mockTimeSeriesEntry];
         const expectedResult = structuredClone(mockResult);
 

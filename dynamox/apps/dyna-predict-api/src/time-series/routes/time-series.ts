@@ -70,9 +70,21 @@ const timeSeriesRoutes: FastifyPluginAsyncTypebox = async function (fastify) {
           }),
         ),
         metrics: {
-          temperature: { min: metricsResult._min.temperature, max: metricsResult._max.temperature, avg: metricsResult._avg.temperature },
-          accelerationRms: { min: metricsResult._min.accelerationRms, max: metricsResult._max.accelerationRms, avg: metricsResult._avg.accelerationRms },
-          velocityRms: { min: metricsResult._min.velocityRms, max: metricsResult._max.velocityRms, avg: metricsResult._avg.velocityRms },
+          temperature: {
+            min: metricsResult._min.temperature,
+            max: metricsResult._max.temperature,
+            avg: metricsResult._avg.temperature,
+          },
+          accelerationRms: {
+            min: metricsResult._min.accelerationRms,
+            max: metricsResult._max.accelerationRms,
+            avg: metricsResult._avg.accelerationRms,
+          },
+          velocityRms: {
+            min: metricsResult._min.velocityRms,
+            max: metricsResult._max.velocityRms,
+            avg: metricsResult._avg.velocityRms,
+          },
           count: metricsResult._count,
         },
       });
@@ -172,8 +184,7 @@ const timeSeriesRoutes: FastifyPluginAsyncTypebox = async function (fastify) {
     {
       schema: {
         tags: ['time-series'],
-        description:
-          'Deleta todos os registros de série temporal do sensor.',
+        description: 'Deleta todos os registros de série temporal do sensor.',
         params: TimeSeriesSensorParamsSchema,
         response: {
           204: { type: 'null' },

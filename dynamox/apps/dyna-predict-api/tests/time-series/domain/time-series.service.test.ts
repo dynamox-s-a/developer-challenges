@@ -19,7 +19,10 @@ describe('resolveTimeSeriesDateRange', () => {
 
       expect(result.lte.getTime()).toBeGreaterThanOrEqual(before);
       expect(result.lte.getTime()).toBeLessThanOrEqual(after);
-      expect(result.gte.getTime()).toBeCloseTo(result.lte.getTime() - DEFAULT_TIME_SERIES_WINDOW_MS, -3);
+      expect(result.gte.getTime()).toBeCloseTo(
+        result.lte.getTime() - DEFAULT_TIME_SERIES_WINDOW_MS,
+        -3,
+      );
     });
   });
 

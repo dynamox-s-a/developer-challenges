@@ -7,9 +7,7 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 
 import { getDashboardMetrics } from '../data-access/reports.repository';
-import {
-  DashboardMetricsSchema
-} from '@dynamox/types';
+import { DashboardMetricsSchema } from '@dynamox/types';
 const plugin: FastifyPluginAsyncTypebox = async function (fastify) {
   fastify.register(reportRoutes, { prefix: '/reports' });
 };
@@ -22,7 +20,8 @@ const reportRoutes: FastifyPluginAsyncTypebox = async function (fastify) {
     {
       schema: {
         tags: ['reports'],
-        description: 'Retorna as métricas agregadas do dashboard para o usuário autenticado: total de máquinas, pontos de monitoramento, sensores associados e registros de série temporal.',
+        description:
+          'Retorna as métricas agregadas do dashboard para o usuário autenticado: total de máquinas, pontos de monitoramento, sensores associados e registros de série temporal.',
         response: {
           200: DashboardMetricsSchema,
         },
@@ -36,7 +35,6 @@ const reportRoutes: FastifyPluginAsyncTypebox = async function (fastify) {
       return reply.send(result);
     },
   );
-
- };
+};
 
 export default plugin;

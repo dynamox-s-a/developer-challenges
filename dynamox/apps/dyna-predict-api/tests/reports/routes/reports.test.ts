@@ -22,7 +22,10 @@ describe('GET /v1/reports/dashboard/metrics', () => {
           .spyOn(reportsRepository, 'getDashboardMetrics')
           .mockResolvedValue(mockResult);
 
-        const response = await fastify.inject({ method: 'GET', url: '/v1/reports/dashboard/metrics' });
+        const response = await fastify.inject({
+          method: 'GET',
+          url: '/v1/reports/dashboard/metrics',
+        });
 
         expect(response.statusCode).toBe(StatusCodes.OK);
         expect(response.json()).toEqual(expectedResult);

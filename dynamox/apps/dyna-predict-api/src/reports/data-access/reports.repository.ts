@@ -6,10 +6,7 @@
 import type { FastifyInstance } from 'fastify';
 import { INTERNAL_SERVER_ERROR, withCause } from '../../shared/errors/errors';
 
-export async function getDashboardMetrics(
-  fastify: FastifyInstance,
-  userId: number,
-) {
+export async function getDashboardMetrics(fastify: FastifyInstance, userId: number) {
   try {
     const [
       machineCount,

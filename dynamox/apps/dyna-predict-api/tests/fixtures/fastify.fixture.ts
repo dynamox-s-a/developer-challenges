@@ -19,7 +19,7 @@ export const test = utilityTest.extend<FastifyFixtures>({
   },
 });
 
-type AuthenticatedUser = { sub: number; uuid: string; email: string; };
+type AuthenticatedUser = { sub: number; uuid: string; email: string };
 
 interface AuthenticatedFixtures {
   authenticatedUser: AuthenticatedUser;

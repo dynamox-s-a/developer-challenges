@@ -7,7 +7,10 @@ describe('reports repository', () => {
   describe('getDashboardMetrics', () => {
     describe('when Prisma throws an error', () => {
       test('should rethrow as INTERNAL_SERVER_ERROR with cause', async ({ fastify, fake }) => {
-        fastify.prisma.machine = { count: vi.fn().mockRejectedValue(fake.dbError), groupBy: vi.fn() };
+        fastify.prisma.machine = {
+          count: vi.fn().mockRejectedValue(fake.dbError),
+          groupBy: vi.fn(),
+        };
         fastify.prisma.monitoringPoint = { count: vi.fn() };
         fastify.prisma.sensor = { count: vi.fn(), groupBy: vi.fn() };
         fastify.prisma.timeSeries = { count: vi.fn() };
@@ -46,10 +49,18 @@ describe('reports repository', () => {
           sensorDistribution,
         });
 
-        expect(fastify.prisma.machine.count).toHaveBeenCalledWith({ where: { userId: fake.userId } });
-        expect(fastify.prisma.monitoringPoint.count).toHaveBeenCalledWith({ where: { machine: { userId: fake.userId } } });
-        expect(fastify.prisma.sensor.count).toHaveBeenCalledWith({ where: { monitoringPoint: { machine: { userId: fake.userId } } } });
-        expect(fastify.prisma.timeSeries.count).toHaveBeenCalledWith({ where: { sensor: { monitoringPoint: { machine: { userId: fake.userId } } } } });
+        expect(fastify.prisma.machine.count).toHaveBeenCalledWith({
+          where: { userId: fake.userId },
+        });
+        expect(fastify.prisma.monitoringPoint.count).toHaveBeenCalledWith({
+          where: { machine: { userId: fake.userId } },
+        });
+        expect(fastify.prisma.sensor.count).toHaveBeenCalledWith({
+          where: { monitoringPoint: { machine: { userId: fake.userId } } },
+        });
+        expect(fastify.prisma.timeSeries.count).toHaveBeenCalledWith({
+          where: { sensor: { monitoringPoint: { machine: { userId: fake.userId } } } },
+        });
         expect(fastify.prisma.machine.groupBy).toHaveBeenCalledWith({
           by: ['type'],
           where: { userId: fake.userId },

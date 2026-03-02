@@ -61,7 +61,6 @@ export async function deleteAllTimeSeriesBySensor(
   }
 }
 
-
 export async function findSensorByUuid(
   fastify: FastifyInstance,
   sensorUuid: string,

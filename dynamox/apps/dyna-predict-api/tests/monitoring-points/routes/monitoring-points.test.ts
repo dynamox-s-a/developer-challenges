@@ -16,34 +16,37 @@ import {
 
 describe('GET /v1/monitoring-points', () => {
   describe('when user has no monitoring points', () => {
-    authenticatedTest(
-      'should return empty list',
-      async ({ fastify, authenticatedUser }) => {
-        const mockResult = {
-          monitoringPoints: [],
-          pagination: { currentPage: 1, pageSize: 5, totalPages: 0, totalElements: 0, hasNextPage: false },
-        };
-        const expectedResult = structuredClone(mockResult);
+    authenticatedTest('should return empty list', async ({ fastify, authenticatedUser }) => {
+      const mockResult = {
+        monitoringPoints: [],
+        pagination: {
+          currentPage: 1,
+          pageSize: 5,
+          totalPages: 0,
+          totalElements: 0,
+          hasNextPage: false,
+        },
+      };
+      const expectedResult = structuredClone(mockResult);
 
-        const spy = vi
-          .spyOn(monitoringPointsRepository, 'getPaginatedMonitoringPoints')
-          .mockResolvedValue(mockResult);
+      const spy = vi
+        .spyOn(monitoringPointsRepository, 'getPaginatedMonitoringPoints')
+        .mockResolvedValue(mockResult);
 
-        const response = await fastify.inject({ method: 'GET', url: '/v1/monitoring-points' });
+      const response = await fastify.inject({ method: 'GET', url: '/v1/monitoring-points' });
 
-        expect(response.statusCode).toBe(StatusCodes.OK);
-        expect(response.json()).toEqual(expectedResult);
+      expect(response.statusCode).toBe(StatusCodes.OK);
+      expect(response.json()).toEqual(expectedResult);
 
-        expect(spy).toHaveBeenCalledExactlyOnceWith(
-          expect.anything(),
-          authenticatedUser.sub,
-          1,
-          5,
-          undefined,
-          undefined,
-        );
-      },
-    );
+      expect(spy).toHaveBeenCalledExactlyOnceWith(
+        expect.anything(),
+        authenticatedUser.sub,
+        1,
+        5,
+        undefined,
+        undefined,
+      );
+    });
   });
 
   describe('when user has monitoring points', () => {
@@ -52,7 +55,13 @@ describe('GET /v1/monitoring-points', () => {
       async ({ fastify, authenticatedUser, mockMonitoringPointListItem }) => {
         const mockResult = {
           monitoringPoints: [mockMonitoringPointListItem],
-          pagination: { currentPage: 1, pageSize: 5, totalPages: 1, totalElements: 1, hasNextPage: false },
+          pagination: {
+            currentPage: 1,
+            pageSize: 5,
+            totalPages: 1,
+            totalElements: 1,
+            hasNextPage: false,
+          },
         };
         const expectedResult = structuredClone(mockResult);
 
@@ -172,7 +181,10 @@ describe('POST /v1/monitoring-points', () => {
           fake.name,
           mockMachine.id,
         );
-        expect(isSensorForbiddenForMachineSpy).toHaveBeenCalledExactlyOnceWith(mockMachine.type, 'TcAg');
+        expect(isSensorForbiddenForMachineSpy).toHaveBeenCalledExactlyOnceWith(
+          mockMachine.type,
+          'TcAg',
+        );
       },
     );
   });
@@ -183,7 +195,13 @@ describe('POST /v1/monitoring-points', () => {
         'should return the created monitoring point',
         async ({ fastify, fake, authenticatedUser, mockMachine }) => {
           const createdAt = dayjs().toDate();
-          const mockCreated = { id: fake.id, uuid: fake.uuid, name: fake.name, createdAt, sensor: null };
+          const mockCreated = {
+            id: fake.id,
+            uuid: fake.uuid,
+            name: fake.name,
+            createdAt,
+            sensor: null,
+          };
 
           const findExistingMachineByUuidSpy = vi
             .spyOn(machineRepository, 'findExistingMachineByUuid')
@@ -281,7 +299,10 @@ describe('POST /v1/monitoring-points', () => {
             fake.name,
             mockMachine.id,
           );
-          expect(isSensorForbiddenForMachineSpy).toHaveBeenCalledExactlyOnceWith(mockMachine.type, sensorModel);
+          expect(isSensorForbiddenForMachineSpy).toHaveBeenCalledExactlyOnceWith(
+            mockMachine.type,
+            sensorModel,
+          );
           expect(createMonitoringPointSpy).toHaveBeenCalledExactlyOnceWith(
             expect.anything(),
             fake.name,
@@ -312,7 +333,11 @@ describe('PATCH /v1/monitoring-points/:uuid', () => {
         expect(response.statusCode).toBe(StatusCodes.NOT_FOUND);
         expect(response.json()).toEqual(createErrorResponse(MONITORING_POINT_ERR_NOT_FOUND));
 
-        expect(spy).toHaveBeenCalledExactlyOnceWith(expect.anything(), fake.uuid, authenticatedUser.sub);
+        expect(spy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          fake.uuid,
+          authenticatedUser.sub,
+        );
       },
     );
   });
@@ -321,7 +346,12 @@ describe('PATCH /v1/monitoring-points/:uuid', () => {
     machineTest(
       'should throw MONITORING_POINT_ERR_ALREADY_EXISTS error',
       async ({ fastify, fake, authenticatedUser, mockMachine }) => {
-        const existingPoint = { id: fake.id, name: 'existing-name', machine: { id: mockMachine.id, type: mockMachine.type }, sensor: null };
+        const existingPoint = {
+          id: fake.id,
+          name: 'existing-name',
+          machine: { id: mockMachine.id, type: mockMachine.type },
+          sensor: null,
+        };
 
         const findMonitoringPointByUuidSpy = vi
           .spyOn(monitoringPointsRepository, 'findMonitoringPointByUuid')
@@ -339,7 +369,11 @@ describe('PATCH /v1/monitoring-points/:uuid', () => {
         expect(response.statusCode).toBe(StatusCodes.CONFLICT);
         expect(response.json()).toEqual(createErrorResponse(MONITORING_POINT_ERR_ALREADY_EXISTS));
 
-        expect(findMonitoringPointByUuidSpy).toHaveBeenCalledExactlyOnceWith(expect.anything(), fake.uuid, authenticatedUser.sub);
+        expect(findMonitoringPointByUuidSpy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          fake.uuid,
+          authenticatedUser.sub,
+        );
         expect(findExistingMonitoringPointSpy).toHaveBeenCalledExactlyOnceWith(
           expect.anything(),
           fake.name,
@@ -353,7 +387,12 @@ describe('PATCH /v1/monitoring-points/:uuid', () => {
     machineTest(
       'should throw SENSOR_ERR_FORBIDDEN_FOR_MACHINE_TYPE error',
       async ({ fastify, fake, authenticatedUser, mockMachine }) => {
-        const existingPoint = { id: fake.id, name: 'existing-name', machine: { id: mockMachine.id, type: mockMachine.type }, sensor: null };
+        const existingPoint = {
+          id: fake.id,
+          name: 'existing-name',
+          machine: { id: mockMachine.id, type: mockMachine.type },
+          sensor: null,
+        };
 
         const findMonitoringPointByUuidSpy = vi
           .spyOn(monitoringPointsRepository, 'findMonitoringPointByUuid')
@@ -371,8 +410,15 @@ describe('PATCH /v1/monitoring-points/:uuid', () => {
         expect(response.statusCode).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
         expect(response.json()).toEqual(createErrorResponse(SENSOR_ERR_FORBIDDEN_FOR_MACHINE_TYPE));
 
-        expect(findMonitoringPointByUuidSpy).toHaveBeenCalledExactlyOnceWith(expect.anything(), fake.uuid, authenticatedUser.sub);
-        expect(isSensorForbiddenForMachineSpy).toHaveBeenCalledExactlyOnceWith(mockMachine.type, 'TcAg');
+        expect(findMonitoringPointByUuidSpy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          fake.uuid,
+          authenticatedUser.sub,
+        );
+        expect(isSensorForbiddenForMachineSpy).toHaveBeenCalledExactlyOnceWith(
+          mockMachine.type,
+          'TcAg',
+        );
       },
     );
   });
@@ -381,10 +427,21 @@ describe('PATCH /v1/monitoring-points/:uuid', () => {
     machineTest(
       'should return the updated monitoring point',
       async ({ fastify, fake, authenticatedUser, mockMachine }) => {
-        const existingPoint = { id: fake.id, name: 'existing-name', machine: { id: mockMachine.id, type: mockMachine.type }, sensor: null };
+        const existingPoint = {
+          id: fake.id,
+          name: 'existing-name',
+          machine: { id: mockMachine.id, type: mockMachine.type },
+          sensor: null,
+        };
         const updatedAt = dayjs().toDate();
         const updatedName = fake.name;
-        const mockUpdated = { id: fake.id, uuid: fake.uuid, name: updatedName, updatedAt, sensor: null };
+        const mockUpdated = {
+          id: fake.id,
+          uuid: fake.uuid,
+          name: updatedName,
+          updatedAt,
+          sensor: null,
+        };
 
         const findMonitoringPointByUuidSpy = vi
           .spyOn(monitoringPointsRepository, 'findMonitoringPointByUuid')
@@ -410,7 +467,11 @@ describe('PATCH /v1/monitoring-points/:uuid', () => {
           updatedAt: updatedAt.toISOString(),
         });
 
-        expect(findMonitoringPointByUuidSpy).toHaveBeenCalledExactlyOnceWith(expect.anything(), fake.uuid, authenticatedUser.sub);
+        expect(findMonitoringPointByUuidSpy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          fake.uuid,
+          authenticatedUser.sub,
+        );
         expect(findExistingMonitoringPointSpy).toHaveBeenCalledExactlyOnceWith(
           expect.anything(),
           updatedName,
@@ -431,10 +492,21 @@ describe('PATCH /v1/monitoring-points/:uuid', () => {
     machineTest(
       'should delete the existing sensor',
       async ({ fastify, fake, authenticatedUser, mockMachine }) => {
-        const existingPoint = { id: fake.id, name: 'existing-name', machine: { id: mockMachine.id, type: mockMachine.type }, sensor: null };
+        const existingPoint = {
+          id: fake.id,
+          name: 'existing-name',
+          machine: { id: mockMachine.id, type: mockMachine.type },
+          sensor: null,
+        };
         const updatedAt = dayjs().toDate();
         const updatedName = fake.name;
-        const mockUpdated = { id: fake.id, uuid: fake.uuid, name: updatedName, updatedAt, sensor: null };
+        const mockUpdated = {
+          id: fake.id,
+          uuid: fake.uuid,
+          name: updatedName,
+          updatedAt,
+          sensor: null,
+        };
 
         const findMonitoringPointByUuidSpy = vi
           .spyOn(monitoringPointsRepository, 'findMonitoringPointByUuid')
@@ -460,7 +532,11 @@ describe('PATCH /v1/monitoring-points/:uuid', () => {
           updatedAt: updatedAt.toISOString(),
         });
 
-        expect(findMonitoringPointByUuidSpy).toHaveBeenCalledExactlyOnceWith(expect.anything(), fake.uuid, authenticatedUser.sub);
+        expect(findMonitoringPointByUuidSpy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          fake.uuid,
+          authenticatedUser.sub,
+        );
         expect(findExistingMonitoringPointSpy).toHaveBeenCalledExactlyOnceWith(
           expect.anything(),
           updatedName,
@@ -495,7 +571,11 @@ describe('DELETE /v1/monitoring-points/:uuid', () => {
         expect(response.statusCode).toBe(StatusCodes.NOT_FOUND);
         expect(response.json()).toEqual(createErrorResponse(MONITORING_POINT_ERR_NOT_FOUND));
 
-        expect(spy).toHaveBeenCalledExactlyOnceWith(expect.anything(), fake.uuid, authenticatedUser.sub);
+        expect(spy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          fake.uuid,
+          authenticatedUser.sub,
+        );
       },
     );
   });
@@ -504,7 +584,12 @@ describe('DELETE /v1/monitoring-points/:uuid', () => {
     machineTest(
       'should delete the monitoring point',
       async ({ fastify, fake, authenticatedUser, mockMachine }) => {
-        const existingPoint = { id: fake.id, name: 'existing-name', machine: { id: mockMachine.id, type: mockMachine.type }, sensor: null };
+        const existingPoint = {
+          id: fake.id,
+          name: 'existing-name',
+          machine: { id: mockMachine.id, type: mockMachine.type },
+          sensor: null,
+        };
 
         const findMonitoringPointByUuidSpy = vi
           .spyOn(monitoringPointsRepository, 'findMonitoringPointByUuid')
@@ -520,8 +605,15 @@ describe('DELETE /v1/monitoring-points/:uuid', () => {
 
         expect(response.statusCode).toBe(StatusCodes.NO_CONTENT);
 
-        expect(findMonitoringPointByUuidSpy).toHaveBeenCalledExactlyOnceWith(expect.anything(), fake.uuid, authenticatedUser.sub);
-        expect(deleteMonitoringPointSpy).toHaveBeenCalledExactlyOnceWith(expect.anything(), fake.uuid);
+        expect(findMonitoringPointByUuidSpy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          fake.uuid,
+          authenticatedUser.sub,
+        );
+        expect(deleteMonitoringPointSpy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          fake.uuid,
+        );
       },
     );
   });
@@ -544,7 +636,11 @@ describe('DELETE /v1/monitoring-points/:uuid/sensor', () => {
         expect(response.statusCode).toBe(StatusCodes.NOT_FOUND);
         expect(response.json()).toEqual(createErrorResponse(MONITORING_POINT_ERR_NOT_FOUND));
 
-        expect(spy).toHaveBeenCalledExactlyOnceWith(expect.anything(), fake.uuid, authenticatedUser.sub);
+        expect(spy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          fake.uuid,
+          authenticatedUser.sub,
+        );
       },
     );
   });
@@ -553,7 +649,12 @@ describe('DELETE /v1/monitoring-points/:uuid/sensor', () => {
     machineTest(
       'should delete the sensor',
       async ({ fastify, fake, authenticatedUser, mockMachine }) => {
-        const existingPoint = { id: fake.id, name: 'existing-name', machine: { id: mockMachine.id, type: mockMachine.type }, sensor: null };
+        const existingPoint = {
+          id: fake.id,
+          name: 'existing-name',
+          machine: { id: mockMachine.id, type: mockMachine.type },
+          sensor: null,
+        };
 
         const findMonitoringPointByUuidSpy = vi
           .spyOn(monitoringPointsRepository, 'findMonitoringPointByUuid')
@@ -569,8 +670,15 @@ describe('DELETE /v1/monitoring-points/:uuid/sensor', () => {
 
         expect(response.statusCode).toBe(StatusCodes.NO_CONTENT);
 
-        expect(findMonitoringPointByUuidSpy).toHaveBeenCalledExactlyOnceWith(expect.anything(), fake.uuid, authenticatedUser.sub);
-        expect(deleteMonitoringPointSensorSpy).toHaveBeenCalledExactlyOnceWith(expect.anything(), fake.uuid);
+        expect(findMonitoringPointByUuidSpy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          fake.uuid,
+          authenticatedUser.sub,
+        );
+        expect(deleteMonitoringPointSensorSpy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          fake.uuid,
+        );
       },
     );
   });
