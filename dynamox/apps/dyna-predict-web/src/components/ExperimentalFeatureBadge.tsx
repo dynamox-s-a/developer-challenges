@@ -1,11 +1,11 @@
 import { Tooltip } from '@mui/material';
 import ScienceIcon from '@mui/icons-material/Science';
 
-interface TestFeatureChipProps {
+interface ExperimentalFeatureBadgeProps {
   tooltipText: string;
 }
 
-function TestFeatureChip({ tooltipText }: TestFeatureChipProps) {
+function ExperimentalFeatureBadge({ tooltipText }: ExperimentalFeatureBadgeProps) {
   return (
     <Tooltip title={tooltipText} arrow placement="top">
       <ScienceIcon fontSize="small" color="warning" sx={{ cursor: 'help' }} />
@@ -13,4 +13,4 @@ function TestFeatureChip({ tooltipText }: TestFeatureChipProps) {
   );
 }
 
-export default TestFeatureChip;
+export default ExperimentalFeatureBadge;

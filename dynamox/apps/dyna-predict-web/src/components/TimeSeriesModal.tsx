@@ -29,7 +29,7 @@ import { useConfirmDialog } from '../utils/useConfirmDialog';
 import { METRICS, type MetricKey } from '../utils/constants';
 import ConfirmDialog from './ConfirmDialog';
 import MetricChart from './MetricChart';
-import TestFeatureChip from './TestFeatureChip';
+import ExperimentalFeatureBadge from './ExperimentalFeatureBadge';
 
 interface TimeSeriesModalProps {
   open: boolean;
@@ -168,9 +168,7 @@ function TimeSeriesModal({ open, onClose, point }: TimeSeriesModalProps) {
                 size="small"
                 startIcon={<AddIcon />}
                 endIcon={
-                  <TestFeatureChip
-                    tooltipText="Simulação para fins de demonstração. Em produção, assume-se que os dados seriam alimentados automaticamente pelo sensor (ex: polling ou pub/sub remoto)."
-                  />
+                  <ExperimentalFeatureBadge tooltipText="Simulação para fins de demonstração. Em produção, assume-se que os dados seriam alimentados automaticamente pelo sensor (ex: polling ou pub/sub remoto)." />
                 }
                 onClick={handleAddData}
               >
