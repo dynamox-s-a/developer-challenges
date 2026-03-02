@@ -12,16 +12,19 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { deleteMachine, fetchMachines } from '../../store/features/machines/machine.slice';
 import type { MachinesListResponse } from '@dynamox/types';
 import MachineFormDialog from '../../components/MachineFormDialog';
+import MachineMonitoringPointsModal from '../../components/MachineMonitoringPointsModal';
 import ConfirmDialog from '../../components/ConfirmDialog';
 import { useConfirmDialog } from '../../utils/useConfirmDialog';
 import { notify } from '../../utils/notifications';
@@ -33,6 +36,7 @@ function MachinesPage() {
   const { machines, isLoading } = useAppSelector((state) => state.machines);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedMachine, setSelectedMachine] = useState<Machine | undefined>();
+  const [pointsModalMachine, setPointsModalMachine] = useState<Machine | undefined>();
   const { confirm, dialogProps } = useConfirmDialog();
 
   useEffect(() => {
@@ -115,8 +119,19 @@ function MachinesPage() {
                     </TableCell>
                     <TableCell align="center">
                       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+                        <Tooltip title={`${machine.unassignedSensorCount} ponto(s) sem sensor`}>
+                          <WarningAmberIcon
+                            fontSize="small"
+                            color="warning"
+                            sx={{ visibility: machine.unassignedSensorCount > 0 ? 'visible' : 'hidden' }}
+                          />
+                        </Tooltip>
                         <Chip label={machine.monitoringPoints.length} size="small" variant="outlined" />
-                        <IconButton size="small">
+                        <IconButton
+                          size="small"
+                          onClick={() => setPointsModalMachine(machine)}
+                          disabled={machine.monitoringPoints.length === 0}
+                        >
                           <VisibilityIcon fontSize="small" />
                         </IconButton>
                       </Box>
@@ -136,6 +151,11 @@ function MachinesPage() {
       </TableContainer>
 
       <MachineFormDialog open={dialogOpen} onClose={handleClose} machine={selectedMachine} />
+      <MachineMonitoringPointsModal
+        open={!!pointsModalMachine}
+        onClose={() => setPointsModalMachine(undefined)}
+        machine={pointsModalMachine}
+      />
       <ConfirmDialog {...dialogProps} />
     </Box>
   );
