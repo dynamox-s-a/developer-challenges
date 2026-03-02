@@ -16,7 +16,7 @@ export default defineConfig(() => ({
       provider: 'v8' as const,
       reporter: ['text', 'html'],
       include: ['src/**/*.ts'],
-      exclude: ['src/prisma/generated/**', 'src/main.ts'],
+      exclude: ['src/prisma/generated/**', 'src/main.ts', 'src/app.ts'],
     }
   },
 }));
