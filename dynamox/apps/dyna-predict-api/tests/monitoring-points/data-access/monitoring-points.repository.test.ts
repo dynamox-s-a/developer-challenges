@@ -122,7 +122,7 @@ describe('monitoring points repository', () => {
 
     describe('when monitoring point is found', () => {
       test('should return the monitoring point', async ({ fastify, fake }) => {
-        const mockResult = { id: fake.id, name: fake.name, machine: { id: fake.id, type: 'Pump' } };
+        const mockResult = { id: fake.id, name: fake.name, machine: { id: fake.id, type: 'Pump' }, sensor: null };
 
         fastify.prisma.monitoringPoint = { findFirst: vi.fn().mockResolvedValue(mockResult) };
 
@@ -276,6 +276,24 @@ describe('monitoring points repository', () => {
               sensor: {
                 upsert: { create: { model: sensorModel }, update: { model: sensorModel } },
               },
+            },
+          }),
+        );
+      });
+    });
+
+    describe('when deleteSensor is true', () => {
+      test('should update with sensor delete', async ({ fastify, fake }) => {
+        fastify.prisma.monitoringPoint = { update: vi.fn().mockResolvedValue({}) };
+
+        await updateMonitoringPoint(fastify, fake.uuid, fake.name, undefined, true);
+
+        expect(fastify.prisma.monitoringPoint.update).toHaveBeenCalledWith(
+          expect.objectContaining({
+            where: { uuid: fake.uuid },
+            data: {
+              name: fake.name,
+              sensor: { delete: true },
             },
           }),
         );

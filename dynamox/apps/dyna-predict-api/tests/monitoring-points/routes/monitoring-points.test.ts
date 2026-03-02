@@ -321,7 +321,7 @@ describe('PATCH /v1/monitoring-points/:uuid', () => {
     machineTest(
       'should throw MONITORING_POINT_ERR_ALREADY_EXISTS error',
       async ({ fastify, fake, authenticatedUser, mockMachine }) => {
-        const existingPoint = { id: fake.id, name: 'old-name', machine: { id: mockMachine.id, type: mockMachine.type } };
+        const existingPoint = { id: fake.id, name: 'existing-name', machine: { id: mockMachine.id, type: mockMachine.type }, sensor: null };
 
         const findMonitoringPointByUuidSpy = vi
           .spyOn(monitoringPointsRepository, 'findMonitoringPointByUuid')
@@ -353,11 +353,11 @@ describe('PATCH /v1/monitoring-points/:uuid', () => {
     machineTest(
       'should throw SENSOR_ERR_FORBIDDEN_FOR_MACHINE_TYPE error',
       async ({ fastify, fake, authenticatedUser, mockMachine }) => {
-        const existingPoint = { id: fake.id, name: fake.name, machine: { id: mockMachine.id, type: mockMachine.type } };
+        const existingPoint = { id: fake.id, name: 'existing-name', machine: { id: mockMachine.id, type: mockMachine.type }, sensor: null };
 
         const findMonitoringPointByUuidSpy = vi
           .spyOn(monitoringPointsRepository, 'findMonitoringPointByUuid')
-          .mockResolvedValue(existingPoint);
+          .mockResolvedValue({ ...existingPoint, name: fake.name });
         const isSensorForbiddenForMachineSpy = vi
           .spyOn(monitoringPointsService, 'isSensorForbiddenForMachine')
           .mockReturnValue(true);
@@ -381,9 +381,9 @@ describe('PATCH /v1/monitoring-points/:uuid', () => {
     machineTest(
       'should return the updated monitoring point',
       async ({ fastify, fake, authenticatedUser, mockMachine }) => {
+        const existingPoint = { id: fake.id, name: 'existing-name', machine: { id: mockMachine.id, type: mockMachine.type }, sensor: null };
         const updatedAt = dayjs().toDate();
         const updatedName = fake.name;
-        const existingPoint = { id: fake.id, name: 'old-name', machine: { id: mockMachine.id, type: mockMachine.type } };
         const mockUpdated = { id: fake.id, uuid: fake.uuid, name: updatedName, updatedAt, sensor: null };
 
         const findMonitoringPointByUuidSpy = vi
@@ -421,6 +421,57 @@ describe('PATCH /v1/monitoring-points/:uuid', () => {
           fake.uuid,
           updatedName,
           undefined,
+          false,
+        );
+      },
+    );
+  });
+
+  describe('when monitoring point has an existing sensor and no sensorModel is sent', () => {
+    machineTest(
+      'should delete the existing sensor',
+      async ({ fastify, fake, authenticatedUser, mockMachine }) => {
+        const existingPoint = { id: fake.id, name: 'existing-name', machine: { id: mockMachine.id, type: mockMachine.type }, sensor: null };
+        const updatedAt = dayjs().toDate();
+        const updatedName = fake.name;
+        const mockUpdated = { id: fake.id, uuid: fake.uuid, name: updatedName, updatedAt, sensor: null };
+
+        const findMonitoringPointByUuidSpy = vi
+          .spyOn(monitoringPointsRepository, 'findMonitoringPointByUuid')
+          .mockResolvedValue({ ...existingPoint, sensor: { id: fake.id } });
+        const findExistingMonitoringPointSpy = vi
+          .spyOn(monitoringPointsRepository, 'findExistingMonitoringPoint')
+          .mockResolvedValue(null);
+        const updateMonitoringPointSpy = vi
+          .spyOn(monitoringPointsRepository, 'updateMonitoringPoint')
+          .mockResolvedValue(mockUpdated);
+
+        const response = await fastify.inject({
+          method: 'PATCH',
+          url: `/v1/monitoring-points/${fake.uuid}`,
+          body: { name: updatedName },
+        });
+
+        expect(response.statusCode).toBe(StatusCodes.OK);
+        expect(response.json()).toEqual({
+          id: mockUpdated.id,
+          uuid: mockUpdated.uuid,
+          name: mockUpdated.name,
+          updatedAt: updatedAt.toISOString(),
+        });
+
+        expect(findMonitoringPointByUuidSpy).toHaveBeenCalledExactlyOnceWith(expect.anything(), fake.uuid, authenticatedUser.sub);
+        expect(findExistingMonitoringPointSpy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          updatedName,
+          mockMachine.id,
+        );
+        expect(updateMonitoringPointSpy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          fake.uuid,
+          updatedName,
+          undefined,
+          true,
         );
       },
     );
@@ -450,10 +501,10 @@ describe('DELETE /v1/monitoring-points/:uuid', () => {
   });
 
   describe('when monitoring point is found', () => {
-    authenticatedTest(
+    machineTest(
       'should delete the monitoring point',
-      async ({ fastify, fake, authenticatedUser }) => {
-        const existingPoint = { id: fake.id, name: fake.name, machine: { id: fake.id, type: 'Pump' } };
+      async ({ fastify, fake, authenticatedUser, mockMachine }) => {
+        const existingPoint = { id: fake.id, name: 'existing-name', machine: { id: mockMachine.id, type: mockMachine.type }, sensor: null };
 
         const findMonitoringPointByUuidSpy = vi
           .spyOn(monitoringPointsRepository, 'findMonitoringPointByUuid')
@@ -499,10 +550,10 @@ describe('DELETE /v1/monitoring-points/:uuid/sensor', () => {
   });
 
   describe('when monitoring point is found', () => {
-    authenticatedTest(
+    machineTest(
       'should delete the sensor',
-      async ({ fastify, fake, authenticatedUser }) => {
-        const existingPoint = { id: fake.id, name: fake.name, machine: { id: fake.id, type: 'Pump' } };
+      async ({ fastify, fake, authenticatedUser, mockMachine }) => {
+        const existingPoint = { id: fake.id, name: 'existing-name', machine: { id: mockMachine.id, type: mockMachine.type }, sensor: null };
 
         const findMonitoringPointByUuidSpy = vi
           .spyOn(monitoringPointsRepository, 'findMonitoringPointByUuid')
