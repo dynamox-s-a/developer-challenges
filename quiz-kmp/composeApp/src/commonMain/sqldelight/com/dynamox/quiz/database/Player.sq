@@ -1,0 +1,19 @@
+CREATE TABLE Player (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE
+);
+
+getPlayerByName:
+SELECT * FROM Player WHERE name = ?;
+
+insertPlayer:
+INSERT INTO Player (name) VALUES (?);
+
+getAllPlayers:
+SELECT * FROM Player;
+
+getPlayerById:
+SELECT * FROM Player WHERE id = ?;
+
+lastInsertRowId:
+SELECT last_insert_rowid();
