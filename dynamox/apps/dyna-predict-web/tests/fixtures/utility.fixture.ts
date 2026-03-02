@@ -14,6 +14,7 @@ export interface Fake {
   name: string;
   email: string;
   errorMessage: string;
+  error: Error;
 }
 
 interface UtilityFixtures {
@@ -23,11 +24,13 @@ interface UtilityFixtures {
 export const utilityTest = baseTest.extend<UtilityFixtures>({
   // eslint-disable-next-line no-empty-pattern
   fake: async ({}, use) => {
+    const errorMessage = faker.lorem.sentence();
     await use({
       uuid: faker.string.uuid(),
       name: faker.word.noun(),
       email: faker.internet.email(),
-      errorMessage: faker.lorem.sentence(),
+      errorMessage,
+      error: new Error(errorMessage),
     });
   },
 });
