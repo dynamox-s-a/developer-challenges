@@ -6,10 +6,7 @@ import machinesReducer, {
   updateMachine,
   deleteMachine,
 } from '../../../../src/store/features/machines/machine.slice';
-import {
-  machineTest,
-  initialMachinesState,
-} from '../../../fixtures/machine.fixture';
+import { machineTest, initialMachinesState } from '../../../fixtures/machine.fixture';
 import { errorWithoutMessage } from '../../../fixtures/utility.fixture';
 
 describe('machinesSlice', () => {
@@ -26,14 +23,21 @@ describe('machinesSlice', () => {
     });
 
     describe('when fulfilled', () => {
-      machineTest('should store the returned machines and stop loading', async ({ mockMachine }) => {
-        const action = fetchMachines.fulfilled({ machines: [mockMachine] }, 'requestId', undefined);
+      machineTest(
+        'should store the returned machines and stop loading',
+        async ({ mockMachine }) => {
+          const action = fetchMachines.fulfilled(
+            { machines: [mockMachine] },
+            'requestId',
+            undefined,
+          );
 
-        const nextState = machinesReducer(initialMachinesState, action);
+          const nextState = machinesReducer(initialMachinesState, action);
 
-        expect(nextState.isLoading).toBe(false);
-        expect(nextState.machines).toEqual([mockMachine]);
-      });
+          expect(nextState.isLoading).toBe(false);
+          expect(nextState.machines).toEqual([mockMachine]);
+        },
+      );
     });
 
     describe('when rejected with a known error', () => {
@@ -61,54 +65,81 @@ describe('machinesSlice', () => {
 
   describe('createMachine', () => {
     describe('when fulfilled', () => {
-      machineTest('should append the new machine to the list', async ({ initialStateWithMachine, anotherMockMachine }) => {
-        expect(initialStateWithMachine.machines).toHaveLength(1);
+      machineTest(
+        'should append the new machine to the list',
+        async ({ initialStateWithMachine, anotherMockMachine }) => {
+          expect(initialStateWithMachine.machines).toHaveLength(1);
 
-        const action = createMachine.fulfilled(anotherMockMachine, 'requestId', { name: anotherMockMachine.name, type: anotherMockMachine.type });
+          const action = createMachine.fulfilled(anotherMockMachine, 'requestId', {
+            name: anotherMockMachine.name,
+            type: anotherMockMachine.type,
+          });
 
-        const nextState = machinesReducer(initialStateWithMachine, action);
+          const nextState = machinesReducer(initialStateWithMachine, action);
 
-        expect(nextState.machines).toHaveLength(2);
-        expect(nextState.machines[1].uuid).toBe(anotherMockMachine.uuid);
-      });
+          expect(nextState.machines).toHaveLength(2);
+          expect(nextState.machines[1].uuid).toBe(anotherMockMachine.uuid);
+        },
+      );
     });
   });
 
   describe('updateMachine', () => {
     describe('when fulfilled', () => {
-      machineTest('should update only the matching machine in the list', async ({ fake, mockMachine, anotherMockMachine }) => {
-        const stateWithTwoMachines = { ...initialMachinesState, machines: [mockMachine, anotherMockMachine] };
+      machineTest(
+        'should update only the matching machine in the list',
+        async ({ fake, mockMachine, anotherMockMachine }) => {
+          const stateWithTwoMachines = {
+            ...initialMachinesState,
+            machines: [mockMachine, anotherMockMachine],
+          };
 
-        expect(stateWithTwoMachines.machines[0].name).toBe(mockMachine.name);
-        expect(stateWithTwoMachines.machines[1].name).toBe(anotherMockMachine.name);
+          expect(stateWithTwoMachines.machines[0].name).toBe(mockMachine.name);
+          expect(stateWithTwoMachines.machines[1].name).toBe(anotherMockMachine.name);
 
-        const newMachineName = fake.name;
-        const updatePayload = { id: mockMachine.id, uuid: mockMachine.uuid, name: newMachineName, type: mockMachine.type, updatedAt: dayjs().toISOString() };
+          const newMachineName = fake.name;
+          const updatePayload = {
+            id: mockMachine.id,
+            uuid: mockMachine.uuid,
+            name: newMachineName,
+            type: mockMachine.type,
+            updatedAt: dayjs().toISOString(),
+          };
 
-        const action = updateMachine.fulfilled(updatePayload, 'requestId', { uuid: mockMachine.uuid, data: { name: newMachineName } });
+          const action = updateMachine.fulfilled(updatePayload, 'requestId', {
+            uuid: mockMachine.uuid,
+            data: { name: newMachineName },
+          });
 
-        const nextState = machinesReducer(stateWithTwoMachines, action);
+          const nextState = machinesReducer(stateWithTwoMachines, action);
 
-        expect(nextState.machines[0].name).toBe(newMachineName);
-        expect(nextState.machines[1].name).toBe(anotherMockMachine.name);
-      });
+          expect(nextState.machines[0].name).toBe(newMachineName);
+          expect(nextState.machines[1].name).toBe(anotherMockMachine.name);
+        },
+      );
     });
   });
 
   describe('deleteMachine', () => {
     describe('when fulfilled', () => {
-      machineTest('should remove the machine and keep the others intact', async ({ mockMachine, anotherMockMachine }) => {
-        const stateWithTwoMachines = { ...initialMachinesState, machines: [mockMachine, anotherMockMachine] };
+      machineTest(
+        'should remove the machine and keep the others intact',
+        async ({ mockMachine, anotherMockMachine }) => {
+          const stateWithTwoMachines = {
+            ...initialMachinesState,
+            machines: [mockMachine, anotherMockMachine],
+          };
 
-        expect(stateWithTwoMachines.machines).toHaveLength(2);
+          expect(stateWithTwoMachines.machines).toHaveLength(2);
 
-        const action = deleteMachine.fulfilled(mockMachine.uuid, 'requestId', mockMachine.uuid);
+          const action = deleteMachine.fulfilled(mockMachine.uuid, 'requestId', mockMachine.uuid);
 
-        const nextState = machinesReducer(stateWithTwoMachines, action);
+          const nextState = machinesReducer(stateWithTwoMachines, action);
 
-        expect(nextState.machines).toHaveLength(1);
-        expect(nextState.machines[0].uuid).toBe(anotherMockMachine.uuid);
-      });
+          expect(nextState.machines).toHaveLength(1);
+          expect(nextState.machines[0].uuid).toBe(anotherMockMachine.uuid);
+        },
+      );
     });
   });
 });

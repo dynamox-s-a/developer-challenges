@@ -5,7 +5,7 @@ import { router } from './router';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 import { ThemeProvider } from '@mui/material/styles';
-import { theme } from './styles/theme'
+import { theme } from './styles/theme';
 import { CssBaseline } from '@mui/material';
 import { injectRouter, injectStore } from './api/client';
 import * as Sentry from '@sentry/react';
@@ -17,27 +17,24 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { initSentry } from './utils/sentry';
 
-injectStore(store)
-injectRouter(router)
+injectStore(store);
+injectRouter(router);
 
-initSentry()
+initSentry();
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement,
-  {
-    onUncaughtError: Sentry.reactErrorHandler(),
-    onCaughtError: Sentry.reactErrorHandler(),
-    onRecoverableError: Sentry.reactErrorHandler(),
-  }
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement, {
+  onUncaughtError: Sentry.reactErrorHandler(),
+  onCaughtError: Sentry.reactErrorHandler(),
+  onRecoverableError: Sentry.reactErrorHandler(),
+});
 
 root.render(
   <StrictMode>
-      <ThemeProvider theme={theme}>
-         <CssBaseline />
-        <Provider store={store}>
-          <RouterProvider router={router} />
-        </Provider>
-      </ThemeProvider>
-  </StrictMode>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
+    </ThemeProvider>
+  </StrictMode>,
 );

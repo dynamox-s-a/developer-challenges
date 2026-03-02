@@ -9,8 +9,21 @@ interface PieChartCardProps {
 
 const RADIAN = Math.PI / 180;
 
-const renderLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: PieLabelRenderProps) => {
-  if (cx == null || cy == null || innerRadius == null || outerRadius == null || (percent ?? 0) === 0) {
+const renderLabel = ({
+  cx,
+  cy,
+  midAngle,
+  innerRadius,
+  outerRadius,
+  percent,
+}: PieLabelRenderProps) => {
+  if (
+    cx == null ||
+    cy == null ||
+    innerRadius == null ||
+    outerRadius == null ||
+    (percent ?? 0) === 0
+  ) {
     return null;
   }
   const radius = Number(innerRadius) + (Number(outerRadius) - Number(innerRadius)) * 0.5;
@@ -19,7 +32,15 @@ const renderLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: Pi
   const x = ncx + radius * Math.cos(-(midAngle ?? 0) * RADIAN);
   const y = ncy + radius * Math.sin(-(midAngle ?? 0) * RADIAN);
   return (
-    <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" fontSize={13} fontWeight="bold">
+    <text
+      x={x}
+      y={y}
+      fill="white"
+      textAnchor="middle"
+      dominantBaseline="central"
+      fontSize={13}
+      fontWeight="bold"
+    >
       {`${((percent ?? 0) * 100).toFixed(0)}%`}
     </text>
   );

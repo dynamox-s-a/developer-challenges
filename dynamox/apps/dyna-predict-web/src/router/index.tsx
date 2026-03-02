@@ -36,7 +36,4 @@ const authenticatedRoutes = [
   },
 ];
 
-export const router = createBrowserRouter([
-  ...externalRoutes,
-  ...authenticatedRoutes,
-]);
+export const router = createBrowserRouter([...externalRoutes, ...authenticatedRoutes]);

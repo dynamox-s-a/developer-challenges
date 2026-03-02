@@ -20,30 +20,29 @@ const initialState: TimeSeriesState = {
   error: null,
 };
 
-export const fetchTimeSeries = createAsyncThunk(
-  'timeSeries/fetch',
-  async (sensorUuid: string) => {
-    const [entriesRes, metricsRes] = await Promise.all([
-      timeSeriesAPI.getTimeSeries(sensorUuid),
-      timeSeriesAPI.getMetrics(sensorUuid),
-    ]);
-    return { entries: entriesRes.data.timeSeries, metrics: metricsRes.data };
-  }
-);
+export const fetchTimeSeries = createAsyncThunk('timeSeries/fetch', async (sensorUuid: string) => {
+  const [entriesRes, metricsRes] = await Promise.all([
+    timeSeriesAPI.getTimeSeries(sensorUuid),
+    timeSeriesAPI.getMetrics(sensorUuid),
+  ]);
+  return { entries: entriesRes.data.timeSeries, metrics: metricsRes.data };
+});
 
 export const createTimeSeries = createAsyncThunk(
   'timeSeries/create',
   async (
     { sensorUuid, data }: { sensorUuid: string; data: CreateTimeSeriesBatchRequest },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const response = await timeSeriesAPI.createTimeSeries(sensorUuid, data);
       return response.data;
     } catch (error) {
-      return rejectWithValue(extractErrorMessage(error, 'Erro ao criar registros de série temporal'));
+      return rejectWithValue(
+        extractErrorMessage(error, 'Erro ao criar registros de série temporal'),
+      );
     }
-  }
+  },
 );
 
 export const deleteAllTimeSeries = createAsyncThunk(
@@ -55,7 +54,7 @@ export const deleteAllTimeSeries = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(extractErrorMessage(error, 'Erro ao remover série temporal'));
     }
-  }
+  },
 );
 
 export const timeSeriesSlice = createSlice({
@@ -87,10 +86,11 @@ export const timeSeriesSlice = createSlice({
         state.error = action.error.message ?? 'Erro ao salvar séries temporais';
       });
 
-    builder.addCase(deleteAllTimeSeries.fulfilled, (state) => {
-      state.entries = [];
-      state.metrics = null;
-    })
+    builder
+      .addCase(deleteAllTimeSeries.fulfilled, (state) => {
+        state.entries = [];
+        state.metrics = null;
+      })
       .addCase(deleteAllTimeSeries.rejected, (state, action) => {
         state.error = action.error.message ?? 'Erro ao remover séries temporais';
       });

@@ -78,7 +78,9 @@ function MachinesPage() {
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
+      <Box
+        sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}
+      >
         <Box>
           <Typography variant="h5" fontWeight="bold">
             Máquinas
@@ -103,10 +105,18 @@ function MachinesPage() {
             {isLoading
               ? Array.from({ length: 3 }).map((_, i) => (
                   <TableRow key={i}>
-                    <TableCell><Skeleton /></TableCell>
-                    <TableCell><Skeleton width={60} /></TableCell>
-                    <TableCell align="center"><Skeleton /></TableCell>
-                    <TableCell align="right"><Skeleton width={80} /></TableCell>
+                    <TableCell>
+                      <Skeleton />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton width={60} />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton />
+                    </TableCell>
+                    <TableCell align="right">
+                      <Skeleton width={80} />
+                    </TableCell>
                   </TableRow>
                 ))
               : machines.map((machine) => (
@@ -116,15 +126,28 @@ function MachinesPage() {
                       <Chip label={machine.type} size="small" variant="filled" />
                     </TableCell>
                     <TableCell align="center">
-                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: 1,
+                        }}
+                      >
                         <Tooltip title={`${machine.unassignedSensorCount} ponto(s) sem sensor`}>
                           <WarningAmberIcon
                             fontSize="small"
                             color="warning"
-                            sx={{ visibility: machine.unassignedSensorCount > 0 ? 'visible' : 'hidden' }}
+                            sx={{
+                              visibility: machine.unassignedSensorCount > 0 ? 'visible' : 'hidden',
+                            }}
                           />
                         </Tooltip>
-                        <Chip label={machine.monitoringPoints.length} size="small" variant="outlined" />
+                        <Chip
+                          label={machine.monitoringPoints.length}
+                          size="small"
+                          variant="outlined"
+                        />
                         <IconButton
                           size="small"
                           onClick={() => setPointsModalMachine(machine)}

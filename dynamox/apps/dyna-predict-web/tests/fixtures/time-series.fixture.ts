@@ -30,9 +30,21 @@ export const timeSeriesTest = utilityTest.extend<TimeSeriesFixtures>({
   // eslint-disable-next-line no-empty-pattern
   mockMetrics: async ({}, use) => {
     await use({
-      temperature: { min: faker.number.float(), max: faker.number.float(), avg: faker.number.float() },
-      accelerationRms: { min: faker.number.float(), max: faker.number.float(), avg: faker.number.float() },
-      velocityRms: { min: faker.number.float(), max: faker.number.float(), avg: faker.number.float() },
+      temperature: {
+        min: faker.number.float(),
+        max: faker.number.float(),
+        avg: faker.number.float(),
+      },
+      accelerationRms: {
+        min: faker.number.float(),
+        max: faker.number.float(),
+        avg: faker.number.float(),
+      },
+      velocityRms: {
+        min: faker.number.float(),
+        max: faker.number.float(),
+        avg: faker.number.float(),
+      },
       count: faker.number.int(),
     });
   },

@@ -22,7 +22,11 @@ interface MachineMonitoringPointsModalProps {
   machine: Machine | undefined;
 }
 
-function MachineMonitoringPointsModal({ open, onClose, machine }: MachineMonitoringPointsModalProps) {
+function MachineMonitoringPointsModal({
+  open,
+  onClose,
+  machine,
+}: MachineMonitoringPointsModalProps) {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -50,12 +54,12 @@ function MachineMonitoringPointsModal({ open, onClose, machine }: MachineMonitor
                   {point.sensor?.model ? (
                     <Chip label={point.sensor.model} size="small" variant="outlined" />
                   ) : (
-                    <Typography variant="body2" color="text.disabled">—</Typography>
+                    <Typography variant="body2" color="text.disabled">
+                      —
+                    </Typography>
                   )}
                 </TableCell>
-                <TableCell>
-                  {new Date(point.createdAt).toLocaleDateString('pt-BR')}
-                </TableCell>
+                <TableCell>{new Date(point.createdAt).toLocaleDateString('pt-BR')}</TableCell>
               </TableRow>
             ))}
           </TableBody>

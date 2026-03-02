@@ -48,7 +48,7 @@ const COLUMNS: { id: MonitoringPointSortBy; label: string }[] = [
 function MonitoringPointsPage() {
   const dispatch = useAppDispatch();
   const { monitoringPoints, pagination, isLoading } = useAppSelector(
-    (state) => state.monitoringPoints
+    (state) => state.monitoringPoints,
   );
 
   const [page, setPage] = useState(0); // 0-based (MUI)
@@ -120,7 +120,9 @@ function MonitoringPointsPage() {
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
+      <Box
+        sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}
+      >
         <Typography variant="h5" fontWeight="bold">
           Pontos de Monitoramento
         </Typography>
@@ -156,7 +158,9 @@ function MonitoringPointsPage() {
                         <Skeleton />
                       </TableCell>
                     ))}
-                    <TableCell><Skeleton width={60} /></TableCell>
+                    <TableCell>
+                      <Skeleton width={60} />
+                    </TableCell>
                     <TableCell align="right">
                       <Skeleton width={80} />
                     </TableCell>
@@ -190,7 +194,9 @@ function MonitoringPointsPage() {
                           Ver
                         </Button>
                       ) : (
-                        <Typography variant="body2" color="text.disabled">—</Typography>
+                        <Typography variant="body2" color="text.disabled">
+                          —
+                        </Typography>
                       )}
                     </TableCell>
                     <TableCell align="right">

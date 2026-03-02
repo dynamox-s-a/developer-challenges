@@ -30,7 +30,7 @@ export const fetchMonitoringPoints = createAsyncThunk(
   async (params: MonitoringPointsQuery) => {
     const response = await monitoringPointsAPI.getMonitoringPoints(params);
     return response.data;
-  }
+  },
 );
 
 export const createMonitoringPoint = createAsyncThunk(
@@ -42,24 +42,24 @@ export const createMonitoringPoint = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(extractErrorMessage(error, 'Erro ao criar ponto de monitoramento'));
     }
-  }
+  },
 );
 
 export const updateMonitoringPoint = createAsyncThunk(
   'monitoringPoints/update',
   async (
     { uuid, data }: { uuid: string; data: PatchMonitoringPointRequest },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       await monitoringPointsAPI.updateMonitoringPoint(uuid, data);
       return undefined;
     } catch (error) {
       return rejectWithValue(
-        extractErrorMessage(error, 'Erro ao atualizar ponto de monitoramento')
+        extractErrorMessage(error, 'Erro ao atualizar ponto de monitoramento'),
       );
     }
-  }
+  },
 );
 
 export const deleteMonitoringPoint = createAsyncThunk(
@@ -71,7 +71,7 @@ export const deleteMonitoringPoint = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(extractErrorMessage(error, 'Erro ao remover ponto de monitoramento'));
     }
-  }
+  },
 );
 
 export const monitoringPointsSlice = createSlice({

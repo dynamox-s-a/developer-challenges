@@ -147,7 +147,9 @@ function TimeSeriesModal({ open, onClose, point }: TimeSeriesModalProps) {
             <Typography variant="body2">Exibindo dados das últimas 24 horas.</Typography>
           </Box>
 
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <Box
+            sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}
+          >
             <Typography variant="body2" color="text.secondary">
               {metrics?.count ?? entries.length} pontos
             </Typography>
@@ -182,9 +184,19 @@ function TimeSeriesModal({ open, onClose, point }: TimeSeriesModalProps) {
               const m = metrics?.[key];
               return (
                 <Paper key={key} variant="outlined" sx={{ p: 2 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 1.5, justifyContent: 'center' }}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 0.5,
+                      mb: 1.5,
+                      justifyContent: 'center',
+                    }}
+                  >
                     <Icon fontSize="small" color="action" />
-                    <Typography variant="subtitle2">{label} ({unit})</Typography>
+                    <Typography variant="subtitle2">
+                      {label} ({unit})
+                    </Typography>
                   </Box>
                   <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
                     {(['min', 'avg', 'max'] as const).map((stat) => (
@@ -209,7 +221,13 @@ function TimeSeriesModal({ open, onClose, point }: TimeSeriesModalProps) {
 
           <Tabs value={tab} onChange={(_, v) => setTab(v)} sx={{ mb: 2 }}>
             {METRICS.map(({ key, label, Icon }) => (
-              <Tab key={key} value={key} label={label} icon={<Icon fontSize="small" />} iconPosition="start" />
+              <Tab
+                key={key}
+                value={key}
+                label={label}
+                icon={<Icon fontSize="small" />}
+                iconPosition="start"
+              />
             ))}
           </Tabs>
 
@@ -220,7 +238,8 @@ function TimeSeriesModal({ open, onClose, point }: TimeSeriesModalProps) {
           ) : entries.length === 0 ? (
             <Box sx={{ textAlign: 'center', py: 6 }}>
               <Typography variant="body2" color="text.secondary">
-                Nenhum dado nas últimas 24 horas. Clique em "Adicionar dados" para gerar registros de teste.
+                Nenhum dado nas últimas 24 horas. Clique em "Adicionar dados" para gerar registros
+                de teste.
               </Typography>
             </Box>
           ) : (

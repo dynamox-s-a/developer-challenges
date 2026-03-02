@@ -19,8 +19,18 @@ interface SideBarProps {
 
 const NAVIGATION_ITEMS = [
   { label: 'Dashboard', icon: <DashboardIcon />, path: routePaths.dashboard, disabled: false },
-  { label: 'Máquinas', icon: <PrecisionManufacturingIcon />, path: routePaths.machines, disabled: false },
-  { label: 'Pontos de Monitoramento', icon: <RadarIcon />, path: routePaths.monitoringPoints, disabled: false },
+  {
+    label: 'Máquinas',
+    icon: <PrecisionManufacturingIcon />,
+    path: routePaths.machines,
+    disabled: false,
+  },
+  {
+    label: 'Pontos de Monitoramento',
+    icon: <RadarIcon />,
+    path: routePaths.monitoringPoints,
+    disabled: false,
+  },
 ];
 
 function SideBar({ width, mobileOpen, onClose, onTransitionEnd }: SideBarProps) {
@@ -36,7 +46,6 @@ function SideBar({ width, mobileOpen, onClose, onTransitionEnd }: SideBarProps) 
 
   const drawerContent = (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, px: 3, py: 3 }}>
         <Avatar sx={{ bgcolor: 'primary.main', width: 40, height: 40 }}>
           <MonitorHeart fontSize="small" />
@@ -64,12 +73,13 @@ function SideBar({ width, mobileOpen, onClose, onTransitionEnd }: SideBarProps) 
               textTransform: 'none',
               fontSize: '0.9rem',
               whiteSpace: 'nowrap',
-              ...(!item.disabled && pathname === item.path && {
-                bgcolor: alpha(theme.palette.primary.main, 0.15),
-                color: 'primary.main',
-                fontWeight: 600,
-                '&:hover': { bgcolor: alpha(theme.palette.primary.main, 0.25) },
-              }),
+              ...(!item.disabled &&
+                pathname === item.path && {
+                  bgcolor: alpha(theme.palette.primary.main, 0.15),
+                  color: 'primary.main',
+                  fontWeight: 600,
+                  '&:hover': { bgcolor: alpha(theme.palette.primary.main, 0.25) },
+                }),
             })}
           >
             {item.label}
@@ -102,7 +112,6 @@ function SideBar({ width, mobileOpen, onClose, onTransitionEnd }: SideBarProps) 
 
   return (
     <Box component="nav" sx={{ width: { sm: width }, flexShrink: { sm: 0 } }}>
-
       <Drawer
         variant="temporary"
         open={mobileOpen}

@@ -24,7 +24,9 @@ function MetricChart({ data, dataKey, label, unit, color }: MetricChartProps) {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="time" tick={{ fontSize: 10 }} />
         <YAxis tick={{ fontSize: 10 }} unit={` ${unit}`} width={65} />
-        <Tooltip formatter={(value: number | undefined) => [`${(value ?? 0).toFixed(2)} ${unit}`, label]} />
+        <Tooltip
+          formatter={(value: number | undefined) => [`${(value ?? 0).toFixed(2)} ${unit}`, label]}
+        />
         <Legend />
         <Line
           type="monotone"

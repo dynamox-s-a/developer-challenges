@@ -86,10 +86,18 @@ function MainDashboard() {
 
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
-          <PieChartCard title="Máquinas por Tipo" data={machinesByTypeData} colors={MACHINE_COLORS} />
+          <PieChartCard
+            title="Máquinas por Tipo"
+            data={machinesByTypeData}
+            colors={MACHINE_COLORS}
+          />
         </Grid>
         <Grid item xs={12} md={6}>
-          <PieChartCard title="Distribuição de Sensores" data={sensorDistributionData} colors={SENSOR_COLORS} />
+          <PieChartCard
+            title="Distribuição de Sensores"
+            data={sensorDistributionData}
+            colors={SENSOR_COLORS}
+          />
         </Grid>
       </Grid>
     </Box>

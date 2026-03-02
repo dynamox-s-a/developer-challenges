@@ -1,7 +1,6 @@
-import api from './client'
-import type { DashboardMetrics } from '@dynamox/types'
+import api from './client';
+import type { DashboardMetrics } from '@dynamox/types';
 
 export const reportsAPI = {
-  getDashboardMetrics: () =>
-    api.get<DashboardMetrics>('/reports/dashboard/metrics')
-}
+  getDashboardMetrics: () => api.get<DashboardMetrics>('/reports/dashboard/metrics'),
+};

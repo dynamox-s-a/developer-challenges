@@ -35,7 +35,9 @@ describe('reportsSlice', () => {
         const nextState = reportsReducer(initialReportsState, action);
 
         expect(nextState.isLoading).toBe(false);
-        expect(nextState.error).toBe('Erro inesperado ao carregar métricas. Por favor, tente novamente mais tarde.');
+        expect(nextState.error).toBe(
+          'Erro inesperado ao carregar métricas. Por favor, tente novamente mais tarde.',
+        );
       });
     });
   });

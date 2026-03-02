@@ -1,4 +1,4 @@
-import * as Sentry from "@sentry/react";
+import * as Sentry from '@sentry/react';
 import { version } from '../../package.json';
 
 export function initSentry() {

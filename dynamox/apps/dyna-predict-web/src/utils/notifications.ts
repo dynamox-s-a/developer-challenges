@@ -26,7 +26,7 @@ export function useNotifications() {
       listeners.add(listener);
       return () => listeners.delete(listener);
     },
-    () => state
+    () => state,
   );
 
   const close = () => {

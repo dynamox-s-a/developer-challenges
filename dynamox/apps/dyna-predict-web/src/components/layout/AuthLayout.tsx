@@ -47,7 +47,13 @@ function AuthLayout() {
           }}
         >
           <Toolbar>
-            <IconButton color="inherit" aria-label="abrir menu" edge="start" onClick={handleDrawerToggle} sx={{ mr: 2 }}>
+            <IconButton
+              color="inherit"
+              aria-label="abrir menu"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2 }}
+            >
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap>

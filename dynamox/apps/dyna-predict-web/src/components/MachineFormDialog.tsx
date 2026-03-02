@@ -19,7 +19,12 @@ function MachineFormDialog({ open, onClose, machine }: MachineFormDialogProps) {
   const dispatch = useAppDispatch();
   const isEditing = !!machine;
 
-  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<CreateMachineRequest>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<CreateMachineRequest>({
     defaultValues: { name: '', type: 'Pump' },
   });
 
@@ -36,26 +41,29 @@ function MachineFormDialog({ open, onClose, machine }: MachineFormDialogProps) {
       } else {
         await dispatch(createMachine(data)).unwrap();
       }
-      notify(isEditing ? 'Máquina atualizada com sucesso!' : 'Máquina criada com sucesso!', 'success');
+      notify(
+        isEditing ? 'Máquina atualizada com sucesso!' : 'Máquina criada com sucesso!',
+        'success',
+      );
       onClose();
     } catch (error) {
-      const message = typeof error === 'string' ? error : 'Erro ao salvar máquina. Tente novamente.';
+      const message =
+        typeof error === 'string' ? error : 'Erro ao salvar máquina. Tente novamente.';
       notify(message, 'error');
     }
   };
 
   return (
-    <FormDialog
-      open={open}
-      onClose={onClose}
-      title={isEditing ? 'Editar Máquina' : 'Nova Máquina'}
-    >
+    <FormDialog open={open} onClose={onClose} title={isEditing ? 'Editar Máquina' : 'Nova Máquina'}>
       <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={2} sx={{ mt: 1 }}>
         <TextField
           label="Nome"
           placeholder="Nome da máquina"
           fullWidth
-          {...register('name', { required: 'Nome é obrigatório', minLength: { value: 1, message: 'Nome é obrigatório' } })}
+          {...register('name', {
+            required: 'Nome é obrigatório',
+            minLength: { value: 1, message: 'Nome é obrigatório' },
+          })}
           error={!!errors.name}
           helperText={errors.name?.message}
         />

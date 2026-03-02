@@ -1,20 +1,11 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import type { LoginRequest } from '@dynamox/types';
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Avatar, Box, Button, Card, CardContent, TextField, Typography } from '@mui/material';
 import MonitorHeart from '@mui/icons-material/MonitorHeart';
 import { useAppDispatch } from '../../store/hooks';
 import { login } from '../../store/features/auth/auth.slice';
 import { routePaths } from '../../router/paths';
-
 
 function LoginPage() {
   const dispatch = useAppDispatch();
@@ -37,9 +28,13 @@ function LoginPage() {
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+    <Box
+      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}
+    >
       <Card sx={{ width: 440, p: 2 }}>
-        <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+        <CardContent
+          sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}
+        >
           <Avatar sx={{ bgcolor: 'primary.main', width: 56, height: 56 }}>
             <MonitorHeart />
           </Avatar>
@@ -56,7 +51,7 @@ function LoginPage() {
           <Box
             component="form"
             onSubmit={handleSubmit(onSubmit)}
-            sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 2}}
+            sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 2 }}
           >
             <TextField
               label="Email"
@@ -72,7 +67,10 @@ function LoginPage() {
               type="password"
               error={!!errors.password}
               helperText={errors.password?.message}
-              {...register('password', { required: 'Senha é obrigatória', minLength: { value: 6, message: 'Mínimo 6 caracteres' } })}
+              {...register('password', {
+                required: 'Senha é obrigatória',
+                minLength: { value: 6, message: 'Mínimo 6 caracteres' },
+              })}
             />
 
             {errors.root && (
@@ -81,7 +79,13 @@ function LoginPage() {
               </Typography>
             )}
 
-            <Button type="submit" variant="contained" fullWidth size="large" disabled={isSubmitting}>
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              size="large"
+              disabled={isSubmitting}
+            >
               Entrar
             </Button>
 

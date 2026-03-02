@@ -12,7 +12,11 @@ function MetricCard({ title, value, icon, loading = false }: MetricCardProps) {
     <Card variant="outlined" sx={{ height: '100%' }}>
       <CardContent>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <Typography variant="body2" color="text.secondary" sx={{ minHeight: '2.86em', textAlign: 'center', flexGrow: 1 }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ minHeight: '2.86em', textAlign: 'center', flexGrow: 1 }}
+          >
             {title}
           </Typography>
           <Box sx={{ color: 'primary.main' }}>{icon}</Box>

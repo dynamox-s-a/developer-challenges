@@ -22,19 +22,22 @@ describe('monitoringPointsSlice', () => {
     });
 
     describe('when fulfilled', () => {
-      monitoringPointTest('should store the returned monitoring points and pagination, and stop loading', async ({ mockMonitoringPoint, mockPagination }) => {
-        const action = fetchMonitoringPoints.fulfilled(
-          { monitoringPoints: [mockMonitoringPoint], pagination: mockPagination },
-          'requestId',
-          {},
-        );
+      monitoringPointTest(
+        'should store the returned monitoring points and pagination, and stop loading',
+        async ({ mockMonitoringPoint, mockPagination }) => {
+          const action = fetchMonitoringPoints.fulfilled(
+            { monitoringPoints: [mockMonitoringPoint], pagination: mockPagination },
+            'requestId',
+            {},
+          );
 
-        const nextState = monitoringPointsReducer(initialMonitoringPointsState, action);
+          const nextState = monitoringPointsReducer(initialMonitoringPointsState, action);
 
-        expect(nextState.isLoading).toBe(false);
-        expect(nextState.monitoringPoints).toEqual([mockMonitoringPoint]);
-        expect(nextState.pagination).toEqual(mockPagination);
-      });
+          expect(nextState.isLoading).toBe(false);
+          expect(nextState.monitoringPoints).toEqual([mockMonitoringPoint]);
+          expect(nextState.pagination).toEqual(mockPagination);
+        },
+      );
     });
 
     describe('when rejected with a known error', () => {
@@ -49,14 +52,17 @@ describe('monitoringPointsSlice', () => {
     });
 
     describe('when rejected without an error message', () => {
-      monitoringPointTest('should fall back to the default error message and stop loading', async () => {
-        const action = fetchMonitoringPoints.rejected(errorWithoutMessage, 'requestId', {});
+      monitoringPointTest(
+        'should fall back to the default error message and stop loading',
+        async () => {
+          const action = fetchMonitoringPoints.rejected(errorWithoutMessage, 'requestId', {});
 
-        const nextState = monitoringPointsReducer(initialMonitoringPointsState, action);
+          const nextState = monitoringPointsReducer(initialMonitoringPointsState, action);
 
-        expect(nextState.isLoading).toBe(false);
-        expect(nextState.error).toBe('Erro ao carregar pontos de monitoramento');
-      });
+          expect(nextState.isLoading).toBe(false);
+          expect(nextState.error).toBe('Erro ao carregar pontos de monitoramento');
+        },
+      );
     });
   });
 });

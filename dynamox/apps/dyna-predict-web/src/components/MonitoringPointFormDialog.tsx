@@ -100,7 +100,7 @@ function MonitoringPointFormDialog({
           updateMonitoringPoint({
             uuid: point.uuid,
             data: { name: values.name, sensorModel },
-          })
+          }),
         ).unwrap();
       } else {
         await dispatch(
@@ -108,7 +108,7 @@ function MonitoringPointFormDialog({
             machineUuid: values.machineUuid,
             name: values.name,
             sensorModel,
-          })
+          }),
         ).unwrap();
       }
       await dispatch(fetchMonitoringPoints(fetchParams));
@@ -116,12 +116,11 @@ function MonitoringPointFormDialog({
         isEditing
           ? 'Ponto de monitoramento atualizado com sucesso!'
           : 'Ponto de monitoramento criado com sucesso!',
-        'success'
+        'success',
       );
       onClose();
     } catch (error) {
-      const message =
-        typeof error === 'string' ? error : 'Erro ao salvar ponto de monitoramento.';
+      const message = typeof error === 'string' ? error : 'Erro ao salvar ponto de monitoramento.';
       notify(message, 'error');
     }
   };

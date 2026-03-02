@@ -20,6 +20,5 @@ export const monitoringPointsAPI = {
   updateMonitoringPoint: (uuid: string, data: PatchMonitoringPointRequest) =>
     api.patch<PatchMonitoringPointResponse>(`/monitoring-points/${uuid}`, data),
 
-  deleteMonitoringPoint: (uuid: string) =>
-    api.delete(`/monitoring-points/${uuid}`),
+  deleteMonitoringPoint: (uuid: string) => api.delete(`/monitoring-points/${uuid}`),
 };

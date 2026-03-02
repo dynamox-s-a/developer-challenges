@@ -1,5 +1,9 @@
 import { describe, expect } from 'vitest';
-import authReducer, { login, logout, fetchMe } from '../../../../src/store/features/auth/auth.slice';
+import authReducer, {
+  login,
+  logout,
+  fetchMe,
+} from '../../../../src/store/features/auth/auth.slice';
 import { authTest, initialAuthState } from '../../../fixtures/auth.fixture';
 import { errorWithoutMessage } from '../../../fixtures/utility.fixture';
 
@@ -17,26 +21,32 @@ describe('authSlice', () => {
     });
 
     describe('when fulfilled', () => {
-      authTest('should authenticate the user and set the currentUser', async ({ mockUser, mockCredentials }) => {
-        const action = login.fulfilled({ user: mockUser }, 'requestId', mockCredentials);
+      authTest(
+        'should authenticate the user and set the currentUser',
+        async ({ mockUser, mockCredentials }) => {
+          const action = login.fulfilled({ user: mockUser }, 'requestId', mockCredentials);
 
-        const nextState = authReducer(initialAuthState, action);
+          const nextState = authReducer(initialAuthState, action);
 
-        expect(nextState.isAuthenticated).toBe(true);
-        expect(nextState.currentUser).toEqual(mockUser);
-        expect(nextState.isLoading).toBe(false);
-      });
+          expect(nextState.isAuthenticated).toBe(true);
+          expect(nextState.currentUser).toEqual(mockUser);
+          expect(nextState.isLoading).toBe(false);
+        },
+      );
     });
 
     describe('when rejected with a known error', () => {
-      authTest('should store the error message from rejectWithValue', async ({ fake, mockCredentials }) => {
-        const action = login.rejected(null, 'requestId', mockCredentials, fake.errorMessage);
+      authTest(
+        'should store the error message from rejectWithValue',
+        async ({ fake, mockCredentials }) => {
+          const action = login.rejected(null, 'requestId', mockCredentials, fake.errorMessage);
 
-        const nextState = authReducer(initialAuthState, action);
+          const nextState = authReducer(initialAuthState, action);
 
-        expect(nextState.isLoading).toBe(false);
-        expect(nextState.error).toBe(fake.errorMessage);
-      });
+          expect(nextState.isLoading).toBe(false);
+          expect(nextState.error).toBe(fake.errorMessage);
+        },
+      );
     });
 
     describe('when rejected without a payload', () => {
