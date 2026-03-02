@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, vi } from 'vitest';
+import { describe, expect, vi } from 'vitest';
 import { faker } from '@faker-js/faker';
 import { test } from '../../fixtures/fastify.fixture';
 import * as userRepository from '../../../src/auth/data-access/user.repository';
@@ -7,10 +7,6 @@ import { createMockUser, createLoginPayload } from '../../fixtures/auth.fixture'
 import { AUTH_ERR_INVALID_CREDENTIALS } from '../../../src/shared/errors/errors';
 
 describe('validateUserCredentials', () => {
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   describe('when user does not exist', () => {
     test('should throw AUTH_ERR_INVALID_CREDENTIALS', async ({ fastify }) => {
       const payload = createLoginPayload();

@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, vi } from 'vitest';
+import { describe, expect, vi } from 'vitest';
 import { repositoryTest as test } from '../../fixtures/fastify.fixture';
 import {
   getMachines,
@@ -11,10 +11,6 @@ import {
 import { INTERNAL_SERVER_ERROR } from '../../../src/shared/errors/errors';
 
 describe('machine repository', () => {
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   describe('getMachines', () => {
     describe('when Prisma throws an error', () => {
       test('should rethrow as INTERNAL_SERVER_ERROR with cause', async ({ fastify, fake }) => {

@@ -1,13 +1,9 @@
-import { afterEach, describe, expect, vi } from 'vitest';
+import { describe, expect, vi } from 'vitest';
 import { repositoryTest as test } from '../../fixtures/fastify.fixture';
 import { findUserByEmail, findUserById } from '../../../src/auth/data-access/user.repository';
 import { INTERNAL_SERVER_ERROR } from '../../../src/shared/errors/errors';
 
 describe('user repository', () => {
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   describe('findUserByEmail', () => {
     describe('when Prisma throws an error', () => {
       test('should rethrow as INTERNAL_SERVER_ERROR with cause', async ({ fastify, fake }) => {
