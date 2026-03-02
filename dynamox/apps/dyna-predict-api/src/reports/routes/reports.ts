@@ -32,6 +32,7 @@ const reportRoutes: FastifyPluginAsyncTypebox = async function (fastify) {
       const { sub: userId } = request.user;
 
       const result = await getDashboardMetrics(fastify, userId);
+
       return reply.send(result);
     },
   );
