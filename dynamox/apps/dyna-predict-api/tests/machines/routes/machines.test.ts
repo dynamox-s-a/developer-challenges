@@ -1,4 +1,5 @@
 import { describe, expect, vi } from 'vitest';
+import dayjs from 'dayjs';
 import { StatusCodes } from 'http-status-codes';
 import * as machineRepository from '../../../src/machines/data-access/machine.repository';
 import { authenticatedTest } from '../../fixtures/fastify.fixture';
@@ -91,15 +92,13 @@ describe('POST /v1/machines', () => {
     machineTest(
       'should create and return the machine',
       async ({ fastify, authenticatedUser, mockMachine }) => {
-        const createdAt = new Date();
-
         const findExistingMachineSpy = vi
           .spyOn(machineRepository, 'findExistingMachine')
           .mockResolvedValue(null);
         const createMachineSpy = vi.spyOn(machineRepository, 'createMachine').mockResolvedValue({
           ...mockMachine,
-          createdAt,
-          updatedAt: createdAt,
+          createdAt: dayjs(mockMachine.createdAt).toDate(),
+          updatedAt: dayjs(mockMachine.updatedAt).toDate(),
         });
 
         const response = await fastify.inject({
@@ -114,7 +113,11 @@ describe('POST /v1/machines', () => {
           uuid: mockMachine.uuid,
           name: mockMachine.name,
           type: mockMachine.type,
-          createdAt: createdAt.toISOString(),
+          userId: authenticatedUser.sub,
+          createdAt: mockMachine.createdAt,
+          updatedAt: mockMachine.updatedAt,
+          monitoringPoints: [],
+          unassignedSensorCount: 0,
         });
 
         expect(findExistingMachineSpy).toHaveBeenCalledExactlyOnceWith(
@@ -196,11 +199,60 @@ describe('PATCH /v1/machines/:uuid', () => {
     );
   });
 
+  describe('when only type is provided', () => {
+    machineTest(
+      'should fall back to existing name',
+      async ({ fastify, authenticatedUser, mockMachine }) => {
+        const updatedAt = dayjs().toDate();
+        const newType: 'Fan' | 'Pump' = mockMachine.type === 'Pump' ? 'Fan' : 'Pump';
+
+        const findExistingMachineByUuidSpy = vi
+          .spyOn(machineRepository, 'findExistingMachineByUuid')
+          .mockResolvedValue(mockMachine);
+        const findExistingMachineSpy = vi
+          .spyOn(machineRepository, 'findExistingMachine')
+          .mockResolvedValue(null);
+        const updateMachineSpy = vi.spyOn(machineRepository, 'updateMachine').mockResolvedValue({
+          ...mockMachine,
+          type: newType,
+          updatedAt,
+        });
+
+        const response = await fastify.inject({
+          method: 'PATCH',
+          url: `/v1/machines/${mockMachine.uuid}`,
+          body: { type: newType },
+        });
+
+        expect(response.statusCode).toBe(StatusCodes.OK);
+
+        expect(findExistingMachineByUuidSpy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          mockMachine.uuid,
+          authenticatedUser.sub,
+        );
+        expect(findExistingMachineSpy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          mockMachine.name,
+          newType,
+          authenticatedUser.sub,
+        );
+        expect(updateMachineSpy).toHaveBeenCalledExactlyOnceWith(
+          expect.anything(),
+          mockMachine.uuid,
+          authenticatedUser.sub,
+          undefined,
+          newType,
+        );
+      },
+    );
+  });
+
   describe('when machine is updated successfully', () => {
     machineTest(
       'should return the updated machine',
       async ({ fastify, fake, authenticatedUser, mockMachine }) => {
-        const updatedAt = new Date();
+        const updatedAt = dayjs().toDate();
         const updatedName = fake.name;
 
         const findExistingMachineByUuidSpy = vi
