@@ -30,12 +30,12 @@ export async function getPaginatedMonitoringPoints(
   sortOrder: 'asc' | 'desc' = 'asc',
 ) {
   try {
-    const where = { machine: { userId } };
+    const queryFilter = { machine: { userId } };
     const orderBy = buildOrderBy(sortBy, sortOrder);
 
     const [items, totalElements] = await Promise.all([
       fastify.prisma.monitoringPoint.findMany({
-        where,
+        where: queryFilter,
         skip: (page - 1) * pageSize,
         take: pageSize,
         orderBy,
@@ -53,7 +53,7 @@ export async function getPaginatedMonitoringPoints(
           },
         },
       }),
-      fastify.prisma.monitoringPoint.count({ where }),
+      fastify.prisma.monitoringPoint.count({ where: queryFilter }),
     ]);
 
     const totalPages = Math.ceil(totalElements / pageSize);
