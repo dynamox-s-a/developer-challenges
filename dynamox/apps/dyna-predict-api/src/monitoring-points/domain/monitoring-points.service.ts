@@ -7,7 +7,12 @@ import type { MachineType, SensorModel } from '@dynamox/types';
 
 /**
  * Returns true if the given sensor model is not allowed for the given machine type.
+ *
  * Business rule: Pump machines only accept HFPlus sensors.
+ *
+ * @param machineType - The type of the machine (`Pump` or `Fan`).
+ * @param sensorModel - The sensor model being assigned (`HFPlus`, `TcAg`, or `TcAs`).
+ * @returns `true` if the sensor is forbidden for the machine type, `false` otherwise.
  */
 export function isSensorForbiddenForMachine(
   machineType: MachineType,
