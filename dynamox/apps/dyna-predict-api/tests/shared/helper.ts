@@ -10,6 +10,9 @@ import authRoutes from '../../src/auth/routes/auth';
 import { faker } from '@faker-js/faker';
 import health from '../../src/shared/routes/health';
 import machinesRoutes from '../../src/machines/routes/machines';
+import monitoringPointsRoutes from '../../src/monitoring-points/routes/monitoring-points';
+import reportsRoutes from '../../src/reports/routes/reports';
+import timeSeriesRoutes from '../../src/time-series/routes/time-series';
 
 type AuthenticatedUser = { sub: number; uuid: string; email: string; role: string };
 
@@ -33,6 +36,9 @@ export async function build(): Promise<FastifyInstance> {
 
   await fastify.register(authRoutes, { prefix: '/v1' });
   await fastify.register(machinesRoutes, { prefix: '/v1' });
+  await fastify.register(monitoringPointsRoutes, { prefix: '/v1' });
+  await fastify.register(reportsRoutes, { prefix: '/v1' });
+  await fastify.register(timeSeriesRoutes, { prefix: '/v1' });
   await fastify.register(health);
 
   await fastify.ready();
@@ -54,6 +60,9 @@ export async function buildAuthenticated(user: AuthenticatedUser): Promise<Fasti
 
   await fastify.register(authRoutes, { prefix: '/v1' });
   await fastify.register(machinesRoutes, { prefix: '/v1' });
+  await fastify.register(monitoringPointsRoutes, { prefix: '/v1' });
+  await fastify.register(reportsRoutes, { prefix: '/v1' });
+  await fastify.register(timeSeriesRoutes, { prefix: '/v1' });
   await fastify.ready();
   vi.clearAllMocks();
 
