@@ -85,9 +85,17 @@ function LoginPage() {
               Entrar
             </Button>
 
-            <Typography variant="caption" color="text.secondary" textAlign="center">
-              Demo: demo@dynapredict.com / user123
-            </Typography>
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography variant="caption" color="text.disabled" display="block" sx={{ mb: 0.5 }}>
+                Usuários de Demo
+              </Typography>
+              <Typography variant="caption" color="text.secondary" display="block">
+                demo1@dynapredict.com · demo123
+              </Typography>
+              <Typography variant="caption" color="text.secondary" display="block">
+                demo2@dynapredict.com · demo456
+              </Typography>
+            </Box>
           </Box>
         </CardContent>
       </Card>
