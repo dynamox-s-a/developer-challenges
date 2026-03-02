@@ -17,5 +17,9 @@
   },
   "devDependencies": {
     "@sentry/vite-plugin": "^5.1.1"
+  },
+  "scripts": {
+    "format": "prettier --write \"{src,tests}/**/*.{ts,tsx}\"",
+    "lint": "eslint --fix \"{src,tests}/**/*.{ts,tsx}\""
   }
 }
