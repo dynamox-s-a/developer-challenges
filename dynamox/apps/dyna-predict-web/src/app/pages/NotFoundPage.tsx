@@ -38,11 +38,11 @@ function NotFoundPage() {
         </Typography>
 
         <Typography variant="h5" fontWeight="medium">
-          Sinal não detectado
+          Página não encontrada.
         </Typography>
 
         <Typography variant="body1" color="text.secondary">
-          A rota que você acessou não existe neste sistema de monitoramento.
+          A rota que você acessou não existe neste sistema.
         </Typography>
 
         <Button variant="contained" size="large" onClick={handleBack} sx={{ mt: 2 }}>
