@@ -230,6 +230,19 @@ describe('machine repository', () => {
         });
       });
     });
+
+    describe('when only type is provided', () => {
+      test('should update only type', async ({ fastify, fake }) => {
+        fastify.prisma.machine = { update: vi.fn().mockResolvedValue({}) };
+
+        await updateMachine(fastify, fake.uuid, fake.userId, undefined, 'Fan');
+
+        expect(fastify.prisma.machine.update).toHaveBeenCalledWith({
+          where: { uuid: fake.uuid, userId: fake.userId },
+          data: { type: 'Fan' },
+        });
+      });
+    });
   });
 
   describe('deleteMachine', () => {
