@@ -8,7 +8,7 @@ import { FastifyInstance } from 'fastify';
 import type { MonitoringPointSortBy } from '@dynamox/types';
 import { INTERNAL_SERVER_ERROR, withCause } from '../../shared/errors/errors';
 
-function buildOrderBy(sortBy: MonitoringPointSortBy, sortOrder: 'asc' | 'desc') {
+export function buildOrderBy(sortBy: MonitoringPointSortBy, sortOrder: 'asc' | 'desc') {
   switch (sortBy) {
     case 'name':
       return { name: sortOrder };
@@ -79,14 +79,20 @@ export async function findMonitoringPointByUuid(
   uuid: string,
   userId: number,
 ) {
-  return await fastify.prisma.monitoringPoint.findFirst({
+  try {
+    return await fastify.prisma.monitoringPoint.findFirst({
     where: { uuid, machine: { userId } },
-    select: {
-      id: true,
-      name: true,
-      machine: { select: { id: true, type: true } },
-    },
-  });
+      select: {
+        id: true,
+        name: true,
+        machine: { select: { id: true, type: true } },
+      },
+    });
+  } catch (error) {
+    fastify.log.error(error);
+    throw withCause(new INTERNAL_SERVER_ERROR(), error);
+  }
+
 }
 
 export async function findExistingMonitoringPoint(
@@ -94,10 +100,15 @@ export async function findExistingMonitoringPoint(
   name: string,
   machineId: number,
 ) {
-  return await fastify.prisma.monitoringPoint.findUnique({
-    where: { machineId_name: { machineId, name } },
-    select: { id: true },
-  });
+  try {
+    return await fastify.prisma.monitoringPoint.findUnique({
+      where: { machineId_name: { machineId, name } },
+      select: { id: true },
+    });
+  } catch (error) {
+    fastify.log.error(error);
+    throw withCause(new INTERNAL_SERVER_ERROR(), error);
+  }
 }
 
 export async function createMonitoringPoint(
