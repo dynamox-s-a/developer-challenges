@@ -1,6 +1,6 @@
 # DynaPredict
 
-A full-stack industrial asset monitoring platform. Users can manage machines, monitoring points, and sensor readings through a web interface — backed by a REST API — while keeping up with important fleet metrics on a live dashboard.
+A full-stack industrial asset monitoring platform. Users can manage machines, monitoring points, and sensor readings through a web interface — backed by a REST API — while keeping up with important asset metrics on a dashboard.
 
 This project was built for the [Dynamox Full-Stack Developer Challenge](https://github.com/dynamox-s-a/developer-challenges/blob/main/full-stack-challenge.md).
 
@@ -106,22 +106,44 @@ CORS_ORIGIN=http://localhost:5173
 SENTRY_DSN=
 ```
 
+> **Make sure to replace all placeholder values** — especially `USER` and `PASSWORD` in `DATABASE_URL` with your actual PostgreSQL credentials. Leaving them as-is will cause a `P1010` access error when running migrations.
+>
+> If you don't have a local database yet, create one first. On macOS with Homebrew PostgreSQL:
+> ```bash
+> createdb dynapredict
+> ```
+> On Linux or any setup with a dedicated `postgres` superuser:
+> ```bash
+> psql -U postgres -c "CREATE DATABASE dynapredict;"
+> ```
+>
+> To find your connection string, run `psql postgres` (connecting to the default `postgres` database) and check with `\conninfo` — it will print your username, host, and port. On macOS with Homebrew, there is usually no password and the username matches your OS user (`whoami`), so the URL becomes:
+> ```
+> DATABASE_URL=postgresql://your-os-username@localhost:5432/dynapredict
+> ```
+
 ### 3. Configure the web environment
+
+From the project root (`dynamox/`):
 
 ```bash
 cp apps/dyna-predict-web/.env.example apps/dyna-predict-web/.env.development
 ```
 
 ```env
-VITE_API_BASE_URL=http://localhost:3000
+VITE_API_BASE_URL=http://localhost:3000/v1
 ```
+
+> **Note:** The `/v1` suffix is required — the API client appends paths like `/auth/login` directly to this base URL, so omitting it will result in requests hitting the wrong endpoints.
 
 ### 4. Create the database and run migrations
 
 ```bash
 cd apps/dyna-predict-api
-npx prisma migrate dev
+npm run dev:db:migrate
 ```
+
+> **Note:** `migrate dev` already runs `prisma generate` automatically. If the seed step fails with a Prisma Client error, run `npm run dev:db:generate` explicitly as a fallback.
 
 ### 5. Seed demo data
 
@@ -133,22 +155,37 @@ npm run dev:db:seed
 
 The seeder creates two demo accounts and populates `demo1` with machines, monitoring points, and sensors while leaving `demo2` untouched.
 
+To also populate `demo1` with time-series data (optional — useful for visualizing charts right away):
+
+```bash
+npm run dev:db:seed:time-series
+```
+
 ---
 
 ## Running the Application
 
-### Run both simultaneously (recommended)
+### Two terminals (recommended)
+
+Run each in a separate terminal so backend and frontend logs stay isolated — this makes it much easier to debug API errors:
+
+**Terminal 1 — API (Backend):**
+```bash
+npx nx serve dyna-predict-api   # http://localhost:3000
+```
+
+**Terminal 2 — Web (Frontend):**
+```bash
+npx nx serve dyna-predict-web   # http://localhost:5173
+```
+
+### Single terminal
 
 ```bash
 npx nx run-many -t serve -p dyna-predict-api,dyna-predict-web
 ```
 
-### Individually
-
-```bash
-npx nx serve dyna-predict-api   # http://localhost:3000
-npx nx serve dyna-predict-web   # http://localhost:5173
-```
+> **Note:** Running both in the same terminal mixes API and frontend output. If something is not working as expected, check the backend logs carefully — errors may be buried in the output.
 
 ---
 
@@ -340,7 +377,15 @@ Coverage metrics are printed directly in the terminal. A full HTML report is als
 
 > *"As with JavaScript, where everything is an object, with Fastify everything is a plugin."*
 
-Fastify's plugin system is the foundation of how the framework is extended. The Fastify core team maintains a set of official plugins under the `@fastify` scope that can be reused across applications without writing infrastructure code from scratch. The plugins below were specifically chosen to cover the backend's infrastructure requirements: request rate limiting, cross-origin access control, error monitoring, and interactive API documentation.
+Fastify's plugin system is the foundation of how the framework is extended. The Fastify core team maintains a set of official plugins under the `@fastify` scope that can be reused across applications without writing infrastructure code from scratch. The plugins below were specifically chosen to cover the backend's infrastructure requirements: authentication, cookie handling, request rate limiting, cross-origin access control, and interactive API documentation.
+
+### JWT
+
+`@fastify/jwt` handles JWT signing and verification. The token payload is typed via module augmentation (`declare module '@fastify/jwt'`), so all route handlers receive a fully typed `request.user` object with no manual casting needed.
+
+### Cookie
+
+`@fastify/cookie` enables cookie parsing and serialization. The JWT is stored in an `httpOnly` cookie set on login and cleared on logout, keeping the token completely inaccessible to JavaScript running in the browser.
 
 ### Rate limiting
 
@@ -351,13 +396,13 @@ Fastify's plugin system is the foundation of how the framework is extended. The 
 
 Cross-Origin Resource Sharing is configured to allow requests only from the frontend origin, set via the `CORS_ORIGIN` environment variable. This prevents unauthorized third-party websites from making authenticated requests on behalf of logged-in users.
 
-### Sentry
-
-Error monitoring via Sentry is active in both the backend and the frontend, in production only. On the backend, the global error handler captures exceptions selectively: only 5xx errors are reported to Sentry. 4xx errors (client mistakes such as invalid input or not-found) are expected behavior and are not treated as incidents.
-
 ### Swagger / OpenAPI
 
 `@fastify/swagger` and `@fastify/swagger-ui` generate interactive API documentation automatically from the TypeBox schemas attached to each route. The docs are available at `/docs` in non-production environments. Because TypeBox schemas are the source of truth for both validation and documentation, the docs are always in sync with the actual API behavior.
+
+### Sentry *(custom plugin)*
+
+The custom Sentry plugin hooks into the global error handler (also a custom plugin) and is active in both the backend and the frontend, in production only. On the backend, only 5xx errors are reported to Sentry. 4xx errors (client mistakes such as invalid input or not-found) are expected behavior and are not treated as incidents.
 
 ---
 
