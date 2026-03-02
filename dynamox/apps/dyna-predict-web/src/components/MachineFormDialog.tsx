@@ -1,9 +1,6 @@
 import { useEffect } from 'react';
 import { Button, MenuItem, Stack, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import type { Resolver } from 'react-hook-form';
-import { typeboxResolver } from '@hookform/resolvers/typebox';
-import { CreateMachineRequestSchema } from '@dynamox/types';
 import type { CreateMachineRequest, MachinesListResponse } from '@dynamox/types';
 import { useAppDispatch } from '../store/hooks';
 import { createMachine, updateMachine } from '../store/features/machines/machine.slice';
@@ -23,7 +20,6 @@ function MachineFormDialog({ open, onClose, machine }: MachineFormDialogProps) {
   const isEditing = !!machine;
 
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<CreateMachineRequest>({
-    resolver: typeboxResolver(CreateMachineRequestSchema) as unknown as Resolver<CreateMachineRequest>,
     defaultValues: { name: '', type: 'Pump' },
   });
 
@@ -59,18 +55,18 @@ function MachineFormDialog({ open, onClose, machine }: MachineFormDialogProps) {
           label="Nome"
           placeholder="Nome da máquina"
           fullWidth
-          {...register('name')}
+          {...register('name', { required: 'Nome é obrigatório', minLength: { value: 1, message: 'Nome é obrigatório' } })}
           error={!!errors.name}
-          helperText={errors.name ? 'Nome é obrigatório' : undefined}
+          helperText={errors.name?.message}
         />
         <TextField
           label="Tipo"
           select
           fullWidth
           defaultValue="Pump"
-          {...register('type')}
+          {...register('type', { required: 'Selecione um tipo válido' })}
           error={!!errors.type}
-          helperText={errors.type ? 'Selecione um tipo válido' : undefined}
+          helperText={errors.type?.message}
         >
           <MenuItem value="Pump">Pump</MenuItem>
           <MenuItem value="Fan">Fan</MenuItem>
