@@ -38,7 +38,6 @@ describe('user repository', () => {
           email: fake.email,
           name: fake.name,
           password: fake.password,
-          role: 'USER',
         };
 
         fastify.prisma.user = { findUnique: vi.fn().mockResolvedValue(mockResult) };
@@ -88,7 +87,6 @@ describe('user repository', () => {
           uuid: fake.uuid,
           email: fake.email,
           name: fake.name,
-          role: 'USER',
         };
 
         fastify.prisma.user = { findUnique: vi.fn().mockResolvedValue(mockResult) };

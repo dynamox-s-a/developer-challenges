@@ -8,36 +8,34 @@ const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  const adminHash = await bcrypt.hash('admin123', 10);
-  const userHash = await bcrypt.hash('user123', 10);
+  const user1Hash = await bcrypt.hash('demo123', 10);
+  const user2Hash = await bcrypt.hash('demo456', 10);
 
-  const admin = await prisma.user.upsert({
-    where: { email: 'admin@dynapredict.com' },
+  const user1 = await prisma.user.upsert({
+    where: { email: 'demo1@dynapredict.com' },
     update: {},
     create: {
-      name: 'Admin',
-      email: 'admin@dynapredict.com',
-      password: adminHash,
-      role: 'SUPER_ADMIN',
+      name: 'Demo User 1',
+      email: 'demo1@dynapredict.com',
+      password: user1Hash,
     },
   });
 
-  const user = await prisma.user.upsert({
-    where: { email: 'demo@dynapredict.com' },
+  const user2 = await prisma.user.upsert({
+    where: { email: 'demo2@dynapredict.com' },
     update: {},
     create: {
-      name: 'Demo User',
-      email: 'demo@dynapredict.com',
-      password: userHash,
-      role: 'USER',
+      name: 'Demo User 2',
+      email: 'demo2@dynapredict.com',
+      password: user2Hash,
     },
   });
 
-  // Machines for admin
+  // Machines for user1
   const [pump1, pump2, fan1] = await prisma.$transaction([
-    prisma.machine.create({ data: { name: 'Bomba Principal', type: 'Pump', userId: admin.id } }),
-    prisma.machine.create({ data: { name: 'Bomba Secundária', type: 'Pump', userId: admin.id } }),
-    prisma.machine.create({ data: { name: 'Ventilador Industrial', type: 'Fan', userId: admin.id } }),
+    prisma.machine.create({ data: { name: 'Bomba Principal', type: 'Pump', userId: user1.id } }),
+    prisma.machine.create({ data: { name: 'Bomba Secundária', type: 'Pump', userId: user1.id } }),
+    prisma.machine.create({ data: { name: 'Ventilador Industrial', type: 'Fan', userId: user1.id } }),
   ]);
 
   // Monitoring points
@@ -72,7 +70,7 @@ async function main() {
   ]);
 
   console.log('Seed completed successfully');
-  console.log(`  Users:             admin (${admin.email}), user (${user.email})`);
+  console.log(`  Users:             ${user1.email}, ${user2.email}`);
   console.log(`  Machines:          ${pump1.name}, ${pump2.name}, ${fan1.name}`);
   console.log(`  Monitoring points: 12 points across 3 machines`);
   console.log(`  Sensors:           11 sensors assigned, 1 unassigned`);

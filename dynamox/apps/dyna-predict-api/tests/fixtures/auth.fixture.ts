@@ -7,7 +7,6 @@ export interface MockUser {
   email: string;
   name: string;
   password: string;
-  role: 'USER' | 'ADMIN' | 'SUPER_ADMIN';
 }
 
 export interface LoginPayload {
@@ -24,7 +23,6 @@ export async function createMockUser(overrides?: Partial<MockUser>): Promise<Moc
     uuid: faker.string.uuid(),
     email: faker.internet.email(),
     name: faker.person.fullName(),
-    role: 'USER',
     ...overrides,
     password: hashedPassword,
   };
@@ -43,7 +41,6 @@ export function mockJwtPayload() {
     sub: 1,
     uuid: faker.string.uuid(),
     email: faker.internet.email(),
-    role: 'USER' as const,
   };
 }
 

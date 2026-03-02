@@ -20,12 +20,6 @@ export const AUTH_ERR_TOKEN_EXPIRED = createError(
   StatusCodes.UNAUTHORIZED,
 );
 
-export const AUTH_ERR_INSUFFICIENT_PERMISSIONS = createError(
-  'AUTH_ERR_INSUFFICIENT_PERMISSIONS',
-  'Permissões insuficientes.',
-  StatusCodes.FORBIDDEN,
-);
-
 export const AUTH_ERR_TOO_MANY_REQUESTS = createError(
   'AUTH_ERR_TOO_MANY_REQUESTS',
   'Limite de requisições excedido. Por favor, tente novamente mais tarde.',
@@ -54,7 +48,7 @@ export const MONITORING_POINT_ERR_ALREADY_EXISTS = createError(
 
 export const MONITORING_POINT_ERR_NOT_FOUND = createError(
   'MONITORING_POINT_ERR_NOT_FOUND',
-  'Monitoring point não encontrado.',
+  'Ponto de monitoramento não encontrado.',
   StatusCodes.NOT_FOUND,
 );
 

@@ -10,12 +10,6 @@ generator client {
   moduleFormat = "commonjs"
 }
 
-enum Role {
-  USER
-  ADMIN
-  SUPER_ADMIN
-}
-
 enum MachineType {
   Pump
   Fan
@@ -33,7 +27,6 @@ model User {
   email     String    @unique
   name      String
   password  String
-  role      Role      @default(USER)
   machines  Machine[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

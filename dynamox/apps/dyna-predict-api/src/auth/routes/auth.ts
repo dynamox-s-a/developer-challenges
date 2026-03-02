@@ -47,7 +47,6 @@ const authRoutes: FastifyPluginAsyncTypebox = async function (fastify) {
           sub: user.id,
           uuid: user.uuid,
           email: user.email,
-          role: user.role,
         },
         { expiresIn: JWT_EXPIRATION },
       );
@@ -60,7 +59,6 @@ const authRoutes: FastifyPluginAsyncTypebox = async function (fastify) {
           uuid: user.uuid,
           email: user.email,
           name: user.name,
-          role: user.role,
         },
       });
     },
@@ -107,7 +105,6 @@ const authRoutes: FastifyPluginAsyncTypebox = async function (fastify) {
           uuid: user.uuid,
           email: user.email,
           name: user.name,
-          role: user.role,
         },
       });
     },

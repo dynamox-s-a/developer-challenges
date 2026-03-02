@@ -5,14 +5,6 @@
  */
 import { Type, Static } from '@sinclair/typebox';
 
-// Shared Schemas
-
-export const UserRoleSchema = Type.Union([
-  Type.Literal('USER'),
-  Type.Literal('ADMIN'),
-  Type.Literal('SUPER_ADMIN'),
-]);
-
 // Model Schemas
 
 export const UserSchema = Type.Object({
@@ -20,7 +12,6 @@ export const UserSchema = Type.Object({
   uuid: Type.String(),
   email: Type.String({ format: 'email' }),
   name: Type.String(),
-  role: UserRoleSchema,
 });
 
 // Login Schemas
@@ -47,7 +38,6 @@ export const UserDataResponseSchema = LoginResponseSchema;
 
 // Types
 
-export type UserRole = Static<typeof UserRoleSchema>;
 export type User = Static<typeof UserSchema>;
 export type LoginRequest = Static<typeof LoginRequestSchema>;
 export type LoginResponse = Static<typeof LoginResponseSchema>;

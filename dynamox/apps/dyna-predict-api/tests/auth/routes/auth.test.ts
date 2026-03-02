@@ -83,7 +83,6 @@ describe('POST /v1/auth/login', () => {
         uuid: mockUser.uuid,
         email: mockUser.email,
         name: mockUser.name,
-        role: mockUser.role,
       });
       expect(user.password).toBeUndefined();
 
@@ -141,7 +140,6 @@ describe('GET /v1/auth/me', () => {
           uuid: authenticatedUser.uuid,
           email: authenticatedUser.email,
           name: 'Test User',
-          role: authenticatedUser.role,
         };
 
         const spy = vi.spyOn(userRepository, 'findUserById').mockResolvedValue(mockUserData);
@@ -158,7 +156,6 @@ describe('GET /v1/auth/me', () => {
           id: authenticatedUser.sub,
           uuid: authenticatedUser.uuid,
           email: authenticatedUser.email,
-          role: authenticatedUser.role,
         });
         expect(user.password).toBeUndefined();
 

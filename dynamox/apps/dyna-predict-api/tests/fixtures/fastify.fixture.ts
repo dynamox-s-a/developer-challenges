@@ -19,7 +19,7 @@ export const test = utilityTest.extend<FastifyFixtures>({
   },
 });
 
-type AuthenticatedUser = { sub: number; uuid: string; email: string; role: string };
+type AuthenticatedUser = { sub: number; uuid: string; email: string; };
 
 interface AuthenticatedFixtures {
   authenticatedUser: AuthenticatedUser;
@@ -30,7 +30,7 @@ export const authenticatedTest = utilityTest.extend<AuthenticatedFixtures>({
   // eslint-disable-next-line no-empty-pattern
   authenticatedUser: async ({}, use) => {
     const user = await createMockUser();
-    await use({ sub: user.id, uuid: user.uuid, email: user.email, role: user.role });
+    await use({ sub: user.id, uuid: user.uuid, email: user.email });
   },
   fastify: async ({ authenticatedUser }, use) => {
     const app = await buildAuthenticated(authenticatedUser);

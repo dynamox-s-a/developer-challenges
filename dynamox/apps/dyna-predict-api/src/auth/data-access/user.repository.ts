@@ -17,7 +17,6 @@ export async function findUserByEmail(fastify: FastifyInstance, email: string) {
         email: true,
         name: true,
         password: true,
-        role: true,
       },
     });
   } catch (error) {
@@ -35,7 +34,6 @@ export async function findUserById(fastify: FastifyInstance, id: number) {
         uuid: true,
         email: true,
         name: true,
-        role: true,
       },
     });
   } catch (error) {
