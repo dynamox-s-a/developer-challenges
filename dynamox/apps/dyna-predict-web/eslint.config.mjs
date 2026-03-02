@@ -9,4 +9,10 @@ export default [
     // Override or add rules here
     rules: {},
   },
+  {
+    files: ['tests/fixtures/**/*.ts'],
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
+    },
+  },
 ];
