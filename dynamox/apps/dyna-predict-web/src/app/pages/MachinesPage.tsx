@@ -43,8 +43,6 @@ function MachinesPage() {
     dispatch(fetchMachines());
   }, [dispatch]);
 
-  const rows = machines;
-
   const handleAdd = () => {
     setSelectedMachine(undefined);
     setDialogOpen(true);
@@ -111,7 +109,7 @@ function MachinesPage() {
                     <TableCell align="right"><Skeleton width={80} /></TableCell>
                   </TableRow>
                 ))
-              : rows.map((machine) => (
+              : machines.map((machine) => (
                   <TableRow key={machine.uuid} hover>
                     <TableCell sx={{ fontWeight: 500 }}>{machine.name}</TableCell>
                     <TableCell>
