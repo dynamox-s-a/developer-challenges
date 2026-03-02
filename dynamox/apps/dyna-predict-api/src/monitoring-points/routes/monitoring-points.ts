@@ -148,7 +148,13 @@ const monitoringPointsRoutes: FastifyPluginAsyncTypebox = async function (fastif
         throw new SENSOR_ERR_FORBIDDEN_FOR_MACHINE_TYPE();
       }
 
-      const updated = await updateMonitoringPoint(fastify, uuid, name, sensorModel);
+      const updated = await updateMonitoringPoint(
+        fastify,
+        uuid,
+        name,
+        sensorModel,
+        !sensorModel && !!monitoringPoint.sensor,
+      );
 
       return reply.send({
         id: updated.id,

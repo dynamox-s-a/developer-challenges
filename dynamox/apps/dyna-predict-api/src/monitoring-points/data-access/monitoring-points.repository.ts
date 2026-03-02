@@ -81,18 +81,18 @@ export async function findMonitoringPointByUuid(
 ) {
   try {
     return await fastify.prisma.monitoringPoint.findFirst({
-    where: { uuid, machine: { userId } },
+      where: { uuid, machine: { userId } },
       select: {
         id: true,
         name: true,
         machine: { select: { id: true, type: true } },
+        sensor: { select: { id: true } },
       },
     });
   } catch (error) {
     fastify.log.error(error);
     throw withCause(new INTERNAL_SERVER_ERROR(), error);
   }
-
 }
 
 export async function findExistingMonitoringPoint(
@@ -145,19 +145,22 @@ export async function updateMonitoringPoint(
   uuid: string,
   name: string,
   sensorModel?: string,
+  deleteSensor?: boolean,
 ) {
   try {
+    let sensorUpdateData;
+
+    if (sensorModel) {
+      sensorUpdateData = { upsert: { create: { model: sensorModel }, update: { model: sensorModel } } };
+    } else if (deleteSensor) {
+      sensorUpdateData = { delete: true };
+    }
+
     return await fastify.prisma.monitoringPoint.update({
       where: { uuid },
       data: {
         name,
-        ...(sensorModel
-          ? {
-              sensor: {
-                upsert: { create: { model: sensorModel }, update: { model: sensorModel } },
-              },
-            }
-          : {}),
+        ...(sensorUpdateData ? { sensor: sensorUpdateData } : {}),
       },
       select: {
         id: true,
