@@ -37,7 +37,7 @@ export default fp(async function errorHandler(fastify: FastifyInstance) {
     return reply.status(statusCode).send({
       error: {
         code: error.code ?? 'INTERNAL_SERVER_ERROR',
-        message: error.message ?? 'Ocorreu um erro interno no servidor',
+        message: error.message,
         statusCode,
       },
     });
