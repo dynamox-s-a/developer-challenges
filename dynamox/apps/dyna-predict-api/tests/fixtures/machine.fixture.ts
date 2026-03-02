@@ -1,5 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import { faker } from '@faker-js/faker';
+import dayjs from 'dayjs';
 import { buildAuthenticated } from '../shared/helper';
 import { authenticatedTest } from './fastify.fixture';
 
@@ -26,10 +27,15 @@ export interface MockMachineListItem extends MockMachine {
   monitoringPoints: MockMonitoringPoint[];
 }
 
+export interface MockMonitoringPointListItem extends MockMonitoringPoint {
+  machine: { uuid: string; name: string; type: 'Pump' | 'Fan' };
+}
+
 interface MachineFixtures {
   fastify: FastifyInstance;
   mockMachine: MockMachine;
   mockMonitoringPoint: MockMonitoringPoint;
+  mockMonitoringPointListItem: MockMonitoringPointListItem;
   mockMachineListItem: MockMachineListItem;
 }
 
@@ -39,22 +45,21 @@ export const machineTest = authenticatedTest.extend<MachineFixtures>({
     await use(app);
     await app.close();
   },
-  // eslint-disable-next-line no-empty-pattern
-  mockMachine: async ({}, use) => {
-    const now = new Date().toISOString();
+  mockMachine: async ({ authenticatedUser }, use) => {
+    const now = dayjs().toISOString();
     await use({
       id: faker.number.int({ min: 1 }),
       uuid: faker.string.uuid(),
       name: faker.word.noun(),
       type: 'Pump',
-      userId: faker.number.int({ min: 1 }),
+      userId: authenticatedUser.sub,
       createdAt: now,
       updatedAt: now,
     });
   },
   // eslint-disable-next-line no-empty-pattern
   mockMonitoringPoint: async ({}, use) => {
-    const now = new Date().toISOString();
+    const now = dayjs().toISOString();
     await use({
       id: faker.number.int({ min: 1 }),
       uuid: faker.string.uuid(),
@@ -62,6 +67,12 @@ export const machineTest = authenticatedTest.extend<MachineFixtures>({
       createdAt: now,
       updatedAt: now,
       sensor: undefined,
+    });
+  },
+  mockMonitoringPointListItem: async ({ mockMachine, mockMonitoringPoint }, use) => {
+    await use({
+      ...mockMonitoringPoint,
+      machine: { uuid: mockMachine.uuid, name: mockMachine.name, type: mockMachine.type },
     });
   },
   mockMachineListItem: async ({ mockMachine, mockMonitoringPoint }, use) => {
