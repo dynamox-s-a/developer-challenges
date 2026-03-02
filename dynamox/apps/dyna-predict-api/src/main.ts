@@ -1,10 +1,10 @@
 /**
- * @fileoverview Application entry point. Initializes the Fastify server with
- * TypeBox type provider for automatic type inference from schemas.
+ * @fileoverview Application entry point. Initializes the Fastify server with TypeBox type provider
+ * for automatic type inference from schemas.
  */
 
-// NOTE (@eric-reis): dotenv must be imported first to ensure environment
-// variables are available when all subsequent modules are loaded.
+// NOTE (@eric-reis): dotenv must be imported first to ensure environment variables are available
+//                    when all subsequent modules are loaded.
 import 'dotenv/config';
 
 import Fastify from 'fastify';
