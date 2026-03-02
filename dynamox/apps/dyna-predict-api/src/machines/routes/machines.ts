@@ -1,5 +1,5 @@
 /**
- * @fileoverview Machines routes. Handles machine lifecycle (list, create, delete).
+ * @fileoverview Machines routes. Handles machine lifecycle (list, create, delete, update).
  * All routes require authentication via the global preValidation hook.
  * Registered under the /v1/machines prefix.
  */
