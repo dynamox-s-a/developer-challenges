@@ -11,11 +11,11 @@ const DEFAULT_TIME_SERIES_WINDOW_MS = TIME_SERIES_DEFAULT_WINDOW_HOURS * 60 * 60
 describe('resolveTimeSeriesDateRange', () => {
   describe('when no arguments are provided', () => {
     it('should default lte to now and gte to 24 hours before', () => {
-      const before = Date.now();
+      const before = dayjs().valueOf();
 
       const result = resolveTimeSeriesDateRange();
 
-      const after = Date.now();
+      const after = dayjs().valueOf();
 
       expect(result.lte.getTime()).toBeGreaterThanOrEqual(before);
       expect(result.lte.getTime()).toBeLessThanOrEqual(after);
@@ -40,11 +40,11 @@ describe('resolveTimeSeriesDateRange', () => {
   describe('when only startDate is provided', () => {
     it('should set gte to startDate and lte to now', () => {
       const startDate = dayjs().subtract(2, 'day').toISOString();
-      const before = Date.now();
+      const before = dayjs().valueOf();
 
       const result = resolveTimeSeriesDateRange(startDate);
 
-      const after = Date.now();
+      const after = dayjs().valueOf();
 
       expect(result.gte).toEqual(dayjs(startDate).toDate());
       expect(result.lte.getTime()).toBeGreaterThanOrEqual(before);
