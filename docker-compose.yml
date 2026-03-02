@@ -13,5 +13,15 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: unless-stopped
 
+  api:
+    build: .
+    container_name: dynamox_api
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://dynamox_user:dynamox_password@timescaledb:5432/timeseries_db
+    depends_on:
+      - timescaledb
+
 volumes:
   timescaledb_data:

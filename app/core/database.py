@@ -1,8 +1,11 @@
+import os
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlalchemy.orm import declarative_base
 
-DATABASE_URL = "postgresql+asyncpg://dynamox_user:dynamox_password@localhost:5432/timeseries_db"
-
+DATABASE_URL = os.getenv(
+    "DATABASE_URL", 
+    "postgresql+asyncpg://dynamox_user:dynamox_password@localhost:5432/timeseries_db"
+)
 # Criação da engine asincrona do banco de dados
 engine = create_async_engine(DATABASE_URL, echo=False, future=True)
 
