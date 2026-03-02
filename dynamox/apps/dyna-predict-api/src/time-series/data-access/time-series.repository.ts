@@ -35,6 +35,7 @@ export async function createTimeSeriesEntries(
       },
     });
   } catch (error) {
+    // NOTE (@eric-reis): P2002 is Prisma's unique constraint violation code.
     if ((error as { code?: string }).code === 'P2002') {
       throw new TIME_SERIES_ERR_DUPLICATE_TIMESTAMP();
     }
@@ -43,15 +44,16 @@ export async function createTimeSeriesEntries(
   }
 }
 
-export async function deleteTimeSeriesByUuids(
+export async function deleteAllTimeSeriesBySensor(
   fastify: FastifyInstance,
-  sensorId: number,
-  uuids: string[],
+  sensorUuid: string,
+  userId: number,
 ): Promise<number> {
   try {
     const result = await fastify.prisma.timeSeries.deleteMany({
-      where: { sensorId, uuid: { in: uuids } },
+      where: { sensor: { uuid: sensorUuid, monitoringPoint: { machine: { userId } } } },
     });
+
     return result.count;
   } catch (error) {
     fastify.log.error(error);
@@ -59,25 +61,6 @@ export async function deleteTimeSeriesByUuids(
   }
 }
 
-export async function deleteTimeSeriesByRange(
-  fastify: FastifyInstance,
-  sensorUuid: string,
-  userId: number,
-  dateRange: { gte: Date; lte: Date },
-): Promise<number> {
-  try {
-    const result = await fastify.prisma.timeSeries.deleteMany({
-      where: {
-        sensor: { uuid: sensorUuid, monitoringPoint: { machine: { userId } } },
-        timestamp: { gte: dateRange.gte, lte: dateRange.lte },
-      },
-    });
-    return result.count;
-  } catch (error) {
-    fastify.log.error(error);
-    throw withCause(new INTERNAL_SERVER_ERROR(), error);
-  }
-}
 
 export async function findSensorByUuid(
   fastify: FastifyInstance,
@@ -138,38 +121,6 @@ export async function getTimeSeriesBySensor(
         timestamp: true,
       },
       orderBy: { timestamp: 'asc' },
-    });
-  } catch (error) {
-    fastify.log.error(error);
-    throw withCause(new INTERNAL_SERVER_ERROR(), error);
-  }
-}
-
-export async function getAllTimeSeriesCountByUser(fastify: FastifyInstance, userId: number) {
-  try {
-    return await fastify.prisma.timeSeries.aggregate({
-      where: {
-        sensor: { monitoringPoint: { machine: { userId } } },
-      },
-      _count: true,
-    });
-  } catch (error) {
-    fastify.log.error(error);
-    throw withCause(new INTERNAL_SERVER_ERROR(), error);
-  }
-}
-
-export async function getAllTimeSeriesCountBySensor(
-  fastify: FastifyInstance,
-  sensorUuid: string,
-  userId: number,
-) {
-  try {
-    return await fastify.prisma.timeSeries.aggregate({
-      where: {
-        sensor: { uuid: sensorUuid, monitoringPoint: { machine: { userId } } },
-      },
-      _count: true,
     });
   } catch (error) {
     fastify.log.error(error);

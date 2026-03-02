@@ -7,10 +7,7 @@
 import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import {
   CreateTimeSeriesBatchRequestSchema,
-  DeleteTimeSeriesByRangeQuerySchema,
-  DeleteTimeSeriesByUuidsRequestSchema,
-  DeleteTimeSeriesByUuidsResponseSchema,
-  TimeSeriesCountResponseSchema,
+  CreateTimeSeriesBatchResponseSchema,
   TimeSeriesSensorParamsSchema,
   TimeSeriesListResponseSchema,
   TimeSeriesMetricsQuerySchema,
@@ -20,11 +17,8 @@ import { StatusCodes } from 'http-status-codes';
 import { SENSOR_ERR_NOT_FOUND } from '../../shared/errors/errors';
 import {
   createTimeSeriesEntries,
-  deleteTimeSeriesByRange,
-  deleteTimeSeriesByUuids,
+  deleteAllTimeSeriesBySensor,
   findSensorByUuid,
-  getAllTimeSeriesCountBySensor,
-  getAllTimeSeriesCountByUser,
   getTimeSeriesBySensor,
   getTimeSeriesMetrics,
 } from '../data-access/time-series.repository';
@@ -46,7 +40,7 @@ const timeSeriesRoutes: FastifyPluginAsyncTypebox = async function (fastify) {
         params: TimeSeriesSensorParamsSchema,
         body: CreateTimeSeriesBatchRequestSchema,
         response: {
-          201: TimeSeriesListResponseSchema,
+          201: CreateTimeSeriesBatchResponseSchema,
         },
       },
     },
@@ -58,6 +52,9 @@ const timeSeriesRoutes: FastifyPluginAsyncTypebox = async function (fastify) {
       if (!sensor) throw new SENSOR_ERR_NOT_FOUND();
 
       const created = await createTimeSeriesEntries(fastify, sensor.id, request.body);
+
+      const dateRange = resolveTimeSeriesDateRange();
+      const metricsResult = await getTimeSeriesMetrics(fastify, sensorUuid, userId, dateRange);
 
       return reply.code(StatusCodes.CREATED).send({
         timeSeries: created.map(
@@ -72,6 +69,12 @@ const timeSeriesRoutes: FastifyPluginAsyncTypebox = async function (fastify) {
             timestamp: entry.timestamp.toISOString(),
           }),
         ),
+        metrics: {
+          temperature: { min: metricsResult._min.temperature, max: metricsResult._max.temperature, avg: metricsResult._avg.temperature },
+          accelerationRms: { min: metricsResult._min.accelerationRms, max: metricsResult._max.accelerationRms, avg: metricsResult._avg.accelerationRms },
+          velocityRms: { min: metricsResult._min.velocityRms, max: metricsResult._max.velocityRms, avg: metricsResult._avg.velocityRms },
+          count: metricsResult._count,
+        },
       });
     },
   );
@@ -123,48 +126,6 @@ const timeSeriesRoutes: FastifyPluginAsyncTypebox = async function (fastify) {
     },
   );
   fastify.get(
-    '/count',
-    {
-      schema: {
-        tags: ['time-series'],
-        description: 'Retorna o total de registros de série temporal do usuário autenticado.',
-        response: {
-          200: TimeSeriesCountResponseSchema,
-        },
-      },
-    },
-    async (request, reply) => {
-      const { sub: userId } = request.user;
-      const result = await getAllTimeSeriesCountByUser(fastify, userId);
-      return reply.send({ count: result._count });
-    },
-  );
-
-  fastify.get(
-    '/:sensorUuid/count',
-    {
-      schema: {
-        tags: ['time-series'],
-        description: 'Retorna o total de registros de série temporal do sensor especificado.',
-        params: TimeSeriesSensorParamsSchema,
-        response: {
-          200: TimeSeriesCountResponseSchema,
-        },
-      },
-    },
-    async (request, reply) => {
-      const { sensorUuid } = request.params;
-      const { sub: userId } = request.user;
-
-      const sensor = await findSensorByUuid(fastify, sensorUuid, userId);
-      if (!sensor) throw new SENSOR_ERR_NOT_FOUND();
-
-      const result = await getAllTimeSeriesCountBySensor(fastify, sensorUuid, userId);
-      return reply.send({ count: result._count });
-    },
-  );
-
-  fastify.get(
     '/:sensorUuid',
     {
       schema: {
@@ -207,41 +168,13 @@ const timeSeriesRoutes: FastifyPluginAsyncTypebox = async function (fastify) {
   );
 
   fastify.delete(
-    '/:sensorUuid',
-    {
-      schema: {
-        tags: ['time-series'],
-        description: 'Deleta um lote de registros de série temporal pelos UUIDs informados.',
-        params: TimeSeriesSensorParamsSchema,
-        body: DeleteTimeSeriesByUuidsRequestSchema,
-        response: {
-          200: DeleteTimeSeriesByUuidsResponseSchema,
-        },
-      },
-    },
-    async (request, reply) => {
-      const { sensorUuid } = request.params;
-      const { sub: userId } = request.user;
-      const { uuids } = request.body;
-
-      const sensor = await findSensorByUuid(fastify, sensorUuid, userId);
-      if (!sensor) throw new SENSOR_ERR_NOT_FOUND();
-
-      const deleted = await deleteTimeSeriesByUuids(fastify, sensor.id, uuids);
-
-      return reply.send({ requested: uuids.length, deleted });
-    },
-  );
-
-  fastify.delete(
-    '/:sensorUuid/range',
+    '/:sensorUuid/all',
     {
       schema: {
         tags: ['time-series'],
         description:
-          'Deleta registros de série temporal do sensor no intervalo de datas informado.',
+          'Deleta todos os registros de série temporal do sensor.',
         params: TimeSeriesSensorParamsSchema,
-        querystring: DeleteTimeSeriesByRangeQuerySchema,
         response: {
           204: { type: 'null' },
         },
@@ -250,14 +183,11 @@ const timeSeriesRoutes: FastifyPluginAsyncTypebox = async function (fastify) {
     async (request, reply) => {
       const { sensorUuid } = request.params;
       const { sub: userId } = request.user;
-      const { startDate, endDate } = request.query;
 
       const sensor = await findSensorByUuid(fastify, sensorUuid, userId);
       if (!sensor) throw new SENSOR_ERR_NOT_FOUND();
 
-      const dateRange = resolveTimeSeriesDateRange(startDate, endDate);
-
-      await deleteTimeSeriesByRange(fastify, sensorUuid, userId, dateRange);
+      await deleteAllTimeSeriesBySensor(fastify, sensorUuid, userId);
 
       return reply.code(StatusCodes.NO_CONTENT).send();
     },

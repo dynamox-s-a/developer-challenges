@@ -38,18 +38,7 @@ export const TimeSeriesMetricsQuerySchema = Type.Object({
   endDate: Type.Optional(Type.String({ format: 'date-time' })),
 });
 
-// Query Schemas
-
-export const DeleteTimeSeriesByRangeQuerySchema = Type.Object({
-  startDate: Type.String({ format: 'date-time' }),
-  endDate: Type.String({ format: 'date-time' }),
-});
-
 // Request Schemas
-
-export const DeleteTimeSeriesByUuidsRequestSchema = Type.Object({
-  uuids: Type.Array(Type.String({ format: 'uuid' }), { minItems: 1 }),
-});
 
 export const CreateTimeSeriesRequestSchema = Type.Object({
   temperature: Type.Number(),
@@ -90,15 +79,6 @@ export const TimeSeriesMetricsResponseSchema = Type.Object({
   count: Type.Number(),
 });
 
-export const TimeSeriesCountResponseSchema = Type.Object({
-  count: Type.Number(),
-});
-
-export const DeleteTimeSeriesByUuidsResponseSchema = Type.Object({
-  requested: Type.Number(),
-  deleted: Type.Number(),
-});
-
 export const CreateTimeSeriesBatchResponseSchema = Type.Object({
   timeSeries: Type.Array(TimeSeriesEntrySchema),
   metrics: TimeSeriesMetricsResponseSchema,
@@ -114,9 +94,5 @@ export type TimeSeriesSensorParams = Static<typeof TimeSeriesSensorParamsSchema>
 export type CreateTimeSeriesResponse = Static<typeof CreateTimeSeriesResponseSchema>;
 export type TimeSeriesListResponse = Static<typeof TimeSeriesListResponseSchema>;
 export type TimeSeriesMetricsResponse = Static<typeof TimeSeriesMetricsResponseSchema>;
-export type TimeSeriesCountResponse = Static<typeof TimeSeriesCountResponseSchema>;
 export type TimeSeriesMetricsQuery = Static<typeof TimeSeriesMetricsQuerySchema>;
-export type DeleteTimeSeriesByRangeQuery = Static<typeof DeleteTimeSeriesByRangeQuerySchema>;
-export type DeleteTimeSeriesByUuidsRequest = Static<typeof DeleteTimeSeriesByUuidsRequestSchema>;
-export type DeleteTimeSeriesByUuidsResponse = Static<typeof DeleteTimeSeriesByUuidsResponseSchema>;
 export type CreateTimeSeriesBatchResponse = Static<typeof CreateTimeSeriesBatchResponseSchema>;
