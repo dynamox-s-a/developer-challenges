@@ -29,7 +29,7 @@ describe('GET /v1/monitoring-points', () => {
       };
       const expectedResult = structuredClone(mockResult);
 
-      const spy = vi
+      const getPaginatedMonitoringPointsSpy = vi
         .spyOn(monitoringPointsRepository, 'getPaginatedMonitoringPoints')
         .mockResolvedValue(mockResult);
 
@@ -38,7 +38,7 @@ describe('GET /v1/monitoring-points', () => {
       expect(response.statusCode).toBe(StatusCodes.OK);
       expect(response.json()).toEqual(expectedResult);
 
-      expect(spy).toHaveBeenCalledExactlyOnceWith(
+      expect(getPaginatedMonitoringPointsSpy).toHaveBeenCalledExactlyOnceWith(
         expect.anything(),
         authenticatedUser.sub,
         1,
@@ -65,7 +65,7 @@ describe('GET /v1/monitoring-points', () => {
         };
         const expectedResult = structuredClone(mockResult);
 
-        const spy = vi
+        const getPaginatedMonitoringPointsSpy = vi
           .spyOn(monitoringPointsRepository, 'getPaginatedMonitoringPoints')
           .mockResolvedValue(mockResult);
 
@@ -74,7 +74,7 @@ describe('GET /v1/monitoring-points', () => {
         expect(response.statusCode).toBe(StatusCodes.OK);
         expect(response.json()).toEqual(expectedResult);
 
-        expect(spy).toHaveBeenCalledExactlyOnceWith(
+        expect(getPaginatedMonitoringPointsSpy).toHaveBeenCalledExactlyOnceWith(
           expect.anything(),
           authenticatedUser.sub,
           1,
@@ -320,7 +320,7 @@ describe('PATCH /v1/monitoring-points/:uuid', () => {
     authenticatedTest(
       'should throw MONITORING_POINT_ERR_NOT_FOUND error',
       async ({ fastify, fake, authenticatedUser }) => {
-        const spy = vi
+        const findMonitoringPointByUuidSpy = vi
           .spyOn(monitoringPointsRepository, 'findMonitoringPointByUuid')
           .mockResolvedValue(null);
 
@@ -333,7 +333,7 @@ describe('PATCH /v1/monitoring-points/:uuid', () => {
         expect(response.statusCode).toBe(StatusCodes.NOT_FOUND);
         expect(response.json()).toEqual(createErrorResponse(MONITORING_POINT_ERR_NOT_FOUND));
 
-        expect(spy).toHaveBeenCalledExactlyOnceWith(
+        expect(findMonitoringPointByUuidSpy).toHaveBeenCalledExactlyOnceWith(
           expect.anything(),
           fake.uuid,
           authenticatedUser.sub,
@@ -559,7 +559,7 @@ describe('DELETE /v1/monitoring-points/:uuid', () => {
     authenticatedTest(
       'should throw MONITORING_POINT_ERR_NOT_FOUND error',
       async ({ fastify, fake, authenticatedUser }) => {
-        const spy = vi
+        const findMonitoringPointByUuidSpy = vi
           .spyOn(monitoringPointsRepository, 'findMonitoringPointByUuid')
           .mockResolvedValue(null);
 
@@ -571,7 +571,7 @@ describe('DELETE /v1/monitoring-points/:uuid', () => {
         expect(response.statusCode).toBe(StatusCodes.NOT_FOUND);
         expect(response.json()).toEqual(createErrorResponse(MONITORING_POINT_ERR_NOT_FOUND));
 
-        expect(spy).toHaveBeenCalledExactlyOnceWith(
+        expect(findMonitoringPointByUuidSpy).toHaveBeenCalledExactlyOnceWith(
           expect.anything(),
           fake.uuid,
           authenticatedUser.sub,
@@ -624,7 +624,7 @@ describe('DELETE /v1/monitoring-points/:uuid/sensor', () => {
     authenticatedTest(
       'should throw MONITORING_POINT_ERR_NOT_FOUND error',
       async ({ fastify, fake, authenticatedUser }) => {
-        const spy = vi
+        const findMonitoringPointByUuidSpy = vi
           .spyOn(monitoringPointsRepository, 'findMonitoringPointByUuid')
           .mockResolvedValue(null);
 
@@ -636,7 +636,7 @@ describe('DELETE /v1/monitoring-points/:uuid/sensor', () => {
         expect(response.statusCode).toBe(StatusCodes.NOT_FOUND);
         expect(response.json()).toEqual(createErrorResponse(MONITORING_POINT_ERR_NOT_FOUND));
 
-        expect(spy).toHaveBeenCalledExactlyOnceWith(
+        expect(findMonitoringPointByUuidSpy).toHaveBeenCalledExactlyOnceWith(
           expect.anything(),
           fake.uuid,
           authenticatedUser.sub,

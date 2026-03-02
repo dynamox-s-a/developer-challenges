@@ -16,7 +16,7 @@ describe('GET /v1/machines', () => {
     authenticatedTest(
       'should return empty machines list',
       async ({ fastify, authenticatedUser }) => {
-        const spy = vi.spyOn(machineRepository, 'getMachines').mockResolvedValue([]);
+        const getMachinesSpy = vi.spyOn(machineRepository, 'getMachines').mockResolvedValue([]);
 
         const response = await fastify.inject({
           method: 'GET',
@@ -26,7 +26,7 @@ describe('GET /v1/machines', () => {
         expect(response.statusCode).toBe(StatusCodes.OK);
         expect(response.json()).toEqual({ machines: [] });
 
-        expect(spy).toHaveBeenCalledExactlyOnceWith(expect.anything(), authenticatedUser.sub);
+        expect(getMachinesSpy).toHaveBeenCalledExactlyOnceWith(expect.anything(), authenticatedUser.sub);
       },
     );
   });
@@ -35,7 +35,7 @@ describe('GET /v1/machines', () => {
     machineTest(
       'should return machines list',
       async ({ fastify, authenticatedUser, mockMachineListItem }) => {
-        const spy = vi
+        const getMachinesSpy = vi
           .spyOn(machineRepository, 'getMachines')
           .mockResolvedValue([mockMachineListItem]);
 
@@ -54,7 +54,7 @@ describe('GET /v1/machines', () => {
           ],
         });
 
-        expect(spy).toHaveBeenCalledExactlyOnceWith(expect.anything(), authenticatedUser.sub);
+        expect(getMachinesSpy).toHaveBeenCalledExactlyOnceWith(expect.anything(), authenticatedUser.sub);
       },
     );
   });
@@ -310,7 +310,7 @@ describe('DELETE /v1/machines/:uuid', () => {
     authenticatedTest(
       'should throw MACHINE_ERR_NOT_FOUND error',
       async ({ fastify, fake, authenticatedUser }) => {
-        const spy = vi
+        const findExistingMachineByUuidSpy = vi
           .spyOn(machineRepository, 'findExistingMachineByUuid')
           .mockResolvedValue(null);
 
@@ -322,7 +322,7 @@ describe('DELETE /v1/machines/:uuid', () => {
         expect(response.statusCode).toBe(StatusCodes.NOT_FOUND);
         expect(response.json()).toEqual(createErrorResponse(MACHINE_ERR_NOT_FOUND));
 
-        expect(spy).toHaveBeenCalledExactlyOnceWith(
+        expect(findExistingMachineByUuidSpy).toHaveBeenCalledExactlyOnceWith(
           expect.anything(),
           fake.machineUuid,
           authenticatedUser.sub,

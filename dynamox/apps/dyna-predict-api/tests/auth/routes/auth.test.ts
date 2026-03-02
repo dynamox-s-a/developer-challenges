@@ -15,7 +15,7 @@ import { LOGIN_RATE_LIMIT, TOKEN_COOKIE_OPTIONS } from '../../../src/auth/domain
 describe('POST /v1/auth/login', () => {
   describe('when credentials are invalid', () => {
     test('should return 401 unauthorized', async ({ fastify }) => {
-      const spy = vi
+      const validateUserCredentialsSpy = vi
         .spyOn(authService, 'validateUserCredentials')
         .mockRejectedValue(new AUTH_ERR_INVALID_CREDENTIALS());
 
@@ -28,13 +28,13 @@ describe('POST /v1/auth/login', () => {
       expect(response.statusCode).toBe(StatusCodes.UNAUTHORIZED);
       expect(response.json()).toEqual(createErrorResponse(AUTH_ERR_INVALID_CREDENTIALS));
 
-      expect(spy).toHaveBeenCalledOnce();
+      expect(validateUserCredentialsSpy).toHaveBeenCalledOnce();
     });
   });
 
   describe('when rate limit is exceeded', () => {
     test('should return 429 after max attempts', async ({ fastify }) => {
-      const spy = vi
+      const validateUserCredentialsSpy = vi
         .spyOn(authService, 'validateUserCredentials')
         .mockRejectedValue(new AUTH_ERR_INVALID_CREDENTIALS());
 
@@ -60,14 +60,14 @@ describe('POST /v1/auth/login', () => {
       );
       expect(blockedResponse.headers['x-ratelimit-remaining']).toBe('0');
 
-      expect(spy).toHaveBeenCalledTimes(LOGIN_RATE_LIMIT.MAX);
+      expect(validateUserCredentialsSpy).toHaveBeenCalledTimes(LOGIN_RATE_LIMIT.MAX);
     });
   });
 
   describe('when credentials are valid', () => {
     test('should return 200 with user data and set JWT cookie', async ({ fastify }) => {
       const mockUser = await createMockUser();
-      const spy = vi.spyOn(authService, 'validateUserCredentials').mockResolvedValue(mockUser);
+      const validateUserCredentialsSpy = vi.spyOn(authService, 'validateUserCredentials').mockResolvedValue(mockUser);
 
       const response = await fastify.inject({
         method: 'POST',
@@ -94,7 +94,7 @@ describe('POST /v1/auth/login', () => {
       expect(cookieHeader).toContain(`Path=${TOKEN_COOKIE_OPTIONS.path}`);
       expect(cookieHeader).toContain(`Max-Age=${TOKEN_COOKIE_OPTIONS.maxAge}`);
 
-      expect(spy).toHaveBeenCalledOnce();
+      expect(validateUserCredentialsSpy).toHaveBeenCalledOnce();
     });
   });
 });
@@ -117,7 +117,7 @@ describe('POST /v1/auth/logout', () => {
 describe('GET /v1/auth/me', () => {
   describe('when user is not found', () => {
     authenticatedTest('should return 404', async ({ fastify }) => {
-      const spy = vi.spyOn(userRepository, 'findUserById').mockResolvedValue(null);
+      const findUserByIdSpy = vi.spyOn(userRepository, 'findUserById').mockResolvedValue(null);
 
       const response = await fastify.inject({
         method: 'GET',
@@ -127,7 +127,7 @@ describe('GET /v1/auth/me', () => {
       expect(response.statusCode).toBe(StatusCodes.NOT_FOUND);
       expect(response.json()).toEqual(createErrorResponse(USER_ERR_NOT_FOUND));
 
-      expect(spy).toHaveBeenCalledOnce();
+      expect(findUserByIdSpy).toHaveBeenCalledOnce();
     });
   });
 
@@ -142,7 +142,7 @@ describe('GET /v1/auth/me', () => {
           name: 'Test User',
         };
 
-        const spy = vi.spyOn(userRepository, 'findUserById').mockResolvedValue(mockUserData);
+        const findUserByIdSpy = vi.spyOn(userRepository, 'findUserById').mockResolvedValue(mockUserData);
 
         const response = await fastify.inject({
           method: 'GET',
@@ -159,7 +159,7 @@ describe('GET /v1/auth/me', () => {
         });
         expect(user.password).toBeUndefined();
 
-        expect(spy).toHaveBeenCalledOnce();
+        expect(findUserByIdSpy).toHaveBeenCalledOnce();
       },
     );
   });

@@ -11,13 +11,13 @@ describe('validateUserCredentials', () => {
     test('should throw AUTH_ERR_INVALID_CREDENTIALS', async ({ fastify }) => {
       const payload = createLoginPayload();
 
-      const spy = vi.spyOn(userRepository, 'findUserByEmail').mockResolvedValue(null);
+      const findUserByEmailSpy = vi.spyOn(userRepository, 'findUserByEmail').mockResolvedValue(null);
 
       await expect(
         validateUserCredentials(fastify, payload.email, payload.password),
       ).rejects.toThrow(AUTH_ERR_INVALID_CREDENTIALS);
 
-      expect(spy).toHaveBeenCalledWith(expect.anything(), payload.email);
+      expect(findUserByEmailSpy).toHaveBeenCalledWith(expect.anything(), payload.email);
     });
   });
 
@@ -25,13 +25,13 @@ describe('validateUserCredentials', () => {
     test('should throw AUTH_ERR_INVALID_CREDENTIALS', async ({ fastify }) => {
       const mockUser = await createMockUser({ password: faker.internet.password() });
 
-      const spy = vi.spyOn(userRepository, 'findUserByEmail').mockResolvedValue(mockUser);
+      const findUserByEmailSpy = vi.spyOn(userRepository, 'findUserByEmail').mockResolvedValue(mockUser);
 
       await expect(
         validateUserCredentials(fastify, mockUser.email, faker.internet.password()),
       ).rejects.toThrow(AUTH_ERR_INVALID_CREDENTIALS);
 
-      expect(spy).toHaveBeenCalledWith(expect.anything(), mockUser.email);
+      expect(findUserByEmailSpy).toHaveBeenCalledWith(expect.anything(), mockUser.email);
     });
   });
 
@@ -40,13 +40,13 @@ describe('validateUserCredentials', () => {
       const plainPassword = faker.internet.password();
       const mockUser = await createMockUser({ password: plainPassword });
 
-      const spy = vi.spyOn(userRepository, 'findUserByEmail').mockResolvedValue(mockUser);
+      const findUserByEmailSpy = vi.spyOn(userRepository, 'findUserByEmail').mockResolvedValue(mockUser);
 
       const result = await validateUserCredentials(fastify, mockUser.email, plainPassword);
 
       expect(result).toMatchObject({ id: mockUser.id, email: mockUser.email });
 
-      expect(spy).toHaveBeenCalledWith(expect.anything(), mockUser.email);
+      expect(findUserByEmailSpy).toHaveBeenCalledWith(expect.anything(), mockUser.email);
     });
   });
 });
