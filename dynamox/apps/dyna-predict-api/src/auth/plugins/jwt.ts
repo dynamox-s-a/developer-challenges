@@ -13,7 +13,11 @@ import { AUTH_ERR_TOKEN_EXPIRED } from '../../shared/errors/errors';
 export default fp(
   async function (fastify: FastifyInstance) {
     fastify.register(jwt, {
-      secret: process.env.JWT_SECRET ?? '',
+      // NOTE (@eric-reis): JWT_SECRET presence is validated in main.ts at startup — if unset the
+      //                    process exits before reaching this point, so the assertion is always
+      //                    safe.
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      secret: process.env.JWT_SECRET!,
       cookie: {
         cookieName: 'token',
         signed: process.env.NODE_ENV === 'production',
