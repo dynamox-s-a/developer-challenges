@@ -1,4 +1,4 @@
 """SQLAlchemy models."""
-from app.models.timeseries import TimeSeriesModel
+from app.models.timeseries import Timeseries, TimeseriesData
 
-__all__ = ["TimeSeriesModel"]
+__all__ = ["Timeseries", "TimeseriesData"]
