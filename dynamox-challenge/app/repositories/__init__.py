@@ -1,4 +1,3 @@
-"""Data access layer (repositories)."""
-from app.repositories.timeseries_repository import TimeSeriesRepository
+from app.repositories.timeseries_repository import TimeseriesRepository
 
-__all__ = ["TimeSeriesRepository"]
+__all__ = ["TimeseriesRepository"]
