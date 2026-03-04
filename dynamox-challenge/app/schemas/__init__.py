@@ -1,17 +1,18 @@
-"""Pydantic request/response schemas."""
+
 from app.schemas.timeseries import (
+    DataPoint,
     TimeSeriesCreate,
     TimeSeriesResponse,
-    TimeSeriesMetricsResponse,
-    TimeSeriesCountResponse,
+    MetricsResponse,
+    CountResponse,
 )
-from app.schemas.errors import ErrorDetail, ErrorResponse
+from app.schemas.errors import ErrorResponse
 
 __all__ = [
+    "DataPoint",
     "TimeSeriesCreate",
     "TimeSeriesResponse",
-    "TimeSeriesMetricsResponse",
-    "TimeSeriesCountResponse",
-    "ErrorDetail",
+    "MetricsResponse",
+    "CountResponse",
     "ErrorResponse",
 ]
