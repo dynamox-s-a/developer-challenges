@@ -4,13 +4,6 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    """
-    Central application config.
-
-    Values come from:
-    - defaults below
-    - overridden by environment variables / .env files
-    """
 
     model_config = SettingsConfigDict(
         env_file=(".env.development", ".env"),
@@ -21,7 +14,7 @@ class Settings(BaseSettings):
     app_name: str = "Dynamox Signal Processing API"
     debug: bool = False
 
-    database_url: str = "postgresql://postgres:postgres@localhost:5432/dynamox_timeseries"
+    database_url: str = "postgresql://caiquegomes@localhost:5432/dynamox_timeseries"
     api_v1_prefix: str = "/api/v1"
 
 
