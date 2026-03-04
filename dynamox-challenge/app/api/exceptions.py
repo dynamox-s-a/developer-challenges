@@ -1,26 +1,75 @@
-"""Custom exceptions and HTTP response handling."""
-from fastapi import Request
-from fastapi.responses import JSONResponse
+
+from http import HTTPStatus
 
 
 class AppException(Exception):
-    """Base application exception with status code and message."""
 
-    def __init__(self, message: str, status_code: int = 400):
-        self.message = message
-        self.status_code = status_code
-        super().__init__(message)
+    error_code: str = "APP_ERROR"
+    message: str = "An application error occurred"
+    status_code: int = 400
 
-
-class NotFoundError(AppException):
-    """Resource not found (404)."""
-
-    def __init__(self, message: str = "Resource not found"):
-        super().__init__(message=message, status_code=404)
+    def __init__(self, message: str | None = None):
+        self.message = message or self.__class__.message
+        super().__init__(self.message)
 
 
-class ValidationError(AppException):
-    """Validation error (422)."""
+# ---------------------------------------------------------------------------
+# GENERIC errors
+# ---------------------------------------------------------------------------
 
-    def __init__(self, message: str = "Validation error"):
-        super().__init__(message=message, status_code=422)
+class InternalServerError(AppException):
+    error_code = "INTERNAL_SERVER_ERROR"
+    message = "An unexpected internal server error occurred"
+    status_code = HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+class InvalidUUID(AppException):
+    error_code = "INVALID_UUID"
+    message = "The provided UUID is invalid"
+    status_code = HTTPStatus.BAD_REQUEST
+
+
+# ---------------------------------------------------------------------------
+# TIMESERIES errors
+# ---------------------------------------------------------------------------
+
+class TimeseriesNotFound(AppException):
+    error_code = "TIMESERIES_NOT_FOUND"
+    message = "Time series not found"
+    status_code = HTTPStatus.NOT_FOUND
+
+
+class TimeseriesCreateFailed(AppException):
+    error_code = "TIMESERIES_CREATE_FAILED"
+    message = "Failed to create the time series"
+    status_code = HTTPStatus.BAD_REQUEST
+
+
+class TimeseriesDeleteFailed(AppException):
+    error_code = "TIMESERIES_DELETE_FAILED"
+    message = "Failed to delete the time series"
+    status_code = HTTPStatus.BAD_REQUEST
+
+
+class TimeseriesDataEmpty(AppException):
+    error_code = "TIMESERIES_DATA_EMPTY"
+    message = "Time series must contain at least one data point"
+    status_code = HTTPStatus.UNPROCESSABLE_ENTITY
+
+
+class TimeseriesDataInvalid(AppException):
+    error_code = "TIMESERIES_DATA_INVALID"
+    message = "One or more data points have invalid values"
+    status_code = HTTPStatus.UNPROCESSABLE_ENTITY
+
+
+class TimeseriesDuplicateTimestamp(AppException):
+    error_code = "TIMESERIES_DUPLICATE_TIMESTAMP"
+    message = "A data point with this timestamp already exists in the series"
+    status_code = HTTPStatus.CONFLICT
+
+
+class TimeseriesMetricsFailed(AppException):
+    error_code = "TIMESERIES_METRICS_FAILED"
+    message = "Failed to compute metrics for the time series"
+    status_code = HTTPStatus.INTERNAL_SERVER_ERROR
