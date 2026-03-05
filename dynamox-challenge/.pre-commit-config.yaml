@@ -1,0 +1,26 @@
+repos:
+  # --- General file hygiene ---
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace       # remove trailing spaces
+      - id: end-of-file-fixer         # ensure files end with a newline
+      - id: check-yaml                # validate YAML syntax
+      - id: check-toml                # validate TOML syntax
+      - id: check-merge-conflict      # catch unresolved merge conflicts
+      - id: debug-statements          # catch leftover breakpoint() / pdb calls
+      - id: check-added-large-files   # prevent accidental large file commits
+        args: ["--maxkb=500"]
+
+  # --- Ruff: linter + import sorter (runs before black) ---
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.6
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+
+  # --- Black: code formatter ---
+  - repo: https://github.com/psf/black
+    rev: 23.11.0
+    hooks:
+      - id: black
