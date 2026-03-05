@@ -2,7 +2,7 @@ from uuid import UUID
 
 from sqlalchemy.orm import Session
 
-from app.api.exceptions import TimeseriesNotFound
+from app.api.exceptions import TimeseriesNotFound, TimeseriesPayloadTooLarge
 from app.repositories.timeseries_repository import TimeseriesRepository
 from app.schemas.timeseries import (
     CountResponse,
@@ -15,6 +15,8 @@ from app.schemas.timeseries import (
 
 class TimeseriesService:
 
+    MAX_DATA_POINTS = 1_000_000
+
     def __init__(self, db: Session):
         self.repo = TimeseriesRepository(db)
 
@@ -23,6 +25,11 @@ class TimeseriesService:
     # ------------------------------------------------------------------
 
     def create(self, payload: TimeSeriesCreate) -> TimeSeriesResponse:
+        if len(payload.data) > self.MAX_DATA_POINTS:
+            raise TimeseriesPayloadTooLarge(
+                f"Received {len(payload.data):,} data points — max is {self.MAX_DATA_POINTS:,}"
+            )
+
         data_points = [
             {"timestamp": dp.timestamp, "value": dp.value}
             for dp in payload.data

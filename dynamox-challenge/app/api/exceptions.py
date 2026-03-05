@@ -45,6 +45,12 @@ class TimeseriesCreateFailed(AppException):
     status_code = HTTPStatus.BAD_REQUEST
 
 
+class TimeseriesPayloadTooLarge(AppException):
+    error_code = "TIMESERIES_PAYLOAD_TOO_LARGE"
+    message = "Time series exceeds the maximum allowed size of 1,000,000 data points"
+    status_code = HTTPStatus.REQUEST_ENTITY_TOO_LARGE
+
+
 class TimeseriesDeleteFailed(AppException):
     error_code = "TIMESERIES_DELETE_FAILED"
     message = "Failed to delete the time series"
