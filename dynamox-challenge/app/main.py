@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse
 
 from app.config import get_settings
 from app.api.exceptions import AppException
+from app.api.v1.timeseries import router as timeseries_router
 from app.schemas.errors import ErrorResponse
 
 settings = get_settings()
@@ -61,6 +62,9 @@ async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONR
             message="An unexpected error occurred",
         ).model_dump(),
     )
+
+
+app.include_router(timeseries_router, prefix=settings.api_v1_prefix)
 
 
 @app.get("/health", tags=["health"])
