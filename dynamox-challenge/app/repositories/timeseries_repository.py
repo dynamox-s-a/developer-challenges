@@ -1,5 +1,4 @@
 """Repository layer — all database queries for Timeseries and TimeseriesData."""
-from datetime import datetime
 from typing import Optional
 from uuid import UUID
 
@@ -7,6 +6,7 @@ from sqlalchemy import func, insert
 from sqlalchemy.orm import Session
 
 from app.models.timeseries import Timeseries, TimeseriesData
+from app.utils.metrics import format_metrics_result
 
 
 class TimeseriesRepository:
@@ -97,17 +97,7 @@ class TimeseriesRepository:
             .one()
         )
 
-        return {
-            "series_id": series_id,
-            "name": series.name,
-            "mean": float(result.mean) if result.mean is not None else None,
-            "stddev": float(result.stddev) if result.stddev is not None else None,
-            "min": float(result.min) if result.min is not None else None,
-            "max": float(result.max) if result.max is not None else None,
-            "count": result.count,
-            "time_range_start": series.time_range_start,
-            "time_range_end": series.time_range_end,
-        }
+        return format_metrics_result(series, result)
 
     def get_count(self) -> int:
         """Return the total number of stored time series."""
