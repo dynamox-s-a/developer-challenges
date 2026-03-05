@@ -46,7 +46,9 @@ def get_timeseries_count(
 )
 def get_timeseries(
     series_id: UUID,
-    limit: int = Query(default=100, ge=1, le=10_000, description="Max data points to return"),
+    limit: int = Query(
+        default=100, ge=1, le=10_000, description="Max data points to return"
+    ),
     offset: int = Query(default=0, ge=0, description="Number of data points to skip"),
     db: Session = Depends(get_db_session),
 ) -> TimeSeriesResponse:

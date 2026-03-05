@@ -1,4 +1,3 @@
-
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
@@ -7,9 +6,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import JSONResponse
 
-from app.config import get_settings
 from app.api.exceptions import AppException
 from app.api.v1.timeseries import router as timeseries_router
+from app.config import get_settings
 from app.schemas.errors import ErrorResponse
 
 settings = get_settings()
@@ -48,8 +47,9 @@ async def app_exception_handler(request: Request, exc: AppException) -> JSONResp
 
 
 @app.exception_handler(RequestValidationError)
-async def pydantic_validation_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
-
+async def pydantic_validation_handler(
+    request: Request, exc: RequestValidationError
+) -> JSONResponse:
     details = [
         {"field": " -> ".join(str(loc) for loc in err["loc"]), "issue": err["msg"]}
         for err in exc.errors()

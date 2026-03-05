@@ -14,7 +14,6 @@ from app.schemas.timeseries import (
 
 
 class TimeseriesService:
-
     MAX_DATA_POINTS = 1_000_000
 
     def __init__(self, db: Session):
@@ -31,8 +30,7 @@ class TimeseriesService:
             )
 
         data_points = [
-            {"timestamp": dp.timestamp, "value": dp.value}
-            for dp in payload.data
+            {"timestamp": dp.timestamp, "value": dp.value} for dp in payload.data
         ]
 
         series = self.repo.create_timeseries(
@@ -49,7 +47,10 @@ class TimeseriesService:
             data_points_count=series.data_points_count,
             time_range_start=series.time_range_start,
             time_range_end=series.time_range_end,
-            data=[DataPoint(timestamp=dp.timestamp, value=dp.value) for dp in series.data_points],
+            data=[
+                DataPoint(timestamp=dp.timestamp, value=dp.value)
+                for dp in series.data_points
+            ],
         )
 
     # ------------------------------------------------------------------
@@ -77,7 +78,9 @@ class TimeseriesService:
             data_points_count=series.data_points_count,
             time_range_start=series.time_range_start,
             time_range_end=series.time_range_end,
-            data=[DataPoint(timestamp=dp.timestamp, value=dp.value) for dp in data_points],
+            data=[
+                DataPoint(timestamp=dp.timestamp, value=dp.value) for dp in data_points
+            ],
         )
 
     # ------------------------------------------------------------------

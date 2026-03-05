@@ -1,5 +1,4 @@
 from typing import Any
-from uuid import UUID
 
 
 def _safe_float(value: Any) -> float | None:

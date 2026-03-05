@@ -1,14 +1,13 @@
 """Pydantic schema for standardised API error responses."""
-from typing import Any, Optional
+from typing import Any
 
 from pydantic import BaseModel
 
 
 class ErrorResponse(BaseModel):
-
     error: str
     message: str
-    details: Optional[Any] = None
+    details: Any | None = None
 
     model_config = {
         "json_schema_extra": {
@@ -26,9 +25,7 @@ class ErrorResponse(BaseModel):
                 {
                     "error": "VALIDATION_ERROR",
                     "message": "Request body is invalid",
-                    "details": [
-                        {"field": "data", "issue": "List must not be empty"}
-                    ],
+                    "details": [{"field": "data", "issue": "List must not be empty"}],
                 },
                 {
                     "error": "TIMESERIES_DUPLICATE_TIMESTAMP",

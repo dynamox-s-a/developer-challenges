@@ -1,5 +1,4 @@
 """Repository layer — all database queries for Timeseries and TimeseriesData."""
-from typing import Optional
 from uuid import UUID
 
 from sqlalchemy import func, insert
@@ -10,17 +9,15 @@ from app.utils.metrics import format_metrics_result
 
 
 class TimeseriesRepository:
-
     def __init__(self, db: Session):
         self.db = db
 
     def create_timeseries(
         self,
-        name: Optional[str],
+        name: str | None,
         extra_metadata: dict,
         data_points: list[dict],
     ) -> Timeseries:
-
         timestamps = [dp["timestamp"] for dp in data_points]
 
         series = Timeseries(
@@ -55,13 +52,8 @@ class TimeseriesRepository:
         series_id: UUID,
         limit: int = 100,
         offset: int = 0,
-    ) -> Optional[tuple[Timeseries, list[TimeseriesData]]]:
-
-        series = (
-            self.db.query(Timeseries)
-            .filter(Timeseries.id == series_id)
-            .first()
-        )
+    ) -> tuple[Timeseries, list[TimeseriesData]] | None:
+        series = self.db.query(Timeseries).filter(Timeseries.id == series_id).first()
         if not series:
             return None
 
@@ -75,13 +67,8 @@ class TimeseriesRepository:
         )
         return series, data_points
 
-    def get_metrics(self, series_id: UUID) -> Optional[dict]:
-
-        series = (
-            self.db.query(Timeseries)
-            .filter(Timeseries.id == series_id)
-            .first()
-        )
+    def get_metrics(self, series_id: UUID) -> dict | None:
+        series = self.db.query(Timeseries).filter(Timeseries.id == series_id).first()
         if not series:
             return None
 
@@ -104,12 +91,7 @@ class TimeseriesRepository:
         return self.db.query(Timeseries).count()
 
     def delete_timeseries(self, series_id: UUID) -> bool:
-
-        series = (
-            self.db.query(Timeseries)
-            .filter(Timeseries.id == series_id)
-            .first()
-        )
+        series = self.db.query(Timeseries).filter(Timeseries.id == series_id).first()
         if not series:
             return False
 

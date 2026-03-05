@@ -1,9 +1,7 @@
-
 from http import HTTPStatus
 
 
 class AppException(Exception):
-
     error_code: str = "APP_ERROR"
     message: str = "An application error occurred"
     status_code: int = 400
@@ -16,6 +14,7 @@ class AppException(Exception):
 # ---------------------------------------------------------------------------
 # GENERIC errors
 # ---------------------------------------------------------------------------
+
 
 class InternalServerError(AppException):
     error_code = "INTERNAL_SERVER_ERROR"
@@ -32,6 +31,7 @@ class InvalidUUID(AppException):
 # ---------------------------------------------------------------------------
 # TIMESERIES errors
 # ---------------------------------------------------------------------------
+
 
 class TimeseriesNotFound(AppException):
     error_code = "TIMESERIES_NOT_FOUND"

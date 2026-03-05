@@ -1,14 +1,12 @@
-
+from datetime import UTC, datetime, timedelta
 import math
-from datetime import datetime, timedelta, timezone
 from typing import Any
-
 
 # ---------------------------------------------------------------------------
 # Base timestamps — a fixed anchor point so tests are deterministic
 # ---------------------------------------------------------------------------
 
-BASE_TIME = datetime(2024, 3, 1, 9, 0, 0, tzinfo=timezone.utc)
+BASE_TIME = datetime(2024, 3, 1, 9, 0, 0, tzinfo=UTC)
 
 
 def _ts(offset_seconds: int) -> str:
@@ -19,10 +17,10 @@ def _ts(offset_seconds: int) -> str:
 # Factory functions — call these in tests to get a fresh copy every time
 # ---------------------------------------------------------------------------
 
+
 def make_data_points(n: int, start_offset: int = 0) -> list[dict[str, Any]]:
     return [
-        {"timestamp": _ts(start_offset + i), "value": float(i + 1)}
-        for i in range(n)
+        {"timestamp": _ts(start_offset + i), "value": float(i + 1)} for i in range(n)
     ]
 
 
@@ -43,6 +41,7 @@ def make_create_payload(
 # Expected metrics helpers
 # ---------------------------------------------------------------------------
 
+
 def expected_stddev(values: list[float]) -> float:
     n = len(values)
     mean = sum(values) / n
@@ -57,7 +56,9 @@ def expected_stddev(values: list[float]) -> float:
 VALID_PAYLOAD_5_POINTS: dict[str, Any] = make_create_payload(n=5)
 """Standard 5-point series used in most happy-path tests."""
 
-VALID_PAYLOAD_1_POINT: dict[str, Any] = make_create_payload(n=1, name="single-point-series")
+VALID_PAYLOAD_1_POINT: dict[str, Any] = make_create_payload(
+    n=1, name="single-point-series"
+)
 """Edge case: minimum valid series (exactly 1 data point)."""
 
 VALID_PAYLOAD_NO_NAME: dict[str, Any] = make_create_payload(n=3, name=None)

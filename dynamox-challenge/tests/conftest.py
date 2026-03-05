@@ -1,16 +1,15 @@
-
-import os
 from collections.abc import Iterator
+import os
 
-import pytest
 from fastapi.testclient import TestClient
+import pytest
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
-import app.models  # noqa: F401 — registers Timeseries + TimeseriesData with Base
 from app.api.dependencies import get_db_session
 from app.database import Base
 from app.main import app
+import app.models  # — registers Timeseries + TimeseriesData with Base
 from tests.fixtures.sample_data import VALID_PAYLOAD_5_POINTS
 
 TEST_DATABASE_URL = os.getenv(
@@ -30,6 +29,7 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engin
 # Dependency override — every request during tests uses the test database
 # ---------------------------------------------------------------------------
 
+
 def override_get_db_session():
     db = TestingSessionLocal()
     try:
@@ -44,6 +44,7 @@ app.dependency_overrides[get_db_session] = override_get_db_session
 # ---------------------------------------------------------------------------
 # Session-scoped setup: create DB + tables + TimescaleDB hypertable
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_database() -> Iterator[None]:
@@ -69,17 +70,17 @@ def _create_test_database_if_missing() -> None:
 
 
 def _promote_to_hypertable() -> None:
+    import contextlib
+
     sql = "SELECT create_hypertable('timeseries_data', 'timestamp', if_not_exists => TRUE);"
-    with engine.begin() as conn:
-        try:
-            conn.execute(text(sql))
-        except Exception:
-            pass  # plain PostgreSQL without TimescaleDB extension — that's fine
+    with engine.begin() as conn, contextlib.suppress(Exception):
+        conn.execute(text(sql))
 
 
 # ---------------------------------------------------------------------------
 # Function-scoped cleanup: wipe rows between every test
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture(autouse=True)
 def clean_db() -> Iterator[None]:
@@ -91,6 +92,7 @@ def clean_db() -> Iterator[None]:
 # ---------------------------------------------------------------------------
 # Shared test fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture(scope="module")
 def client() -> Iterator[TestClient]:

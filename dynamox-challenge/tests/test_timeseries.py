@@ -14,11 +14,11 @@ Requirements:
   - docker-compose up -d db   (TimescaleDB must be running)
   - pytest tests/ -v
 """
-import pytest
 from http import HTTPStatus
 from unittest.mock import patch
 
 from fastapi.testclient import TestClient
+import pytest
 
 from app.services.timeseries_service import TimeseriesService
 from tests.fixtures.sample_data import (
@@ -34,10 +34,10 @@ from tests.fixtures.sample_data import (
     make_create_payload,
 )
 
-
 # ===========================================================================
 # Health check
 # ===========================================================================
+
 
 def test_health_check_returns_ok(client: TestClient) -> None:
     response = client.get("/health")
@@ -49,6 +49,7 @@ def test_health_check_returns_ok(client: TestClient) -> None:
 # ===========================================================================
 # POST /api/v1/timeseries
 # ===========================================================================
+
 
 def test_create_timeseries_success(client: TestClient) -> None:
     expected_name = VALID_PAYLOAD_5_POINTS["name"]
@@ -128,6 +129,7 @@ def test_create_timeseries_with_too_many_points(client: TestClient) -> None:
 # GET /api/v1/timeseries/count
 # ===========================================================================
 
+
 def test_get_count_when_empty(client: TestClient) -> None:
     response = client.get("/api/v1/timeseries/count")
 
@@ -137,7 +139,9 @@ def test_get_count_when_empty(client: TestClient) -> None:
 
 def test_get_count_with_data(client: TestClient) -> None:
     client.post("/api/v1/timeseries", json=make_create_payload(n=2, name="s1"))
-    client.post("/api/v1/timeseries", json=make_create_payload(n=2, name="s2", start_offset=10))
+    client.post(
+        "/api/v1/timeseries", json=make_create_payload(n=2, name="s2", start_offset=10)
+    )
 
     response = client.get("/api/v1/timeseries/count")
 
@@ -148,6 +152,7 @@ def test_get_count_with_data(client: TestClient) -> None:
 # ===========================================================================
 # GET /api/v1/timeseries/{id}
 # ===========================================================================
+
 
 def test_get_timeseries_success(
     client: TestClient,
@@ -208,6 +213,7 @@ def test_get_timeseries_with_offset_beyond_data(
 # GET /api/v1/timeseries/{id}/metrics
 # ===========================================================================
 
+
 def test_get_metrics_success(
     client: TestClient,
     created_timeseries_id: str,
@@ -221,7 +227,9 @@ def test_get_metrics_success(
     assert body["min"] == pytest.approx(EXPECTED_METRICS_5_POINTS["min"])
     assert body["max"] == pytest.approx(EXPECTED_METRICS_5_POINTS["max"])
     assert body["mean"] == pytest.approx(EXPECTED_METRICS_5_POINTS["mean"])
-    assert body["stddev"] == pytest.approx(EXPECTED_METRICS_5_POINTS["stddev"], rel=1e-4)
+    assert body["stddev"] == pytest.approx(
+        EXPECTED_METRICS_5_POINTS["stddev"], rel=1e-4
+    )
 
 
 def test_get_metrics_with_not_found_error(client: TestClient) -> None:
@@ -237,6 +245,7 @@ def test_get_metrics_with_not_found_error(client: TestClient) -> None:
 # ===========================================================================
 # DELETE /api/v1/timeseries/{id}
 # ===========================================================================
+
 
 def test_delete_timeseries_success(
     client: TestClient,
@@ -283,6 +292,7 @@ def test_delete_timeseries_reduces_count(
 # ===========================================================================
 # Unit tests — pure Python, no database or HTTP
 # ===========================================================================
+
 
 def test_expected_stddev_calculation() -> None:
     values = [1.0, 2.0, 3.0, 4.0, 5.0]

@@ -1,12 +1,11 @@
-
+from app.schemas.errors import ErrorResponse
 from app.schemas.timeseries import (
+    CountResponse,
     DataPoint,
+    MetricsResponse,
     TimeSeriesCreate,
     TimeSeriesResponse,
-    MetricsResponse,
-    CountResponse,
 )
-from app.schemas.errors import ErrorResponse
 
 __all__ = [
     "DataPoint",
