@@ -3,6 +3,8 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import JSONResponse
 
 from app.config import get_settings
@@ -22,6 +24,15 @@ app = FastAPI(
     title=settings.app_name,
     debug=settings.debug,
     lifespan=lifespan,
+)
+
+app.add_middleware(GZipMiddleware, minimum_size=1000)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
