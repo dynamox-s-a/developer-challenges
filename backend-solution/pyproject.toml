@@ -6,6 +6,8 @@ readme = "README.md"
 requires-python = ">=3.11,<4.0"
 dependencies = [
     "fastapi[standard]>=0.135.1",
+    "pydantic-settings>=2.13.1",
+    "sqlalchemy>=2.0.48",
 ]
 
 [dependency-groups]
@@ -15,6 +17,7 @@ dev = [
     "taskipy>=1.14.1,<2.0.0",
     "ruff>=0.15.4,<0.16.0",
     "typos>=1.44.0,<2.0.0",
+    "pyright>=1.1.408",
 ]
 
 [tool.ruff]
