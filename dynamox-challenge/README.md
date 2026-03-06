@@ -101,6 +101,21 @@ Expected output: **23 passed** against real PostgreSQL/TimescaleDB.
 
 ---
 
+## Load tests (Locust)
+
+**Prerequisites:** API and database must be running (`docker-compose up` or `uvicorn app.main:app --reload` with `docker-compose up -d db`).
+
+From the project root:
+
+```bash
+pip install -r requirements-dev.txt
+locust -f tests/load/locustfile.py --host=http://localhost:8000
+```
+
+Open `http://localhost:8089` in your browser. Enter **Number of users** and **Ramp up** (or **Spawn rate**), then click **Start**. Let it run for 2–5 minutes. Target: p95 latency < 350 ms for all endpoints.
+
+---
+
 ## Project structure
 
 ```
@@ -132,6 +147,8 @@ dynamox-challenge/
 │   ├── conftest.py               # PostgreSQL test DB setup, fixtures
 │   ├── fixtures/
 │   │   └── sample_data.py        # Reusable test payloads and helpers
+│   ├── load/
+│   │   └── locustfile.py         # Locust load tests (health, count, CRUD, metrics)
 │   └── test_timeseries.py        # 23 integration + unit tests
 ├── .env.example                  # Environment variable template
 ├── docker-compose.yml            # API + TimescaleDB services
