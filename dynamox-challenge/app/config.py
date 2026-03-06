@@ -13,7 +13,9 @@ class Settings(BaseSettings):
     app_name: str = "Dynamox Signal Processing API"
     debug: bool = False
 
-    database_url: str = "postgresql://caiquegomes@localhost:5432/dynamox_timeseries"
+    database_url: str = (
+        "postgresql://postgres:postgres@localhost:5432/dynamox_timeseries"
+    )
     api_v1_prefix: str = "/api/v1"
 
 
