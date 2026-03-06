@@ -2,6 +2,13 @@
 
 A performant REST API for storing and analysing time-series data, built for the [Dynamox Back-end Developer Challenge](https://github.com/dynamox-s-a/developer-challenges).
 
+
+## Thought process & design
+
+See the [Miro board](https://miro.com/app/board/uXjVG5UClZw=/?share_link_id=874735978506) for the design thinking, architecture decisions, and build process behind this solution.
+
+---
+
 ## Stack
 
 | Layer | Technology |
