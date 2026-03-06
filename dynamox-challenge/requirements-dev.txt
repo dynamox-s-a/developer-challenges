@@ -7,3 +7,5 @@ black==23.11.0
 ruff==0.1.6
 
 pre-commit==3.5.0
+
+locust==2.32.4
