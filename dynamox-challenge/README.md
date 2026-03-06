@@ -35,14 +35,8 @@ Interactive docs available at `http://localhost:8000/docs` when the API is runni
 The fastest way to get the full stack running:
 
 ```bash
-# 1. Start both the database and the API
+# Start both the database and the API
 docker-compose up --build
-
-# 2. In a separate terminal, run migrations
-docker-compose exec api alembic upgrade head
-
-# 3. Promote timeseries_data to a TimescaleDB hypertable
-docker-compose exec api python scripts/init_db.py
 ```
 
 API is now live at `http://localhost:8000`.
