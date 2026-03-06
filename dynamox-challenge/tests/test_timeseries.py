@@ -14,13 +14,16 @@ Requirements:
   - docker-compose up -d db   (TimescaleDB must be running)
   - pytest tests/ -v
 """
+from datetime import UTC, datetime
 from http import HTTPStatus
+from types import SimpleNamespace
 from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 import pytest
 
 from app.services.timeseries_service import TimeseriesService
+from app.utils.metrics import format_metrics_result
 from tests.fixtures.sample_data import (
     EXPECTED_METRICS_5_POINTS,
     INVALID_PAYLOAD_DUPLICATE_TIMESTAMPS,
@@ -290,7 +293,7 @@ def test_delete_timeseries_reduces_count(
 
 
 # ===========================================================================
-# Unit tests — pure Python, no database or HTTP
+# Unit tests
 # ===========================================================================
 
 
@@ -308,3 +311,85 @@ def test_expected_stddev_with_two_values() -> None:
     result = expected_stddev(values)
 
     assert result == pytest.approx(1.4142135623730951, rel=1e-6)
+
+
+# ---------------------------------------------------------------------------
+# format_metrics_result (app.utils.metrics)
+# ---------------------------------------------------------------------------
+
+
+def test_format_metrics_result_normal_case() -> None:
+    """All SQL values present — normal case."""
+    series = SimpleNamespace(
+        id="550e8400-e29b-41d4-a716-446655440000",
+        name="test-series",
+        time_range_start=datetime(2024, 1, 1, tzinfo=UTC),
+        time_range_end=datetime(2024, 1, 2, tzinfo=UTC),
+    )
+    sql_result = SimpleNamespace(
+        mean=3.0,
+        stddev=1.5,
+        min=1.0,
+        max=5.0,
+        count=5,
+    )
+
+    result = format_metrics_result(series, sql_result)
+
+    assert result["series_id"] == series.id
+    assert result["name"] == "test-series"
+    assert result["mean"] == 3.0
+    assert result["stddev"] == 1.5
+    assert result["min"] == 1.0
+    assert result["max"] == 5.0
+    assert result["count"] == 5
+    assert result["time_range_start"] == series.time_range_start
+    assert result["time_range_end"] == series.time_range_end
+
+
+def test_format_metrics_result_with_none_in_sql_result() -> None:
+    """stddev is None for single-point series — _safe_float returns None."""
+    series = SimpleNamespace(
+        id="550e8400-e29b-41d4-a716-446655440000",
+        name="single-point",
+        time_range_start=datetime(2024, 1, 1, tzinfo=UTC),
+        time_range_end=datetime(2024, 1, 1, tzinfo=UTC),
+    )
+    sql_result = SimpleNamespace(
+        mean=42.0,
+        stddev=None,  # PostgreSQL returns NULL for stddev of 1 value
+        min=42.0,
+        max=42.0,
+        count=1,
+    )
+
+    result = format_metrics_result(series, sql_result)
+
+    assert result["mean"] == 42.0
+    assert result["stddev"] is None
+    assert result["min"] == 42.0
+    assert result["max"] == 42.0
+    assert result["count"] == 1
+
+
+def test_format_metrics_result_safe_float_with_numeric_types() -> None:
+    """_safe_float converts int/decimal to float."""
+    series = SimpleNamespace(
+        id="550e8400-e29b-41d4-a716-446655440000",
+        name="test",
+        time_range_start=None,
+        time_range_end=None,
+    )
+    sql_result = SimpleNamespace(
+        mean=3,  # int
+        stddev=1.4142135623730951,
+        min=1,
+        max=5,
+        count=5,
+    )
+
+    result = format_metrics_result(series, sql_result)
+
+    assert result["mean"] == 3.0
+    assert result["min"] == 1.0
+    assert result["max"] == 5.0
