@@ -1,12 +1,11 @@
-"""Alembic environment — wires app config and models into the migration engine."""
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config, pool
 from alembic import context
+from sqlalchemy import engine_from_config, pool
 
 from app.config import get_settings
 from app.database import Base
-import app.models  # noqa: F401 — registers all SQLAlchemy models against Base
+import app.models  # — registers all SQLAlchemy models against Base
 
 config = context.config
 
@@ -20,7 +19,6 @@ target_metadata = Base.metadata
 
 
 def run_migrations_offline() -> None:
-    """Run migrations without a live DB connection (generates SQL to stdout)."""
     url = config.get_main_option("sqlalchemy.url")
     context.configure(
         url=url,
@@ -33,7 +31,6 @@ def run_migrations_offline() -> None:
 
 
 def run_migrations_online() -> None:
-    """Run migrations against a live DB connection."""
     connectable = engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",

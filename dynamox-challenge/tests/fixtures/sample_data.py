@@ -54,28 +54,23 @@ def expected_stddev(values: list[float]) -> float:
 # ---------------------------------------------------------------------------
 
 VALID_PAYLOAD_5_POINTS: dict[str, Any] = make_create_payload(n=5)
-"""Standard 5-point series used in most happy-path tests."""
 
 VALID_PAYLOAD_1_POINT: dict[str, Any] = make_create_payload(
     n=1, name="single-point-series"
 )
-"""Edge case: minimum valid series (exactly 1 data point)."""
 
 VALID_PAYLOAD_NO_NAME: dict[str, Any] = make_create_payload(n=3, name=None)
-"""Series where the optional `name` field is omitted."""
 
 VALID_PAYLOAD_NO_METADATA: dict[str, Any] = {
     "name": "no-metadata-series",
     "data": make_data_points(3),
 }
-"""Series where the optional `metadata` field is omitted."""
 
 INVALID_PAYLOAD_EMPTY_DATA: dict[str, Any] = {
     "name": "empty-series",
     "metadata": {},
     "data": [],
 }
-"""Should be rejected with 422 — data list must not be empty."""
 
 INVALID_PAYLOAD_DUPLICATE_TIMESTAMPS: dict[str, Any] = {
     "name": "duplicate-ts-series",
@@ -85,13 +80,11 @@ INVALID_PAYLOAD_DUPLICATE_TIMESTAMPS: dict[str, Any] = {
         {"timestamp": _ts(0), "value": 2.0},
     ],
 }
-"""Should be rejected with 422 — two points share the same timestamp."""
 
 INVALID_PAYLOAD_MISSING_DATA: dict[str, Any] = {
     "name": "missing-data-field",
     "metadata": {},
 }
-"""Should be rejected with 422 — required `data` field is absent."""
 
 
 # ---------------------------------------------------------------------------

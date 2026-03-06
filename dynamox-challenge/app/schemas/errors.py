@@ -1,4 +1,3 @@
-"""Pydantic schema for standardised API error responses."""
 from typing import Any
 
 from pydantic import BaseModel

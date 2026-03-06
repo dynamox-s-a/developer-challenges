@@ -1,4 +1,3 @@
-"""Repository layer — all database queries for Timeseries and TimeseriesData."""
 from uuid import UUID
 
 from sqlalchemy import func, insert

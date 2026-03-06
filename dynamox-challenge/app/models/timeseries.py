@@ -1,4 +1,3 @@
-"""SQLAlchemy models for time series header and data points."""
 from uuid import uuid4
 
 from sqlalchemy import Column, DateTime, Float, ForeignKey, Index, Integer, String
@@ -10,8 +9,6 @@ from app.database import Base
 
 
 class Timeseries(Base):
-    """Header record describing a time series (no data points here)"""
-
     __tablename__ = "timeseries"
 
     id = Column(
@@ -37,10 +34,6 @@ class Timeseries(Base):
 
 
 class TimeseriesData(Base):
-    """Individual data points belonging to a Timeseries.
-    This table is promoted to a TimescaleDB hypertable on timestamp.
-    """
-
     __tablename__ = "timeseries_data"
 
     timeseries_id = Column(
