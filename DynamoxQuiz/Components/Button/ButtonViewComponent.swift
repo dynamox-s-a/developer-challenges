@@ -17,7 +17,7 @@ class ButtonViewComponent: UIButton {
         setTitle(title, for: .normal)
         setTitleColor(.white, for: .normal)
         titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
-        backgroundColor = .systemCyan
+        backgroundColor = Colors.primaryGreenBase
         layer.cornerRadius = 6
         translatesAutoresizingMaskIntoConstraints = false
         

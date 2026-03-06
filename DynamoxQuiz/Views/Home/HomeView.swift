@@ -9,7 +9,7 @@ import UIKit
 
 class HomeView: UIView {
     
-    public weak var delegate: HomeDelegate?
+    public weak var delegate: HomeViewDelegate?
     
     let myButtonResponse = ButtonViewComponent(title: "Iniciar Quiz")
 
@@ -44,15 +44,16 @@ class HomeView: UIView {
         
         return name
     }()
+    
+    var userNickName: String {
+        inputName.text ?? ""
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        myButtonResponse.setAction{ [weak self] in
-            self?.homeButtonDidTaped()
-        }
-        
         backgroundColor = .white
+    
+        setupActions()
         
         setupUI()
         setupConstraints()
@@ -61,7 +62,11 @@ class HomeView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    private func setupActions(){
+        myButtonResponse.setAction{ [weak self] in
+            self?.delegate?.didTapStart()
+        }
+    }
     private func setupUI(){
         addSubview(titleLabel)
         addSubview(subLabel)
@@ -87,10 +92,5 @@ class HomeView: UIView {
             myButtonResponse.widthAnchor.constraint(equalToConstant: 300),
             myButtonResponse.heightAnchor.constraint(equalToConstant: 40),
         ])
-    }
-    @objc
-    private func homeButtonDidTaped(){
-        let userNickName = inputName.text ?? ""
-        delegate?.sendNickNameUser(nickName: userNickName)
     }
 }

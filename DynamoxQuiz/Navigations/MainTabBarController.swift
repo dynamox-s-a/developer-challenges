@@ -8,7 +8,21 @@
 import UIKit
 
 class MainTabBarController: UITabBarController {
-    let flowController = DynamoxFlowController()
+    let flowController: AppCoordinator
+    let profileViewModel: ProfileViewModel
+    
+    init(profileViewModel: ProfileViewModel) {
+        self.profileViewModel = profileViewModel
+        self.flowController = AppCoordinator(
+            profileViewModel: profileViewModel
+        )
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     
     override func viewDidLoad() {
     
@@ -19,10 +33,10 @@ class MainTabBarController: UITabBarController {
     
     private func setupTabs() {
         
-        let homeVC = HomeViewController(flowDelegate: flowController)
-        let profileVC = ProfileViewController()
+        let quizVC = QuizViewController(profileViewModel: profileViewModel)
+        let profileVC = ProfileViewController(profileViewModel: profileViewModel)
         
-        homeVC.tabBarItem = UITabBarItem(
+        quizVC.tabBarItem = UITabBarItem(
             title: "Home",
             image: UIImage(systemName: "house"),
             tag: 0
@@ -35,7 +49,7 @@ class MainTabBarController: UITabBarController {
             tag: 1
         )
         viewControllers = [
-            UINavigationController(rootViewController: homeVC),
+            UINavigationController(rootViewController: quizVC),
             UINavigationController(rootViewController: profileVC)
         ]
     }
@@ -43,17 +57,16 @@ class MainTabBarController: UITabBarController {
     private func setupAppearence(){
         let apperance = UITabBarAppearance()
         apperance.configureWithOpaqueBackground()
+        apperance.backgroundColor = .white
         
-        tabBar.backgroundColor = .gray
-        
-        apperance.stackedLayoutAppearance.selected.iconColor = .systemCyan
+        apperance.stackedLayoutAppearance.selected.iconColor = Colors.primaryGreenBase
         apperance.stackedLayoutAppearance.selected.titleTextAttributes = [
-            .foregroundColor: UIColor.systemCyan
+            .foregroundColor: Colors.primaryGreenBase
         ]
         
-        apperance.stackedLayoutAppearance.normal.iconColor = .systemCyan
+        apperance.stackedLayoutAppearance.normal.iconColor = Colors.primaryGreenBase
         apperance.stackedLayoutAppearance.normal.titleTextAttributes = [
-            .foregroundColor: UIColor.systemGray
+            .foregroundColor: Colors.primaryGreenBase
         ]
         tabBar.standardAppearance = apperance
         tabBar.scrollEdgeAppearance = apperance

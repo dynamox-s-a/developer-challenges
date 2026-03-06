@@ -10,7 +10,6 @@ import UIKit
 class QuestionCardComponent: UIView {
     
     var onSelect: (() -> Void)?
-    
     var isSelected: Bool = false
     
     
@@ -46,8 +45,6 @@ class QuestionCardComponent: UIView {
     
     init(title: String){
         super.init(frame: .zero)
-    
-        
         textLabel.text = title
             
         setupUI()
@@ -95,7 +92,7 @@ class QuestionCardComponent: UIView {
         self.isSelected = isSelected
         
         btnResult.layer.borderWidth = isSelected ? 1.0 : 0
-        btnResult.layer.borderColor = isSelected ? UIColor.systemCyan.cgColor : nil
+        btnResult.layer.borderColor = isSelected ? Colors.primaryGreenBase.cgColor : nil
     }
     func configure(with text: String){
         textLabel.text = text

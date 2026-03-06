@@ -11,7 +11,7 @@ class CoreDataStack {
     static let shared = CoreDataStack()
     
     lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "QuizModel")
+        let container = NSPersistentContainer(name: "QuizEntity")
         
         container.loadPersistentStores { _, error in
             if let error = error {

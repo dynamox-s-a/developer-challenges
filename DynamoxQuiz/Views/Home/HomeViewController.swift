@@ -12,14 +12,17 @@ class HomeViewController: UIViewController{
     let homeView = HomeView()
     let viewModel = HomeViewModel()
     
+    let profileViewModel: ProfileViewModel
+    
     public weak var flowDelegate: HomeFlowDelegate?
     
     override func loadView() {
         view = homeView
     }
     
-    init(flowDelegate: HomeFlowDelegate){
+    init(flowDelegate: HomeFlowDelegate, profileViewModel: ProfileViewModel){
         self.flowDelegate = flowDelegate
+        self.profileViewModel = profileViewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -40,9 +43,14 @@ class HomeViewController: UIViewController{
         }
     }
 }
-extension HomeViewController: HomeDelegate{
+extension HomeViewController: HomeViewDelegate{
     
-    func sendNickNameUser(nickName: String) {
+    func didTapStart() {
+        let nickName = homeView.userNickName
+        
+        profileViewModel.user = nickName
+        UserDefaults.standard.set(nickName, forKey: "userName")
+        
         viewModel.itsOkay(userNick: nickName)
     }
 }
