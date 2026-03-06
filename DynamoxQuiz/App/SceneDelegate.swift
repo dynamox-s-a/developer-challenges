@@ -11,6 +11,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
+    let profileViewModel = ProfileViewModel()
     var flowController: DynamoxFlowController?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -24,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         // SceneDelegate
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-            self.flowController = DynamoxFlowController()
+            self.flowController = DynamoxFlowController(profileViewModel: self.profileViewModel)
             
             if let navController = self.flowController?.start() {
                 UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: {

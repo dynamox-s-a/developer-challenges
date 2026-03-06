@@ -7,8 +7,8 @@
 
 import Foundation
 
-protocol HomeDelegate: AnyObject {
-    func sendNickNameUser(nickName: String)
+protocol HomeViewDelegate: AnyObject {
+    func didTapStart()
 }
 
 public protocol HomeFlowDelegate: AnyObject {
