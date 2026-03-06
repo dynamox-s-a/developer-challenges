@@ -9,7 +9,6 @@ from sqlalchemy.orm import sessionmaker
 from app.api.dependencies import get_db_session
 from app.database import Base
 from app.main import app
-import app.models  # — registers Timeseries + TimeseriesData with Base
 from tests.fixtures.sample_data import VALID_PAYLOAD_5_POINTS
 
 TEST_DATABASE_URL = os.getenv(
