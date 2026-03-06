@@ -9,6 +9,8 @@ import UIKit
 
 class QuizView: UIView {
     
+    weak var delegate: QuizViewDelegate?
+    
     private let scrollView: UIScrollView = {
             let scroll = UIScrollView()
             scroll.translatesAutoresizingMaskIntoConstraints = false
@@ -30,23 +32,21 @@ class QuizView: UIView {
             return btn
         }()
 
-    private lazy var cardsStackView: UIStackView = {
-            let stack = UIStackView(arrangedSubviews: [
-                myPrimaryCardForQuestion,
-                mySecondaryCardForQuestion,
-                MyThirdCardForQuestion,
-                MyFourthCardForQuestion
-            ])
-            stack.axis = .vertical
-            stack.spacing = 20
-            stack.distribution = .fill
-            stack.translatesAutoresizingMaskIntoConstraints = false
-            return stack
-        }()
+    private let cardsStackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = 20
+        stack.distribution = .fill
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+    
+    private var cards: [QuestionCardComponent] {
+        cardsStackView.arrangedSubviews.compactMap { $0 as? QuestionCardComponent }
+    }
     
     private let titleQuestionsLabel: UILabel = {
         let label = UILabel()
-        label.text = "Pergunta 1 de 10"
         label.font = .systemFont(ofSize: 18, weight: .semibold)
         label.textColor = .gray
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -65,31 +65,24 @@ class QuizView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    let myPrimaryCardForQuestion = QuestionCardComponent(title: "...")
+    let mySecondaryCardForQuestion = QuestionCardComponent(title: "...")
+    let MyThirdCardForQuestion = QuestionCardComponent(title: "...")
+    let MyFourthCardForQuestion = QuestionCardComponent(title: "...")
+    let MyFiveCardForQuestion = QuestionCardComponent(title: "...")
     
-    let myPrimaryCardForQuestion: QuestionCardComponent = {
-        let button = QuestionCardComponent(title: "...")
-        return button
-    }()
-    
-    let mySecondaryCardForQuestion: QuestionCardComponent = {
-        let button = QuestionCardComponent(title: "...")
-        return button
-    }()
-    
-    let MyThirdCardForQuestion: QuestionCardComponent = {
-        let button = QuestionCardComponent(title: "...")
-        return button
-    }()
-    
-    let MyFourthCardForQuestion: QuestionCardComponent = {
-        let button = QuestionCardComponent(title: "...")
-        return button
+    private let loadingView: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.color = Colors.primaryGreenBase
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.hidesWhenStopped = true
+        return indicator
     }()
     
     private let logoWinnerView: UIImageView = {
         let img = UIImageView()
         img.image = UIImage(systemName: "trophy")
-        img.tintColor = .systemCyan
+        img.tintColor = Colors.primaryGreenBase
         img.contentMode = .scaleAspectFit
         img.translatesAutoresizingMaskIntoConstraints = false
         img.isHidden = true
@@ -137,7 +130,7 @@ class QuizView: UIView {
     let percentTextLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 32, weight: .semibold)
-        label.textColor = .systemCyan
+        label.textColor = Colors.primaryGreenBase
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isHidden = true
         return label
@@ -148,6 +141,8 @@ class QuizView: UIView {
         super.init(frame: frame)
         
         setupUI()
+        setupActions()
+
     }
     
 
@@ -168,6 +163,7 @@ class QuizView: UIView {
         contentView.addSubview(titleQuestionsLabel)
         contentView.addSubview(questionsLabel)
         contentView.addSubview(cardsStackView)
+        contentView.addSubview(loadingView)
                 
         addSubview(logoWinnerView)
         addSubview(myCardResult)
@@ -175,9 +171,30 @@ class QuizView: UIView {
         myCardResult.addSubview(subTextLabel)
         myCardResult.addSubview(percentTextLabel)
         
+        cardsStackView.addArrangedSubview(myPrimaryCardForQuestion)
+        cardsStackView.addArrangedSubview(mySecondaryCardForQuestion)
+        cardsStackView.addArrangedSubview(MyThirdCardForQuestion)
+        cardsStackView.addArrangedSubview(MyFourthCardForQuestion)
+        cardsStackView.addArrangedSubview(MyFiveCardForQuestion)
+
         setupConstraints()
         
         }
+    
+    private func setupActions(){
+        myButtonResponse.setAction { [ weak self ] in
+            self?.delegate?.didTapAnswerButton()
+        }
+        buttonRestartQuiz.setAction { [ weak self ] in
+            self?.delegate?.didTapRestartButton()
+        }
+        cards.enumerated().forEach { index, card in
+            card.onSelect = { [weak self ] in
+                self?.delegate?.didSelectOption(index: index)
+            }
+        }
+    }
+    
     private func setupConstraints(){
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
@@ -185,15 +202,17 @@ class QuizView: UIView {
                         scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
                         scrollView.bottomAnchor.constraint(equalTo: myButtonResponse.topAnchor, constant: -10),
                         
-                        // CONTENT VIEW: Ocupa o Content Layout Guide do Scroll
+            
                         contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
                         contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
                         contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
                         contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
-                        // IMPORTANTE: Trava a largura para evitar scroll horizontal
+            
+                        loadingView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+                        loadingView.topAnchor.constraint(equalTo: questionsLabel.bottomAnchor, constant: 60),
+            
                         contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
                         
-                        // ELEMENTOS DENTRO DA CONTENT VIEW
                         titleQuestionsLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
                         titleQuestionsLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
                         
@@ -204,10 +223,8 @@ class QuizView: UIView {
                         cardsStackView.topAnchor.constraint(equalTo: questionsLabel.bottomAnchor, constant: 30),
                         cardsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
                         cardsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-                        // IMPORTANTE: O último elemento da contentView deve prender no bottom dela para o scroll entender o tamanho
                         cardsStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
                         
-                        // BOTÕES FIXOS (Na View Principal)
                         myButtonResponse.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
                         myButtonResponse.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
                         myButtonResponse.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20),
@@ -218,7 +235,6 @@ class QuizView: UIView {
                         buttonRestartQuiz.widthAnchor.constraint(equalToConstant: 300),
                         buttonRestartQuiz.heightAnchor.constraint(equalToConstant: 48),
                         
-                        // RESULTADO (Centralizado na tela principal)
                         logoWinnerView.bottomAnchor.constraint(equalTo: myCardResult.topAnchor, constant: -20),
                         logoWinnerView.centerXAnchor.constraint(equalTo: centerXAnchor),
                         logoWinnerView.widthAnchor.constraint(equalToConstant: 100),
@@ -248,15 +264,7 @@ class QuizView: UIView {
         titleQuestionsLabel.text = "Pergunta \(number) de 10"
     }
     func resetCards() {
-            let allCards = [
-                myPrimaryCardForQuestion,
-                mySecondaryCardForQuestion,
-                MyThirdCardForQuestion,
-                MyFourthCardForQuestion
-            ]
-        allCards.forEach { card in
-            card.setSelection(false)
-        }
+        cards.forEach{ $0.setSelection(false)}
     }
     func showRestartButton(){
         myButtonResponse.isHidden = true
@@ -283,10 +291,8 @@ class QuizView: UIView {
     func showQuizAgain(){
         scrollView.isHidden = false
         cardsStackView.isHidden = false
-        myPrimaryCardForQuestion.isHidden = false
-        mySecondaryCardForQuestion.isHidden = false
-        MyThirdCardForQuestion.isHidden = false
-        MyFourthCardForQuestion.isHidden = false
+        
+        cards.forEach { $0.setSelection(false)}
         
         titleQuestionsLabel.isHidden = false
         questionsLabel.isHidden = false
@@ -296,6 +302,15 @@ class QuizView: UIView {
         textLabel.isHidden = true
         subTextLabel.isHidden = true
         percentTextLabel.isHidden = true
-        
+    }
+    func showLoading() {
+        cardsStackView.isHidden = true
+        questionsLabel.text = ""
+        loadingView.startAnimating()
+    }
+
+    func hideLoading() {
+        cardsStackView.isHidden = false
+        loadingView.stopAnimating()
     }
 }

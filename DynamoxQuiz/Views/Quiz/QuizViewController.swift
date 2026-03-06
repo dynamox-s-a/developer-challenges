@@ -10,9 +10,18 @@ import UIKit
 final class QuizViewController: UIViewController {
     
     let viewModel = QuizViewModel()
+    let profileViewModel: ProfileViewModel
     
     private var hasSelectorAnswer: Bool = false
-    private var currentQuestionNumber: Int = 1
+    
+    init(profileViewModel: ProfileViewModel) {
+        self.profileViewModel = profileViewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private var quizView: QuizView {
         view as! QuizView
@@ -23,7 +32,8 @@ final class QuizViewController: UIViewController {
             quizView.myPrimaryCardForQuestion,
             quizView.mySecondaryCardForQuestion,
             quizView.MyThirdCardForQuestion,
-            quizView.MyFourthCardForQuestion
+            quizView.MyFourthCardForQuestion,
+            quizView.MyFiveCardForQuestion,
         ]
     }()
     
@@ -43,13 +53,14 @@ final class QuizViewController: UIViewController {
         setupBindings()
         setupSelectionLogic()
         setupActions()
-        quizView.updateQuestionTitle(number: "\(currentQuestionNumber)")
+        quizView.updateQuestionTitle(number: "\(viewModel.currentIndex + 1)")
     }
     
     private func setupBindings(){
         viewModel.onQuestionReceived = { [weak self] question in
             guard let self = self else { return }
             
+            self.quizView.updateQuestionTitle(number: "\(self.viewModel.currentIndex + 1)")
             self.quizView.questionsLabel.text = question.statement
             
             for(index, card) in self.allCards.enumerated() {
@@ -85,26 +96,39 @@ final class QuizViewController: UIViewController {
             }
             print("Selecione uma resposta antes de continuar")
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                self.proceedToNextStep()
+                Task { [weak self] in
+                    await self?.proceedToNextStep()
+                    self?.setCards(true)
+                }
             }
         }
         viewModel.onError = { message in
             print("Erro ao carregar \(message)")
         }
+        viewModel.onStateChange = { [weak self] state in
+            DispatchQueue.main.async {
+                switch state {
+                case .loading:
+                    self?.quizView.showLoading()
+                case .quiz:
+                    self?.quizView.hideLoading()
+                default:
+                    break
+                }
+            }
+        }
     }
     
-    private func proceedToNextStep(){
-        self.setCards(true)
+    private func proceedToNextStep() async {
+        viewModel.nextQuestion()
+        updateQuestion()
         
-        if currentQuestionNumber < 10 {
-            currentQuestionNumber += 1
-            Task {
-                await viewModel.loadQuestion()
-                updateQuestion()
-            }
-        } else {
+        if viewModel.isQuizFinished {
             finishQuiz()
+        } else {
+            await viewModel.loadQuestion()
         }
+        
     }
 
     
@@ -136,7 +160,7 @@ final class QuizViewController: UIViewController {
         viewModel.answerQuestion(option: answer, questionId: questionId)
     }
     private func restartQuiz(){
-        currentQuestionNumber = 1
+        viewModel.resetQuiz()
         viewModel.correctAnswerCount = 0
         hasSelectorAnswer = false
         quizView.updateQuestionTitle(number: "1")
@@ -150,7 +174,7 @@ final class QuizViewController: UIViewController {
         }
     }
     private func updateQuestion(){
-        quizView.updateQuestionTitle(number: "\(currentQuestionNumber)")
+        quizView.updateQuestionTitle(number: "\(viewModel.currentIndex + 1)")
         quizView.resetCards()
         hasSelectorAnswer = false
     }
@@ -179,16 +203,19 @@ final class QuizViewController: UIViewController {
         }
     private func finishQuiz() {
         
+        let nickUserName = profileViewModel.user
         let correctAnswers = viewModel.correctAnswerCount
         let total = 10
         let porcentam = (Double(correctAnswers) / Double(total)) * 100.0
         
+        viewModel.saveResult(name: nickUserName, correct: Int16(correctAnswers), total: Int16(total), rounds: Int32(viewModel.currentIndex))
+        
         if correctAnswers < 6 {
-            quizView.textLabel.text = "Não foi dessa vez, mas você está no caminho certo 💪"
+            quizView.textLabel.text = "Não foi dessa vez \(nickUserName), mas você está no caminho certo 💪"
         } else if correctAnswers < 8 {
-            quizView.textLabel.text = "Mandou bem! Dá pra melhorar ainda mais 🚀"
+            quizView.textLabel.text = "Mandou bem \(nickUserName)! Dá pra melhorar ainda mais 🚀"
         } else {
-            quizView.textLabel.text = "Arrasou! Desempenho incrível 🎉"
+            quizView.textLabel.text = "Arrasou \(nickUserName)! Desempenho incrível 🎉"
         }
         quizView.subTextLabel.text = "Vc acertou \(correctAnswers) de \(total)"
         quizView.percentTextLabel.text = "\(Int(porcentam))% de acerto"
@@ -199,3 +226,4 @@ final class QuizViewController: UIViewController {
         print("Quiz finalizado")
     }
 }
+

@@ -7,9 +7,13 @@
 
 import Foundation
 
-final class QuizViewModel {
+class QuizViewModel {
     
-    private let service = APIService()
+    private let service: APIService
+    private let repository: QuizRepository
+    
+    private let totalQuestions: Int = 10
+    private(set) var currentIndex = 0
     
     var currentQuestion: Question?
     var correctAnswerCount: Int = 0
@@ -20,29 +24,59 @@ final class QuizViewModel {
     var onLoadingChange: ((Bool) -> Void)?
     var onAnswerResult: ((Bool) -> Void)?
     
+    init(
+        service: APIService = APIService(),
+         repository: QuizRepository = QuizRepository()
+    ){
+        self.service = service
+        self.repository = repository
+    }
+    
     private(set) var state: QuizState = .quiz {
         didSet {
             onStateChange?(state)
         }
     }
     
+    var isQuizFinished: Bool {
+        currentIndex >= totalQuestions
+    }
+    
+    func nextQuestion() {
+        currentIndex += 1
+    }
+    
     func resetQuiz(){
+        currentIndex = 0
+        correctAnswerCount = 0
+        currentQuestion = nil
         state = .quiz
     }
     
+    func saveResult(name: String, correct: Int16, total: Int16, rounds: Int32){
+        repository.create(
+            name: name,
+            correct: correct,
+            total: total,
+            rounds: rounds
+        )
+    }
+    
     func loadQuestion() async {
-        onLoadingChange?(true)
-        Task{
+        state = .loading
             do {
                 let question = try await service.fetchRandomQuestion()
                 currentQuestion = question
-                onQuestionReceived?(question)
+                await MainActor.run{
+                    onQuestionReceived?(question)
+                    state = .quiz
+                }
             } catch {
-                onError?(error.localizedDescription)
+                await MainActor.run{
+                    onError?(error.localizedDescription)
+                    state = .quiz
+                }
             }
-            
-            onLoadingChange?(false)
-        }
     }
     func answerQuestion(option: String, questionId: String){
         Task {
