@@ -9,4 +9,4 @@ sqlalchemy==2.0.36
 psycopg2-binary==2.9.11
 alembic==1.12.1
 
-numpy==1.26.2
+numpy==2.2.2
