@@ -49,7 +49,8 @@ class TimeSeriesFullResponse(BaseModel):
     id: UUID
     label: str
     created_at: datetime
-    points: List[TimeSeriesPointResponse]
+    points: list[TimeSeriesPointResponse]
+    next_after_ts: datetime | None = None
 
     model_config = ConfigDict(from_attributes=True)
 

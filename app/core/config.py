@@ -6,6 +6,7 @@ load_dotenv()
 # Constants
 MAX_BATCH_SIZE = 50000
 CHUNK_SIZE = 5000
+MAX_POINTS_RETURNED = 20000
 
 # Functions
 def get_db_url() -> str:

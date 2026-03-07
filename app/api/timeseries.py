@@ -4,7 +4,6 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import select, insert, func, delete
-from sqlalchemy.orm import selectinload
 from datetime import datetime
 
 from app.db.session import get_db
@@ -19,7 +18,7 @@ from app.schemas.timeseries import (
     DeleteTimeSeriesResponse,
     TimeSeriesMetricsResponse
 )
-from app.core.config import MAX_BATCH_SIZE, CHUNK_SIZE
+from app.core.config import MAX_BATCH_SIZE, CHUNK_SIZE, MAX_POINTS_RETURNED
 from app.utils.chunking import chunked
 
 
@@ -94,7 +93,7 @@ async def insert_points(
     if not series_id:
         raise HTTPException(status_code=404, detail="TimeSeries not found")
 
-    # Check duplicates inside request. TODO: Manter essa verificação?
+    # Check duplicates inside request.
     timestamps = [p.timestamp for p in data.points]
     if len(timestamps) != len(set(timestamps)):
         raise HTTPException(
@@ -170,28 +169,71 @@ async def get_timeseries_metrics(
 
 
 @router.get(
-    "/{timeseries_id}", 
+    "/{timeseries_id}",
     response_model=TimeSeriesFullResponse,
     status_code=200,
-    summary="Retrieve a full time series with all points"
+    summary="Retrieve time series points",
 )
 async def get_timeseries(
     timeseries_id: uuid.UUID,
+    from_ts: datetime | None = None,
+    to_ts: datetime | None = None,
+    after_ts: datetime | None = None,
+    limit: int = 20000,
     db: AsyncSession = Depends(get_db),
-):
-    stmt = (
-        select(TimeSeries)
-        .where(TimeSeries.id == timeseries_id)
-        .options(selectinload(TimeSeries.points))
-    )
+):    
+    if limit <= 0:
+        raise HTTPException(status_code=400, detail="limit must be positive")
+    
+    limit = min(limit, MAX_POINTS_RETURNED)
 
-    result = await db.execute(stmt)
+    if from_ts and to_ts and from_ts > to_ts:
+        raise HTTPException(status_code=400, detail="from_ts must be <= to_ts")
+
+    if after_ts and (from_ts or to_ts):
+        raise HTTPException(status_code=400, detail="after_ts cannot be combined with from_ts or to_ts")
+
+    conditions = [TimeSeriesPoint.timeseries_id == timeseries_id]
+
+    if after_ts:
+        conditions.append(TimeSeriesPoint.timestamp > after_ts)
+
+    if from_ts:
+        conditions.append(TimeSeriesPoint.timestamp >= from_ts)
+
+    if to_ts:
+        conditions.append(TimeSeriesPoint.timestamp <= to_ts)
+
+    # check if timeseries exists
+    result = await db.execute(
+        select(TimeSeries).where(TimeSeries.id == timeseries_id)
+    )
     timeseries = result.scalar_one_or_none()
 
     if not timeseries:
         raise HTTPException(status_code=404, detail="Time series not found")
 
-    return timeseries
+    stmt = (
+        select(TimeSeriesPoint)
+        .where(*conditions)
+        .order_by(TimeSeriesPoint.timestamp)
+        .limit(limit)
+    )
+
+    points_result = await db.execute(stmt)
+    points = points_result.scalars().all()
+
+    next_after_ts = None
+    if len(points) == limit:
+        next_after_ts = points[-1].timestamp
+
+    return {
+        "id": timeseries.id,
+        "label": timeseries.label,
+        "created_at": timeseries.created_at,
+        "points": points,
+        "next_after_ts": next_after_ts,
+    }
 
 
 @router.delete(
