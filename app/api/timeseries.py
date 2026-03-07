@@ -148,7 +148,9 @@ async def get_timeseries_metrics(
     if to_ts:
         conditions.append(TimeSeriesPoint.timestamp <= to_ts)
 
-    exists = await db.execute(select(TimeSeries.id).where(TimeSeries.id == timeseries_id))
+    exists = await db.execute(
+        select(TimeSeries.id).where(TimeSeries.id == timeseries_id)
+    )
     if exists.scalar_one_or_none() is None:
         raise HTTPException(status_code=404, detail="Time series not found")
 
