@@ -1,5 +1,5 @@
 from uuid import UUID
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime
 from typing import List
 
@@ -19,8 +19,7 @@ class TimeSeriesRead(BaseModel):
     label: str
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Points
@@ -30,7 +29,7 @@ class TimeSeriesPointCreate(BaseModel):
 
 
 class TimeSeriesPointsBatchCreate(BaseModel):
-    points: List[TimeSeriesPointCreate] = Field(
+    points: list[TimeSeriesPointCreate] = Field(
         ...,
         min_length=1,
         description="List of time series points"
@@ -44,9 +43,7 @@ class TimeSeriesPointResponse(BaseModel):
     timestamp: datetime
     value: float
 
-    class Config:
-        from_attributes = True
-
+    model_config = ConfigDict(from_attributes=True)
 
 class TimeSeriesFullResponse(BaseModel):
     id: UUID
@@ -54,8 +51,7 @@ class TimeSeriesFullResponse(BaseModel):
     created_at: datetime
     points: List[TimeSeriesPointResponse]
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # Count
 class TimeSeriesCountResponse(BaseModel):
