@@ -9,7 +9,7 @@ import Foundation
 
 class QuizViewModel {
     
-    private let service: APIService
+    private let service: APIServiceDelegate
     private let repository: QuizRepository
     
     private let totalQuestions: Int = 10
@@ -25,7 +25,7 @@ class QuizViewModel {
     var onAnswerResult: ((Bool) -> Void)?
     
     init(
-        service: APIService = APIService(),
+        service: APIServiceDelegate = APIService(),
          repository: QuizRepository = QuizRepository()
     ){
         self.service = service

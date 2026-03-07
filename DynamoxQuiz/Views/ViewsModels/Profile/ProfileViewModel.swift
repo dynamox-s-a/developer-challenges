@@ -52,4 +52,24 @@ final class ProfileViewModel: ObservableObject {
     func loadMatch() {
         match = repository.search()
     }
+    
+    func saveProfileImage(_ image: UIImage){
+        guard let data = image.jpegData(compressionQuality: 0.8) else { return }
+        
+        let url = getImageUrl()
+        try? data.write(to: url)
+    }
+    
+    func loadProfileImage() -> UIImage? {
+        let url = getImageUrl()
+        
+        guard let data = try? Data(contentsOf: url) else { return nil }
+        
+        return UIImage(data: data)
+    }
+    
+    private func getImageUrl() -> URL {
+        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("profileImage.jpg")
+    }
 }

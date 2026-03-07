@@ -5,7 +5,7 @@
 //  Created by Mateus on 04/03/26.
 //
 
-enum QuizState {
+enum QuizState: Equatable {
     case loading
     case quiz
     case result
