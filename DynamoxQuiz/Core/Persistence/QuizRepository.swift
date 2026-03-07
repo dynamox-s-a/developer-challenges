@@ -17,7 +17,6 @@ class QuizRepository {
             into: context
         )
         
-        match.setValue(name, forKey: "name")
         match.setValue(correct, forKey: "correctAnswers")
         match.setValue(total, forKey: "totalQuestions")
         match.setValue(rounds, forKey: "totalRounds")

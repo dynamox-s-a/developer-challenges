@@ -8,11 +8,12 @@
 import Foundation
 import Alamofire
 
-struct APIService {
+struct APIService: APIServiceDelegate {
     private let baseURL = "https://quiz-api-bwi5hjqyaq-uc.a.run.app"
 
     nonisolated func fetchRandomQuestion() async throws -> Question {
-        let url = "\(baseURL)/question"
+//        let url = "\(baseURL)/question"
+        let url = String(format: "%@/question", baseURL)
 
         return try await AF.request(url)
             .validate()
