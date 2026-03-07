@@ -20,3 +20,12 @@ alembic/__pycache__/
 
 # OS
 .DS_Store
+
+# Local commands
+commands.md
+
+# Tests
+.pytest_cache
+
+# Linting
+.ruff_cache
