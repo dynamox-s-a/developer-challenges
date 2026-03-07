@@ -8,6 +8,17 @@ target 'DynamoxQuiz' do
   pod 'Alamofire'
 
   # Pods for DynamoxQuiz
-  
+end
 
+target 'DynamoxQuizTests' do
+  inherit! :search_paths
+  pod 'Alamofire'
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['ENABLE_USER_SCRIPT_SANDBOXING'] = 'NO'
+    end
+  end
 end
