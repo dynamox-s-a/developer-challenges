@@ -8,7 +8,7 @@
 import XCTest
 @testable import DynamoxQuiz
 
-final class QuizViewModelTests: XCTestCase {
+final class ResetQuizTest: XCTestCase {
     
     var sut: QuizViewModel!
 
