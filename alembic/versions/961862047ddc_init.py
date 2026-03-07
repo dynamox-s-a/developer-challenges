@@ -1,8 +1,8 @@
 """init
 
-Revision ID: aeb580bfd369
+Revision ID: 961862047ddc
 Revises: 
-Create Date: 2026-03-03 19:45:43.820475
+Create Date: 2026-03-07 15:52:59.405993
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'aeb580bfd369'
+revision: str = '961862047ddc'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -27,14 +27,15 @@ def upgrade() -> None:
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_index(op.f('ix_timeseries_label'), 'timeseries', ['label'], unique=False)
+    op.create_index(op.f('ix_timeseries_label'), 'timeseries', ['label'], unique=True)
     op.create_table('timeseries_points',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('timeseries_id', sa.UUID(), nullable=False),
     sa.Column('timestamp', sa.DateTime(timezone=True), nullable=False),
     sa.Column('value', sa.Float(), nullable=False),
     sa.ForeignKeyConstraint(['timeseries_id'], ['timeseries.id'], ondelete='CASCADE'),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('timeseries_id', 'timestamp', name='uq_timeseries_timestamp')
     )
     op.create_index('idx_timeseries_timestamp', 'timeseries_points', ['timeseries_id', 'timestamp'], unique=False)
     op.create_index(op.f('ix_timeseries_points_timeseries_id'), 'timeseries_points', ['timeseries_id'], unique=False)
