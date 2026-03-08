@@ -213,7 +213,7 @@ async def get_timeseries(
         description="Cursor for pagination. Returns points after this timestamp"
     ),
     limit: int = Query(
-        20000,
+        1000,
         description="Maximum number of points returned"
     ),
     db: AsyncSession = Depends(get_db),
