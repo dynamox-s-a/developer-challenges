@@ -1,55 +1,301 @@
-# Dynamox Developer Challenges
+# Timeseries API
 
-## About Dynamox
+A simple REST API to store and query time series data.  
+The API allows users to create time series, insert points, retrieve stored data, compute metrics, and delete series.
 
-[Dynamox](https://dynamox.net/) is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications. 
+---
 
-With our proficiency in signal processing for vibration and acoustics, we deliver advanced and precise monitoring systems. We are committed to optimizing operational efficiency and facilitating proactive maintenance through our innovative technology and integrated solutions.
+## Features
 
-## Positions
+The API implements the following operations:
 
-We are looking for developers who are passionate about learning, growing, and contributing to our team. You will play a key role in our development efforts, working on a variety of projects and collaborating with different teams to build and improve our solutions.
+- Create a time series identified by a label
+- Insert points into a time series (batch insertion)
+- Retrieve stored time series points
+- Retrieve metrics about a time series
+- Count stored time series
+- Delete a time series
 
-We value flexibility and collaboration, hence we provide opportunities for you to lend your skills to other teams when required. Join us on this exciting journey as we revolutionize our digital platforms. Currently we are particularly interested in individuals who can identify with one of the following role descriptions:
+---
 
-### Junior Software Developer
+## Tech Stack
 
-With limited experience, assists in coding, testing, and stabilizing systems under supervision. Communicates with immediate team members and solves straightforward problems with guidance. Should display a willingness to learn and grow professionally. This is an individual contributor role.
+- FastAPI
+- PostgreSQL
+- SQLAlchemy (async)
+- Alembic (database migrations)
+- Pytest (testing)
+- Docker / Docker Compose
 
-### Mid-level Software Developer
+---
 
-With a certain level of proven experience, contributes to software development, solves moderate problems, and starts handling ambiguous situations with minimal guidance. Communicates with the broader team and engages in code reviews and documentation. This role also includes supporting junior engineers and commitment to continuous learning. This is an individual contributor role.
+## Running the Application
 
-### Senior-level Software Developer
+#### Requirements
 
-With vast experience, enhances software development, leading complex system development and ambiguous situation handling. Tackles intricate problems and mentors junior and mid-level engineers. Champions coding standards, project strategy, and technology adoption. Communicates across teams, influencing technical and non-technical stakeholders. This individual contributor role blends technical expertise with leadership, focusing on innovation, mentorship, and strategic contributions to the development process.
+- Docker
+- Docker Compose
 
-## Challenges Full-Stack
+#### Start the services
 
-- [ ] [01 - Dynamox Full-Stack Node.js React Developer Challenge](./full-stack-challenge.md)
-- [ ] [02 - Dynamox Full-Stack C# React Developer Challenge](./full-stack-csharp-react-challenge.md) 
-  
-## Challenges Front-End
+Generate the `.env` file from `.env.example`
 
-- [ ] [01 - Dynamox Front-end React Developer Challenge Marketing Teams](./front-end-challenge-v1.md)
-- [ ] [02 - Dynamox Front-end React Developer Challenge Product Teams](./front-end-challenge-v2.md)
+```bash
+cp .env.example .env
+```
 
-## Challenges DevOps
+Start the containers
 
-- [ ] [01 - Dynamox DevOps Developer Challenge Foundation Teams](./dev-sec-fin-ops-challenge-v1/README.md)
+```bash
+docker compose up --build -d
+```
 
-## Challenges Mobile
+This will start:
+- PostgreSQL database
+- API container
 
-- [ ] [01 - Dynamox Kotlin Multiplatform Developer Challenge](./kotlin-multiplatform-challenge.md)
-- [ ] [02 - Dynamox Android Developer Challenge](./android-challenge.md)
-- [ ] [03 - Dynamox iOS Developer Challenge](./ios-challenge.md)
+The API will be available at:
 
-## Challenge Back-End
-- [ ] [01 - Dynamox Back-End Time Series ](./back-end-challenge-v1.md)
+```
+http://localhost:8000
+```
 
-## Challenge QA
-- [ ] [01- Dynamox QA Challenge](./qa-challenge.md)
+Interactive documentation is available at:
 
-</br>
+```
+http://localhost:8000/docs
+```
 
-**Good luck! We look forward to reviewing your submission.** 🚀
+Using the Swagger interface, create a time series first. The returned `id` can then be used in the other endpoints.
+
+### Running Tests
+
+The project includes automated tests using pytest. Tests run against a separate test database container.
+
+Run tests with:
+
+```bash
+make test
+```
+
+---
+### Database Migrations
+
+Database schema changes are managed using Alembic.
+
+When the API container starts, the entrypoint script automatically runs `alembic upgrade head`.
+
+---
+### Populate the Database and Test Requests
+
+#### Example Workflow
+
+A typical interaction with the API follows these steps:
+
+1. Create a timeseries
+2. Generate points
+3. Insert points
+4. Query the series
+
+Create a time series:
+
+```bash
+curl -X POST http://localhost:8000/timeseries/ \
+  -H "Content-Type: application/json" \
+  -d '{"label":"timeseries-label"}' \
+  -w "\nStatus: %{http_code}\nTotal: %{time_total}s\n"
+```
+
+The `-w` flag prints the total request time, which can be used to observe request latency.
+
+Generate the desired number of points
+
+```bash
+python3 scripts/generate_points.py --points 5000
+```
+
+This will create a file named `points.json.
+
+In the next requests, replace \<id> with the created timeseries id.
+
+Insert the generated points:
+
+```bash
+curl -s \
+  -X POST http://localhost:8000/timeseries/<id>/points \
+  -H "Content-Type: application/json" \
+  --data @points.json \
+  -w "\nStatus: %{http_code}\nTotal: %{time_total}s\n"
+```
+
+Retrieve the stored points (the command below discards the response body to focus only on request latency):
+
+```bash
+curl -s -o /dev/null -w "Status: %{http_code}\nTotal: %{time_total}s\n" \
+"http://localhost:8000/timeseries/<id>?limit=5000"
+```
+
+Retrieve metrics for a time series:
+
+```bash
+curl -s "http://localhost:8000/timeseries/<id>/metrics" -w "\nStatus: %{http_code}\nTotal: %{time_total}s\n"
+```
+---
+## Performance Observations
+
+Local tests were executed to observe the response time of the main operations.
+
+In general, requests remain below 350 ms under moderate workloads.
+
+### Points insertion
+
+For batch insertion, requests remain below 350 ms when inserting up to approximately 6,000 points in a single request.  
+As the number of points increases, the request time grows proportionally due to the larger payload and database work required.
+
+### Time series retrieval
+
+When retrieving a full time series with its points, responses remain below 350 ms for up to approximately 30,000 points returned in a single request (around 1.6 MB of response data).
+
+As expected, increasing the number of returned points also increases the request latency due to larger data transfer and serialization overhead.
+
+---
+
+## API Structure
+
+The project follows a modular structure:
+
+```
+app/
+├── api/            # FastAPI routes
+├── core/           # configuration and constants
+├── db/             # database session and base
+├── models/         # SQLAlchemy models
+├── schemas/        # Pydantic schemas
+└── main.py         # application entrypoint
+```
+
+### Main Components
+
+#### Models
+
+SQLAlchemy models represent the database structure:
+
+- `TimeSeries`
+- `TimeSeriesPoint`
+
+A time series can contain multiple points.
+
+#### Schemas
+
+Pydantic schemas are used for request validation and response serialization. Examples:
+
+- `TimeSeriesCreate`
+- `TimeSeriesPointCreate`
+- `TimeSeriesMetricsResponse`
+
+#### Routes
+
+All endpoints are implemented in:
+
+```
+app/api/timeseries.py
+```
+
+---
+
+## Data Model
+
+Two main tables are used.
+
+**TimeSeries**
+
+```
+id (UUID)
+label (string)
+created_at (timestamp)
+```
+
+**TimeSeriesPoint**
+
+```
+id (int)
+timeseries_id (UUID)
+timestamp (timestamp)
+value (float)
+```
+
+A unique constraint ensures that a timestamp cannot be duplicated within the same time series.
+
+---
+
+## API Design Notes
+
+Some design choices implemented in the API:
+
+- **Chunked batch insertion** to avoid database parameter limits when inserting large numbers of points, the API splits insertions into chunks before executing them. This allows large batches to be inserted safely.
+- **Cursor-based pagination** (`after_ts`) for efficient traversal of large time series.
+- **Time window queries** (`from_ts`, `to_ts`) for retrieving specific data ranges.
+- **Database-level constraints** to prevent duplicate timestamps within a time series.
+
+<!-- ### Batch Insertion
+
+Points are inserted in batches. To avoid database parameter limits and very large SQL statements, the API splits insertions into chunks before executing them. This allows large batches to be inserted safely.
+
+--- -->
+---
+
+## Retrieving Time Series
+
+The endpoint supports different retrieval strategies.
+
+### Time Window
+
+Parameters: `from_ts`, `to_ts`
+
+```
+GET /timeseries/{id}?from_ts=...&to_ts=...
+```
+
+### Cursor Pagination
+
+Parameters: `after_ts`, `limit`
+
+```
+GET /timeseries/{id}?after_ts=...&limit=1000
+```
+
+The response includes `next_after_ts` when more data is available.
+
+---
+
+## Metrics
+
+The API computes the metrics directly in PostgreSQL. The metrics can also be computed based on values inside a specific time window (`from_ts`, `to_ts`):
+
+- count
+- min
+- max
+- average
+- standard deviation
+- p50 percentile
+- p95 percentile
+- start timestamp
+- end timestamp
+
+---
+
+## Logging
+
+A simple middleware logs basic request information:
+
+```
+METHOD PATH STATUS TIME
+```
+
+Example:
+
+```
+GET /timeseries/... -> 200 (0.021s)
+```
+
+Logs are visible in the API container output.
