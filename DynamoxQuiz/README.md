@@ -7,11 +7,11 @@ O app permite que o usuário informe seu nome, responda 10 perguntas de múltipl
 ## Screenshots
 
 <p float="left">
-  <img src="https://github.com/user-attachments/assets/e2ecc649-b23f-4a5b-8f10-ae8c11ae836d" width="190"/>
-  <img src="https://github.com/user-attachments/assets/036a9053-d641-4c9f-adae-0a59134c7247" width="190"/>
-  <img src="https://github.com/user-attachments/assets/a3f86f27-c9a0-416d-9fc1-b61879e9ed0e" width="190"/>
-  <img src="https://github.com/user-attachments/assets/3204d05f-5755-4abf-8443-326d93430965" width="190"/>
-  <img src="https://github.com/user-attachments/assets/3324cdaf-c016-4c4f-ba35-3750cace3da1" width="190"/>
+  <img src="https://github.com/user-attachments/assets/e2ecc649-b23f-4a5b-8f10-ae8c11ae836d" width="180"/>
+  <img src="https://github.com/user-attachments/assets/036a9053-d641-4c9f-adae-0a59134c7247" width="180"/>
+  <img src="https://github.com/user-attachments/assets/a3f86f27-c9a0-416d-9fc1-b61879e9ed0e" width="180"/>
+  <img src="https://github.com/user-attachments/assets/3204d05f-5755-4abf-8443-326d93430965" width="180"/>
+  <img src="https://github.com/user-attachments/assets/3324cdaf-c016-4c4f-ba35-3750cace3da1" width="180"/>
 </p>
 
 Tecnologias Utilizadas
