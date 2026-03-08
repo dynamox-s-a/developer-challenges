@@ -3,6 +3,8 @@
 A simple REST API to store and query time series data.  
 The API allows users to create time series, insert points, retrieve stored data, compute metrics, and delete series.
 
+Basic latency observations and a small load test were also executed to evaluate the API behavior under concurrent access.
+
 ---
 
 ## Features
@@ -114,9 +116,9 @@ Generate the desired number of points
 python3 scripts/generate_points.py --points 5000
 ```
 
-This will create a file named `points.json.
+This will create a file named `points.json`.
 
-In the next requests, replace \<id> with the created timeseries id.
+In the next requests, replace `<id>` with the created timeseries `id`.
 
 Insert the generated points:
 
@@ -140,24 +142,6 @@ Retrieve metrics for a time series:
 ```bash
 curl -s "http://localhost:8000/timeseries/<id>/metrics" -w "\nStatus: %{http_code}\nTotal: %{time_total}s\n"
 ```
----
-## Performance Observations
-
-Local tests were executed to observe the response time of the main operations.
-
-In general, requests remain below 350 ms under moderate workloads.
-
-### Points insertion
-
-For batch insertion, requests remain below 350 ms when inserting up to approximately 6,000 points in a single request.  
-As the number of points increases, the request time grows proportionally due to the larger payload and database work required.
-
-### Time series retrieval
-
-When retrieving a full time series with its points, responses remain below 350 ms for up to approximately 30,000 points returned in a single request (around 1.6 MB of response data).
-
-As expected, increasing the number of returned points also increases the request latency due to larger data transfer and serialization overhead.
-
 ---
 
 ## API Structure
@@ -237,11 +221,6 @@ Some design choices implemented in the API:
 - **Time window queries** (`from_ts`, `to_ts`) for retrieving specific data ranges.
 - **Database-level constraints** to prevent duplicate timestamps within a time series.
 
-<!-- ### Batch Insertion
-
-Points are inserted in batches. To avoid database parameter limits and very large SQL statements, the API splits insertions into chunks before executing them. This allows large batches to be inserted safely.
-
---- -->
 ---
 
 ## Retrieving Time Series
@@ -281,6 +260,61 @@ The API computes the metrics directly in PostgreSQL. The metrics can also be com
 - p95 percentile
 - start timestamp
 - end timestamp
+
+---
+## Performance and Latency
+
+Local tests were executed to observe the behavior of the API both for single requests and under concurrent access.
+
+### Single Request Latency
+
+Under moderate workloads, most requests remain below 350 ms.
+
+#### Points insertion
+
+For batch insertion, requests remain below 350 ms when inserting up to approximately 6,000 points in a single request.
+
+As the number of points increases, the request time grows proportionally due to the larger payload and database work required.
+
+#### Time series retrieval
+
+When retrieving a time series with its points, responses remain below 350 ms for up to approximately 30,000 points returned in a single request (around 1.6 MB of response data).
+
+Increasing the number of returned points also increases request latency due to larger payload size and JSON serialization overhead.
+
+### Concurrent Requests
+
+To evaluate the behavior of the API under concurrent access, a simple load test was executed using [hey](https://github.com/rakyll/hey?tab=readme-ov-file).
+
+Each test executed 1000 requests with 50 concurrent clients.
+
+#### Metrics endpoint
+hey -n 1000 -c 50 "http://localhost:8000/timeseries/<id\>/metrics"
+
+- average latency: ~154 ms  
+- p95 latency: ~217 ms  
+- throughput: ~318 req/sec  
+- response size: ~166 bytes  
+
+#### Retrieve time series (limit=100)
+
+hey -n 1000 -c 50 "http://localhost:8000/timeseries/<id\>?limit=100"
+
+- average latency: ~198 ms  
+- p95 latency: ~273 ms  
+- throughput: ~248 req/sec  
+- response size: ~5.7 KB  
+
+#### Retrieve time series (limit=1000)
+
+hey -n 1000 -c 50 "http://localhost:8000/timeseries/<id\>?limit=1000"
+
+- average latency: ~585 ms  
+- p95 latency: ~720 ms  
+- throughput: ~83 req/sec  
+- response size: ~56 KB  
+
+These results illustrate how larger payloads increase latency and reduce throughput due to additional serialization and data transfer overhead.
 
 ---
 
