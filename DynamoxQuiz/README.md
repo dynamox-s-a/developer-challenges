@@ -25,8 +25,10 @@ Core Data — persistência local de partidas e usuário
 XCTest — testes unitários
 
 
-Arquitetura
-O projeto utiliza o padrão MVVMC (Model-View-ViewModel-Coordinator):
+## Arquitetura
+
+O projeto utiliza o padrão **MVVMC (Model-View-ViewModel-Coordinator)**:
+```
 DynamoxQuiz/
 ├── App/                    # AppDelegate, SceneDelegate
 ├── Components/             # Componentes reutilizáveis de UI
@@ -41,6 +43,7 @@ DynamoxQuiz/
 │   ├── Quiz/               # Tela do quiz (UIKit)
 │   └── Home/               # Tela de perfil (SwiftUI)
 └── ViewsModels/            # ViewModels por tela
+```
 
 Decisões Técnicas
 
