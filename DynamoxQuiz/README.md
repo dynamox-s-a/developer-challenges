@@ -67,16 +67,17 @@ Funcionalidades
  Testes unitários do QuizViewModel
 
 
-Testes Unitários
+Os testes cobrem a camada de maior risco e complexidade do negócio — o `QuizViewModel`. Utilizando **XCTest** com o padrão **AAA (Arrange, Act, Assert)** e Mocks para isolar dependências externas.
 
-Os testes cobrem a camada de maior risco e complexidade do negócio — o QuizViewModel. Utilizando XCTest com o padrão AAA (Arrange, Act, Assert) e Mocks para isolar dependências externas.
+```
 DynamoxQuizTests/
 ├── Mocks/
-│   └── MockAPIService.swift     # Mock do APIService para isolar rede
+│   └── MockAPIService.swift         # Mock do APIService para isolar rede
 └── ViewModels/
-    ├── NextQuestionTest.swift       # Testa incremento do índice
-    ├── ResetQuizTest.swift          # Testa reset de estado
-    └── LoadQuestionQuizTest.swift   # Testa carregamento de pergunta com Mock
+    ├── NextQuestionTest.swift        # Testa incremento do índice
+    ├── ResetQuizTest.swift           # Testa reset de estado
+    └── LoadQuestionQuizTest.swift    # Testa carregamento de pergunta com Mock
+```
     
 Casos testados
 
