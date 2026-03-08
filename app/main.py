@@ -1,9 +1,12 @@
 import time
 import logging
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 
 from app.api.timeseries import router as timeseries_router
+from app.db.session import get_db
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("api")
@@ -22,7 +25,7 @@ async def log_requests(request, call_next):
     duration = time.perf_counter() - start
 
     logger.info(
-        "%s %s -> %s (%.3fs)",
+        "  %s %s -> %s (%.3fs)",
         request.method,
         request.url.path,
         response.status_code,
@@ -34,5 +37,6 @@ async def log_requests(request, call_next):
 app.include_router(timeseries_router)
 
 @app.get("/health")
-async def health():
+async def health(db: AsyncSession = Depends(get_db)):
+    await db.execute(select(1))
     return {"status": "ok"}
