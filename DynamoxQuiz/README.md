@@ -99,7 +99,7 @@ iOS 16+
 CocoaPods instalado
 
 Instalação
-
+```
 Clone o repositório
 git clone https://github.com/TecoAdamo/developer-challenges.git
 
@@ -114,6 +114,8 @@ pod install
 
 # Abra o workspace (não o .xcodeproj)
 open DynamoxQuiz.xcworkspace
+```
+
 Rodando
 
 Selecione um simulador (iPhone 16 recomendado)
