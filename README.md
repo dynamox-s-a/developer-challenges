@@ -72,9 +72,27 @@ Using the Swagger interface, create a time series first. The returned `id` can t
 
 ### Running Tests
 
-The project includes automated tests using pytest. Tests run against a separate test database container.
+Tests are executed locally against a dedicated PostgreSQL test database container.
 
-Run tests with:
+To run the tests, first create a Python virtual environment and install the dependencies:
+
+To create the virtual environment:
+
+```bash
+python3 -m venv .venv
+```
+
+Activate the virtual environment:
+```bash
+source .venv/bin/activate
+```
+
+Install the dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+With the dependencies installed the tests can be run with:
 
 ```bash
 make test
