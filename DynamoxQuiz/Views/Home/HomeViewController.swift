@@ -41,6 +41,11 @@ class HomeViewController: UIViewController{
         viewModel.succesResult = { [weak self] in
             self?.flowDelegate?.navigateToQuiz()
         }
+        
+        viewModel.showToast = { [weak self] message in
+            guard let self else { return }
+            ToastMessageComponent.show(message: message, in: self)
+        }
     }
 }
 extension HomeViewController: HomeViewDelegate{

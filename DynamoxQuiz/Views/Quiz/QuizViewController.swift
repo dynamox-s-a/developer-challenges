@@ -57,6 +57,11 @@ final class QuizViewController: UIViewController {
     }
     
     private func setupBindings(){
+        viewModel.showToast = { [weak self] message in
+            guard let self else { return }
+            ToastMessageComponent.show(message: message, in: self)
+        }
+
         viewModel.onQuestionReceived = { [weak self] question in
             guard let self = self else { return }
             
@@ -94,7 +99,6 @@ final class QuizViewController: UIViewController {
                 selectedCard?.layer.cornerRadius = 8
                 selectedCard?.layer.borderWidth = 2
             }
-            print("Selecione uma resposta antes de continuar")
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 Task { [weak self] in
                     await self?.proceedToNextStep()
@@ -131,7 +135,6 @@ final class QuizViewController: UIViewController {
         
     }
 
-    
     private func setupActions() {
             quizView.myButtonResponse.setAction { [weak self] in
                 self?.handleAnswerButtonTap()
@@ -152,6 +155,7 @@ final class QuizViewController: UIViewController {
         let selectedComponent = allCards.first(where: {$0.isSelected})
         
         guard let selectedCard = selectedComponent, let answer = selectedCard.getAnswerText() else {
+            ToastMessageComponent.show(message: "Selecione uma resposta antes de continuar!", in: self)
             return
         }
         
@@ -223,7 +227,6 @@ final class QuizViewController: UIViewController {
         
         quizView.showCardResultTotal()
         quizView.showRestartButton()
-        print("Quiz finalizado")
     }
 }
 

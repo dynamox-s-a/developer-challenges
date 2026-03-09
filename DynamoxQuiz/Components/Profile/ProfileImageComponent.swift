@@ -17,6 +17,10 @@ struct ProfileImageView: View {
                 .scaledToFill()
                 .frame(width: 120, height: 120)
                 .clipShape(Circle())
+                .overlay(
+                    Circle()
+                        .stroke(Color(Colors.primaryGreenBase), lineWidth: 3)
+                )
         } else {
             Image(systemName: "person.circle.fill")
                 .resizable()
