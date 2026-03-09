@@ -24,6 +24,8 @@ class QuizViewModel {
     var onLoadingChange: ((Bool) -> Void)?
     var onAnswerResult: ((Bool) -> Void)?
     
+    var showToast: ((String) -> Void)?
+    
     init(
         service: APIServiceDelegate = APIService(),
          repository: QuizRepository = QuizRepository()
@@ -44,6 +46,7 @@ class QuizViewModel {
     
     func nextQuestion() {
         currentIndex += 1
+     
     }
     
     func resetQuiz(){
@@ -85,6 +88,9 @@ class QuizViewModel {
                 
                 if isCorrect {
                     self.correctAnswerCount += 1
+                    self.showToast?("Resposta correta! ✅")
+                } else {
+                    self.showToast?("Resposta errada! ❌")
                 }
                 
                 await MainActor.run{
