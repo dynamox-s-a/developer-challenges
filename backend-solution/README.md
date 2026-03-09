@@ -176,6 +176,27 @@ Resposta:
 }
 ```
 
+### Prever valores futuros de uma série
+```
+GET /time-series/{id}/predict?steps=5
+```
+
+Exemplo:
+```bash
+curl http://localhost:8000/time-series/1/predict?steps=5
+```
+
+Resposta:
+```json
+{
+  "series_id": 1,
+  "series_name": "Sensor Temperatura Sala 01",
+  "historical_count": 5,
+  "steps": 5,
+  "predictions": [23.6, 23.8, 24.0, 24.2, 24.4]
+}
+```
+
 ## Executando os Testes
 
 Testes unitários e de integração:
@@ -232,6 +253,12 @@ A API foi testada e apresentou os seguintes resultados de latência:
 | GET /time-series/count | ~8ms |
 
 Todos os endpoints atendem ao requisito de latência inferior a 350ms.
+
+## Deploy
+
+A API está disponível em produção:
+
+- **API:** https://developer-challenges-production-2932.up.railway.app/docs
 
 ## Autor
 
