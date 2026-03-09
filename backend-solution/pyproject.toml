@@ -22,7 +22,6 @@ dev = [
     "typos>=1.44.0,<2.0.0",
     "pyright>=1.1.408",
     "pytest-benchmark>=5.2.3",
-    "locust>=2.43.3",
 ]
 
 loadtest = [
@@ -43,7 +42,11 @@ quote-style = 'single'
 
 [tool.pytest.ini_options]
 pythonpath = "."
-addopts = "-p no:warnings"
+markers = [
+    "benchmark: marks tests as benchmark tests",
+    "load: marks tests as load tests",
+]
+addopts = "-p no:warnings -m 'not load'"
 
 [tool.taskipy.tasks]
 pre_lint = 'typos'
