@@ -41,23 +41,10 @@ extension AppCoordinator: SplashFlowDelegate {
 
 extension AppCoordinator: HomeFlowDelegate {
     func navigateToQuiz() {
-        
-        let quizVC = QuizViewController(profileViewModel: profileViewModel)
-        quizVC.view.backgroundColor = .white
-        let quizNav = UINavigationController(rootViewController: quizVC)
-        quizNav.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
-        
-        let profileVC = ProfileViewController(profileViewModel: profileViewModel)
-        let profileNav = UINavigationController(rootViewController: profileVC)
-        profileNav.tabBarItem = UITabBarItem(title: "Perfil", image: UIImage(systemName: "person"), tag: 1)
-        
-        let tabBar = UITabBarController()
-        tabBar.viewControllers = [quizNav, profileNav]
-        
         if let window = UIApplication.shared.connectedScenes
             .compactMap({ $0 as? UIWindowScene })
             .first?.windows.first {
-            window.rootViewController = tabBar
+            window.rootViewController = MainTabBarController(profileViewModel: profileViewModel)
             window.makeKeyAndVisible()
         }
     }
