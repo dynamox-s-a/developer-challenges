@@ -6,8 +6,11 @@ readme = "README.md"
 requires-python = ">=3.11,<4.0"
 dependencies = [
     "fastapi[standard]>=0.135.1",
+    "numpy>=2.4.2",
     "pydantic-settings>=2.13.1",
+    "scikit-learn>=1.8.0",
     "sqlalchemy>=2.0.48",
+    "statsmodels>=0.14.6",
 ]
 
 [dependency-groups]

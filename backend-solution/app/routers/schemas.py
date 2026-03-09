@@ -42,3 +42,11 @@ class TimeSeriesMetrics(BaseModel):
 
 class TimeSeriesCount(BaseModel):
     total: int
+
+
+class TimeSeriesPrediction(BaseModel):
+    series_id: int
+    series_name: str
+    historical_count: int
+    steps: int
+    predictions: list[float]

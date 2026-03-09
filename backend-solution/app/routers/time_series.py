@@ -11,8 +11,10 @@ from app.routers.schemas import (
     TimeSeriesCount,
     TimeSeriesCreate,
     TimeSeriesMetrics,
+    TimeSeriesPrediction,
     TimeSeriesResponse,
 )
+from app.services.prediction import predict_values
 
 router = APIRouter(prefix='/time-series', tags=['Time Series'])
 
@@ -93,3 +95,34 @@ def delete_time_series(
     session.commit()
 
     return Message(message='Time series deleted successfully')
+
+
+@router.get('/{series_id}/predict', response_model=TimeSeriesPrediction)
+def get_time_series_prediction(
+    series_id: int,
+    steps: int = 5,
+    session: Session = Depends(get_session),
+):
+    time_series = session.get(TimeSeries, series_id)
+
+    if not time_series:
+        raise HTTPException(status_code=404, detail='Time series not found')
+
+    data_points = sorted(time_series.data_points, key=lambda x: x.timestamp)
+    values = [dp.value for dp in data_points]
+
+    if len(values) < int(2):
+        raise HTTPException(
+            status_code=400,
+            detail='Need at least 2 data points for prediction',
+        )
+
+    predictions = predict_values(values, steps)
+
+    return TimeSeriesPrediction(
+        series_id=time_series.id,
+        series_name=time_series.name,
+        historical_count=len(values),
+        steps=steps,
+        predictions=predictions,
+    )
