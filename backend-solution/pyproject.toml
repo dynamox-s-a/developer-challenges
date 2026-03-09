@@ -51,3 +51,5 @@ pre_test = 'task lint'
 test = 'pytest -s -x --cov=app -vv'
 post_test = 'coverage html'
 
+[tool.typos]
+files.extend-exclude = ["README.md"]
