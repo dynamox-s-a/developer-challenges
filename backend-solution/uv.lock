@@ -59,6 +59,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "locust" },
     { name = "pyright" },
     { name = "pytest" },
     { name = "pytest-benchmark" },
@@ -83,6 +84,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "locust", specifier = ">=2.43.3" },
     { name = "pyright", specifier = ">=1.1.408" },
     { name = "pytest", specifier = ">=9.0.2,<10.0.0" },
     { name = "pytest-benchmark", specifier = ">=5.2.3" },
