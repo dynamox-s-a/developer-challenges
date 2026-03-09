@@ -22,6 +22,7 @@ dev = [
     "typos>=1.44.0,<2.0.0",
     "pyright>=1.1.408",
     "pytest-benchmark>=5.2.3",
+    "psycopg2-binary",
 ]
 
 loadtest = [
