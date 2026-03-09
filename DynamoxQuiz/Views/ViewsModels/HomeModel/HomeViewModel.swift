@@ -13,9 +13,8 @@ class HomeViewModel {
     
     func itsOkay(userNick: String){
         if userNick.isEmpty {
-            showToast?("Selecione uma resposta antes de continuar!")
+            showToast?("Informe seu nome para prosseguir.")
         } else {
-            print(userNick)
             succesResult?()
         }
     }
