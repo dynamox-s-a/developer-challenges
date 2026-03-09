@@ -24,4 +24,14 @@ final class NextQuestionTest: XCTestCase {
         
         XCTAssertEqual(sut.currentIndex, initialIndex + 1)    }
 
+    func test_quizViewModel_isQuizFinished_mustBeFalseAtTheBeginning(){
+        XCTAssertFalse(sut.isQuizFinished)
+    }
+    
+    func test_quizViewModel_isQuizFinished_ItMustBeTrueWhenYouReachTen(){
+        for _ in 0..<10 {
+            sut.nextQuestion()
+        }
+        XCTAssertTrue(sut.isQuizFinished)
+    }
 }

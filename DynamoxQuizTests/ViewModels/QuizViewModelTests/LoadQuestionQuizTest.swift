@@ -11,16 +11,43 @@ import XCTest
 @MainActor
 final class LoadQuestionQuizTest: XCTestCase {
 
+    
+    var mock: MockApiService!
+    var sut: QuizViewModel!
+    
+    override func setUp() {
+        super.setUp()
+        mock = MockApiService()
+        sut = QuizViewModel(service: mock)
+    }
+    
+    override func tearDown() {
+        sut = nil
+        mock = nil
+        super.tearDown()
+    }
+    
     func test_quizViewmodel_loadQuestionQuiz_shouldLoadQuestion() async {
-        let mock = MockApiService()
         mock.questionMock = Question(id: "1", statement: "Pergunta teste", options: ["A", "B", "C"])
-        let sut = QuizViewModel(service: mock)
         
         await sut.loadQuestion()
         
         
         XCTAssertNotNil(sut.currentQuestion)
         XCTAssertEqual(sut.state, .quiz)
+    }
+    
+    func test_quizViewModel_loadQuestionQuiz_MustMaintainStateQuiz() async {
+
+        mock.shouldThrowError = true
+        
+        await sut.loadQuestion()
+        
+        XCTAssertEqual(sut.state, .quiz)
+        XCTAssertNil(sut.currentQuestion)
+
+        
+        
     }
 
 }
