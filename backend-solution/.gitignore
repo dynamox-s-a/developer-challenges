@@ -2,6 +2,11 @@
 __pycache__/
 *.pyc
 
+.env
+
+*.pyo
+*.db
+
 # Unit test / coverage reports
 htmlcov/
 .tox/
