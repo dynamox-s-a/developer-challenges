@@ -87,6 +87,7 @@ test_quizViewModel_resetQuiz_deveZerarCorrectAnswerCount | Após resetQuiz(), o 
 test_quizViewModel_resetQuiz_deveZerarCurrentQuestion | Após resetQuiz(), o currentQuestion deve ser nil |
 test_quizViewModel_resetQuiz_resetStateEqualQuiz | Após resetQuiz(), o state deve ser .quiz |
 test_quizViewmodel_loadQuestionQuiz_shouldLoadQuestion | Ao carregar uma pergunta via Mock, currentQuestion não deve ser nil |
+test_quizViewModel_loadQuestionQuiz_MustMaintainStateQuiz | Ao simular erro na API, o state deve permanecer .quiz e currentQuestion deve ser nil |
 
 Para rodar os testes: ⌘ + U no Xcode.
 
