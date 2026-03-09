@@ -29,13 +29,13 @@ def init_db():
 
     while retries > 0:
         try:
-            table_registry.metadata.create_all(engine)
+            table_registry.metadata.create_all(engine, checkfirst=True)
             logger.info('Database synchronized successfully!')
             break
         except OperationalError:
             retries -= 1
             logger.warning(
-                f'atabase unavailable. Trying again...'
+                f'Database unavailable. Trying again...'
                 f' ({retries} attempts remaining)'
             )
             time.sleep(3)
