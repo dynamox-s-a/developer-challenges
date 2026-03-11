@@ -39,35 +39,13 @@ The easiest way to execute the project is using Docker Compose, which will provi
 3. The API will be available at: `http://localhost:8000`
 4. Access the interactive API documentation at: `http://localhost:8000/docs`
 
-## How to Run - Local Development
-
-To run the application locally outside of the application container:
-
-1. Start only the database container:
-   ```bash
-   docker-compose up -d db
-   ```
-2. Create and activate a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate
-   ```
-3. Install the dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Run the application using Uvicorn:
-   ```bash
-   uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-   ```
-
 ## Running the Automated Tests
 
 The project uses `pytest` for unit and integration testing. Ensure the database container is running before executing the tests.
 
 Execute the tests from the project root:
 ```bash
-pytest -v
+docker exec -it dynamox_api pytest -v
 ```
 
 ## Running the Load Tests

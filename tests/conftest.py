@@ -5,7 +5,7 @@ from app.main import app
 from app.core.database import Base, get_db
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
-TEST_DATABASE_URL = "postgresql+asyncpg://dynamox_user:dynamox_password@localhost:5432/timeseries_db_test"
+TEST_DATABASE_URL = "postgresql+asyncpg://dynamox_user:dynamox_password@timescaledb:5432/timeseries_db_test"
 
 @pytest.fixture
 async def engine():

@@ -12,6 +12,11 @@ services:
       - timescaledb_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dynamox_user -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   api:
     build: .
@@ -21,7 +26,8 @@ services:
     environment:
       - DATABASE_URL=postgresql+asyncpg://dynamox_user:dynamox_password@timescaledb:5432/timeseries_db
     depends_on:
-      - timescaledb
+      timescaledb:
+        condition: service_healthy
 
 volumes:
   timescaledb_data:
