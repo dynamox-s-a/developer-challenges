@@ -1,7 +1,7 @@
+'use client'
+
 import { AuthProvider } from '@/context/AuthContext';
-import theme from '@/theme/theme';
-import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider } from '@mui/material/styles';
+import ThemeRegistry from '@/theme/ThemeRegistry';
 
 export default function RootLayout({
   children,
@@ -12,10 +12,9 @@ export default function RootLayout({
     <html lang="en">
       <body suppressHydrationWarning >
         <AuthProvider>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
+          <ThemeRegistry>
             {children}
-          </ThemeProvider>
+          </ThemeRegistry>
         </AuthProvider>
       </body>
     </html>

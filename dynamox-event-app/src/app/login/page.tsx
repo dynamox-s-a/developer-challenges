@@ -61,7 +61,7 @@ export default function Login() {
               height: 64,
               margin: '0 auto',
               borderRadius: 3,
-              background: '#6366f1',
+              background: 'linear-gradient(135deg,#6366f1,#8b5cf6)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -121,7 +121,7 @@ export default function Login() {
                   variant='contained'
                   size='large'
                   fullWidth
-                  sx={{backgroundColor: '#6366f1'}}
+                  sx={{backgroundColor: 'linear-gradient(135deg,#6366f1,#8b5cf6)'}}
                 >
                   Login
                 </Button>
