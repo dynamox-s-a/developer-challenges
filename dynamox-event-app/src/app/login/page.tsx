@@ -31,8 +31,6 @@ export default function Login() {
     e.preventDefault();
     setError('');
 
-    console.log('Login attempt:', { email, password });
-
     const result = await login(email, password);
 
     if (result.success) {
@@ -46,124 +44,94 @@ export default function Login() {
 
   return (
     <Container maxWidth="sm">
-      <Box
+      <Stack 
+        spacing={3}
         sx={{
           minHeight: '100vh',
-          display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          gap: 3
         }}
       >
-        <Box width="100%">
-          <Stack spacing={3}>
 
-            <Box textAlign="center">
-              <Box
-                sx={{
-                  width: 64,
-                  height: 64,
-                  margin: '0 auto',
-                  borderRadius: 3,
-                  background: 'linear-gradient(135deg,#6366f1,#8b5cf6)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <ConfirmationNumberIcon sx={{ color: '#fff', fontSize: 32 }} />
-              </Box>
+        <Box textAlign='center' width={'100%'}>
+          <Box
+            sx={{
+              width: 64,
+              height: 64,
+              margin: '0 auto',
+              borderRadius: 3,
+              background: '#6366f1',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <ConfirmationNumberIcon sx={{ color: '#fff', fontSize: 32 }} />
+          </Box>
 
-              <Typography variant="h4" sx={{fontWeight: 'bold', mt: 2}}>
-                EventHub
-              </Typography>
+          <Typography variant='h4' sx={{fontWeight: 'bold', mt: 2}}>
+            EventHub
+          </Typography>
 
-              <Typography color="text.secondary">
-                Faça login para gerenciar seus eventos.
-              </Typography>
-            </Box>
-
-            <Card>
-              <CardHeader
-                title="Login"
-                subheader="Entre com suas credênciais para continuar"
-              />
-
-              <CardContent>
-
-                <form onSubmit={handleSubmit}>
-
-                  <Stack spacing={2}>
-
-                    {error && (
-                      <Alert severity="error">
-                        {error}
-                      </Alert>
-                    )}
-
-                    <TextField
-                      label="Email"
-                      type="email"
-                      placeholder="admin@events.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      fullWidth
-                      required
-                    />
-
-                    <TextField
-                      label="Senha"
-                      type="password"
-                      placeholder="senha"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      fullWidth
-                      required
-                    />
-
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      size="large"
-                      fullWidth
-                    >
-                      Login
-                    </Button>
-
-                  </Stack>
-                </form>
-
-                {/* Demo credentials */}
-                <Box
-                  sx={{
-                    mt: 4,
-                    p: 2,
-                    borderRadius: 2,
-                    bgcolor: 'grey.100'
-                  }}
-                >
-                  <Typography
-                    variant="caption"
-                    fontWeight="bold"
-                    color="text.secondary"
-                  >
-                    Demo Credentials
-                  </Typography>
-
-                  <Typography variant="body2">
-                    <b>Admin:</b> admin@events.com / admin123
-                  </Typography>
-
-                  <Typography variant="body2">
-                    <b>Reader:</b> reader@events.com / reader123
-                  </Typography>
-                </Box>
-
-              </CardContent>
-            </Card>
-
-          </Stack>
+          <Typography color='text.secondary'>
+            Faça login para gerenciar seus eventos.
+          </Typography>
         </Box>
-      </Box>
+
+        <Card sx={{width: '100%', borderRadius: 3}}>
+          <CardHeader
+            title='Login'
+            subheader='Entre com suas credênciais para continuar'
+          />
+
+          <CardContent>
+            <form onSubmit={handleSubmit}>
+
+              <Stack spacing={2}>
+
+                {error && (
+                  <Alert severity='error'>
+                    {error}
+                  </Alert>
+                )}
+
+                <TextField
+                  label='Email'
+                  type='email'
+                  placeholder='admin@events.com'
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  fullWidth
+                  required
+                />
+
+                <TextField
+                  label='Senha'
+                  type='password'
+                  placeholder='senha'
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  fullWidth
+                  required
+                />
+
+                <Button
+                  type='submit'
+                  variant='contained'
+                  size='large'
+                  fullWidth
+                  sx={{backgroundColor: '#6366f1'}}
+                >
+                  Login
+                </Button>
+
+              </Stack>
+            </form>
+          </CardContent>
+        </Card>
+
+      </Stack>
     </Container>
   );
 }
