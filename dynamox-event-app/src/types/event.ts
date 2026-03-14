@@ -7,3 +7,14 @@ export interface User {
   role: UserRole;
   name: string;
 }
+
+export type EventCategory = 'Conference' | 'Workshop' | 'Webinar' | 'Networking' | 'Other';
+
+export interface Event {
+  id: string;
+  name: string;
+  dateTime: string;
+  location: string;
+  description: string;
+  category: EventCategory;
+}

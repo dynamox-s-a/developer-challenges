@@ -1,6 +1,7 @@
 'use client'
 
 import { AuthProvider } from '@/context/AuthContext';
+import StoreProvider from '@/redux/StoreProvider';
 import ThemeRegistry from '@/theme/ThemeRegistry';
 
 export default function RootLayout({
@@ -12,9 +13,11 @@ export default function RootLayout({
     <html lang="en">
       <body suppressHydrationWarning >
         <AuthProvider>
-          <ThemeRegistry>
-            {children}
-          </ThemeRegistry>
+          <StoreProvider>
+            <ThemeRegistry>
+              {children}
+            </ThemeRegistry>
+          </StoreProvider>
         </AuthProvider>
       </body>
     </html>

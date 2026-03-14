@@ -15,5 +15,54 @@
       "name": "Reader User"
     }
   ],
-  "events": []
+  "events": [
+    {
+      id: '1',
+      name: 'React Summit 2026',
+      dateTime: '2026-06-15T09:00',
+      location: 'Amsterdam, Netherlands',
+      description: 'The biggest React conference in the world. Join thousands of developers to learn about the latest React features, patterns, and best practices from industry experts.',
+      category: 'Conference',
+    },
+    {
+      id: '2',
+      name: 'TypeScript Deep Dive Workshop',
+      dateTime: '2026-04-20T14:00',
+      location: 'Online',
+      description: 'A hands-on workshop covering advanced TypeScript patterns including generics, conditional types, mapped types, and building type-safe libraries from scratch.',
+      category: 'Workshop',
+    },
+    {
+      id: '3',
+      name: 'Startup Networking Night',
+      dateTime: '2026-05-10T18:30',
+      location: 'São Paulo, Brazil',
+      description: 'Connect with fellow entrepreneurs, investors, and tech enthusiasts at our monthly networking event. Great food, drinks, and conversations about the future of tech.',
+      category: 'Networking',
+    },
+    {
+      id: '4',
+      name: 'AI in Frontend Development',
+      dateTime: '2026-03-28T16:00',
+      location: 'Online',
+      description: 'Explore how artificial intelligence is transforming frontend development workflows. Learn about AI-powered code generation, testing, design systems, and developer tools.',
+      category: 'Webinar',
+    },
+    {
+      id: '5',
+      name: 'Design Systems at Scale',
+      dateTime: '2025-12-01T10:00',
+      location: 'Berlin, Germany',
+      description: 'Learn how leading companies build and maintain design systems that scale across hundreds of products and thousands of developers. Includes case studies and workshops.',
+      category: 'Conference',
+    },
+    {
+      id: '6',
+      name: 'GraphQL Masterclass',
+      dateTime: '2025-11-15T09:00',
+      location: 'London, UK',
+      description: 'An intensive full-day workshop on GraphQL including schema design, resolvers, authentication patterns, caching strategies, and performance optimization techniques.',
+      category: 'Workshop',
+    }
+  ]
 }
