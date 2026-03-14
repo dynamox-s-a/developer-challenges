@@ -123,8 +123,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <Button
               fullWidth
               startIcon={<DashboardIcon />}
-              variant={isActive('/admin') ? 'contained' : 'text'}
-              onClick={() => router.push('/admin')}
+              variant={isActive('/dashboard') ? 'contained' : 'text'}
+              onClick={() => router.push('/dashboard')}
             >
               Dashboard
             </Button>
