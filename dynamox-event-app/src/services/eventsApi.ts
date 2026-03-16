@@ -5,7 +5,7 @@ export const eventsApi = createApi({
   reducerPath: 'eventsApi',
 
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3000'
+    baseUrl: '/api'
   }),
 
   tagTypes: ['Events'],

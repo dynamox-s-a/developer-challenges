@@ -1,6 +1,7 @@
 'use client'
 
 import { AuthProvider } from '@/context/AuthContext';
+import { ToastProvider } from '@/context/ToastProvider';
 import StoreProvider from '@/redux/StoreProvider';
 import ThemeRegistry from '@/theme/ThemeRegistry';
 
@@ -12,13 +13,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AuthProvider>
-          <StoreProvider>
+        <StoreProvider>
+          <AuthProvider>
             <ThemeRegistry>
-              {children}
+              <ToastProvider>
+                {children}
+              </ToastProvider>
             </ThemeRegistry>
-          </StoreProvider>
-        </AuthProvider>
+          </AuthProvider>
+        </StoreProvider>
       </body>
     </html>
   )

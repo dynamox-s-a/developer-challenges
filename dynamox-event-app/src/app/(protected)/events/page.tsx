@@ -106,8 +106,8 @@ export default function EventsPage() {
             label="Ordenar por"
             onChange={e => setSortBy(e.target.value as SortBy)}
           >
-            <MenuItem value="date-asc">Data (Mais antigos)</MenuItem>
-            <MenuItem value="date-desc">Data (Mais recentes)</MenuItem>
+            <MenuItem value="date-asc">Data (Mais próximos)</MenuItem>
+            <MenuItem value="date-desc">Data (Mais distantes)</MenuItem>
             <MenuItem value="name-asc">Nome (A-Z)</MenuItem>
             <MenuItem value="name-desc">Nome (Z-A)</MenuItem>
           </Select>

@@ -30,8 +30,10 @@ import AddIcon from '@mui/icons-material/Add'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import BarChartIcon from '@mui/icons-material/BarChart'
 import DashboardStats from '@/components/DashboardStats'
+import { useToast } from '@/context/ToastProvider'
 
 export default function AdminDashboard() {
+  const { showToast } = useToast()
 
   const { data: events = [], isLoading } = useGetEventsQuery()
 
@@ -63,13 +65,16 @@ export default function AdminDashboard() {
           id: editingEvent.id,
           event: data
         }).unwrap()
+
+        showToast("Evento atualizado com sucesso", "success")
       } else {
         await createEvent(data).unwrap()
+        showToast("Evento criado com sucesso", "success")
       }
 
       setFormOpen(false)
-    } catch (err) {
-      console.log('Falha ao salvar evento')
+    } catch (err: any) {
+      showToast(err?.data?.message || "Falha ao processar evento", "error")
     }
   }
 
@@ -79,8 +84,9 @@ export default function AdminDashboard() {
       try {
         await deleteEvent(deleteId).unwrap()
         setDeleteId(null)
-      } catch (err) {
-        console.log('Falha ao tentar excluir o evento')
+        showToast("Evento excluído com sucesso", "success")
+      } catch (err: any) {
+        showToast(err?.data?.message || "Falha ao deletar evento", "error")
       }
     }
 
