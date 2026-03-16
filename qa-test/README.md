@@ -21,3 +21,11 @@ rfbrowser init
 ## Run tests
 
 robot -d results tests/
+
+
+## Documentation
+
+Additional documentation related to the test automation can be found in the `docs` folder.
+
+- [Requirements Traceability](docs/requirements_traceability.md)
+- [Defects Report](docs/defects.md)
