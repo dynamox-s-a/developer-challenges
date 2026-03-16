@@ -1,55 +1,137 @@
-# Dynamox Developer Challenges
+# 🎟️ Event Management System
 
-## About Dynamox
+Aplicação web desenvolvida como parte de um **teste técnico**, com o objetivo de demonstrar habilidades no desenvolvimento de interfaces modernas, controle de acesso por papéis de usuário e gerenciamento de eventos.
 
-[Dynamox](https://dynamox.net/) is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications. 
+A aplicação permite que **administradores gerenciem eventos** enquanto **leitores podem visualizar as informações disponíveis**.
 
-With our proficiency in signal processing for vibration and acoustics, we deliver advanced and precise monitoring systems. We are committed to optimizing operational efficiency and facilitating proactive maintenance through our innovative technology and integrated solutions.
+---
 
-## Positions
+# 🌐 Deploy
 
-We are looking for developers who are passionate about learning, growing, and contributing to our team. You will play a key role in our development efforts, working on a variety of projects and collaborating with different teams to build and improve our solutions.
+A aplicação está disponível em:
 
-We value flexibility and collaboration, hence we provide opportunities for you to lend your skills to other teams when required. Join us on this exciting journey as we revolutionize our digital platforms. Currently we are particularly interested in individuals who can identify with one of the following role descriptions:
+https://dyna-eventhub.vercel.app/
 
-### Junior Software Developer
+---
 
-With limited experience, assists in coding, testing, and stabilizing systems under supervision. Communicates with immediate team members and solves straightforward problems with guidance. Should display a willingness to learn and grow professionally. This is an individual contributor role.
+# 👥 Usuários de Teste
 
-### Mid-level Software Developer
+Para facilitar a avaliação do sistema, existem dois usuários pré-configurados:
 
-With a certain level of proven experience, contributes to software development, solves moderate problems, and starts handling ambiguous situations with minimal guidance. Communicates with the broader team and engages in code reviews and documentation. This role also includes supporting junior engineers and commitment to continuous learning. This is an individual contributor role.
+### 🔑 Admin
 
-### Senior-level Software Developer
+Email:
 
-With vast experience, enhances software development, leading complex system development and ambiguous situation handling. Tackles intricate problems and mentors junior and mid-level engineers. Champions coding standards, project strategy, and technology adoption. Communicates across teams, influencing technical and non-technical stakeholders. This individual contributor role blends technical expertise with leadership, focusing on innovation, mentorship, and strategic contributions to the development process.
+```
+admin@events.com
+```
 
-## Challenges Full-Stack
+Senha:
 
-- [ ] [01 - Dynamox Full-Stack Node.js React Developer Challenge](./full-stack-challenge.md)
-- [ ] [02 - Dynamox Full-Stack C# React Developer Challenge](./full-stack-csharp-react-challenge.md) 
-  
-## Challenges Front-End
+```
+admin123
+```
 
-- [ ] [01 - Dynamox Front-end React Developer Challenge Marketing Teams](./front-end-challenge-v1.md)
-- [ ] [02 - Dynamox Front-end React Developer Challenge Product Teams](./front-end-challenge-v2.md)
+Permissões:
 
-## Challenges DevOps
+* Criar eventos
+* Editar eventos
+* Excluir eventos
+* Visualizar eventos
 
-- [ ] [01 - Dynamox DevOps Developer Challenge Foundation Teams](./dev-sec-fin-ops-challenge-v1/README.md)
+---
 
-## Challenges Mobile
+### 👤 Reader
 
-- [ ] [01 - Dynamox Kotlin Multiplatform Developer Challenge](./kotlin-multiplatform-challenge.md)
-- [ ] [02 - Dynamox Android Developer Challenge](./android-challenge.md)
-- [ ] [03 - Dynamox iOS Developer Challenge](./ios-challenge.md)
+Email:
 
-## Challenge Back-End
-- [ ] [01 - Dynamox Back-End Time Series ](./back-end-challenge-v1.md)
+```
+reader@events.com
+```
 
-## Challenge QA
-- [ ] [01- Dynamox QA Challenge](./qa-challenge.md)
+Senha:
 
-</br>
+```
+reader123
+```
 
-**Good luck! We look forward to reviewing your submission.** 🚀
+Permissões:
+
+* Apenas visualizar eventos
+
+---
+
+# ⚙️ Rodando o projeto localmente
+
+### 1️⃣ Clonar o repositório
+
+```bash
+git clone https://github.com/olivan94/developer-challenges.git
+cd dynamox-event-app
+```
+
+---
+
+### 2️⃣ Instalar as dependências
+
+```bash
+npm install
+```
+
+---
+
+### 3️⃣ Iniciar a aplicação
+
+Em outro terminal:
+
+```bash
+npm run dev
+```
+
+A aplicação estará disponível em:
+
+```
+http://localhost:3001
+```
+
+---
+
+# ⚠️ Observação Importante
+
+Antes de rodar a aplicação, **certifique-se de que está na pasta correta do projeto**, onde está localizado o arquivo:
+
+```
+package.json
+```
+
+Caso contrário os comandos `npm install` ou `npm run dev` podem não funcionar corretamente.
+
+---
+
+# 🛠️ Tecnologias Utilizadas
+
+* Next.js
+* React
+* Redux Toolkit
+* Material UI
+* json-server
+
+---
+
+# 📌 Funcionalidades
+
+* Autenticação de usuário
+* Controle de acesso por papel (Admin / Reader)
+* Listagem de eventos
+* Criação de eventos
+* Edição de eventos
+* Exclusão de eventos
+* Interface responsiva
+
+---
+
+# 📄 Observações
+
+Este projeto foi desenvolvido exclusivamente para fins de avaliação técnica.
+
+---
