@@ -1,0 +1,68 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "admin@events.com",
+      "password": "admin123",
+      "role": "admin",
+      "name": "Admin User"
+    },
+    {
+      "id": 2,
+      "email": "reader@events.com",
+      "password": "reader123",
+      "role": "reader",
+      "name": "Reader User"
+    }
+  ],
+  "events": [
+    {
+      "id": "af4391dc-bb04-45b4-b74a-1ffc1d154b73",
+      "name": "React Summit 2026",
+      "dateTime": "2026-06-15T09:00",
+      "location": "Amsterdam, Netherlands",
+      "description": "The biggest React conference in the world. Join thousands of developers to learn about the latest React features, patterns, and best practices from industry experts.",
+      "category": "Conference"
+    },
+    {
+      "id": "2ca4ff8d-ecd8-40c5-926e-7e08d88d0525",
+      "name": "TypeScript Deep Dive Workshop",
+      "dateTime": "2026-04-20T14:00",
+      "location": "Online",
+      "description": "A hands-on workshop covering advanced TypeScript patterns including generics, conditional types, mapped types, and building type-safe libraries from scratch.",
+      "category": "Workshop"
+    },
+    {
+      "id": "565d21f9-dcb2-41fd-ba6b-ac077fe85dd2",
+      "name": "Startup Networking Night",
+      "dateTime": "2026-05-10T18:30",
+      "location": "São Paulo, Brazil",
+      "description": "Connect with fellow entrepreneurs, investors, and tech enthusiasts at our monthly networking event. Great food, drinks, and conversations about the future of tech.",
+      "category": "Networking"
+    },
+    {
+      "id": "2a52d65a-9f5a-4970-b0e0-d8538310655c",
+      "name": "AI in Frontend Development",
+      "dateTime": "2026-03-28T16:00",
+      "location": "Online",
+      "description": "Explore how artificial intelligence is transforming frontend development workflows. Learn about AI-powered code generation, testing, design systems, and developer tools.",
+      "category": "Webinar"
+    },
+    {
+      "id": "a1872365-2bf1-45a4-93d1-6ca2a41c8dcb",
+      "name": "Design Systems at Scale",
+      "dateTime": "2025-12-01T10:00",
+      "location": "Berlin, Germany",
+      "description": "Learn how leading companies build and maintain design systems that scale across hundreds of products and thousands of developers. Includes case studies and workshops.",
+      "category": "Conference"
+    },
+    {
+      "id": "59e62a81-7278-442c-8302-01a5f45194f7",
+      "name": "GraphQL Masterclass",
+      "dateTime": "2025-11-15T09:00",
+      "location": "London, UK",
+      "description": "An intensive full-day workshop on GraphQL including schema design, resolvers, authentication patterns, caching strategies, and performance optimization techniques.",
+      "category": "Workshop"
+    }
+  ]
+}

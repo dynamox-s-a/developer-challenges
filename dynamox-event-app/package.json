@@ -1,0 +1,37 @@
+{
+  "name": "dynamox-event-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "vercel-build": "next dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.9",
+    "@mui/material": "^7.3.9",
+    "@reduxjs/toolkit": "^2.11.2",
+    "axios": "^1.13.6",
+    "date-fns": "^4.1.0",
+    "json-server": "^1.0.0-beta.13",
+    "next": "^16.1.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-redux": "^9.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "@types/react": "^19.2.14",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "typescript": "^5.9.3"
+  }
+}
