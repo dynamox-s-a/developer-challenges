@@ -1,0 +1,7 @@
+# CocoaPods
+Pods/
+
+# Xcode pessoal e temporários
+.DS_Store
+DerivedData/
+*.xcuserstate
