@@ -1,0 +1,26 @@
+{
+  "name": "developer-challenges",
+  "version": "1.0.0",
+  "description": "## About Dynamox",
+  "main": "index.js",
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run --browser chrome",
+    "test": "npm run cy:run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FernandoLauChaves/developer-challenges.git"
+  },
+  "keywords": [],
+  "author": "Fernando Chaves",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FernandoLauChaves/developer-challenges/issues"
+  },
+  "homepage": "https://github.com/FernandoLauChaves/developer-challenges#readme",
+  "devDependencies": {
+    "@cypress/grep": "^6.0.0",
+    "cypress": "^15.10.0"
+  }
+}

@@ -1,55 +1,112 @@
-# Dynamox Developer Challenges
+## Desafio QA – Testes automatizados com Cypress
 
-## About Dynamox
+Este diretório contém a implementação do desafio de QA utilizando testes end‑to‑end com Cypress para validar o dashboard disponível em:
 
-[Dynamox](https://dynamox.net/) is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications. 
+- `https://frontend-test-for-qa.vercel.app`
 
-With our proficiency in signal processing for vibration and acoustics, we deliver advanced and precise monitoring systems. We are committed to optimizing operational efficiency and facilitating proactive maintenance through our innovative technology and integrated solutions.
+Os testes cobrem cenários de renderização dos gráficos, comportamento de tooltips, validação de metadados, recarregamento da página e tratamento de erro 500 na API de dados.
 
-## Positions
+---
 
-We are looking for developers who are passionate about learning, growing, and contributing to our team. You will play a key role in our development efforts, working on a variety of projects and collaborating with different teams to build and improve our solutions.
+## Stack utilizada
 
-We value flexibility and collaboration, hence we provide opportunities for you to lend your skills to other teams when required. Join us on this exciting journey as we revolutionize our digital platforms. Currently we are particularly interested in individuals who can identify with one of the following role descriptions:
+- Node.js (LTS recomendado – ex.: 18+)
+- npm
+- Cypress `^15.10.0`
+- Plugin `@cypress/grep` para filtragem de testes por tags
 
-### Junior Software Developer
+---
 
-With limited experience, assists in coding, testing, and stabilizing systems under supervision. Communicates with immediate team members and solves straightforward problems with guidance. Should display a willingness to learn and grow professionally. This is an individual contributor role.
+## Estrutura relevante do projeto
 
-### Mid-level Software Developer
+- `package.json`: scripts npm e dependências
+- `cypress.config.js`: configuração do Cypress (baseUrl e plugin de grep)
+- `cypress/e2e/dashboards.cy.js`: cenários de teste automatizados
+- `cypress/pages/dashboards.page.js`: Page Object com seletores e ações do dashboard
+- `REPORT.md`: análise de usabilidade e sugestões de melhorias para o produto
 
-With a certain level of proven experience, contributes to software development, solves moderate problems, and starts handling ambiguous situations with minimal guidance. Communicates with the broader team and engages in code reviews and documentation. This role also includes supporting junior engineers and commitment to continuous learning. This is an individual contributor role.
+---
 
-### Senior-level Software Developer
+## Pré‑requisitos
 
-With vast experience, enhances software development, leading complex system development and ambiguous situation handling. Tackles intricate problems and mentors junior and mid-level engineers. Champions coding standards, project strategy, and technology adoption. Communicates across teams, influencing technical and non-technical stakeholders. This individual contributor role blends technical expertise with leadership, focusing on innovation, mentorship, and strategic contributions to the development process.
+- Node.js instalado (versão LTS recomendada)
+- npm instalado
+- Acesso à internet (a aplicação sob teste está hospedada remotamente)
 
-## Challenges Full-Stack
+---
 
-- [ ] [01 - Dynamox Full-Stack Node.js React Developer Challenge](./full-stack-challenge.md)
-- [ ] [02 - Dynamox Full-Stack C# React Developer Challenge](./full-stack-csharp-react-challenge.md) 
-  
-## Challenges Front-End
+## Como instalar as dependências
 
-- [ ] [01 - Dynamox Front-end React Developer Challenge Marketing Teams](./front-end-challenge-v1.md)
-- [ ] [02 - Dynamox Front-end React Developer Challenge Product Teams](./front-end-challenge-v2.md)
+No diretório `developer-challenges`:
 
-## Challenges DevOps
+```bash
+npm install
+```
 
-- [ ] [01 - Dynamox DevOps Developer Challenge Foundation Teams](./dev-sec-fin-ops-challenge-v1/README.md)
+---
 
-## Challenges Mobile
+## Como rodar os testes Cypress
 
-- [ ] [01 - Dynamox Kotlin Multiplatform Developer Challenge](./kotlin-multiplatform-challenge.md)
-- [ ] [02 - Dynamox Android Developer Challenge](./android-challenge.md)
-- [ ] [03 - Dynamox iOS Developer Challenge](./ios-challenge.md)
+- Abrir o Cypress com interface gráfica:
 
-## Challenge Back-End
-- [ ] [01 - Dynamox Back-End Time Series ](./back-end-challenge-v1.md)
+```bash
+npm run cy:open
+```
 
-## Challenge QA
-- [ ] [01- Dynamox QA Challenge](./qa-challenge.md)
+- Rodar todos os testes em modo headless (Chrome):
 
-</br>
+```bash
+npm run cy:run
+```
 
-**Good luck! We look forward to reviewing your submission.** 🚀
+O script `cy:run` está configurado em `package.json` como:
+
+```json
+"cy:run": "cypress run --browser chrome"
+```
+
+---
+
+## Uso de tags com @cypress/grep (grepTags)
+
+O projeto utiliza o plugin `@cypress/grep`, configurado em `cypress.config.js`:
+
+```js
+setupNodeEvents(on, config) {
+  require('@cypress/grep/src/plugin')(config);
+  return config;
+}
+```
+
+Nos testes, as tags são declaradas via propriedade `grepTags`:
+
+```js
+it('Deve renderizar os 3 gráficos', { grepTags: ['@smoke', '@graphs'] }, () => {
+  // ...
+});
+```
+
+Para filtrar os testes por tag na linha de comando, utilize a opção `--env grepTags` após o script npm:
+
+```bash
+npm run cy:run -- --env grepTags=@smoke
+```
+
+---
+
+## Tags disponíveis e cenários cobertos
+
+Atualmente o arquivo `cypress/e2e/dashboards.cy.js` define os seguintes cenários com `grepTags`:
+
+- `@smoke`: marca todos os cenários principais do dashboard (sanity check da aplicação).
+- `@graphs`: valida que os 3 gráficos são renderizados corretamente.
+- `@tooltip`: valida que a tooltip é exibida ao passar o mouse sobre o gráfico.
+- `@header`: compara os dados do cabeçalho com o retorno da API `metadata`.
+- `@reload`: garante que, ao recarregar a página, os dados são buscados novamente com sucesso.
+- `@error`: garante que um erro 500 na API de `data` é tratado sem quebrar a tela.
+
+---
+
+## Feedbacks
+
+- Dentro do arquivo REPORT.md está um pequeno feedback encontrados durante os testes da aplicação.
