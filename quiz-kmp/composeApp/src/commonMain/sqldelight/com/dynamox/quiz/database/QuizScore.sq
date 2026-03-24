@@ -1,0 +1,21 @@
+CREATE TABLE QuizScore (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    player_id INTEGER NOT NULL,
+    player_name TEXT NOT NULL,
+    score INTEGER NOT NULL,
+    total_questions INTEGER NOT NULL DEFAULT 10,
+    created_at TEXT NOT NULL
+);
+
+insertScore:
+INSERT INTO QuizScore (player_id, player_name, score, total_questions, created_at)
+VALUES (?, ?, ?, ?, ?);
+
+getScoresByPlayerId:
+SELECT * FROM QuizScore WHERE player_id = ? ORDER BY created_at DESC;
+
+getAllScoresOrderedByScore:
+SELECT * FROM QuizScore ORDER BY score DESC, created_at DESC;
+
+getTopScores:
+SELECT * FROM QuizScore ORDER BY score DESC LIMIT 20;

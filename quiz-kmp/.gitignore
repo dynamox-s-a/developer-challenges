@@ -1,0 +1,10 @@
+.gradle
+.idea
+*.iml
+build/
+local.properties
+*.keystore
+*.jks
+*.DS_Store
+composeApp/build/
+gradle-wrapper.jar
