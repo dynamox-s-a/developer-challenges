@@ -1,0 +1,43 @@
+services:
+  timescaledb:
+    image: timescale/timescaledb:latest-pg15
+    container_name: dynamox_timescaledb
+    environment:
+      - POSTGRES_USER=dynamox_user
+      - POSTGRES_PASSWORD=dynamox_password
+      - POSTGRES_DB=timeseries_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - timescaledb_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dynamox_user -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    container_name: dynamox_api
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://dynamox_user:dynamox_password@timescaledb:5432/timeseries_db
+    depends_on:
+      timescaledb:
+        condition: service_healthy
+
+  locust:
+    image: locustio/locust
+    ports:
+      - "8089:8089"
+    volumes:
+      - .:/mnt/locust
+    command: -f /mnt/locust/locustfile.py
+    depends_on:
+      - api
+
+volumes:
+  timescaledb_data:

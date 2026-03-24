@@ -1,55 +1,77 @@
-# Dynamox Developer Challenges
+# Dynamox Back-end Challenge
 
-## About Dynamox
+## Database
 
-[Dynamox](https://dynamox.net/) is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications. 
+For this project, I selected a database composed of two tables: one containing the measurement metadata (name and unit), and another containing the corresponding time series data.
 
-With our proficiency in signal processing for vibration and acoustics, we deliver advanced and precise monitoring systems. We are committed to optimizing operational efficiency and facilitating proactive maintenance through our innovative technology and integrated solutions.
+```mermaid
+erDiagram
+    SERIES {
+        uuid id PK
+        string name
+        string unit
+        timestamp created_at
+    }
 
-## Positions
+    SERIES_DATA {
+        timestamp timestamp PK
+        uuid series_id PK,FK
+        float value
+    }
 
-We are looking for developers who are passionate about learning, growing, and contributing to our team. You will play a key role in our development efforts, working on a variety of projects and collaborating with different teams to build and improve our solutions.
+    SERIES ||--|{ SERIES_DATA : ""
+```
 
-We value flexibility and collaboration, hence we provide opportunities for you to lend your skills to other teams when required. Join us on this exciting journey as we revolutionize our digital platforms. Currently we are particularly interested in individuals who can identify with one of the following role descriptions:
+## Requirements
 
-### Junior Software Developer
+* Docker and Docker Compose
+* Python 3.12+
 
-With limited experience, assists in coding, testing, and stabilizing systems under supervision. Communicates with immediate team members and solves straightforward problems with guidance. Should display a willingness to learn and grow professionally. This is an individual contributor role.
+## How to Run - Docker
 
-### Mid-level Software Developer
+The easiest way to execute the project is using Docker Compose, which will provision both the PostgreSQL database and the FastAPI application.
 
-With a certain level of proven experience, contributes to software development, solves moderate problems, and starts handling ambiguous situations with minimal guidance. Communicates with the broader team and engages in code reviews and documentation. This role also includes supporting junior engineers and commitment to continuous learning. This is an individual contributor role.
+1. Clone the repository and navigate to the project root.
+2. Build and start the containers:
+   ```bash
+   docker-compose up --build -d
+   ```
+3. The API will be available at: `http://localhost:8000`
+4. Access the interactive API documentation at: `http://localhost:8000/docs`
 
-### Senior-level Software Developer
+## Running the Automated Tests
 
-With vast experience, enhances software development, leading complex system development and ambiguous situation handling. Tackles intricate problems and mentors junior and mid-level engineers. Champions coding standards, project strategy, and technology adoption. Communicates across teams, influencing technical and non-technical stakeholders. This individual contributor role blends technical expertise with leadership, focusing on innovation, mentorship, and strategic contributions to the development process.
+The project uses `pytest` for unit and integration testing. Ensure the database container is running before executing the tests.
 
-## Challenges Full-Stack
+Execute the tests from the project root:
+```bash
+docker exec -it dynamox_api pytest -v
+```
 
-- [ ] [01 - Dynamox Full-Stack Node.js React Developer Challenge](./full-stack-challenge.md)
-- [ ] [02 - Dynamox Full-Stack C# React Developer Challenge](./full-stack-csharp-react-challenge.md) 
-  
-## Challenges Front-End
+## Running the Load Tests
 
-- [ ] [01 - Dynamox Front-end React Developer Challenge Marketing Teams](./front-end-challenge-v1.md)
-- [ ] [02 - Dynamox Front-end React Developer Challenge Product Teams](./front-end-challenge-v2.md)
+Load tests were implemented using Locust to ensure the application meets the sub-350ms response time requirement for bulk data insertion.
 
-## Challenges DevOps
+1. Ensure the API is running (via Docker or locally).
+2. In a separate terminal, with the virtual environment activated, run:
+   ```bash
+   locust -f locustfile.py
+   ```
+3. Open `http://localhost:8089` in your browser.
+4. Configure the test (e.g., 50 concurrent users, spawn rate of 5) and set the host to `http://localhost:8000`.
+5. Start the test to observe RPS and latency metrics.
 
-- [ ] [01 - Dynamox DevOps Developer Challenge Foundation Teams](./dev-sec-fin-ops-challenge-v1/README.md)
+## API Endpoints Overview
 
-## Challenges Mobile
+* `POST /api/series/`: Creates a new series with bulk data points.
+* `GET /api/series/{id}`: Retrieves a specific series and its data points.
+* `GET /api/series/`: Lists all available series.
+* `GET /api/series/count`: Returns the total number of data points for a given series.
+* `GET /api/series/{id}/predict`: Predicts future values for a series based on historical data using Simple Linear Regression.
 
-- [ ] [01 - Dynamox Kotlin Multiplatform Developer Challenge](./kotlin-multiplatform-challenge.md)
-- [ ] [02 - Dynamox Android Developer Challenge](./android-challenge.md)
-- [ ] [03 - Dynamox iOS Developer Challenge](./ios-challenge.md)
+## Implemented Features
 
-## Challenge Back-End
-- [ ] [01 - Dynamox Back-End Time Series ](./back-end-challenge-v1.md)
-
-## Challenge QA
-- [ ] [01- Dynamox QA Challenge](./qa-challenge.md)
-
-</br>
-
-**Good luck! We look forward to reviewing your submission.** 🚀
+* **Asynchronous Database Access:** Implemented with `asyncpg` and SQLAlchemy for high throughput.
+* **Bulk Inserts:** Optimized data ingestion to handle batches of 500+ points per request efficiently.
+* **Data Prediction:** Custom implementation of Ordinary Least Squares (OLS) Linear Regression to forecast future sensor values without heavy external machine learning dependencies.
+* **Load Testing:** Locust implementation proving stable latencies under the requested threshold during continuous stress testing.

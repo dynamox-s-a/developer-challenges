@@ -1,0 +1,23 @@
+.env
+.env.*
+*.pem
+*.key
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+venv/
+env/
+.venv/
+ENV/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+*.log
+*.sqlite3
+timescaledb_data/  # O volume do Docker que criámos!
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
