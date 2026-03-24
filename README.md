@@ -1,55 +1,77 @@
-# Dynamox Developer Challenges
+# timeseries-api
 
-## About Dynamox
+REST API for storing and analysing time series data. Built with FastAPI + SQLAlchemy (async).
 
-[Dynamox](https://dynamox.net/) is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications. 
+## Stack
 
-With our proficiency in signal processing for vibration and acoustics, we deliver advanced and precise monitoring systems. We are committed to optimizing operational efficiency and facilitating proactive maintenance through our innovative technology and integrated solutions.
+- **FastAPI** — HTTP layer
+- **SQLAlchemy 2 (async)** + **aiosqlite** — persistence (swap to postgres by changing `DATABASE_URL`)
+- **NumPy / statsmodels** — metrics and forecasting
+- **pytest + pytest-asyncio** — tests
+- **Locust** — load tests
+- **Nginx** — load balancer (docker setup)
 
-## Positions
+## Getting started
 
-We are looking for developers who are passionate about learning, growing, and contributing to our team. You will play a key role in our development efforts, working on a variety of projects and collaborating with different teams to build and improve our solutions.
+```bash
+python3 -m venv .venv
+source .venv/bin/activate       # windows: .venv\Scripts\activate
+pip install -r requirements.txt
+cp .env.example .env
+python run.py
+```
 
-We value flexibility and collaboration, hence we provide opportunities for you to lend your skills to other teams when required. Join us on this exciting journey as we revolutionize our digital platforms. Currently we are particularly interested in individuals who can identify with one of the following role descriptions:
+Swagger at http://localhost:8000/docs
 
-### Junior Software Developer
+## Running with docker (nginx + 3 workers)
 
-With limited experience, assists in coding, testing, and stabilizing systems under supervision. Communicates with immediate team members and solves straightforward problems with guidance. Should display a willingness to learn and grow professionally. This is an individual contributor role.
+```bash
+docker-compose up --build -d
+# api available at http://localhost:80
+```
 
-### Mid-level Software Developer
+## Tests
 
-With a certain level of proven experience, contributes to software development, solves moderate problems, and starts handling ambiguous situations with minimal guidance. Communicates with the broader team and engages in code reviews and documentation. This role also includes supporting junior engineers and commitment to continuous learning. This is an individual contributor role.
+```bash
+pytest                          # all
+pytest tests/unit/              # unit only
+pytest tests/integration/       # integration only
+```
 
-### Senior-level Software Developer
+## Load tests
 
-With vast experience, enhances software development, leading complex system development and ambiguous situation handling. Tackles intricate problems and mentors junior and mid-level engineers. Champions coding standards, project strategy, and technology adoption. Communicates across teams, influencing technical and non-technical stakeholders. This individual contributor role blends technical expertise with leadership, focusing on innovation, mentorship, and strategic contributions to the development process.
+```bash
+# interactive (opens browser UI at :8089)
+locust -f load_tests/locustfile.py --host=http://localhost:80
 
-## Challenges Full-Stack
+# headless
+locust -f load_tests/locustfile.py --host=http://localhost:80 \
+  --headless -u 100 -r 10 --run-time 60s --html load_tests/report.html
+```
 
-- [ ] [01 - Dynamox Full-Stack Node.js React Developer Challenge](./full-stack-challenge.md)
-- [ ] [02 - Dynamox Full-Stack C# React Developer Challenge](./full-stack-csharp-react-challenge.md) 
-  
-## Challenges Front-End
+## Endpoints
 
-- [ ] [01 - Dynamox Front-end React Developer Challenge Marketing Teams](./front-end-challenge-v1.md)
-- [ ] [02 - Dynamox Front-end React Developer Challenge Product Teams](./front-end-challenge-v2.md)
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/v1/timeseries/` | store a new series |
+| GET | `/api/v1/timeseries/` | list (paginated) |
+| GET | `/api/v1/timeseries/count` | how many series you have |
+| GET | `/api/v1/timeseries/{id}` | full series + data points |
+| GET | `/api/v1/timeseries/{id}/metrics` | stats (min/max/mean/rms/p95/p99...) |
+| POST | `/api/v1/timeseries/{id}/predict` | forecast future values |
+| DELETE | `/api/v1/timeseries/{id}` | delete a series |
+| GET | `/health` | health check |
 
-## Challenges DevOps
+### Prediction methods
 
-- [ ] [01 - Dynamox DevOps Developer Challenge Foundation Teams](./dev-sec-fin-ops-challenge-v1/README.md)
+`POST /api/v1/timeseries/{id}/predict`
 
-## Challenges Mobile
+```json
+{ "steps": 10, "method": "auto" }
+```
 
-- [ ] [01 - Dynamox Kotlin Multiplatform Developer Challenge](./kotlin-multiplatform-challenge.md)
-- [ ] [02 - Dynamox Android Developer Challenge](./android-challenge.md)
-- [ ] [03 - Dynamox iOS Developer Challenge](./ios-challenge.md)
+- `linear` — OLS regression, good for steady trends
+- `holt_winters` — double exponential smoothing, handles trend changes better
+- `auto` — trains both on 80% of data, picks lower RMSE on the remaining 20%
 
-## Challenge Back-End
-- [ ] [01 - Dynamox Back-End Time Series ](./back-end-challenge-v1.md)
-
-## Challenge QA
-- [ ] [01- Dynamox QA Challenge](./qa-challenge.md)
-
-</br>
-
-**Good luck! We look forward to reviewing your submission.** 🚀
+Returns predictions + 95% confidence interval bounds.
