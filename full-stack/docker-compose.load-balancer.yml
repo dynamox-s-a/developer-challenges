@@ -1,0 +1,109 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: dynamox-postgres
+    environment:
+      POSTGRES_USER: dynamox
+      POSTGRES_PASSWORD: dynamox
+      POSTGRES_DB: dynamox
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dynamox -d dynamox"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: apps/backend
+      dockerfile: Dockerfile
+    container_name: dynamox-backend
+    environment:
+      PORT: 3001
+      DATABASE_URL: postgresql://dynamox:dynamox@postgres:5432/dynamox?schema=public
+      JWT_SECRET: prod_secret_change_me
+      SEED_ADMIN_USERNAME: admin
+      SEED_ADMIN_PASSWORD: admin
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "3001:3001"
+    restart: unless-stopped
+
+  backend-1:
+    build:
+      context: apps/backend
+      dockerfile: Dockerfile
+    container_name: dynamox-backend-1
+    environment:
+      PORT: 3001
+      DATABASE_URL: postgresql://dynamox:dynamox@postgres:5432/dynamox?schema=public
+      JWT_SECRET: prod_secret_change_me
+      SEED_ADMIN_USERNAME: admin
+      SEED_ADMIN_PASSWORD: admin
+      NODE_ENV: production
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - dynamox-network
+    restart: unless-stopped
+    profiles: [load-balancer]
+
+  backend-2:
+    build:
+      context: apps/backend
+      dockerfile: Dockerfile
+    container_name: dynamox-backend-2
+    environment:
+      PORT: 3001
+      DATABASE_URL: postgresql://dynamox:dynamox@postgres:5432/dynamox?schema=public
+      JWT_SECRET: prod_secret_change_me
+      SEED_ADMIN_USERNAME: admin
+      SEED_ADMIN_PASSWORD: admin
+      NODE_ENV: production
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - dynamox-network
+    restart: unless-stopped
+    profiles: [load-balancer]
+
+  nginx:
+    image: nginx:alpine
+    container_name: dynamox-nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend-1
+      - backend-2
+    networks:
+      - dynamox-network
+    restart: unless-stopped
+    profiles: [load-balancer]
+
+  frontend:
+    build:
+      context: apps/frontend
+      dockerfile: Dockerfile
+    container_name: dynamox-frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  dynamox-network:
+    driver: bridge

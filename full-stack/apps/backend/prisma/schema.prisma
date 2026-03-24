@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum MachineType {
+  Pump
+  Fan
+}
+
+enum SensorModel {
+  TcAg
+  TcAs
+  HF_plus
+}
+
+model Machine {
+  id        String            @id @default(cuid())
+  name      String
+  type      MachineType
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  monitoringPoints MonitoringPoint[]
+
+  @@index([type])
+  @@index([name])
+}
+
+model MonitoringPoint {
+  id        String   @id @default(cuid())
+  name      String
+  machineId String
+  timeSeries TimeSeries[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  machine   Machine  @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  sensor    Sensor?
+
+  // opcional: não repetir nome dentro da mesma máquina
+  @@unique([machineId, name])
+
+  @@index([machineId])
+  @@index([name])
+}
+
+model Sensor {
+  id                String      @id @default(cuid())
+  uniqueId          String      @unique
+  model             SensorModel
+  monitoringPointId String      @unique
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  monitoringPoint MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
+
+  @@index([model])
+}
+
+model HealthCheck {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  role         String   @default("admin")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model TimeSeries {
+  id               String        @id @default(cuid())
+  monitoringPoint  MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
+  monitoringPointId String
+  timestamp        DateTime
+  value            Float
+  createdAt        DateTime      @default(now())
+
+  @@index([monitoringPointId, timestamp])
+  @@unique([monitoringPointId, timestamp])
+}

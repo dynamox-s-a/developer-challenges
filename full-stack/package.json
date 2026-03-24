@@ -1,0 +1,10 @@
+{
+  "name": "full-stack",
+  "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "scripts": {
+    "dev": "pnpm -r dev",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down"
+  }
+}

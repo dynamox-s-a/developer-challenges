@@ -1,0 +1,14 @@
+node_modules
+dist
+.env
+.env.*
+!.env.example
+.DS_Store
+pnpm-debug.log*
+
+# Docker build artifacts
+docker-compose.prod.yml
+
+# Deploy artifacts
+deploy/
+*.log
