@@ -9,7 +9,6 @@ export class KafkaProducerService {
   ) {}
 
   async onModuleInit() {
-    this.kafkaClient.subscribeToResponseOf('signals.raw');
     await this.kafkaClient.connect();
   }
 
