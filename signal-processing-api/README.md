@@ -1,98 +1,56 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Signal Processing API — Dynamox Challenge
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Senior-level implementation for the `back-end-challenge-v2.md`.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🏗 Architectural Decisions
 
-## Description
+### Clean Architecture & DDD
+The project is structured following Domain-Driven Design principles within NestJS modules:
+- **Domain Layer**: Pure logic, entities (`TimeSeries`), and Value Objects (`SensorName`, `Timestamp`). 
+- **Application Layer**: Orchestrates use cases (US1-US5) and maps DTOs.
+- **Infrastructure Layer**: Framework-specific adapters for **MongoDB Time Series Collections** and **Kafka**.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Performance & Storage
+- **MongoDB 6.0+ Time Series**: Used to take advantage of native columnar storage and the bucket pattern, reducing index size and optimizing I/O for sensor data.
+- **Aggregation Pipeline**: Statistical metrics (RMS, Kurtosis, Skewness, Max) are computed using MongoDB's aggregation engine to ensure high performance and low latency.
+- **Kafka Strategy**: Partitioning by `sensorId` as the key. This guarantees that all data for a specific sensor is processed in strict chronological order within a single partition.
 
-## Project setup
+## 🚀 Getting Started
+
+### Prerequisites
+- Docker & Docker Compose
+- Node.js 20+
+
+### Setup & Run
+Using the provided `Makefile`:
 
 ```bash
-$ npm install
+make setup    # Install deps and starts MongoDB/Kafka containers
+make start    # Starts the NestJS API in dev mode
 ```
 
-## Compile and run the project
+## 🧪 Testing
 
+### Automated Tests
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+make test     # Runs unit and e2e tests
 ```
 
-## Run tests
-
+### Load Testing (k6)
+To validate the **SLA of < 350ms @ 100 RPS**:
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+make load-test
 ```
 
-## Deployment
+## 📊 Domain Metrics Justification
+- **RMS (Root Mean Square)**: Essential for vibratory analysis as it represents the overall energy of the signal.
+- **Kurtosis**: A key indicator for detecting sudden impacts in mechanical components (like bearing faults).
+- **Skewness**: Used to detect signal asymmetry, helping identify sensor clipping or directional bias.
+- **Max**: Required by the challenge's JSON contract.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 📁 Endpoints
+- `POST /api/time-series`: Store raw data and publish to Kafka.
+- `GET /api/time-series/count`: Total stored signals.
+- `GET /api/time-series/:id`: Retrieve full series.
+- `GET /api/time-series/:id/metrics`: Statistical analysis (Contract matches `response-challenge-v2.json`).
+- `DELETE /api/time-series/:id`: Remove data.
