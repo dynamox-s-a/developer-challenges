@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/node24/tsconfig.json",
   "compilerOptions": {
+    "types": ["node"],
     "outDir": "./dist",
     "rootDir": "./"
   },
