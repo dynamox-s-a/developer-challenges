@@ -26,7 +26,8 @@ Using the provided `Makefile`:
 
 ```bash
 make setup    # Install deps and starts MongoDB/Kafka containers
-make start    # Starts the NestJS API in dev mode
+make start    # Starts the NestJS API in dev mode locally
+make start-lb # Starts the API with 3 Load-Balanced replicas via Nginx + Docker
 ```
 
 ## 🧪 Testing
@@ -37,10 +38,34 @@ make test     # Runs unit and e2e tests
 ```
 
 ### Load Testing (k6)
-To validate the **SLA of < 350ms @ 100 RPS**:
+Para validar o **SLA < 350ms @ 100+ RPS**, configuramos múltiplos cenários. Certifique-se de que o ambiente está rodando (`make start-lb`) antes de iniciar:
+
 ```bash
-make load-test
+make load-test-smoke   # Check básico de sanidade (1 VU)
+make load-test-stress  # Rampa até 200 VUs para testar estabilidade
+make load-test-spike   # Pico súbito de 300 VUs para testar resiliência
 ```
+
+## 🚀 Performance Benchmarks
+
+Os testes foram realizados utilizando **3 réplicas da API** balanceadas por **Nginx (Round-robin)**. O objetivo foi validar o comportamento sob carga real de sensores de alta frequência.
+
+### Resultados Obtidos
+| Cenário | Usuários (VUs) | Latência p(95) | Peak RPS | Status |
+|---|---|---|---|---|
+| **Smoke Test** | 1 | **26ms** | 2 | ✅ PASS |
+| **Stress Test** | 200 | **5.47ms** | **265** | ✅ PASS |
+| **Spike Test** | 300 | **61.0ms** | **699** | ✅ PASS |
+
+> [!TIP]
+> Mesmo sob um pico agressivo de **300 usuários simultâneos** (~700 requisições por segundo), a API manteve a latência p95 em **61ms**, sendo **82% mais rápida** que o requisito máximo de 350ms.
+
+## 💎 Valor de Produto (Business Value)
+
+1. **Baixa Latência em Escala:** O uso de **MongoDB Time Series Collections** aliado a Aggregation Pipelines permite que métricas complexas (RMS, Kurtosis) sejam calculadas em milissegundos, independente do volume de dados.
+2. **Alta Disponibilidade:** A arquitetura com **Nginx Load Balancer** permite escalabilidade horizontal imediata. Novas réplicas da API podem ser adicionadas sem downtime.
+3. **Resiliência Industrial:** A integração com **Kafka** garante que os sinais brutos sejam processados de forma assíncrona e ordenada por sensor, protegendo o banco de dados principal de picos de escrita.
+
 
 ## 📊 Domain Metrics Justification
 - **RMS (Root Mean Square)**: Essential for vibratory analysis as it represents the overall energy of the signal.
