@@ -54,3 +54,21 @@ make load-test
 - `GET /api/time-series/:id`: Retrieve full series.
 - `GET /api/time-series/:id/metrics`: Statistical analysis (Contract matches `response-challenge-v2.json`).
 - `DELETE /api/time-series/:id`: Remove data.
+
+## 📈 Scalability Roadmap (System Design)
+For a production-ready evolution, the following distributed systems patterns are documented as next steps:
+
+### 1. Kafka Idempotency & Acks
+- **Implemented:** The Kafka producer is already configured with `idempotent: true` and `maxInFlightRequests: 5`. This prevents duplicate messages in case of temporary network failures between the API and the Kafka broker, guaranteeing **Exactly-Once** semantics for the producer.
+
+### 2. Consumer Lag Management
+- **Monitoring:** Integrating **Prometheus/Grafana** with `kafka_exporter` to monitor Consumer Lag (the difference between produced offsets and consumed offsets).
+- **Auto-Scaling:** If lag spikes during heavy machinery usage periods, we can scale out the worker pods. This requires matching the number of Kafka partitions to the maximum number of desired consumers.
+
+### 3. DLQ (Dead Letter Queue) & Retry Architecture
+- To prevent a **Poison Pill** (a corrupted message that constantly fails to parse) from blocking an entire partition:
+  - **Non-blocking Retries:** Consumers should publish failed messages to a `signals.raw.retry` topic and immediately commit the original offset.
+  - **DLQ Routing:** If processing fails after predefined retries, route to a `signals.raw.dlq` topic for manual inspection or altering.
+
+### 4. Database Idempotency
+- While Kafka is partitioned by `sensorId`, ensuring true end-to-end idempotency requires **Upserts** in MongoDB using a composite key (`sensorId` + `datetime`) to prevent duplicated points under concurrent retries or re-deployments.

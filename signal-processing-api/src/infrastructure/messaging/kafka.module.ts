@@ -19,6 +19,8 @@ import { KafkaProducerService } from './kafka-producer.service';
           },
           producer: {
             allowAutoTopicCreation: true,
+            idempotent: true,
+            maxInFlightRequests: 5,
           },
         },
       },
