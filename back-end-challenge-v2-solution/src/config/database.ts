@@ -10,3 +10,9 @@ export async function connectDB(): Promise<typeof mongoose> {
 export async function disconnectDB(): Promise<void> {
   await mongoose.disconnect();
 }
+
+export async function getStatusDB(): Promise<"connected" | "disconnected"> {
+  const status =
+    mongoose.connection.readyState === 1 ? "connected" : "disconnected";
+  return status;
+}
