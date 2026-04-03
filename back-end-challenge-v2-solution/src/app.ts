@@ -1,5 +1,7 @@
 import express, { Application } from "express";
 import { getStatusDB } from "./config/database.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
+import AppError from "./errors/AppError.js";
 
 const app: Application = express();
 
@@ -13,5 +15,11 @@ app.get("/health", async (_req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+
+app.use((req, res) => {
+  throw new AppError(`Route ${req.originalUrl} not found`, 404);
+});
+
+app.use(errorHandler);
 
 export default app;
