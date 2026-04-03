@@ -22,8 +22,10 @@
     "@types/jest": "^30.0.0",
     "@types/mongoose": "^5.11.96",
     "@types/node": "^25.5.0",
+    "@types/supertest": "^7.2.0",
     "jest": "^30.3.0",
     "prettier": "3.8.1",
+    "supertest": "^7.2.2",
     "ts-jest": "^29.4.9",
     "tsx": "^4.21.0",
     "typescript": "^6.0.2"
