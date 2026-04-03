@@ -1,4 +1,5 @@
 import { CreateTimeSeriesDto } from "../dto/time-series.dto.js";
+import AppError from "../errors/AppError.js";
 import { TimeSeries, TimeSeriesModel } from "../models/TimeSeries.js";
 
 export async function createTimeSeries({
@@ -9,7 +10,7 @@ export async function createTimeSeries({
   const existing = await TimeSeriesModel.findOne({ seriesId });
 
   if (existing) {
-    throw new Error(`Time series with ID ${seriesId} already exists.`);
+    throw new AppError(`Time series with ID ${seriesId} already exists.`, 409);
   }
 
   const series = await TimeSeriesModel.create({ seriesId, unit, points });

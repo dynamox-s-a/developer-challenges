@@ -1,3 +1,4 @@
+import AppError from "../errors/AppError.js";
 import { TimeSeriesModel } from "../models/TimeSeries.js";
 import { createTimeSeries } from "./time-series.service.js";
 
@@ -32,9 +33,14 @@ describe("TimeSeries Service", () => {
   it("should throw if time series already exists", async () => {
     mockedModel.findOne.mockResolvedValue(mockData as any);
 
-    await expect(createTimeSeries(mockData)).rejects.toThrow(
-      `Time series with ID ${mockData.seriesId} already exists.`,
-    );
+    const promise = createTimeSeries(mockData);
+
+    await expect(promise).rejects.toBeInstanceOf(AppError);
+
+    await expect(promise).rejects.toMatchObject({
+      message: `Time series with ID ${mockData.seriesId} already exists.`,
+      statusCode: 409,
+    });
 
     expect(mockedModel.findOne).toHaveBeenCalledWith({
       seriesId: mockData.seriesId,
