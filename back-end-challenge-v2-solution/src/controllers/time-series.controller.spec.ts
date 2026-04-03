@@ -33,3 +33,14 @@ describe("POST /api/series", () => {
     expect(response.body.seriesId).toBe("S1");
   });
 });
+
+describe("GET /api/series/count", () => {
+  it("should return the total number of time series", async () => {
+    mockedModel.countDocuments.mockResolvedValue(5);
+
+    const response = await request(app).get("/api/series/count");
+
+    expect(response.status).toBe(200);
+    expect(response.body.total).toBe(5);
+  });
+});

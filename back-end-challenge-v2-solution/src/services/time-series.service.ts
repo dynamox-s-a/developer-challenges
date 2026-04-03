@@ -17,3 +17,7 @@ export async function createTimeSeries({
 
   return series;
 }
+
+export async function countTimeSeries(): Promise<Number> {
+  return await TimeSeriesModel.countDocuments();
+}
