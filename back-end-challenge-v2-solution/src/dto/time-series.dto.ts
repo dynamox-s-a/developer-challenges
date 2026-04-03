@@ -1,7 +1,9 @@
 import { z } from "zod";
 
 const PointSchema = z.object({
-  timestamp: z.iso.datetime({ message: "timestamp must be ISO 8601 format" }),
+  timestamp: z.iso
+    .datetime({ message: "timestamp must be ISO 8601 format" })
+    .pipe(z.coerce.date()),
   value: z.number(),
 });
 
