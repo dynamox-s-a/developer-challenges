@@ -1,18 +1,6 @@
-import mongoose, { Schema, Document } from "mongoose";
+import { InferSchemaType, model, Schema } from "mongoose";
 
-export interface IPoint {
-  timestamp: Date;
-  value: number;
-}
-
-export interface ITimeSeries extends Document {
-  seriesId: string;
-  unit: string;
-  points: IPoint[];
-  createdAt: Date;
-}
-
-const PointSchema = new Schema<IPoint>(
+const PointSchema = new Schema(
   {
     timestamp: { type: Date, required: true },
     value: { type: Number, required: true },
@@ -20,7 +8,7 @@ const PointSchema = new Schema<IPoint>(
   { _id: false },
 );
 
-const TimeSeriesSchema = new Schema<ITimeSeries>(
+const TimeSeriesSchema = new Schema(
   {
     seriesId: { type: String, required: true },
     unit: { type: String, required: true },
@@ -35,7 +23,6 @@ const TimeSeriesSchema = new Schema<ITimeSeries>(
 TimeSeriesSchema.index({ seriesId: 1 }, { unique: true });
 TimeSeriesSchema.index({ "points.timestamp": 1 });
 
-export const TimeSeries = mongoose.model<ITimeSeries>(
-  "TimeSeries",
-  TimeSeriesSchema,
-);
+export type TimeSeries = InferSchemaType<typeof TimeSeriesSchema>;
+
+export const TimeSeriesModel = model("TimeSeries", TimeSeriesSchema);
