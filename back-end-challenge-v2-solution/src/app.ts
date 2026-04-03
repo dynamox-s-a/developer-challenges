@@ -1,11 +1,13 @@
 import express, { Application } from "express";
 import { getStatusDB } from "./config/database.js";
+import timeSeriesRoutes from "./routes/time-series.routes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import AppError from "./errors/AppError.js";
 
 const app: Application = express();
 
 app.use(express.json());
+app.use("/api", timeSeriesRoutes);
 
 app.get("/health", async (_req, res) => {
   const mongoStatus = await getStatusDB();
