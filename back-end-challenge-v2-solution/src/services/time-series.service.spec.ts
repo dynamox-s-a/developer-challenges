@@ -1,5 +1,5 @@
 import AppError from "../errors/AppError.js";
-import { TimeSeriesModel } from "../models/TimeSeries.js";
+import { TimeSeriesModel } from "../models/time-series.model.js";
 import {
   countTimeSeries,
   createTimeSeries,
@@ -7,7 +7,7 @@ import {
   getBySeriesId,
 } from "./time-series.service.js";
 
-jest.mock("../models/TimeSeries");
+jest.mock("../models/time-series.model");
 const mockedModel = jest.mocked(TimeSeriesModel);
 
 describe("TimeSeries Service", () => {

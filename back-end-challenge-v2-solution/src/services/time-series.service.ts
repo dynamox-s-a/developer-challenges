@@ -1,6 +1,6 @@
 import { CreateTimeSeriesDto } from "../dto/time-series.dto.js";
 import AppError from "../errors/AppError.js";
-import { TimeSeries, TimeSeriesModel } from "../models/TimeSeries.js";
+import { TimeSeries, TimeSeriesModel } from "../models/time-series.model.js";
 
 export async function createTimeSeries({
   seriesId,

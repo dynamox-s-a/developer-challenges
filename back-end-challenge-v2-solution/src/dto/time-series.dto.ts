@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { TimeSeries } from "../models/TimeSeries.js";
+import { TimeSeries } from "../models/time-series.model.js";
 
 const seriesIdSchema = z.string().trim().min(1, "seriesId is required");
 

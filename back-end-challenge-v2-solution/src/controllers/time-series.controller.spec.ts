@@ -1,8 +1,8 @@
 import request from "supertest";
 import app from "../app.js";
-import { TimeSeriesModel } from "../models/TimeSeries.js";
+import { TimeSeriesModel } from "../models/time-series.model.js";
 
-jest.mock("../models/TimeSeries.js");
+jest.mock("../models/time-series.model.js");
 const mockedModel = jest.mocked(TimeSeriesModel);
 
 describe("POST /api/series", () => {
