@@ -1,6 +1,10 @@
 import AppError from "../errors/AppError.js";
 import { TimeSeriesModel } from "../models/TimeSeries.js";
-import { createTimeSeries, deleteBySeriesId } from "./time-series.service.js";
+import {
+  countTimeSeries,
+  createTimeSeries,
+  deleteBySeriesId,
+} from "./time-series.service.js";
 
 jest.mock("../models/TimeSeries");
 const mockedModel = jest.mocked(TimeSeriesModel);
@@ -45,6 +49,15 @@ describe("TimeSeries Service", () => {
       seriesId: mockData.seriesId,
     });
     expect(mockedModel.create).not.toHaveBeenCalled();
+  });
+
+  it("should return the total number of time series", async () => {
+    mockedModel.countDocuments.mockResolvedValue(5);
+
+    const result = await countTimeSeries();
+
+    expect(mockedModel.countDocuments).toHaveBeenCalled();
+    expect(result).toBe(5);
   });
 
   it("should delete an existing time series", async () => {
