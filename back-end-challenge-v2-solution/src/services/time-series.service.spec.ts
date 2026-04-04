@@ -5,6 +5,7 @@ import {
   createTimeSeries,
   deleteBySeriesId,
   getBySeriesId,
+  getMetricsBySeriesId,
 } from "./time-series.service.js";
 
 jest.mock("../models/time-series.model");
@@ -14,7 +15,11 @@ describe("TimeSeries Service", () => {
   const mockData = {
     seriesId: "S1",
     unit: "C",
-    points: [{ timestamp: new Date(), value: 10 }],
+    points: [
+      { timestamp: new Date("2024-01-01T00:00:00.000Z"), value: 10 },
+      { timestamp: new Date("2024-01-02T00:00:00.000Z"), value: 30 },
+      { timestamp: new Date("2024-01-03T00:00:00.000Z"), value: 20 },
+    ],
   };
 
   beforeEach(() => {
@@ -40,7 +45,6 @@ describe("TimeSeries Service", () => {
     const promise = createTimeSeries(mockData);
 
     await expect(promise).rejects.toBeInstanceOf(AppError);
-
     await expect(promise).rejects.toMatchObject({
       message: `Time series with ID ${mockData.seriesId} already exists.`,
       statusCode: 409,
@@ -76,6 +80,42 @@ describe("TimeSeries Service", () => {
     mockedModel.findOne.mockResolvedValue(null);
 
     const promise = getBySeriesId(mockData.seriesId);
+
+    await expect(promise).rejects.toBeInstanceOf(AppError);
+    await expect(promise).rejects.toMatchObject({
+      message: `Time series with ID ${mockData.seriesId} not found.`,
+      statusCode: 404,
+    });
+
+    expect(mockedModel.findOne).toHaveBeenCalledWith({
+      seriesId: mockData.seriesId,
+    });
+  });
+
+  it("should return metrics for an existing time series", async () => {
+    mockedModel.findOne.mockResolvedValue(mockData as any);
+
+    const result = await getMetricsBySeriesId(mockData.seriesId);
+
+    expect(mockedModel.findOne).toHaveBeenCalledWith({
+      seriesId: mockData.seriesId,
+    });
+    expect(result).toEqual({
+      seriesId: "S1",
+      unit: "C",
+      totalPoints: 3,
+      minValue: 10,
+      maxValue: 30,
+      averageValue: 20,
+      firstTimestamp: new Date("2024-01-01T00:00:00.000Z"),
+      lastTimestamp: new Date("2024-01-03T00:00:00.000Z"),
+    });
+  });
+
+  it("should throw if the time series for metrics does not exist", async () => {
+    mockedModel.findOne.mockResolvedValue(null);
+
+    const promise = getMetricsBySeriesId(mockData.seriesId);
 
     await expect(promise).rejects.toBeInstanceOf(AppError);
     await expect(promise).rejects.toMatchObject({
