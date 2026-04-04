@@ -1,4 +1,4 @@
-import AppError from "../errors/AppError.js";
+import AppError from "../errors/app-error.js";
 import { TimeSeriesModel } from "../models/time-series.model.js";
 import {
   countTimeSeries,

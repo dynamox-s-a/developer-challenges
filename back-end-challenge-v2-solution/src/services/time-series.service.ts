@@ -1,5 +1,5 @@
 import { CreateTimeSeriesDto } from "../dto/time-series.dto.js";
-import AppError from "../errors/AppError.js";
+import AppError from "../errors/app-error.js";
 import { TimeSeries, TimeSeriesModel } from "../models/time-series.model.js";
 import { TimeSeriesMetrics } from "../models/time-series.types.js";
 

@@ -2,7 +2,7 @@ import express, { Application } from "express";
 import { getStatusDB } from "./config/database.js";
 import timeSeriesRoutes from "./routes/time-series.routes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
-import AppError from "./errors/AppError.js";
+import AppError from "./errors/app-error.js";
 
 const app: Application = express();
 
