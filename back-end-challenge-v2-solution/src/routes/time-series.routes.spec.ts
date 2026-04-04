@@ -37,7 +37,7 @@ describe("POST /api/series", () => {
     const response = await request(app)
       .post("/api/series")
       .send({
-        seriesId: "S1",
+        series_id: "S1",
         unit: "C",
         points: [{ timestamp: "2024-01-01T00:00:00.000Z", value: 10 }],
       });
