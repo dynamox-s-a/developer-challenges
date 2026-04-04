@@ -23,18 +23,34 @@ describe("POST /api/series", () => {
 
   it("should return 201 on success", async () => {
     const validData = {
+      _id: "mongo-id",
+      __v: 0,
       seriesId: "S1",
       unit: "C",
-      points: [{ timestamp: new Date().toISOString(), value: 10 }],
+      createdAt: new Date("2026-04-04T16:16:11.845Z"),
+      points: [{ timestamp: new Date("2024-01-01T00:00:00.000Z"), value: 10 }],
     };
 
     mockedModel.findOne.mockResolvedValue(null);
     mockedModel.create.mockResolvedValue(validData as any);
 
-    const response = await request(app).post("/api/series").send(validData);
+    const response = await request(app)
+      .post("/api/series")
+      .send({
+        seriesId: "S1",
+        unit: "C",
+        points: [{ timestamp: "2024-01-01T00:00:00.000Z", value: 10 }],
+      });
 
     expect(response.status).toBe(201);
-    expect(response.body.seriesId).toBe("S1");
+    expect(response.body).toEqual({
+      series_id: "S1",
+      unit: "C",
+      points: [{ timestamp: "2024-01-01T00:00:00.000Z", value: 10 }],
+      created_at: "2026-04-04T16:16:11.845Z",
+    });
+    expect(response.body._id).toBeUndefined();
+    expect(response.body.__v).toBeUndefined();
   });
 });
 
@@ -49,15 +65,18 @@ describe("GET /api/series/count", () => {
     const response = await request(app).get("/api/series/count");
 
     expect(response.status).toBe(200);
-    expect(response.body.total).toBe(5);
+    expect(response.body).toEqual({ total_series: 5 });
   });
 });
 
 describe("GET /api/series/:seriesId", () => {
   const mockSeries = {
+    _id: "mongo-id",
+    __v: 0,
     seriesId: "S1",
     unit: "C",
-    points: [{ timestamp: new Date().toISOString(), value: 25 }],
+    createdAt: new Date("2026-04-04T16:16:11.845Z"),
+    points: [{ timestamp: new Date("2024-01-01T00:00:00.000Z"), value: 25 }],
   };
 
   beforeEach(() => {
@@ -67,15 +86,18 @@ describe("GET /api/series/:seriesId", () => {
   it("should return 200 and the series data if it exists", async () => {
     mockedModel.findOne.mockResolvedValue(mockSeries as any);
 
-    const response = await request(app).get(
-      `/api/series/${mockSeries.seriesId}`,
-    );
+    const response = await request(app).get("/api/series/S1");
 
     expect(response.status).toBe(200);
-    expect(response.body.seriesId).toBe(mockSeries.seriesId);
-    expect(mockedModel.findOne).toHaveBeenCalledWith({
-      seriesId: mockSeries.seriesId,
+    expect(response.body).toEqual({
+      series_id: "S1",
+      unit: "C",
+      points: [{ timestamp: "2024-01-01T00:00:00.000Z", value: 25 }],
+      created_at: "2026-04-04T16:16:11.845Z",
     });
+    expect(response.body._id).toBeUndefined();
+    expect(response.body.__v).toBeUndefined();
+    expect(mockedModel.findOne).toHaveBeenCalledWith({ seriesId: "S1" });
   });
 
   it("should return 404 if the series does not exist", async () => {

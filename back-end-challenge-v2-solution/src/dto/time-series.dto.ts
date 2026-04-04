@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { TimeSeries } from "../models/TimeSeries.js";
 
 const seriesIdSchema = z.string().trim().min(1, "seriesId is required");
 
@@ -24,3 +25,21 @@ export const deleteTimeSeriesSchema = z.object({
 });
 
 export type CreateTimeSeriesDto = z.infer<typeof createTimeSeriesSchema>;
+
+export const toTimeSeriesResponse = (series: TimeSeries) => {
+  return {
+    series_id: series.seriesId,
+    unit: series.unit,
+    points: series.points.map((point) => ({
+      timestamp: point.timestamp.toISOString(),
+      value: point.value,
+    })),
+    created_at: series.createdAt.toISOString(),
+  };
+};
+
+export const toCountResponse = (total: Number) => {
+  return {
+    total_series: Number(total),
+  };
+};
