@@ -31,3 +31,11 @@ export async function getBySeriesId(seriesId: string): Promise<TimeSeries> {
 
   return series;
 }
+
+export async function deleteBySeriesId(seriesId: string): Promise<void> {
+  const deletedSeries = await TimeSeriesModel.findOneAndDelete({ seriesId });
+
+  if (!deletedSeries) {
+    throw new AppError(`Time series with ID ${seriesId} not found.`, 404);
+  }
+}

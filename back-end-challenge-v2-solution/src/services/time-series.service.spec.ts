@@ -1,9 +1,8 @@
 import AppError from "../errors/AppError.js";
 import { TimeSeriesModel } from "../models/TimeSeries.js";
-import { createTimeSeries } from "./time-series.service.js";
+import { createTimeSeries, deleteBySeriesId } from "./time-series.service.js";
 
 jest.mock("../models/TimeSeries");
-
 const mockedModel = jest.mocked(TimeSeriesModel);
 
 describe("TimeSeries Service", () => {
@@ -46,5 +45,31 @@ describe("TimeSeries Service", () => {
       seriesId: mockData.seriesId,
     });
     expect(mockedModel.create).not.toHaveBeenCalled();
+  });
+
+  it("should delete an existing time series", async () => {
+    mockedModel.findOneAndDelete.mockResolvedValue(mockData as any);
+
+    await deleteBySeriesId(mockData.seriesId);
+
+    expect(mockedModel.findOneAndDelete).toHaveBeenCalledWith({
+      seriesId: mockData.seriesId,
+    });
+  });
+
+  it("should throw if the time series to delete does not exist", async () => {
+    mockedModel.findOneAndDelete.mockResolvedValue(null);
+
+    const promise = deleteBySeriesId(mockData.seriesId);
+
+    await expect(promise).rejects.toBeInstanceOf(AppError);
+    await expect(promise).rejects.toMatchObject({
+      message: `Time series with ID ${mockData.seriesId} not found.`,
+      statusCode: 404,
+    });
+
+    expect(mockedModel.findOneAndDelete).toHaveBeenCalledWith({
+      seriesId: mockData.seriesId,
+    });
   });
 });
