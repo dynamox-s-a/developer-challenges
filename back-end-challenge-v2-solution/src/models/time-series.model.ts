@@ -21,7 +21,6 @@ const TimeSeriesSchema = new Schema(
 );
 
 TimeSeriesSchema.index({ seriesId: 1 }, { unique: true });
-TimeSeriesSchema.index({ "points.timestamp": 1 });
 
 export type TimeSeries = InferSchemaType<typeof TimeSeriesSchema>;
 
