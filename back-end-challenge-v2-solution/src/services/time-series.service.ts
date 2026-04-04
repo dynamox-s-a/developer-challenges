@@ -21,3 +21,13 @@ export async function createTimeSeries({
 export async function countTimeSeries(): Promise<Number> {
   return await TimeSeriesModel.countDocuments();
 }
+
+export async function getBySeriesId(seriesId: string): Promise<TimeSeries> {
+  const series = await TimeSeriesModel.findOne({ seriesId });
+
+  if (!series) {
+    throw new AppError(`Time series with ID ${seriesId} not found.`, 404);
+  }
+
+  return series;
+}

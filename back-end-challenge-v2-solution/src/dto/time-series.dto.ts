@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+const seriesIdSchema = z.string().trim().min(1, "seriesId is required");
+
 const PointSchema = z.object({
   timestamp: z.iso
     .datetime({ message: "timestamp must be ISO 8601 format" })
@@ -8,9 +10,13 @@ const PointSchema = z.object({
 });
 
 export const createTimeSeriesSchema = z.object({
-  seriesId: z.string().trim().min(1, "seriesId is required"),
+  seriesId: seriesIdSchema,
   unit: z.string().trim().min(1, "unit is required"),
   points: z.array(PointSchema).min(1, "points must be a non-empty array"),
+});
+
+export const getBySeriesIdSchema = z.object({
+  seriesId: seriesIdSchema,
 });
 
 export type CreateTimeSeriesDto = z.infer<typeof createTimeSeriesSchema>;

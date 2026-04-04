@@ -44,3 +44,40 @@ describe("GET /api/series/count", () => {
     expect(response.body.total).toBe(5);
   });
 });
+
+describe("GET /api/series/:seriesId", () => {
+  const mockSeries = {
+    seriesId: "S1",
+    unit: "C",
+    points: [{ timestamp: new Date().toISOString(), value: 25 }],
+  };
+
+  it("should return 200 and the series data if it exists", async () => {
+    mockedModel.findOne.mockResolvedValue(mockSeries as any);
+
+    const response = await request(app).get(
+      `/api/series/${mockSeries.seriesId}`,
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.body.seriesId).toBe(mockSeries.seriesId);
+    expect(mockedModel.findOne).toHaveBeenCalledWith({
+      seriesId: mockSeries.seriesId,
+    });
+  });
+
+  it("should return 404 if the series does not exist", async () => {
+    mockedModel.findOne.mockResolvedValue(null);
+
+    const response = await request(app).get("/api/series/ID-INEXISTENTE");
+
+    expect(response.status).toBe(404);
+    expect(response.body.message).toContain("not found");
+  });
+
+  it("should return 400 if seriesId is invalid/empty", async () => {
+    const response = await request(app).get("/api/series/%20");
+
+    expect(response.status).toBe(400);
+  });
+});

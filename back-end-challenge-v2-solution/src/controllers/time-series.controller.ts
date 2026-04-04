@@ -10,3 +10,9 @@ export async function count(req: Request, res: Response) {
   const total = await service.countTimeSeries();
   return res.status(200).json({ total });
 }
+
+export async function getById(req: Request, res: Response) {
+  const { seriesId } = req.params as { seriesId: string };
+  const series = await service.getBySeriesId(seriesId);
+  return res.status(200).json(series);
+}
