@@ -3,6 +3,7 @@ import * as controller from "../controllers/time-series.controller.js";
 import { validateBody, validateParams } from "../middlewares/validate.js";
 import {
   createTimeSeriesSchema,
+  deleteTimeSeriesSchema,
   getBySeriesIdSchema,
 } from "../dto/time-series.dto.js";
 
@@ -14,6 +15,11 @@ router.get(
   "/series/:seriesId",
   validateParams(getBySeriesIdSchema),
   controller.getById,
+);
+router.delete(
+  "/series/:seriesId",
+  validateParams(deleteTimeSeriesSchema),
+  controller.remove,
 );
 
 export default router;

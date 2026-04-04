@@ -16,3 +16,9 @@ export async function getById(req: Request, res: Response) {
   const series = await service.getBySeriesId(seriesId);
   return res.status(200).json(series);
 }
+
+export async function remove(req: Request, res: Response) {
+  const { seriesId } = req.params as { seriesId: string };
+  await service.deleteBySeriesId(seriesId);
+  return res.sendStatus(204);
+}

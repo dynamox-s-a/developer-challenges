@@ -19,4 +19,8 @@ export const getBySeriesIdSchema = z.object({
   seriesId: seriesIdSchema,
 });
 
+export const deleteTimeSeriesSchema = z.object({
+  seriesId: seriesIdSchema,
+});
+
 export type CreateTimeSeriesDto = z.infer<typeof createTimeSeriesSchema>;

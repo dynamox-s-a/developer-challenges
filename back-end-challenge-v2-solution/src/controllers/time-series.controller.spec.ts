@@ -6,6 +6,10 @@ jest.mock("../models/TimeSeries.js");
 const mockedModel = jest.mocked(TimeSeriesModel);
 
 describe("POST /api/series", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("should return 400 if points array is empty (Zod validation)", async () => {
     const response = await request(app).post("/api/series").send({
       seriesId: "S1",
@@ -35,6 +39,10 @@ describe("POST /api/series", () => {
 });
 
 describe("GET /api/series/count", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("should return the total number of time series", async () => {
     mockedModel.countDocuments.mockResolvedValue(5);
 
@@ -51,6 +59,10 @@ describe("GET /api/series/:seriesId", () => {
     unit: "C",
     points: [{ timestamp: new Date().toISOString(), value: 25 }],
   };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
   it("should return 200 and the series data if it exists", async () => {
     mockedModel.findOne.mockResolvedValue(mockSeries as any);
@@ -77,6 +89,38 @@ describe("GET /api/series/:seriesId", () => {
 
   it("should return 400 if seriesId is invalid/empty", async () => {
     const response = await request(app).get("/api/series/%20");
+
+    expect(response.status).toBe(400);
+  });
+});
+
+describe("DELETE /api/series/:seriesId", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("should return 204 if the series is deleted", async () => {
+    mockedModel.findOneAndDelete.mockResolvedValue({ seriesId: "S1" } as any);
+
+    const response = await request(app).delete("/api/series/S1");
+
+    expect(response.status).toBe(204);
+    expect(mockedModel.findOneAndDelete).toHaveBeenCalledWith({
+      seriesId: "S1",
+    });
+  });
+
+  it("should return 404 if the series does not exist", async () => {
+    mockedModel.findOneAndDelete.mockResolvedValue(null);
+
+    const response = await request(app).delete("/api/series/ID-INEXISTENTE");
+
+    expect(response.status).toBe(404);
+    expect(response.body.message).toContain("not found");
+  });
+
+  it("should return 400 if seriesId is invalid/empty", async () => {
+    const response = await request(app).delete("/api/series/%20");
 
     expect(response.status).toBe(400);
   });
