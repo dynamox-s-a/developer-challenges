@@ -12,6 +12,11 @@ const router = Router();
 router.post("/series", validateBody(createTimeSeriesSchema), controller.create);
 router.get("/series/count", controller.count);
 router.get(
+  "/series/:seriesId/metrics",
+  validateParams(getBySeriesIdSchema),
+  controller.getMetrics,
+);
+router.get(
   "/series/:seriesId",
   validateParams(getBySeriesIdSchema),
   controller.getById,

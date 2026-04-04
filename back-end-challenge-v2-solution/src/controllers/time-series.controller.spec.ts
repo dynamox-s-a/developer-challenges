@@ -116,6 +116,60 @@ describe("GET /api/series/:seriesId", () => {
   });
 });
 
+describe("GET /api/series/:seriesId/metrics", () => {
+  const mockSeries = {
+    seriesId: "S1",
+    unit: "C",
+    points: [
+      { timestamp: new Date("2024-01-01T00:00:00.000Z"), value: 10 },
+      { timestamp: new Date("2024-01-02T00:00:00.000Z"), value: 30 },
+      { timestamp: new Date("2024-01-03T00:00:00.000Z"), value: 20 },
+    ],
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("should return 200 and the metrics if the series exists", async () => {
+    mockedModel.findOne.mockResolvedValue(mockSeries as any);
+
+    const response = await request(app).get("/api/series/S1/metrics");
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      series_id: "S1",
+      unit: "C",
+      total_points: 3,
+      min_value: 10,
+      max_value: 30,
+      average_value: 20,
+      first_timestamp: "2024-01-01T00:00:00.000Z",
+      last_timestamp: "2024-01-03T00:00:00.000Z",
+    });
+    expect(mockedModel.findOne).toHaveBeenCalledWith({
+      seriesId: "S1",
+    });
+  });
+
+  it("should return 404 if the series for metrics does not exist", async () => {
+    mockedModel.findOne.mockResolvedValue(null);
+
+    const response = await request(app).get(
+      "/api/series/ID-INEXISTENTE/metrics",
+    );
+
+    expect(response.status).toBe(404);
+    expect(response.body.message).toContain("not found");
+  });
+
+  it("should return 400 if seriesId for metrics is invalid/empty", async () => {
+    const response = await request(app).get("/api/series/%20/metrics");
+
+    expect(response.status).toBe(400);
+  });
+});
+
 describe("DELETE /api/series/:seriesId", () => {
   beforeEach(() => {
     jest.clearAllMocks();

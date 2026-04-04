@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {
   toCountResponse,
+  toTimeSeriesMetricsResponse,
   toTimeSeriesResponse,
 } from "../dto/time-series.dto.js";
 import * as service from "../services/time-series.service.js";
@@ -19,6 +20,12 @@ export async function getById(req: Request, res: Response) {
   const { seriesId } = req.params as { seriesId: string };
   const series = await service.getBySeriesId(seriesId);
   return res.status(200).json(toTimeSeriesResponse(series));
+}
+
+export async function getMetrics(req: Request, res: Response) {
+  const { seriesId } = req.params as { seriesId: string };
+  const metrics = await service.getMetricsBySeriesId(seriesId);
+  return res.status(200).json(toTimeSeriesMetricsResponse(metrics));
 }
 
 export async function remove(req: Request, res: Response) {
