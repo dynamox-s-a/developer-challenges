@@ -186,7 +186,7 @@ PORT=3000
 npm run db:start
 ```
 
-### 5. Start the application
+### 5. Start the application in development mode
 
 ```bash
 npm run dev
@@ -196,6 +196,20 @@ By default, the API will be available at:
 
 ```text
 http://localhost:3000
+```
+
+### 6. Build and start the application
+
+Compile the project:
+
+```bash
+npm run build
+```
+
+Start the compiled server:
+
+```bash
+npm start
 ```
 
 ## Running Tests
