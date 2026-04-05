@@ -21,6 +21,28 @@ describe("POST /api/series", () => {
     expect(response.body.message).toBe("Validation failed");
   });
 
+  it("should return 400 if points contain duplicated timestamps", async () => {
+    const response = await request(app).post("/api/series").send({
+      series_id: "S1",
+      unit: "C",
+      points: [
+        { timestamp: "2024-01-01T00:00:00.000Z", value: 10 },
+        { timestamp: "2024-01-01T00:00:00.000Z", value: 20 },
+      ],
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe("Validation failed");
+    expect(response.body.errors).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          field: "points.1.timestamp",
+          message: "timestamp must be unique within the same series",
+        }),
+      ]),
+    );
+  });
+
   it("should return 201 on success", async () => {
     const validData = {
       _id: "mongo-id",

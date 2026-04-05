@@ -11,11 +11,29 @@ const PointSchema = z.object({
   value: z.number(),
 });
 
-export const createTimeSeriesSchema = z.object({
-  series_id: seriesIdSchema,
-  unit: z.string().trim().min(1, "unit is required"),
-  points: z.array(PointSchema).min(1, "points must be a non-empty array"),
-});
+export const createTimeSeriesSchema = z
+  .object({
+    series_id: seriesIdSchema,
+    unit: z.string().trim().min(1, "unit is required"),
+    points: z.array(PointSchema).min(1, "points must be a non-empty array"),
+  })
+  .superRefine((data, ctx) => {
+    const seen = new Set<string>();
+
+    data.points.forEach((point, index) => {
+      const key = point.timestamp.toISOString();
+
+      if (seen.has(key)) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["points", index, "timestamp"],
+          message: "timestamp must be unique within the same series",
+        });
+      }
+
+      seen.add(key);
+    });
+  });
 
 export const getBySeriesIdSchema = z.object({
   series_id: seriesIdSchema,
