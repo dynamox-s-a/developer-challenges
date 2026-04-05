@@ -81,13 +81,6 @@ Example response:
 ```json
 {
   "series_id": "S1",
-  "unit": "C",
-  "points": [
-    {
-      "timestamp": "2024-01-01T00:00:00.000Z",
-      "value": 10
-    }
-  ],
   "created_at": "2026-04-04T16:16:11.845Z"
 }
 ```
@@ -144,8 +137,11 @@ Returns the basic application and MongoDB connection status.
 - `series_id` must be a non-empty string
 - `unit` must be a non-empty string
 - `points` must contain at least one item
+- `points` must contain at most `2000` items
 - `timestamp` must use ISO 8601 format
+- timestamps must be unique within the same time series
 - `series_id` must be unique per series
+- JSON request payloads above `512kb` are rejected with `413 Payload Too Large`
 
 Notes:
 
@@ -245,14 +241,17 @@ src/
 - response serialization is handled in the DTO layer
 - `seriesId` has a unique index in MongoDB
 - metrics are calculated in memory after retrieving the full series
+- request size and number of points are bounded to keep ingestion latency under control
 
 ## Test Coverage
 
 - invalid payload validation
+- duplicate timestamp validation within the same time series
+- maximum points validation for time series creation
 - time series creation
 - time series count
 - full time series retrieval by `series_id`
 - time series metrics retrieval
 - time series deletion
-- `400` and `404` scenarios
+- `400`, `404`, and `413` scenarios
 - service tests and HTTP tests with Supertest
