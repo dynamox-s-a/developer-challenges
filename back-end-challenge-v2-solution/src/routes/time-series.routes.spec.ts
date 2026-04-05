@@ -22,14 +22,16 @@ describe("POST /api/series", () => {
   });
 
   it("should return 400 if points contain duplicated timestamps", async () => {
-    const response = await request(app).post("/api/series").send({
-      series_id: "S1",
-      unit: "C",
-      points: [
-        { timestamp: "2024-01-01T00:00:00.000Z", value: 10 },
-        { timestamp: "2024-01-01T00:00:00.000Z", value: 20 },
-      ],
-    });
+    const response = await request(app)
+      .post("/api/series")
+      .send({
+        series_id: "S1",
+        unit: "C",
+        points: [
+          { timestamp: "2024-01-01T00:00:00.000Z", value: 10 },
+          { timestamp: "2024-01-01T00:00:00.000Z", value: 20 },
+        ],
+      });
 
     expect(response.status).toBe(400);
     expect(response.body.message).toBe("Validation failed");
@@ -91,7 +93,7 @@ describe("GET /api/series/count", () => {
   });
 });
 
-describe("GET /api/series/:seriesId", () => {
+describe("GET /api/series/:series_id", () => {
   const mockSeries = {
     _id: "mongo-id",
     __v: 0,
@@ -138,7 +140,7 @@ describe("GET /api/series/:seriesId", () => {
   });
 });
 
-describe("GET /api/series/:seriesId/metrics", () => {
+describe("GET /api/series/:series_id/metrics", () => {
   const mockSeries = {
     seriesId: "S1",
     unit: "C",
@@ -192,7 +194,7 @@ describe("GET /api/series/:seriesId/metrics", () => {
   });
 });
 
-describe("DELETE /api/series/:seriesId", () => {
+describe("DELETE /api/series/:series_id", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
