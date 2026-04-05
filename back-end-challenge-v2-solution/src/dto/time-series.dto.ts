@@ -2,6 +2,7 @@ import { z } from "zod";
 import { TimeSeries } from "../models/time-series.model.js";
 import { TimeSeriesMetrics } from "../models/time-series.types.js";
 
+const MAX_POINTS_PER_SERIES = 2000;
 const seriesIdSchema = z.string().trim().min(1, "series_id is required");
 
 const PointSchema = z.object({
@@ -15,7 +16,13 @@ export const createTimeSeriesSchema = z
   .object({
     series_id: seriesIdSchema,
     unit: z.string().trim().min(1, "unit is required"),
-    points: z.array(PointSchema).min(1, "points must be a non-empty array"),
+    points: z
+      .array(PointSchema)
+      .min(1, "points must be a non-empty array")
+      .max(
+        MAX_POINTS_PER_SERIES,
+        `points must contain at most ${MAX_POINTS_PER_SERIES} items`,
+      ),
   })
   .superRefine((data, ctx) => {
     const seen = new Set<string>();

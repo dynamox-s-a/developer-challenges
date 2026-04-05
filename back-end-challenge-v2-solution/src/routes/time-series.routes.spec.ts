@@ -45,6 +45,32 @@ describe("POST /api/series", () => {
     );
   });
 
+  it("should return 400 if points exceed the maximum supported size", async () => {
+    const points = Array.from({ length: 2001 }, (_, index) => ({
+      timestamp: new Date(
+        Date.UTC(2024, 0, 1, 0, 0, index),
+      ).toISOString(),
+      value: index,
+    }));
+
+    const response = await request(app).post("/api/series").send({
+      series_id: "S1",
+      unit: "C",
+      points,
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe("Validation failed");
+    expect(response.body.errors).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          field: "points",
+          message: "points must contain at most 2000 items",
+        }),
+      ]),
+    );
+  });
+
   it("should return 201 on success", async () => {
     const validData = {
       _id: "mongo-id",

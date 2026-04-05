@@ -6,7 +6,7 @@ import AppError from "./errors/app-error.js";
 
 const app: Application = express();
 
-app.use(express.json());
+app.use(express.json({ limit: "512kb" }));
 app.use("/api", timeSeriesRoutes);
 
 app.get("/health", async (_req, res) => {
