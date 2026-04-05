@@ -57,6 +57,11 @@ export type PointResponse = {
   value: number;
 };
 
+export type TimeSeriesCreationResponse = {
+  series_id: string;
+  created_at: string;
+};
+
 export type TimeSeriesResponse = {
   series_id: string;
   unit: string;
@@ -77,6 +82,15 @@ export type TimeSeriesMetricsResponse = {
   average_value: number;
   first_timestamp: string;
   last_timestamp: string;
+};
+
+export const toTimeSeriesCreationResponse = (
+  series: TimeSeries,
+): TimeSeriesCreationResponse => {
+  return {
+    series_id: series.seriesId,
+    created_at: series.createdAt.toISOString(),
+  };
 };
 
 export const toTimeSeriesResponse = (

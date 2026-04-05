@@ -47,9 +47,7 @@ describe("POST /api/series", () => {
 
   it("should return 400 if points exceed the maximum supported size", async () => {
     const points = Array.from({ length: 2001 }, (_, index) => ({
-      timestamp: new Date(
-        Date.UTC(2024, 0, 1, 0, 0, index),
-      ).toISOString(),
+      timestamp: new Date(Date.UTC(2024, 0, 1, 0, 0, index)).toISOString(),
       value: index,
     }));
 
@@ -95,8 +93,6 @@ describe("POST /api/series", () => {
     expect(response.status).toBe(201);
     expect(response.body).toEqual({
       series_id: "S1",
-      unit: "C",
-      points: [{ timestamp: "2024-01-01T00:00:00.000Z", value: 10 }],
       created_at: "2026-04-04T16:16:11.845Z",
     });
     expect(response.body._id).toBeUndefined();
