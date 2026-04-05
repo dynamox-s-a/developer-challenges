@@ -1,0 +1,27 @@
+import express, { Application } from "express";
+import { getStatusDB } from "./config/database.js";
+import timeSeriesRoutes from "./routes/time-series.routes.js";
+import { errorHandler } from "./middlewares/error-handler.js";
+import AppError from "./errors/app-error.js";
+
+const app: Application = express();
+
+app.use(express.json({ limit: "512kb" }));
+app.use("/api", timeSeriesRoutes);
+
+app.get("/health", async (_req, res) => {
+  const mongoStatus = await getStatusDB();
+  res.json({
+    status: "ok",
+    mongo: mongoStatus,
+    timestamp: new Date().toISOString(),
+  });
+});
+
+app.use((req, res) => {
+  throw new AppError(`Route ${req.originalUrl} not found`, 404);
+});
+
+app.use(errorHandler);
+
+export default app;
