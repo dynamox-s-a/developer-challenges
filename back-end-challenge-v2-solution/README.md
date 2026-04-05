@@ -2,6 +2,8 @@
 
 Implementation of `back-end-challenge-v2.md` using Node.js, Express, MongoDB, and Jest.
 
+**All commands in this README must be run from the back-end-challenge-v2-solution directory.**
+
 ## Overview
 
 This API allows clients to:
@@ -41,6 +43,7 @@ https://developer-challenges-n2rp.onrender.com/health
 ```
 
 Note:
+
 - the deployed version uses free-tier cloud services
 - response times may vary due to shared infrastructure, cold starts, and network latency between the application and the managed database
 - local execution is a more reliable reference for evaluating the application itself than the free-tier deployment environment
