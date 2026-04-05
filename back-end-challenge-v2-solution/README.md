@@ -24,6 +24,27 @@ The public API contract is standardized in `snake_case`.
 - Jest + Supertest for tests
 - Docker for local MongoDB
 
+## Deployed API
+
+The application is also deployed as a bonus feature.
+
+Base URL:
+
+```text
+https://developer-challenges-n2rp.onrender.com
+```
+
+Health check:
+
+```text
+https://developer-challenges-n2rp.onrender.com/health
+```
+
+Note:
+- the deployed version uses free-tier cloud services
+- response times may vary due to shared infrastructure, cold starts, and network latency between the application and the managed database
+- local execution is a more reliable reference for evaluating the application itself than the free-tier deployment environment
+
 ## Prerequisites
 
 Make sure the following tools are installed on your machine:
@@ -145,6 +166,7 @@ Returns the basic application and MongoDB connection status.
 
 Notes:
 
+- repeated timestamps are allowed across different time series
 - series uniqueness is enforced by `seriesId`
 
 ## How to Run
