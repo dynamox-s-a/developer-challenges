@@ -11,7 +11,10 @@
     "start": "node dist/server.js",
     "dev": "tsx watch --env-file=.env src/server.ts",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "db:start": "docker compose up -d",
+    "db:stop": "docker compose stop",
+    "db:down": "docker compose down"
   },
   "dependencies": {
     "express": "^5.2.1",
