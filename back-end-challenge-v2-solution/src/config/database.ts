@@ -1,10 +1,8 @@
 import mongoose from "mongoose";
-
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017";
-const MONGODB_DATABASE = process.env.MONGODB_DATABASE || "dynamox";
+import { env } from "./env.js";
 
 export async function connectDB(): Promise<typeof mongoose> {
-  return mongoose.connect(`${MONGODB_URI}/${MONGODB_DATABASE}`);
+  return mongoose.connect(`${env.MONGODB_URI}/${env.MONGODB_DATABASE}`);
 }
 
 export async function disconnectDB(): Promise<void> {

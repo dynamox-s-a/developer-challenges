@@ -1,15 +1,14 @@
 import app from "./app.js";
 import { connectDB } from "./config/database.js";
-
-const PORT = process.env.PORT || 3000;
+import { env } from "./config/env.js";
 
 async function start() {
   try {
     await connectDB();
     console.log("✓ Connected to MongoDB");
 
-    app.listen(PORT, () => {
-      console.log(`✓ Server running on port ${PORT}`);
+    app.listen(env.PORT, () => {
+      console.log(`✓ Server running on port ${env.PORT}`);
     });
   } catch (error) {
     console.error("✗ Failed to start server:", error);
