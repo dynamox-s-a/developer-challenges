@@ -1,4 +1,4 @@
-FROM node:20-alpine AS builder
+FROM node:20-alpine AS base
 
 WORKDIR /app
 
@@ -9,6 +9,8 @@ COPY tsconfig.json ./
 COPY jest.config.ts ./
 COPY src ./src
 COPY tests ./tests
+
+FROM base AS builder
 
 RUN npm run build
 

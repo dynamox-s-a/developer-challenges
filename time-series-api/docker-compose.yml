@@ -8,11 +8,27 @@ services:
       MONGO_INITDB_DATABASE: time-series-api
     volumes:
       - mongo_data:/data/db
-    healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    container_name: time-series-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    container_name: time-series-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   api:
     build:
@@ -20,15 +36,34 @@ services:
       dockerfile: Dockerfile
     container_name: time-series-api
     depends_on:
-      mongo:
-        condition: service_healthy
+      - mongo
+      - kafka
     ports:
       - "3000:3000"
     environment:
       NODE_ENV: production
       PORT: 3000
       MONGODB_URI: mongodb://mongo:27017/time-series-api
+      KAFKA_ENABLED: "true"
+      KAFKA_CLIENT_ID: time-series-api
+      KAFKA_BROKERS: kafka:9092
+      KAFKA_TOPIC_TIME_SERIES_CREATED: time-series.created
+      KAFKA_TOPIC_TIME_SERIES_DELETED: time-series.deleted
     restart: on-failure
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    container_name: time-series-api-test
+    depends_on:
+      - mongo
+    environment:
+      NODE_ENV: test
+      MONGODB_URI: mongodb://mongo:27017/time-series-api-test
+      KAFKA_ENABLED: "false"
+    command: npm test
 
 volumes:
   mongo_data:
