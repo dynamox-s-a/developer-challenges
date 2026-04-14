@@ -3,6 +3,14 @@ import { env } from './env';
 
 let producer: Producer | null = null;
 let isConnected = false;
+const MAX_RETRIES = 5;
+const RETRY_DELAY_MS = 2000;
+
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
 
 function getProducer(): Producer {
   if (!producer) {
@@ -22,9 +30,25 @@ export async function connectKafkaProducer(): Promise<void> {
     return;
   }
 
-  const kafkaProducer = getProducer();
-  await kafkaProducer.connect();
-  isConnected = true;
+  let currentAttempt = 0;
+
+  while (currentAttempt < MAX_RETRIES) {
+    try {
+      const kafkaProducer = getProducer();
+      await kafkaProducer.connect();
+      isConnected = true;
+      return;
+    } catch (error) {
+      currentAttempt += 1;
+      isConnected = false;
+
+      if (currentAttempt >= MAX_RETRIES) {
+        throw error;
+      }
+
+      await delay(RETRY_DELAY_MS);
+    }
+  }
 }
 
 export async function disconnectKafkaProducer(): Promise<void> {
@@ -45,24 +69,36 @@ export async function sendKafkaMessage(
     return;
   }
 
-  try {
-    if (!isConnected) {
-      await connectKafkaProducer();
+  let currentAttempt = 0;
+
+  while (currentAttempt < MAX_RETRIES) {
+    try {
+      if (!isConnected) {
+        await connectKafkaProducer();
+      }
+
+      const kafkaProducer = getProducer();
+
+      await kafkaProducer.send({
+        topic,
+        messages: [
+          {
+            key,
+            value: JSON.stringify(payload),
+          },
+        ],
+      });
+
+      return;
+    } catch (error) {
+      currentAttempt += 1;
+      isConnected = false;
+
+      if (currentAttempt >= MAX_RETRIES) {
+        throw error;
+      }
+
+      await delay(RETRY_DELAY_MS);
     }
-
-    const kafkaProducer = getProducer();
-
-    await kafkaProducer.send({
-      topic,
-      messages: [
-        {
-          key,
-          value: JSON.stringify(payload),
-        },
-      ],
-    });
-  } catch (error) {
-    isConnected = false;
-    throw error;
   }
 }

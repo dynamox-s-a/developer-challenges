@@ -20,8 +20,14 @@ logs-kafka:
 	docker compose logs -f kafka
 
 topics:
-	docker exec time-series-kafka kafka-topics --create --topic time-series.created --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1 || true
-	docker exec time-series-kafka kafka-topics --create --topic time-series.deleted --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1 || true
+	@echo "Kafka topics are created automatically during 'make up'."
+
+ps:
+	docker compose ps
+
+restart:
+	docker compose down
+	docker compose up -d --build
 
 test:
 	npm test

@@ -1,5 +1,5 @@
 import { app } from './app';
-import { connectDatabase } from './config/database';
+import { connectDatabase, disconnectDatabase } from './config/database';
 import { env } from './config/env';
 import { disconnectKafkaProducer } from './config/kafka';
 
@@ -14,6 +14,7 @@ async function bootstrap(): Promise<void> {
     const shutdown = async (): Promise<void> => {
       server.close(async () => {
         await disconnectKafkaProducer();
+        await disconnectDatabase();
         process.exit(0);
       });
     };
