@@ -11,6 +11,14 @@ Challenge coverage:
 - Retrieve the total number of stored time series
 - Bonus: Kafka publishing on create/delete
 
+## Bonus items
+
+- Live deployment on Render
+- MongoDB Atlas as persistent cloud database
+- Kafka integration for create/delete events
+- Load tests with `autocannon`
+- Automated unit and integration tests
+
 ## Stack
 
 - Node.js 20
@@ -98,6 +106,20 @@ make down
 ```
 
 This starts MongoDB, Kafka, topic bootstrap, and the API. Kafka topics are created automatically during startup.
+
+## Deployment
+
+Live API URL:
+
+```text
+https://time-series-api-c670.onrender.com
+```
+
+Production setup used for the public deployment:
+
+- Render for the API
+- MongoDB Atlas for persistence
+- `KAFKA_ENABLED=false` in the deployed environment
 
 ## Tests
 
@@ -190,6 +212,12 @@ Response:
 }
 ```
 
+Deployed health check:
+
+```text
+https://time-series-api-c670.onrender.com/health
+```
+
 ## Validation and errors
 
 - `samples` must contain at least one item
@@ -252,3 +280,4 @@ Notes:
 - All measured scenarios stayed below `350 ms`, including the worst observed latency in these runs.
 - No errors or timeouts were observed during these runs.
 - Running the API directly on the host produced lower latency than the earlier full-Docker setup, which is expected due to lower container overhead.
+- The public Render deployment uses free-tier infrastructure, so real internet latency can be higher than the local measurements above.
