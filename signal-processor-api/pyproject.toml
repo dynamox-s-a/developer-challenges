@@ -1,0 +1,12 @@
+[project]
+name = "signal-processor-api"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi[standard]>=0.136.1",
+    "pydantic>=2.13.4",
+    "sqlalchemy>=2.0.49",
+    "sqlmodel>=0.0.38",
+]
