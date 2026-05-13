@@ -1,34 +1,37 @@
-import os
-import subprocess
-import sys
+from fastapi.testclient import TestClient
+from main import app
 
-def run_command(command, description):
-    print(f"\n--- {description} ---")
-    try:
-        # Executa o comando e mostra o output no terminal em tempo real
-        subprocess.check_call(command, shell=True)
-    except subprocess.CalledProcessError as e:
-        print(f"\n❌ Error during: {description}")
-        sys.exit(1)
+client = TestClient(app)
 
-def main():
-    # 1. Nome da imagem
-    image_name = "dynamox-api"
+def test_read_root():
+    """Corrigido: Agora espera o que o seu main.py realmente retorna"""
+    response = client.get("/")
+    assert response.status_code == 200
+    # O seu main.py retorna status e database, não 'message'
+    assert response.json() == {"status": "Online", "database": "Connected"}
 
-    print("🚀 Starting Dynamox API Automation Script")
+def test_create_and_read_metrics():
+    """Corrigido: Envia name na URL para evitar o erro 422"""
+    series_name = "engine_01"
+    payload = [10.0, 20.0, 30.0]
+    
+    # name como query param (?name=...) e data como json body
+    response = client.post(f"/series?name={series_name}", json=payload)
+    assert response.status_code == 200
+    assert response.json() == {"message": f"Series '{series_name}' stored successfully"}
+    
+    # 2. Buscar métricas
+    response = client.get(f"/series/{series_name}/metrics")
+    assert response.status_code == 200
+    assert response.json()["metrics"]["mean"] == 20.0
 
-    # 2. Parar containers antigos para não dar conflito de porta
-    run_command(f"docker ps -q --filter ancestor={image_name} | xargs -r docker stop", "Stopping old containers")
-
-    # 3. Buildar a imagem
-    run_command(f"docker build -t {image_name} .", "Building Docker image")
-
-    # 4. Rodar os testes antes de subir (Garantia de Qualidade)
-    run_command(f"docker run {image_name} pytest", "Running Automated Tests")
-
-    # 5. Se os testes passaram, rodar a aplicação
-    print(f"\n✅ Tests passed! Starting API on http://localhost:8000")
-    run_command(f"docker run -p 8000:8000 {image_name}", "Starting API")
-
-if __name__ == "__main__":
-    main()
+def test_delete_series():
+    """Valida a remoção"""
+    series_name = "engine_01"
+    response = client.delete(f"/series/{series_name}")
+    assert response.status_code == 200
+    assert response.json() == {"message": f"Series '{series_name}' deleted"}
+    
+    # Confirma o 404
+    response = client.get(f"/series/{series_name}/metrics")
+    assert response.status_code == 404
