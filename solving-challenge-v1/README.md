@@ -1,28 +1,26 @@
 # Dynamox Signal Processing API 🚀
 
-This is a high-performance FastAPI solution for time series data processing.
+Esta é uma solução de alta performance para processamento de séries temporais, desenvolvida com foco em **baixa latência**, **observabilidade** e **automação de infraestrutura**.
 
-## 🛠 Technologies
-- **Python 3.11**
-- **FastAPI** (High performance)
-- **Pandas** (Data metrics)
-- **Pytest** (Automated testing)
-- **Docker** (Containerization)
+## 🛠 Tecnologias e Decisões Técnicas
 
-## 🚀 How to Run
+*   **FastAPI:** Escolhido pela performance assíncrona, garantindo latência < 350ms.
+*   **PostgreSQL:** Persistência robusta com suporte a JSON para flexibilidade de dados.
+*   **Pandas:** Processamento vetorial para cálculo de métricas (Mean, Max, Min) com alta eficiência.
+*   **Docker & Compose:** Orquestração completa da stack (API + DB + Tester).
+*   **Pytest:** Suíte de testes unitários para garantir a integridade da lógica de negócio.
 
-1. **Build the image:**
+## 📈 Diferenciais de Observabilidade (SRE)
 
-   docker build -t dynamox-api .
+Diferente de uma API comum, esta solução inclui:
+*   **Middleware de Latência:** Monitoramento em tempo real de cada request, injetando o tempo de processamento nos headers (`X-Response-Time-MS`).
+*   **Logging Estruturado:** Geração automática de `latency.log` com alertas de `WARNING` caso o limite de 350ms seja atingido.
+*   **Healthcheck Proativo:** A API aguarda a prontidão real do banco de dados (PostgreSQL Healthy) antes de iniciar o serviço.
 
-2. **Run the image:**
+## 🚀 Como Executar (The "Single Command" Experience)
 
-    docker run -p 8000:8000 dynamox-api
+Para facilitar a avaliação, todo o processo de build, deploy e teste foi automatizado em um único script:
 
-3. **Access the docs**
-    Go to `http://localhost:8000/docs` to test the endpoints.
-
-## 🧪 Running Tests
-Inside the container or local environment:
-
-    RUN pytest on the terminal
+```bash
+chmod +x run.sh
+./run.sh
