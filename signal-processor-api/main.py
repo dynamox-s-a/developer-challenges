@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from sqlmodel import Session, select
+from sqlmodel import Session, select, func
 
 from database import create_db_and_tables, engine
 
@@ -78,6 +78,33 @@ def create_series(timeseries: TimeSeriesCreate, response_model=TimeSeriesRead):
 
         return timeseries_validated
     
+@app.get('/series/metrics/{time_series_id}')
+def get_metrics(time_series_id):
+    """
+        Retrieve 3 metrics from an informed timeseries
+        Air humidity average, max air humidity and min air humidity
+    """
 
+    with Session(engine) as session:
+        
+        avg_humidity = session.exec(select(func.avg(Measurement.air_humidity)).where(Measurement.timeseries_id == time_series_id)).one()
+        max_humidity = session.exec(select(func.max(Measurement.air_humidity)).where(Measurement.timeseries_id == time_series_id)).one()
+        min_humidity = session.exec(select(func.min(Measurement.air_humidity)).where(Measurement.timeseries_id == time_series_id)).one()
 
+        metrics = {
+            'average_humidity': avg_humidity,
+            'max_humidity': max_humidity,
+            'min_humidity': min_humidity
+        }
+        return metrics
+    
+@app.get('/series/count/')
+def count_series():
+    """
+        Retrieve the number of all registered time-series
+    """
+    with Session(engine) as session:
+        count = select(func.count()).select_from(TimeSeries)
+        time_series_number = session.exec(count).one()
+        return time_series_number
 
