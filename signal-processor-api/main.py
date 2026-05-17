@@ -4,6 +4,8 @@ from fastapi import FastAPI
 
 from sqlmodel import Session, select, func
 
+from sqlalchemy.orm import selectinload
+
 from database import create_db_and_tables, engine
 
 from models import (
@@ -11,6 +13,7 @@ from models import (
     Measurement
 )
 
+from typing import List
 
 # Initializing database
 @asynccontextmanager
@@ -32,6 +35,11 @@ def root():
 
 @app.get('/series/')
 def read_all_series():
+    """
+        Retrieve all time-series registered, but without
+        corresponding measurements
+    """
+    
     with Session(engine) as session:
         query = select(TimeSeries)
         results = session.exec(query).all()
@@ -54,6 +62,19 @@ def read_series(time_series_id: int):
             measurements = timeseries.measurements
 
         return timeseries
+
+@app.get('/series/full_series/', response_model=List[TimeSeriesRead])
+def read_full_series():
+    """
+        Retrieve all time-series with all measurements
+    """
+
+    with Session(engine) as session:
+        query = select(TimeSeries).options(selectinload(TimeSeries.measurements))
+        all_timeseries = session.exec(query).all()
+
+        return all_timeseries
+
 
 @app.post('/series/')
 def create_series(timeseries: TimeSeriesCreate, response_model=TimeSeriesRead):
@@ -78,6 +99,19 @@ def create_series(timeseries: TimeSeriesCreate, response_model=TimeSeriesRead):
 
         return timeseries_validated
     
+
+@app.delete('/series/{time_series_id}')
+def delete_series(time_series_id: int):
+    with Session(engine) as session:
+        query = select(TimeSeries).where(TimeSeries.id == time_series_id)
+        time_series = session.exec(query).one_or_none()
+
+        if time_series is None:
+            return {'Response': 'Time-series not found, please check if the ID is correct'}
+
+        session.delete(time_series)
+        session.commit()
+
 @app.get('/series/metrics/{time_series_id}')
 def get_metrics(time_series_id):
     """
@@ -107,4 +141,3 @@ def count_series():
         count = select(func.count()).select_from(TimeSeries)
         time_series_number = session.exec(count).one()
         return time_series_number
-

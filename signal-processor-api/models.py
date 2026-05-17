@@ -17,7 +17,7 @@ class TimeSeries(TimeSeriesBase, table=True):
     created_at: Optional[datetime] = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     # Estabilishing 1-to-many relationship between time-series and measurements
-    measurements: list['Measurement'] = Relationship(back_populates='timeseries')
+    measurements: list['Measurement'] = Relationship(back_populates='timeseries', cascade_delete=True)
 
 class TimeSeriesCreate(TimeSeriesBase):
     # Only used for POST requests
