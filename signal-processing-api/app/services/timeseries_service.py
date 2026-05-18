@@ -94,19 +94,22 @@ class TimeSeriesService:
     def get_metrics(self, time_series_id: int):
         """
             Retrieve 3 metrics from an informed timeseries
-            Air humidity average, max air humidity and min air humidity
+            Air humidity average, max air humidity, min air humidity
+            and standard deviation humidity
         """
 
         
         avg_humidity = self.session.exec(select(func.avg(Measurement.air_humidity)).where(Measurement.timeseries_id == time_series_id)).one()
         max_humidity = self.session.exec(select(func.max(Measurement.air_humidity)).where(Measurement.timeseries_id == time_series_id)).one()
         min_humidity = self.session.exec(select(func.min(Measurement.air_humidity)).where(Measurement.timeseries_id == time_series_id)).one()
+        stddev_humidity = self.session.exec(select(func.stddev(Measurement.air_humidity)).where(Measurement.timeseries_id == time_series_id)).one()
 
 
         metrics = {
             'average_humidity': avg_humidity,
             'max_humidity': max_humidity,
-            'min_humidity': min_humidity
+            'min_humidity': min_humidity,
+            'std_dev_humidity': stddev_humidity
         }
         return metrics
         

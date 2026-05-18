@@ -1,0 +1,26 @@
+# Environment & Secrets
+.env
+.venv/
+env/
+venv/
+*.env
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Database / PostgreSQL local artifacts
+# (If using local pgAdmin or SQLite for testing)
+*.db
+*.sqlite3
+.pgpass
+.pgdata
+
+# OS specific
+.DS_Store
+Thumbs.db

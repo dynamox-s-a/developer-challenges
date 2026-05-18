@@ -1,3 +1,5 @@
+import os
+
 # ORM imports
 from sqlmodel import SQLModel, create_engine, Session
 
@@ -5,10 +7,10 @@ from sqlmodel import SQLModel, create_engine, Session
 from models.timeseries import TimeSeries
 from models.measurement import Measurement
 
-DATABASE_URL = "sqlite:///./signal.db"
+DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://signal_api:dynamox@localhost:5432/signal')
 
-# Remember: remove echo for production
-engine = create_engine(DATABASE_URL, echo=True)
+
+engine = create_engine(DATABASE_URL)
 
 def create_db_and_tables():
     """

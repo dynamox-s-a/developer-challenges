@@ -11,4 +11,10 @@ dependencies = [
     "pytest-cov>=7.1.0",
     "sqlalchemy>=2.0.49",
     "sqlmodel>=0.0.38",
+    "psycopg2-binary",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "app"
 ]
