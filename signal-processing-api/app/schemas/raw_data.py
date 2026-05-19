@@ -10,8 +10,11 @@ class RawDataItem(BaseModel):
 
 
 class RawDataCreate(BaseModel):
-    serial_device: str 
-    name: str 
+    serial_device: str
+    data: list[RawDataItem]
+
+class DeviceDataResponse(BaseModel):
+    device_id: int
     data: list[RawDataItem]
 
 

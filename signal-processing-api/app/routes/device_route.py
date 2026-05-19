@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.schemas.device import DeviceResponse
 from app.service.device_service import DeviceService
+from app.schemas.raw_data import DeviceDataResponse, RawDataItem
 
 
 router = APIRouter(
@@ -20,3 +21,15 @@ router = APIRouter(
 def get_all_devices(db: Session = Depends(get_db)):
     service = DeviceService(db)
     return service.get_all_devices()
+
+
+@router.get(
+    "/{device_id}/raw-data",
+    response_model=list[RawDataItem]
+)
+def get_device_raw_data(
+    device_id: int,
+    db: Session = Depends(get_db)
+):
+    service = DeviceService(db)
+    return service.get_device_raw_data(device_id)

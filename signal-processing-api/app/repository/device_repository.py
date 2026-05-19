@@ -26,7 +26,8 @@ class DeviceRepository:
         self.db.query(Device)
         .order_by(Device.created_at.desc())
         .all()
-    )    
+    )   
+     
 
     def create(self, name: str, serial_device: str, created_at: datetime):
         device = Device(

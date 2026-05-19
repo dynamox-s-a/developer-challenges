@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from app.models.raw_data import RawData
 
 
+
 class RawDataRepository:
     def __init__(self, db: Session):
         self.db = db
@@ -26,6 +27,32 @@ class RawDataRepository:
             .all()
     )
     
+    def get_by_device_id(self, device_id: int):
+        return (
+            self.db.query(RawData)
+            .filter(RawData.device_id == device_id)
+            .order_by(RawData.timestamp.asc())
+            .all()
+    )
+
+    def delete_by_device_id(self, device_id: int):
+        deleted = self.db.query(RawData).filter(
+            RawData.device_id == device_id
+        ).delete()
+
+        self.db.commit()
+        return deleted
+    
+    def count_devices_with_data(self):
+        return self.db.query(func.count(func.distinct(RawData.device_id))).scalar()
+    
+
+    def get_all_devices_with_data(self):
+        return (
+            self.db.query(RawData)
+            .order_by(RawData.device_id.asc(), RawData.timestamp.asc())
+            .all()
+        )
     
 
 
@@ -44,17 +71,46 @@ class RawDataRepository:
         except Exception as e:
             self.db.rollback()
             raise e
+        
+
+
+
+    def get_time_series_stats(self, device_id: int):
+        # 1. Média, Total e Período Geral
+        general_stats = self.db.query(
+            func.avg(RawData.value).label("avg_value"),
+            func.count(RawData.id).label("total_records"),
+            func.min(RawData.timestamp).label("first_timestamp"),
+            func.max(RawData.timestamp).label("last_timestamp")
+        ).filter(RawData.device_id == device_id).first()
+
+        if not general_stats or general_stats.total_records == 0:
+            return None
+
+        # 2. Busca o registro com o VALOR MÁXIMO (trazendo o valor e o timestamp dele)
+        max_record = (
+            self.db.query(RawData.value, RawData.timestamp)
+            .filter(RawData.device_id == device_id)
+            .order_by(RawData.value.desc(), RawData.timestamp.asc())
+            .first()
+        )
+
+        # 3. Busca o registro com o VALOR MÍNIMO (trazendo o valor e o timestamp dele)
+        min_record = (
+            self.db.query(RawData.value, RawData.timestamp)
+            .filter(RawData.device_id == device_id)
+            .order_by(RawData.value.asc(), RawData.timestamp.asc())
+            .first()
+        )
+
+        return {
+            "general": general_stats,
+            "max_record": max_record,
+            "min_record": min_record
+        }
+        
+
+    
             
 
-    # def create(self, device_id: int, timestamp, value: float):
-    #     raw = RawData(
-    #         device_id=device_id,
-    #         timestamp=timestamp,
-    #         value=value
-    #     )
-
-        self.db.add(raw)
-        self.db.commit()
-        self.db.refresh(raw)
-
-        return raw
+   

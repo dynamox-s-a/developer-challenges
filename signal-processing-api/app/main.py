@@ -5,7 +5,8 @@ from app.models.device import Device
 from app.models.raw_data import RawData
 from app.routes.raw_data_route import router as raw_data_router
 from app.routes.device_route import router as device_router
-
+from app.core.exceptions import DomainException
+from app.core.exception_handlers import domain_exception_handler
 
 
 app = FastAPI(
@@ -13,7 +14,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-
+app.add_exception_handler(DomainException, domain_exception_handler)
 # Criar as tabelas no banco de dados
 Base.metadata.create_all(bind=engine)
 
