@@ -23,5 +23,7 @@ class DeviceService:
             raise NotFoundException("device not found")
 
         return self.raw_repo.get_by_device_id(device_id)
+    
+    
             
         
