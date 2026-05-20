@@ -103,6 +103,14 @@ Com Docker:
 docker compose run --rm web python -m pytest
 ```
 
+Testes de performance/latência:
+
+```powershell
+python -m pytest -m performance
+```
+
+Esses testes medem os principais endpoints contra o limite de 350ms definido no desafio.
+
 ## Modelo de Dados
 
 A aplicação possui duas entidades principais:
@@ -353,5 +361,5 @@ Arquivos gerados localmente, como bancos SQLite de teste e arquivos `.pyc`, não
 Resultado esperado:
 
 ```text
-31 passed
+36 passed
 ```
