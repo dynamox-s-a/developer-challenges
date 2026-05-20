@@ -66,6 +66,11 @@ class RawDataMetricsResponse(BaseModel):
     period: RawDataPeriod
 
 
+class DeleteRawDataResponse(BaseModel):
+    success: bool
+    deleted_records: int
+
+
 class DeviceDataResponse(BaseModel):
     device_id: int
     data: list[RawDataItem]
