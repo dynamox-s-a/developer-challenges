@@ -29,10 +29,16 @@ Funcionalidades implementadas:
 
 ## Como Executar Com Docker
 
-No diretório do projeto:
+Clonar repositório
 
-```powershell
-cd "C:\Users\marco\OneDrive\Área de Trabalho\developer-challenges\signal-processing-api"
+```bash
+git clone https://github.com/seuusuario/signal-processing-api.git
+cd signal-processing-api
+```
+
+Construir e iniciar containers
+
+```bash
 docker compose up --build
 ```
 
