@@ -75,6 +75,17 @@ class ActiveDevicesCountResponse(BaseModel):
     active_devices_count: int
 
 
+class FullTimeSeriesItem(BaseModel):
+    id: int
+    timestamp: datetime
+    value: float
+
+
+class FullTimeSeriesResponse(BaseModel):
+    device_id: int
+    series_data: list[FullTimeSeriesItem]
+
+
 class DeviceDataResponse(BaseModel):
     device_id: int
     data: list[RawDataItem]

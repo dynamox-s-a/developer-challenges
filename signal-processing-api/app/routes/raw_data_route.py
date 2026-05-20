@@ -6,6 +6,7 @@ from app.service.raw_data_service import RawDataService
 from app.schemas.raw_data import (
     ActiveDevicesCountResponse,
     DeleteRawDataResponse,
+    FullTimeSeriesResponse,
     RawDataCreate,
     RawDataCreateResponse,
     RawDataMetricsResponse,
@@ -23,7 +24,10 @@ def create_raw_data(
     return service.create_raw_data(payload)
 
 
-@router.get("/raw_data/full_time_series")
+@router.get(
+    "/raw_data/full_time_series",
+    response_model=list[FullTimeSeriesResponse]
+)
 def get_full_time_series(
     limit: int | None = Query(default=None, ge=1, le=1000),
     offset: int = Query(default=0, ge=0),
