@@ -32,7 +32,7 @@ Funcionalidades implementadas:
 A Api esta publicada e configurada em um ambiente de produção na Oracle Cloud com alta disponibilidade(Load Balancer Nginx + 3 réplicas de aplicação) e banco de dados PostgreSQL gerenciado. 
 
 - **URL Base da API:** [http://163.176.152.66](http://163.176.152.66)
-- **Swagger UI (Documentação Interativa):** [http://163.176.152](http://163.176.152)
+- **Swagger UI (Documentação Interativa):** [http://163.176.152.66/docs](http://163.176.152.66/docs)
 
 
 
