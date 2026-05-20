@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+\.venv
+\.pytest_cache
+.coverage
+*.db
+*.sqlite3
+.env
+.idea/
+.vscode/
+__pycache__/
