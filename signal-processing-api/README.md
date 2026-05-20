@@ -369,3 +369,27 @@ Resultado esperado:
 ```text
 36 passed
 ```
+
+## Load Balancer (Nginx)
+Foi adicionado um Nginx como reverse proxy e load balancer, responsável por distribuir as requisições entre múltiplas instâncias da API (api1, api2 e api3), utilizando estratégia de balanceamento round-robin.
+
+Essa abordagem simula um ambiente de escalabilidade horizontal, onde múltiplas réplicas da aplicação recebem tráfego de forma distribuída.
+
+Rota de teste de instância
+
+Para validar o comportamento do load balancer, foi criada uma rota auxiliar de debug:
+
+```http
+GET /instance
+```
+
+Essa rota retorna informações da instância da API que processou a requisição, permitindo observar a distribuição de carga entre os containers.
+
+Exemplo de resposta:
+
+```json
+{
+  "instance": "api1",
+  "hostname": "608b869670fd"
+}
+```

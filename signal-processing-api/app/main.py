@@ -1,3 +1,5 @@
+import socket
+import os
 
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
@@ -32,12 +34,20 @@ app.include_router(raw_data_router)
 app.include_router(device_router)
 
 
-
+INSTANCE_ID = os.getenv("INSTANCE_ID", socket.gethostname())
 
 @app.get("/")
 def health_check():
     return {"status": "ok"}
 
+import socket
+import os
 
+@app.get("/instance")
+def instance():
+    return {
+        "instance": os.getenv("INSTANCE_NAME"),
+        "hostname": socket.gethostname()
+    }
 
     
