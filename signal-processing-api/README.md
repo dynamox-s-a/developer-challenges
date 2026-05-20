@@ -42,7 +42,7 @@ A Api esta publicada e configurada em um ambiente de produção na Oracle Cloud 
 Clonar repositório
 
 ```bash
-git clone 
+git clone <URL_DO_REPOSITORIO>
 ```
 Acessar a pasta do projeto
 ```bash
