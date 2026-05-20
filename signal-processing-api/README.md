@@ -282,6 +282,19 @@ Exemplo de resposta:
 GET /raw_data/full_time_series
 ```
 
+Este endpoint também aceita paginação opcional:
+
+- `limit`: quantidade máxima de pontos de dados retornados. Valor mínimo: `1`. Valor máximo: `1000`.
+- `offset`: quantidade de pontos ignorados antes de iniciar o retorno. Valor mínimo: `0`.
+
+Exemplo:
+
+```http
+GET /raw_data/full_time_series?limit=100&offset=0
+```
+
+A paginação é aplicada sobre os pontos de dados antes do agrupamento por dispositivo. Por isso, uma mesma série temporal pode aparecer em páginas diferentes quando houver muitos registros.
+
 Exemplo de resposta:
 
 ```json

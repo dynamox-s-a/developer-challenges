@@ -54,12 +54,19 @@ class RawDataRepository:
         return self.db.query(func.count(func.distinct(RawData.device_id))).scalar()
     
 
-    def get_all_devices_with_data(self):
-        return (
+    def get_all_devices_with_data(self, limit: int | None = None, offset: int = 0):
+        query = (
             self.db.query(RawData)
             .order_by(RawData.device_id.asc(), RawData.timestamp.asc())
-            .all()
         )
+
+        if offset:
+            query = query.offset(offset)
+
+        if limit is not None:
+            query = query.limit(limit)
+
+        return query.all()
     
 
 

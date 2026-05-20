@@ -325,6 +325,36 @@ def test_full_time_series_grouping(client):
     assert len(device_series["series_data"]) == 2
 
 
+def test_full_time_series_with_limit_and_offset(client):
+    client.post("/raw_data", json={
+        "serial_device": "DEV-FULL-PAGINATION",
+        "data": [
+            {"timestamp": "2026-05-18T10:00:00Z", "value": 10},
+            {"timestamp": "2026-05-18T11:00:00Z", "value": 20},
+            {"timestamp": "2026-05-18T12:00:00Z", "value": 30}
+        ]
+    })
+
+    response = client.get("/raw_data/full_time_series?limit=1&offset=1")
+
+    assert response.status_code == 200
+
+    body = response.json()
+    assert len(body) == 1
+    assert len(body[0]["series_data"]) == 1
+    assert body[0]["series_data"][0]["value"] == 20.0
+
+
+def test_full_time_series_rejects_invalid_pagination(client):
+    response = client.get("/raw_data/full_time_series?limit=0&offset=-1")
+
+    assert response.status_code == 422
+
+    body = response.json()
+    assert body["success"] is False
+    assert body["error_code"] == "ValidationError"
+
+
 def test_full_time_series_structure(client):
     client.post("/raw_data", json={
         "serial_device": "DEV-B",

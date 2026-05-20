@@ -95,9 +95,12 @@ class RawDataService:
         }
     
 
-    def get_full_time_series(self):
+    def get_full_time_series(self, limit: int | None = None, offset: int = 0):
     #  Busca todos os dados brutos ordenados por dispositivo
-        all_data = self.raw_repo.get_all_devices_with_data()
+        all_data = self.raw_repo.get_all_devices_with_data(
+            limit=limit,
+            offset=offset
+        )
         
         result = []
         

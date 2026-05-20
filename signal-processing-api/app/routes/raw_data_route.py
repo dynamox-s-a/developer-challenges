@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
@@ -19,10 +19,15 @@ def create_raw_data(
 
 @router.get("/raw_data/full_time_series")
 def get_full_time_series(
+    limit: int | None = Query(default=None, ge=1, le=1000),
+    offset: int = Query(default=0, ge=0),
     db: Session = Depends(get_db)
 ):
     service = RawDataService(db)
-    return service.get_full_time_series()
+    return service.get_full_time_series(
+        limit=limit,
+        offset=offset
+    )
 
 
 @router.get("/devices/count/active")
