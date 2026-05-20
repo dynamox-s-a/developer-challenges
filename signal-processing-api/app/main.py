@@ -1,7 +1,9 @@
+
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from app.core.database import get_db, Base, engine
+
 
 from app.models.device import Device
 from app.models.raw_data import RawData
@@ -24,11 +26,18 @@ app.add_exception_handler(DomainException, domain_exception_handler)
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.add_exception_handler(StarletteHTTPException, http_exception_handler)
 # Criar as tabelas no banco de dados
-Base.metadata.create_all(bind=engine)
+# Base.metadata.create_all(bind=engine)
 
 app.include_router(raw_data_router)
 app.include_router(device_router)
 
+
+
+
 @app.get("/")
 def health_check():
     return {"status": "ok"}
+
+
+
+    
