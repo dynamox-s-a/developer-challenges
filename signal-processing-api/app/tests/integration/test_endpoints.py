@@ -18,6 +18,28 @@ def test_bulk_insert_success_clean_data(client):
     assert body["rejected"] == 0
 
 
+def test_not_found_route_uses_standard_error_format(client):
+    response = client.get("/not-found-route")
+
+    assert response.status_code == 404
+
+    body = response.json()
+    assert body["success"] is False
+    assert body["error"] == "Not Found"
+    assert body["error_code"] == "HttpError"
+
+
+def test_method_not_allowed_uses_standard_error_format(client):
+    response = client.post("/devices/1/raw-data")
+
+    assert response.status_code == 405
+
+    body = response.json()
+    assert body["success"] is False
+    assert body["error"] == "Method Not Allowed"
+    assert body["error_code"] == "HttpError"
+
+
 def test_bulk_insert_should_reject_future_date(client):
     """Deve rejeitar registros com timestamp futuro, mas manter resposta 200."""
     payload = {

@@ -1,7 +1,8 @@
-from fastapi import HTTPException, Request
+from fastapi import Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
+from starlette.exceptions import HTTPException
 from app.core.exceptions import DomainException
 
 
