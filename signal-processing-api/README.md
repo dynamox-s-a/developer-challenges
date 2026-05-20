@@ -16,6 +16,7 @@ Funcionalidades implementadas:
 - Consultar a quantidade de séries temporais armazenadas, contando dispositivos com dados ativos.
 - Recuperar a série temporal completa de um dispositivo.
 - Listar as séries temporais completas agrupadas por dispositivo.
+- Listar todos os devices cadastrados, mesmo aqueles sem dados associados.
 - Validar payloads inválidos, timestamps sem timezone, timestamps futuros e registros duplicados.
 
 ## Tecnologias
