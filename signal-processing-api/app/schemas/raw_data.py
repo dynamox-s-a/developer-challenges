@@ -8,6 +8,11 @@ class RawDataItem(BaseModel):
     value: float
 
 
+class RawDataPointResponse(BaseModel):
+    timestamp: datetime
+    value: float
+
+
 class RawDataInput(RawDataItem):
     @field_validator("timestamp")
     @classmethod
