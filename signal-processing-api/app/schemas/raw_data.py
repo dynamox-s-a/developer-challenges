@@ -71,6 +71,10 @@ class DeleteRawDataResponse(BaseModel):
     deleted_records: int
 
 
+class ActiveDevicesCountResponse(BaseModel):
+    active_devices_count: int
+
+
 class DeviceDataResponse(BaseModel):
     device_id: int
     data: list[RawDataItem]

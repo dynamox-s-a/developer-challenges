@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.service.raw_data_service import RawDataService
 from app.schemas.raw_data import (
+    ActiveDevicesCountResponse,
     DeleteRawDataResponse,
     RawDataCreate,
     RawDataCreateResponse,
@@ -35,7 +36,10 @@ def get_full_time_series(
     )
 
 
-@router.get("/devices/count/active")
+@router.get(
+    "/devices/count/active",
+    response_model=ActiveDevicesCountResponse
+)
 def get_active_devices_count(
     db: Session = Depends(get_db)
 ):
