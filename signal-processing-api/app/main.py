@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from fastapi.exceptions import RequestValidationError
 from app.core.database import get_db, Base, engine
 
 from app.models.device import Device
@@ -6,7 +7,11 @@ from app.models.raw_data import RawData
 from app.routes.raw_data_route import router as raw_data_router
 from app.routes.device_route import router as device_router
 from app.core.exceptions import DomainException
-from app.core.exception_handlers import domain_exception_handler
+from app.core.exception_handlers import (
+    domain_exception_handler,
+    http_exception_handler,
+    validation_exception_handler,
+)
 
 
 app = FastAPI(
@@ -15,6 +20,8 @@ app = FastAPI(
 )
 
 app.add_exception_handler(DomainException, domain_exception_handler)
+app.add_exception_handler(RequestValidationError, validation_exception_handler)
+app.add_exception_handler(HTTPException, http_exception_handler)
 # Criar as tabelas no banco de dados
 Base.metadata.create_all(bind=engine)
 

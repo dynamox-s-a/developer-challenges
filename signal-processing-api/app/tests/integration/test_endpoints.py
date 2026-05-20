@@ -38,6 +38,55 @@ def test_bulk_insert_should_reject_future_date(client):
     assert body["details"][0]["reason"] == "future_timestamp"
 
 
+def test_bulk_insert_rejects_empty_data_payload(client):
+    payload = {
+        "serial_device": "DEV-EMPTY",
+        "data": []
+    }
+
+    response = client.post("/raw_data", json=payload)
+
+    assert response.status_code == 422
+
+    body = response.json()
+    assert body["success"] is False
+    assert body["error_code"] == "ValidationError"
+
+
+def test_bulk_insert_rejects_blank_serial_device(client):
+    payload = {
+        "serial_device": "   ",
+        "data": [
+            {"timestamp": "2026-05-18T22:00:00Z", "value": 23.5}
+        ]
+    }
+
+    response = client.post("/raw_data", json=payload)
+
+    assert response.status_code == 422
+
+    body = response.json()
+    assert body["success"] is False
+    assert body["error_code"] == "ValidationError"
+
+
+def test_bulk_insert_rejects_timestamp_without_timezone(client):
+    payload = {
+        "serial_device": "DEV-NO-TZ",
+        "data": [
+            {"timestamp": "2026-05-18T22:00:00", "value": 23.5}
+        ]
+    }
+
+    response = client.post("/raw_data", json=payload)
+
+    assert response.status_code == 422
+
+    body = response.json()
+    assert body["success"] is False
+    assert body["error_code"] == "ValidationError"
+
+
 def test_bulk_insert_handle_duplicate_timestamps(client):
     """Deve rejeitar timestamp duplicado no mesmo payload."""
     payload = {
@@ -108,7 +157,7 @@ def test_get_device_raw_data_success(client):
 
 
 def test_get_device_raw_data_not_found(client):
-    response = client.get("/999/raw-data")
+    response = client.get("/devices/999/raw-data")
 
     assert response.status_code == 404
 
