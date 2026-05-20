@@ -30,6 +30,19 @@ class RawDataCreate(BaseModel):
         return value
 
 
+class RejectedRawDataItem(BaseModel):
+    timestamp: datetime
+    reason: str
+
+
+class RawDataCreateResponse(BaseModel):
+    device_id: int
+    serial_device: str
+    inserted: int
+    rejected: int
+    details: list[RejectedRawDataItem]
+
+
 class DeviceDataResponse(BaseModel):
     device_id: int
     data: list[RawDataItem]

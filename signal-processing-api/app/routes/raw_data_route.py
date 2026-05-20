@@ -3,12 +3,12 @@ from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.service.raw_data_service import RawDataService
-from app.schemas.raw_data import RawDataCreate
+from app.schemas.raw_data import RawDataCreate, RawDataCreateResponse
 
 router = APIRouter()
 
 
-@router.post("/raw_data")
+@router.post("/raw_data", response_model=RawDataCreateResponse)
 def create_raw_data(
     payload: RawDataCreate,
     db: Session = Depends(get_db)
