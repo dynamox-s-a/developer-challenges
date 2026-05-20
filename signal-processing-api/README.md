@@ -353,5 +353,5 @@ Arquivos gerados localmente, como bancos SQLite de teste e arquivos `.pyc`, não
 Resultado esperado:
 
 ```text
-25 passed
+31 passed
 ```
