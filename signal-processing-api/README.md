@@ -161,8 +161,8 @@ A documentação interativa do FastAPI permite executar testes rápidos sem inst
 Para criar coleções de testes automatizados ou monitorar o desempenho de requisições mais robustas:
 1. Crie uma nova requisição configurando o método correspondente (`POST`, `GET`, `DELETE`).
 2. Monte o endereço utilizando o formato: `URL_BASE/nome-da-rota`
-   - *Exemplo de POST em produção:* `http://163.176.152`
-   - *Exemplo de POST local:* `http://localhost/api/v1/signals`
+   - *Exemplo de POST em produção:* `http://163.176.152.66/raw_data`
+   - *Exemplo de POST local:* `http://localhost/raw_data`
 
 
 
@@ -178,7 +178,8 @@ Na prática, a série temporal é formada pelo conjunto de registros `RawData` a
 Regras importantes:
 
 - `serial_device` é normalizado com `strip()` e `upper()`.
-- Um dispositivo é criado automaticamente quando recebe sua primeira série.
+- Um dispositivo é criado automaticamente quando recebe sua primeira série, mesmo todos os dados sendo rejeitados por serem duplicados ou inválidos. Isso garante que o histórico de dispositivos seja mantido mesmo sem dados associados. Não será criado o dispositivo se o payload for completamente inválido (ex: `serial_device` vazio ou `data` vazio), pois a validação do Pydantic bloqueia a requisição inteira nesses casos.
+
 - Não é permitido inserir dois dados com o mesmo `timestamp` para o mesmo dispositivo.
 - Timestamps futuros são rejeitados.
 - Timestamps sem timezone são rejeitados.
