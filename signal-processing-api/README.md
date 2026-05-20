@@ -384,8 +384,23 @@ Exemplo de resposta:
 ```http
 GET /devices
 ```
-
-
+Lista todos os devices cadastrados, mesmo aqueles sem dados associados (ou seja, sem séries temporais ativas). Isso é útil para manter um histórico completo dos dispositivos que já interagiram com a API, mesmo que seus dados tenham sido removidos posteriormente.
+```json
+[
+  {
+    "id": 4,
+    "name": "device-DEV-TEST-100",
+    "serial_device": "DEV-TEST-100",
+    "created_at": "2026-05-20T17:48:27.969195Z"
+  },
+  {
+    "id": 3,
+    "name": "device-DEV-TEST-50",
+    "serial_device": "DEV-TEST-50",
+    "created_at": "2026-05-20T17:42:57.775106Z"
+  }
+]
+```
 
 ## Padrão de Erros
 
