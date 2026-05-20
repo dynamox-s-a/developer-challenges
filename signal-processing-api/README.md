@@ -150,7 +150,7 @@ Escolha o endereço de acordo com o ambiente que deseja testar:
 ### 1. Pelo Swagger UI (Direto no Navegador)
 A documentação interativa do FastAPI permite executar testes rápidos sem instalar nada:
 1. Acesse o Swagger adicionando `/docs` ao final da sua URL Base escolhida:
-   - Produção: [http://163.176.152](http://163.176.152)
+   - Produção: [http://163.176.152.66/docs](http://163.176.152.66/docs)
    - Local: `http://localhost/docs`
 2. Clique no endpoint desejado (ex: `POST /api/v1/signals`).
 3. Clique no botão **"Try it out"**.
