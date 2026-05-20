@@ -3,7 +3,11 @@ from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.service.raw_data_service import RawDataService
-from app.schemas.raw_data import RawDataCreate, RawDataCreateResponse
+from app.schemas.raw_data import (
+    RawDataCreate,
+    RawDataCreateResponse,
+    RawDataMetricsResponse,
+)
 
 router = APIRouter()
 
@@ -46,7 +50,10 @@ def delete_by_device(
     service = RawDataService(db)
     return service.delete_by_device(device_id)
 
-@router.get("/raw_data/{device_id}/metrics")
+@router.get(
+    "/raw_data/{device_id}/metrics",
+    response_model=RawDataMetricsResponse
+)
 def get_device_metrics(
     device_id: int,
     db: Session = Depends(get_db)

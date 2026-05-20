@@ -43,6 +43,29 @@ class RawDataCreateResponse(BaseModel):
     details: list[RejectedRawDataItem]
 
 
+class MetricValuePoint(BaseModel):
+    value: float | None
+    timestamp: datetime | None
+
+
+class RawDataMetricsSummary(BaseModel):
+    total_records: int
+    average_value: float
+    max: MetricValuePoint
+    min: MetricValuePoint
+
+
+class RawDataPeriod(BaseModel):
+    start_time: datetime
+    end_time: datetime
+
+
+class RawDataMetricsResponse(BaseModel):
+    device_id: int
+    metrics: RawDataMetricsSummary
+    period: RawDataPeriod
+
+
 class DeviceDataResponse(BaseModel):
     device_id: int
     data: list[RawDataItem]
