@@ -27,8 +27,7 @@ app = FastAPI(
 app.add_exception_handler(DomainException, domain_exception_handler)
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.add_exception_handler(StarletteHTTPException, http_exception_handler)
-# Criar as tabelas no banco de dados
-# Base.metadata.create_all(bind=engine)
+
 
 app.include_router(raw_data_router)
 app.include_router(device_router)

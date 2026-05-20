@@ -90,7 +90,7 @@ class RawDataRepository:
 
 
     def get_time_series_stats(self, device_id: int):
-        # 1. Média, Total e Período Geral
+       
         general_stats = self.db.query(
             func.avg(RawData.value).label("avg_value"),
             func.count(RawData.id).label("total_records"),
@@ -101,7 +101,7 @@ class RawDataRepository:
         if not general_stats or general_stats.total_records == 0:
             return None
 
-        # 2. Busca o registro com o VALOR MÁXIMO (trazendo o valor e o timestamp dele)
+        
         max_record = (
             self.db.query(RawData.value, RawData.timestamp)
             .filter(RawData.device_id == device_id)
@@ -109,7 +109,7 @@ class RawDataRepository:
             .first()
         )
 
-        # 3. Busca o registro com o VALOR MÍNIMO (trazendo o valor e o timestamp dele)
+        
         min_record = (
             self.db.query(RawData.value, RawData.timestamp)
             .filter(RawData.device_id == device_id)

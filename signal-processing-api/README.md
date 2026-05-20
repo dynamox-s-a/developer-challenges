@@ -27,13 +27,26 @@ Funcionalidades implementadas:
 - Docker e Docker Compose
 - Pytest
 
+
+## Ambiente de Produção
+A Api esta publicada e configurada em um ambiente de produção na Oracle Cloud com alta disponibilidade(Load Balancer Nginx + 3 réplicas de aplicação) e banco de dados PostgreSQL gerenciado. 
+
+- **URL Base da API:** [http://163.176.152.66](http://163.176.152.66)
+- **Swagger UI (Documentação Interativa):** [http://163.176.152](http://163.176.152)
+
+
+
 ## Como Executar Com Docker
 
 Clonar repositório
 
 ```bash
-git clone https://github.com/seuusuario/signal-processing-api.git
-cd signal-processing-api
+git clone 
+```
+Acessar a pasta do projeto
+```bash
+
+cd  developer-challenges\signal-processing-api
 ```
 
 Construir e iniciar containers
@@ -44,9 +57,9 @@ docker compose up --build
 
 A API ficará disponível em:
 
-- API: `http://localhost:8000`
-- Swagger: `http://localhost:8000/docs`
-- Health check: `http://localhost:8000/`
+- API: `http://localhost`
+- Swagger: `http://localhost/docs`
+- Health check: `http://localhost/`
 
 Para executar em segundo plano:
 
@@ -95,6 +108,12 @@ $env:DATABASE_URL="postgresql://postgres:postgres@localhost:5432/timeseries_db"
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
+A API ficará disponível em:
+
+- API: `http://localhost:8000`
+- Swagger: `http://localhost:8000/docs`
+- Health check: `http://localhost:8000/`
+
 ## Como Rodar os Testes
 
 Localmente:
@@ -106,7 +125,7 @@ python -m pytest
 Com Docker:
 
 ```powershell
-docker compose run --rm web python -m pytest
+docker compose run --rm api1 python -m pytest
 ```
 
 Testes de performance/latência:
@@ -116,6 +135,36 @@ python -m pytest -m performance
 ```
 
 Esses testes medem os principais endpoints contra o limite de 350ms definido no desafio.
+
+## 🛠️ Como Testar a API
+
+Você pode testar os endpoints e as regras de validação (como bloqueio de registros duplicados ou com datas futuras) de duas formas: através da documentação interativa ou por clientes HTTP externos.
+
+### Definição da URL Base
+Escolha o endereço de acordo com o ambiente que deseja testar:
+- **Ambiente de Produção (Live):** `http://163.176.152.66`
+- **Ambiente Local (Docker):** `http://localhost` (ou `http://localhost:8000` se acessar a API diretamente sem o Nginx)
+
+---
+
+### 1. Pelo Swagger UI (Direto no Navegador)
+A documentação interativa do FastAPI permite executar testes rápidos sem instalar nada:
+1. Acesse o Swagger adicionando `/docs` ao final da sua URL Base escolhida:
+   - Produção: [http://163.176.152](http://163.176.152)
+   - Local: `http://localhost/docs`
+2. Clique no endpoint desejado (ex: `POST /api/v1/signals`).
+3. Clique no botão **"Try it out"**.
+4. Insira o JSON de teste no campo de texto e clique em **"Execute"**.
+5. O retorno do servidor e o status HTTP (ex: `201`, `400`) serão exibidos na tela.
+
+### 2. Por Ferramentas Externas (Postman / Insomnia)
+Para criar coleções de testes automatizados ou monitorar o desempenho de requisições mais robustas:
+1. Crie uma nova requisição configurando o método correspondente (`POST`, `GET`, `DELETE`).
+2. Monte o endereço utilizando o formato: `URL_BASE/nome-da-rota`
+   - *Exemplo de POST em produção:* `http://163.176.152`
+   - *Exemplo de POST local:* `http://localhost/api/v1/signals`
+
+
 
 ## Modelo de Dados
 
@@ -188,6 +237,8 @@ Exemplo de resposta:
 ```
 
 Quando o payload contém registros duplicados, futuros ou já existentes, a API mantém os registros válidos e retorna os rejeitados em `details`.
+**Nota:** Se o payload contiver erros de formato (como um texto no campo `value` ou um `timestamp` sem fuso horário), a validação inicial do Pydantic irá bloquear a requisição inteira.
+
 
 ### Buscar Métricas de Uma Série
 
@@ -233,6 +284,8 @@ Exemplo de resposta:
   "deleted_records": 2
 }
 ```
+
+Nesta implementação, a remoção é feita por dispositivo, ou seja, ao chamar esse endpoint, todos os registros associados ao `device_id` especificado serão removidos do banco de dados. Matnendo o device cadastrado, mas sem registros associados, o que é útil para manter o histórico de dispositivos mesmo após a remoção dos dados.
 
 ### Contar Séries Temporais Armazenadas
 
@@ -326,6 +379,13 @@ Exemplo de resposta:
 ]
 ```
 
+### Listar Todas os Devices cadastrados
+```http
+GET /devices
+```
+
+
+
 ## Padrão de Erros
 
 Erros de domínio, como dispositivo inexistente, seguem o formato:
@@ -358,9 +418,15 @@ Arquivos gerados localmente, como bancos SQLite de teste e arquivos `.pyc`, não
 ## Observações Técnicas
 
 - A criação das tabelas é feita automaticamente na inicialização da aplicação com SQLAlchemy.
-- A camada de serviço concentra as regras de negócio.
-- A camada de repositório concentra as consultas e operações de banco.
+- A camada de service concentra as regras de negócio.
+- A camada de repossitory concentra as consultas e operações de banco.
+- A camada routes define os endpoints e a validação de entrada.
 - Os testes cobrem os principais fluxos de criação, consulta, remoção, métricas, validação e contagem de séries.
+- O Nginx é configurado como load balancer para distribuir requisições entre múltiplas instâncias da API, simulando um ambiente de produção escalável.
+- O endpoint `/instance` permite verificar qual instância da API processou a requisição, facilitando a observação do balanceamento de carga.
+- O projeto é estruturado para ser facilmente extensível, permitindo a adição de novas funcionalidades ou endpoints sem impactar a organização atual.
+- As credencias do banco de dados foram mantidadas no docker compose para facilitar a execução local, mas em um ambiente de produção real, recomenda-se o uso de variáveis de ambiente ou serviços de gerenciamento de segredos para proteger essas informações sensíveis.
+
 
 ## Status dos Testes
 
