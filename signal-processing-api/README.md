@@ -242,6 +242,25 @@ Exemplo de resposta:
 GET /devices/{device_id}/raw-data
 ```
 
+Este endpoint aceita paginação opcional por query params:
+
+- `limit`: quantidade máxima de pontos retornados. Valor mínimo: `1`. Valor máximo: `1000`.
+- `offset`: quantidade de pontos ignorados antes de iniciar o retorno. Valor mínimo: `0`.
+
+Exemplo buscando os primeiros 100 pontos da série temporal:
+
+```http
+GET /devices/1/raw-data?limit=100&offset=0
+```
+
+Exemplo buscando os próximos 100 pontos:
+
+```http
+GET /devices/1/raw-data?limit=100&offset=100
+```
+
+Nesse caso, `offset=100` significa que a API ignora os 100 primeiros pontos da série e retorna a próxima página de resultados.
+
 Exemplo de resposta:
 
 ```json

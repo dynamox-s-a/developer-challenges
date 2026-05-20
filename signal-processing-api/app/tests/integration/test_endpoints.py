@@ -156,6 +156,37 @@ def test_get_device_raw_data_success(client):
     assert len(body) > 0
 
 
+def test_get_device_raw_data_with_limit_and_offset(client):
+    response_post = client.post("/raw_data", json={
+        "serial_device": "DEV-PAGINATION",
+        "data": [
+            {"timestamp": "2026-05-18T10:00:00Z", "value": 10},
+            {"timestamp": "2026-05-18T11:00:00Z", "value": 20},
+            {"timestamp": "2026-05-18T12:00:00Z", "value": 30}
+        ]
+    })
+
+    device_id = response_post.json()["device_id"]
+
+    response = client.get(f"/devices/{device_id}/raw-data?limit=1&offset=1")
+
+    assert response.status_code == 200
+
+    body = response.json()
+    assert len(body) == 1
+    assert body[0]["value"] == 20.0
+
+
+def test_get_device_raw_data_rejects_invalid_pagination(client):
+    response = client.get("/devices/1/raw-data?limit=0&offset=-1")
+
+    assert response.status_code == 422
+
+    body = response.json()
+    assert body["success"] is False
+    assert body["error_code"] == "ValidationError"
+
+
 def test_get_device_raw_data_not_found(client):
     response = client.get("/devices/999/raw-data")
 

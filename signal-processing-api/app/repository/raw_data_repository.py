@@ -27,13 +27,20 @@ class RawDataRepository:
             .all()
     )
     
-    def get_by_device_id(self, device_id: int):
-        return (
+    def get_by_device_id(self, device_id: int, limit: int | None = None, offset: int = 0):
+        query = (
             self.db.query(RawData)
             .filter(RawData.device_id == device_id)
             .order_by(RawData.timestamp.asc())
-            .all()
-    )
+        )
+
+        if offset:
+            query = query.offset(offset)
+
+        if limit is not None:
+            query = query.limit(limit)
+
+        return query.all()
 
     def delete_by_device_id(self, device_id: int):
         deleted = self.db.query(RawData).filter(

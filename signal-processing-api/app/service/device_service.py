@@ -16,13 +16,17 @@ class DeviceService:
         return self.device_repo.get_all()
     
     
-    def get_device_raw_data(self, device_id: int):
+    def get_device_raw_data(self, device_id: int, limit: int | None = None, offset: int = 0):
         device = self.device_repo.get_by_deviceid(device_id)
 
         if not device:
             raise NotFoundException("device not found")
 
-        return self.raw_repo.get_by_device_id(device_id)
+        return self.raw_repo.get_by_device_id(
+            device_id=device_id,
+            limit=limit,
+            offset=offset
+        )
     
     
             
