@@ -1,10 +1,7 @@
-# Async context manager import
 from contextlib import asynccontextmanager
 
-# FastAPI import
 from fastapi import FastAPI
 
-# Database and routers import
 from config.database import create_db_and_tables
 from routes import timeseries_routes
 
@@ -12,10 +9,9 @@ from routes import timeseries_routes
 # Initializing database
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # create database and tables
     create_db_and_tables()
 
-    # start API
+    # starts API here
     yield
 
 
@@ -25,9 +21,9 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Routes
+### Routers ###
 
-## Including timeseries router
+# time-series router
 app.include_router(timeseries_routes.router)
 
 
@@ -35,6 +31,5 @@ app.include_router(timeseries_routes.router)
 def root():
     return {
         'message': 'Welcome to Signal Processor API',
-        # pensar se colocar a documentação aqui
-        'routes': 'http://127.0.0.1:8000/docs'
+        'routes': 'http://127.0.0.1:80/docs'
         }

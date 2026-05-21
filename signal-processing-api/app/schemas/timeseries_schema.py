@@ -7,7 +7,14 @@ from schemas.measurement_schema import MeasurementRead
 
 class TimeSeriesCreate(TimeSeriesBase):
     # Only used for POST requests
-    measurements: list['Measurement']    
+    """
+        What expects:
+        - Sensor
+        - Measurements list
+    """
+
+    measurements: list['Measurement']
+
 
 class TimeSeriesRead(TimeSeriesBase):
     # Used for data visualization

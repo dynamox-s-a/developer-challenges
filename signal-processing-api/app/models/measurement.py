@@ -5,7 +5,6 @@ from sqlmodel import Field, SQLModel, Relationship
 
 from models.timeseries import TimeSeries
 
-# Measurement Models
 
 class MeasurementBase(SQLModel):
     timestamp: datetime
@@ -16,7 +15,6 @@ class MeasurementBase(SQLModel):
 class Measurement(MeasurementBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     
-    # Setting up the foreign-key and the 1-to-many relationship
+    # Setting up the foreign-key and the 1-to-many relationship with Time-series
     timeseries_id: Optional[int] = Field(default=None, foreign_key='timeseries.id')
     timeseries: Optional['TimeSeries'] = Relationship(back_populates='measurements')
-
