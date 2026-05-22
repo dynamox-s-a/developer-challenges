@@ -25,7 +25,7 @@ class TestAPI:
         assert response.status_code == 200
         assert response.json() == {
                                 'message': 'Welcome to Signal Processor API',
-                                'routes': 'http://127.0.0.1:80/docs'
+                                'api_docs': 'http://127.0.0.1:80/docs'
                             }
 
     def test_create_timeseries_route(self, client: TestClient, sample_data):

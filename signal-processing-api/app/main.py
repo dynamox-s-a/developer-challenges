@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from config.database import create_db_and_tables
+from config.database import create_db_and_tables, seed_db
 from routes import timeseries_routes
 
 
@@ -10,7 +10,7 @@ from routes import timeseries_routes
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     create_db_and_tables()
-
+    seed_db()
     # starts API here
     yield
 
