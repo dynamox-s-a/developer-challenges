@@ -1,0 +1,37 @@
+services:
+
+  # Database set up
+  database:
+    container_name: Postgres
+    image: postgres:alpine
+    restart: on-failure
+    volumes:
+    - ./.pgdata:/var/lib/postgresql
+    environment:
+      POSTGRES_USER: signal_api
+      POSTGRES_PASSWORD: dynamox
+      POSTGRES_DB: signal
+    ports:
+    - 5432:5432
+    # Database health validation
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U signal_api -d signal"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # API set up
+  fastapi:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: fastapi_app
+    restart: always
+    ports:
+      - '80:80'
+    environment:
+      - DATABASE_URL=postgresql://signal_api:dynamox@database:5432/signal
+    depends_on:
+      # Starts API only if database is healthy
+      database:
+        condition: service_healthy
