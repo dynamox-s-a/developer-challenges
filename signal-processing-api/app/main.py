@@ -31,5 +31,5 @@ app.include_router(timeseries_routes.router)
 def root():
     return {
         'message': 'Welcome to Signal Processor API',
-        'routes': 'http://127.0.0.1:80/docs'
+        'api_docs': 'http://127.0.0.1:80/docs'
         }
