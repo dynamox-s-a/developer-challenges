@@ -27,3 +27,6 @@ class TimeSeriesMetricsResponse(BaseModel):
     min: float
     max: float
     mean: float
+
+class PredictionResponse(BaseModel):
+    prediction: list[float]

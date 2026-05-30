@@ -1,3 +1,5 @@
+import numpy as np
+
 from app.models import TimeSeries
 
 
@@ -12,3 +14,27 @@ def calculate_metrics(
         "max": max(values),
         "mean": sum(values) / len(values),
     }
+
+def predict_future_values(
+        timeseries: TimeSeries,
+        steps: int = 3
+):
+    values = timeseries.values
+
+    x = np.arange(len(values))
+    y = np.array(values)
+
+    slope, intercept = np.polyfit(x, y, 1)
+
+    predictions = []
+
+    for i in range(len(values),
+                   len(values) + steps,
+    ):
+        predictions = slope * i + intercept
+
+        predictions.append(
+            round(float(predictions),2)
+        )
+
+    return predictions

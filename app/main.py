@@ -8,7 +8,7 @@ from app.models import TimeSeries
 from app.schemas import TimeSeriesResponse, TimeSeriesCreate, TimeSeriesDetail, TimeSeriesCountResponse, \
     TimeSeriesMetricsResponse
 from app.crud import create_timeseries, get_timeseries,count_timeseries, delete_timeseries
-from app.services import calculate_metrics
+from app.services import calculate_metrics, predict_future_values
 
 app = FastAPI()
 
@@ -114,3 +114,30 @@ def delete_timeseries_endpoint(
     )
 
     return Response(status_code=204)
+
+@app.get(
+    "/tieseries/{timeseries_id}/predict",
+    response_model=TimeSeriesMetricsResponse,
+)
+def predict_timeseries(
+        timeseries_id: UUID,
+        db: Session = Depends(get_db),
+):
+    timeseries = get_timeseries(
+        db=db,
+        timeseries_id=timeseries_id,
+    )
+
+    if not timeseries:
+        raise HTTPException(
+            status_code=404,
+            detail="Time series not found",
+        )
+    
+    predictions = predict_future_values(
+        timeseries
+    )
+
+    return {
+        "predictions": predictions,
+    }

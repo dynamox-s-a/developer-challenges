@@ -10,6 +10,7 @@ httpcore==1.0.9
 httpx==0.28.1
 idna==3.17
 iniconfig==2.3.0
+numpy==2.4.6
 packaging==26.2
 pluggy==1.6.0
 psycopg2-binary==2.9.12

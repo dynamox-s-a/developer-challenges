@@ -110,3 +110,29 @@ def test_delete_timeseries():
     assert get_response.json() == {
         "detail": "Time series not found"
     }
+
+
+def test_predict_timeseries():
+
+    create_response = client.post(
+        "/timeseries",
+        json={
+            "values": [10,20,30,40]
+        }
+    )
+
+    timeseries_id = create_response.json()["id"]
+
+    response = client.get(
+        f"/timeseries/{timeseries_id}/predict"
+    )
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert "predictions" in data
+
+    assert len(
+        data["predictions"]
+    ) == 3
