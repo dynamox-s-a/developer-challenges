@@ -21,3 +21,9 @@ class TimeSeriesDetail(BaseModel):
 
 class TimeSeriesCountResponse(BaseModel):
     count: int
+
+class TimeSeriesMetricsResponse(BaseModel):
+    count: int
+    min: float
+    max: float
+    mean: float

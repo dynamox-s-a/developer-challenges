@@ -5,8 +5,11 @@ from sqlalchemy.orm import Session
 
 from app.database import Base, engine, get_db
 from app.models import TimeSeries
-from app.schemas import TimeSeriesResponse, TimeSeriesCreate, TimeSeriesDetail, TimeSeriesCountResponse
+from app.schemas import TimeSeriesResponse, TimeSeriesCreate, TimeSeriesDetail, TimeSeriesCountResponse, \
+    TimeSeriesMetricsResponse
 from app.crud import create_timeseries, get_timeseries,count_timeseries
+from app.services import calculate_metrics
+
 app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
@@ -62,3 +65,27 @@ def get_timeseries_endpoint(
             detail="Time series not found",
         )
     return timeseries
+
+@app.get("/timeseries/{timeseries_id}/metrics",
+         response_model=TimeSeriesMetricsResponse,
+)
+def get_metrics_endpoint(
+        timeseries_id: UUID,
+        db: Session = Depends(get_db),
+):
+    timeseries = get_timeseries(
+        db=db,
+        timeseries_id=timeseries_id,
+    )
+
+    if not timeseries:
+        raise HTTPException(
+            status_code=404,
+            detail="Time series not found",
+        )
+
+    metrics = calculate_metrics(
+        timeseries
+    )
+
+    return metrics
