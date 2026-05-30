@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from sqlalchemy.orm import Session
 
 from app.models import TimeSeries
@@ -18,3 +20,13 @@ def create_timeseries(
     db.refresh(timeseries)
 
     return timeseries
+
+def get_timeseries(
+        db: Session,
+        timeseries_id: UUID,
+):
+    return(
+        db.query(TimeSeries)
+        .filter(TimeSeries.id == timeseries_id)
+        .first()
+    )
