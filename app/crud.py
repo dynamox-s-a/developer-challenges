@@ -33,3 +33,10 @@ def get_timeseries(
 
 def count_timeseries(db:Session) -> int:
     return db.query(TimeSeries).count()
+
+def delete_timeseries(
+        db: Session,
+        timeseries: TimeSeries,
+) -> None:
+    db.delete(timeseries)
+    db.commit()

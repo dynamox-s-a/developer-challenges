@@ -1,13 +1,13 @@
 from uuid import UUID
 
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Response
 from sqlalchemy.orm import Session
 
 from app.database import Base, engine, get_db
 from app.models import TimeSeries
 from app.schemas import TimeSeriesResponse, TimeSeriesCreate, TimeSeriesDetail, TimeSeriesCountResponse, \
     TimeSeriesMetricsResponse
-from app.crud import create_timeseries, get_timeseries,count_timeseries
+from app.crud import create_timeseries, get_timeseries,count_timeseries, delete_timeseries
 from app.services import calculate_metrics
 
 app = FastAPI()
@@ -89,3 +89,28 @@ def get_metrics_endpoint(
     )
 
     return metrics
+
+@app.delete("/timeseries/{timeseries_id}",
+            status_code=204,
+)
+def delete_timeseries_endpoint(
+        timeseries_id: UUID,
+        db: Session = Depends(get_db),
+):
+    timeseries = get_timeseries(
+        db=db,
+        timeseries_id=timeseries_id,
+    )
+
+    if not timeseries:
+        raise HTTPException(
+            status_code=404,
+            detail="Time series not found",
+        )
+
+    delete_timeseries(
+        db=db,
+        timeseries=timeseries,
+    )
+
+    return Response(status_code=204)
