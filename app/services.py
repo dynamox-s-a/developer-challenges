@@ -16,8 +16,8 @@ def calculate_metrics(
     }
 
 def predict_future_values(
-        timeseries: TimeSeries,
-        steps: int = 3
+    timeseries: TimeSeries,
+    steps: int = 3,
 ):
     values = timeseries.values
 
@@ -28,13 +28,14 @@ def predict_future_values(
 
     predictions = []
 
-    for i in range(len(values),
-                   len(values) + steps,
+    for i in range(
+        len(values),
+        len(values) + steps,
     ):
-        predictions = slope * i + intercept
+        prediction = slope * i + intercept
 
         predictions.append(
-            round(float(predictions),2)
+            round(float(prediction), 2)
         )
 
     return predictions

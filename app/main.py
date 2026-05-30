@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from app.database import Base, engine, get_db
 from app.models import TimeSeries
 from app.schemas import TimeSeriesResponse, TimeSeriesCreate, TimeSeriesDetail, TimeSeriesCountResponse, \
-    TimeSeriesMetricsResponse
+    TimeSeriesMetricsResponse, PredictionResponse
 from app.crud import create_timeseries, get_timeseries,count_timeseries, delete_timeseries
 from app.services import calculate_metrics, predict_future_values
 
@@ -116,8 +116,8 @@ def delete_timeseries_endpoint(
     return Response(status_code=204)
 
 @app.get(
-    "/tieseries/{timeseries_id}/predict",
-    response_model=TimeSeriesMetricsResponse,
+    "/timeseries/{timeseries_id}/predict",
+    response_model=PredictionResponse,
 )
 def predict_timeseries(
         timeseries_id: UUID,
@@ -133,7 +133,7 @@ def predict_timeseries(
             status_code=404,
             detail="Time series not found",
         )
-    
+
     predictions = predict_future_values(
         timeseries
     )

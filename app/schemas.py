@@ -29,4 +29,4 @@ class TimeSeriesMetricsResponse(BaseModel):
     mean: float
 
 class PredictionResponse(BaseModel):
-    prediction: list[float]
+    predictions: list[float]

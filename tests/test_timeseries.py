@@ -111,13 +111,12 @@ def test_delete_timeseries():
         "detail": "Time series not found"
     }
 
-
 def test_predict_timeseries():
 
     create_response = client.post(
         "/timeseries",
         json={
-            "values": [10,20,30,40]
+            "values": [10, 20, 30, 40]
         }
     )
 
@@ -132,7 +131,4 @@ def test_predict_timeseries():
     data = response.json()
 
     assert "predictions" in data
-
-    assert len(
-        data["predictions"]
-    ) == 3
+    assert len(data["predictions"]) == 3
