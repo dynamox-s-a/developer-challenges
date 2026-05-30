@@ -83,3 +83,30 @@ def test_get_metrics():
     assert data["min"] == 10
     assert data["max"] == 50
     assert data["mean"] == 26.666666666666668
+
+def test_delete_timeseries():
+
+    create_response = client.post(
+        "/timeseries",
+        json={
+            "values": [10, 20, 30]
+        }
+    )
+
+    timeseries_id = create_response.json()["id"]
+
+    delete_response = client.delete(
+        f"/timeseries/{timeseries_id}"
+    )
+
+    assert delete_response.status_code == 204
+
+    get_response = client.get(
+        f"/timeseries/{timeseries_id}"
+    )
+
+    assert get_response.status_code == 404
+
+    assert get_response.json() == {
+        "detail": "Time series not found"
+    }
