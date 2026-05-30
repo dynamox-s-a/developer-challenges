@@ -30,3 +30,6 @@ def get_timeseries(
         .filter(TimeSeries.id == timeseries_id)
         .first()
     )
+
+def count_timeseries(db:Session) -> int:
+    return db.query(TimeSeries).count()

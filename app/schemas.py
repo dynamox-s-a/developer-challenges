@@ -18,3 +18,6 @@ class TimeSeriesDetail(BaseModel):
     model_config = {
         "from_attributtes": True
     }
+
+class TimeSeriesCountResponse(BaseModel):
+    count: int
