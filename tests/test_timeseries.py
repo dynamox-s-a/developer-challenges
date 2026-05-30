@@ -13,3 +13,73 @@ def test_health_check():
     assert response.json() == {
         "status": "ok"
     }
+
+def test_create_timeseries():
+    response = client.post(
+        "/timeseries",
+        json={
+            "values": [10, 20, 30]
+        }
+    )
+
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert 'id' in data
+
+def test_count_timeseries():
+    response = client.get(
+        "/timeseries/count"
+    )
+
+    assert response.status_code == 200
+
+    assert "count" in response.json()
+
+
+def test_get_timeseries_by_id():
+
+    create_response = client.post(
+        "/timeseries",
+        json={
+            "values": [1, 2, 3]
+        }
+    )
+
+    timeseries_id = create_response.json()["id"]
+
+    response = client.get(
+        f"/timeseries/{timeseries_id}"
+    )
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["values"] == [1, 2, 3]
+
+def test_get_metrics():
+
+    create_response = client.post(
+        "/timeseries",
+        json={
+            "values": [10, 20, 50]
+        }
+    )
+
+    timeseries_id = create_response.json()["id"]
+
+    response = client.get(
+        f"/timeseries/{timeseries_id}/metrics"
+    )
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["count"] == 3
+    assert data["min"] == 10
+    assert data["max"] == 50
+    assert data["mean"] == 26.666666666666668
