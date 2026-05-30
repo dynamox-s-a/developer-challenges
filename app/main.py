@@ -8,7 +8,7 @@ from app.session import get_db
 from app.models import TimeSeries
 from app.schemas import TimeSeriesResponse, TimeSeriesCreate, TimeSeriesDetail, TimeSeriesCountResponse, \
     TimeSeriesMetricsResponse, PredictionResponse
-from app.crud import create_timeseries, get_timeseries,count_timeseries, delete_timeseries
+from app.repository import create_timeseries, get_timeseries,count_timeseries, delete_timeseries
 from app.services import calculate_metrics, predict_future_values
 
 app = FastAPI()
