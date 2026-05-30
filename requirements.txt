@@ -14,9 +14,11 @@ packaging==26.2
 pluggy==1.6.0
 psycopg2-binary==2.9.12
 pydantic==2.13.4
+pydantic-settings==2.14.1
 pydantic_core==2.46.4
 Pygments==2.20.0
 pytest==9.0.3
+python-dotenv==1.2.2
 SQLAlchemy==2.0.50
 starlette==1.2.0
 typing-inspection==0.4.2

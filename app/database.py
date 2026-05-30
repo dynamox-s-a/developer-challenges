@@ -1,9 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL = (
-    "postgresql://dynamox:dynamox_26@localhost:5432/dynamox_db"
-)
+from app.config import settings
+
+DATABASE_URL = settings.DATABASE_URL
 
 engine =  create_engine(DATABASE_URL)
 
