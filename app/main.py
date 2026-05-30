@@ -3,7 +3,8 @@ from uuid import UUID
 from fastapi import FastAPI, Depends, HTTPException, Response
 from sqlalchemy.orm import Session
 
-from app.database import Base, engine, get_db
+from app.database import Base, engine
+from app.session import get_db
 from app.models import TimeSeries
 from app.schemas import TimeSeriesResponse, TimeSeriesCreate, TimeSeriesDetail, TimeSeriesCountResponse, \
     TimeSeriesMetricsResponse, PredictionResponse
