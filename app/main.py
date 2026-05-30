@@ -14,9 +14,9 @@ app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
 
-@app.get("/")
-def Health_check():
-    return {"status": "ok"}
+# @app.get("/")
+# def Health_check():
+#     return {"status": "ok"}
 
 @app.post(
     "/timeseries",
