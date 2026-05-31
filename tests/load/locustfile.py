@@ -58,6 +58,4 @@ class TimeSeriesUser(HttpUser):
 
     @task(1)
     def health_check(self):
-        self.client.get(
-            "/health"
-        )
+        self.client.get("/health")

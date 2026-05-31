@@ -1,6 +1,14 @@
 from fastapi.testclient import TestClient
 import pytest
 
+def test_health_check(client):
+    response = client.get("/health")
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "status": "ok"
+    }
+
 
 def test_create_timeseries(client: TestClient):
     response = client.post(
