@@ -8,3 +8,9 @@ app = FastAPI(title="TimeSeries API")
 Base.metadata.create_all(bind=engine)
 
 app.include_router(timeseries_router)
+
+# app/main.py
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
