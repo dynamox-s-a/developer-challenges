@@ -1,20 +1,8 @@
 from fastapi.testclient import TestClient
-
-from app.main import app
-
-client = TestClient(app)
+import pytest
 
 
-# def test_health_check():
-#     response = client.get("/")
-
-#     assert response.status_code == 200
-
-#     assert response.json() == {
-#         "status": "ok"
-#     }
-
-def test_create_timeseries():
+def test_create_timeseries(client: TestClient):
     response = client.post(
         "/timeseries",
         json={
@@ -22,25 +10,49 @@ def test_create_timeseries():
         }
     )
 
-
     assert response.status_code == 200
 
     data = response.json()
 
-    assert 'id' in data
+    assert isinstance(data["id"], str)
 
-def test_count_timeseries():
+
+def test_create_timeseries_invalid_payload(
+    client: TestClient,
+):
+    response = client.post(
+        "/timeseries",
+        json={}
+    )
+
+    assert response.status_code == 422
+
+
+def test_count_timeseries(
+    client: TestClient,
+):
+    client.post(
+        "/timeseries",
+        json={
+            "values": [1, 2, 3]
+        }
+    )
+
     response = client.get(
         "/timeseries/count"
     )
 
     assert response.status_code == 200
 
-    assert "count" in response.json()
+    data = response.json()
+
+    assert isinstance(data["count"], int)
+    assert data["count"] >= 1
 
 
-def test_get_timeseries_by_id():
-
+def test_get_timeseries_by_id(
+    client: TestClient,
+):
     create_response = client.post(
         "/timeseries",
         json={
@@ -59,9 +71,36 @@ def test_get_timeseries_by_id():
     data = response.json()
 
     assert data["values"] == [1, 2, 3]
+    assert "created_at" in data
 
-def test_get_metrics():
 
+def test_get_timeseries_not_found(
+    client: TestClient,
+):
+    response = client.get(
+        "/timeseries/00000000-0000-0000-0000-000000000000"
+    )
+
+    assert response.status_code == 404
+
+    assert response.json() == {
+        "detail": "Time series not found"
+    }
+
+
+def test_get_timeseries_invalid_uuid(
+    client: TestClient,
+):
+    response = client.get(
+        "/timeseries/abc"
+    )
+
+    assert response.status_code == 422
+
+
+def test_get_metrics(
+    client: TestClient,
+):
     create_response = client.post(
         "/timeseries",
         json={
@@ -82,10 +121,15 @@ def test_get_metrics():
     assert data["count"] == 3
     assert data["min"] == 10
     assert data["max"] == 50
-    assert data["mean"] == 26.666666666666668
 
-def test_delete_timeseries():
+    assert data["mean"] == pytest.approx(
+        26.666666666666668
+    )
 
+
+def test_delete_timeseries(
+    client: TestClient,
+):
     create_response = client.post(
         "/timeseries",
         json={
@@ -100,6 +144,7 @@ def test_delete_timeseries():
     )
 
     assert delete_response.status_code == 204
+    assert delete_response.text == ""
 
     get_response = client.get(
         f"/timeseries/{timeseries_id}"
@@ -111,8 +156,10 @@ def test_delete_timeseries():
         "detail": "Time series not found"
     }
 
-def test_predict_timeseries():
 
+def test_predict_timeseries(
+    client: TestClient,
+):
     create_response = client.post(
         "/timeseries",
         json={
@@ -131,4 +178,32 @@ def test_predict_timeseries():
     data = response.json()
 
     assert "predictions" in data
-    assert len(data["predictions"]) == 3
+    assert isinstance(data["predictions"], list)
+    assert len(data["predictions"]) == 5
+
+    assert all(
+        isinstance(value, (int, float))
+        for value in data["predictions"]
+    )
+
+    def test_predict_empty_timeseries(
+        client: TestClient,
+):
+        create_response = client.post(
+            "/timeseries",
+            json={
+                "values": []
+            }
+        )
+
+        timeseries_id = create_response.json()["id"]
+
+        response = client.get(
+            f"/timeseries/{timeseries_id}/predict"
+        )
+
+        assert response.status_code == 200
+
+        assert response.json() == {
+            "predictions": []
+        }

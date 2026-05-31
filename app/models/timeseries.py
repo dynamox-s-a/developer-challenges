@@ -5,7 +5,7 @@ from sqlalchemy import DateTime, func, UUID
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.database import Base
+from app.database.base import Base
 
 
 class TimeSeries(Base):
@@ -17,7 +17,7 @@ class TimeSeries(Base):
         default=uuid.uuid4,
     )
 
-    values: Mapped[list] = mapped_column(
+    values: Mapped[list[float]] = mapped_column(
         JSONB,
         nullable=False,
     )
