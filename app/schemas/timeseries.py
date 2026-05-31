@@ -1,11 +1,13 @@
 from datetime import datetime
 from uuid import UUID
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class TimeSeriesCreate(BaseModel):
-    values: list[float]
+    values: list[float] = Field(
+        min_length=1
+    )
 
 class TimeSeriesResponse(BaseModel):
     id: UUID
