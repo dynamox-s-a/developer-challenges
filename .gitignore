@@ -1,2 +1,83 @@
+# =========================
+# Environment Variables
+# =========================
+.env
+.env.*
+!.env.example
 
-/venv/
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+venv/
+.venv/
+env/
+
+# Pytest
+.pytest_cache/
+
+# Mypy
+.mypy_cache/
+
+# Ruff
+.ruff_cache/
+
+# Coverage
+.coverage
+htmlcov/
+
+# =========================
+# Node.js / React
+# =========================
+node_modules/
+
+# Build
+dist/
+build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================
+# VS Code
+# =========================
+.vscode/
+
+# =========================
+# JetBrains
+# =========================
+.idea/
+
+# =========================
+# macOS
+# =========================
+.DS_Store
+
+# =========================
+# Windows
+# =========================
+Thumbs.db
+
+# =========================
+# Database
+# =========================
+*.sqlite
+*.db
+
+# =========================
+# Docker
+# =========================
+.docker/
+
+# =========================
+# Temporary Files
+# =========================
+*.log
+*.tmp
+*.swp
