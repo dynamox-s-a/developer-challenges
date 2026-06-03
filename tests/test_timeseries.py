@@ -19,7 +19,7 @@ def test_create_timeseries(client: TestClient):
         }
     )
 
-    assert response.status_code == 200
+    assert response.status_code == 201
 
     data = response.json()
 
@@ -239,3 +239,7 @@ def test_get_all_timeseries(
     )
 
     assert len(data) >= 2
+
+    assert "id" in data[0]
+    assert "values" in data[0]
+    assert "created_at" in data[0]
