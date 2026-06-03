@@ -38,6 +38,7 @@ router = APIRouter(
 @router.post(
     "",
     response_model=TimeSeriesResponse,
+    status_code=201,
 )
 def create(
     payload: TimeSeriesCreate,
