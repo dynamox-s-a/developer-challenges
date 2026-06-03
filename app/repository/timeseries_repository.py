@@ -6,21 +6,6 @@ from sqlalchemy.orm import Session
 from app.models import TimeSeries
 
 
-def get_all_timeseries(
-    db: Session,
-) -> list[TimeSeries]:
-
-    stmt = (
-    select(TimeSeries)
-    .order_by(
-        TimeSeries.created_at.desc()
-    )
-)
-
-    return list(
-        db.scalars(stmt).all()
-    )
-
 
 def create_timeseries(
     db: Session,
@@ -36,6 +21,22 @@ def create_timeseries(
     db.refresh(timeseries)
 
     return timeseries
+
+
+def get_all_timeseries(
+    db: Session,
+) -> list[TimeSeries]:
+
+    stmt = (
+    select(TimeSeries)
+    .order_by(
+        TimeSeries.created_at.desc()
+    )
+)
+
+    return list(
+        db.scalars(stmt).all()
+    )
 
 
 def get_timeseries(
