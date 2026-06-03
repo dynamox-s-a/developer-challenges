@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class TimeSeriesCreate(BaseModel):
@@ -9,26 +9,31 @@ class TimeSeriesCreate(BaseModel):
         min_length=1
     )
 
+
 class TimeSeriesResponse(BaseModel):
     id: UUID
+
 
 class TimeSeriesDetail(BaseModel):
     id: UUID
     values: list[float]
     created_at: datetime
 
-    model_config = {
-        "from_attributes": True
-    }
+    model_config = ConfigDict(
+        from_attributes=True
+    )
+
 
 class TimeSeriesCountResponse(BaseModel):
     count: int
+
 
 class TimeSeriesMetricsResponse(BaseModel):
     count: int
     min: float
     max: float
     mean: float
+
 
 class PredictionResponse(BaseModel):
     predictions: list[float]

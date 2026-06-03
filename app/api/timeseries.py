@@ -12,6 +12,7 @@ from app.repository.timeseries_repository import (
     create_timeseries,
     count_timeseries,
     delete_timeseries,
+    get_all_timeseries,
 )
 
 from app.schemas.timeseries import (
@@ -124,3 +125,13 @@ def predict(
             timeseries
         )
     )
+
+
+@router.get(
+    "",
+    response_model=list[TimeSeriesDetail],
+)
+def get_all(
+    db: Session = Depends(get_db),
+):
+    return get_all_timeseries(db)

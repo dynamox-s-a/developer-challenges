@@ -1,7 +1,8 @@
 from fastapi.testclient import TestClient
 import pytest
 
-def test_health_check(client):
+
+def test_health_check(client: TestClient):
     response = client.get("/health")
 
     assert response.status_code == 200
@@ -31,6 +32,19 @@ def test_create_timeseries_invalid_payload(
     response = client.post(
         "/timeseries",
         json={}
+    )
+
+    assert response.status_code == 422
+
+
+def test_create_timeseries_empty_values(
+    client: TestClient,
+):
+    response = client.post(
+        "/timeseries",
+        json={
+            "values": []
+        }
     )
 
     assert response.status_code == 422
@@ -194,24 +208,34 @@ def test_predict_timeseries(
         for value in data["predictions"]
     )
 
-    def test_predict_empty_timeseries(
-        client: TestClient,
+def test_get_all_timeseries(
+    client: TestClient,
 ):
-        create_response = client.post(
-            "/timeseries",
-            json={
-                "values": []
-            }
-        )
-
-        timeseries_id = create_response.json()["id"]
-
-        response = client.get(
-            f"/timeseries/{timeseries_id}/predict"
-        )
-
-        assert response.status_code == 200
-
-        assert response.json() == {
-            "predictions": []
+    client.post(
+        "/timeseries",
+        json={
+            "values": [10, 20, 30]
         }
+    )
+
+    client.post(
+        "/timeseries",
+        json={
+            "values": [40, 50, 60]
+        }
+    )
+
+    response = client.get(
+        "/timeseries"
+    )
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert isinstance(
+        data,
+        list,
+    )
+
+    assert len(data) >= 2
