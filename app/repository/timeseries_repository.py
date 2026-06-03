@@ -28,16 +28,15 @@ def get_all_timeseries(
 ) -> list[TimeSeries]:
 
     stmt = (
-    select(TimeSeries)
-    .order_by(
-        TimeSeries.created_at.desc()
+        select(TimeSeries)
+        .order_by(
+            TimeSeries.created_at.desc()
+        )
     )
-)
 
     return list(
         db.scalars(stmt).all()
     )
-
 
 def get_timeseries(
     db: Session,
