@@ -84,10 +84,10 @@ def test_get_metrics():
     metrics = metrics_response.json()
     
     assert metrics["count"] == 3
-    assert metrics["mean"] == 20.0  # (10 + 20 + 30) / 3
-    assert metrics["min"] == 10.0
-    assert metrics["max"] == 30.0
-    assert metrics["std_dev"] is not None  # Deve calcular o desvio padrão
+    assert metrics["media"] == 20.0  # (10 + 20 + 30) / 3
+    assert metrics["minimo"] == 10.0
+    assert metrics["maximo"] == 30.0
+    assert metrics["desvio_padrao"] is not None  # Deve calcular o desvio padrão
 
 
 def test_delete_series():

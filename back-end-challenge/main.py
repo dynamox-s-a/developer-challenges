@@ -56,10 +56,10 @@ class SeriesResponseSchema(BaseModel):
 class MetricsSchema(BaseModel):
     """Schema das métricas calculadas sobre uma série"""
     count: int  # Quantos pontos
-    mean: float  # Média
-    min: float  # Mínimo
-    max: float  # Máximo
-    std_dev: Optional[float] = None  # Desvio padrão (None se houver < 2 pontos)
+    media: float  # Média
+    minimo: float  # Mínimo
+    maximo: float  # Máximo
+    desvio_padrao: Optional[float] = None  # Desvio padrão (None se houver < 2 pontos)
 
 
 # ============================================================================
@@ -152,15 +152,15 @@ def get_series(series_id: int, db: Session = Depends(get_db)):
 def get_metrics(series_id: int, db: Session = Depends(get_db)):
     """
     HISTÓRIA 2: Obter métricas sobre a série temporal.
-    
+
     GET /series/1/metrics
-    Retorno: { "count": 10, "mean": 15.5, "min": 5, "max": 25, "std_dev": 2.3 }
-    
+    Retorno: { "count": 10, "media": 15.5, "minimo": 5, "maximo": 25, "desvio_padrao": 2.3 }
+
     Métricas escolhidas (padrão pra sinais de vibração/sensores):
     - count: número de leituras
-    - mean: valor médio
-    - min/max: extremos
-    - std_dev: variabilidade (desvio padrão)
+    - media: valor médio
+    - minimo/maximo: extremos
+    - desvio_padrao: variabilidade (desvio padrão)
     """
     series = db.query(Series).filter(Series.id == series_id).first()
     
@@ -171,23 +171,23 @@ def get_metrics(series_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Série vazia, sem métricas")
     
     # Extrair só os valores numéricos
-    values = [dp.value for dp in series.data_points]
-    
+    valores = [dp.value for dp in series.data_points]
+
     # Calcular métricas
-    count = len(values)
-    avg = mean(values)
-    min_val = min(values)
-    max_val = max(values)
-    
+    quantidade = len(valores)
+    media = mean(valores)
+    valor_minimo = min(valores)
+    valor_maximo = max(valores)
+
     # Desvio padrão só faz sentido com 2+ pontos
-    std_dev = stdev(values) if count >= 2 else None
-    
+    desvio_padrao = stdev(valores) if quantidade >= 2 else None
+
     return MetricsSchema(
-        count=count,
-        mean=avg,
-        min=min_val,
-        max=max_val,
-        std_dev=std_dev
+        count=quantidade,
+        media=media,
+        minimo=valor_minimo,
+        maximo=valor_maximo,
+        desvio_padrao=desvio_padrao
     )
 
 

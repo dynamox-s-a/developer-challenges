@@ -72,18 +72,18 @@ Retorno:
 ```json
 {
   "count": 3,
-  "mean": 11.53,
-  "min": 10.5,
-  "max": 12.3,
-  "std_dev": 0.85
+  "media": 11.53,
+  "minimo": 10.5,
+  "maximo": 12.3,
+  "desvio_padrao": 0.85
 }
 ```
 
 **Métricas calculadas:**
 - `count`: número de leituras
-- `mean`: valor médio
-- `min` / `max`: extremos
-- `std_dev`: desvio padrão (variabilidade)
+- `media`: valor médio
+- `minimo` / `maximo`: extremos
+- `desvio_padrao`: desvio padrão (variabilidade)
 
 ### 4️⃣ Deletar uma série
 **DELETE** `/series/1`
