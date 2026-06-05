@@ -20,9 +20,6 @@ from statistics import mean, stdev
 
 from database import get_db, Series, DataPoint, engine, Base
 
-# Criar as tabelas (se não existirem)
-Base.metadata.create_all(bind=engine)
-
 app = FastAPI(title="Dynamox - API de Processamento de Sinais")
 
 
