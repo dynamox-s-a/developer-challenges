@@ -37,7 +37,7 @@ Abra o navegador em `http://127.0.0.1:8000/docs` para ver a documentação inter
 
 ## Os 5 Endpoints
 
-### 1️⃣ Criar uma série
+### Criar uma série
 **POST** `/series`
 
 ```json
@@ -60,12 +60,12 @@ Retorno:
 }
 ```
 
-### 2️⃣ Recuperar uma série
+### Recuperar uma série
 **GET** `/series/1`
 
 Retorno: a série inteira com todos os pontos.
 
-### 3️⃣ Obter métricas
+### Obter métricas
 **GET** `/series/1/metrics`
 
 Retorno:
@@ -85,12 +85,12 @@ Retorno:
 - `minimo` / `maximo`: extremos
 - `desvio_padrao`: desvio padrão (variabilidade)
 
-### 4️⃣ Deletar uma série
+### Deletar uma série
 **DELETE** `/series/1`
 
 Retorno: `{ "message": "Série deletada com sucesso" }`
 
-### 5️⃣ Contar séries
+### Contar séries
 **GET** `/series/count`
 
 Retorno: `{ "count": 5 }`
@@ -149,44 +149,17 @@ Todos os testes devem passar (7 tests).
 
 Relacionamento: 1 série → muitos pontos de dados.
 
-### Como explicar isto tudo na entrevista
-
-**Pergunta: "Como você armazenou os dados?"**
-> "Usei SQLAlchemy com SQLite. O SQLAlchemy é um ORM, que transforma classes Python em tabelas do banco. Criei duas tabelas: `series` pra agrupar as séries, e `data_points` pra armazenar cada leitura. Usei SQLite porque é simples (um arquivo) e o mesmo código funcionaria com Postgres/MySQL só trocando a URL de conexão."
-
-**Pergunta: "Por que FastAPI?"**
-> "FastAPI é rápido, valida input automaticamente com Pydantic, e gera documentação automática (Swagger). O requisito era latência <350ms, e FastAPI entrega isso."
-
-**Pergunta: "Como validam os dados de entrada?"**
-> "Uso Pydantic schemas. Cada endpoint define o que espera receber (ex: `SeriesCreateSchema` espera `name` e `data_points`). Se o cliente mandar algo inválido, FastAPI rejeita automaticamente com erro 400."
-
-**Pergunta: "Como calculam as métricas?"**
-> "Uso a biblioteca `statistics` do Python. Para uma série com N pontos, calculo: count (quantos), mean (média), min/max (extremos), e std_dev (desvio padrão pra medir variabilidade). Essas métricas fazem sentido pra sinais de sensores."
-
-**Pergunta: "Como garantem a latência <350ms?"**
-> "SQLite em disco local é muito rápido pra essa escala. Os testes passam em <100ms. Se escalar pro milhões de requisições, migraria pra PostgreSQL + índices, mas o código continua o mesmo."
-
-## Próximos passos (bônus)
-
-- **Previsão (forecasting):** adicionar endpoint `/series/{id}/forecast` que retorna predicted next value usando média móvel
-- **Testes de carga:** usar `locust` pra simular múltiplas requisições simultâneas
-- **Deploy em nuvem:** colocar em Heroku, Railway, ou DigitalOcean com Dockerfile
-
 ## Latência
 
-Medida empiricamente: todos os endpoints respondem em <50ms (em máquina local). Requisito: <350ms ✅
+Para verificar a latência manualmente, com a API rodando, execute no PowerShell:
 
-## FAQ
+```powershell
+$sw = [System.Diagnostics.Stopwatch]::StartNew()
+Invoke-RestMethod -Method POST -Uri http://localhost:8000/series -ContentType "application/json" -Body '{"name":"test","data_points":[{"timestamp":"2026-05-29T10:00:00","value":10}]}'
+$sw.Stop()
+Write-Host "Latência: $($sw.ElapsedMilliseconds)ms"
+```
 
-**P: Preciso de autenticação?**
-R: Não. O desafio não pediu, então não adicionei. Mas seria fácil adicionar com `fastapi.security`.
-
-**P: Posso modificar as métricas?**
-R: Sim! Está tudo em `get_metrics()` em `main.py`. Adicione mais cálculos se achar necessário (ex: RMS para vibração, FFT, etc.).
-
-**P: Como testar os endpoints?**
-R: Rodando a API (`uvicorn main:app --reload`), abra `http://127.0.0.1:8000/docs` e clique nos botões. Ou use Postman/Insomnia se preferir.
-
----
+> Nota: a primeira requisição após iniciar o servidor pode ser mais lenta (~3s) por conta da inicialização do Python e do SQLAlchemy. As requisições seguintes ficam abaixo de 50ms. Requisito: <350ms ✅
 
 **Desenvolvido com:** Python 3.12 + FastAPI + SQLAlchemy + pytest
