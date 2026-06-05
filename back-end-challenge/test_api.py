@@ -7,8 +7,6 @@ Como rodar:
 
 from fastapi.testclient import TestClient
 from main import app
-import json
-from datetime import datetime
 
 # O TestClient faz requisições fake pra API sem precisar rodar o servidor
 client = TestClient(app)

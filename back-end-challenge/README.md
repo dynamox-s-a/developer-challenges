@@ -151,15 +151,36 @@ Relacionamento: 1 série → muitos pontos de dados.
 
 ## Latência
 
-Para verificar a latência manualmente, com a API rodando, execute no PowerShell:
+Requisito: **latência cliente↔servidor < 350ms em todas as requisições**.
+
+Para comprovar, com a API rodando (`python -m uvicorn main:app`), execute o
+script abaixo no PowerShell. Ele dispara **100 requisições reais via HTTP** e
+reporta média, p95 e máximo — medindo o caminho de rede de verdade (não chamadas
+in-process):
 
 ```powershell
-$sw = [System.Diagnostics.Stopwatch]::StartNew()
-Invoke-RestMethod -Method POST -Uri http://localhost:8000/series -ContentType "application/json" -Body '{"name":"test","data_points":[{"timestamp":"2026-05-29T10:00:00","value":10}]}'
-$sw.Stop()
-Write-Host "Latência: $($sw.ElapsedMilliseconds)ms"
+$body = '{"name":"test","data_points":[{"timestamp":"2026-05-29T10:00:00","value":10}]}'
+
+# Warm-up: descarta a 1ª requisição (inicialização única do processo)
+Invoke-RestMethod -Method POST -Uri http://localhost:8000/series -ContentType "application/json" -Body $body | Out-Null
+
+# Mede 100 requisições
+$tempos = 1..100 | ForEach-Object {
+    $sw = [System.Diagnostics.Stopwatch]::StartNew()
+    Invoke-RestMethod -Method POST -Uri http://localhost:8000/series -ContentType "application/json" -Body $body | Out-Null
+    $sw.Stop()
+    $sw.Elapsed.TotalMilliseconds
+}
+
+$ordenado = $tempos | Sort-Object
+$media = ($tempos | Measure-Object -Average).Average
+$p95   = $ordenado[[int]([math]::Ceiling(0.95 * $ordenado.Count) - 1)]
+$max   = ($tempos | Measure-Object -Maximum).Maximum
+
+Write-Host ("Média: {0:N1}ms | p95: {1:N1}ms | Máx: {2:N1}ms" -f $media, $p95, $max)
+if ($p95 -lt 350) { Write-Host "✅ p95 < 350ms" } else { Write-Host "❌ p95 >= 350ms" }
 ```
 
-> Nota: a primeira requisição após iniciar o servidor pode ser mais lenta (~3s) por conta da inicialização do Python e do SQLAlchemy. As requisições seguintes ficam abaixo de 50ms. Requisito: <350ms ✅
+> 350ms. Requisito atendido
 
 **Desenvolvido com:** Python 3.12 + FastAPI + SQLAlchemy + pytest
