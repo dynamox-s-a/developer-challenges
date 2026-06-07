@@ -1,0 +1,13 @@
+{
+  "name": "dynamox-qa-challenge",
+  "version": "1.0.0",
+  "description": "Solução para o desafio de QA da Dynamox usando Playwright",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:report": "npx playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.0"
+  }
+}
