@@ -36,6 +36,17 @@ describe('Validar API /data.json', () => {
         expect(primeiroRegistro.datetime).to.be.a('string');
         expect(primeiroRegistro.max).to.be.a('number'); 
       });
-    })
+    });
+  });
+
+  // Valida se é feito um novo request quando a página é recarregada
+  it('Deve realizar uma nova request após recarregar a página', () => {
+    cy.intercept('GET', '/data.json').as('getUser')
+    cy.wait('@getUser')
+    cy.reload()
+    cy.wait('@getUser')
+    cy.get('@getUser.all').then((calls) => {
+      expect(calls.length).to.eq(2)
+    });
   });
 });
