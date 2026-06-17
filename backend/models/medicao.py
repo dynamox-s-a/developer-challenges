@@ -1,8 +1,5 @@
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, Float
-from sqlalchemy.ext.declarative import declarative_base
-
-db= create_engine("sqlite:///./data.db")
-Base = declarative_base()
+from sqlalchemy import Column, Integer, String, DateTime, Float
+from models.base import Base
 
 class Medicao(Base):
     __tablename__ = "medicoes"
