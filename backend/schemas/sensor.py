@@ -16,7 +16,9 @@ class Sensor(BaseModel):
     
     class Config:
         from_attributes = True
-
-
-
-    
+        
+class SensorPagination(BaseModel):
+    total: int
+    skip: int
+    limit: int
+    items: list[Sensor]
