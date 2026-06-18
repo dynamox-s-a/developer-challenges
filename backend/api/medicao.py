@@ -1,8 +1,3 @@
-#POST /medicoes
-#GET  /medicoes
-#GET  /medicoes/{id}
-#GET /sensores/{sensor_id}/metricas
-
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException
 from database import get_db
@@ -46,12 +41,9 @@ async def delete_medicao(
         medicao_id=medicao_id
     )
 
-@medicao_router.get("/sensores/{sensor_id}/metricas")
-async def get_metricas(
+@medicao_router.get("/sensor/{sensor_id}")
+async def get_medicoes_by_sensor(
     sensor_id: int,
     db: Session = Depends(get_db)
 ):
-    return MedicaoService.get_metricas(
-        db=db,
-        sensor_id=sensor_id
-    )
+    return MedicaoService.get_medicoes_by_sensor(db, sensor_id)

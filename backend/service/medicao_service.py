@@ -38,7 +38,11 @@ class MedicaoService:
     
     @staticmethod
     def get_medicoes(db):
-        return MedicaoRepository.get_medicoes(db)
+        medicoes = MedicaoRepository.get_medicoes(db)
+        return {
+            "medicoes": medicoes,
+            "total": len(medicoes)
+        }
     
     @staticmethod
     def get_medicao(db, medicao_id: int):
@@ -70,4 +74,11 @@ class MedicaoService:
             "max": max(valores),
             "avg": sum(valores) / len(valores)
         }
-        
+    
+    @staticmethod
+    def get_medicoes_by_sensor(db, sensor_id: int):
+        medicoes = MedicaoRepository.get_by_sensor(db, sensor_id)
+        return {
+            "medicoes": medicoes,
+            "total": len(medicoes)
+        }

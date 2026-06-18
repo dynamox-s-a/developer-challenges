@@ -4,6 +4,7 @@ from database import get_db
 from models.sensor import Sensor as SensorModel
 from schemas.sensor import SensorCreate, Sensor
 from service.sensor_service import SensorService
+from service.medicao_service import MedicaoService
 
 sensor_router=APIRouter(prefix="/sensores", tags=["sensores"])
 
@@ -39,6 +40,16 @@ async def delete_sensor(
     db: Session = Depends(get_db)
 ):
     return SensorService.delete_sensor(
+        db=db,
+        sensor_id=sensor_id
+    )
+    
+@sensor_router.get("/{sensor_id}/metricas")
+async def get_metricas(
+    sensor_id: int,
+    db: Session = Depends(get_db)
+):
+    return MedicaoService.get_metricas(
         db=db,
         sensor_id=sensor_id
     )
