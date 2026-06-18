@@ -24,7 +24,22 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-A API estará disponível em `http://localhost:8000`.
+## Documentação interativa
+
+### Ambiente local
+
+Após subir a aplicação localmente, acesse:
+
+`http://localhost:8000/docs`
+
+### Ambiente de produção
+
+A documentação da API publicada para avaliação do desafio está disponível em:
+
+`https://developer-challenges-qz0n.onrender.com/docs`
+
+Através dessa interface é possível visualizar todos os endpoints, schemas, exemplos de requisição e testar a API diretamente pelo navegador.
+
 
 ### 3. Docker (PostgreSQL + Nginx + 3 réplicas)
 
