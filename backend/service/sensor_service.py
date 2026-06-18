@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from repositories.sensor_repository import SensorRepository
+from repository.sensor_repository import SensorRepository
 
 class SensorService:
 
@@ -27,13 +27,4 @@ class SensorService:
     
     @staticmethod
     def delete_sensor(db, sensor_id: int):
-        sensor = db.query(SensorModel).filter(SensorModel.id == sensor_id).first()
-        if not sensor:
-            raise HTTPException(
-                status_code=404,
-                detail="Sensor not found"
-            )
-        db.delete(sensor)
-        db.commit()
-        return {"message": "Sensor deleted successfully"}
-        
+        return SensorRepository.delete_sensor(db, sensor_id)
