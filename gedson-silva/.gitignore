@@ -1,0 +1,17 @@
+*.env.prod
+*.env
+.vscode
+
+pytest_cache/
+.pytest_cache
+
+guide.md
+
+*.db
+*.db-shm
+*db-wal
+
+venv/
+__pycache__/
+*.pyc
+.env
