@@ -1,0 +1,57 @@
+#POST /medicoes
+#GET  /medicoes
+#GET  /medicoes/{id}
+#GET /sensores/{sensor_id}/metricas
+
+from sqlalchemy.orm import Session
+from fastapi import APIRouter, Depends, HTTPException
+from database import get_db
+from models.medicao import Medicao as MedicaoModel
+from schemas.medicao import MedicaoCreate, Medicao
+from repository.medicao_repository import MedicaoRepository
+from service.medicao_service import MedicaoService
+
+medicao_router=APIRouter(prefix="/medicoes", tags=["medicoes"])
+
+@medicao_router.post("/", response_model=Medicao)
+async def create_medicao(
+    medicao: MedicaoCreate, 
+    db: Session = Depends(get_db)
+): 
+    return MedicaoService.create_medicao(db, medicao.sensor_id, medicao.name, medicao.value)
+
+@medicao_router.get("/")
+async def get_medicoes(
+    db: Session = Depends(get_db)
+):
+    return MedicaoService.get_medicoes(db)
+
+@medicao_router.get("/{medicao_id}")
+async def get_medicao(
+    medicao_id: int,
+    db: Session = Depends(get_db)
+):
+    return MedicaoService.get_medicao(
+        db=db,
+        medicao_id=medicao_id
+    )
+
+@medicao_router.delete("/{medicao_id}")
+async def delete_medicao(
+    medicao_id: int,
+    db: Session = Depends(get_db)
+):
+    return MedicaoService.delete_medicao(
+        db=db,
+        medicao_id=medicao_id
+    )
+
+@medicao_router.get("/sensores/{sensor_id}/metricas")
+async def get_metricas(
+    sensor_id: int,
+    db: Session = Depends(get_db)
+):
+    return MedicaoService.get_metricas(
+        db=db,
+        sensor_id=sensor_id
+    )
