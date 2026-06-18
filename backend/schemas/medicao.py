@@ -8,8 +8,8 @@ class MedicaoCreate(BaseModel):
     sensor_id: int
     name: str
     value: float
-    timestamp: datetime
 
+    
 class Medicao(BaseModel):
     """
     Schema para representar uma medição
