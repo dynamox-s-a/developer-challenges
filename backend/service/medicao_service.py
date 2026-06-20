@@ -33,11 +33,16 @@ class MedicaoService:
                 detail="Measurement name cannot be empty"
             )
 
+        if sensor_id <= 0:
+            raise HTTPException(
+                status_code=400,
+                detail="Sensor ID must be a positive integer"
+            )
+
         sensor = SensorRepository.get_sensor(
             db=db,
             sensor_id=sensor_id
         )
-
         if not sensor:
             raise HTTPException(
                 status_code=404,
@@ -78,6 +83,16 @@ class MedicaoService:
         Returns:
             Found measurement or None if not exists
         """
+        if medicao_id <= 0:
+            raise HTTPException(
+                status_code=400,
+                detail="Measurement ID must be a positive integer"
+            )
+        if not MedicaoRepository.get_medicao(db, medicao_id):
+            raise HTTPException(
+                status_code=404,
+                detail=f"Measurement with ID {medicao_id} not found"
+            )
         return MedicaoRepository.get_medicao(db, medicao_id)
     
     @staticmethod
@@ -91,6 +106,16 @@ class MedicaoService:
         Returns:
             Deleted measurement or None if not exists
         """
+        if medicao_id <= 0:
+            raise HTTPException(
+                status_code=400,
+                detail="Measurement ID must be a positive integer"
+            )
+        if not MedicaoRepository.get_medicao(db, medicao_id):
+            raise HTTPException(
+                status_code=404,
+                detail=f"Measurement with ID {medicao_id} not found"
+            )
         return MedicaoRepository.delete_medicao(db, medicao_id)
     
     @staticmethod
@@ -108,11 +133,23 @@ class MedicaoService:
             HTTPException: If no measurements found for the sensor
         """
 
+        if sensor_id <= 0:
+            raise HTTPException(
+                status_code=400,
+                detail="Sensor ID must be a positive integer"
+            )
+
+        sensor = SensorRepository.get_sensor(db, sensor_id)
+        if not sensor:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Sensor with ID {sensor_id} not found"
+            )
+
         medicoes = MedicaoRepository.get_by_sensor(
             db=db,
             sensor_id=sensor_id
         )
-
         if not medicoes:
             raise HTTPException(
                 status_code=404,
@@ -139,6 +176,16 @@ class MedicaoService:
         Returns:
             Dictionary with list of sensor measurements and total
         """
+        if sensor_id <= 0:
+            raise HTTPException(
+                status_code=400,
+                detail="Sensor ID must be a positive integer"
+            )
+        if not SensorRepository.get_sensor(db, sensor_id):
+            raise HTTPException(
+                status_code=404,
+                detail=f"Sensor with ID {sensor_id} not found"
+            )
         medicoes = MedicaoRepository.get_by_sensor(db, sensor_id)
         return {
             "medicoes": medicoes,

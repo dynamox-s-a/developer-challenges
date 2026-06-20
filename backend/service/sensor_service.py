@@ -53,6 +53,17 @@ class SensorService:
         Returns:
             Found sensor or None if not exists
         """
+        if sensor_id <= 0:
+            raise HTTPException(
+                status_code=400,
+                detail="Sensor ID must be a positive integer"
+            )
+        if not SensorRepository.get_sensor(db, sensor_id):
+            raise HTTPException(
+                status_code=404,
+                detail=f"Sensor with ID {sensor_id} not found"
+            )
+        
         return SensorRepository.get_sensor(db, sensor_id)
     
     @staticmethod
@@ -66,4 +77,14 @@ class SensorService:
         Returns:
             Deletion confirmation message
         """
+        if sensor_id <= 0:
+            raise HTTPException(
+                status_code=400,
+                detail="Sensor ID must be a positive integer"
+            )
+        if not SensorRepository.get_sensor(db, sensor_id):
+            raise HTTPException(
+                status_code=404,
+                detail=f"Sensor with ID {sensor_id} not found"
+            )
         return SensorRepository.delete_sensor(db, sensor_id)
