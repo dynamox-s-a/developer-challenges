@@ -3,13 +3,13 @@ from datetime import datetime
 
 class SensorCreate(BaseModel):
     """
-    Schema para criação de sensor
+    Schema for sensor creation
     """
     name: str
 
 class Sensor(BaseModel):
     """
-    Schema para representar um sensor
+    Schema to represent a sensor
     """
     id: int
     name: str

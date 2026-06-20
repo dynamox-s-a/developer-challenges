@@ -2,6 +2,10 @@ from sqlalchemy import Column, Integer, String, DateTime, Float
 from models.base import Base
 
 class Medicao(Base):
+    """Data model for Medicao.
+    
+    Represents a measurement collected by a sensor.
+    """
     __tablename__ = "medicoes"
     
     id = Column(Integer, primary_key=True, index=True)

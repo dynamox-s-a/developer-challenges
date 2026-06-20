@@ -10,6 +10,7 @@ app = FastAPI(
 
 @app.on_event("startup")
 def startup():
+    """Initializes the database when the application starts."""
     init_db()
 
 app.include_router(sensor_router)

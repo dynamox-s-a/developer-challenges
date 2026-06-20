@@ -3,7 +3,7 @@ from datetime import datetime
 
 class MedicaoCreate(BaseModel):
     """
-    Schema para realizar a criação de uma medição
+    Schema for creating a measurement
     """
     sensor_id: int
     name: str
@@ -12,7 +12,7 @@ class MedicaoCreate(BaseModel):
     
 class Medicao(BaseModel):
     """
-    Schema para representar uma medição
+    Schema to represent a measurement
     """
     id: int
     sensor_id: int

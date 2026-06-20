@@ -3,6 +3,7 @@ from repository.medicao_repository import MedicaoRepository
 from repository.sensor_repository import SensorRepository
 
 class MedicaoService:
+    """Service for business logic related to Medicao."""
 
     @staticmethod
     def create_medicao(
@@ -11,6 +12,20 @@ class MedicaoService:
         name: str,
         value: float
     ):
+        """Creates a new measurement with validation.
+        
+        Args:
+            db: Database session
+            sensor_id: ID of the associated sensor
+            name: Measurement name
+            value: Measurement value
+            
+        Returns:
+            Created measurement
+            
+        Raises:
+            HTTPException: If name is empty or sensor does not exist
+        """
 
         if not name.strip():
             raise HTTPException(
@@ -38,6 +53,14 @@ class MedicaoService:
     
     @staticmethod
     def get_medicoes(db):
+        """Returns all measurements with total.
+        
+        Args:
+            db: Database session
+            
+        Returns:
+            Dictionary with list of measurements and total
+        """
         medicoes = MedicaoRepository.get_medicoes(db)
         return {
             "medicoes": medicoes,
@@ -46,14 +69,44 @@ class MedicaoService:
     
     @staticmethod
     def get_medicao(db, medicao_id: int):
+        """Returns a specific measurement by ID.
+        
+        Args:
+            db: Database session
+            medicao_id: Measurement ID
+            
+        Returns:
+            Found measurement or None if not exists
+        """
         return MedicaoRepository.get_medicao(db, medicao_id)
     
     @staticmethod
     def delete_medicao(db, medicao_id: int):
+        """Deletes a measurement from the database.
+        
+        Args:
+            db: Database session
+            medicao_id: ID of the measurement to be deleted
+            
+        Returns:
+            Deleted measurement or None if not exists
+        """
         return MedicaoRepository.delete_medicao(db, medicao_id)
     
     @staticmethod
     def get_metricas(db, sensor_id: int):
+        """Calculates statistical metrics for sensor measurements.
+        
+        Args:
+            db: Database session
+            sensor_id: Sensor ID
+            
+        Returns:
+            Dictionary with count, min, max, avg of measurements
+            
+        Raises:
+            HTTPException: If no measurements found for the sensor
+        """
 
         medicoes = MedicaoRepository.get_by_sensor(
             db=db,
@@ -77,6 +130,15 @@ class MedicaoService:
     
     @staticmethod
     def get_medicoes_by_sensor(db, sensor_id: int):
+        """Returns all measurements from a specific sensor with total.
+        
+        Args:
+            db: Database session
+            sensor_id: Sensor ID
+            
+        Returns:
+            Dictionary with list of sensor measurements and total
+        """
         medicoes = MedicaoRepository.get_by_sensor(db, sensor_id)
         return {
             "medicoes": medicoes,

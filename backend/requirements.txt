@@ -2,3 +2,7 @@ pydantic
 sqlalchemy
 fastapi
 uvicorn
+pytest
+pytest-asyncio
+httpx
+pytest-benchmark

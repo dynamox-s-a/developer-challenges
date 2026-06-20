@@ -13,6 +13,9 @@ async def create_sensor(
     sensor: SensorCreate, 
     db: Session = Depends(get_db)
 ): 
+    """
+    Creates a new sensor.
+    """
     return SensorService.create_sensor(
         db=db,
         name=sensor.name
@@ -22,6 +25,9 @@ async def create_sensor(
 async def get_sensors(
     db: Session = Depends(get_db)
 ):
+    """
+    Returns all sensors.
+    """
     return SensorService.get_sensors(db)
 
 @sensor_router.get("/{sensor_id}")
@@ -29,6 +35,9 @@ async def get_sensor(
     sensor_id: int,
     db: Session = Depends(get_db)
 ):
+    """
+    Returns a specific sensor by ID.
+    """
     return SensorService.get_sensor(
         db=db,
         sensor_id=sensor_id
@@ -39,6 +48,9 @@ async def delete_sensor(
     sensor_id: int,
     db: Session = Depends(get_db)
 ):
+    """
+    Deletes a specific sensor by ID.
+    """
     return SensorService.delete_sensor(
         db=db,
         sensor_id=sensor_id
@@ -49,6 +61,9 @@ async def get_metricas(
     sensor_id: int,
     db: Session = Depends(get_db)
 ):
+    """
+    Returns the metrics of a specific sensor.
+    """
     return MedicaoService.get_metricas(
         db=db,
         sensor_id=sensor_id
