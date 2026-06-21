@@ -101,9 +101,11 @@ class TestMedicaoService:
     
     def test_get_medicao_not_found(self, db_session):
         """Tests measurement search when not found"""
-        medicao = MedicaoService.get_medicao(db_session, 999)
+        with pytest.raises(HTTPException) as exc_info:
+            MedicaoService.get_medicao(db_session, 999)
         
-        assert medicao is None
+        assert exc_info.value.status_code == 404
+        assert "Measurement with ID 999 not found" in exc_info.value.detail
     
     def test_delete_medicao(self, db_session):
         """Tests measurement deletion"""
@@ -119,8 +121,10 @@ class TestMedicaoService:
         
         assert result is not None
         
-        deleted_medicao = MedicaoService.get_medicao(db_session, medicao.id)
-        assert deleted_medicao is None
+        with pytest.raises(HTTPException) as exc_info:
+            MedicaoService.get_medicao(db_session, medicao.id)
+        
+        assert exc_info.value.status_code == 404
     
     def test_get_metricas_success(self, db_session):
         """Tests successful metrics calculation"""

@@ -62,9 +62,11 @@ class TestSensorService:
     
     def test_get_sensor_not_found(self, db_session):
         """Tests sensor search when not found"""
-        sensor = SensorService.get_sensor(db_session, 999)
+        with pytest.raises(HTTPException) as exc_info:
+            SensorService.get_sensor(db_session, 999)
         
-        assert sensor is None
+        assert exc_info.value.status_code == 404
+        assert "Sensor with ID 999 not found" in exc_info.value.detail
     
     def test_delete_sensor(self, db_session):
         """Tests sensor deletion"""
@@ -74,5 +76,7 @@ class TestSensorService:
         
         assert result == {"message": "Sensor deleted successfully"}
         
-        deleted_sensor = SensorService.get_sensor(db_session, sensor.id)
-        assert deleted_sensor is None
+        with pytest.raises(HTTPException) as exc_info:
+            SensorService.get_sensor(db_session, sensor.id)
+        
+        assert exc_info.value.status_code == 404
