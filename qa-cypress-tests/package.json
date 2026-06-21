@@ -1,0 +1,19 @@
+{
+  "name": "qa-cypress-tests",
+  "version": "1.0.0",
+  "description": "Automated QA tests for the Dynamox web application challenge.",
+  "main": "index.js",
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "test": "cypress run"
+  },
+  "keywords": [],
+  "author": "Adhriano Machado de Oliveira",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "cypress": "^15.17.0",
+    "cypress-real-events": "^1.15.0"
+  }
+}
