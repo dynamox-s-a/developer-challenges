@@ -5,12 +5,12 @@ import {
   loadMeasurementsFailure,
   loadMeasurementsSuccess,
 } from './measurementsSlice'
-import type { IMeasurementSeries } from './types'
+import type { IMeasurementsPayload } from './types'
 
 function* handleLoadMeasurements() {
   try {
-    const measurements: IMeasurementSeries[] = yield call(fetchMeasurements)
-    yield put(loadMeasurementsSuccess(measurements))
+    const payload: IMeasurementsPayload = yield call(fetchMeasurements)
+    yield put(loadMeasurementsSuccess(payload))
   } catch (error) {
     const message =
       error instanceof Error ? error.message : 'Unable to fetch measurements'

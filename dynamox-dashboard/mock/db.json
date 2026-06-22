@@ -1,4 +1,11 @@
 {
+  "machine": {
+    "name": "Maquina 1023",
+    "point": "Ponto 20192",
+    "rotation": "200",
+    "range": "16g",
+    "interval": "20 min"
+  },
   "measurements": [{
     "name": "accelerationRms/x",
     "data": [
