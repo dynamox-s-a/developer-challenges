@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "api": "json-server mock/db.json --port 3001",
     "test": "vitest run --passWithNoTests",
     "test:watch": "vitest"
   },
