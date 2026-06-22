@@ -16,7 +16,7 @@
     "@mui/icons-material": "^9.1.1",
     "@mui/material": "^9.1.1",
     "@reduxjs/toolkit": "^2.12.0",
-    "axios": "^1.18.0",
+    "axios": "^1.18.1",
     "highcharts": "^13.0.0",
     "highcharts-react-official": "^3.2.3",
     "json-server": "^1.0.0-beta.15",
