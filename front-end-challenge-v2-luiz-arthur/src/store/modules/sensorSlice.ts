@@ -1,10 +1,10 @@
-import type {PayloadAction } from '@reduxjs/toolkit';
+// src/store/modules/sensorSlice.ts
+import type { PayloadAction } from '@reduxjs/toolkit';
 import type { SensorState, MetricSeries, SensorDataResponse } from '../../types/sensor.types';
 import { createSlice } from '@reduxjs/toolkit';
 
-// Função auxiliar para encontrar uma série pelo nome exato
 const findMetric = (data: SensorDataResponse, name: string): MetricSeries | null => {
-  return data.find(item => item.name === name) || null;
+  return data.find((item) => item.name === name) || null;
 };
 
 const initialState: SensorState = {
@@ -14,6 +14,7 @@ const initialState: SensorState = {
   acceleration: { x: null, y: null, z: null },
   velocity: { x: null, y: null, z: null },
   temperature: null,
+  hoveredTimestamp: null, // <-- NOVO: timestamp do hover sincronizado
 };
 
 const sensorSlice = createSlice({
@@ -41,13 +42,22 @@ const sensorSlice = createSlice({
       // Popula Temperatura (1 série)
       state.temperature = findMetric(action.payload, 'temperature');
     },
-    // Disparada pela SAGA quando dá ERRO
     fetchDataFailure: (state, action: PayloadAction<string>) => {
       state.loading = false;
       state.error = action.payload;
     },
+    setHoveredTimestamp: (state, action: PayloadAction<number | null>) => {
+      state.hoveredTimestamp = action.payload;
+    },
   },
 });
 
-export const { fetchDataRequest, fetchDataSuccess, fetchDataFailure } = sensorSlice.actions;
+// Exportação das actions
+export const {
+  fetchDataRequest,
+  fetchDataSuccess,
+  fetchDataFailure,
+  setHoveredTimestamp,
+} = sensorSlice.actions;
+
 export default sensorSlice.reducer;

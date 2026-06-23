@@ -1,7 +1,7 @@
 // src/components/SensorChart/index.tsx
-import React from 'react';
-import * as Highcharts from 'highcharts'; // ← Importação nomeada com *
-import { HighchartsReact } from 'highcharts-react-official'; // ← Importação nomeada
+import React, { useEffect, useRef } from 'react';
+import * as Highcharts from 'highcharts';
+import { HighchartsReact } from 'highcharts-react-official';
 import type { SensorDataPoint } from '../../types/sensor.types';
 
 interface SensorChartProps {
@@ -12,9 +12,19 @@ interface SensorChartProps {
     color?: string;
   }[];
   colors?: string[];
+  hoveredTimestamp?: number | null;
+  onHover?: (timestamp: number | null) => void;
 }
 
-const SensorChart: React.FC<SensorChartProps> = ({ title, series, colors }) => {
+const SensorChart: React.FC<SensorChartProps> = ({
+  title,
+  series,
+  colors,
+  hoveredTimestamp,
+  onHover,
+}) => {
+  const chartRef = useRef<HighchartsReact>(null);
+
   const formattedSeries = series.map((s, index) => ({
     name: s.name,
     data: s.data.map((point) => [new Date(point.datetime).getTime(), point.max]),
@@ -27,6 +37,12 @@ const SensorChart: React.FC<SensorChartProps> = ({ title, series, colors }) => {
       zoomType: 'x',
       height: 280,
       backgroundColor: 'transparent',
+      events: {
+        // Adiciona evento para capturar mouse sobre o gráfico como fallback
+        mouseOver: () => {
+          // Não usado diretamente
+        },
+      },
     },
     title: {
       text: '',
@@ -53,6 +69,7 @@ const SensorChart: React.FC<SensorChartProps> = ({ title, series, colors }) => {
       shared: true,
       crosshairs: true,
       valueDecimals: 4,
+      xDateFormat: '%Y-%m-%d %H:%M:%S',
     },
     legend: {
       align: 'center',
@@ -71,14 +88,56 @@ const SensorChart: React.FC<SensorChartProps> = ({ title, series, colors }) => {
             lineWidthPlus: 0,
           },
         },
+        events: {
+          mouseOver: function (e) {
+            if (e.target?.x && onHover) {
+              const timestamp = e.target.x;
+              onHover(timestamp);
+            }
+          },
+          mouseOut: function () {
+            if (onHover) {
+              onHover(null);
+            }
+          },
+        },
       },
     },
     credits: {
       enabled: false,
     },
+    accessibility: {
+      enabled: false,
+    },
   };
 
-  return <HighchartsReact highcharts={Highcharts} options={options} />;
+  useEffect(() => {
+    const chart = chartRef.current?.chart;
+    if (!chart) return;
+
+    const xAxis = chart.xAxis[0];
+    if (!xAxis) return;
+
+    if (hoveredTimestamp !== null && hoveredTimestamp !== undefined) {
+      xAxis.drawCrosshair(null, { x: hoveredTimestamp } as any);
+      const seriesList = chart.series;
+      if (seriesList.length > 0) {
+        const points = seriesList
+          .map((s) => s.findNearestPointByX(hoveredTimestamp))
+          .filter(Boolean);
+        if (points.length > 0) {
+          chart.tooltip.refresh(points);
+        }
+      }
+    } else {
+      xAxis.hideCrosshair();
+      if (chart.tooltip) {
+        chart.tooltip.hide();
+      }
+    }
+  }, [hoveredTimestamp]);
+
+  return <HighchartsReact highcharts={Highcharts} options={options} ref={chartRef} />;
 };
 
 export default SensorChart;
