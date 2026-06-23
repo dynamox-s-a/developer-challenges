@@ -1,15 +1,42 @@
 import { useEffect } from 'react'
 import { Alert, Box, CircularProgress, Stack, Typography } from '@mui/material'
+import { loadMachine } from '../../modules/machine/machineSlice'
 import { loadMeasurements } from '../../modules/measurements/measurementsSlice'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import {
+  MachineMetadataBar,
+  type MachineMetadataItem,
+} from './components/MachineMetadataBar'
+import {
+  GPSIcon,
+  IntervalIcon,
+  MachineIcon,
+  RPMIcon,
+  RangeIcon,
+} from './components/MachineMetadataBar/MetadataIcons'
 
 export function DataPage() {
   const dispatch = useAppDispatch()
-  const { error, isLoading } = useAppSelector((state) => state.measurements)
+  const machine = useAppSelector((state) => state.machine)
+  const measurements = useAppSelector((state) => state.measurements)
 
   useEffect(() => {
+    dispatch(loadMachine())
     dispatch(loadMeasurements())
   }, [dispatch])
+
+  const error = machine.error ?? measurements.error
+  const isLoading =
+    !error && (machine.isLoading || measurements.isLoading || !machine.data)
+  const metadata: MachineMetadataItem[] = machine.data
+    ? [
+        { icon: MachineIcon, label: `Maquina ${machine.data.id ?? '-'}` },
+        { icon: GPSIcon, label: `Ponto ${machine.data.point ?? '-'}` },
+        { icon: RPMIcon, label: machine.data.rotation ?? '-' },
+        { icon: RangeIcon, label: machine.data.range ? `${machine.data.range}g` : '-' },
+        { icon: IntervalIcon, label: machine.data.interval ? `${machine.data.interval} min` : '-' },
+      ]
+    : []
 
   return (
     <Box
@@ -22,7 +49,7 @@ export function DataPage() {
           bgcolor: 'background.paper',
           borderBottom: 1,
           borderColor: 'primary.light',
-          padding: '21px 24px 19px',
+          padding: '1.3125rem 1.5rem 1.1875rem',
         }}
       >
         <Stack
@@ -35,12 +62,12 @@ export function DataPage() {
           }}
         >
           <Typography color="text.primary" component="h1" variant="h4">
-            Analise de Dados
+            Análise de Dados
           </Typography>
         </Stack>
       </Box>
 
-      <Box sx={{ padding: '24px' }}>
+      <Box sx={{ padding: '1.5rem' }}>
         <Stack
           spacing={2}
           sx={{
@@ -56,13 +83,13 @@ export function DataPage() {
             >
               <CircularProgress size={64} />
             </Stack>
-          ) : null}
-
-          {error ? (
+          ) : error ? (
             <Alert severity="error" sx={{ alignItems: 'center' }}>
               Não foi possível carregar os dados. {error}
             </Alert>
-          ) : null}
+          ) : (
+            <MachineMetadataBar items={metadata} />
+          )}
         </Stack>
       </Box>
     </Box>

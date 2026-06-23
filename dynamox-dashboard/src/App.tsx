@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { DataPage } from './pages/data/DataPage'
+import { DataPage } from './pages/data'
 
 function App() {
   return (

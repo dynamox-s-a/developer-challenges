@@ -1,11 +1,10 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { IMeasurementsPayload, IMeasurementsState } from './types'
+import type { IMeasurementSeries, IMeasurementsState } from './types'
 
 const initialState: IMeasurementsState = {
   data: [],
   error: null,
   isLoading: false,
-  machine: null,
 }
 
 const measurementsSlice = createSlice({
@@ -16,10 +15,9 @@ const measurementsSlice = createSlice({
       state.isLoading = true
       state.error = null
     },
-    loadMeasurementsSuccess(state, action: PayloadAction<IMeasurementsPayload>) {
-      state.data = action.payload.measurements
+    loadMeasurementsSuccess(state, action: PayloadAction<IMeasurementSeries[]>) {
+      state.data = action.payload
       state.isLoading = false
-      state.machine = action.payload.machine
     },
     loadMeasurementsFailure(state, action: PayloadAction<string>) {
       state.error = action.payload
