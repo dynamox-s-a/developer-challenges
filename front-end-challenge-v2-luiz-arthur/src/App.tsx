@@ -1,21 +1,15 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchDataRequest } from './store/modules/sensorSlice';
-import type { RootState } from './store';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import DashboardPage from './pages/DashBoardPage';
 
 function App() {
-  const dispatch = useDispatch();
-  const { loading, acceleration, velocity, temperature, error } = useSelector(
-    (state: RootState) => state.sensor
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/data" element={<DashboardPage />} />
+        <Route path="/" element={<Navigate to="/data" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
-
-  useEffect(() => {
-    dispatch(fetchDataRequest());
-  }, [dispatch]);
-
-  console.log('🔍 Estado do Redux:', { loading, acceleration, velocity, temperature, error });
-
-  return <div>Veja o console e o Redux DevTools!</div>;
 }
 
 export default App;
