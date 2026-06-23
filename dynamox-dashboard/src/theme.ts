@@ -1,6 +1,23 @@
 import { createTheme } from '@mui/material/styles'
 
+declare module '@mui/material/styles' {
+  interface Theme {
+    layout: {
+      maxContentWidth: string
+    }
+  }
+
+  interface ThemeOptions {
+    layout?: {
+      maxContentWidth?: string
+    }
+  }
+}
+
 export const theme = createTheme({
+  layout: {
+    maxContentWidth: '91.5rem',
+  },
   palette: {
     mode: 'light',
     primary: {
