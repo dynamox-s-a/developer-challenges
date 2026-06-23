@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container, Grid, Paper, Typography, Box, CircularProgress, Alert } from '@mui/material';
 import Header from '../../components/Header';
+import SensorChart from '../../components/SensorChart';
 import { fetchDataRequest } from '../../store/modules/sensorSlice';
 import type { RootState } from '../../store';
 
@@ -11,12 +12,10 @@ const DashboardPage = () => {
     (state: RootState) => state.sensor
   );
 
-  // Dispara a busca ao montar a página (rota /data)
   useEffect(() => {
     dispatch(fetchDataRequest());
   }, [dispatch]);
 
-  // Estado de loading
   if (loading) {
     return (
       <Container maxWidth="xl" sx={{ mt: 8, display: 'flex', justifyContent: 'center' }}>
@@ -25,7 +24,6 @@ const DashboardPage = () => {
     );
   }
 
-  // Estado de erro
   if (error) {
     return (
       <Container maxWidth="xl" sx={{ mt: 8 }}>
@@ -34,7 +32,6 @@ const DashboardPage = () => {
     );
   }
 
-  // Verifica se os dados essenciais estão carregados
   if (!acceleration.x || !velocity.x || !temperature) {
     return (
       <Container maxWidth="xl" sx={{ mt: 8 }}>
@@ -43,7 +40,22 @@ const DashboardPage = () => {
     );
   }
 
-  // Tela principal com os gráficos
+  const accelerationSeries = [
+    { name: 'Horizontal (X)', data: acceleration.x.data, color: '#1976d2' },
+    { name: 'Radial (Y)', data: acceleration.y?.data || [], color: '#d32f2f' },
+    { name: 'Axial (Z)', data: acceleration.z?.data || [], color: '#2e7d32' },
+  ];
+
+  const velocitySeries = [
+    { name: 'Horizontal (X)', data: velocity.x.data, color: '#1976d2' },
+    { name: 'Radial (Y)', data: velocity.y?.data || [], color: '#d32f2f' },
+    { name: 'Axial (Z)', data: velocity.z?.data || [], color: '#2e7d32' },
+  ];
+
+  const temperatureSeries = [
+    { name: 'Temperatura', data: temperature.data, color: '#ed6c02' },
+  ];
+
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
       <Header />
@@ -56,10 +68,7 @@ const DashboardPage = () => {
               Aceleração RMS
             </Typography>
             <Box sx={{ height: 280 }}>
-              {/* Placeholder - será substituído na Fase 4 */}
-              <Typography color="textSecondary" align="center" sx={{ mt: 8 }}>
-                📊 Gráfico (Fase 4)
-              </Typography>
+              <SensorChart title="Aceleração RMS" series={accelerationSeries} />
             </Box>
           </Paper>
         </Grid>
@@ -71,9 +80,7 @@ const DashboardPage = () => {
               Velocidade RMS
             </Typography>
             <Box sx={{ height: 280 }}>
-              <Typography color="textSecondary" align="center" sx={{ mt: 8 }}>
-                📊 Gráfico (Fase 4)
-              </Typography>
+              <SensorChart title="Velocidade RMS" series={velocitySeries} />
             </Box>
           </Paper>
         </Grid>
@@ -85,9 +92,7 @@ const DashboardPage = () => {
               Temperatura
             </Typography>
             <Box sx={{ height: 280 }}>
-              <Typography color="textSecondary" align="center" sx={{ mt: 8 }}>
-                📊 Gráfico (Fase 4)
-              </Typography>
+              <SensorChart title="Temperatura" series={temperatureSeries} />
             </Box>
           </Paper>
         </Grid>
