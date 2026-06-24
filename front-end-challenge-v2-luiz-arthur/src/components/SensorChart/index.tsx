@@ -28,10 +28,9 @@ const SensorChart: React.FC<SensorChartProps> = ({
   const chartRef = useRef<HighchartsReact>(null);
   const theme = useTheme();
 
-  // Verifica se alguma série está vazia
   if (series.some((s) => s.data.length === 0)) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 280 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 320 }}>
         <Typography color="textSecondary">Sem dados disponíveis</Typography>
       </Box>
     );
@@ -47,8 +46,8 @@ const SensorChart: React.FC<SensorChartProps> = ({
   const options: Highcharts.Options = {
     chart: {
       zoomType: 'x',
-      height: 280,
-      backgroundColor: 'transparent', // Fundo transparente para herdar o Paper
+      height: 320,
+      backgroundColor: 'transparent',
     },
     title: {
       text: '',
@@ -136,7 +135,6 @@ const SensorChart: React.FC<SensorChartProps> = ({
     },
   };
 
-  // Sincroniza o crosshair com o hoveredTimestamp do Redux
   useEffect(() => {
     const chart = chartRef.current?.chart;
     if (!chart) return;
@@ -163,7 +161,6 @@ const SensorChart: React.FC<SensorChartProps> = ({
     }
   }, [hoveredTimestamp]);
 
-  // Redimensiona o gráfico quando a janela é redimensionada
   useEffect(() => {
     const handleResize = () => {
       const chart = chartRef.current?.chart;

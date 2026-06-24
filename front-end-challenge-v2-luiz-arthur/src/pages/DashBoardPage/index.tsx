@@ -1,18 +1,11 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Container,
-  Grid,
-  Paper,
-  Typography,
-  Box,
-  Alert,
-  Skeleton,
-} from '@mui/material';
+import { Container, Paper, Typography, Box, Alert, Skeleton } from '@mui/material';
 import Header from '../../components/Header';
 import SensorChart from '../../components/SensorChart';
 import { fetchDataRequest, setHoveredTimestamp } from '../../store/modules/sensorSlice';
 import type { RootState } from '../../store';
+import '../../App.css';
 
 const DashboardPage = () => {
   const dispatch = useDispatch();
@@ -28,148 +21,103 @@ const DashboardPage = () => {
     dispatch(setHoveredTimestamp(timestamp));
   };
 
-  // --- Loading com Skeleton ---
   if (loading) {
     return (
-      <Container maxWidth="xl" sx={{ py: { xs: 2, md: 4 } }}>
+      <Container maxWidth="xl" className="app-container">
         <Header />
-        <Grid container spacing={4}>
+        <div className="charts-grid">
           {[1, 2, 3].map((_, index) => (
-            <Grid item xs={12} md={6} lg={4} key={index}>
-              <Paper
-                elevation={2}
-                sx={{
-                  p: { xs: 1.5, md: 2 },
-                  height: 350,
-                  borderRadius: 2,
-                }}
-              >
-                <Skeleton variant="text" width="60%" height={32} />
-                <Skeleton variant="rectangular" height={280} sx={{ mt: 2 }} />
-              </Paper>
-            </Grid>
+            <Paper key={index} className="chart-card" elevation={0}>
+              <Skeleton variant="text" width="60%" height={32} />
+              <Skeleton variant="rectangular" height={280} sx={{ mt: 2 }} />
+            </Paper>
           ))}
-        </Grid>
+        </div>
       </Container>
     );
   }
 
-  // --- Estado de erro ---
   if (error) {
     return (
-      <Container maxWidth="xl" sx={{ mt: 8 }}>
+      <Container maxWidth="xl" className="app-container">
         <Alert severity="error">{error}</Alert>
       </Container>
     );
   }
 
-  // --- Aguardando dados ---
   if (!acceleration.x || !velocity.x || !temperature) {
     return (
-      <Container maxWidth="xl" sx={{ mt: 8 }}>
+      <Container maxWidth="xl" className="app-container">
         <Typography>Aguardando dados...</Typography>
       </Container>
     );
   }
 
-  // --- Preparação das séries ---
   const accelerationSeries = [
-    { name: 'Horizontal (X)', data: acceleration.x.data, color: '#1976d2' },
-    { name: 'Radial (Y)', data: acceleration.y?.data || [], color: '#d32f2f' },
-    { name: 'Axial (Z)', data: acceleration.z?.data || [], color: '#2e7d32' },
+    { name: 'Horizontal', data: acceleration.x.data, color: '#1976d2' },
+    { name: 'Radial', data: acceleration.y?.data || [], color: '#d32f2f' },
+    { name: 'Axial', data: acceleration.z?.data || [], color: '#2e7d32' },
   ];
 
   const velocitySeries = [
-    { name: 'Horizontal (X)', data: velocity.x.data, color: '#1976d2' },
-    { name: 'Radial (Y)', data: velocity.y?.data || [], color: '#d32f2f' },
-    { name: 'Axial (Z)', data: velocity.z?.data || [], color: '#2e7d32' },
+    { name: 'Horizontal', data: velocity.x.data, color: '#1976d2' },
+    { name: 'Radial', data: velocity.y?.data || [], color: '#d32f2f' },
+    { name: 'Axial', data: velocity.z?.data || [], color: '#2e7d32' },
   ];
 
   const temperatureSeries = [
     { name: 'Temperatura', data: temperature.data, color: '#ed6c02' },
   ];
 
-  // --- Dashboard principal ---
   return (
-    <Container maxWidth="xl" sx={{ py: { xs: 2, md: 4 } }}>
+    <Container maxWidth="xl" className="app-container">
       <Header />
+      <div className="charts-grid">
+        <Paper className="chart-card" elevation={0}>
+          <Typography className="chart-title" color="primary">
+            Aceleração RMS
+          </Typography>
+          <div className="chart-container">
+            <SensorChart
+              title="Aceleração RMS"
+              series={accelerationSeries}
+              yAxisTitle="Análise RMS (g)"
+              hoveredTimestamp={hoveredTimestamp}
+              onHover={handleHover}
+            />
+          </div>
+        </Paper>
 
-      <Grid container spacing={4}>
-        {/* Aceleração */}
-        <Grid item xs={12} md={6} lg={4}>
-          <Paper
-            elevation={2}
-            sx={{
-              p: { xs: 1.5, md: 2 },
-              height: '100%',
-              minHeight: 350,
-              borderRadius: 2,
-            }}
-          >
-            <Typography variant="h6" gutterBottom color="primary">
-              Aceleração RMS
-            </Typography>
-            <Box sx={{ height: 280 }}>
-              <SensorChart
-                title="Aceleração RMS"
-                series={accelerationSeries}
-                hoveredTimestamp={hoveredTimestamp}
-                onHover={handleHover}
-              />
-            </Box>
-          </Paper>
-        </Grid>
+        <Paper className="chart-card" elevation={0}>
+          <Typography className="chart-title" color="secondary">
+            Velocidade RMS
+          </Typography>
+          <div className="chart-container">
+            <SensorChart
+              title="Velocidade RMS"
+              series={velocitySeries}
+              yAxisTitle="Análise RMS (mm/s)"
+              hoveredTimestamp={hoveredTimestamp}
+              onHover={handleHover}
+            />
+          </div>
+        </Paper>
 
-        {/* Velocidade */}
-        <Grid item xs={12} md={6} lg={4}>
-          <Paper
-            elevation={2}
-            sx={{
-              p: { xs: 1.5, md: 2 },
-              height: '100%',
-              minHeight: 350,
-              borderRadius: 2,
-            }}
-          >
-            <Typography variant="h6" gutterBottom color="secondary">
-              Velocidade RMS
-            </Typography>
-            <Box sx={{ height: 280 }}>
-              <SensorChart
-                title="Velocidade RMS"
-                series={velocitySeries}
-                hoveredTimestamp={hoveredTimestamp}
-                onHover={handleHover}
-              />
-            </Box>
-          </Paper>
-        </Grid>
-
-        {/* Temperatura */}
-        <Grid item xs={12} md={6} lg={4}>
-          <Paper
-            elevation={2}
-            sx={{
-              p: { xs: 1.5, md: 2 },
-              height: '100%',
-              minHeight: 350,
-              borderRadius: 2,
-            }}
-          >
-            <Typography variant="h6" gutterBottom color="success">
-              Temperatura
-            </Typography>
-            <Box sx={{ height: 280 }}>
-              <SensorChart
-                title="Temperatura"
-                series={temperatureSeries}
-                hoveredTimestamp={hoveredTimestamp}
-                onHover={handleHover}
-              />
-            </Box>
-          </Paper>
-        </Grid>
-      </Grid>
+        <Paper className="chart-card" elevation={0}>
+          <Typography className="chart-title" color="success">
+            Temperatura
+          </Typography>
+          <div className="chart-container">
+            <SensorChart
+              title="Temperatura"
+              series={temperatureSeries}
+              yAxisTitle="Temperatura (°C)"
+              hoveredTimestamp={hoveredTimestamp}
+              onHover={handleHover}
+            />
+          </div>
+        </Paper>
+      </div>
     </Container>
   );
 };
