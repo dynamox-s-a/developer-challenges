@@ -18,7 +18,7 @@ export function MachineMetadataBar({ items }: MachineMetadataBarProps) {
       elevation={0}
       sx={{
         border: 1,
-        borderColor: 'primary.light',
+        borderColor: (theme) => theme.border.default,
         borderRadius: 'borderRadius',
         display: 'grid',
         gridTemplateColumns: {
@@ -47,7 +47,7 @@ export function MachineMetadataBar({ items }: MachineMetadataBarProps) {
                 xs: '0.0625rem',
                 md: '1.3125rem',
               },
-              bgcolor: 'primary.light',
+              bgcolor: (theme) => theme.border.default,
               position: 'absolute',
               top: {
                 xs: 'auto',
