@@ -28,6 +28,8 @@
     "redux-saga": "^1.5.0"
   },
   "devDependencies": {
+    "@emnapi/core": "^1.11.1",
+    "@emnapi/runtime": "^1.11.1",
     "@eslint/js": "^10.0.1",
     "@storybook/addon-docs": "^10.4.6",
     "@storybook/react-vite": "^10.4.6",
