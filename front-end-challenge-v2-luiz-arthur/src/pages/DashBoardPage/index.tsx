@@ -1,7 +1,14 @@
-// src/pages/DashboardPage/index.tsx
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Container, Grid, Paper, Typography, Box, CircularProgress, Alert } from '@mui/material';
+import {
+  Container,
+  Grid,
+  Paper,
+  Typography,
+  Box,
+  Alert,
+  Skeleton,
+} from '@mui/material';
 import Header from '../../components/Header';
 import SensorChart from '../../components/SensorChart';
 import { fetchDataRequest, setHoveredTimestamp } from '../../store/modules/sensorSlice';
@@ -21,14 +28,33 @@ const DashboardPage = () => {
     dispatch(setHoveredTimestamp(timestamp));
   };
 
+  // --- Loading com Skeleton ---
   if (loading) {
     return (
-      <Container maxWidth="xl" sx={{ mt: 8, display: 'flex', justifyContent: 'center' }}>
-        <CircularProgress />
+      <Container maxWidth="xl" sx={{ py: { xs: 2, md: 4 } }}>
+        <Header />
+        <Grid container spacing={4}>
+          {[1, 2, 3].map((_, index) => (
+            <Grid item xs={12} md={6} lg={4} key={index}>
+              <Paper
+                elevation={2}
+                sx={{
+                  p: { xs: 1.5, md: 2 },
+                  height: 350,
+                  borderRadius: 2,
+                }}
+              >
+                <Skeleton variant="text" width="60%" height={32} />
+                <Skeleton variant="rectangular" height={280} sx={{ mt: 2 }} />
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
       </Container>
     );
   }
 
+  // --- Estado de erro ---
   if (error) {
     return (
       <Container maxWidth="xl" sx={{ mt: 8 }}>
@@ -37,6 +63,7 @@ const DashboardPage = () => {
     );
   }
 
+  // --- Aguardando dados ---
   if (!acceleration.x || !velocity.x || !temperature) {
     return (
       <Container maxWidth="xl" sx={{ mt: 8 }}>
@@ -45,6 +72,7 @@ const DashboardPage = () => {
     );
   }
 
+  // --- Preparação das séries ---
   const accelerationSeries = [
     { name: 'Horizontal (X)', data: acceleration.x.data, color: '#1976d2' },
     { name: 'Radial (Y)', data: acceleration.y?.data || [], color: '#d32f2f' },
@@ -61,13 +89,23 @@ const DashboardPage = () => {
     { name: 'Temperatura', data: temperature.data, color: '#ed6c02' },
   ];
 
+  // --- Dashboard principal ---
   return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
+    <Container maxWidth="xl" sx={{ py: { xs: 2, md: 4 } }}>
       <Header />
 
       <Grid container spacing={4}>
+        {/* Aceleração */}
         <Grid item xs={12} md={6} lg={4}>
-          <Paper elevation={3} sx={{ p: 2, height: '100%', minHeight: 350 }}>
+          <Paper
+            elevation={2}
+            sx={{
+              p: { xs: 1.5, md: 2 },
+              height: '100%',
+              minHeight: 350,
+              borderRadius: 2,
+            }}
+          >
             <Typography variant="h6" gutterBottom color="primary">
               Aceleração RMS
             </Typography>
@@ -82,8 +120,17 @@ const DashboardPage = () => {
           </Paper>
         </Grid>
 
+        {/* Velocidade */}
         <Grid item xs={12} md={6} lg={4}>
-          <Paper elevation={3} sx={{ p: 2, height: '100%', minHeight: 350 }}>
+          <Paper
+            elevation={2}
+            sx={{
+              p: { xs: 1.5, md: 2 },
+              height: '100%',
+              minHeight: 350,
+              borderRadius: 2,
+            }}
+          >
             <Typography variant="h6" gutterBottom color="secondary">
               Velocidade RMS
             </Typography>
@@ -98,8 +145,17 @@ const DashboardPage = () => {
           </Paper>
         </Grid>
 
+        {/* Temperatura */}
         <Grid item xs={12} md={6} lg={4}>
-          <Paper elevation={3} sx={{ p: 2, height: '100%', minHeight: 350 }}>
+          <Paper
+            elevation={2}
+            sx={{
+              p: { xs: 1.5, md: 2 },
+              height: '100%',
+              minHeight: 350,
+              borderRadius: 2,
+            }}
+          >
             <Typography variant="h6" gutterBottom color="success">
               Temperatura
             </Typography>

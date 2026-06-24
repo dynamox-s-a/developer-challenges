@@ -3,6 +3,8 @@ import React, { useEffect, useRef } from 'react';
 import * as Highcharts from 'highcharts';
 import { HighchartsReact } from 'highcharts-react-official';
 import type { SensorDataPoint } from '../../types/sensor.types';
+import { useTheme } from '@mui/material/styles';
+import { Typography, Box } from '@mui/material';
 
 interface SensorChartProps {
   title: string;
@@ -24,6 +26,16 @@ const SensorChart: React.FC<SensorChartProps> = ({
   onHover,
 }) => {
   const chartRef = useRef<HighchartsReact>(null);
+  const theme = useTheme();
+
+  // Verifica se alguma série está vazia
+  if (series.some((s) => s.data.length === 0)) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 280 }}>
+        <Typography color="textSecondary">Sem dados disponíveis</Typography>
+      </Box>
+    );
+  }
 
   const formattedSeries = series.map((s, index) => ({
     name: s.name,
@@ -36,13 +48,7 @@ const SensorChart: React.FC<SensorChartProps> = ({
     chart: {
       zoomType: 'x',
       height: 280,
-      backgroundColor: 'transparent',
-      events: {
-        // Adiciona evento para capturar mouse sobre o gráfico como fallback
-        mouseOver: () => {
-          // Não usado diretamente
-        },
-      },
+      backgroundColor: 'transparent', // Fundo transparente para herdar o Paper
     },
     title: {
       text: '',
@@ -51,10 +57,15 @@ const SensorChart: React.FC<SensorChartProps> = ({
       type: 'datetime',
       labels: {
         format: '{value:%b %e}',
+        style: {
+          color: theme.palette.text.secondary,
+        },
       },
+      lineColor: theme.palette.divider,
+      tickColor: theme.palette.divider,
       crosshair: {
         width: 2,
-        color: '#888',
+        color: theme.palette.text.disabled,
         dashStyle: 'Dash',
         zIndex: 10,
       },
@@ -63,18 +74,32 @@ const SensorChart: React.FC<SensorChartProps> = ({
       title: {
         text: '',
       },
-      gridLineColor: '#e0e0e0',
+      gridLineColor: theme.palette.divider,
+      labels: {
+        style: {
+          color: theme.palette.text.secondary,
+        },
+      },
     },
     tooltip: {
       shared: true,
       crosshairs: true,
       valueDecimals: 4,
       xDateFormat: '%Y-%m-%d %H:%M:%S',
+      backgroundColor: theme.palette.background.paper,
+      borderColor: theme.palette.divider,
+      style: {
+        color: theme.palette.text.primary,
+      },
     },
     legend: {
       align: 'center',
       verticalAlign: 'bottom',
       layout: 'horizontal',
+      itemStyle: {
+        color: theme.palette.text.primary,
+        fontWeight: 'normal',
+      },
     },
     series: formattedSeries as Highcharts.SeriesOptionsType[],
     plotOptions: {
@@ -111,6 +136,7 @@ const SensorChart: React.FC<SensorChartProps> = ({
     },
   };
 
+  // Sincroniza o crosshair com o hoveredTimestamp do Redux
   useEffect(() => {
     const chart = chartRef.current?.chart;
     if (!chart) return;
@@ -136,6 +162,18 @@ const SensorChart: React.FC<SensorChartProps> = ({
       }
     }
   }, [hoveredTimestamp]);
+
+  // Redimensiona o gráfico quando a janela é redimensionada
+  useEffect(() => {
+    const handleResize = () => {
+      const chart = chartRef.current?.chart;
+      if (chart) {
+        chart.reflow();
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return <HighchartsReact highcharts={Highcharts} options={options} ref={chartRef} />;
 };
