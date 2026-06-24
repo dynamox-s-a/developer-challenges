@@ -53,7 +53,7 @@ export function DataPage() {
     !error && (machine.isLoading || measurements.isLoading || !machine.data)
   const metadata: MachineMetadataItem[] = machine.data
     ? [
-        { icon: MachineIcon, label: `Maquina ${machine.data.id ?? '-'}` },
+        { icon: MachineIcon, label: `Máquina ${machine.data.id ?? '-'}` },
         { icon: GPSIcon, label: `Ponto ${machine.data.point ?? '-'}` },
         { icon: RPMIcon, label: machine.data.rotation ?? '-' },
         {
