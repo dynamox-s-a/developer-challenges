@@ -263,7 +263,7 @@ function createChartOptions(
         x: -10,
       },
       lineColor: theme.border.default,
-      maxPadding: 0,
+      maxPadding: 0.02,
       min: 0,
       tickAmount: 5,
       title: {

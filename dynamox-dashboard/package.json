@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "api": "json-server mock/db.json --port 3001",
     "test": "vitest run --passWithNoTests",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -27,6 +29,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@storybook/addon-docs": "^10.4.6",
+    "@storybook/react-vite": "^10.4.6",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
@@ -40,6 +44,7 @@
     "globals": "^17.6.0",
     "jsdom": "^29.1.1",
     "json-server": "^1.0.0-beta.15",
+    "storybook": "^10.4.6",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
     "vite": "^8.0.12",
