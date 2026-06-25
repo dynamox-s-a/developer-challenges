@@ -28,7 +28,7 @@ const DashboardPage = () => {
         <div className="charts-grid">
           {[1, 2, 3].map((_, index) => (
             <Paper key={index} className="chart-card" elevation={0}>
-              <Skeleton variant="text" width="60%" height={32} />
+              <Skeleton variant="text" width="40%" height={24} />
               <Skeleton variant="rectangular" height={280} sx={{ mt: 2 }} />
             </Paper>
           ))}
@@ -69,54 +69,53 @@ const DashboardPage = () => {
     { name: 'Temperatura', data: temperature.data, color: '#ed6c02' },
   ];
 
+  const chartConfigs = [
+    {
+      title: 'Aceleração RMS',
+      series: accelerationSeries,
+      yAxisTitle: 'Aceleração RMS (g)',
+      color: 'primary',
+      badge: '3 eixos',
+    },
+    {
+      title: 'Velocidade RMS',
+      series: velocitySeries,
+      yAxisTitle: 'Velocidade RMS (mm/s)',
+      color: 'secondary',
+      badge: '3 eixos',
+    },
+    {
+      title: 'Temperatura',
+      series: temperatureSeries,
+      yAxisTitle: 'Temperatura (°C)',
+      color: 'success',
+      badge: '1 série',
+    },
+  ];
+
   return (
     <Container maxWidth="xl" className="app-container">
       <Header />
       <div className="charts-grid">
-        <Paper className="chart-card" elevation={0}>
-          <Typography className="chart-title" color="primary">
-            Aceleração RMS
-          </Typography>
-          <div className="chart-container">
-            <SensorChart
-              title="Aceleração RMS"
-              series={accelerationSeries}
-              yAxisTitle="Análise RMS (g)"
-              hoveredTimestamp={hoveredTimestamp}
-              onHover={handleHover}
-            />
-          </div>
-        </Paper>
-
-        <Paper className="chart-card" elevation={0}>
-          <Typography className="chart-title" color="secondary">
-            Velocidade RMS
-          </Typography>
-          <div className="chart-container">
-            <SensorChart
-              title="Velocidade RMS"
-              series={velocitySeries}
-              yAxisTitle="Análise RMS (mm/s)"
-              hoveredTimestamp={hoveredTimestamp}
-              onHover={handleHover}
-            />
-          </div>
-        </Paper>
-
-        <Paper className="chart-card" elevation={0}>
-          <Typography className="chart-title" color="success">
-            Temperatura
-          </Typography>
-          <div className="chart-container">
-            <SensorChart
-              title="Temperatura"
-              series={temperatureSeries}
-              yAxisTitle="Temperatura (°C)"
-              hoveredTimestamp={hoveredTimestamp}
-              onHover={handleHover}
-            />
-          </div>
-        </Paper>
+        {chartConfigs.map((config, index) => (
+          <Paper key={index} className="chart-card" elevation={0}>
+            <div className="chart-header">
+              <Typography className="chart-title" color={config.color}>
+                {config.title}
+              </Typography>
+              <span className="chart-badge">{config.badge}</span>
+            </div>
+            <div className="chart-container">
+              <SensorChart
+                title={config.title}
+                series={config.series}
+                yAxisTitle={config.yAxisTitle}
+                hoveredTimestamp={hoveredTimestamp}
+                onHover={handleHover}
+              />
+            </div>
+          </Paper>
+        ))}
       </div>
     </Container>
   );
