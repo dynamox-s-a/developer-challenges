@@ -1,73 +1,153 @@
-# React + TypeScript + Vite
+# Dynamox Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Dashboard desenvolvido para o desafio front-end da Dynamox. A aplicação exibe a rota `/data` com informações da máquina monitorada e gráficos de séries temporais para aceleração, temperatura e velocidade.
 
-Currently, two official plugins are available:
+## Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Tela `/data` com cabeçalho e metadados da máquina.
+- Consumo de dados por uma API REST mockada com `json-server`.
+- Três gráficos de séries temporais usando Highcharts:
+  - Aceleração RMS
+  - Temperatura
+  - Velocidade RMS
+- Tooltip e crosshair nos gráficos ao passar o mouse sobre os pontos.
+- Gerenciamento de estado com Redux Toolkit.
+- Efeitos assíncronos com Redux Saga.
+- Testes unitários, testes de componentes e testes e2e com Cypress.
+- Storybook para documentação visual dos componentes.
 
-## React Compiler
+## Tecnologias
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React
+- TypeScript
+- Vite
+- Material UI 5
+- Redux Toolkit
+- Redux Saga
+- Highcharts
+- Vitest
+- Cypress
+- Storybook
+- json-server
 
-## Expanding the ESLint configuration
+## Requisitos
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Node.js
+- npm
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Como executar
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Instale as dependências:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Crie o arquivo de ambiente a partir do exemplo:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+cp .env.example .env.development
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Em um terminal, inicie a API mockada:
+
+```bash
+npm run api
+```
+
+Em outro terminal, inicie a aplicação:
+
+```bash
+npm run dev
+```
+
+A aplicação ficará disponível em:
+
+```text
+http://localhost:5173/data
+```
+
+A API mockada roda em:
+
+```text
+http://localhost:3001
+```
+
+## Hospedagem
+
+A aplicação foi hospedada usando AWS Amplify:
+
+```text
+https://maria-betman.dredu640vdttu.amplifyapp.com/data
+```
+
+A API mockada foi disponibilizada com AWS API Gateway e AWS Lambda para servir os dados consumidos pelo dashboard.
+
+## Endpoints mockados
+
+- `GET /machine`: retorna os dados da máquina.
+- `GET /measurements`: retorna as séries temporais usadas nos gráficos.
+
+## Scripts
+
+```bash
+npm run dev
+```
+
+Inicia o servidor de desenvolvimento.
+
+```bash
+npm run api
+```
+
+Inicia a API mockada com `json-server`.
+
+```bash
+npm run build
+```
+
+Gera a versão de produção.
+
+```bash
+npm run preview
+```
+
+Executa o preview do build.
+
+```bash
+npm run lint
+```
+
+Executa a validação com ESLint.
+
+```bash
+npm run test
+```
+
+Executa os testes com Vitest.
+
+```bash
+npm run e2e
+```
+
+Executa os testes end-to-end com Cypress.
+
+```bash
+npm run storybook
+```
+
+Inicia o Storybook em `http://localhost:6006`.
+
+## Estrutura principal
+
+```text
+src/
+  modules/
+    machine/        # estado, saga e serviço dos dados da máquina
+    measurements/   # estado, saga e serviço das medições
+  pages/
+    data/           # tela principal e componentes do dashboard
+  store/            # configuração do Redux e sagas
+mock/
+  db.json           # base usada pelo json-server
 ```
