@@ -3,23 +3,21 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useThemeContext } from '../../context/ThemeContext';
 
-// Ícones temporários (substitua pelos seus ícones do Figma)
-import BusinessIcon from '@mui/icons-material/Business';
-import PinDropIcon from '@mui/icons-material/PinDrop';
-import SpeedIcon from '@mui/icons-material/Speed';
-import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import TimerIcon from '@mui/icons-material/Timer';
+import MachineIcon from '../icons/MachineIcon';
+import CentralPointIcon from '../icons/CentralPointIcon';
+import RMSIcon from '../icons/RMSIcon';
+import SensorIcon from '../icons/SensorIcon';
+import TimeIcon from '../icons/TimeIcon';
 
 const Header = () => {
   const { mode, toggleTheme } = useThemeContext();
 
-  // Adicione a propriedade 'width' para cada item (use px, %, ou qualquer valor CSS)
   const machineInfo = [
-    { label: 'Máquina', value: '1023', icon: <BusinessIcon fontSize="small" />, width: '366px' },
-    { label: 'Ponto', value: '20192', icon: <PinDropIcon fontSize="small" />, width: '366px' },
-    { label: '', value: '200', icon: <SpeedIcon fontSize="small" />, width: '228px' },
-    { label: '', value: '16g', icon: <FitnessCenterIcon fontSize="small" />, width: '252px' },
-    { label: '', value: '20 min', icon: <TimerIcon fontSize="small" />, width: '252px' },
+    { label: 'Máquina', value: '1023', icon: <MachineIcon/>, width: '366px' },
+    { label: 'Ponto', value: '20192', icon: <CentralPointIcon/>, width: '366px' },
+    { label: '', value: '200', icon: <RMSIcon/>, width: '228px' },
+    { label: '', value: '16g', icon: <SensorIcon/>, width: '252px' },
+    { label: '', value: '20 min', icon: <TimeIcon />, width: '252px' },
   ];
 
   return (
@@ -34,30 +32,52 @@ const Header = () => {
       </Box>
 
       <Box className="header-container">
+        <Box className="header-info-row">
+          {machineInfo.map((item, index) => (
+            <Box
+              key={index}
+              className="header-info-item-wrapper"
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                flex: '0 0 auto',
+              }}
+            >
+              {/* Item com largura fixa */}
+              <Box
+                className="header-info-item"
+                sx={{
+                  width: item.width,
+                  minWidth: item.width,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
+              >
+                <Box className="header-info-icon">{item.icon}</Box>
+                <Box className="header-info-text">
+                  {item.label && (
+                    <span className="header-info-label">{item.label}</span>
+                  )}
+                  <span className="header-info-value">{item.value}</span>
+                </Box>
+              </Box>
 
-      <Box className="header-info-row">
-        {machineInfo.map((item, index) => (
-          <Box
-            key={index}
-            className="header-info-item"
-            sx={{
-              flex: '0 0 auto', // não cresce nem encolhe
-              width: item.width, // largura personalizada
-              minWidth: item.width,
-            }}
-          >
-            <Box className="header-info-icon">{item.icon}</Box>
-            <Box className="header-info-text">
-              <span className="header-info-label">{item.label}</span>
-              <span className="header-info-value">{item.value}</span>
+              {/* Divisor somente entre os itens */}
+              {index < machineInfo.length - 1 && (
+                <Divider
+                  orientation="vertical"
+                  flexItem
+                  className="header-divider"
+                  sx={{
+                    marginLeft: '16px', // Espaço entre o item e o divisor
+                    marginRight: '16px', // Espaço entre o divisor e o próximo item
+                  }}
+                />
+              )}
             </Box>
-            {index < machineInfo.length - 1 && (
-              <Divider orientation="vertical" flexItem className="header-divider" />
-            )}
-          </Box>
-        ))}
-      </Box>
-
+          ))}
+        </Box>
       </Box>
     </Paper>
   );

@@ -84,6 +84,7 @@ body {
   align-items: center;
   gap: 8px;
   justify-content: center;
+  align-items: center !important;
 }
 
 .header-info-icon {
@@ -116,7 +117,7 @@ body {
   height: 20px;
   width: 1px;
   background-color: #DFE3E8;
-  position: relative;
+  margin: 0 !important;
 }
 
 /* Responsividade */
