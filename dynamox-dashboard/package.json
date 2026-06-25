@@ -11,6 +11,8 @@
     "api": "json-server mock/db.json --port 3001",
     "test": "vitest run --passWithNoTests",
     "test:watch": "vitest",
+    "e2e": "concurrently -k -s first -n API,WEB,E2E \"npm run api\" \"npm run dev -- --host 127.0.0.1\" \"wait-on tcp:3001 tcp:5173 && cypress run\"",
+    "e2e:open": "concurrently -k -s first -n API,WEB,CYPRESS \"npm run api\" \"npm run dev -- --host 127.0.0.1\" \"wait-on tcp:3001 tcp:5173 && cypress open\"",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -40,6 +42,9 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
+    "concurrently": "^10.0.3",
+    "cypress": "^15.18.0",
+    "cypress-real-events": "^1.15.0",
     "eslint": "^10.3.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
@@ -50,6 +55,7 @@
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
     "vite": "^8.0.12",
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.9",
+    "wait-on": "^9.0.10"
   }
 }
