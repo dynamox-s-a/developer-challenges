@@ -151,3 +151,21 @@ text
 ```bash
 git add README.md
 git commit -m "docs: add comprehensive README with project overview and sesetup instructions"
+
+##Você pode achar o deploy deste app com os dados fixos (sem execução de servidor JSON) no link abaixo
+
+https://front-end-challenge-v2-luiz-arthur-y8cni4d6f.vercel.app
+
+##📦 Dados mockados: arquivo estático vs JSON Server
+Para este desafio, optei por utilizar um arquivo JSON estático na pasta public/ em vez de manter o JSON Server em produção. Essa decisão foi tomada por dois motivos principais:
+
+Simplicidade no deploy: O JSON Server é uma ferramenta excelente para desenvolvimento local, mas não é prático (nem recomendado) para produção. Em ambientes como Vercel, Netlify ou outros provedores de hospedagem estática, não há um servidor Node.js contínuo para manter o JSON Server rodando. Usar um arquivo estático elimina essa dependência.
+
+Foco no front-end: O desafio é sobre desenvolvimento front-end, não sobre infraestrutura de back-end. Optar por um arquivo estático mantém o foco no que é avaliado: a qualidade do código React, a integração com Redux/Saga, a UI/UX e a documentação.
+
+Durante o desenvolvimento local, o JSON Server ainda pode ser usado (via npm run server) para simular uma API REST com endpoints reais. Mas, para a versão final (deploy), substituí a chamada à API por um fetch direto ao arquivo JSON estático, garantindo que o aplicativo funcione em qualquer ambiente sem necessidade de configuração adicional.
+
+Essa abordagem é comum em desafios técnicos e projetos de demonstração, pois mantém o código enxuto e o deploy simples, sem prejudicar a experiência do usuário.
+
+🔧 Como adaptar para um back-end real
+Se no futuro este projeto evoluísse para um ambiente de produção com uma API real, bastaria substituir a URL do fetch no arquivo src/services/api.ts pela URL da API real e ajustar os tipos de dados conforme necessário. O restante da arquitetura (Redux, Saga, componentes) já está preparado para consumir dados de qualquer fonte.
