@@ -54,19 +54,19 @@ const DashboardPage = () => {
   }
 
   const accelerationSeries = [
-    { name: 'Horizontal', data: acceleration.x.data, color: '#1976d2' },
-    { name: 'Radial', data: acceleration.y?.data || [], color: '#d32f2f' },
-    { name: 'Axial', data: acceleration.z?.data || [], color: '#2e7d32' },
+    { name: 'Horizontal', data: acceleration.x.data, color: '#CC337D' },
+    { name: 'Radial', data: acceleration.y?.data || [], color: '#B48A00' },
+    { name: 'Axial', data: acceleration.z?.data || [], color: '#2386CB' },
   ];
 
   const velocitySeries = [
-    { name: 'Horizontal', data: velocity.x.data, color: '#1976d2' },
-    { name: 'Radial', data: velocity.y?.data || [], color: '#d32f2f' },
-    { name: 'Axial', data: velocity.z?.data || [], color: '#2e7d32' },
+    { name: 'Horizontal', data: velocity.x.data, color: '#CC337D' },
+    { name: 'Radial', data: velocity.y?.data || [], color: '#B48A00' },
+    { name: 'Axial', data: velocity.z?.data || [], color: '#2386CB' },
   ];
 
   const temperatureSeries = [
-    { name: 'Temperatura', data: temperature.data, color: '#ed6c02' },
+    { name: 'Temperatura', data: temperature.data, color: '#89982E' },
   ];
 
   const chartConfigs = [
@@ -74,22 +74,16 @@ const DashboardPage = () => {
       title: 'Aceleração RMS',
       series: accelerationSeries,
       yAxisTitle: 'Aceleração RMS (g)',
-      color: 'primary',
-      badge: '3 eixos',
     },
     {
       title: 'Velocidade RMS',
       series: velocitySeries,
       yAxisTitle: 'Velocidade RMS (mm/s)',
-      color: 'secondary',
-      badge: '3 eixos',
     },
     {
       title: 'Temperatura',
       series: temperatureSeries,
       yAxisTitle: 'Temperatura (°C)',
-      color: 'success',
-      badge: '1 série',
     },
   ];
 
@@ -99,12 +93,9 @@ const DashboardPage = () => {
       <div className="charts-grid">
         {chartConfigs.map((config, index) => (
           <Paper key={index} className="chart-card" elevation={0}>
-            <div className="chart-header">
-              <Typography className="chart-title" color={config.color}>
-                {config.title}
-              </Typography>
-              <span className="chart-badge">{config.badge}</span>
-            </div>
+            <Typography className="chart-title">
+              {config.title}
+            </Typography>
             <div className="chart-container">
               <SensorChart
                 title={config.title}
