@@ -41,87 +41,44 @@ const MachineDashboard = () => {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Box sx={{ padding: '2rem' }}>
+            <Box sx={{ padding: { xs: '2rem 0.5rem', md: '2rem' } }}>
                 <Box
                     sx={{
-                        bgcolor: 'white',
+                        bgcolor: 'light1',
                         border: '1px solid',
                         borderColor: 'light1',
                         borderRadius: '0.25rem',
-                        display: 'flex',
+                        display: 'grid',
                         fontSize: '1rem',
+                        gap: '1px',
+                        gridTemplateColumns: { xs: 'repeat(2, 1fr)', md: 'repeat(5, 1fr)' },
                         marginBottom: '2rem',
-                        padding: '1rem',
+                        overflow: 'hidden',
+                        '& > *:last-child': { gridColumn: { xs: '1 / -1', md: 'auto' } },
                     }}
                 >
-                    <Box
-                        sx={{
-                            alignItems: 'center',
-                            borderRight: '1px solid',
-                            borderColor: 'light1',
-                            display: 'flex',
-                            flexGrow: 1,
-                            gap: '0.5rem',
-                            justifyContent: 'center',
-                            textAlign: 'center'
-                        }}
-                    >
-                        <img src={machineIcon} /> Máquina 1023
-                    </Box>
-                    <Box
-                        sx={{
-                            alignItems: 'center',
-                            borderRight: '1px solid',
-                            borderColor: 'light1',
-                            display: 'flex',
-                            flexGrow: 1,
-                            gap: '0.5rem',
-                            justifyContent: 'center',
-                            textAlign: 'center'
-                        }}
-                    >
-                        <img src={gpsIcon} /> Ponto 20192
-                    </Box>
-                    <Box
-                        sx={{
-                            alignItems: 'center',
-                            borderRight: '1px solid',
-                            borderColor: 'light1',
-                            display: 'flex',
-                            flexGrow: 1,
-                            gap: '0.5rem',
-                            justifyContent: 'center',
-                            textAlign: 'center'
-                        }}
-                    >
-                        <img src={rpmIcon} /> 200
-                    </Box>
-                    <Box
-                        sx={{
-                            alignItems: 'center',
-                            borderRight: '1px solid',
-                            borderColor: 'light1',
-                            display: 'flex',
-                            flexGrow: 1,
-                            gap: '0.5rem',
-                            justifyContent: 'center',
-                            textAlign: 'center'
-                        }}
-                    >
-                        <img src={graphIcon} /> 16g
-                    </Box>
-                    <Box
-                        sx={{
-                            alignItems: 'center',
-                            display: 'flex',
-                            flexGrow: 1,
-                            gap: '0.5rem',
-                            justifyContent: 'center',
-                            textAlign: 'center'
-                        }}
-                    >
-                        <img src={timeIcon} /> 20 min
-                    </Box>
+                    {[
+                        { icon: machineIcon, label: 'Máquina 1023' },
+                        { icon: gpsIcon, label: 'Ponto 20192' },
+                        { icon: rpmIcon, label: '200' },
+                        { icon: graphIcon, label: '16g' },
+                        { icon: timeIcon, label: '20 min' },
+                    ].map(({ icon, label }) => (
+                        <Box
+                            key={label}
+                            sx={{
+                                alignItems: 'center',
+                                bgcolor: 'white',
+                                display: 'flex',
+                                gap: '0.5rem',
+                                justifyContent: 'center',
+                                padding: '1rem',
+                                textAlign: 'center',
+                            }}
+                        >
+                            <img src={icon} /> {label}
+                        </Box>
+                    ))}
                 </Box>
                 <Box
                     sx={{
@@ -130,8 +87,8 @@ const MachineDashboard = () => {
                         borderColor: 'light1',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '1rem',
-                        padding: '1.5rem',
+                        gap: '1.5rem',
+                        padding: { xs: '0.5rem', md: '2rem' },
                     }}
                 >
                     {
