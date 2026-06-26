@@ -18,13 +18,12 @@ interface SensorChartProps {
 }
 
 const SensorChart: React.FC<SensorChartProps> = ({
-  title,
   series,
   hoveredTimestamp,
   onHover,
   yAxisTitle = '',
 }) => {
-  const chartRef = useRef<HighchartsReact>(null);
+  const chartRef = useRef<HighchartsReact.RefObject>(null);
   const theme = useTheme();
 
   if (series.some((s) => s.data.length === 0)) {
@@ -33,20 +32,6 @@ const SensorChart: React.FC<SensorChartProps> = ({
         <Typography color="textSecondary">Sem dados disponíveis</Typography>
       </Box>
     );
-  }
-
-  const firstSeries = series.find((s) => s.data.length > 0);
-  const dataPoints = firstSeries?.data || [];
-
-  let tickInterval: number | undefined = undefined;
-  if (dataPoints.length >= 2) {
-    const timestamps = dataPoints.map((p) => new Date(p.datetime).getTime());
-    const intervals = [];
-    for (let i = 1; i < timestamps.length; i++) {
-      intervals.push(timestamps[i] - timestamps[i - 1]);
-    }
-    const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
-    tickInterval = avgInterval * 2;
   }
 
   const formattedSeries = series.map((s) => ({
@@ -76,7 +61,7 @@ const SensorChart: React.FC<SensorChartProps> = ({
           color: '#6673A9',
           fontSize: '12px',
           fontFamily: 'roboto',
-          fontWeight: '400'
+          fontWeight: '400',
         },
       },
       lineColor: 'transparent',
@@ -98,7 +83,7 @@ const SensorChart: React.FC<SensorChartProps> = ({
           color: '#6673A9',
           fontSize: '12px',
           fontFamily: 'roboto',
-          fontWeight: '400'
+          fontWeight: '400',
         },
       },
       gridLineColor: theme.palette.divider,
@@ -130,7 +115,7 @@ const SensorChart: React.FC<SensorChartProps> = ({
         color: '#5B5F65',
         fontWeight: '700',
         fontFamily: 'roboto',
-        fontSize: '12px'
+        fontSize: '12px',
       },
     },
     series: formattedSeries as Highcharts.SeriesOptionsType[],
@@ -146,7 +131,8 @@ const SensorChart: React.FC<SensorChartProps> = ({
           },
         },
         events: {
-          mouseOver: function (e) {
+          mouseOver: function (e: any) {
+            // Usamos 'any' para evitar problemas de tipo com o evento do Highcharts
             if (e.target?.x && onHover) {
               const timestamp = e.target.x;
               onHover(timestamp);
@@ -175,11 +161,17 @@ const SensorChart: React.FC<SensorChartProps> = ({
     if (!xAxis) return;
 
     if (hoveredTimestamp !== null && hoveredTimestamp !== undefined) {
-      xAxis.drawCrosshair(null, { x: hoveredTimestamp } as any);
+      // Usamos undefined em vez de null para o primeiro argumento
+      xAxis.drawCrosshair(undefined, { x: hoveredTimestamp } as any);
       const seriesList = chart.series;
       if (seriesList.length > 0) {
+        // Usamos searchPoint (mais seguro) ou findNearestPointByX com casting
         const points = seriesList
-          .map((s) => s.findNearestPointByX(hoveredTimestamp))
+          .map((s) => {
+            // O método correto no Highcharts é findNearestPointByX, mas o tipo pode não estar disponível
+            // Usamos qualquer para evitar erro de tipo
+            return (s as any).findNearestPointByX?.(hoveredTimestamp) || null;
+          })
           .filter(Boolean);
         if (points.length > 0) {
           chart.tooltip.refresh(points);

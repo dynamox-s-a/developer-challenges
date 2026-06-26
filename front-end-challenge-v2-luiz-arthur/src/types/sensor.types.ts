@@ -28,4 +28,5 @@ export interface SensorDataPoint {
     };
     
     temperature: MetricSeries | null;
+    hoveredTimestamp: number | null;
   }

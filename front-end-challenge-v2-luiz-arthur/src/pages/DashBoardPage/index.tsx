@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Container, Paper, Typography, Box, Alert, Skeleton } from '@mui/material';
+import { Container, Paper, Typography, Alert, Skeleton } from '@mui/material';
 import Header from '../../components/Header';
 import SensorChart from '../../components/SensorChart';
 import { fetchDataRequest, setHoveredTimestamp } from '../../store/modules/sensorSlice';
