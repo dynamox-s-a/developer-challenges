@@ -167,5 +167,26 @@ Durante o desenvolvimento local, o JSON Server ainda pode ser usado (via npm run
 
 Essa abordagem é comum em desafios técnicos e projetos de demonstração, pois mantém o código enxuto e o deploy simples, sem prejudicar a experiência do usuário.
 
-🔧 Como adaptar para um back-end real
+(Sugestão) - Como adaptar para um back-end real
 Se no futuro este projeto evoluísse para um ambiente de produção com uma API real, bastaria substituir a URL do fetch no arquivo src/services/api.ts pela URL da API real e ajustar os tipos de dados conforme necessário. O restante da arquitetura (Redux, Saga, componentes) já está preparado para consumir dados de qualquer fonte.
+
+Alternando entre arquivo estático e JSON Server
+Por padrão, a aplicação em produção utiliza o arquivo response-challenge-v2.json localizado na pasta public/. Isso garante que o app funcione em qualquer ambiente sem a necessidade de um servidor adicional.
+
+Se você deseja usar o JSON Server (ex: para desenvolvimento ou para testar chamadas REST), siga os passos abaixo:
+
+Remova o arquivo estático (ou mantenha, mas altere o código para priorizar o servidor).
+
+No arquivo src/services/api.ts, substitua a função fetchAllMetrics pela versão que faz requisições ao JSON Server (há um código comentado no arquivo que faz exatamente isso).
+
+Rode o JSON Server em um terminal separado:
+
+bash
+npm run server
+O servidor estará disponível em http://localhost:3000.
+
+Rode a aplicação normalmente:
+
+bash
+npm run dev
+Nota: O código atual está preparado para ambas as abordagens. A versão com fetch para o JSON Server está comentada no api.ts para referência.
