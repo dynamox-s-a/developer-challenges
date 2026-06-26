@@ -1,4 +1,4 @@
-import type { RawSeries } from './telemetry.types';
+import type { RawSeries } from './types';
 
 const SERIES_COUNT = 7;
 

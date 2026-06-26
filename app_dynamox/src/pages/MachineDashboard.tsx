@@ -7,8 +7,8 @@ import Typography from '@mui/material/Typography';
 
 
 import type { AppDispatch, RootState } from '../app/store';
-import { fetchTelemetry } from '../features/telemetry/telemetrySlice';
-import { groupByMetric } from '../features/telemetry/telemetry.transform';
+import { fetchTelemetry } from '../features/telemetry/slice';
+import { groupByMetric } from '../features/telemetry/groupByMetric';
 import SyncedCharts from '../components/charts/SyncedCharts';
 import gpsIcon from '../assets/imgs/icons/GPS_24px.svg'
 import graphIcon from '../assets/imgs/icons/faixa_dinamica.svg'

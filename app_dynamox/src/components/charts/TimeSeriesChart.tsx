@@ -1,6 +1,6 @@
 import Highcharts from 'highcharts';
 import HighchartsReactImport from 'highcharts-react-official';
-import type { ChartGroup } from '../../features/telemetry/telemetry.transform';
+import type { ChartGroup } from '../../features/telemetry/groupByMetric';
 import { Alert, Box } from '@mui/material';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../app/store';

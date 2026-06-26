@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Highcharts from 'highcharts';
-import type { ChartGroup } from '../../features/telemetry/telemetry.transform';
+import type { ChartGroup } from '../../features/telemetry/groupByMetric';
 import TimeSeriesChart from './TimeSeriesChart';
 
 type Props = {

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchTelemetryData } from './telemetry.api';
-import type { RawSeries } from './telemetry.types';
+import { fetchTelemetryData } from './api';
+import type { RawSeries } from './types';
 
 type TelemetryState = {
     series: RawSeries[];
