@@ -13,20 +13,16 @@ const mockFetch = (ok: boolean, data?: unknown) =>
     } as Response);
 
 describe('fetchTelemetryData', () => {
-    it('should return 7 series on success', async () => {
-        global.fetch = vi.fn((url: string) => {
-            const index = Number(url.split('/').pop());
-
-            return mockFetch(true, mockSeries[index]);
-        }) as typeof fetch;
+    it('should return series on success', async () => {
+        global.fetch = vi.fn(() => mockFetch(true, mockSeries)) as typeof fetch;
 
         const result = await fetchTelemetryData();
 
-        expect(result).toHaveLength(7);
+        expect(global.fetch).toHaveBeenCalledWith('http://localhost:3000/telemetry');
         expect(result).toEqual(mockSeries);
     });
 
-    it('should throw an error when any response is not ok', async () => {
+    it('should throw an error when response is not ok', async () => {
         global.fetch = vi.fn(() => mockFetch(false)) as typeof fetch;
 
         await expect(fetchTelemetryData()).rejects.toThrow('Falha ao buscar dados de telemetria');
