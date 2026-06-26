@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import type { AppDispatch, RootState } from '../app/store';
 import { fetchTelemetry } from '../features/telemetry/telemetrySlice';
 import { groupByMetric } from '../features/telemetry/telemetry.transform';
-import TimeSeriesChart from '../components/charts/TimeSeriesChart';
+import SyncedCharts from '../components/charts/SyncedCharts';
 import gpsIcon from '../assets/imgs/icons/GPS_24px.svg'
 import graphIcon from '../assets/imgs/icons/faixa_dinamica.svg'
 import machineIcon from '../assets/imgs/icons/maquina.svg'
@@ -105,9 +105,7 @@ const MachineDashboard = () => {
                                 >
                                     <CircularProgress aria-label="Loading…" color="primary" size="5rem" />
                                 </Box>
-                            ) : groupByMetric(series).map((group) => (
-                                <TimeSeriesChart key={group.title} group={group} />
-                            ))
+                            ) : <SyncedCharts groups={groupByMetric(series)} />
                     }
                 </Box>
             </Box>
