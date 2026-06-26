@@ -45,18 +45,18 @@ const TimeSeriesChart = ({ group }: Props) => {
             lineColor: '#DFE3E8',
             tickColor: '#DFE3E8',
             labels: {
-                style: { color: '#31539c', fontSize: '11px' },
+                style: { color: '#31539c', fontSize: '14px' },
             },
             crosshair: true,
         },
         yAxis: {
             title: {
                 text: group.unit,
-                style: { color: '#31539c', fontSize: '11px' },
+                style: { color: '#31539c', fontSize: '14px' },
             },
             gridLineColor: '#f0f0f0',
             labels: {
-                style: { color: '#31539c', fontSize: '11px' },
+                style: { color: '#31539c', fontSize: '14px' },
             },
         },
         legend: {
