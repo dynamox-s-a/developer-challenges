@@ -2,17 +2,15 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { fetchTelemetryData } from './telemetry.api';
 import type { RawSeries } from './telemetry.types';
 
-type Status = 'idle' | 'loading' | 'succeeded' | 'failed';
-
 type TelemetryState = {
     series: RawSeries[];
-    status: Status;
+    isLoading: Boolean;
     error: string | null;
 };
 
 const initialState: TelemetryState = {
     series: [],
-    status: 'idle',
+    isLoading: false,
     error: null,
 };
 
@@ -25,15 +23,15 @@ const telemetrySlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchTelemetry.pending, (state) => {
-                state.status = 'loading';
+                state.isLoading = true;
                 state.error = null;
             })
             .addCase(fetchTelemetry.fulfilled, (state, action) => {
-                state.status = 'succeeded';
+                state.isLoading = false;
                 state.series = action.payload;
             })
             .addCase(fetchTelemetry.rejected, (state, action) => {
-                state.status = 'failed';
+                state.isLoading = false;
                 state.error = action.error.message ?? 'Erro desconhecido';
             });
     },

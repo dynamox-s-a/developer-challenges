@@ -20,17 +20,12 @@ import timeIcon from '../assets/imgs/icons/intervalo_amostras.svg'
 const MachineDashboard = () => {
     const dispatch = useDispatch<AppDispatch>();
 
+const isLoading = useSelector((state: RootState) => state.telemetry.isLoading);
     const series = useSelector((state: RootState) => state.telemetry.series);
-    const status = useSelector((state: RootState) => state.telemetry.status);
-
+    
     useEffect(() => {
         dispatch(fetchTelemetry());
     }, []);
-
-    // Usar essa lógica apenas nos componentes dos gráficos.
-    // Em vez disso, utilizar spinner de Loading.
-    if (status === 'idle' || status === 'loading') return <p>Carregando...</p>;
-    if (status === 'failed') return <p>Erro ao carregar dados.</p>;
 
     return (
         <Box>
