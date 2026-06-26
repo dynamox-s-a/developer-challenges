@@ -1,32 +1,19 @@
 import type { SensorDataResponse, MetricSeries } from '../types/sensor.types';
 
-// Número total de séries disponíveis (0 a 6)
-const TOTAL_INDICES = 7;
-
 /**
- * Busca todos os dados dos sensores.
- * 
- * NOTA: Em um ambiente de produção, teríamos um único endpoint que retorna
- * o array completo. Porém, como o JSON Server serve HTML na raiz (devido à
- * pasta public), buscamos cada índice individualmente para garantir que
- * recebemos JSON puro.
+ * Busca os dados dos sensores a partir do arquivo estático na pasta public.
+ * Essa abordagem funciona tanto em desenvolvimento quanto em produção.
  */
 export const fetchAllMetrics = async (): Promise<SensorDataResponse> => {
-  const promises = [];
-  for (let i = 0; i < TOTAL_INDICES; i++) {
-    promises.push(
-      fetch(`http://localhost:3000/${i}`, {
-        headers: { 'Accept': 'application/json' },
-      }).then((res) => {
-        if (!res.ok) throw new Error(`Erro ao buscar /${i}: ${res.status}`);
-        return res.json();
-      })
-    );
+  const response = await fetch('/response-challenge-v2.json');
+  if (!response.ok) {
+    throw new Error(`Erro ao carregar dados: ${response.status}`);
   }
-
-  const results = await Promise.all(promises);
-  console.log('📊 Dados carregados:', results.length, 'séries');
-  return results;
+  const data = await response.json();
+  if (Array.isArray(data)) {
+    return data;
+  }
+  throw new Error('Formato de dados inesperado.');
 };
 
 export const findMetricByName = (
