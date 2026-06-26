@@ -23,6 +23,7 @@ const theme = createTheme({
         dark: '#252525',
         light1: '#DFE3E8',
         light2: '#eeeeee',
+        primary: { main: '#71008d' },
         white: '#fff',
     },
 });
