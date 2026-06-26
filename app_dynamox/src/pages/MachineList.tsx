@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -9,16 +10,25 @@ import Toolbar from '@mui/material/Toolbar';
 import type { Machine } from '../features/telemetry/types';
 
 const MachineList = () => {
-    const [machines, setMachines] = useState<Machine[]>([]);
+    const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [machines, setMachines] = useState<Machine[]>([]);
 
     const navigate = useNavigate();
 
     useEffect(() => {
         fetch('http://localhost:3000/machines')
-            .then((response) => response.json())
+            .then((response) => {
+                if (!response.ok) throw new Error();
+
+                return response.json();
+            })
             .then((data) => {
                 setMachines(data);
+                setIsLoading(false);
+            })
+            .catch(() => {
+                setError('Erro ao buscar máquinas.');
                 setIsLoading(false);
             });
     }, []);
@@ -36,6 +46,10 @@ const MachineList = () => {
                 {isLoading ? (
                     <Box sx={{ alignItems: 'center', display: 'flex', height: '50vh', justifyContent: 'center' }}>
                         <CircularProgress color="primary" size="5rem" />
+                    </Box>
+                ) : error ? (
+                    <Box sx={{ border: '1px solid', borderColor: 'light1', borderRadius: '0.5rem', bgcolor: 'white', padding: '1.5rem' }}>
+                        <Alert severity="error">{error}</Alert>
                     </Box>
                 ) : (
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
