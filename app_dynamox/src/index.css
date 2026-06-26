@@ -13,6 +13,7 @@
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
     background-color: var(--light2);
+    color: var(--dark);
+    font-family: 'Roboto', sans-serif;
 }
