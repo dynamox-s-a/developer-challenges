@@ -4,9 +4,7 @@ const SERIES_COUNT = 7;
 
 export async function fetchTelemetryData(): Promise<RawSeries[]> {
     const responses = await Promise.all(
-        Array.from({ length: SERIES_COUNT }, (_, i) =>
-            fetch(`http://localhost:3000/${i}`)
-        )
+        Array.from({ length: SERIES_COUNT }, (_, index) => fetch(`http://localhost:3000/${index}`))
     );
 
     for (const response of responses) {
