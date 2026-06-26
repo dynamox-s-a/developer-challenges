@@ -34,7 +34,7 @@ const MachineDashboard = () => {
 
     return (
         <Box>
-            <AppBar position="static" sx={{ bgcolor: 'white', color: 'dark', padding: '1rem 0' }}>
+            <AppBar position="sticky" sx={{ bgcolor: 'white', color: 'dark', padding: '1rem 0' }}>
                 <Toolbar variant="dense">
                     <Typography
                         component="h1"
