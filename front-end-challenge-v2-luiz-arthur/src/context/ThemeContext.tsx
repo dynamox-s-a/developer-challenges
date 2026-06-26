@@ -1,4 +1,3 @@
-// src/context/ThemeContext.tsx
 import React, { createContext, useState, useEffect, useContext, useMemo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -28,7 +27,6 @@ export const ThemeContextProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
   useEffect(() => {
     localStorage.setItem('themeMode', mode);
-    // Adiciona o atributo data-theme ao body para uso em CSS
     document.body.setAttribute('data-theme', mode);
   }, [mode]);
 

@@ -1,4 +1,3 @@
-// src/store/modules/sensorSlice.ts
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { SensorState, MetricSeries, SensorDataResponse } from '../../types/sensor.types';
 import { createSlice } from '@reduxjs/toolkit';
@@ -14,7 +13,7 @@ const initialState: SensorState = {
   acceleration: { x: null, y: null, z: null },
   velocity: { x: null, y: null, z: null },
   temperature: null,
-  hoveredTimestamp: null, // <-- NOVO: timestamp do hover sincronizado
+  hoveredTimestamp: null,
 };
 
 const sensorSlice = createSlice({
@@ -52,7 +51,6 @@ const sensorSlice = createSlice({
   },
 });
 
-// Exportação das actions
 export const {
   fetchDataRequest,
   fetchDataSuccess,

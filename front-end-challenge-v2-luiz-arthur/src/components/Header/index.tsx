@@ -43,7 +43,6 @@ const Header = () => {
                 flex: '0 0 auto',
               }}
             >
-              {/* Item com largura fixa */}
               <Box
                 className="header-info-item"
                 sx={{
@@ -63,15 +62,14 @@ const Header = () => {
                 </Box>
               </Box>
 
-              {/* Divisor somente entre os itens */}
               {index < machineInfo.length - 1 && (
                 <Divider
                   orientation="vertical"
                   flexItem
                   className="header-divider"
                   sx={{
-                    marginLeft: '16px', // Espaço entre o item e o divisor
-                    marginRight: '16px', // Espaço entre o divisor e o próximo item
+                    marginLeft: '16px',
+                    marginRight: '16px',
                   }}
                 />
               )}

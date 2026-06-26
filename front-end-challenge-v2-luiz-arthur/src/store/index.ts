@@ -11,7 +11,7 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      thunk: false, // desabilita thunk para usar exclusivamente Saga
+      thunk: false,
     }).concat(sagaMiddleware),
 });
 

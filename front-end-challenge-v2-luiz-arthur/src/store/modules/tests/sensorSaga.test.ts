@@ -1,4 +1,3 @@
-// src/store/modules/__tests__/sensorSaga.test.ts
 import { describe, it } from 'vitest';
 import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';

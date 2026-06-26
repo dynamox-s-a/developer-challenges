@@ -10,7 +10,7 @@ interface SensorChartProps {
   series: {
     name: string;
     data: SensorDataPoint[];
-    color?: string; // Cor específica da série
+    color?: string;
   }[];
   hoveredTimestamp?: number | null;
   onHover?: (timestamp: number | null) => void;
@@ -27,7 +27,6 @@ const SensorChart: React.FC<SensorChartProps> = ({
   const chartRef = useRef<HighchartsReact>(null);
   const theme = useTheme();
 
-  // Verifica se há dados
   if (series.some((s) => s.data.length === 0)) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 280 }}>
@@ -36,7 +35,6 @@ const SensorChart: React.FC<SensorChartProps> = ({
     );
   }
 
-  // Pega a primeira série com dados para calcular o tickInterval
   const firstSeries = series.find((s) => s.data.length > 0);
   const dataPoints = firstSeries?.data || [];
 
@@ -48,14 +46,13 @@ const SensorChart: React.FC<SensorChartProps> = ({
       intervals.push(timestamps[i] - timestamps[i - 1]);
     }
     const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
-    tickInterval = avgInterval * 2; // a cada 2 pontos
+    tickInterval = avgInterval * 2;
   }
 
-  // Formata as séries para o Highcharts, usando a cor definida em cada série
   const formattedSeries = series.map((s) => ({
     name: s.name,
     data: s.data.map((point) => [new Date(point.datetime).getTime(), point.max]),
-    color: s.color || undefined, // <-- USA A COR DEFINIDA NO DASHBOARD
+    color: s.color || undefined,
     type: 'line' as const,
   }));
 
@@ -171,7 +168,6 @@ const SensorChart: React.FC<SensorChartProps> = ({
     },
   };
 
-  // Crosshair sync effect
   useEffect(() => {
     const chart = chartRef.current?.chart;
     if (!chart) return;
@@ -197,7 +193,6 @@ const SensorChart: React.FC<SensorChartProps> = ({
     }
   }, [hoveredTimestamp]);
 
-  // Reflow on resize
   useEffect(() => {
     const handleResize = () => {
       const chart = chartRef.current?.chart;

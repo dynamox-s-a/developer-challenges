@@ -1,5 +1,3 @@
-/* src/index.css */
-
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 /* Reset e fontes */
@@ -25,7 +23,7 @@ body {
   width: 1512px !important;
   margin: 0 auto;
   padding: 50px 24px !important;
-  background-color: #F8FAFC;/*/#F8FAFC*/
+  background-color: #F8FAFC;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -72,7 +70,6 @@ body {
   border-top: 1px solid #DFE3E8;
 }
 
-/* Linha de informações (5 colunas) */
 .header-info-row {
   display: flex;
   align-items: center;
@@ -137,7 +134,7 @@ body {
     flex: 0 1 auto;
   }
   .header-divider {
-    display: none; /* Remove divisores em telas pequenas para não poluir */
+    display: none;
   }
 }
 
