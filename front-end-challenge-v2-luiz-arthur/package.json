@@ -13,7 +13,9 @@
     "test:ui": "vitest --ui",
     "coverage": "vitest --coverage",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -32,7 +34,13 @@
     "redux-saga": "^1.5.0"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^5.2.1",
     "@eslint/js": "^10.0.1",
+    "@storybook/addon-a11y": "^10.4.6",
+    "@storybook/addon-docs": "^10.4.6",
+    "@storybook/addon-mcp": "^0.6.0",
+    "@storybook/addon-vitest": "^10.4.6",
+    "@storybook/react-vite": "^10.4.6",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@types/node": "^24.12.3",
@@ -41,6 +49,7 @@
     "@vitejs/plugin-react": "^6.0.1",
     "@vitest/browser-playwright": "^4.1.9",
     "@vitest/coverage-v8": "^4.1.9",
+    "cypress": "^15.18.0",
     "eslint": "^10.3.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
@@ -49,16 +58,10 @@
     "jsdom": "^29.1.1",
     "playwright": "^1.61.1",
     "redux-saga-test-plan": "^4.0.6",
+    "storybook": "^10.4.6",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
     "vite": "^8.0.12",
-    "vitest": "^4.1.9",
-    "storybook": "^10.4.6",
-    "@storybook/react-vite": "^10.4.6",
-    "@chromatic-com/storybook": "^5.2.1",
-    "@storybook/addon-vitest": "^10.4.6",
-    "@storybook/addon-a11y": "^10.4.6",
-    "@storybook/addon-docs": "^10.4.6",
-    "@storybook/addon-mcp": "^0.6.0"
+    "vitest": "^4.1.9"
   }
 }
