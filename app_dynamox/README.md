@@ -29,14 +29,14 @@ A aplicação depende de dois processos rodando simultaneamente — o servidor d
 ```bash
 npm run server
 ```
-Disponível em `http://localhost:3000`. As 7 séries são expostas nos endpoints `/0` a `/6`.
+Disponível em `http://localhost:3000`, com os endpoints `/machines` e `/telemetry`.
 
 **2. Aplicação:**
 ```bash
 npm run dev
 ```
 
-Acesse [http://localhost:5173/data](http://localhost:5173/data).
+Acesse [http://localhost:5173](http://localhost:5173).
 
 ## Testes
 
@@ -74,6 +74,6 @@ O dataset é composto por 7 séries temporais:
 - `velocityRms/x`, `velocityRms/y`, `velocityRms/z` — velocidade nos 3 eixos
 - `temperature` — temperatura
 
-Como o `db.json` é um array, o `json-server` expõe cada série por índice numérico (`/0` a `/6`) em vez de por nome. Para contornar isso, as 7 requisições são feitas em paralelo com `Promise.all`, o que garante que todas as séries sejam carregadas ao mesmo tempo sem depender de chamadas sequenciais.
+O `db.json` é estruturado como um objeto com as chaves `machines` e `telemetry`, o que permite ao `json-server` expor os endpoints `/machines` e `/telemetry` diretamente.
 
-Após o carregamento, os dados são salvos no estado global do Redux. A função `groupByMetric` então os agrupa em 3 conjuntos — aceleração, velocidade e temperatura — que são passados individualmente a cada gráfico. Cada vez que o usuário acessa a rota `/data`, um novo fetch é disparado para garantir que os dados estejam sempre atualizados.
+Ao acessar `/`, a lista de máquinas é buscada em `/machines` e exibida. Ao selecionar uma máquina e navegar para `/data`, os dados de telemetria são buscados em `/telemetry` em uma única requisição, armazenados no Redux e transformados pela função `groupByMetric` em 3 grupos — aceleração, velocidade e temperatura — que são passados individualmente a cada gráfico.
