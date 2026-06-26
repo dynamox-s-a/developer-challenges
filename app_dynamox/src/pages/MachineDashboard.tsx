@@ -15,14 +15,15 @@ import graphIcon from '../assets/imgs/icons/faixa_dinamica.svg'
 import machineIcon from '../assets/imgs/icons/maquina.svg'
 import rpmIcon from '../assets/imgs/icons/rpm.svg'
 import timeIcon from '../assets/imgs/icons/intervalo_amostras.svg'
+import { CircularProgress } from '@mui/material';
 
 
 const MachineDashboard = () => {
     const dispatch = useDispatch<AppDispatch>();
 
-const isLoading = useSelector((state: RootState) => state.telemetry.isLoading);
+    const isLoading = useSelector((state: RootState) => state.telemetry.isLoading);
     const series = useSelector((state: RootState) => state.telemetry.series);
-    
+
     useEffect(() => {
         dispatch(fetchTelemetry());
     }, []);
@@ -133,9 +134,24 @@ const isLoading = useSelector((state: RootState) => state.telemetry.isLoading);
                         padding: '1.5rem',
                     }}
                 >
-                    {groupByMetric(series).map((group) => (
-                        <TimeSeriesChart key={group.title} group={group} />
-                    ))}
+                    {
+                        isLoading
+                            ? (
+                                <Box
+                                    sx={{
+                                        alignItems: 'center',
+                                        display: 'flex',
+                                        height: '50vh',
+                                        justifyContent: 'center',
+                                        padding: '2rem',
+                                    }}
+                                >
+                                    <CircularProgress aria-label="Loading…" color="primary" size="5rem" />
+                                </Box>
+                            ) : groupByMetric(series).map((group) => (
+                                <TimeSeriesChart key={group.title} group={group} />
+                            ))
+                    }
                 </Box>
             </Box>
         </Box>
