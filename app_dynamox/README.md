@@ -29,6 +29,7 @@ A aplicação depende de dois processos rodando simultaneamente — o servidor d
 ```bash
 npm run server
 ```
+Disponível em `http://localhost:3000`. As 7 séries são expostas nos endpoints `/0` a `/6`.
 
 **2. Aplicação:**
 ```bash
