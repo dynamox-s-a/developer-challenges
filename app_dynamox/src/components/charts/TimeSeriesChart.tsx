@@ -1,7 +1,9 @@
 import Highcharts from 'highcharts';
 import HighchartsReactImport from 'highcharts-react-official';
 import type { ChartGroup } from '../../features/telemetry/telemetry.transform';
-import { Box } from '@mui/material';
+import { Alert, Box } from '@mui/material';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../app/store';
 
 const HighchartsReact = (HighchartsReactImport as any).default ?? HighchartsReactImport;
 
@@ -27,6 +29,8 @@ function toHighchartsPoints(series: ChartGroup['series'][number]): Highcharts.Se
 }
 
 const TimeSeriesChart = ({ group }: Props) => {
+    const error = useSelector((state: RootState) => state.telemetry.error);
+
     const options: Highcharts.Options = {
         colors: ['#7CB5EC', '#E91E8C', '#B8860B'],
         chart: {
@@ -57,6 +61,11 @@ const TimeSeriesChart = ({ group }: Props) => {
             gridLineColor: '#f0f0f0',
             labels: {
                 style: { color: '#31539c', fontSize: '14px' },
+                formatter() {
+                    const value = this.value as number;
+
+                    return Number.isInteger(value) ? String(value) : value.toFixed(2);
+                },
             },
         },
         legend: {
@@ -74,6 +83,7 @@ const TimeSeriesChart = ({ group }: Props) => {
             style: { color: '#212121', fontSize: '12px' },
             shared: true,
             xDateFormat: '%d/%m/%Y %H:%M',
+            valueDecimals: 2,
         },
         plotOptions: {
             line: {
@@ -111,7 +121,11 @@ const TimeSeriesChart = ({ group }: Props) => {
                     padding: '1.5rem 2rem'
                 }}
             >
-                <HighchartsReact highcharts={Highcharts} options={options} />
+                {
+                    error
+                        ? <Alert severity="error">Erro ao carregar gráficos</Alert>
+                        : <HighchartsReact highcharts={Highcharts} options={options} />
+                }
             </Box>
         </Box>
     );
