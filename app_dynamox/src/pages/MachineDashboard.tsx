@@ -1,25 +1,31 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import Toolbar from '@mui/material/Toolbar';
+import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-
-
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import type { AppDispatch, RootState } from '../app/store';
 import { fetchTelemetry } from '../features/telemetry/slice';
 import { groupByMetric } from '../features/telemetry/groupByMetric';
+import type { Machine } from '../features/telemetry/types';
 import SyncedCharts from '../components/charts/SyncedCharts';
-import gpsIcon from '../assets/imgs/icons/GPS_24px.svg'
-import graphIcon from '../assets/imgs/icons/faixa_dinamica.svg'
-import machineIcon from '../assets/imgs/icons/maquina.svg'
-import rpmIcon from '../assets/imgs/icons/rpm.svg'
-import timeIcon from '../assets/imgs/icons/intervalo_amostras.svg'
-import { CircularProgress } from '@mui/material';
+import gpsIcon from '../assets/imgs/icons/GPS_24px.svg';
+import graphIcon from '../assets/imgs/icons/faixa_dinamica.svg';
+import machineIcon from '../assets/imgs/icons/maquina.svg';
+import rpmIcon from '../assets/imgs/icons/rpm.svg';
+import timeIcon from '../assets/imgs/icons/intervalo_amostras.svg';
 
 
 const MachineDashboard = () => {
     const dispatch = useDispatch<AppDispatch>();
+
+    const machine = useLocation().state as Machine;
+
+    const navigate = useNavigate();
 
     const isLoading = useSelector((state: RootState) => state.telemetry.isLoading);
     const series = useSelector((state: RootState) => state.telemetry.series);
@@ -42,6 +48,13 @@ const MachineDashboard = () => {
                 </Toolbar>
             </AppBar>
             <Box sx={{ padding: { xs: '2rem 0.5rem', md: '2rem' } }}>
+                <Button
+                    startIcon={<ArrowBackIcon />}
+                    onClick={() => navigate('/')}
+                    sx={{ mb: 2 }}
+                >
+                    Voltar
+                </Button>
                 <Box
                     sx={{
                         bgcolor: 'light1',
@@ -58,11 +71,11 @@ const MachineDashboard = () => {
                     }}
                 >
                     {[
-                        { icon: machineIcon, label: 'Máquina 1023' },
-                        { icon: gpsIcon, label: 'Ponto 20192' },
-                        { icon: rpmIcon, label: '200' },
-                        { icon: graphIcon, label: '16g' },
-                        { icon: timeIcon, label: '20 min' },
+                        { icon: machineIcon, label: machine.name },
+                        { icon: gpsIcon, label: machine.point },
+                        { icon: rpmIcon, label: String(machine.rpm) },
+                        { icon: graphIcon, label: machine.dynamicRange },
+                        { icon: timeIcon, label: machine.sampleInterval },
                     ].map(({ icon, label }) => (
                         <Box
                             key={label}
