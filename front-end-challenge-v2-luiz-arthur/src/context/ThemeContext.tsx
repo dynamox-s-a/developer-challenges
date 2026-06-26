@@ -21,7 +21,6 @@ export const useThemeContext = () => {
 };
 
 export const ThemeContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Recupera preferência do localStorage ou usa a preferência do sistema
   const storedMode = localStorage.getItem('themeMode') as ThemeMode | null;
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
@@ -29,6 +28,8 @@ export const ThemeContextProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
   useEffect(() => {
     localStorage.setItem('themeMode', mode);
+    // Adiciona o atributo data-theme ao body para uso em CSS
+    document.body.setAttribute('data-theme', mode);
   }, [mode]);
 
   const toggleTheme = () => {
@@ -40,28 +41,22 @@ export const ThemeContextProvider: React.FC<{ children: React.ReactNode }> = ({ 
       createTheme({
         palette: {
           mode,
-          primary: {
-            main: '#1976d2',
-          },
-          secondary: {
-            main: '#d32f2f',
-          },
-          success: {
-            main: '#2e7d32',
-          },
+          primary: { main: '#1976d2' },
+          secondary: { main: '#d32f2f' },
+          success: { main: '#2e7d32' },
           background: {
             default: mode === 'light' ? '#f5f7fa' : '#121212',
             paper: mode === 'light' ? '#ffffff' : '#1e1e1e',
           },
         },
         typography: {
-          fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+          fontFamily: '"Inter", "Roboto", sans-serif',
         },
         components: {
           MuiPaper: {
             styleOverrides: {
               root: {
-                backgroundImage: 'none', // Remove gradiente padrão do Paper
+                backgroundImage: 'none',
               },
             },
           },

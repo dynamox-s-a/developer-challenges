@@ -82,8 +82,8 @@ const SensorChart: React.FC<SensorChartProps> = ({
           fontWeight: '400'
         },
       },
-      lineColor: '#DFE3E8',
-      tickColor: 'white',
+      lineColor: 'transparent',
+      tickColor: 'transparent',
       gridLineWidth: 1,
       gridLineColor: theme.palette.divider,
       gridLineDashStyle: 'Solid',
@@ -130,7 +130,7 @@ const SensorChart: React.FC<SensorChartProps> = ({
       y: 20,
       itemMarginTop: 24,
       itemStyle: {
-        color: '#3A3B3F',
+        color: '#5B5F65',
         fontWeight: '700',
         fontFamily: 'roboto',
         fontSize: '12px'
