@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* Reset e fontes */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #1a1a1a;
+}
+
+#root{
+  background-color: gray !important;
+}
+
+/* Container principal */
+.app-container {
+  width: 1512px !important;
+  margin: 0 auto;
+  padding: 50px 24px !important;
+  background-color: #F8FAFC;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* src/index.css */
+
+/* ===== HEADER ===== */
+.header-paper {
+  padding: 10px 0 0px 0;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #F8FAFC;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 50px;
+  width: 100%;
+  padding: 0 24px;
+  height: 64px;
+}
+
+.header-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #1a1a1a;
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+
+.header-container{
+  background-color: #F8FAFC;
+  width: 100%;
+  height: 84px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-top: 1px solid #DFE3E8;
+}
+
+.header-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 0;
+  width: 1464px;
+  margin: 0 auto;
+  height: 46px;
+  background-color: white;
+  border: 1px solid #DFE3E8;
+  border-radius: 4px;
+}
+
+.header-info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  align-items: center !important;
+}
+
+.header-info-icon {
+  display: flex;
+  align-items: center;
+  color: #6b7280;
+}
+
+.header-info-text {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+  line-height: 1.3;
+}
+
+.header-info-label, .header-info-value {
+  font-family: Roboto;
+  font-weight: 400;
+  font-size: 14px;
+  leading-trim: NONE;
+  line-height: 21px;
+  letter-spacing: -0.05%;
+  text-align: center;
+  vertical-align: middle;
+  color: #3A3B3F;
+}
+
+.header-divider {
+  height: 20px;
+  width: 1px;
+  background-color: #DFE3E8;
+  margin: 0 !important;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .header-info-row {
+    gap: 8px 12px;
+  }
+  .header-info-item {
+    min-width: 80px;
+    flex: 0 1 auto;
+  }
+  .header-divider {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-title {
+    font-size: 18px;
+  }
+  .header-info-value {
+    font-size: 12px;
+  }
+  .header-info-label {
+    font-size: 10px;
+  }
+}
+
+/* ===== CARDS DOS GRÁFICOS ===== */
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-top: 8px;
+  background-color: #ffffff;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #DFE3E8;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  border-radius: 4px;
+  padding-bottom: 50px;
+}
+
+.chart-card {
+  background: #ffffff;
+  padding: 24px 24px 0px 24px;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s ease;
+  min-width: 1464px;
+}
+
+.chart-card:hover {
+  border-color: #d1d5db;
+}
+
+.chart-title {
+  font-family: Roboto;
+  font-weight: 500;
+  font-style: Medium;
+  font-size: 14px;
+  leading-trim: NONE;
+  line-height: 20px !important;
+  letter-spacing: -0.05% !important;
+  color: #3A3B3F;
+  border: 1px solid #DFE3E8;  
+  padding: 19px 24px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.chart-container {
+  flex: 1;
+  min-height: 430px;
+  width: 100%;
+  border-right: 1px solid #DFE3E8;
+  border-left: 1px solid #DFE3E8;
+  border-bottom: 1px solid #DFE3E8;
+  padding: 24px 31px 24px 5px;
+}
+
+/* ===== DARK MODE OVERRIDES ===== */
+
+body[data-theme="dark"] .app-container {
+  background-color: rgb(75, 74, 74);
+}
+
+body[data-theme="dark"] .charts-grid {
+  background-color: #121212;
+}
+
+body[data-theme="dark"] .header-container{
+  background-color: rgb(68, 68, 68);
+}
+
+body[data-theme="dark"] .header-info-row{
+  background-color: rgb(187, 185, 185);
+}
+
+body[data-theme="dark"] .header-title, body[data-theme="dark"]  .chart-title{
+  color: #DFE3E8;
+}
