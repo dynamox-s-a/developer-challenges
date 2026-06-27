@@ -1,0 +1,19 @@
+:root {
+    --black: #000;
+    --dark: #252525;
+    --light1: #DFE3E8;
+    --light2: #f6f6f6;
+    --white: #fff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--light2);
+    color: var(--dark);
+    font-family: 'Roboto', sans-serif;
+}
