@@ -11,6 +11,8 @@ from app.schemas.time_series import (
     TimeSeriesMetricsResponse,
     TimeSeriesResponse,
     TimeSeriesSummaryResponse,
+    TimeSeriesPointsAppend,
+    TimeSeriesPointsAppendResponse,
 )
 
 
@@ -27,7 +29,10 @@ class TimeSeriesService:
         return [
             TimeSeriesSummaryResponse(
                 id=series.id,
-                name=series.name,
+                asset_name=series.asset_name,
+                sensor_name=series.sensor_name,
+                signal_type=series.signal_type,
+                unit=series.unit,
                 created_at=series.created_at,
                 points_count=len(series.points),
             )
@@ -47,7 +52,10 @@ class TimeSeriesService:
 
         return TimeSeriesResponse(
             id=series.id,
-            name=series.name,
+            asset_name=series.asset_name,
+            sensor_name=series.sensor_name,
+            signal_type=series.signal_type,
+            unit=series.unit,
             created_at=series.created_at,
             data=[
                 {
@@ -158,4 +166,28 @@ class TimeSeriesService:
             series_id=series.id,
             steps=steps,
             forecast=forecast,
+        )
+        
+    def append_points(
+        self,
+        series_id: UUID,
+        payload: TimeSeriesPointsAppend,
+    ) -> TimeSeriesPointsAppendResponse:
+        series = self.repository.find_by_id(series_id)
+
+        if not series:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Time series not found",
+            )
+
+        inserted_points = self.repository.append_points(
+            series=series,
+            points_data=payload.data,
+        )
+
+        return TimeSeriesPointsAppendResponse(
+            series_id=series.id,
+            inserted_points=inserted_points,
+            message="Points appended successfully",
         )

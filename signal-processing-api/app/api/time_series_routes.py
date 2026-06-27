@@ -12,6 +12,8 @@ from app.schemas.time_series import (
     TimeSeriesResponse,
     TimeSeriesSummaryResponse,
     TimeSeriesForecastResponse,
+    TimeSeriesPointsAppend,
+    TimeSeriesPointsAppendResponse,
 )
 from app.services.time_series_service import TimeSeriesService
 
@@ -58,6 +60,18 @@ def count_time_series(
     service: TimeSeriesService = Depends(get_service),
 ):
     return TimeSeriesCountResponse(count=service.count())
+
+@router.post(
+    "/{series_id}/points",
+    response_model=TimeSeriesPointsAppendResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+def append_time_series_points(
+    series_id: UUID,
+    payload: TimeSeriesPointsAppend,
+    service: TimeSeriesService = Depends(get_service),
+):
+    return service.append_points(series_id, payload)
 
 
 @router.get(

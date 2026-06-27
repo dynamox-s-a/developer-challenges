@@ -17,7 +17,10 @@ class TimeSeries(Base):
         default=uuid4,
         index=True,
     )
-    name: Mapped[str] = mapped_column(String(120), nullable=False)
+    asset_name: Mapped[str] = mapped_column(String(120), nullable=False)
+    sensor_name: Mapped[str] = mapped_column(String(120), nullable=False)
+    signal_type: Mapped[str] = mapped_column(String(80), nullable=False)
+    unit: Mapped[str] = mapped_column(String(40), nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
         default=lambda: datetime.now(UTC),

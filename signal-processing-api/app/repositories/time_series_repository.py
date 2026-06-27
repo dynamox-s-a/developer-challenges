@@ -12,7 +12,12 @@ class TimeSeriesRepository:
         self.db = db
 
     def create(self, payload: TimeSeriesCreate) -> TimeSeries:
-        series = TimeSeries(name=payload.name)
+        series = TimeSeries(
+            asset_name=payload.asset_name,
+            sensor_name=payload.sensor_name,
+            signal_type=payload.signal_type,
+            unit=payload.unit,
+        )
 
         series.points = [
             TimeSeriesPoint(timestamp=point.timestamp, value=point.value)
@@ -48,3 +53,22 @@ class TimeSeriesRepository:
     def delete(self, series: TimeSeries) -> None:
         self.db.delete(series)
         self.db.commit()
+        
+    def append_points(
+        self,
+        series: TimeSeries,
+        points_data,
+    ) -> int:
+        points = [
+            TimeSeriesPoint(
+                series_id=series.id,
+                timestamp=point.timestamp,
+                value=point.value,
+            )
+            for point in points_data
+        ]
+
+        self.db.add_all(points)
+        self.db.commit()
+
+        return len(points)

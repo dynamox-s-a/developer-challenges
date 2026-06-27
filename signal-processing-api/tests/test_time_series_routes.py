@@ -15,7 +15,10 @@ def test_health_check():
 
 def test_create_time_series():
     payload = {
-        "name": "motor-bomba-01-vibracao",
+        "asset_name": "motor-bomba-01",
+        "sensor_name": "sensor-vibracao-01",
+        "signal_type": "vibration",
+        "unit": "mm/s",
         "data": [
             {
                 "timestamp": "2026-06-27T12:00:00",
@@ -56,7 +59,10 @@ def test_count_time_series():
 
 def test_get_time_series_by_id_and_metrics():
     payload = {
-        "name": "redutor-02-temperatura",
+        "asset_name": "redutor-02",
+        "sensor_name": "sensor-temperatura-01",
+        "signal_type": "temperature",
+        "unit": "celsius",
         "data": [
             {
                 "timestamp": "2026-06-27T12:00:00",
@@ -83,7 +89,10 @@ def test_get_time_series_by_id_and_metrics():
 
     assert get_response.status_code == 200
     assert get_response.json()["id"] == series_id
-    assert get_response.json()["name"] == "redutor-02-temperatura"
+    assert get_response.json()["asset_name"] == "redutor-02"
+    assert get_response.json()["sensor_name"] == "sensor-temperatura-01"
+    assert get_response.json()["signal_type"] == "temperature"
+    assert get_response.json()["unit"] == "celsius"
     assert len(get_response.json()["data"]) == 3
 
     metrics_response = client.get(f"/api/v1/time-series/{series_id}/metrics")
@@ -101,7 +110,10 @@ def test_get_time_series_by_id_and_metrics():
 
 def test_delete_time_series():
     payload = {
-        "name": "esteira-03-corrente",
+        "asset_name": "esteira-03",
+        "sensor_name": "sensor-corrente-01",
+        "signal_type": "current",
+        "unit": "ampere",
         "data": [
             {
                 "timestamp": "2026-06-27T12:00:00",
@@ -127,7 +139,10 @@ def test_delete_time_series():
 
 def test_forecast_time_series():
     payload = {
-        "name": "motor-linear-trend",
+        "asset_name": "motor-linear-trend",
+        "sensor_name": "sensor-vibracao-02",
+        "signal_type": "vibration",
+        "unit": "mm/s",
         "data": [
             {
                 "timestamp": "2026-06-27T12:00:00",
@@ -167,3 +182,54 @@ def test_forecast_time_series():
 
     assert body["forecast"][1]["step"] == 2
     assert body["forecast"][1]["predicted_value"] == 50.0
+    
+def test_append_points_to_time_series():
+    payload = {
+        "asset_name": "compressor-01",
+        "sensor_name": "sensor-vibracao-03",
+        "signal_type": "vibration",
+        "unit": "mm/s",
+        "data": [
+            {
+                "timestamp": "2026-06-27T12:00:00",
+                "value": 1.0,
+            }
+        ],
+    }
+
+    create_response = client.post("/api/v1/time-series", json=payload)
+
+    assert create_response.status_code == 201
+
+    series_id = create_response.json()["id"]
+
+    append_payload = {
+        "data": [
+            {
+                "timestamp": "2026-06-27T12:00:01",
+                "value": 1.5,
+            },
+            {
+                "timestamp": "2026-06-27T12:00:02",
+                "value": 2.0,
+            },
+        ]
+    }
+
+    append_response = client.post(
+        f"/api/v1/time-series/{series_id}/points",
+        json=append_payload,
+    )
+
+    assert append_response.status_code == 201
+
+    append_body = append_response.json()
+
+    assert append_body["series_id"] == series_id
+    assert append_body["inserted_points"] == 2
+    assert append_body["message"] == "Points appended successfully"
+
+    get_response = client.get(f"/api/v1/time-series/{series_id}")
+
+    assert get_response.status_code == 200
+    assert len(get_response.json()["data"]) == 3
