@@ -23,7 +23,7 @@ import timeIcon from '../assets/imgs/icons/intervalo_amostras.svg';
 const MachineDashboard = () => {
     const dispatch = useDispatch<AppDispatch>();
 
-    const machine = useLocation().state as Machine;
+    const machine = useLocation().state as Machine | null;
 
     const navigate = useNavigate();
 
@@ -31,8 +31,15 @@ const MachineDashboard = () => {
     const series = useSelector((state: RootState) => state.telemetry.series);
 
     useEffect(() => {
+        if (!machine) {
+            navigate('/', { replace: true });
+            return;
+        }
+
         dispatch(fetchTelemetry());
     }, []);
+
+    if (!machine) return null;
 
     return (
         <Box>
