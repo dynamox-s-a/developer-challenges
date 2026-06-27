@@ -123,3 +123,47 @@ def test_delete_time_series():
     get_response = client.get(f"/api/v1/time-series/{series_id}")
 
     assert get_response.status_code == 404
+
+
+def test_forecast_time_series():
+    payload = {
+        "name": "motor-linear-trend",
+        "data": [
+            {
+                "timestamp": "2026-06-27T12:00:00",
+                "value": 10.0,
+            },
+            {
+                "timestamp": "2026-06-27T12:00:01",
+                "value": 20.0,
+            },
+            {
+                "timestamp": "2026-06-27T12:00:02",
+                "value": 30.0,
+            },
+        ],
+    }
+
+    create_response = client.post("/api/v1/time-series", json=payload)
+
+    assert create_response.status_code == 201
+
+    series_id = create_response.json()["id"]
+
+    forecast_response = client.get(
+        f"/api/v1/time-series/{series_id}/forecast?steps=2"
+    )
+
+    assert forecast_response.status_code == 200
+
+    body = forecast_response.json()
+
+    assert body["series_id"] == series_id
+    assert body["steps"] == 2
+    assert len(body["forecast"]) == 2
+
+    assert body["forecast"][0]["step"] == 1
+    assert body["forecast"][0]["predicted_value"] == 40.0
+
+    assert body["forecast"][1]["step"] == 2
+    assert body["forecast"][1]["predicted_value"] == 50.0

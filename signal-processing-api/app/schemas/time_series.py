@@ -49,3 +49,13 @@ class TimeSeriesMetricsResponse(BaseModel):
     mean: float
     median: float
     std: float | None
+    
+class ForecastPointResponse(BaseModel):
+    step: int
+    predicted_value: float
+
+
+class TimeSeriesForecastResponse(BaseModel):
+    series_id: UUID
+    steps: int
+    forecast: list[ForecastPointResponse]

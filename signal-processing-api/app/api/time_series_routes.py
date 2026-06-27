@@ -11,6 +11,7 @@ from app.schemas.time_series import (
     TimeSeriesMetricsResponse,
     TimeSeriesResponse,
     TimeSeriesSummaryResponse,
+    TimeSeriesForecastResponse,
 )
 from app.services.time_series_service import TimeSeriesService
 
@@ -57,6 +58,18 @@ def count_time_series(
     service: TimeSeriesService = Depends(get_service),
 ):
     return TimeSeriesCountResponse(count=service.count())
+
+
+@router.get(
+    "/{series_id}/forecast",
+    response_model=TimeSeriesForecastResponse,
+)
+def forecast_time_series(
+    series_id: UUID,
+    steps: int = 5,
+    service: TimeSeriesService = Depends(get_service),
+):
+    return service.forecast(series_id, steps)
 
 
 @router.get(
