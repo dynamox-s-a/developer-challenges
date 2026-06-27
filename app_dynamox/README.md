@@ -64,16 +64,14 @@ src/
 └── theme/                # Tema Material UI
 ```
 
-Os dados são buscados via `json-server` ao acessar a rota `/data`, armazenados no Redux e transformados em 3 grupos (aceleração, velocidade e temperatura) antes de serem passados aos gráficos Highcharts.
-
 ## Como os dados dos gráficos são carregados
 
-O dataset é composto por 7 séries temporais:
+O `db.json` é estruturado como um objeto com as chaves `machines` e `telemetry`, o que permite ao `json-server` expor os endpoints `/machines` e `/telemetry` diretamente.
+
+Ao acessar `/`, a lista de máquinas é buscada em `/machines` e exibida. Ao selecionar uma máquina e navegar para `/data`, os dados de telemetria são buscados em `/telemetry` em uma única requisição e armazenados no Redux. A função `groupByMetric` então os agrupa em 3 conjuntos a partir das 7 séries temporais disponíveis:
 
 - `accelerationRms/x`, `accelerationRms/y`, `accelerationRms/z` — aceleração nos 3 eixos
 - `velocityRms/x`, `velocityRms/y`, `velocityRms/z` — velocidade nos 3 eixos
 - `temperature` — temperatura
 
-O `db.json` é estruturado como um objeto com as chaves `machines` e `telemetry`, o que permite ao `json-server` expor os endpoints `/machines` e `/telemetry` diretamente.
-
-Ao acessar `/`, a lista de máquinas é buscada em `/machines` e exibida. Ao selecionar uma máquina e navegar para `/data`, os dados de telemetria são buscados em `/telemetry` em uma única requisição, armazenados no Redux e transformados pela função `groupByMetric` em 3 grupos — aceleração, velocidade e temperatura — que são passados individualmente a cada gráfico.
+Cada grupo é passado individualmente a um gráfico Highcharts.
