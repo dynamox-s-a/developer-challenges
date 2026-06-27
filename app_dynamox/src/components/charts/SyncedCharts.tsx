@@ -26,13 +26,16 @@ const SyncedCharts = ({ groups }: Props) => {
             Highcharts.charts.forEach((chart) => {
                 if (!chart) return;
 
+                // Converts the DOM event to Highcharts internal coordinates
                 const event = chart.pointer.normalize(e);
 
+                // Finds the closest point to the cursor on each series
                 const points = chart.series.map((serie) => serie.searchPoint(event, true))
                     .filter((point): point is Highcharts.Point => point !== undefined);
 
                 if (points.length === 0) return;
 
+                // Prevents Highcharts from clearing hover state on charts the cursor isn't directly over
                 chart.pointer.reset = () => undefined;
                 chart.tooltip.refresh(points);
                 chart.xAxis[0].drawCrosshair(event, points[0]);
@@ -45,6 +48,7 @@ const SyncedCharts = ({ groups }: Props) => {
             Highcharts.charts.forEach((chart) => {
                 if (!chart) return;
 
+                // Restores the original pointer.reset overridden in syncCrosshairs
                 delete (chart.pointer as any).reset;
 
                 chart.tooltip.hide();
