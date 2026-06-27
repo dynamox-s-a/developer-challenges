@@ -15,6 +15,8 @@ Dashboard de análise de dados de sensores de vibração, desenvolvido como part
 - Node.js 18+
 - npm
 
+> Todos os comandos abaixo devem ser executados dentro da pasta `app_dynamox`.
+
 ## Instalação
 
 ```bash
