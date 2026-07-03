@@ -1,0 +1,31 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: signal-db
+    environment:
+      POSTGRES_DB: signal_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d signal_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: .
+    container_name: signal-api
+    environment:
+      DATABASE_URL: postgresql+psycopg2://postgres:postgres@postgres:5432/signal_db
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
