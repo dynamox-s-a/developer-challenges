@@ -1,0 +1,25 @@
+{
+  "name": "DynaUI",
+  "version": "0.1.0",
+  "summary": "SwiftUI components for the DynaUI Design System.",
+  "description": "A lightweight Design System built with reusable SwiftUI components.",
+  "homepage": "https://github.com/kiyo92/DynaUI",
+  "license": {
+    "type": "MIT"
+  },
+  "authors": "João Marcus",
+  "source": {
+    "git": "https://github.com/kiyo92/DynaUI.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "26.0"
+  },
+  "swift_versions": [
+    "5.9",
+    "6.0"
+  ],
+  "source_files": "Sources/**/*.swift",
+  "frameworks": "SwiftUI",
+  "swift_version": "6.0"
+}
