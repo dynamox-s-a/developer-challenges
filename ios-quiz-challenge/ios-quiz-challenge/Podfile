@@ -1,14 +1,15 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+# platform :ios, '18.0'
 
 target 'ios-quiz-challenge' do
   # Comment the next line if you don't want to use dynamic frameworks
-  use_frameworks!
+  use_frameworks! :linkage => :static
 
   # Pods for ios-quiz-challenge
 
   pod 'DynaUI', :path => 'DynaUI'
-  #pod 'dNetwork', :path => 'dNetwork'
+  pod 'dNetwork', :path => 'dNetwork'
+  pod 'dDependencies', :path => 'dDependencies'
 
   target 'ios-quiz-challengeTests' do
     inherit! :search_paths

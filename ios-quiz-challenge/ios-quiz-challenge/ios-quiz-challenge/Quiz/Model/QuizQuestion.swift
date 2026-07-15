@@ -7,28 +7,6 @@
 
 import Foundation
 
-struct QuizQuestion: Identifiable, Equatable {
-    let id: UUID
-    let number: Int
-    let title: String
-    let imageName: String
-    let options: [QuizOption]
-
-    init(
-        id: UUID = UUID(),
-        number: Int,
-        title: String,
-        imageName: String,
-        options: [QuizOption]
-    ) {
-        self.id = id
-        self.number = number
-        self.title = title
-        self.imageName = imageName
-        self.options = options
-    }
-}
-
 struct QuizOption: Identifiable, Equatable {
     let id: UUID
     let title: String
@@ -40,4 +18,12 @@ struct QuizOption: Identifiable, Equatable {
         self.id = id
         self.title = title
     }
+}
+
+struct QuizQuestion: Identifiable, Equatable {
+    let id: String
+    let number: Int
+    let title: String
+    let imageName: String?
+    let options: [QuizOption]
 }

@@ -9,24 +9,10 @@ import SwiftUI
 import DynaUI
 
 struct QuizOptionsPanel: View {
-    
-    enum Constants {
-        static let rootTrailingPadding: CGFloat = 8
-        static let rootBottomPadding: CGFloat = 8
-        
-        static let optionsCardShadowViewCornerRadius: CGFloat = 21
-        static let optionsCardShadowViewBorderSize: CGFloat = 2
-        static let optionsCardShadowViewInitialOffset: CGFloat = 500
-        static let optionsCardShadowViewFinalOffset: CGFloat = 8
-        static let optionsCardShadowViewVerticalOffset: CGFloat = 8
-        
-        static let optionsSpacing: CGFloat = 6
-        static let purpleOptionsCardVerticalPadding: CGFloat = 16
-        static let purpleOptionsCardHorizontalPadding: CGFloat = 8
-        static let purpleOptionsCardCornerRadius: CGFloat = 21
-        static let purpleOptionsCardInitialOffset: CGFloat = -500
+    private enum Constants {
+        static let optionInitialScale: CGFloat = 0.62
     }
-    
+
     let options: [QuizOption]
 
     @Binding var selectedOptionID: QuizOption.ID?
@@ -34,78 +20,50 @@ struct QuizOptionsPanel: View {
     let showPinkShadow: Bool
     let showPurpleCard: Bool
     let visibleOptionCount: Int
+
     let onAnswer: (QuizOption) -> Void
 
     var body: some View {
-        ZStack {
-            optionsCardShadowView
-            purpleOptionsCard
-        }
-        .padding(.trailing, Constants.rootTrailingPadding)
-        .padding(.bottom, Constants.rootBottomPadding)
-    }
-
-    private var optionsCardShadowView: some View {
-        RoundedRectangle(
-            cornerRadius: Constants.optionsCardShadowViewCornerRadius,
-            style: .continuous
-        )
-        .fill(QuizPalette.pink)
-        .overlay {
-            RoundedRectangle(
-                cornerRadius: Constants.optionsCardShadowViewCornerRadius,
-                style: .continuous
-            )
-            .stroke(Color.black, lineWidth: Constants.optionsCardShadowViewBorderSize)
-        }
-        .offset(
-            x: showPinkShadow
-                ? Constants.optionsCardShadowViewFinalOffset
-                : Constants.optionsCardShadowViewInitialOffset,
-            y: Constants.optionsCardShadowViewVerticalOffset
-        )
-        .opacity(showPinkShadow ? 1 : .zero)
-    }
-
-    private var purpleOptionsCard: some View {
-        VStack(spacing: Constants.optionsSpacing) {
+        DynaPanel(
+            layout: .vertical,
+            style: .default,
+            motion: .opposingHorizontal(
+                distance: 500
+            ),
+            isPanelVisible: showPurpleCard,
+            isShadowVisible: showPinkShadow,
+        ) {
             ForEach(
                 Array(options.enumerated()),
                 id: \.element.id
             ) { index, option in
-                let isVisible = index < visibleOptionCount
-
-                DynaOptionButton(
-                    option.title,
-                    state: buttonState(for: option),
-                    isEnabled: isVisible
-                ) {
-                    select(option)
-                }
-                .opacity(isVisible ? 1 : .zero)
-                .scaleEffect(isVisible ? 1 : 0.62)
+                optionButton(
+                    option,
+                    at: index
+                )
             }
         }
-        .padding(.vertical, Constants.purpleOptionsCardVerticalPadding)
-        .padding(.horizontal, Constants.purpleOptionsCardHorizontalPadding)
-        .background {
-            RoundedRectangle(
-                cornerRadius: Constants.purpleOptionsCardCornerRadius,
-                style: .continuous
-            )
-            .fill(QuizPalette.purple)
+    }
+
+    private func optionButton(
+        _ option: QuizOption,
+        at index: Int
+    ) -> some View {
+        let isVisible = index < visibleOptionCount
+
+        return DynaOptionButton(
+            option.title,
+            state: buttonState(for: option),
+            isEnabled: isVisible
+        ) {
+            select(option)
         }
-        .overlay {
-            RoundedRectangle(
-                cornerRadius: Constants.purpleOptionsCardCornerRadius,
-                style: .continuous
-            )
-            .stroke(Color.black, lineWidth: 2)
-        }
-        .offset(x: showPurpleCard
-                ? .zero
-                : Constants.purpleOptionsCardInitialOffset)
-        .opacity(showPurpleCard ? 1 : .zero)
+        .opacity(isVisible ? 1 : 0)
+        .scaleEffect(
+            isVisible
+                ? 1
+                : Constants.optionInitialScale
+        )
     }
 
     private func buttonState(
@@ -116,7 +74,9 @@ struct QuizOptionsPanel: View {
             : .idle
     }
 
-    private func select(_ option: QuizOption) {
+    private func select(
+        _ option: QuizOption
+    ) {
         withAnimation(
             .spring(
                 response: 0.3,
@@ -131,6 +91,26 @@ struct QuizOptionsPanel: View {
     }
 }
 
+private extension DynaPanelStyle {
+    static let quizOptions = DynaPanelStyle(
+        backgroundColor: QuizPalette.purple,
+        shadowColor: QuizPalette.pink,
+        borderColor: .black,
+        borderWidth: 2,
+        cornerRadius: 21,
+        shadowOffset: CGSize(
+            width: 8,
+            height: 8
+        ),
+        contentInsets: EdgeInsets(
+            top: 16,
+            leading: 8,
+            bottom: 16,
+            trailing: 8
+        ),
+        itemSpacing: 6
+    )
+}
 
 #Preview {
     @Previewable @State var selectedOptionID: QuizOption.ID?
@@ -150,4 +130,5 @@ struct QuizOptionsPanel: View {
             
         }
     }
+    .frame(height: .zero)
 }

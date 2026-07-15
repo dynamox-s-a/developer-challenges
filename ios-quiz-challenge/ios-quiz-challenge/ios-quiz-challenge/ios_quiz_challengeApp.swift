@@ -10,9 +10,19 @@ import SwiftData
 
 @main
 struct ios_quiz_challengeApp: App {
+    
+    init() {
+        AppDependenciesConfigurator.configure()
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            QuizConfigurator.make(
+                questionNumber: 1,
+                totalQuestions: 10,
+                score: 120,
+                remainingSeconds: 5
+            )
         }
     }
 }

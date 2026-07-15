@@ -1,0 +1,25 @@
+{
+  "name": "dDependencies",
+  "module_name": "dDependencies",
+  "version": "0.1.0",
+  "summary": "Lightweight dependency injection for modular apps.",
+  "description": "A small type-based dependency container with property wrapper support.",
+  "homepage": "https://github.com/kiyo92/dDependencies",
+  "license": {
+    "type": "MIT"
+  },
+  "authors": "João Marcus",
+  "source": {
+    "git": "https://github.com/kiyo92/dDependencies.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "26.0"
+  },
+  "swift_versions": [
+    "5.9",
+    "6.0"
+  ],
+  "source_files": "Sources/**/*.swift",
+  "swift_version": "6.0"
+}
