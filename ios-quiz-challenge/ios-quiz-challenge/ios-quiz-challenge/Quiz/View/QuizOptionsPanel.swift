@@ -14,8 +14,8 @@ struct QuizOptionsPanel: View {
     }
     
     let options: [QuizOption]
-    
-    @Binding var selectedOptionID: QuizOption.ID?
+
+    let selectedOptionID: QuizOption.ID?
     let answerResult: Bool?
     let isAnswering: Bool
     
@@ -80,21 +80,6 @@ struct QuizOptionsPanel: View {
         : .incorrect
     }
     
-    private func select(
-        _ option: QuizOption
-    ) {
-        withAnimation(
-            .spring(
-                response: 0.3,
-                dampingFraction: 0.7,
-                blendDuration: 0
-            )
-        ) {
-            selectedOptionID = option.id
-        }
-        
-        onAnswer(option)
-    }
 }
 
 private extension DynaPanelStyle {
@@ -119,7 +104,6 @@ private extension DynaPanelStyle {
 }
 
 #Preview {
-    @Previewable @State var selectedOptionID: QuizOption.ID?
     VStack {
         QuizOptionsPanel(
             options: [
@@ -128,7 +112,7 @@ private extension DynaPanelStyle {
                 .init(title: "Option 3"),
                 .init(title: "Option 4")
             ],
-            selectedOptionID: $selectedOptionID,
+            selectedOptionID: nil,
             answerResult: true,
             isAnswering: false,
             showPinkShadow: true,

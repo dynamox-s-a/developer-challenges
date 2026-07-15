@@ -31,7 +31,7 @@ final class QuizService: QuizServiceProtocol {
     
     func fetchQuestion() async throws -> QuizQuestionDTO {
         let request = NetworkRequest(
-            path: "",
+            path: "question",
             method: .get
         )
         

@@ -11,7 +11,7 @@ struct QuizContentView: View {
     let question: QuizQuestion
     let totalQuestions: Int
 
-    @Binding var selectedOptionID: QuizOption.ID?
+    let selectedOptionID: QuizOption.ID?
 
     let answerResult: Bool?
     let isAnswering: Bool
@@ -94,7 +94,7 @@ private extension QuizContentView {
     var optionsPanel: some View {
         QuizOptionsPanel(
             options: question.options,
-            selectedOptionID: $selectedOptionID,
+            selectedOptionID: selectedOptionID,
             answerResult: answerResult,
             isAnswering: isAnswering,
             showPinkShadow: showPinkShadow,
@@ -197,7 +197,6 @@ private extension QuizContentView {
             showPinkShadow = false
             showPurpleCard = false
             visibleOptionCount = .zero
-            selectedOptionID = nil
         }
     }
 

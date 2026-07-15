@@ -98,9 +98,6 @@ struct QuizView: View {
     let totalQuestions: Int
     let remainingSeconds: Int
 
-    @State
-    private var selectedOptionID: QuizOption.ID?
-
     init(
         state: QuizViewState,
         interactor: any QuizInteracting,
@@ -134,9 +131,6 @@ struct QuizView: View {
         .task {
             await interactor.loadQuestion()
         }
-        .onChange(of: state.question?.id) { _ in
-            selectedOptionID = nil
-        }
     }
 }
 
@@ -159,7 +153,7 @@ private extension QuizView {
         QuizContentView(
             question: question,
             totalQuestions: totalQuestions,
-            selectedOptionID: $selectedOptionID,
+            selectedOptionID: state.selectedOptionID,
             answerResult: state.answerResult,
             isAnswering: state.isAnswering,
             onAnswer: handleAnswer
@@ -211,7 +205,6 @@ private extension QuizView {
     }
 
     func handleAnswer( _ option: QuizOption) {
-        selectedOptionID = option.id
         Task {
             await interactor.selectAnswer(option)
         }
@@ -223,6 +216,7 @@ private extension QuizView {
         questionNumber: 1,
         totalQuestions: 10,
         remainingSeconds: 5,
-        onClose: {}
+        onClose: {},
+        onFinish: { _ in }
     )
 }
