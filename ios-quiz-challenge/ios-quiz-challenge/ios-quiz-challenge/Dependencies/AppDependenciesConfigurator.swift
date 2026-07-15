@@ -13,6 +13,7 @@ enum AppDependenciesConfigurator {
 
     static func configure() {
         registerNetworkClient()
+        registerPlayerRepository()
     }
 
     private static func registerNetworkClient() {
@@ -25,23 +26,30 @@ enum AppDependenciesConfigurator {
         let configuration = NetworkConfiguration(
             baseURL: baseURL,
             defaultHeaders: [
-                "Accept": "application/json"
+                "Accept": "application/json",
+                "Content-Type": "application/json"
             ],
             timeoutInterval: 30
         )
 
-        let networkClient: NetworkClient =
-            URLSessionNetworkClient(
-                configuration: configuration
-            ) {
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                return decoder
-            }
+        let networkClient: NetworkClient = URLSessionNetworkClient(configuration: configuration) {
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            return decoder
+        }
 
         Dependencies.register(
             networkClient,
             as: NetworkClient.self
+        )
+    }
+    
+    private static func registerPlayerRepository() {
+        let repository: PlayerRepository = UserDefaultsPlayerRepository()
+
+        Dependencies.register(
+            repository,
+            as: PlayerRepository.self
         )
     }
 }

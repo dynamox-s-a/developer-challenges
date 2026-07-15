@@ -12,17 +12,19 @@ struct QuizOptionsPanel: View {
     private enum Constants {
         static let optionInitialScale: CGFloat = 0.62
     }
-
+    
     let options: [QuizOption]
-
+    
     @Binding var selectedOptionID: QuizOption.ID?
-
+    let answerResult: Bool?
+    let isAnswering: Bool
+    
     let showPinkShadow: Bool
     let showPurpleCard: Bool
     let visibleOptionCount: Int
-
+    
     let onAnswer: (QuizOption) -> Void
-
+    
     var body: some View {
         DynaPanel(
             layout: .vertical,
@@ -44,36 +46,40 @@ struct QuizOptionsPanel: View {
             }
         }
     }
-
+    
     private func optionButton(
         _ option: QuizOption,
         at index: Int
     ) -> some View {
         let isVisible = index < visibleOptionCount
-
+        
         return DynaOptionButton(
             option.title,
             state: buttonState(for: option),
             isEnabled: isVisible
+            && !isAnswering
+            && answerResult == nil
         ) {
-            select(option)
+            onAnswer(option)
         }
-        .opacity(isVisible ? 1 : 0)
-        .scaleEffect(
-            isVisible
-                ? 1
-                : Constants.optionInitialScale
-        )
+        .opacity(isVisible ? 1 : .zero)
+        .scaleEffect(isVisible ? 1 : 0.62)
     }
-
-    private func buttonState(
-        for option: QuizOption
-    ) -> DynaOptionButton.State {
-        selectedOptionID == option.id
-            ? .selected
-            : .idle
+    
+    private func buttonState(for option: QuizOption) -> DynaOptionButton.State {
+        guard selectedOptionID == option.id else {
+            return .idle
+        }
+        
+        guard let answerResult else {
+            return .selected
+        }
+        
+        return answerResult
+        ? .correct
+        : .incorrect
     }
-
+    
     private func select(
         _ option: QuizOption
     ) {
@@ -86,7 +92,7 @@ struct QuizOptionsPanel: View {
         ) {
             selectedOptionID = option.id
         }
-
+        
         onAnswer(option)
     }
 }
@@ -123,6 +129,8 @@ private extension DynaPanelStyle {
                 .init(title: "Option 4")
             ],
             selectedOptionID: $selectedOptionID,
+            answerResult: true,
+            isAnswering: false,
             showPinkShadow: true,
             showPurpleCard: true,
             visibleOptionCount: 4

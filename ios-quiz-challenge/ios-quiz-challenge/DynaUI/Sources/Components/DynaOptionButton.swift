@@ -50,7 +50,6 @@ public struct DynaOptionButton: View {
             )
         )
         .disabled(!isEnabled)
-        .opacity(isEnabled ? 1 : 0.45)
         .accessibilityLabel(title)
         .accessibilityAddTraits(
             state == .selected ? .isSelected : []

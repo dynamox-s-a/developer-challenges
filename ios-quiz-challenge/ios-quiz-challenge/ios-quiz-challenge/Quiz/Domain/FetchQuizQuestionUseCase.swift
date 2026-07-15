@@ -8,23 +8,18 @@
 import Foundation
 
 protocol FetchQuizQuestionUseCaseProtocol {
-    func execute() async throws -> QuizQuestion
+    func execute(questionNumber: Int) async throws -> QuizQuestion
 }
 
 final class FetchQuizQuestionUseCase: FetchQuizQuestionUseCaseProtocol {
 
     private let service: QuizServiceProtocol
-    private let questionNumber: Int
 
-    init(
-        service: QuizServiceProtocol,
-        questionNumber: Int
-    ) {
+    init(service: QuizServiceProtocol) {
         self.service = service
-        self.questionNumber = questionNumber
     }
 
-    func execute() async throws -> QuizQuestion {
+    func execute(questionNumber: Int) async throws -> QuizQuestion {
         let dto = try await service.fetchQuestion()
 
         return QuizQuestion(

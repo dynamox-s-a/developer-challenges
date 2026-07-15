@@ -29,31 +29,61 @@ enum QuizPalette {
 protocol QuizDisplaying: AnyObject {
     func displayLoading()
     func display(question: QuizQuestion)
+    func display(score: Int)
+    func displayAnswering(optionID: QuizOption.ID)
+    func displayAnswerResult(isCorrect: Bool)
     func display(errorMessage: String)
+    func displayAnswerError(message: String)
 }
 
 @MainActor
 final class QuizViewState: ObservableObject, QuizDisplaying {
 
     @Published private(set) var question: QuizQuestion?
+    @Published private(set) var selectedOptionID: QuizOption.ID?
+    @Published private(set) var score = 0
     @Published private(set) var isLoading = false
+    @Published private(set) var isAnswering = false
+    @Published private(set) var answerResult: Bool?
     @Published private(set) var errorMessage: String?
+    @Published private(set) var answerErrorMessage: String?
 
     func displayLoading() {
         isLoading = true
         errorMessage = nil
+        question = nil
     }
-
+    
     func display(question: QuizQuestion) {
         self.question = question
-        isLoading = false
-        errorMessage = nil
+        selectedOptionID = nil
+        answerResult = nil
+        isAnswering = false
     }
-
+    
+    func display(score: Int) {
+        self.score = score
+    }
+    
+    func displayAnswering(optionID: QuizOption.ID) {
+        selectedOptionID = optionID
+        answerResult = nil
+        isAnswering = true
+    }
+    
+    func displayAnswerResult(isCorrect: Bool) {
+        answerResult = isCorrect
+        isAnswering = false
+    }
+    
     func display(errorMessage: String) {
         question = nil
         isLoading = false
         self.errorMessage = errorMessage
+    }
+    
+    func displayAnswerError( message: String) {
+        answerErrorMessage = message
     }
 }
 
@@ -66,7 +96,6 @@ struct QuizView: View {
     private let interactor: any QuizInteracting
 
     let totalQuestions: Int
-    let score: Int
     let remainingSeconds: Int
 
     @State
@@ -76,7 +105,6 @@ struct QuizView: View {
         state: QuizViewState,
         interactor: any QuizInteracting,
         totalQuestions: Int,
-        score: Int,
         remainingSeconds: Int
     ) {
         _state = StateObject(
@@ -85,7 +113,6 @@ struct QuizView: View {
 
         self.interactor = interactor
         self.totalQuestions = totalQuestions
-        self.score = score
         self.remainingSeconds = remainingSeconds
     }
 
@@ -93,7 +120,7 @@ struct QuizView: View {
         ZStack {
             VStack(spacing: .zero) {
                 QuizFixedHeader(
-                    score: score,
+                    score: state.score,
                     remainingSeconds: remainingSeconds,
                     onClose: {
                         interactor.close()
@@ -127,12 +154,14 @@ private extension QuizView {
             loadingContent
         }
     }
-
+    
     func questionContent(_ question: QuizQuestion) -> some View {
         QuizContentView(
             question: question,
             totalQuestions: totalQuestions,
             selectedOptionID: $selectedOptionID,
+            answerResult: state.answerResult,
+            isAnswering: state.isAnswering,
             onAnswer: handleAnswer
         )
     }
@@ -183,7 +212,9 @@ private extension QuizView {
 
     func handleAnswer( _ option: QuizOption) {
         selectedOptionID = option.id
-        interactor.selectAnswer(option)
+        Task {
+            await interactor.selectAnswer(option)
+        }
     }
 }
 
@@ -191,7 +222,7 @@ private extension QuizView {
     QuizConfigurator.make(
         questionNumber: 1,
         totalQuestions: 10,
-        score: 120,
-        remainingSeconds: 5
+        remainingSeconds: 5,
+        onClose: {}
     )
 }

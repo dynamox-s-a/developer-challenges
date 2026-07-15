@@ -32,18 +32,16 @@ class QuizConfigurator {
         dependencies: Dependencies = .init(),
         questionNumber: Int = 1,
         totalQuestions: Int = 1,
-        score: Int = 0,
-        remainingSeconds: Int = 5
+        remainingSeconds: Int = 5,
+        onClose: @escaping () -> Void,
+        onFinish: @escaping (Int) -> Void
     ) -> QuizView {
         let service = QuizService(
             networkClient: dependencies.networkClient
         )
 
-        let fetchQuestionUseCase =
-            FetchQuizQuestionUseCase(
-                service: service,
-                questionNumber: questionNumber
-            )
+        let fetchQuestionUseCase = FetchQuizQuestionUseCase(service: service)
+        let answerQuestionUseCase = AnswerQuizQuestionUseCase(service: service)
 
         let viewState = QuizViewState()
 
@@ -51,21 +49,22 @@ class QuizConfigurator {
             view: viewState
         )
 
-        let router = QuizRouter()
+        let router = QuizRouter(onClose: onClose, onFinish: onFinish)
 
         let interactor = QuizInteractor(
             useCases: .init(
-                fetchQuestion: fetchQuestionUseCase
+                fetchQuestion: fetchQuestionUseCase,
+                answerQuestion: answerQuestionUseCase
             ),
             presenter: presenter,
-            router: router
+            router: router,
+            totalQuestions: totalQuestions
         )
 
         return QuizView(
             state: viewState,
             interactor: interactor,
             totalQuestions: totalQuestions,
-            score: score,
             remainingSeconds: remainingSeconds
         )
     }

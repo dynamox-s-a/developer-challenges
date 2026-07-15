@@ -11,44 +11,60 @@ import Foundation
 protocol QuizPresenting: AnyObject {
     func presentLoading()
     func present(question: QuizQuestion)
+    func present(score: Int)
+    func presentAnswering(optionID: QuizOption.ID)
+    func presentAnswerResult(isCorrect: Bool)
     func present(error: Error)
+    func presentAnswerError(_ error: Error)
 }
 
 @MainActor
 final class QuizPresenter: QuizPresenting {
-
+    
     private weak var view: QuizDisplaying?
-
+    
     init(view: QuizDisplaying) {
         self.view = view
     }
-
+    
     func presentLoading() {
         view?.displayLoading()
     }
-
+    
     func present(question: QuizQuestion) {
-        let formattedQuestion = format(question)
-
         view?.display(
-            question: formattedQuestion
+            question: format(question)
         )
     }
-
+    
+    func present(score: Int) {
+        view?.display(score: score)
+    }
+    
+    func presentAnswering(optionID: QuizOption.ID) {
+        view?.displayAnswering(optionID: optionID)
+    }
+    
+    func presentAnswerResult(isCorrect: Bool) {
+        view?.displayAnswerResult(isCorrect: isCorrect)
+    }
+    
     func present(error: Error) {
-        let message = format(error)
-
         view?.display(
-            errorMessage: message
+            errorMessage: error.localizedDescription
+        )
+    }
+    
+    func presentAnswerError( _ error: Error) {
+        view?.displayAnswerError(
+            message: error.localizedDescription
         )
     }
 }
 
 private extension QuizPresenter {
-
-    func format(
-        _ question: QuizQuestion
-    ) -> QuizQuestion {
+    
+    func format(_ question: QuizQuestion) -> QuizQuestion {
         QuizQuestion(
             id: question.id,
             number: question.number,
@@ -62,18 +78,10 @@ private extension QuizPresenter {
             }
         )
     }
-
-    func format(
-        _ text: String
-    ) -> String {
+    
+    func format(_ text: String) -> String {
         text.trimmingCharacters(
             in: .whitespacesAndNewlines
         )
-    }
-
-    func format(
-        _ error: Error
-    ) -> String {
-        error.localizedDescription
     }
 }

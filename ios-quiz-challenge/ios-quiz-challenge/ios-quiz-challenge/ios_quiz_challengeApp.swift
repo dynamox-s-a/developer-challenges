@@ -14,15 +14,10 @@ struct ios_quiz_challengeApp: App {
     init() {
         AppDependenciesConfigurator.configure()
     }
-    
+
     var body: some Scene {
         WindowGroup {
-            QuizConfigurator.make(
-                questionNumber: 1,
-                totalQuestions: 10,
-                score: 120,
-                remainingSeconds: 5
-            )
+            AppFlowView()
         }
     }
 }
