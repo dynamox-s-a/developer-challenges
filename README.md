@@ -1,55 +1,70 @@
-# Dynamox Developer Challenges
+# Desafio de Desenvolvedor Front-end da Dynamox
 
-## About Dynamox
+A equipe de desenvolvimento front-end da Dynamox apresenta o seguinte desafio:
 
-[Dynamox](https://dynamox.net/) is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications. 
+**Utilizando React e TypeScript, desenvolva uma aplicação de dashboard robusta e intuitiva que permita analisar os dados coletados por nossos sensores.**
 
-With our proficiency in signal processing for vibration and acoustics, we deliver advanced and precise monitoring systems. We are committed to optimizing operational efficiency and facilitating proactive maintenance through our innovative technology and integrated solutions.
+---
 
-## Positions
+Lembre-se de que o desafio visa reproduzir um ambiente onde você possa demonstrar suas habilidades.
 
-We are looking for developers who are passionate about learning, growing, and contributing to our team. You will play a key role in our development efforts, working on a variety of projects and collaborating with different teams to build and improve our solutions.
+Para orientar seu processo de desenvolvimento, forneceremos alguns requisitos. Não é obrigatório atender a todos os requisitos para enviar sua implementação. Quanto mais requisitos você implementar, mais elementos teremos para avaliar suas habilidades e conhecimentos.
 
-We value flexibility and collaboration, hence we provide opportunities for you to lend your skills to other teams when required. Join us on this exciting journey as we revolutionize our digital platforms. Currently we are particularly interested in individuals who can identify with one of the following role descriptions:
+Use seu bom senso para priorizar tarefas de acordo com o tempo disponível. Sinta-se à vontade para fazer quaisquer suposições que considere necessárias para concluir a tarefa.
 
-### Junior Software Developer
+## Requisitos Funcionais e Histórias de Usuário
 
-With limited experience, assists in coding, testing, and stabilizing systems under supervision. Communicates with immediate team members and solves straightforward problems with guidance. Should display a willingness to learn and grow professionally. This is an individual contributor role.
+Na indústria de manutenção, a análise de vibração desempenha um papel fundamental: ela utiliza grandezas físicas, como aceleração e velocidade, para identificar indícios que ajudem a prever a ocorrência de falhas ou degradações em máquinas.
 
-### Mid-level Software Developer
+A página que exibe essas informações no DynaPredict, nossa plataforma de monitoramento de condições de ativos, foi projetada de forma muito semelhante a [este modelo no Figma](https://www.figma.com/file/QxUZkTUIzQA7cvyiMvVyxK/Front-end---Teste?type=design&node-id=1001%3A3&mode=design&t=JLnbGmQJcSlnYYE2-1).
 
-With a certain level of proven experience, contributes to software development, solves moderate problems, and starts handling ambiguous situations with minimal guidance. Communicates with the broader team and engages in code reviews and documentation. This role also includes supporting junior engineers and commitment to continuous learning. This is an individual contributor role.
+Utilize o Figma como referência para construir a interface e desenvolver as seguintes histórias de usuário:
 
-### Senior-level Software Developer
+1 - Histórias de Usuário
 
-With vast experience, enhances software development, leading complex system development and ambiguous situation handling. Tackles intricate problems and mentors junior and mid-level engineers. Champions coding standards, project strategy, and technology adoption. Communicates across teams, influencing technical and non-technical stakeholders. This individual contributor role blends technical expertise with leadership, focusing on innovation, mentorship, and strategic contributions to the development process.
+1. [ ] Como usuário, quero acessar a rota `/data` da minha aplicação e visualizar uma tela contendo um cabeçalho com informações sobre a máquina e alguns gráficos de série temporal.
 
-## Challenges Full-Stack
+1. [ ] Como usuário, quero visualizar 3 gráficos de série temporal para as seguintes métricas: aceleração, velocidade e temperatura. Cada série temporal deve apresentar um eixo horizontal para o tempo e um eixo vertical para a magnitude da métrica.
 
-- [ ] [01 - Dynamox Full-Stack Node.js React Developer Challenge](./full-stack-challenge.md)
-- [ ] [02 - Dynamox Full-Stack C# React Developer Challenge](./full-stack-csharp-react-challenge.md) 
-  
-## Challenges Front-End
+1. [ ] Como usuário, quero que os dados que alimentarão esses gráficos sejam buscados sempre que eu acessar a rota `/data`. Utilize os dados disponíveis em [Responses](./response-challenge-v2.json) como _mock_ e use um pacote como o [json-server](https://www.npmjs.com/package/json-server) para criar uma API REST.
 
-- [ ] [01 - Dynamox Front-end React Developer Challenge Marketing Teams](./front-end-challenge-v1.md)
-- [ ] [02 - Dynamox Front-end React Developer Challenge Product Teams](./front-end-challenge-v2.md)
+1. [ ] Como usuário, quero passar o mouse sobre um ponto de um gráfico e ver uma linha de referência vertical (_crosshair_) marcando os _timestamps_ correspondentes em todos os gráficos de séries temporais, acompanhada de um _tooltip_ descrevendo aquele ponto. [Confira](https://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/demo/synchronized-charts) um exemplo dessa funcionalidade.
 
-## Challenges DevOps
+2 - Requisitos técnicos
 
-- [ ] [01 - Dynamox DevOps Developer Challenge Foundation Teams](./dev-sec-fin-ops-challenge-v1/README.md)
+1. [ ] Utilize TypeScript.
+1. [ ] Utilize React.
+1. [ ] Utilize Redux para gerenciar estados globais. [Confira](https://redux-toolkit.js.org/introduction/getting-started) como começar.
+1. [ ] Utilize Redux Saga para lidar com efeitos colaterais assíncronos. [Confira](https://redux-saga.js.org/docs/introduction/GettingStarted) como começar.
+1. [ ] Utilize Vite para o _build_ da aplicação. [Confira](https://vitejs.dev/guide/) como começar.
+1. [ ] Utilize Material UI 5 para estilizar a aplicação. [Confira](https://mui.com/material-ui/getting-started/) como começar.
+1. [ ] Utilize Highcharts, Plotly, D3 ou qualquer biblioteca similar para exibir os gráficos. [Confira](https://www.highcharts.com/docs/index) como começar.
+1. [ ] Garanta a lógica de negócio e o comportamento corretos por meio de testes unitários automatizados.
 
-## Challenges Mobile
+Incentivamos o uso das ferramentas da nossa _stack_ de _frontend_ para que o desafio se assemelhe às nossas tarefas do dia a dia.
 
-- [ ] [01 - Dynamox Kotlin Multiplatform Developer Challenge](./kotlin-multiplatform-challenge.md)
-- [ ] [02 - Dynamox Android Developer Challenge](./android-challenge.md)
-- [ ] [03 - Dynamox iOS Developer Challenge](./ios-challenge.md)
+3 - Bônus
 
-## Challenge Back-End
-- [ ] [01 - Dynamox Back-End Time Series ](./back-end-challenge-v1.md)
+1. [ ] Utilize Storybook para documentação. [Confira](https://storybook.js.org/docs) como começar.
+1. [ ] Adicione testes E2E com Cypress. [Confira](https://learn.cypress.io/) como começar.
+1. [ ] Faça o _deploy_ da sua aplicação em um provedor de nuvem e forneça o link da aplicação em execução. ## Critérios de Avaliação
 
-## Challenge QA
-- [ ] [01- Dynamox QA Challenge](./qa-challenge.md)
+Cada um dos itens acima será avaliado como "Não Implementado", "Implementado com Problemas", "Implementado" ou "Implementado com Excelência". Para avaliar diferentes perfis e experiências, esperamos que candidatos a níveis mais seniores demonstrem uma compreensão mais profunda dos requisitos e implementem uma quantidade maior deles dentro do mesmo prazo.
 
-</br>
+De modo geral, avaliaremos os seguintes pontos:
 
-**Good luck! We look forward to reviewing your submission.** 🚀
+1. [ ] Qualquer pessoa deve conseguir seguir as instruções e executar a aplicação.
+1. [ ] O código do front-end está integrado com sucesso a uma API REST simulada (fake API).
+1. [ ] As histórias foram implementadas de acordo com os requisitos funcionais.
+1. [ ] Habilidades de resolução de problemas e capacidade de lidar com ambiguidades.
+1. [ ] Qualidade, legibilidade e manutenibilidade do código.
+1. [ ] O código está bem organizado e documentado.
+1. [ ] O layout da aplicação é responsivo.
+
+## Pronto para começar os desafios?
+
+- Faça um _fork_ deste repositório para a sua própria conta no GitHub.
+- Crie uma nova _branch_ usando seu primeiro e último nome. Por exemplo: `caroline-oliveira`.
+- Após concluir o desafio, crie um _pull request_ para este repositório (https://github.com/dynamox-s-a/js-ts-full-stack-test) apontando para a _branch_ `main`.
+- Receberemos uma notificação sobre o seu _pull request_, analisaremos sua solução e entraremos em contato com você.
+  <br>
