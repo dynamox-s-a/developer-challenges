@@ -1,0 +1,53 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 3000",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --port 3000",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@fontsource-variable/dm-sans": "^5.2.8",
+    "@fontsource-variable/public-sans": "^5.2.7",
+    "@iconify/react": "^6.0.2",
+    "@mui/material": "^7.3.2",
+    "@mui/x-date-pickers": "^8.12.0",
+    "@orpc/client": "catalog:",
+    "@orpc/contract": "catalog:",
+    "@orpc/openapi-client": "catalog:",
+    "@reduxjs/toolkit": "^2.12.0",
+    "@repo/contracts": "workspace:*",
+    "dayjs": "^1.11.18",
+    "es-toolkit": "^1.39.10",
+    "highcharts": "^12.4.0",
+    "highcharts-react-official": "^3.2.2",
+    "minimal-shared": "^1.1.0",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-redux": "^9.2.0",
+    "react-router": "^7.9.1",
+    "redux-saga": "^1.5.0",
+    "simplebar-react": "^3.3.2"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "^19.1.15",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.2",
+    "jsdom": "^26.1.0",
+    "typescript": "catalog:",
+    "vite": "^7.1.5",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "catalog:"
+  }
+}
