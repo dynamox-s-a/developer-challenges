@@ -1,0 +1,48 @@
+/** **************************************
+* Fonts
+* Só as duas famílias que o tema usa (primary/secondary); as demais opções do
+* kit original ficaram de fora para não carregar fonte que ninguém renderiza.
+*************************************** */
+@import '@fontsource-variable/public-sans';
+@import '@fontsource-variable/dm-sans';
+
+/** **************************************
+* Plugins
+*************************************** */
+@import './components/scrollbar/styles.css';
+
+/** **************************************
+* Baseline
+*************************************** */
+html {
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+body,
+#root {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 100%;
+  flex-direction: column;
+}
+img {
+  max-width: 100%;
+  vertical-align: middle;
+}
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: none;
+}
+input[type='number']::-webkit-outer-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+input[type='number']::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}

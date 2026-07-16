@@ -1,0 +1,33 @@
+{
+  "name": "dynamox-challenge",
+  "private": true,
+  "type": "module",
+  "workspaces": {
+    "packages": ["apps/*", "packages/*"],
+    "catalog": {
+      "@orpc/client": "1.14.8",
+      "@orpc/contract": "1.14.8",
+      "@orpc/openapi": "1.14.8",
+      "@orpc/openapi-client": "1.14.8",
+      "@orpc/react-query": "1.14.8",
+      "@orpc/server": "1.14.8",
+      "@orpc/zod": "1.14.8",
+      "react": "^19.1.1",
+      "react-dom": "^19.1.1",
+      "typescript": "^5.9.2",
+      "vitest": "^3.2.4",
+      "zod": "^4.1.11"
+    }
+  },
+  "scripts": {
+    "dev": "bun run --filter '*' dev",
+    "dev:backend": "bun run --filter backend dev",
+    "dev:frontend": "bun run --filter frontend dev",
+    "build": "bun run --filter frontend build",
+    "test": "bun run --filter '*' test",
+    "typecheck": "bun run --filter '*' typecheck"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  }
+}

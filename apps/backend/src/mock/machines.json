@@ -1,0 +1,47 @@
+[
+  {
+    "id": "MCH-001",
+    "name": "Ventilador de Exaustão 01",
+    "type": "Motor elétrico",
+    "manufacturer": "WEG",
+    "rpm": 1780,
+    "status": "alert",
+    "sensor": {
+      "id": "SNR-8842",
+      "model": "DynaLogger TcAg",
+      "serialNumber": "HF-8842-2023",
+      "position": "Mancal dianteiro"
+    },
+    "lastReadingAt": "2023-12-12T15:02:42.000Z"
+  },
+  {
+    "id": "MCH-002",
+    "name": "Bomba Centrífuga 04",
+    "type": "Bomba",
+    "manufacturer": "KSB",
+    "rpm": 3550,
+    "status": "operational",
+    "sensor": {
+      "id": "SNR-9110",
+      "model": "DynaLogger TcAs",
+      "serialNumber": "HF-9110-2023",
+      "position": "Mancal traseiro"
+    },
+    "lastReadingAt": "2023-12-12T15:02:42.000Z"
+  },
+  {
+    "id": "MCH-003",
+    "name": "Redutor da Esteira 12",
+    "type": "Redutor",
+    "manufacturer": "SEW-Eurodrive",
+    "rpm": 890,
+    "status": "operational",
+    "sensor": {
+      "id": "SNR-7431",
+      "model": "DynaLogger TcAg",
+      "serialNumber": "HF-7431-2023",
+      "position": "Carcaça"
+    },
+    "lastReadingAt": "2023-12-12T15:02:42.000Z"
+  }
+]
