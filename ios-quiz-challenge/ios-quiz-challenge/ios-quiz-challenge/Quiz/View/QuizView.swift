@@ -64,6 +64,7 @@ final class QuizViewState: ObservableObject, QuizDisplaying {
         self.question = question
         selectedOptionID = nil
         answerResult = nil
+        answerErrorMessage = nil
         isAnswering = false
         isLoading = false
     }
@@ -79,6 +80,7 @@ final class QuizViewState: ObservableObject, QuizDisplaying {
     func displayAnswering(optionID: QuizOption.ID) {
         selectedOptionID = optionID
         answerResult = nil
+        answerErrorMessage = nil
         isAnswering = true
     }
     
@@ -93,8 +95,15 @@ final class QuizViewState: ObservableObject, QuizDisplaying {
         self.errorMessage = errorMessage
     }
     
-    func displayAnswerError( message: String) {
+    func displayAnswerError(message: String) {
+        selectedOptionID = nil
+        answerResult = nil
+        isAnswering = false
         answerErrorMessage = message
+    }
+
+    func dismissAnswerError() {
+        answerErrorMessage = nil
     }
 }
 
@@ -133,6 +142,10 @@ struct QuizView: View {
                 )
 
                 content
+            }
+
+            if let answerErrorMessage = state.answerErrorMessage {
+                answerErrorOverlay(message: answerErrorMessage)
             }
         }
         .preferredColorScheme(.light)
@@ -225,6 +238,58 @@ private extension QuizView {
             .padding(.bottom, 8)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    func answerErrorOverlay(message: String) -> some View {
+        ZStack {
+            Color.black
+                .opacity(0.34)
+                .ignoresSafeArea()
+
+            DynaPanel(
+                title: "Ops!",
+                titleFont: .system(size: 18, weight: .black, design: .rounded),
+                titleColor: .white
+            ) {
+                VStack(spacing: 14) {
+                    RaisedCard {
+                        VStack(spacing: 12) {
+                            Image(systemName: "wifi.exclamationmark")
+                                .font(.system(size: 36, weight: .black))
+                                .foregroundStyle(QuizPalette.pink)
+
+                            Text("Não foi possível enviar sua resposta")
+                                .font(.system(size: 17, weight: .black, design: .rounded))
+                                .foregroundStyle(.black)
+                                .multilineTextAlignment(.center)
+
+                            Text(message)
+                                .font(.system(size: 13, weight: .semibold))
+                                .foregroundStyle(.black.opacity(0.58))
+                                .multilineTextAlignment(.center)
+
+                            Text("O tempo está pausado. Escolha uma alternativa para tentar novamente.")
+                                .font(.system(size: 13, weight: .bold))
+                                .foregroundStyle(QuizPalette.purple)
+                                .multilineTextAlignment(.center)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 18)
+                        .padding(.horizontal, 12)
+                    }
+
+                    DynaOptionButton("Escolher novamente") {
+                        withAnimation(.easeOut(duration: 0.18)) {
+                            state.dismissAnswerError()
+                        }
+                    }
+                }
+                .padding(.horizontal, 4)
+            }
+            .padding(.horizontal, 18)
+            .padding(.bottom, 8)
+        }
+        .transition(.opacity)
     }
 
     func handleAnswer( _ option: QuizOption) {

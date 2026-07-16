@@ -93,6 +93,69 @@ struct QuizInteractorTests {
         #expect(router.finishedScores == [120])
     }
 
+    @Test func answerFailurePresentsErrorAndAllowsRetry() async {
+        let question = makeQuestion(number: 1)
+        let fetchQuestion = FetchQuizQuestionUseCaseSpy(
+            result: .success(question)
+        )
+        let answerQuestion = AnswerQuizQuestionUseCaseSpy(
+            result: .failure(TestError.expected)
+        )
+        let presenter = QuizPresenterSpy()
+        let router = QuizRouterSpy()
+        let sut = makeSUT(
+            fetchQuestion: fetchQuestion,
+            answerQuestion: answerQuestion,
+            presenter: presenter,
+            router: router
+        )
+
+        await sut.loadQuestion()
+        await sut.selectAnswer(question.options[0])
+        answerQuestion.result = .success(false)
+        await sut.selectAnswer(question.options[1])
+        let didPresentAnswerError = presenter.events.contains { event in
+            if case .answerError = event {
+                return true
+            }
+
+            return false
+        }
+
+        #expect(answerQuestion.receivedAnswers.count == 2)
+        #expect(answerQuestion.receivedAnswers[0].answer == question.options[0].title)
+        #expect(answerQuestion.receivedAnswers[1].answer == question.options[1].title)
+        #expect(didPresentAnswerError)
+        #expect(presenter.events.contains(.answerResult(false)))
+    }
+
+    @Test func answerFailurePausesTimer() async throws {
+        let question = makeQuestion(number: 1)
+        let fetchQuestion = FetchQuizQuestionUseCaseSpy(
+            result: .success(question)
+        )
+        let answerQuestion = AnswerQuizQuestionUseCaseSpy(
+            result: .failure(TestError.expected)
+        )
+        let presenter = QuizPresenterSpy()
+        let router = QuizRouterSpy()
+        let sut = makeSUT(
+            fetchQuestion: fetchQuestion,
+            answerQuestion: answerQuestion,
+            presenter: presenter,
+            router: router,
+            quizDurationSeconds: 1,
+            timerTickNanoseconds: 1_000_000
+        )
+
+        await sut.loadQuestion()
+        await sut.selectAnswer(question.options[0])
+        try await Task.sleep(nanoseconds: 5_000_000)
+
+        #expect(!presenter.events.contains(.remainingSeconds(0)))
+        #expect(router.finishedScores.isEmpty)
+    }
+
     @Test func quizFinishesWhenTimerReachesZero() async throws {
         let question = makeQuestion(number: 1)
         let fetchQuestion = FetchQuizQuestionUseCaseSpy(

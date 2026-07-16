@@ -107,6 +107,7 @@ final class QuizInteractor: QuizInteracting {
             return
         }
 
+        startTimerIfNeeded()
         isAnswering = true
         presenter.presentAnswering(optionID: option.id)
 
@@ -151,8 +152,8 @@ final class QuizInteractor: QuizInteracting {
             }
 
             presenter.presentAnswerError(error)
-            presenter.presentAnswering(optionID: option.id)
             isAnswering = false
+            pauseTimer()
         }
     }
 
@@ -185,6 +186,11 @@ private extension QuizInteractor {
                 await self?.tickTimer()
             }
         }
+    }
+
+    func pauseTimer() {
+        timerTask?.cancel()
+        timerTask = nil
     }
 
     func tickTimer() {
