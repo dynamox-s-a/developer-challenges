@@ -9,5 +9,6 @@ import Foundation
 
 enum AppRoute: Hashable {
     case quiz(nickname: String)
+    case result(nickname: String, score: Int)
     case ranking(nickname: String)
 }
