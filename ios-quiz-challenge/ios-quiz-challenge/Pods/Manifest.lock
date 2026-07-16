@@ -1,0 +1,26 @@
+PODS:
+  - dDependencies (0.1.0)
+  - dNetwork (0.1.0)
+  - DynaUI (0.1.0)
+
+DEPENDENCIES:
+  - dDependencies (from `dDependencies`)
+  - dNetwork (from `dNetwork`)
+  - DynaUI (from `DynaUI`)
+
+EXTERNAL SOURCES:
+  dDependencies:
+    :path: dDependencies
+  dNetwork:
+    :path: dNetwork
+  DynaUI:
+    :path: DynaUI
+
+SPEC CHECKSUMS:
+  dDependencies: 2fed3f9d22f6d13ac31d468b92163fc5b33ab125
+  dNetwork: 48b8164ccad2c5e87810c5092cae20a37bf69733
+  DynaUI: 4a1a9ecdabc66ae21c9a74e82fa85c327b512427
+
+PODFILE CHECKSUM: 5a23873c6a3d4c3e475b4c1dbb1b22287258e820
+
+COCOAPODS: 1.17.0

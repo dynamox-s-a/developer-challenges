@@ -1,0 +1,26 @@
+{
+  "name": "dNetwork",
+  "module_name": "dNetwork",
+  "version": "0.1.0",
+  "summary": "A lightweight and model-agnostic networking module.",
+  "description": "A reusable networking module based on URLSession,\nasync/await and generic Decodable responses.",
+  "homepage": "https://github.com/kiyo92/dNetwork",
+  "license": {
+    "type": "MIT"
+  },
+  "authors": "João Marcus",
+  "source": {
+    "git": "https://github.com/kiyo92/dNetwork.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "26.0"
+  },
+  "swift_versions": [
+    "5.9",
+    "6.0"
+  ],
+  "source_files": "Sources/**/*.swift",
+  "frameworks": "Foundation",
+  "swift_version": "6.0"
+}

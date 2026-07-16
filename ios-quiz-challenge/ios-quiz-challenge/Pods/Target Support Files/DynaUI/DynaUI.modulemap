@@ -1,0 +1,6 @@
+framework module DynaUI {
+  umbrella header "DynaUI-umbrella.h"
+
+  export *
+  module * { export * }
+}

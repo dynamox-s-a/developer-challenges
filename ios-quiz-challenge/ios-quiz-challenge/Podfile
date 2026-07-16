@@ -1,0 +1,23 @@
+platform :ios, '26.0'
+
+target 'ios-quiz-challenge' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks! :linkage => :static
+
+  # Pods for ios-quiz-challenge
+
+  pod 'DynaUI', :path => 'DynaUI'
+  pod 'dNetwork', :path => 'dNetwork'
+  pod 'dDependencies', :path => 'dDependencies'
+
+  target 'ios-quiz-challengeTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'ios-quiz-challengeUITests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end

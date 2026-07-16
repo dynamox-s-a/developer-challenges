@@ -1,0 +1,6 @@
+framework module dDependencies {
+  umbrella header "dDependencies-umbrella.h"
+
+  export *
+  module * { export * }
+}

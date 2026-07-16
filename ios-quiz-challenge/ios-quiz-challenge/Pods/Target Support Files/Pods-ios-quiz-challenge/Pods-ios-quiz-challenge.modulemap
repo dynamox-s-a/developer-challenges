@@ -1,0 +1,6 @@
+framework module Pods_ios_quiz_challenge {
+  umbrella header "Pods-ios-quiz-challenge-umbrella.h"
+
+  export *
+  module * { export * }
+}
