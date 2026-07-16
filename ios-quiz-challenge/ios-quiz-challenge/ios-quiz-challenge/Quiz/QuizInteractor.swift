@@ -27,24 +27,39 @@ final class QuizInteractor: QuizInteracting {
     private let presenter: any QuizPresenting
     private let router: any QuizRouting
     private let totalQuestions: Int
+    private let answerResultDelayNanoseconds: UInt64
+    private let timerTickNanoseconds: UInt64
 
     private var currentQuestion: QuizQuestion?
     private var currentQuestionNumber = 0
     private var score = 0
+    private var remainingSeconds: Int
 
     private var isLoadingQuestion = false
     private var isAnswering = false
+    private var isFinished = false
+    private var timerTask: Task<Void, Never>?
 
     init(
         useCases: UseCases,
         presenter: any QuizPresenting,
         router: any QuizRouting,
-        totalQuestions: Int
+        totalQuestions: Int,
+        quizDurationSeconds: Int = 120,
+        timerTickNanoseconds: UInt64 = 1_000_000_000,
+        answerResultDelayNanoseconds: UInt64 = 1_000_000_000
     ) {
         self.useCases = useCases
         self.presenter = presenter
         self.router = router
         self.totalQuestions = totalQuestions
+        self.remainingSeconds = quizDurationSeconds
+        self.timerTickNanoseconds = timerTickNanoseconds
+        self.answerResultDelayNanoseconds = answerResultDelayNanoseconds
+    }
+
+    deinit {
+        timerTask?.cancel()
     }
 
     func loadQuestion() async {
@@ -52,17 +67,29 @@ final class QuizInteractor: QuizInteracting {
             return
         }
 
+        startTimerIfNeeded()
+
         do {
             try await fetchNextQuestion(displaysLoading: true)
         } catch {
+            guard !isFinished else {
+                return
+            }
+
             presenter.present(error: error)
         }
     }
 
     func retry() async {
+        startTimerIfNeeded()
+
         do {
             try await fetchNextQuestion(displaysLoading: true)
         } catch {
+            guard !isFinished else {
+                return
+            }
+
             presenter.present(error: error)
         }
     }
@@ -71,6 +98,7 @@ final class QuizInteractor: QuizInteracting {
         guard
             !isAnswering,
             !isLoadingQuestion,
+            !isFinished,
             let question = currentQuestion,
             question.options.contains(
                 where: { $0.id == option.id }
@@ -87,6 +115,10 @@ final class QuizInteractor: QuizInteracting {
                 .answerQuestion
                 .execute(questionID: question.id, answer: option.title)
 
+            guard !isFinished else {
+                return
+            }
+
             if isCorrect {
                 score += 1
                 presenter.present(score: score)
@@ -97,11 +129,15 @@ final class QuizInteractor: QuizInteracting {
             )
             
             try? await Task.sleep(
-                nanoseconds: 1_000_000_000
+                nanoseconds: answerResultDelayNanoseconds
             )
 
+            guard !isFinished else {
+                return
+            }
+
             if currentQuestionNumber >= totalQuestions {
-                router.finishQuiz(score: score)
+                finishQuiz()
                 return
             }
 
@@ -110,6 +146,10 @@ final class QuizInteractor: QuizInteracting {
             )
             isAnswering = false
         } catch {
+            guard !isFinished else {
+                return
+            }
+
             presenter.presentAnswerError(error)
             presenter.presentAnswering(optionID: option.id)
             isAnswering = false
@@ -117,13 +157,63 @@ final class QuizInteractor: QuizInteracting {
     }
 
     func close() {
+        isFinished = true
+        timerTask?.cancel()
         router.close()
     }
 }
 
 private extension QuizInteractor {
+    func startTimerIfNeeded() {
+        guard timerTask == nil else {
+            return
+        }
+
+        presenter.present(remainingSeconds: remainingSeconds)
+        let timerTickNanoseconds = timerTickNanoseconds
+
+        timerTask = Task { [weak self] in
+            while !Task.isCancelled {
+                try? await Task.sleep(
+                    nanoseconds: timerTickNanoseconds
+                )
+
+                if Task.isCancelled {
+                    return
+                }
+
+                await self?.tickTimer()
+            }
+        }
+    }
+
+    func tickTimer() {
+        guard !isFinished, remainingSeconds > 0 else {
+            return
+        }
+
+        remainingSeconds -= 1
+        presenter.present(remainingSeconds: remainingSeconds)
+
+        if remainingSeconds == 0 {
+            finishQuiz()
+        }
+    }
+
+    func finishQuiz() {
+        guard !isFinished else {
+            return
+        }
+
+        isFinished = true
+        timerTask?.cancel()
+        router.finishQuiz(
+            score: score * remainingSeconds
+        )
+    }
+
     func fetchNextQuestion(displaysLoading: Bool) async throws {
-        guard !isLoadingQuestion else {
+        guard !isLoadingQuestion, !isFinished else {
             return
         }
 
@@ -143,6 +233,10 @@ private extension QuizInteractor {
         let question = try await useCases
             .fetchQuestion
             .execute(questionNumber: nextQuestionNumber)
+
+        guard !isFinished else {
+            return
+        }
 
         currentQuestionNumber = nextQuestionNumber
         currentQuestion = question

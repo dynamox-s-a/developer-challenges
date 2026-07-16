@@ -141,7 +141,7 @@ private extension QuizResultView {
     var scoreCard: some View {
         RaisedCard {
             VStack(spacing: 4) {
-                Text("\(score)/\(totalQuestions)")
+                Text("\(score) pts")
                     .font(.system(size: 58, weight: .black, design: .rounded))
                     .foregroundStyle(.black)
 
@@ -177,9 +177,7 @@ private extension QuizResultView {
     }
 
     var resultMessage: String {
-        score == totalQuestions
-        ? "Perfeito!"
-        : "Continue tentando"
+        score > 0 ? "Boa tentativa!" : "Continue tentando"
     }
 }
 

@@ -32,7 +32,7 @@ class QuizConfigurator {
         dependencies: Dependencies = .init(),
         questionNumber: Int = 1,
         totalQuestions: Int = 1,
-        remainingSeconds: Int = 5,
+        quizDurationSeconds: Int = 120,
         onClose: @escaping () -> Void,
         onFinish: @escaping (Int) -> Void
     ) -> QuizView {
@@ -43,7 +43,9 @@ class QuizConfigurator {
         let fetchQuestionUseCase = FetchQuizQuestionUseCase(service: service)
         let answerQuestionUseCase = AnswerQuizQuestionUseCase(service: service)
 
-        let viewState = QuizViewState()
+        let viewState = QuizViewState(
+            remainingSeconds: quizDurationSeconds
+        )
 
         let presenter = QuizPresenter(
             view: viewState
@@ -58,14 +60,14 @@ class QuizConfigurator {
             ),
             presenter: presenter,
             router: router,
-            totalQuestions: totalQuestions
+            totalQuestions: totalQuestions,
+            quizDurationSeconds: quizDurationSeconds
         )
 
         return QuizView(
             state: viewState,
             interactor: interactor,
-            totalQuestions: totalQuestions,
-            remainingSeconds: remainingSeconds
+            totalQuestions: totalQuestions
         )
     }
 }

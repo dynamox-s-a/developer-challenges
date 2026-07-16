@@ -133,6 +133,7 @@ final class QuizPresenterSpy: QuizPresenting {
         case loading
         case question(QuizQuestion)
         case score(Int)
+        case remainingSeconds(Int)
         case answering(QuizOption.ID)
         case answerResult(Bool)
         case error(String)
@@ -151,6 +152,10 @@ final class QuizPresenterSpy: QuizPresenting {
 
     func present(score: Int) {
         events.append(.score(score))
+    }
+
+    func present(remainingSeconds: Int) {
+        events.append(.remainingSeconds(remainingSeconds))
     }
 
     func presentAnswering(optionID: QuizOption.ID) {

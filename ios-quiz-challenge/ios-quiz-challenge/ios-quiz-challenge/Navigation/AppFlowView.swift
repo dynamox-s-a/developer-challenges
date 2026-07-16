@@ -56,7 +56,6 @@ private extension AppFlowView {
         QuizConfigurator.make(
             questionNumber: 1,
             totalQuestions: 10,
-            remainingSeconds: 5,
             onClose: {
                 closeCurrentScene()
             },

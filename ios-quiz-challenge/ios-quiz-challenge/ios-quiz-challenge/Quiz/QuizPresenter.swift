@@ -12,6 +12,7 @@ protocol QuizPresenting: AnyObject {
     func presentLoading()
     func present(question: QuizQuestion)
     func present(score: Int)
+    func present(remainingSeconds: Int)
     func presentAnswering(optionID: QuizOption.ID)
     func presentAnswerResult(isCorrect: Bool)
     func present(error: Error)
@@ -39,6 +40,10 @@ final class QuizPresenter: QuizPresenting {
     
     func present(score: Int) {
         view?.display(score: score)
+    }
+
+    func present(remainingSeconds: Int) {
+        view?.display(remainingSeconds: remainingSeconds)
     }
     
     func presentAnswering(optionID: QuizOption.ID) {

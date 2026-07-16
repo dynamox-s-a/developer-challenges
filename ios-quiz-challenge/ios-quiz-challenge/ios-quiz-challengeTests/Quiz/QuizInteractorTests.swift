@@ -31,7 +31,13 @@ struct QuizInteractorTests {
         await sut.loadQuestion()
 
         #expect(fetchQuestion.receivedQuestionNumbers == [1])
-        #expect(presenter.events == [.loading, .question(question)])
+        #expect(
+            presenter.events == [
+                .remainingSeconds(120),
+                .loading,
+                .question(question)
+            ]
+        )
     }
 
     @Test func loadQuestionDoesNotFetchAgainWhenQuestionIsAlreadyLoaded() async {
@@ -84,7 +90,34 @@ struct QuizInteractorTests {
         #expect(presenter.events.contains(.answering(question.options[0].id)))
         #expect(presenter.events.contains(.score(1)))
         #expect(presenter.events.contains(.answerResult(true)))
-        #expect(router.finishedScores == [1])
+        #expect(router.finishedScores == [120])
+    }
+
+    @Test func quizFinishesWhenTimerReachesZero() async throws {
+        let question = makeQuestion(number: 1)
+        let fetchQuestion = FetchQuizQuestionUseCaseSpy(
+            result: .success(question)
+        )
+        let answerQuestion = AnswerQuizQuestionUseCaseSpy(
+            result: .success(true)
+        )
+        let presenter = QuizPresenterSpy()
+        let router = QuizRouterSpy()
+        let sut = makeSUT(
+            fetchQuestion: fetchQuestion,
+            answerQuestion: answerQuestion,
+            presenter: presenter,
+            router: router,
+            quizDurationSeconds: 1,
+            timerTickNanoseconds: 1_000_000
+        )
+
+        await sut.loadQuestion()
+        await Task.yield()
+        try await Task.sleep(nanoseconds: 5_000_000)
+
+        #expect(presenter.events.contains(.remainingSeconds(0)))
+        #expect(router.finishedScores == [0])
     }
 
     @Test func closeRoutesBack() {
@@ -115,7 +148,9 @@ private extension QuizInteractorTests {
         answerQuestion: AnswerQuizQuestionUseCaseSpy,
         presenter: QuizPresenterSpy,
         router: QuizRouterSpy,
-        totalQuestions: Int = 10
+        totalQuestions: Int = 10,
+        quizDurationSeconds: Int = 120,
+        timerTickNanoseconds: UInt64 = 1_000_000_000
     ) -> QuizInteractor {
         QuizInteractor(
             useCases: .init(
@@ -124,7 +159,10 @@ private extension QuizInteractorTests {
             ),
             presenter: presenter,
             router: router,
-            totalQuestions: totalQuestions
+            totalQuestions: totalQuestions,
+            quizDurationSeconds: quizDurationSeconds,
+            timerTickNanoseconds: timerTickNanoseconds,
+            answerResultDelayNanoseconds: 0
         )
     }
 }
