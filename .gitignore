@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.env.local
+*.log
+coverage/
+.vite/
+cypress/videos/
+cypress/screenshots/
+storybook-static/
