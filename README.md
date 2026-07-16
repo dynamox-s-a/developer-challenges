@@ -1,3 +1,9 @@
+> 📋 **Solução deste desafio: [SOLUTION.md](./SOLUTION.md)** — como executar, arquitetura e decisões.
+>
+> TL;DR: `bun install && bun run dev` → http://localhost:3000/data
+
+---
+
 # Desafio de Desenvolvedor Front-end da Dynamox
 
 A equipe de desenvolvimento front-end da Dynamox apresenta o seguinte desafio:
