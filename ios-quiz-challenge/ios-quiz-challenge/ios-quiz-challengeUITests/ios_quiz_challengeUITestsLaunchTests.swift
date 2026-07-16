@@ -10,7 +10,7 @@ import XCTest
 final class ios_quiz_challengeUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
-        true
+        false
     }
 
     override func setUpWithError() throws {

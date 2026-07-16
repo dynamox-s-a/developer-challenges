@@ -182,3 +182,21 @@ private extension QuizResultView {
         : "Continue tentando"
     }
 }
+
+#Preview {
+    QuizResultView(
+        state: QuizResultViewState(),
+        interactor: QuizResultInteractorMock(),
+        nickname: "Kiyo",
+        score: 0,
+        totalQuestions: 0
+    )
+}
+
+
+class QuizResultInteractorMock: QuizResultInteracting {
+    func load() async {}
+    func restartQuiz() {}
+    func openRanking() {}
+    func close() {}
+}

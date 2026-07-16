@@ -13,6 +13,7 @@ struct ios_quiz_challengeApp: App {
     
     init() {
         AppDependenciesConfigurator.configure()
+        AppLaunchConfiguration.configureForUITestsIfNeeded()
     }
 
     var body: some Scene {

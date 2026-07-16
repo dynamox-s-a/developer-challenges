@@ -411,10 +411,7 @@ public struct DynaPanelTitle: View {
     }
 }
 
-public struct DynaPanelHeader<
-    Leading: View,
-    Trailing: View
->: View {
+public struct DynaPanelHeader<Leading: View, Trailing: View>: View {
     private let title: String
     private let titleFont: Font
     private let titleColor: Color

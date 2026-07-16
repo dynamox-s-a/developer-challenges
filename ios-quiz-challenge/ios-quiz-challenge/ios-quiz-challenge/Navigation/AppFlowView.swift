@@ -11,6 +11,14 @@ import SwiftUI
 struct AppFlowView: View {
     @State private var navigationPath: [AppRoute] = []
 
+    init(
+        initialNavigationPath: [AppRoute] = AppLaunchConfiguration.initialNavigationPath()
+    ) {
+        _navigationPath = State(
+            initialValue: initialNavigationPath
+        )
+    }
+
     var body: some View {
         NavigationStack(path: $navigationPath) {
             entryScene
