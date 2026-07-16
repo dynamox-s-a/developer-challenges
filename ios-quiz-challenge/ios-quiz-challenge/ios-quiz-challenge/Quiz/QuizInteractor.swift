@@ -111,37 +111,50 @@ final class QuizInteractor: QuizInteracting {
         isAnswering = true
         presenter.presentAnswering(optionID: option.id)
 
+        let isCorrect: Bool
+
         do {
-            let isCorrect = try await useCases
+            isCorrect = try await useCases
                 .answerQuestion
                 .execute(questionID: question.id, answer: option.title)
-
+        } catch {
             guard !isFinished else {
                 return
             }
 
-            if isCorrect {
-                score += 1
-                presenter.present(score: score)
-            }
-            
-            presenter.presentAnswerResult(
-                isCorrect: isCorrect
-            )
-            
-            try? await Task.sleep(
-                nanoseconds: answerResultDelayNanoseconds
-            )
+            presenter.presentAnswerError(error)
+            isAnswering = false
+            pauseTimer()
+            return
+        }
 
-            guard !isFinished else {
-                return
-            }
+        guard !isFinished else {
+            return
+        }
 
-            if currentQuestionNumber >= totalQuestions {
-                finishQuiz()
-                return
-            }
+        if isCorrect {
+            score += 1
+            presenter.present(score: score)
+        }
+        
+        presenter.presentAnswerResult(
+            isCorrect: isCorrect
+        )
+        
+        try? await Task.sleep(
+            nanoseconds: answerResultDelayNanoseconds
+        )
 
+        guard !isFinished else {
+            return
+        }
+
+        if currentQuestionNumber >= totalQuestions {
+            finishQuiz()
+            return
+        }
+
+        do {
             try await fetchNextQuestion(
                 displaysLoading: false
             )
@@ -151,9 +164,8 @@ final class QuizInteractor: QuizInteracting {
                 return
             }
 
-            presenter.presentAnswerError(error)
             isAnswering = false
-            pauseTimer()
+            presenter.present(error: error)
         }
     }
 

@@ -156,6 +156,47 @@ struct QuizInteractorTests {
         #expect(router.finishedScores.isEmpty)
     }
 
+    @Test func nextQuestionFailureAfterAnswerPresentsQuestionError() async {
+        let question = makeQuestion(number: 1)
+        let fetchQuestion = FetchQuizQuestionUseCaseSpy(
+            result: .success(question)
+        )
+        let answerQuestion = AnswerQuizQuestionUseCaseSpy(
+            result: .success(true)
+        )
+        let presenter = QuizPresenterSpy()
+        let router = QuizRouterSpy()
+        let sut = makeSUT(
+            fetchQuestion: fetchQuestion,
+            answerQuestion: answerQuestion,
+            presenter: presenter,
+            router: router,
+            totalQuestions: 2
+        )
+
+        await sut.loadQuestion()
+        fetchQuestion.result = .failure(TestError.expected)
+        await sut.selectAnswer(question.options[0])
+        let didPresentQuestionError = presenter.events.contains { event in
+            if case .error = event {
+                return true
+            }
+
+            return false
+        }
+        let didPresentAnswerError = presenter.events.contains { event in
+            if case .answerError = event {
+                return true
+            }
+
+            return false
+        }
+
+        #expect(fetchQuestion.receivedQuestionNumbers == [1, 2])
+        #expect(didPresentQuestionError)
+        #expect(!didPresentAnswerError)
+    }
+
     @Test func quizFinishesWhenTimerReachesZero() async throws {
         let question = makeQuestion(number: 1)
         let fetchQuestion = FetchQuizQuestionUseCaseSpy(
