@@ -104,7 +104,7 @@ public struct DynaPanelMotion {
     }
 }
 
-public struct DynaPanel<Header: View, Content: View>: View {
+public struct DynaPanel<Content: View>: View {
     private let layout: DynaPanelLayout
     private let scrollsContent: Bool
 
@@ -113,19 +113,24 @@ public struct DynaPanel<Header: View, Content: View>: View {
 
     private let isPanelVisible: Bool
     private let isShadowVisible: Bool
-    private let hasHeader: Bool
 
-    private let header: Header
+    private let header: PanelHeader?
     private let content: Content
 
     public init(
+        title: String? = nil,
+        icon: String? = nil,
+        buttonTitle: String? = nil,
         layout: DynaPanelLayout = .vertical,
         scrollsContent: Bool = false,
         style: DynaPanelStyle = .default,
         motion: DynaPanelMotion = .opposingHorizontal(),
         isPanelVisible: Bool = true,
         isShadowVisible: Bool = true,
-        @ViewBuilder header: () -> Header,
+        titleFont: Font = .headline,
+        titleColor: Color = .primary,
+        headerSpacing: CGFloat = 8,
+        buttonAction: (() -> Void)? = nil,
         @ViewBuilder content: () -> Content
     ) {
         self.layout = layout
@@ -134,31 +139,18 @@ public struct DynaPanel<Header: View, Content: View>: View {
         self.motion = motion
         self.isPanelVisible = isPanelVisible
         self.isShadowVisible = isShadowVisible
-        self.hasHeader = true
-        self.header = header()
+        self.header = title.map {
+            PanelHeader(
+                icon: icon,
+                title: $0,
+                buttonTitle: buttonTitle,
+                titleFont: titleFont,
+                titleColor: titleColor,
+                spacing: headerSpacing,
+                buttonAction: buttonAction
+            )
+        }
         self.content = content()
-    }
-
-    private init(
-        layout: DynaPanelLayout,
-        scrollsContent: Bool,
-        style: DynaPanelStyle,
-        motion: DynaPanelMotion,
-        isPanelVisible: Bool,
-        isShadowVisible: Bool,
-        hasHeader: Bool,
-        header: Header,
-        content: Content
-    ) {
-        self.layout = layout
-        self.scrollsContent = scrollsContent
-        self.style = style
-        self.motion = motion
-        self.isPanelVisible = isPanelVisible
-        self.isShadowVisible = isShadowVisible
-        self.hasHeader = hasHeader
-        self.header = header
-        self.content = content
     }
 
     public var body: some View {
@@ -191,8 +183,8 @@ public struct DynaPanel<Header: View, Content: View>: View {
             alignment: .leading,
             spacing: style.headerContentSpacing
         ) {
-            if hasHeader {
-                header
+            if let header {
+                PanelHeaderView(header: header)
                     .frame(
                         maxWidth: .infinity,
                         alignment: .leading
@@ -289,9 +281,9 @@ public struct DynaPanel<Header: View, Content: View>: View {
 
         return CGSize(
             width: style.shadowOffset.width
-                + entranceOffset.width,
+            + entranceOffset.width,
             height: style.shadowOffset.height
-                + entranceOffset.height
+            + entranceOffset.height
         )
     }
 
@@ -326,135 +318,68 @@ public struct DynaPanel<Header: View, Content: View>: View {
     }
 }
 
-// MARK: - Sem header
-
-public extension DynaPanel where Header == EmptyView {
-    init(
-        layout: DynaPanelLayout = .vertical,
-        scrollsContent: Bool = false,
-        style: DynaPanelStyle = .default,
-        motion: DynaPanelMotion = .opposingHorizontal(),
-        isPanelVisible: Bool = true,
-        isShadowVisible: Bool = true,
-        @ViewBuilder content: () -> Content
-    ) {
-        self.init(
-            layout: layout,
-            scrollsContent: scrollsContent,
-            style: style,
-            motion: motion,
-            isPanelVisible: isPanelVisible,
-            isShadowVisible: isShadowVisible,
-            hasHeader: false,
-            header: EmptyView(),
-            content: content()
-        )
-    }
+private struct PanelHeader {
+    let icon: String?
+    let title: String
+    let buttonTitle: String?
+    let titleFont: Font
+    let titleColor: Color
+    let spacing: CGFloat
+    let buttonAction: (() -> Void)?
 }
 
-// MARK: - Com título simples
+private struct PanelHeaderView: View {
+    let header: PanelHeader
 
-public extension DynaPanel where Header == DynaPanelTitle {
-    init(
-        title: String,
-        layout: DynaPanelLayout = .vertical,
-        scrollsContent: Bool = false,
-        style: DynaPanelStyle = .default,
-        motion: DynaPanelMotion = .opposingHorizontal(),
-        isPanelVisible: Bool = true,
-        isShadowVisible: Bool = true,
-        titleFont: Font = .headline,
-        titleColor: Color = .primary,
-        @ViewBuilder content: () -> Content
-    ) {
-        self.init(
-            layout: layout,
-            scrollsContent: scrollsContent,
-            style: style,
-            motion: motion,
-            isPanelVisible: isPanelVisible,
-            isShadowVisible: isShadowVisible,
-            hasHeader: true,
-            header: DynaPanelTitle(
-                title,
-                font: titleFont,
-                color: titleColor
-            ),
-            content: content()
-        )
-    }
-}
+    var body: some View {
+        HStack(spacing: header.spacing) {
+            if let icon = header.icon {
+                iconView(icon)
+            }
 
-public struct DynaPanelTitle: View {
-    private let title: String
-    private let font: Font
-    private let color: Color
+            Text(header.title)
+                .font(header.titleFont)
+                .foregroundStyle(header.titleColor)
 
-    public init(
-        _ title: String,
-        font: Font = .headline,
-        color: Color = .primary
-    ) {
-        self.title = title
-        self.font = font
-        self.color = color
-    }
+            Spacer(minLength: header.spacing)
 
-    public var body: some View {
-        Text(title)
-            .font(font)
-            .foregroundStyle(color)
-            .frame(
-                maxWidth: .infinity,
-                alignment: .leading
-            )
-    }
-}
-
-public struct DynaPanelHeader<Leading: View, Trailing: View>: View {
-    private let title: String
-    private let titleFont: Font
-    private let titleColor: Color
-    private let spacing: CGFloat
-
-    private let leading: Leading
-    private let trailing: Trailing
-
-    public init(
-        title: String,
-        titleFont: Font = .headline,
-        titleColor: Color = .primary,
-        spacing: CGFloat = 8,
-        @ViewBuilder leading: () -> Leading,
-        @ViewBuilder trailing: () -> Trailing
-    ) {
-        self.title = title
-        self.titleFont = titleFont
-        self.titleColor = titleColor
-        self.spacing = spacing
-        self.leading = leading()
-        self.trailing = trailing()
-    }
-
-    public var body: some View {
-        HStack(spacing: spacing) {
-            leading
-
-            Text(title)
-                .font(titleFont)
-                .foregroundStyle(titleColor)
-
-            Spacer(minLength: spacing)
-
-            trailing
+            if
+                let buttonTitle = header.buttonTitle,
+                let buttonAction = header.buttonAction
+            {
+                Button(buttonTitle, action: buttonAction)
+                    .foregroundStyle(header.titleColor)
+            }
         }
         .frame(maxWidth: .infinity)
+        .padding(.horizontal, header.icon == nil ? 0 : 4)
     }
 }
 
+private extension PanelHeaderView {
+    func iconView(_ icon: String) -> some View {
+        Circle()
+            .foregroundStyle(.black)
+            .frame(width: 26, height: 26)
+            .overlay {
+                Image(systemName: icon)
+                    .font(.system(size: 14))
+                    .foregroundStyle(.black)
+                    .background {
+                        Circle()
+                            .frame(width: 22, height: 22)
+                            .foregroundStyle(.white)
+                    }
+                    .offset(
+                        CGSize(width: -1, height: -1)
+                    )
+            }
+    }
+}
 
 #Preview {
     @Previewable var options: [String] = ["Poodle", "Husky", "Golden Retriever"]
+
     DynaPanel(
         title: "Choose a category",
         layout: .horizontal,
@@ -468,45 +393,24 @@ public struct DynaPanelHeader<Leading: View, Trailing: View>: View {
             DynaOptionButton(option) {}
         }
     }
-    
-    VStack{
-        DynaPanel(
-            layout: .horizontal,
-            scrollsContent: false
-        ) {
-            DynaPanelHeader(
-                title: "Power-ups",
-                titleColor: .white
-            ) {
-                
-                Circle()
-                    .foregroundStyle(.black)
-                    .frame(width: 26, height: 26)
-                    .overlay {
-                        Image(systemName: "bolt.fill")
-                            .font(.system(size: 14))
-                            .foregroundStyle(.black)
-                            .background {
-                                Circle()
-                                    .frame(width: 22, height: 22)
-                                    .foregroundStyle(.white)
-                            }
-                            .offset(CGSize(width: -1, height: -1))
-                    }
-                
-            } trailing: {
-                Button("See all") {
-                    print("See all")
-                }
-                .foregroundStyle(.white)
-            }
-            .padding(.horizontal, 4)
-            
+
+    DynaPanel(
+        title: "Power-ups",
+        icon: "bolt.fill",
+        buttonTitle: "See all",
+        layout: .horizontal,
+        scrollsContent: false,
+        titleColor: .white,
+        buttonAction: {
+            print("See all")
+        }
+    ) {
+        VStack(spacing: 12) {
             Text("Kiyo")
                 .foregroundStyle(.white)
                 .font(Font.system(size: 48, weight: .bold))
                 .frame(maxWidth: .infinity)
-        } content: {
+
             HStack {
                 ForEach(
                     options.enumerated(),
@@ -515,24 +419,25 @@ public struct DynaPanelHeader<Leading: View, Trailing: View>: View {
                     DynaOptionButton(option) {}
                 }
             }
-            .padding(.horizontal, 4)
         }
-        
-        DynaPanel(
-            title: "Select an answer",
-            layout: .vertical,
-            titleFont: .system(
-                size: 18,
-                weight: .bold
-            ),
-            titleColor: .white
-        ) {
-            ForEach(
-                options.enumerated(),
-                id: \.element.self
-            ) { index, option in
-                DynaOptionButton(option) {}
-            }
+        .padding(.horizontal, 4)
+    }
+
+    DynaPanel(
+        title: "Select an answer",
+        layout: .vertical,
+        titleFont: .system(
+            size: 18,
+            weight: .bold
+        ),
+        titleColor: .white
+    ) {
+        ForEach(
+            options.enumerated(),
+            id: \.element.self
+        ) { index, option in
+            DynaOptionButton(option) {}
         }
     }
+
 }

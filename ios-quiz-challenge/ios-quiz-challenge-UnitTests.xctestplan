@@ -1,0 +1,30 @@
+{
+  "configurations" : [
+    {
+      "id" : "22091426-329E-450B-BC3D-E1B4673828BA",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:ios-quiz-challenge.xcodeproj",
+      "identifier" : "6C73BA4E300410E900C231BC",
+      "name" : "ios-quiz-challenge"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : false,
+      "target" : {
+        "containerPath" : "container:ios-quiz-challenge.xcodeproj",
+        "identifier" : "6C73BA5D300410EB00C231BC",
+        "name" : "ios-quiz-challengeTests"
+      }
+    }
+  ],
+  "version" : 1
+}

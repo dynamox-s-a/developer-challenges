@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		302F3758A2D1A09746029237 /* Pods_ios_quiz_challenge_ios_quiz_challengeUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B85230ACB0201D0671E4076A /* Pods_ios_quiz_challenge_ios_quiz_challengeUITests.framework */; };
 		51A3B1D0E60F7E463DEFFAC6 /* Pods_ios_quiz_challenge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 908C85BD4FA36AA70E4DD708 /* Pods_ios_quiz_challenge.framework */; };
+		B58A07671F79B30B174B780B /* Pods_ios_quiz_challengeUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31A3613707190FF7F1371175 /* Pods_ios_quiz_challengeUITests.framework */; };
 		FE8CDB01FEA586E37C9A3147 /* Pods_ios_quiz_challengeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25EC7173F6807BD00EBD6FD8 /* Pods_ios_quiz_challengeTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -32,15 +32,15 @@
 /* Begin PBXFileReference section */
 		0E1BA7E84284EDFC295D2767 /* Pods-ios-quiz-challenge.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-quiz-challenge.debug.xcconfig"; path = "Target Support Files/Pods-ios-quiz-challenge/Pods-ios-quiz-challenge.debug.xcconfig"; sourceTree = "<group>"; };
 		10AC858A4C4C34F2738B20AD /* Pods-ios-quiz-challengeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-quiz-challengeTests.release.xcconfig"; path = "Target Support Files/Pods-ios-quiz-challengeTests/Pods-ios-quiz-challengeTests.release.xcconfig"; sourceTree = "<group>"; };
-		235ED9F9AF7AB0338B7B5DAA /* Pods-ios-quiz-challenge-ios-quiz-challengeUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-quiz-challenge-ios-quiz-challengeUITests.release.xcconfig"; path = "Target Support Files/Pods-ios-quiz-challenge-ios-quiz-challengeUITests/Pods-ios-quiz-challenge-ios-quiz-challengeUITests.release.xcconfig"; sourceTree = "<group>"; };
 		25EC7173F6807BD00EBD6FD8 /* Pods_ios_quiz_challengeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ios_quiz_challengeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		3229DEEA14260AE7BC0A4FEE /* Pods-ios-quiz-challenge-ios-quiz-challengeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-quiz-challenge-ios-quiz-challengeUITests.debug.xcconfig"; path = "Target Support Files/Pods-ios-quiz-challenge-ios-quiz-challengeUITests/Pods-ios-quiz-challenge-ios-quiz-challengeUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		31A3613707190FF7F1371175 /* Pods_ios_quiz_challengeUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ios_quiz_challengeUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		672096844A938AB1A3C930F6 /* Pods-ios-quiz-challengeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-quiz-challengeUITests.debug.xcconfig"; path = "Target Support Files/Pods-ios-quiz-challengeUITests/Pods-ios-quiz-challengeUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		6C73BA4F300410E900C231BC /* ios-quiz-challenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-quiz-challenge.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C73BA5E300410EB00C231BC /* ios-quiz-challengeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ios-quiz-challengeTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C73BA68300410EB00C231BC /* ios-quiz-challengeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ios-quiz-challengeUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		908C85BD4FA36AA70E4DD708 /* Pods_ios_quiz_challenge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ios_quiz_challenge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9562AAAADF454FABE616F40F /* Pods-ios-quiz-challenge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-quiz-challenge.release.xcconfig"; path = "Target Support Files/Pods-ios-quiz-challenge/Pods-ios-quiz-challenge.release.xcconfig"; sourceTree = "<group>"; };
-		B85230ACB0201D0671E4076A /* Pods_ios_quiz_challenge_ios_quiz_challengeUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ios_quiz_challenge_ios_quiz_challengeUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9C4063290BF33973A25D89C /* Pods-ios-quiz-challengeUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-quiz-challengeUITests.release.xcconfig"; path = "Target Support Files/Pods-ios-quiz-challengeUITests/Pods-ios-quiz-challengeUITests.release.xcconfig"; sourceTree = "<group>"; };
 		D589E873A96E31014BFDA873 /* Pods-ios-quiz-challengeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-quiz-challengeTests.debug.xcconfig"; path = "Target Support Files/Pods-ios-quiz-challengeTests/Pods-ios-quiz-challengeTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -83,7 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				302F3758A2D1A09746029237 /* Pods_ios_quiz_challenge_ios_quiz_challengeUITests.framework in Frameworks */,
+				B58A07671F79B30B174B780B /* Pods_ios_quiz_challengeUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,8 +94,8 @@
 			isa = PBXGroup;
 			children = (
 				908C85BD4FA36AA70E4DD708 /* Pods_ios_quiz_challenge.framework */,
-				B85230ACB0201D0671E4076A /* Pods_ios_quiz_challenge_ios_quiz_challengeUITests.framework */,
 				25EC7173F6807BD00EBD6FD8 /* Pods_ios_quiz_challengeTests.framework */,
+				31A3613707190FF7F1371175 /* Pods_ios_quiz_challengeUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -127,10 +127,10 @@
 			children = (
 				0E1BA7E84284EDFC295D2767 /* Pods-ios-quiz-challenge.debug.xcconfig */,
 				9562AAAADF454FABE616F40F /* Pods-ios-quiz-challenge.release.xcconfig */,
-				3229DEEA14260AE7BC0A4FEE /* Pods-ios-quiz-challenge-ios-quiz-challengeUITests.debug.xcconfig */,
-				235ED9F9AF7AB0338B7B5DAA /* Pods-ios-quiz-challenge-ios-quiz-challengeUITests.release.xcconfig */,
 				D589E873A96E31014BFDA873 /* Pods-ios-quiz-challengeTests.debug.xcconfig */,
 				10AC858A4C4C34F2738B20AD /* Pods-ios-quiz-challengeTests.release.xcconfig */,
+				672096844A938AB1A3C930F6 /* Pods-ios-quiz-challengeUITests.debug.xcconfig */,
+				B9C4063290BF33973A25D89C /* Pods-ios-quiz-challengeUITests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -287,7 +287,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ios-quiz-challenge-ios-quiz-challengeUITests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ios-quiz-challengeUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -617,7 +617,7 @@
 		};
 		6C73BA79300410EB00C231BC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3229DEEA14260AE7BC0A4FEE /* Pods-ios-quiz-challenge-ios-quiz-challengeUITests.debug.xcconfig */;
+			baseConfigurationReference = 672096844A938AB1A3C930F6 /* Pods-ios-quiz-challengeUITests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -638,7 +638,7 @@
 		};
 		6C73BA7A300410EB00C231BC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 235ED9F9AF7AB0338B7B5DAA /* Pods-ios-quiz-challenge-ios-quiz-challengeUITests.release.xcconfig */;
+			baseConfigurationReference = B9C4063290BF33973A25D89C /* Pods-ios-quiz-challengeUITests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
