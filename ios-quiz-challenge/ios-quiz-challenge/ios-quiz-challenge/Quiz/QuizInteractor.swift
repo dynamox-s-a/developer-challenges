@@ -67,8 +67,6 @@ final class QuizInteractor: QuizInteracting {
             return
         }
 
-        startTimerIfNeeded()
-
         do {
             try await fetchNextQuestion(displaysLoading: true)
         } catch {
@@ -81,8 +79,6 @@ final class QuizInteractor: QuizInteracting {
     }
 
     func retry() async {
-        startTimerIfNeeded()
-
         do {
             try await fetchNextQuestion(displaysLoading: true)
         } catch {
@@ -236,6 +232,7 @@ private extension QuizInteractor {
         }
 
         isLoadingQuestion = true
+        pauseTimer()
 
         defer {
             isLoadingQuestion = false
@@ -262,5 +259,6 @@ private extension QuizInteractor {
         presenter.present(
             question: question
         )
+        startTimerIfNeeded()
     }
 }

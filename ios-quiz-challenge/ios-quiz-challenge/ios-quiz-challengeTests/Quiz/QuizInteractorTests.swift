@@ -33,11 +33,37 @@ struct QuizInteractorTests {
         #expect(fetchQuestion.receivedQuestionNumbers == [1])
         #expect(
             presenter.events == [
-                .remainingSeconds(120),
                 .loading,
-                .question(question)
+                .question(question),
+                .remainingSeconds(120)
             ]
         )
+    }
+
+    @Test func loadQuestionDoesNotAdvanceTimerWhileFetching() async {
+        let question = makeQuestion(number: 1)
+        let fetchQuestion = FetchQuizQuestionUseCaseSpy(
+            result: .success(question)
+        )
+        fetchQuestion.delayNanoseconds = 5_000_000
+        let answerQuestion = AnswerQuizQuestionUseCaseSpy(
+            result: .success(true)
+        )
+        let presenter = QuizPresenterSpy()
+        let router = QuizRouterSpy()
+        let sut = makeSUT(
+            fetchQuestion: fetchQuestion,
+            answerQuestion: answerQuestion,
+            presenter: presenter,
+            router: router,
+            quizDurationSeconds: 1,
+            timerTickNanoseconds: 1_000_000
+        )
+
+        await sut.loadQuestion()
+
+        #expect(!presenter.events.contains(.remainingSeconds(0)))
+        #expect(router.finishedScores.isEmpty)
     }
 
     @Test func loadQuestionDoesNotFetchAgainWhenQuestionIsAlreadyLoaded() async {
@@ -195,6 +221,37 @@ struct QuizInteractorTests {
         #expect(fetchQuestion.receivedQuestionNumbers == [1, 2])
         #expect(didPresentQuestionError)
         #expect(!didPresentAnswerError)
+    }
+
+    @Test func nextQuestionLoadingAfterAnswerDoesNotAdvanceTimer() async {
+        let firstQuestion = makeQuestion(number: 1)
+        let nextQuestion = makeQuestion(number: 2)
+        let fetchQuestion = FetchQuizQuestionUseCaseSpy(
+            result: .success(firstQuestion)
+        )
+        let answerQuestion = AnswerQuizQuestionUseCaseSpy(
+            result: .success(false)
+        )
+        let presenter = QuizPresenterSpy()
+        let router = QuizRouterSpy()
+        let sut = makeSUT(
+            fetchQuestion: fetchQuestion,
+            answerQuestion: answerQuestion,
+            presenter: presenter,
+            router: router,
+            totalQuestions: 2,
+            quizDurationSeconds: 1,
+            timerTickNanoseconds: 1_000_000
+        )
+
+        await sut.loadQuestion()
+        fetchQuestion.result = .success(nextQuestion)
+        fetchQuestion.delayNanoseconds = 5_000_000
+        await sut.selectAnswer(firstQuestion.options[0])
+
+        #expect(fetchQuestion.receivedQuestionNumbers == [1, 2])
+        #expect(!presenter.events.contains(.remainingSeconds(0)))
+        #expect(router.finishedScores.isEmpty)
     }
 
     @Test func quizFinishesWhenTimerReachesZero() async throws {

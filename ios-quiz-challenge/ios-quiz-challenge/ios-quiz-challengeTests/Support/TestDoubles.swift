@@ -96,6 +96,7 @@ final class QuizServiceSpy: QuizServiceProtocol {
 
 final class FetchQuizQuestionUseCaseSpy: FetchQuizQuestionUseCaseProtocol {
     var result: Result<QuizQuestion, Error>
+    var delayNanoseconds: UInt64 = 0
     private(set) var receivedQuestionNumbers: [Int] = []
 
     init(result: Result<QuizQuestion, Error>) {
@@ -104,6 +105,11 @@ final class FetchQuizQuestionUseCaseSpy: FetchQuizQuestionUseCaseProtocol {
 
     func execute(questionNumber: Int) async throws -> QuizQuestion {
         receivedQuestionNumbers.append(questionNumber)
+
+        if delayNanoseconds > 0 {
+            try? await Task.sleep(nanoseconds: delayNanoseconds)
+        }
+
         return try result.get()
     }
 }
