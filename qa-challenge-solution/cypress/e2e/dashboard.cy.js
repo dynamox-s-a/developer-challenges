@@ -24,11 +24,15 @@ describe('Desafio Técnico - Dashboard de Sensores', () => {
     });
 
     it('Deve exibir o tooltip com os valores ao passar o mouse sobre o gráfico', () => {
-        // Pegamos o primeiro gráfico e usamos o realHover com coordenadas (x, y) 
-        // relativas ao próprio container para garantir que tocaremos na área do gráfico
-        cy.get('.highcharts-container').first().realHover({ pointerPosition: { x: 200, y: 150 } });
+        cy.get('.highcharts-series-group', { timeout: 10000 }).should('be.visible');
 
-        // Valida se a estrutura de tooltip ativa do Highcharts aparece na tela
-        cy.get('.highcharts-tooltip').should('be.visible');
+        // Dispara o evento nativo para forçar a renderização do tooltip no DOM
+        cy.get('path.highcharts-graph')
+            .first()
+            .trigger('mouseover', { force: true });
+
+        cy.get('.highcharts-tooltip', { timeout: 10000 })
+            .should('exist')
+            .and('be.visible');
     });
 });
