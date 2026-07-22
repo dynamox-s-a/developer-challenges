@@ -1,7 +1,7 @@
 {
-  "name": "qa-challenge-solution",
+  "name": "developer-challenges",
   "version": "1.0.0",
-  "description": "",
+  "description": "[Dynamox](https://dynamox.net/) is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,7 +9,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "devDependencies": {
     "cypress": "^15.18.1",
     "cypress-real-events": "^1.15.0"
