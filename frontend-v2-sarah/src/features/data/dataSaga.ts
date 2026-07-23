@@ -2,12 +2,12 @@ import axios from 'axios';
 import { call, put, takeLatest } from 'redux-saga/effects';
 import type { CallEffect, PutEffect } from 'redux-saga/effects';
 import type { MetricsResponse } from './types';
-import { getMetrics } from './dataService';
 import {
   fetchMetricsSuccess,
   fetchMetricsFailure,
   fetchMetricsRequest,
 } from './dataSlice';
+import { getMetrics } from './dataService';
 import { ERROR_MESSAGES } from './constants';
 
 function* fetchMetricsSaga(): Generator<
