@@ -1,14 +1,13 @@
-import axios from 'axios';
 import { call, put, takeLatest } from 'redux-saga/effects';
 import type { CallEffect, PutEffect } from 'redux-saga/effects';
-import type { MetricsResponse } from './types';
+import { getMetrics } from '../../services/metrics.service';
+import { getErrorMessage } from '../../utils/errorUtils';
 import {
   fetchMetricsSuccess,
   fetchMetricsFailure,
   fetchMetricsRequest,
 } from './dataSlice';
-import { getMetrics } from './dataService';
-import { ERROR_MESSAGES } from './constants';
+import type { MetricsResponse } from './types';
 
 function* fetchMetricsSaga(): Generator<
   CallEffect<MetricsResponse> | PutEffect,
@@ -19,12 +18,8 @@ function* fetchMetricsSaga(): Generator<
     const data = yield call(getMetrics);
     yield put(fetchMetricsSuccess(data));
   } catch (error: unknown) {
-    if (axios.isAxiosError(error)) {
-      yield put(fetchMetricsFailure(error.message));
-      return;
-    }
-
-    yield put(fetchMetricsFailure(ERROR_MESSAGES.FETCH_METRICS));
+    const errorMessage = getErrorMessage(error);
+    yield put(fetchMetricsFailure(errorMessage));
   }
 }
 

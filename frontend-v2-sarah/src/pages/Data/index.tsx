@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { CircularProgress } from '@mui/material';
 import type { RootState } from '../../app/store';
 import type { AppDispatch } from '../../app/store';
 import { fetchMetricsRequest } from '../../features/data/dataSlice';
@@ -15,10 +16,14 @@ const DataPage = () => {
     dispatch(fetchMetricsRequest());
   }, [dispatch]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <CircularProgress />;
+  if (error) return <alert severity="error">{error}</alert>;
 
-  return <pre>{JSON.stringify(metrics, null, 2)}</pre>;
+  return (
+    <>
+      <h1>Metricas carregadas</h1>
+    </>
+  );
 };
 
 export default DataPage;
