@@ -1,11 +1,15 @@
-export interface MetricPoint {
-  datetime: string;
-  max: number;
-}
+export type ChartPoint = [number, number];
 
 export interface MetricSeries {
+  id: string;
   name: string;
-  data: MetricPoint[];
+  data: ChartPoint[];
 }
 
 export type MetricsResponse = MetricSeries[];
+
+export interface MachineDataState {
+  metrics: MetricSeries[];
+  isLoading: boolean;
+  error: string | null;
+}

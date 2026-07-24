@@ -1,6 +1,11 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
-import type { CallEffect, PutEffect } from 'redux-saga/effects';
-import { getMetrics } from '../../services/metrics.service';
+import {
+  call,
+  put,
+  takeLatest,
+  type CallEffect,
+  type PutEffect,
+} from 'redux-saga/effects';
+import { getMetrics } from '../../services/metrics/metrics.service';
 import { getErrorMessage } from '../../utils/errorUtils';
 import {
   fetchMetricsSuccess,

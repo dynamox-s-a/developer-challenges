@@ -1,16 +1,15 @@
-import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { MetricsResponse } from './types';
 
 interface DataState {
   metrics: MetricsResponse;
-  loading: boolean;
+  isLoading: boolean;
   error: string | null;
 }
 
 const initialState: DataState = {
   metrics: [],
-  loading: false,
+  isLoading: false,
   error: null,
 };
 
@@ -19,15 +18,15 @@ const dataSlice = createSlice({
   initialState,
   reducers: {
     fetchMetricsRequest(state) {
-      state.loading = true;
+      state.isLoading = true;
       state.error = null;
     },
     fetchMetricsSuccess(state, action: PayloadAction<MetricsResponse>) {
       state.metrics = action.payload;
-      state.loading = false;
+      state.isLoading = false;
     },
     fetchMetricsFailure(state, action: PayloadAction<string>) {
-      state.loading = false;
+      state.isLoading = false;
       state.error = action.payload;
     },
   },

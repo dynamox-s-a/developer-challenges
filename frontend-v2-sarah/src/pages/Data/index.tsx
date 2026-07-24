@@ -1,27 +1,24 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { CircularProgress } from '@mui/material';
-import type { RootState } from '../../app/store';
-import type { AppDispatch } from '../../app/store';
+import { CircularProgress, Alert } from '@mui/material';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { fetchMetricsRequest } from '../../features/data/dataSlice';
 
 const DataPage = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
-  const { metrics, loading, error } = useSelector(
-    (state: RootState) => state.data,
-  );
+  const { metrics, isLoading, error } = useAppSelector((state) => state.data);
 
   useEffect(() => {
     dispatch(fetchMetricsRequest());
   }, [dispatch]);
 
-  if (loading) return <CircularProgress />;
-  if (error) return <alert severity="error">{error}</alert>;
+  if (isLoading) return <CircularProgress />;
+  if (error) return <Alert severity="error">{error}</Alert>;
 
   return (
     <>
       <h1>Metricas carregadas</h1>
+      <pre>{JSON.stringify(metrics, null, 2)}</pre>
     </>
   );
 };
