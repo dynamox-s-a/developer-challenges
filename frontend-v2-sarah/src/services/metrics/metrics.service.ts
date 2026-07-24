@@ -8,7 +8,6 @@ import type { RawMetricsResponse } from './type';
 export const getMetrics = async (): Promise<MetricsResponse> => {
   try {
     const response = await api.get<RawMetricsResponse>('/metrics');
-    console.log('response:', response.data);
     return mapRawMetricsToMetricsResponse(response.data);
   } catch (error) {
     if (import.meta.env.DEV) {
