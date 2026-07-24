@@ -4,6 +4,7 @@ import {
   YAxisTitle,
   MetricUnit,
 } from '../../features/data/types';
+import theme from '../../theme/theme';
 
 export const CHART_TITLE_MAP: Record<string, ChartTitle> = {
   accelerationrms: ChartTitle.ACCELERATION,
@@ -28,4 +29,14 @@ export const UNIT_MAP: Record<string, MetricUnit> = {
   accelerationrms: MetricUnit.G,
   velocityrms: MetricUnit.MM_S,
   temperature: MetricUnit.CELSIUS,
+};
+
+export const COLOR_MAP: Record<string, string> = {
+  'accelerationrms/x': theme.palette.charts.accelerationX,
+  'accelerationrms/y': theme.palette.charts.accelerationY,
+  'accelerationrms/z': theme.palette.charts.accelerationZ,
+  'velocityrms/x': theme.palette.charts.velocityX,
+  'velocityrms/y': theme.palette.charts.velocityY,
+  'velocityrms/z': theme.palette.charts.velocityZ,
+  temperature: theme.palette.charts.temperature,
 };

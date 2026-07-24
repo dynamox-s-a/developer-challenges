@@ -38,6 +38,7 @@ export interface MetricSeries {
   id: string;
   name: string;
   label: MetricLabel;
+  color: string;
   data: ChartPoint[];
 }
 
@@ -49,7 +50,11 @@ export interface ChartData {
   series: MetricSeries[];
 }
 
-export type MetricsResponse = Record<string, ChartData>;
+export interface MetricsResponse {
+  accelerationRms?: ChartData;
+  velocityRms?: ChartData;
+  temperature?: ChartData;
+}
 
 export interface MachineDataState {
   metrics: MetricsResponse;

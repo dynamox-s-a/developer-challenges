@@ -6,6 +6,28 @@ declare module '@mui/material/styles' {
   interface TypographyVariantsOptions {
     chartLegend?: React.CSSProperties;
   }
+  interface Palette {
+    charts: {
+      accelerationX: string;
+      accelerationY: string;
+      accelerationZ: string;
+      temperature: string;
+      velocityX: string;
+      velocityY: string;
+      velocityZ: string;
+    };
+  }
+  interface PaletteOptions {
+    charts?: {
+      accelerationX?: string;
+      accelerationY?: string;
+      accelerationZ?: string;
+      temperature?: string;
+      velocityX?: string;
+      velocityY?: string;
+      velocityZ?: string;
+    };
+  }
 }
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
@@ -26,6 +48,15 @@ let theme = createTheme({
     grey: {
       100: '#F8FAFC',
       500: '#DFE3E8',
+    },
+    charts: {
+      accelerationX: '#2386CB',
+      accelerationY: '#CC337D',
+      accelerationZ: '#B48A00',
+      temperature: '#89982E',
+      velocityX: '#2386CB',
+      velocityY: '#CC337D',
+      velocityZ: '#B48A00',
     },
   },
   typography: {

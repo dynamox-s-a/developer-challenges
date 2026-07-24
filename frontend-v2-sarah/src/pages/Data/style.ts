@@ -25,14 +25,3 @@ export const ChartsContainer = styled(Paper)(({ theme }) => ({
   border: '1px solid',
   borderColor: theme.palette.grey[500],
 }));
-
-export const Chart = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(2),
-  [theme.breakpoints.up('sm')]: {
-    padding: theme.spacing(3),
-  },
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: theme.palette.background.paper,
-  border: '1px solid',
-  borderColor: theme.palette.grey[500],
-}));

@@ -8,7 +8,7 @@ interface DataState {
 }
 
 const initialState: DataState = {
-  metrics: [],
+  metrics: {} as MetricsResponse,
   isLoading: false,
   error: null,
 };
