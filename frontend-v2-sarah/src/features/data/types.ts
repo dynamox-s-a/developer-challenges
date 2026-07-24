@@ -37,10 +37,7 @@ export type ChartPoint = [number, number];
 export interface MetricSeries {
   id: string;
   name: string;
-  category: string;
   label: MetricLabel;
-  yAxisTitle: YAxisTitle;
-  unit: MetricUnit;
   data: ChartPoint[];
 }
 

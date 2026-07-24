@@ -39,10 +39,7 @@ export const mapRawMetricsToMetricsResponse = (
     const series: MetricSeries = {
       id: `${name.replace(/[^a-zA-Z0-9]/g, '-')}-series-${index}`,
       name,
-      category,
       label,
-      yAxisTitle,
-      unit,
       data: data.map(
         (point) =>
           [timestampMsFormatter(point.datetime), point.max] as ChartPoint,
