@@ -1,0 +1,57 @@
+:root {
+  color-scheme: light;
+  font-family: Manrope, Inter, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  color: #17233f;
+  background: #f6f7fa;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: #f6f7fa;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 92% 0%, rgba(91, 75, 204, 0.08), transparent 24rem),
+    #f6f7fa;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+::selection {
+  color: #fff;
+  background: #5b4bcc;
+}
+
+.highcharts-credits {
+  display: none;
+}
+
+.highcharts-container,
+.highcharts-root {
+  font-family: Manrope, Inter, system-ui, sans-serif !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
