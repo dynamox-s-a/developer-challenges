@@ -3,7 +3,11 @@ import { CircularProgress, Alert, Stack } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { fetchMetricsRequest } from '../../features/data/dataSlice';
 import { PageHeader, MachineData, Chart } from '../../components';
-import { ChartsContainer, MainContainer, PageContent } from './style';
+import {
+  DataPageChartsContainer,
+  DataPageContent,
+  DataPageMainContainer,
+} from './style';
 import { DATA_PAGE_TEXTS } from './constants';
 
 const DataPage = () => {
@@ -15,21 +19,19 @@ const DataPage = () => {
     dispatch(fetchMetricsRequest());
   }, [dispatch]);
 
-  console.log('metrics', metrics);
-
   if (isLoading) return <CircularProgress />;
   if (error) return <Alert severity="error">{error}</Alert>;
 
   return (
-    <MainContainer>
+    <DataPageMainContainer>
       <PageHeader pageTitle={DATA_PAGE_TEXTS.pageTitle} />
 
-      <PageContent>
+      <DataPageContent>
         <Stack spacing={3}>
           <MachineData machineInfoTitle={DATA_PAGE_TEXTS.machineInfoTitle} />
 
           {metrics && (
-            <ChartsContainer>
+            <DataPageChartsContainer>
               <Stack spacing={3}>
                 {metrics.accelerationRms && (
                   <Chart data={metrics.accelerationRms} />
@@ -37,11 +39,11 @@ const DataPage = () => {
                 {metrics.temperature && <Chart data={metrics.temperature} />}
                 {metrics.velocityRms && <Chart data={metrics.velocityRms} />}
               </Stack>
-            </ChartsContainer>
+            </DataPageChartsContainer>
           )}
         </Stack>
-      </PageContent>
-    </MainContainer>
+      </DataPageContent>
+    </DataPageMainContainer>
   );
 };
 

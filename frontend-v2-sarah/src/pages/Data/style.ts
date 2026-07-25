@@ -1,21 +1,21 @@
 import { Box, Paper, styled } from '@mui/material';
 
-export const MainContainer = styled(Box)(({ theme }) => ({
+export const DataPageMainContainer = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   minHeight: '100vh',
   padding: 0,
   boxSizing: 'border-box',
 }));
 
-export const PageContent = styled(Box)(({ theme }) => ({
+export const DataPageContent = styled(Box)(({ theme }) => ({
   width: '100%',
-  padding: theme.spacing(2),
+  padding: theme.spacing(2, 2, '55px', 2),
   [theme.breakpoints.up('sm')]: {
-    padding: theme.spacing(3),
+    padding: theme.spacing(3, 3, '55px', 3),
   },
 }));
 
-export const ChartsContainer = styled(Paper)(({ theme }) => ({
+export const DataPageChartsContainer = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
   [theme.breakpoints.up('sm')]: {
     padding: theme.spacing(3),

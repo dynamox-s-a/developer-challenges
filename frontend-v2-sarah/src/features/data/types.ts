@@ -10,7 +10,7 @@ export const MetricLabel = {
   AXIAL: 'Axial',
   HORIZONTAL: 'Horizontal',
   RADIAL: 'Radial',
-  TEMPERATURE: 'Temperature',
+  TEMPERATURE: 'Temperatura',
 } as const;
 export type MetricLabel =
   | (typeof MetricLabel)[keyof typeof MetricLabel]
