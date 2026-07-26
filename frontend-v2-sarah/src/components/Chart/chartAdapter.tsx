@@ -2,12 +2,21 @@ import Highcharts from 'highcharts';
 import type { CSSProperties } from 'react';
 import type { ChartData } from '../../features/data/types';
 
-export const adaptChartDataToHighcharts = (
-  data: ChartData,
-  lineColor: string,
-  bodyFontConfig: CSSProperties,
-  legendFontConfig: CSSProperties,
-): Highcharts.Options => {
+interface adaptToHighchartsProps {
+  data: ChartData;
+  chartStyleConfig: {
+    lineColor: string;
+    bodyFontConfig: CSSProperties;
+    legendFontConfig: CSSProperties;
+  };
+}
+
+export const adaptChartDataToHighcharts = ({
+  data,
+  chartStyleConfig,
+}: adaptToHighchartsProps): Highcharts.Options => {
+  const { lineColor, bodyFontConfig, legendFontConfig } = chartStyleConfig;
+
   const bodyFontStyle = {
     color: bodyFontConfig.color,
     fontSize: bodyFontConfig.fontSize,
@@ -117,5 +126,5 @@ export const adaptChartDataToHighcharts = (
     credits: {
       enabled: false,
     },
-  };
+  } as Highcharts.Options;
 };

@@ -1,26 +1,23 @@
-import { useEffect } from 'react';
-import { CircularProgress, Alert, Stack } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { fetchMetricsRequest } from '../../features/data/dataSlice';
-import { PageHeader, MachineData, Chart } from '../../components';
+import { Stack } from '@mui/material';
+import {
+  PageHeader,
+  MachineData,
+  Chart,
+  Loading,
+  ErrorMessage,
+} from '../../components';
+import { useMetricsData } from './useMetricsData';
+import { getValidCharts } from './chartMetricsMapper';
+import { DATA_PAGE_TEXTS } from './constants';
 import {
   DataPageChartsContainer,
   DataPageContent,
   DataPageMainContainer,
 } from './style';
-import { DATA_PAGE_TEXTS } from './constants';
 
 const DataPage = () => {
-  const dispatch = useAppDispatch();
-
-  const { metrics, isLoading, error } = useAppSelector((state) => state.data);
-
-  useEffect(() => {
-    dispatch(fetchMetricsRequest());
-  }, [dispatch]);
-
-  if (isLoading) return <CircularProgress />;
-  if (error) return <Alert severity="error">{error}</Alert>;
+  const { metrics, isLoading, error } = useMetricsData();
+  const validChats = getValidCharts(metrics);
 
   return (
     <DataPageMainContainer>
@@ -30,15 +27,19 @@ const DataPage = () => {
         <Stack spacing={3}>
           <MachineData machineInfoTitle={DATA_PAGE_TEXTS.machineInfoTitle} />
 
-          {metrics && (
+          {error && <ErrorMessage message={error} />}
+
+          {!error && (!!validChats.length || isLoading) && (
             <DataPageChartsContainer>
-              <Stack spacing={3}>
-                {metrics.accelerationRms && (
-                  <Chart data={metrics.accelerationRms} />
-                )}
-                {metrics.temperature && <Chart data={metrics.temperature} />}
-                {metrics.velocityRms && <Chart data={metrics.velocityRms} />}
-              </Stack>
+              {isLoading && <Loading />}
+
+              {!isLoading && !!validChats.length && (
+                <Stack spacing={3}>
+                  {validChats.map(({ id, data }) => (
+                    <Chart key={id} data={data} />
+                  ))}
+                </Stack>
+              )}
             </DataPageChartsContainer>
           )}
         </Stack>

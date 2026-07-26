@@ -1,46 +1,30 @@
-import { useMemo, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Highcharts from 'highcharts';
-import { Typography, useTheme } from '@mui/material';
 import type { ChartData } from '../../features/data/types';
-import {
-  ChartContainer,
-  ChartContent,
-  ChartWrapperHeader,
-  ChartWrapper,
-} from './style';
-import { adaptChartDataToHighcharts } from './chartAdapter';
+import { CardWrapper } from '../CardWrapper';
+import { ChartContent } from './style';
+import { useChartOptions } from './useChartOptions';
 
 export const Chart = ({ data }: { data: ChartData }) => {
   const { chartTitle } = data;
-  const theme = useTheme();
-  const lineColor = theme.palette.grey[500];
-  const bodyFontConfig = theme.typography.body2;
-  const legendFontConfig = theme.typography.chartLegend;
   const chartContentRef = useRef<HTMLDivElement>(null);
-  const chartOptions = useMemo(
-    () =>
-      adaptChartDataToHighcharts(
-        data,
-        lineColor,
-        bodyFontConfig,
-        legendFontConfig,
-      ),
-    [data, lineColor, bodyFontConfig, legendFontConfig],
-  );
+  const chartOptions = useChartOptions(data);
 
   useEffect(() => {
-    if (chartContentRef.current)
-      Highcharts.chart(chartContentRef.current, chartOptions);
+    let chartInstance: Highcharts.Chart | null = null;
+    const chartContainer = chartContentRef.current;
+
+    if (chartContainer)
+      chartInstance = Highcharts.chart(chartContainer, chartOptions);
+
+    return () => {
+      if (chartInstance) chartInstance.destroy();
+    };
   }, [chartOptions]);
 
   return (
-    <ChartWrapper>
-      <ChartWrapperHeader>
-        <Typography variant="h6">{chartTitle}</Typography>
-      </ChartWrapperHeader>
-      <ChartContainer>
-        <ChartContent ref={chartContentRef}></ChartContent>
-      </ChartContainer>
-    </ChartWrapper>
+    <CardWrapper title={chartTitle}>
+      <ChartContent ref={chartContentRef}></ChartContent>
+    </CardWrapper>
   );
 };

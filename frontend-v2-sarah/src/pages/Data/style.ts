@@ -16,6 +16,9 @@ export const DataPageContent = styled(Box)(({ theme }) => ({
 }));
 
 export const DataPageChartsContainer = styled(Paper)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  minHeight: '90vh',
   padding: theme.spacing(2),
   [theme.breakpoints.up('sm')]: {
     padding: theme.spacing(3),
