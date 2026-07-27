@@ -1,9 +1,7 @@
 import type { MachineData } from './type';
-import {
-  MachineSummaryBarContainer,
-  MachineSummaryBarDataLabel,
-} from './style';
 import { Divider, Stack } from '@mui/material';
+import { MachineSummaryItem } from '../MachineSummaryItem';
+import { MachineSummaryBarContainer } from './style';
 
 export const MachineSummaryBar = ({
   machineData,
@@ -13,7 +11,7 @@ export const MachineSummaryBar = ({
   return (
     <MachineSummaryBarContainer>
       <Stack
-        direction={{ xs: 'column', sm: 'row' }}
+        direction={{ sm: 'column', md: 'row' }}
         alignItems="center"
         justifyContent="space-around"
         divider={<Divider orientation="vertical" flexItem />}
@@ -21,19 +19,12 @@ export const MachineSummaryBar = ({
         sx={{
           width: '100%',
           overflowX: 'auto',
-          // Esconde a barra de rolagem mantendo a funcionalidade responsiva
           '&::-webkit-scrollbar': { display: 'none' },
           scrollbarWidth: 'none',
         }}
       >
-        {machineData.map((data, index) => (
-          <MachineSummaryBarDataLabel
-            key={data.id}
-            isPrimary={index < 2}
-            component="span"
-          >
-            {data.label}
-          </MachineSummaryBarDataLabel>
+        {machineData.map((data) => (
+          <MachineSummaryItem key={data.id} {...{ data }} />
         ))}
       </Stack>
     </MachineSummaryBarContainer>

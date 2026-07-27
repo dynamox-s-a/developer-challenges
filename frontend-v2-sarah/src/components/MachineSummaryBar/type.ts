@@ -1,5 +1,8 @@
+import type { ElementType } from 'react';
+
 export interface MachineData {
   id: string;
   label: string;
-  size: 'large' | 'small';
+  isLarge: boolean;
+  icon: ElementType<{ size?: number }>;
 }

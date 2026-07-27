@@ -79,7 +79,9 @@ export const adaptChartDataToHighcharts = ({
       shared: true,
       xDateFormat: '%d/%m/%Y %H:%M:%S',
     },
-
+    accessibility: {
+      enabled: false,
+    },
     responsive: {
       rules: [
         {

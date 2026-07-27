@@ -1,29 +1,40 @@
+import {
+  DynamicRangeIcon,
+  GpsIcon,
+  MachineIcon,
+  RpmIcon,
+} from '../components/Icons';
 import type { MachineData } from '../components/MachineSummaryBar/type';
 
 export const mockMachineData: MachineData[] = [
   {
     id: 'machine',
     label: 'Máquina 1023',
-    size: 'large',
+    isLarge: true,
+    icon: MachineIcon,
   },
   {
     id: 'point',
     label: 'Ponto 20192',
-    size: 'large',
+    isLarge: true,
+    icon: GpsIcon,
   },
   {
     id: 'rpm',
     label: '200',
-    size: 'small',
+    isLarge: false,
+    icon: RpmIcon,
   },
   {
     id: 'vibration',
     label: '16g',
-    size: 'small',
+    isLarge: false,
+    icon: DynamicRangeIcon,
   },
   {
     id: 'time',
     label: '20 min',
-    size: 'small',
+    isLarge: false,
+    icon: DynamicRangeIcon,
   },
 ];
