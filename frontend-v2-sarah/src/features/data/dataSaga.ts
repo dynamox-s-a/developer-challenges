@@ -14,7 +14,7 @@ import {
 } from './dataSlice';
 import type { MetricsResponse } from './types';
 
-function* fetchMetricsSaga(): Generator<
+export function* fetchMetricsSaga(): Generator<
   CallEffect<MetricsResponse> | PutEffect,
   void,
   MetricsResponse
