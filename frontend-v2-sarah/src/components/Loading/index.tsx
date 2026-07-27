@@ -7,8 +7,9 @@ export const Loading = () => {
       flexGrow={1}
       justifyContent="center"
       alignItems="center"
+      data-testid="loading-container"
     >
-      <CircularProgress />
+      <CircularProgress data-testid="loading-circular-progress" />
     </Box>
   );
 };

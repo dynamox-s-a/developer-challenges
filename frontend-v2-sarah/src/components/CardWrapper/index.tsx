@@ -13,11 +13,15 @@ interface CardWrapperProps {
 
 export const CardWrapper = ({ title, children }: CardWrapperProps) => {
   return (
-    <CardWrapperMainContainer>
-      <CardWrapperHeader>
-        <Typography variant="h6">{title}</Typography>
+    <CardWrapperMainContainer data-testid="card-wrapper-main-container">
+      <CardWrapperHeader data-testid="card-wrapper-header">
+        <Typography variant="h6" data-testid="card-wrapper-title">
+          {title}
+        </Typography>
       </CardWrapperHeader>
-      <CardWrapperContent>{children}</CardWrapperContent>
+      <CardWrapperContent data-testid="card-wrapper-content">
+        {children}
+      </CardWrapperContent>
     </CardWrapperMainContainer>
   );
 };

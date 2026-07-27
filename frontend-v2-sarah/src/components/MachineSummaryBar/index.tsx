@@ -9,7 +9,7 @@ export const MachineSummaryBar = ({
   machineData: MachineData[];
 }) => {
   return (
-    <MachineSummaryBarContainer>
+    <MachineSummaryBarContainer data-testid="machine-summary-bar-container">
       <Stack
         direction={{ sm: 'column', md: 'row' }}
         alignItems="center"

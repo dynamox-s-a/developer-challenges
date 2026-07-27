@@ -3,8 +3,8 @@ import { PageTitleHeader } from './style';
 
 export const PageHeader = ({ pageTitle }: { pageTitle: string }) => {
   return (
-    <PageTitleHeader>
-      <Typography variant="h4" component="h1">
+    <PageTitleHeader data-testid="page-header-container">
+      <Typography variant="h4" component="h1" data-testid="page-header-title">
         {pageTitle}
       </Typography>
     </PageTitleHeader>
