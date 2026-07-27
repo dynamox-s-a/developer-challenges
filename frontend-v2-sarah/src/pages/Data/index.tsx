@@ -1,11 +1,12 @@
 import { Stack } from '@mui/material';
 import {
   PageHeader,
-  MachineData,
   Chart,
   Loading,
   ErrorMessage,
+  MachineSummaryBar,
 } from '../../components';
+import { mockMachineData } from '../../mocks/machieDataMock';
 import { useMetricsData } from './useMetricsData';
 import { getValidCharts } from './chartMetricsMapper';
 import { DATA_PAGE_TEXTS } from './constants';
@@ -25,7 +26,7 @@ const DataPage = () => {
 
       <DataPageContent>
         <Stack spacing={3}>
-          <MachineData machineInfoTitle={DATA_PAGE_TEXTS.machineInfoTitle} />
+          <MachineSummaryBar machineData={mockMachineData} />
 
           {error && <ErrorMessage message={error} />}
 

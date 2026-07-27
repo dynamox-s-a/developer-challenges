@@ -86,7 +86,7 @@ let theme = createTheme({
       fontFamily: 'Roboto, sans-serif',
       fontWeight: 400,
       fontSize: '1.17rem',
-      lineHeight: 21,
+      lineHeight: '1.5',
       color: '#3A3B3F',
     },
 
@@ -95,7 +95,7 @@ let theme = createTheme({
       fontFamily: 'Roboto, sans-serif',
       fontWeight: 400,
       fontSize: '1rem',
-      lineHeight: 14,
+      lineHeight: '1.4',
       color: '#6673A9',
     },
 
@@ -104,7 +104,7 @@ let theme = createTheme({
       fontFamily: 'Roboto, sans-serif',
       fontWeight: 700,
       fontSize: '1rem',
-      lineHeight: '120%',
+      lineHeight: '1.2',
       color: '#3A3B3F',
     },
   },
