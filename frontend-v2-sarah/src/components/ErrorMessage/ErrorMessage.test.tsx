@@ -5,15 +5,19 @@ import { ErrorMessage } from './index';
 
 const theme = createTheme();
 
+const renderErrorMessage = (message: string) => {
+  return render(
+    <ThemeProvider theme={theme}>
+      <ErrorMessage message={message} />
+    </ThemeProvider>,
+  );
+};
+
 describe('ErrorMessage Component', () => {
   it('should render the error message correctly', () => {
     const message = 'Teste de mensagem de erro';
 
-    render(
-      <ThemeProvider theme={theme}>
-        <ErrorMessage message={message} />
-      </ThemeProvider>,
-    );
+    renderErrorMessage(message);
 
     expect(screen.getByTestId('error-wrapper')).toBeInTheDocument();
     expect(screen.getByTestId('error-message-icon')).toBeInTheDocument();
@@ -26,11 +30,7 @@ describe('ErrorMessage Component', () => {
   it('should render the empty error message correctly', () => {
     const message = '';
 
-    render(
-      <ThemeProvider theme={theme}>
-        <ErrorMessage message={message} />
-      </ThemeProvider>,
-    );
+    renderErrorMessage(message);
 
     expect(screen.getByTestId('error-wrapper')).toBeInTheDocument();
     expect(screen.getByTestId('error-message-icon')).toBeInTheDocument();
