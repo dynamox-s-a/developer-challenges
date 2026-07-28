@@ -1,7 +1,8 @@
 import type { ChartData, MetricsResponse } from '../../features/data/types';
+import type { ValidChart } from './type';
 
-export const getValidCharts = (metrics: MetricsResponse | null | undefined) => {
-  if (!metrics) return [];
+export const getValidCharts = (metrics: MetricsResponse): ValidChart[] => {
+  if (!metrics || Object.keys(metrics).length === 0) return [];
 
   const chartMetricsData = [
     { id: 'accelleration', data: metrics?.accelerationRms },

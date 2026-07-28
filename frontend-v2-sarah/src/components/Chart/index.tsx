@@ -24,7 +24,10 @@ export const Chart = ({ data }: { data: ChartData }) => {
 
   return (
     <CardWrapper title={chartTitle}>
-      <ChartContent ref={chartContentRef}></ChartContent>
+      <ChartContent
+        ref={chartContentRef}
+        data-testid="chart-content"
+      ></ChartContent>
     </CardWrapper>
   );
 };

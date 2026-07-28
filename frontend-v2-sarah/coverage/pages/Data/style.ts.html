@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for components/Chart/chart.mock.ts</title>
+    <title>Code coverage report for pages/Data/style.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">components/Chart</a> chart.mock.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">pages/Data</a> style.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
@@ -93,27 +93,24 @@
 <a name='L28'></a><a href='#L28'>28</a>
 <a name='L29'></a><a href='#L29'>29</a>
 <a name='L30'></a><a href='#L30'>30</a>
-<a name='L31'></a><a href='#L31'>31</a>
-<a name='L32'></a><a href='#L32'>32</a>
-<a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a>
-<a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a>
-<a name='L38'></a><a href='#L38'>38</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L31'></a><a href='#L31'>31</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -126,54 +123,36 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { createTheme } from '@mui/material';
-import {
-  ChartTitle,
-  YAxisTitle,
-  type ChartData,
-} from '../../features/data/types';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Box, Paper, styled } from '@mui/material';
 &nbsp;
-export const mockChartData: ChartData = {
-  category: 'gráfico',
-  chartTitle: ChartTitle.ACCELERATION,
-  yAxisTitle: YAxisTitle.ACCELERATION,
-  unit: 'g',
-  series: [
-    {
-      id: '1',
-      name: 'accelleration',
-      label: 'Série A',
-      color: '#e8de14',
-      data: [
-        [1625097600000, 10],
-        [1625184000000, 20],
-      ],
-    },
-  ],
-};
+export const DataPageMainContainer = styled(Box)(({ theme }) =&gt; ({
+  backgroundColor: theme.palette.background.default,
+  minHeight: '100vh',
+  padding: 0,
+  boxSizing: 'border-box',
+}));
 &nbsp;
-export const theme = createTheme({
-  typography: {
-    chartLegend: {
-      fontFamily: 'Roboto, sans-serif',
-      fontWeight: 700,
-      fontSize: '1rem',
-      lineHeight: '1.2',
-      color: '#3A3B3F',
-    },
+export const DataPageContent = styled(Box)(({ theme }) =&gt; ({
+  width: '100%',
+  padding: theme.spacing(2, 2, '55px', 2),
+  [theme.breakpoints.up('sm')]: {
+    padding: theme.spacing(3, 3, '55px', 3),
   },
-});
+}));
+&nbsp;
+export const DataPageChartsContainer = styled(Paper)(({ theme }) =&gt; ({
+  display: 'flex',
+  flexDirection: 'column',
+  minHeight: '90vh',
+  padding: theme.spacing(2),
+  [theme.breakpoints.up('sm')]: {
+    padding: theme.spacing(3),
+  },
+  backgroundColor: theme.palette.background.paper,
+  borderRadius: 0,
+  border: '1px solid',
+  borderColor: theme.palette.grey[500],
+}));
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -181,7 +160,7 @@ export const theme = createTheme({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-27T22:09:28.529Z
+                at 2026-07-28T16:14:47.267Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

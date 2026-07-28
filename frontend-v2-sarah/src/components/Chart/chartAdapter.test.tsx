@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { adaptChartDataToHighcharts } from './chartAdapter';
 import type { CSSProperties } from 'react';
-import { mockChartData } from './chart.mock';
+import { mockChartDataAcceleration } from '../../mocks/metricsMock';
 
 describe('adaptChartDataToHighcharts', () => {
   const mockStyleConfig = {
@@ -23,7 +23,7 @@ describe('adaptChartDataToHighcharts', () => {
 
   it('should correctly convert the data and styles to the Highcharts format', () => {
     const result = adaptChartDataToHighcharts({
-      data: mockChartData,
+      data: mockChartDataAcceleration,
       chartStyleConfig: mockStyleConfig,
     });
 
@@ -33,7 +33,7 @@ describe('adaptChartDataToHighcharts', () => {
 
     expect(result.title?.text).toBeUndefined();
     expect((result.yAxis as Highcharts.YAxisOptions)?.title?.text).toBe(
-      mockChartData.yAxisTitle,
+      mockChartDataAcceleration.yAxisTitle,
     );
 
     expect(result.legend?.enabled).toBe(true);
@@ -47,10 +47,10 @@ describe('adaptChartDataToHighcharts', () => {
 
     expect(series[0]).toMatchObject({
       type: 'line',
-      id: mockChartData.series[0].id,
-      name: mockChartData.series[0].label,
-      color: mockChartData.series[0].color,
-      data: mockChartData.series[0].data,
+      id: mockChartDataAcceleration.series[0].id,
+      name: mockChartDataAcceleration.series[0].label,
+      color: mockChartDataAcceleration.series[0].color,
+      data: mockChartDataAcceleration.series[0].data,
     });
 
     expect(result.credits?.enabled).toBe(false);

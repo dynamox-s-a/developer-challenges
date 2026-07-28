@@ -6,8 +6,9 @@ import {
   YAxisTitle,
   type ChartData,
 } from '../../features/data/types';
+import { mockChartDataAcceleration } from '../../mocks/metricsMock';
+import { theme } from '../../mocks/themeMock';
 import { useChartOptions } from './useChartOptions';
-import { mockChartData, theme } from './chart.mock';
 
 const wrapper = ({ children }: { children: React.ReactNode }) => (
   <ThemeProvider theme={theme}>{children}</ThemeProvider>
@@ -15,9 +16,12 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 
 describe('useChartOptions Hook', () => {
   it('should return Highcharts options correctly structured based on the data provided', () => {
-    const { result } = renderHook(() => useChartOptions(mockChartData), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () => useChartOptions(mockChartDataAcceleration),
+      {
+        wrapper,
+      },
+    );
 
     const options = result.current;
 
@@ -25,23 +29,23 @@ describe('useChartOptions Hook', () => {
     expect(options.chart?.type).toBe('line');
 
     const yAxis = options.yAxis as Highcharts.YAxisOptions;
-    expect(yAxis?.title?.text).toBe(mockChartData.yAxisTitle);
+    expect(yAxis?.title?.text).toBe(mockChartDataAcceleration.yAxisTitle);
 
     const series = options.series as Highcharts.SeriesOptionsType[];
     expect(series).toBeDefined();
     expect(series).toHaveLength(1);
 
     expect(series[0]).toMatchObject({
-      id: mockChartData.series[0].id,
-      name: mockChartData.series[0].label,
-      color: mockChartData.series[0].color,
-      data: mockChartData.series[0].data,
+      id: mockChartDataAcceleration.series[0].id,
+      name: mockChartDataAcceleration.series[0].label,
+      color: mockChartDataAcceleration.series[0].color,
+      data: mockChartDataAcceleration.series[0].data,
     });
   });
 
   it('should update the options if the input data changes', () => {
     const updatedData: ChartData = {
-      ...mockChartData,
+      ...mockChartDataAcceleration,
       chartTitle: ChartTitle.VELOCITY,
       yAxisTitle: YAxisTitle.VELOCITY,
       series: [],
@@ -51,11 +55,13 @@ describe('useChartOptions Hook', () => {
       ({ data }) => useChartOptions(data),
       {
         wrapper,
-        initialProps: { data: mockChartData },
+        initialProps: { data: mockChartDataAcceleration },
       },
     );
 
-    expect(result.current.series).toHaveLength(mockChartData.series.length);
+    expect(result.current.series).toHaveLength(
+      mockChartDataAcceleration.series.length,
+    );
 
     rerender({ data: updatedData });
     expect(result.current.series).toHaveLength(updatedData.series.length);

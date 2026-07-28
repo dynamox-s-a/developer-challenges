@@ -18,10 +18,10 @@ import {
 
 const DataPage = () => {
   const { metrics, isLoading, error } = useMetricsData();
-  const validChats = getValidCharts(metrics);
+  const validCharts = getValidCharts(metrics);
 
   return (
-    <DataPageMainContainer>
+    <DataPageMainContainer data-testid="data-page-main-container">
       <PageHeader pageTitle={DATA_PAGE_TEXTS.pageTitle} />
 
       <DataPageContent>
@@ -30,13 +30,13 @@ const DataPage = () => {
 
           {error && <ErrorMessage message={error} />}
 
-          {!error && (!!validChats.length || isLoading) && (
-            <DataPageChartsContainer>
+          {!error && (isLoading || !!validCharts?.length) && (
+            <DataPageChartsContainer data-testid="data-page-charts-container">
               {isLoading && <Loading />}
 
-              {!isLoading && !!validChats.length && (
-                <Stack spacing={3}>
-                  {validChats.map(({ id, data }) => (
+              {!isLoading && !!validCharts?.length && (
+                <Stack spacing={3} data-testid="data-page-wrapper-chat">
+                  {validCharts.map(({ id, data }) => (
                     <Chart key={id} data={data} />
                   ))}
                 </Stack>
