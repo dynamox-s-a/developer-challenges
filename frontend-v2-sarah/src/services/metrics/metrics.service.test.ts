@@ -23,7 +23,7 @@ describe('getMetrics Service', () => {
     vi.clearAllMocks();
   });
 
-  it('deve buscar as métricas com sucesso e retornar o resultado mapeado', async () => {
+  it('should retrieve metrics and return mapped result', async () => {
     const mockRawMetricsData: RawMetricsResponse = [
       {
         name: 'accelerationRms/x',
@@ -52,7 +52,7 @@ describe('getMetrics Service', () => {
     expect(result).toEqual(mockMetricMappedData);
   });
 
-  it('deve lançar erro de rede formatado quando o axios retornar erro', async () => {
+  it('should throw formatted network error when axios returns error', async () => {
     const networkErrorMock = {
       code: 'ERR_NETWORK',
       response: undefined,
@@ -66,7 +66,7 @@ describe('getMetrics Service', () => {
     await expect(getMetrics()).rejects.toThrow(ERROR_MESSAGES.NETWORK_ERROR);
   });
 
-  it('deve lançar erro genérico de fetch quando ocorrer outro tipo de erro', async () => {
+  it('should throw a generic fetch error when returns another type of error', async () => {
     const serverError = new Error('Erro do servidor');
 
     vi.spyOn(axios, 'isAxiosError').mockReturnValueOnce(false);
