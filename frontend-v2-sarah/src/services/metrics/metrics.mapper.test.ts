@@ -11,13 +11,13 @@ import { mapRawMetricsToMetricsResponse } from './metrics.mapper';
 import type { RawMetricsResponse } from './type';
 
 describe('Metrics Mapper Test', () => {
-  it('deve retornar um objeto vazio se rawMetrics nao for um array', () => {
+  it('should return empty object if rawMetrics is not array', () => {
     const metrics = mapRawMetricsToMetricsResponse({} as RawMetricsResponse);
 
     expect(metrics).toEqual({});
   });
 
-  it('deve mapear e agrupar as métricas usando os resolvers', () => {
+  it('should map and group the metrics using resolvers', () => {
     const mockRawMetricsData: RawMetricsResponse = [
       {
         name: 'accelerationRms/x',
@@ -44,7 +44,7 @@ describe('Metrics Mapper Test', () => {
     expect(series.data[0][1]).toBe(mockRawMetricsData[0].data[0].max);
   });
 
-  it('deve mapear, agrupar métricas e reutilizar categoria existente corretamente', () => {
+  it('should map, group metrics, and reuse existing categories correctly', () => {
     // mesma categoria ('accelerationRms'), mas eixos diferentes
     const mockRawData: RawMetricsResponse = [
       {

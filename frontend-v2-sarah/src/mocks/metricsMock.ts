@@ -8,15 +8,15 @@ import {
 import type { ValidChart } from '../pages/Data/type';
 
 export const mockChartDataAcceleration: ChartData = {
-  category: 'acceleration',
+  category: 'accelerationRms',
   chartTitle: ChartTitle.ACCELERATION,
   yAxisTitle: YAxisTitle.ACCELERATION,
   unit: MetricUnit.MM_S,
   series: [
     {
-      id: '1',
-      name: 'accelleration',
-      label: 'Série A',
+      id: 'accelerationRms-x-series-0',
+      name: 'accelerationRms/x',
+      label: 'Axial',
       color: '#e8de14',
       data: [
         [1625097600000, 10],
@@ -33,9 +33,9 @@ export const mockChartDataTemperature: ChartData = {
   unit: MetricUnit.CELSIUS,
   series: [
     {
-      id: '1',
+      id: 'temperature-series-6',
       name: 'temperature',
-      label: 'Série A',
+      label: 'Temperatura',
       color: '#e8de14',
       data: [
         [1625097600000, 10],
@@ -46,15 +46,15 @@ export const mockChartDataTemperature: ChartData = {
 };
 
 export const mockChartDataVelocity: ChartData = {
-  category: 'velocity',
+  category: 'velocityRms',
   chartTitle: ChartTitle.VELOCITY,
   yAxisTitle: YAxisTitle.VELOCITY,
   unit: MetricUnit.G,
   series: [
     {
-      id: '1',
-      name: 'velocity',
-      label: 'Série A',
+      id: 'velocityRms-x-series-3',
+      name: 'velocityRms/x',
+      label: 'Axial',
       color: '#e8de14',
       data: [
         [1625097600000, 10],
