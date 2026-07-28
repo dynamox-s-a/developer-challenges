@@ -3,13 +3,13 @@ import { runSaga } from 'redux-saga';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ERROR_MESSAGES } from '../../features/data/constants';
 import { getMetrics } from '../../services/metrics/metrics.service';
+import { mockMetricsResponse } from '../../mocks/metricsMock';
 import { dataSaga, fetchMetricsSaga } from './dataSaga';
 import {
   fetchMetricsSuccess,
   fetchMetricsFailure,
   fetchMetricsRequest,
 } from './dataSlice';
-import { mockMetrics } from './data.mock';
 
 vi.mock('../../services/metrics/metrics.service', () => ({
   getMetrics: vi.fn(),
@@ -45,12 +45,12 @@ describe('dataSaga Tests', () => {
   });
 
   it('should successfully retrieve metrics and dispatch fetchMetricsSuccess', async () => {
-    vi.mocked(getMetrics).mockResolvedValueOnce(mockMetrics);
+    vi.mocked(getMetrics).mockResolvedValueOnce(mockMetricsResponse);
 
     const dispatched = await runSagaHelper();
 
     expect(getMetrics).toHaveBeenCalledTimes(1);
-    expect(dispatched).toEqual([fetchMetricsSuccess(mockMetrics)]);
+    expect(dispatched).toEqual([fetchMetricsSuccess(mockMetricsResponse)]);
   });
 
   it('should send correct error message and dispatch fetchMetricsFailure when service fails', async () => {

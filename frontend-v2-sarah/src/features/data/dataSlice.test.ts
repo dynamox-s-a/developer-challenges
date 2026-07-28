@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
+import { mockMetricsResponse } from '../../mocks/metricsMock';
 import type { MetricsResponse } from './types';
 import dataReducer, {
   fetchMetricsRequest,
   fetchMetricsSuccess,
   fetchMetricsFailure,
 } from './dataSlice';
-import { mockMetrics } from './data.mock';
 import { ERROR_MESSAGES } from './constants';
 
 const initialState = {
@@ -40,10 +40,13 @@ describe('dataSlice tests', () => {
       isLoading: true,
     };
 
-    const state = dataReducer(previousState, fetchMetricsSuccess(mockMetrics));
+    const state = dataReducer(
+      previousState,
+      fetchMetricsSuccess(mockMetricsResponse),
+    );
 
     expect(state.isLoading).toBe(false);
-    expect(state.metrics).toEqual(mockMetrics);
+    expect(state.metrics).toEqual(mockMetricsResponse);
     expect(state.error).toBeNull();
   });
 
