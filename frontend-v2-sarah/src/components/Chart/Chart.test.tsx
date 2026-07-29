@@ -40,6 +40,20 @@ describe('Chart component', () => {
     expect(Highcharts.chart).toHaveBeenCalledTimes(1);
   });
 
+  it('should pass correct configuration and tooltip settings to Highcharts', () => {
+    renderChart();
+
+    const chartOptions = vi.mocked(Highcharts.chart).mock.calls[0][1];
+
+    expect(chartOptions).toBeDefined();
+    expect(chartOptions.tooltip).toBeDefined();
+    expect(chartOptions.tooltip?.enabled).not.toBe(false);
+    expect(chartOptions?.tooltip).toMatchObject({
+      shared: true,
+      xDateFormat: '%d/%m/%Y %H:%M:%S',
+    });
+  });
+
   it('should destroy the Highcharts instance when unmounting the component', () => {
     const mockDestroy = vi.fn();
 
