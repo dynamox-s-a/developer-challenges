@@ -1,75 +1,98 @@
-# React + TypeScript + Vite
+# Sarah Santana - Front-End Challenge V2
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Status do Projeto](https://img.shields.io/badge/status-concluído-brightgreen)
+![React](https://img.shields.io/badge/React-18.3.1-blue?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-6.0.2-blue?logo=typescript)
+![Vite](https://img.shields.io/badge/Vite-8.1.1-purple?logo=vite)
 
-Currently, two official plugins are available:
+Aplicação front-end desenvolvida com arquitetura escalável, utilizando React, TypeScript, Redux Toolkit, Redux Saga e Material-UI.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Tecnologias e Ferramentas
 
-## React Compiler
+- **Core:** React, TypeScript, Vite
+- **Estado & Side Effects:** Redux Toolkit, Redux Saga
+- **Roteamento:** React Router DOM
+- **Estilização:** Material-UI (MUI)
+- **Visualização de Dados:** Highcharts
+- **Comunicação HTTP:** Axios
+- **Testes Automatizados:** Vitest, React Testing Library
+- **Documentação de Componentes:** Storybook
+- **Qualidade de Código:** ESLint
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 📂 Estrutura do Projeto
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```text
+├── public/                 # Assets públicos (ícones, favicon)
+├── src/
+│   ├── app/                # Configuração do Redux Store, Hooks e RootSaga
+│   ├── assets/             # Recursos estáticos (ícones, imagens)
+│   ├── components/         # Componentes reutilizáveis de UI
+│   ├── features/           # Módulos de funcionalidades
+│   ├── mocks/              # Dados mockados para testes e desenvolvimento
+│   ├── pages/              # Páginas da aplicação
+│   ├── routes/             # Configuração de rotas (React Router)
+│   ├── services/           # Camada de serviços e API
+│   ├── theme/              # Configuração do tema do Material-UI
+│   ├── utils/              # Funções utilitárias
+│   ├── App.tsx             # Componente raiz
+│   └── main.tsx            # Ponto de entrada
+├── db.json                 # Base de dados local para o JSON Server
+└── package.json
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## ⚙️ Como Executar o Projeto Localmente
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Certifique-se de ter o Node.js instalado em sua máquina.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Clone o repositório e acesse a pasta do projeto:
 
+```bash
+git clone (https://github.com/SarahSantana/developer-challenges)
+frontend-v2-sarah
+```
+
+1. **Instale as dependências:**
+
+```bash
+npm install
+```
+
+2. **Inicie o servidor de dados locais (JSON Server):**
+
+```bash
+npm run server
+```
+
+Isso iniciará o json-server na porta 3001 utilizando o arquivo db.json.
+
+3. **Em outro terminal, inicie a aplicação em modo de desenvolvimento:**
+
+```bash
+npm run dev
+```
+
+A aplicação estará rodando em http://localhost:5173 (ou na porta indicada pelo terminal).
+
+## 🧪 Testes Automatizados
+
+Para rodar os testes unitários e de integração utilizando o Vitest:
+
+```bash
+npm run test
+```
+
+Para verificar a cobertura de testes:
+
+```bash
+npm run test:coverage
+```
+
+## 📝 Storybook
+
+Inicia o Storybook para documentação de componentes:
+
+```bash
+npm run storybook
 ```
