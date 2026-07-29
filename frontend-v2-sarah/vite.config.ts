@@ -7,6 +7,7 @@ export default defineConfig({
   build: {
     chunkSizeWarningLimit: 1000,
   },
+  base: '/data/',
   test: {
     environment: 'jsdom',
     globals: true,
