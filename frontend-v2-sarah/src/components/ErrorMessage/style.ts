@@ -14,7 +14,7 @@ export const ErrorContentBox = styled(Box)(({ theme }) => ({
   alignSelf: 'flex-start',
   backgroundColor: alpha(theme.palette.error.main, 0.12),
   color: theme.palette.error.dark,
-  paddingTop: theme.spacing(1.5, 3),
+  padding: theme.spacing(1.5, 3),
   borderRadius: theme.shape.borderRadius,
   width: '100%',
   lineHeight: 1.2,
