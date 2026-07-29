@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Data from '../pages/Data';
 
 export function AppRouters() {
@@ -10,6 +10,7 @@ export function AppRouters() {
       }}
     >
       <Routes>
+        <Route path="/" element={<Navigate to="/data" replace />} />
         <Route path="/data" element={<Data />} />
       </Routes>
     </BrowserRouter>
