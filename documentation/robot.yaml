@@ -1,0 +1,7 @@
+robot:
+  output: reports/output.xml
+  log: reports/log.html
+  report: reports/report.html
+  loglevel: INFO
+  pythonpath:
+    - resources
