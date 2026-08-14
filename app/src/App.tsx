@@ -1,20 +1,12 @@
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import Data from './pages/Data';
 
 function App() {
   return (
-    <Container maxWidth="lg">
-      <Box sx={{ py: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Dynamox Dashboard
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Projeto inicializado com Vite, React, TypeScript, Redux, Redux Saga, Material UI,
-          Highcharts e Jest.
-        </Typography>
-      </Box>
-    </Container>
+    <Routes>
+      <Route path="/data" element={<Data />} />
+      <Route path="*" element={<Navigate to="/data" replace />} />
+    </Routes>
   );
 }
 

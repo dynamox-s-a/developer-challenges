@@ -1,12 +1,10 @@
 {
   "extends": "./tsconfig.app.json",
   "compilerOptions": {
-    "types": ["jest", "@testing-library/jest-dom"],
-    "verbatimModuleSyntax": false,
-    "erasableSyntaxOnly": false,
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "noEmit": true
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "types": ["jest", "node"],
+    "jsx": "react-jsx"
   },
   "include": ["src/**/*.test.ts", "src/**/*.test.tsx", "src/setupTests.ts"]
 }
