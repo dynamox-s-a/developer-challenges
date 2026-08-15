@@ -1,7 +1,9 @@
 import type { RootState } from '../index';
 
-export const selectData = (state: RootState) => state.data.data;
+export const selectDataState = (state: RootState) => state.data;
 
-export const selectDataLoading = (state: RootState) => state.data.loading;
+export const selectData = (state: RootState) => selectDataState(state).data;
 
-export const selectDataError = (state: RootState) => state.data.error;
+export const selectDataLoading = (state: RootState) => selectDataState(state).loading;
+
+export const selectDataError = (state: RootState) => selectDataState(state).error;

@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
+    "api": "json-server --watch db.json --port 3000",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "format": "prettier --write .",

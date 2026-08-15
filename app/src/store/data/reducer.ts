@@ -2,7 +2,7 @@ import type { AnyAction } from 'redux';
 
 import { DataActionTypes, type DataState } from './types';
 
-const initialState: DataState = {
+export const initialState: DataState = {
   data: [],
   loading: false,
   error: null,

@@ -5,7 +5,7 @@ import { api } from '../../services/api';
 import { fetchDataFailure, fetchDataSuccess } from './actions';
 import { DataActionTypes } from './types';
 
-function* fetchDataSaga(): SagaIterator {
+export function* fetchDataSaga() {
   try {
     const data = yield call(api.getData);
 
