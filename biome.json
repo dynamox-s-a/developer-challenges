@@ -3,6 +3,8 @@
 	"files": {
 		"includes": [
 			"src/**",
+			"api/**",
+			"tests/**",
 			"cypress/**",
 			".storybook/**",
 			"cypress.config.ts",
