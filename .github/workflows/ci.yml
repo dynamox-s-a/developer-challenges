@@ -134,4 +134,5 @@ jobs:
     uses: ./.github/workflows/cd.yml
     permissions:
       contents: read
-    secrets: inherit
+    secrets:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
