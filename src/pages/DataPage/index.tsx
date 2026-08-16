@@ -5,6 +5,7 @@ import { EmptyState } from '@/components/EmptyState';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ErrorState } from '@/components/ErrorState';
 import { LoadingState } from '@/components/LoadingState';
+import { ChartsPanel } from '@/features/measurements/components/ChartsPanel';
 import { MachineSummary } from '@/features/measurements/components/MachineSummary';
 import { MACHINE_INFO } from '@/features/measurements/constants';
 import {
@@ -36,7 +37,12 @@ export default function DataPage() {
 				return <ErrorState message={error ?? undefined} onRetry={handleRetry} />;
 			case 'success':
 				if (data.length === 0) return <EmptyState />;
-				return <MachineSummary data={MACHINE_INFO} />;
+				return (
+					<Box sx={{ display: 'grid', gap: 3 }}>
+						<MachineSummary data={MACHINE_INFO} />
+						<ChartsPanel />
+					</Box>
+				);
 		}
 	}
 

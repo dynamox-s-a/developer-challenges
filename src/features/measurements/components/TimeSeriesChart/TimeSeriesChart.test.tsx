@@ -1,0 +1,67 @@
+import type { HTMLAttributes } from 'react';
+import type Highcharts from 'highcharts';
+import { render, screen } from '@testing-library/react';
+import type { MeasurementSeries } from '../../model/types';
+import { TimeSeriesChart } from '.';
+
+vi.mock('highcharts-react-official', () => ({
+	HighchartsReact: ({
+		containerProps,
+		options,
+	}: {
+		containerProps: HTMLAttributes<HTMLDivElement>;
+		options: Highcharts.Options;
+	}) => (
+		<div {...containerProps} data-series-count={options.series?.length ?? 0}>
+			Highcharts
+		</div>
+	),
+}));
+
+function createSeries(axis: MeasurementSeries['axis']): MeasurementSeries {
+	return {
+		axis,
+		data: [{ timestamp: 1_699_357_200_000, value: 1 }],
+		id: axis ?? 'temperature',
+		metric: axis === null ? 'temperature' : 'accelerationRms',
+		name: axis ?? 'temperature',
+		unit: axis === null ? '°C' : 'g',
+	};
+}
+
+describe('TimeSeriesChart', () => {
+	it.each([
+		[['x'] as const, '1'],
+		[['z', 'x', 'y'] as const, '3'],
+	])('renders %s series through the Highcharts boundary', (axes, expectedCount) => {
+		render(
+			<TimeSeriesChart
+				chartId="measurement-chart"
+				labelledBy="measurement-title"
+				series={axes.map(createSeries)}
+				title="Aceleração RMS"
+				unit="g"
+			/>,
+		);
+
+		expect(screen.getByText('Highcharts')).toHaveAttribute('data-series-count', expectedCount);
+		expect(screen.getByText('Highcharts')).toHaveAttribute('aria-labelledby', 'measurement-title');
+	});
+
+	it('unregisters the chart instance when unmounted', () => {
+		const onChartReady = vi.fn();
+		const { unmount } = render(
+			<TimeSeriesChart
+				chartId="temperature-chart"
+				onChartReady={onChartReady}
+				series={[createSeries(null)]}
+				title="Temperatura"
+				unit="°C"
+			/>,
+		);
+
+		unmount();
+
+		expect(onChartReady).toHaveBeenCalledWith(null);
+	});
+});

@@ -7,6 +7,10 @@ import type { MeasurementsState } from '@/features/measurements/store/slice';
 import type { MeasurementSeries } from '@/features/measurements/model/types';
 import DataPage from './index';
 
+vi.mock('@/features/measurements/components/TimeSeriesChart', () => ({
+	TimeSeriesChart: ({ title }: { title: string }) => <div role="img" aria-label={title} />,
+}));
+
 const mockSeries: MeasurementSeries[] = [
 	{
 		id: 'accelerationRms-x',
@@ -77,6 +81,7 @@ describe('DataPage', () => {
 		renderWithStore({ status: 'success', data: mockSeries });
 		expect(screen.getByText('Máquina 1023')).toBeInTheDocument();
 		expect(screen.getByText('Ponto 20192')).toBeInTheDocument();
+		expect(screen.getAllByRole('img')).toHaveLength(3);
 	});
 
 	it('retry button dispatches measurementsRequested', async () => {

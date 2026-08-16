@@ -29,6 +29,12 @@ importers:
       axios:
         specifier: ^1.19.0
         version: 1.19.0
+      highcharts:
+        specifier: ^13.0.0
+        version: 13.0.0
+      highcharts-react-official:
+        specifier: ^3.2.3
+        version: 3.2.3(highcharts@13.0.0)(react@19.2.8)
       react:
         specifier: ^19.2.8
         version: 19.2.8
@@ -1005,6 +1011,23 @@ packages:
   header-range-parser@2.0.0:
     resolution: {integrity: sha512-DMbQU7Dd2tG4a+9M09ZUkPX4Ie/QRed6TYvoeDtgIajIkVo7A7xRTbs/M/j7jFMZzVhe6tVNWLk3/nwPO8iSMQ==}
     engines: {node: '>=20.19.0'}
+
+  highcharts-react-official@3.2.3:
+    resolution: {integrity: sha512-2gL8bVGe6Pf75tSe6IB5Ucd0nIOJX7ZrpttQBZVrjN2J9StdVZ12aOinXHIOFvlc6EzP8CbN13WS8NUq+9mptA==}
+    peerDependencies:
+      highcharts: '>=6.0.0'
+      react: '>=16.8.0'
+
+  highcharts@13.0.0:
+    resolution: {integrity: sha512-AoFXei9hSnVXo8X5PmXzSiNXwPMgA+NzyN35uRRy0N1XwbJbRI1laTCaaFci9QB9Wyv9ZFWlgF0xzgivavJpDA==}
+    peerDependencies:
+      jspdf: ^4.1.0
+      svg2pdf.js: ^2.7.0
+    peerDependenciesMeta:
+      jspdf:
+        optional: true
+      svg2pdf.js:
+        optional: true
 
   hoist-non-react-statics@3.3.2:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
@@ -2495,6 +2518,13 @@ snapshots:
       function-bind: 1.1.2
 
   header-range-parser@2.0.0: {}
+
+  highcharts-react-official@3.2.3(highcharts@13.0.0)(react@19.2.8):
+    dependencies:
+      highcharts: 13.0.0
+      react: 19.2.8
+
+  highcharts@13.0.0: {}
 
   hoist-non-react-statics@3.3.2:
     dependencies:
