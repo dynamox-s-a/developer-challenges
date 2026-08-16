@@ -17,7 +17,7 @@ jobs:
     env:
       VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ vars.VERCEL_APP_PROJECT_ID }}
-      VERCEL_TOKEN: ${{ secrets.VERCEL_APP_TOKEN }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
 
     steps:
@@ -57,7 +57,7 @@ jobs:
     env:
       VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ vars.VERCEL_STORYBOOK_PROJECT_ID }}
-      VERCEL_TOKEN: ${{ secrets.VERCEL_STORYBOOK_TOKEN }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
     steps:
       - name: Check out repository
