@@ -3,8 +3,9 @@ import { LoadingState } from './index';
 
 describe('LoadingState', () => {
 	it('renders a spinner', () => {
-		render(<LoadingState />);
-		expect(screen.getByRole('progressbar')).toBeInTheDocument();
+		const { container } = render(<LoadingState />);
+		expect(container.querySelector('.MuiCircularProgress-root')).toBeInTheDocument();
+		expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
 	});
 
 	it('displays default message', () => {
@@ -19,6 +20,6 @@ describe('LoadingState', () => {
 
 	it('has role="status"', () => {
 		render(<LoadingState />);
-		expect(screen.getByRole('status')).toBeInTheDocument();
+		expect(screen.getByRole('status')).toHaveAttribute('aria-live', 'polite');
 	});
 });

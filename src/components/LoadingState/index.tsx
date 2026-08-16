@@ -10,7 +10,8 @@ export function LoadingState({ message = 'Carregando dados...' }: LoadingStatePr
 	return (
 		<Box
 			role="status"
-			aria-label={message}
+			aria-atomic="true"
+			aria-live="polite"
 			sx={{
 				display: 'flex',
 				flexDirection: 'column',
@@ -20,7 +21,7 @@ export function LoadingState({ message = 'Carregando dados...' }: LoadingStatePr
 				gap: 2,
 			}}
 		>
-			<CircularProgress />
+			<CircularProgress aria-hidden="true" />
 			<Typography variant="body1">{message}</Typography>
 		</Box>
 	);

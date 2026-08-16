@@ -52,6 +52,8 @@ describe('chartOptions', () => {
 			accessibility: {
 				description: 'Aceleração RMS. Gráfico temporal com valores em g.',
 				enabled: true,
+				keyboardNavigation: { enabled: true },
+				screenReaderSection: { beforeChartFormat: '' },
 			},
 			chart: {
 				height: 432,
@@ -64,6 +66,20 @@ describe('chartOptions', () => {
 				series: {
 					lineWidth: 2,
 				},
+			},
+			responsive: {
+				rules: [
+					{
+						chartOptions: {
+							chart: { height: 320 },
+							xAxis: {
+								labels: { autoRotation: [-45] },
+								tickPixelInterval: 80,
+							},
+						},
+						condition: { maxWidth: 600 },
+					},
+				],
 			},
 			time: {
 				timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,

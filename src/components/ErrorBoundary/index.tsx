@@ -42,6 +42,8 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
 		return (
 			<Box
+				role="alert"
+				aria-atomic="true"
 				sx={{
 					display: 'flex',
 					flexDirection: 'column',
@@ -52,7 +54,9 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 				}}
 			>
 				<ErrorOutline color="error" sx={{ fontSize: 48 }} />
-				<Typography variant="h6">Algo deu errado</Typography>
+				<Typography component="h2" variant="h6">
+					Algo deu errado
+				</Typography>
 				{this.state.error && (
 					<Typography variant="body2" color="text.secondary">
 						{this.state.error.message}

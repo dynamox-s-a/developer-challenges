@@ -11,4 +11,9 @@ describe('EmptyState', () => {
 		render(<EmptyState message="Sem resultados" />);
 		expect(screen.getByText('Sem resultados')).toBeInTheDocument();
 	});
+
+	it('announces empty results politely', () => {
+		render(<EmptyState />);
+		expect(screen.getByRole('status')).toHaveAttribute('aria-live', 'polite');
+	});
 });

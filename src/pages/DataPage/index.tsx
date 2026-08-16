@@ -57,14 +57,19 @@ export default function DataPage() {
 					borderColor: 'divider',
 					display: 'flex',
 					height: 64,
-					px: 3,
+					px: { xs: 2, sm: 3 },
 				}}
 			>
 				<Typography variant="h4" component="h1">
 					Análise de Dados
 				</Typography>
 			</Box>
-			<Box component="main" sx={{ p: { xs: 2, sm: 3 } }}>
+			<Box
+				component="main"
+				id="main-content"
+				aria-busy={status === 'idle' || status === 'loading'}
+				sx={{ minWidth: 0, p: { xs: 2, sm: 3 } }}
+			>
 				<ErrorBoundary>{renderContent()}</ErrorBoundary>
 			</Box>
 		</Box>

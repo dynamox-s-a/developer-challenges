@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import type { MeasurementsState } from '@/features/measurements/store/slice';
 import type { MeasurementSeries } from '@/features/measurements/model/types';
+import { auditAccessibility } from '@/test/accessibility';
 import DataPage from './index';
 
 vi.mock('@/features/measurements/components/TimeSeriesChart', () => ({
@@ -64,6 +65,7 @@ describe('DataPage', () => {
 		renderWithStore({ status: 'loading' });
 		expect(screen.getByRole('status')).toBeInTheDocument();
 		expect(screen.getByText('Carregando dados...')).toBeInTheDocument();
+		expect(screen.getByRole('main')).toHaveAttribute('aria-busy', 'true');
 	});
 
 	it('renders ErrorState when status is error', () => {
@@ -81,7 +83,20 @@ describe('DataPage', () => {
 		renderWithStore({ status: 'success', data: mockSeries });
 		expect(screen.getByText('Máquina 1023')).toBeInTheDocument();
 		expect(screen.getByText('Ponto 20192')).toBeInTheDocument();
-		expect(screen.getAllByRole('img')).toHaveLength(3);
+		expect(screen.getByRole('img', { name: 'Aceleração RMS' })).toBeInTheDocument();
+		expect(screen.getByRole('img', { name: 'Temperatura' })).toBeInTheDocument();
+		expect(screen.getByRole('img', { name: 'Velocidade RMS' })).toBeInTheDocument();
+		expect(screen.getByRole('main')).toHaveAttribute('aria-busy', 'false');
+	});
+
+	it.each<[string, Partial<MeasurementsState>]>([
+		['loading', { status: 'loading' }],
+		['error', { status: 'error', error: 'Network failure' }],
+		['empty', { status: 'success', data: [] }],
+		['success', { status: 'success', data: mockSeries }],
+	])('has no automated accessibility violations in the %s state', async (_name, state) => {
+		const { container } = renderWithStore(state);
+		expect(await auditAccessibility(container)).toEqual([]);
 	});
 
 	it('retry button dispatches measurementsRequested', async () => {

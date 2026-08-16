@@ -83,6 +83,8 @@ export function createChartOptions({ title, unit, series }: ChartOptionsInput): 
 		accessibility: {
 			description: `${title}. Gráfico temporal com valores em ${unit}.`,
 			enabled: true,
+			keyboardNavigation: { enabled: true },
+			screenReaderSection: { beforeChartFormat: '' },
 		},
 		chart: {
 			animation: false,
@@ -116,8 +118,25 @@ export function createChartOptions({ title, unit, series }: ChartOptionsInput): 
 				{
 					condition: { maxWidth: 600 },
 					chartOptions: {
-						chart: { height: 320 },
-						legend: { itemDistance: 8 },
+						chart: {
+							height: 320,
+							spacing: [12, 8, 8, 4],
+						},
+						legend: {
+							itemDistance: 8,
+							itemStyle: { fontSize: '11px' },
+						},
+						xAxis: {
+							labels: {
+								autoRotation: [-45],
+								style: { fontSize: '10px' },
+							},
+							tickPixelInterval: 80,
+						},
+						yAxis: {
+							labels: { style: { fontSize: '10px' } },
+							title: { style: { fontSize: '10px' } },
+						},
 					},
 				},
 			],

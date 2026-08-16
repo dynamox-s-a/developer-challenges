@@ -32,7 +32,8 @@ describe('ErrorBoundary', () => {
 				<ThrowingComponent shouldThrow={true} />
 			</ErrorBoundary>,
 		);
-		expect(screen.getByText('Algo deu errado')).toBeInTheDocument();
+		expect(screen.getByRole('alert')).toBeInTheDocument();
+		expect(screen.getByRole('heading', { level: 2, name: 'Algo deu errado' })).toBeInTheDocument();
 		expect(screen.getByText('Test error')).toBeInTheDocument();
 	});
 

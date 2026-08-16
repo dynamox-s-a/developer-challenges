@@ -34,6 +34,6 @@ describe('ErrorState', () => {
 
 	it('has role="alert"', () => {
 		render(<ErrorState />);
-		expect(screen.getByRole('alert')).toBeInTheDocument();
+		expect(screen.getByRole('alert')).toHaveAttribute('aria-atomic', 'true');
 	});
 });

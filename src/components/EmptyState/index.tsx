@@ -12,6 +12,9 @@ interface EmptyStateProps {
 export function EmptyState({ message = 'Nenhuma medição disponível.' }: EmptyStateProps) {
 	return (
 		<Box
+			role="status"
+			aria-atomic="true"
+			aria-live="polite"
 			sx={{
 				display: 'flex',
 				flexDirection: 'column',

@@ -10,11 +10,10 @@ describe('MetricChartCard', () => {
 		);
 
 		const title = screen.getByRole('heading', { level: 2, name: 'Aceleração RMS' });
-		const card = screen.getByRole('region', { name: 'Aceleração RMS' });
-		const chartArea = screen.getByRole('group', { name: 'Aceleração RMS' });
+		const card = screen.getByRole('article', { name: 'Aceleração RMS' });
 
 		expect(title).toHaveAttribute('id', 'acceleration-title');
-		expect(card).toContainElement(chartArea);
-		expect(chartArea).toHaveTextContent('Conteúdo do gráfico');
+		expect(card).toHaveTextContent('Conteúdo do gráfico');
+		expect(screen.queryByRole('group')).not.toBeInTheDocument();
 	});
 });

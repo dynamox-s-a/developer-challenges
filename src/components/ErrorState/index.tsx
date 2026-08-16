@@ -18,6 +18,7 @@ export function ErrorState({
 	return (
 		<Box
 			role="alert"
+			aria-atomic="true"
 			sx={{
 				display: 'flex',
 				flexDirection: 'column',

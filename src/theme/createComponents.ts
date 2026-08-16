@@ -63,6 +63,10 @@ export function createComponents(palette: Theme['palette']): Components<Theme> {
 		MuiCssBaseline: {
 			styleOverrides: {
 				'*': { boxSizing: 'border-box' },
+				':where(a, button, [tabindex]):focus-visible': {
+					outline: `2px solid ${palette.primary.main}`,
+					outlineOffset: 2,
+				},
 				html: {
 					MozOsxFontSmoothing: 'grayscale',
 					WebkitFontSmoothing: 'antialiased',
