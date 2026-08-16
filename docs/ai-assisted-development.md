@@ -10,7 +10,7 @@ Nenhuma ferramenta de IA é necessária para instalar, executar, testar ou avali
 
 ## Hierarquia da documentação
 
-- [`README.md`](../README.md): entrada para execução e avaliação.
+- [`README.md`](../README.md): entrada para execução e avaliação da solução.
 - [`docs/sketch.md`](sketch.md): blueprint técnico e escopo consolidado.
 - [`docs/TODO.md`](TODO.md): roadmap e status.
 - [`docs/architecture.md`](architecture.md): fronteiras e fluxo do sistema.
@@ -119,7 +119,7 @@ deve gerar comentários cosméticos.
 
 ## MCPs
 
-`.cursor/mcp.json` configura três integrações remotas e opcionais.
+`.cursor/mcp.json` configura três integrações remotas e uma integração local, todas opcionais.
 
 ### Figma
 
@@ -134,6 +134,11 @@ O servidor oficial usa endpoint read-only. O PAT fine-grained é lido de
 ### Context7
 
 Fornece documentação atual de bibliotecas. A chave é lida de `CONTEXT7_API_KEY`.
+
+### Chrome DevTools
+
+O servidor local permite inspeção do navegador durante validações. O pacote executado por `npx`
+possui versão explícita para evitar resolução por uma tag mutável.
 
 As variáveis precisam existir no ambiente do processo do Cursor. Valores reais não pertencem ao
 `mcp.json`, a arquivos versionados, prompts, logs ou documentação. Ausência de credenciais desativa
