@@ -78,7 +78,7 @@ commits permanece no Git; decisões e detalhes técnicos ficam no
 ## Fase 11 — Documentação final e pública
 
 - [x] Publicar este roadmap e reescrever `docs/sketch.md` como blueprint final.
-- [x] Consolidar o `README.md` para avaliação e execução.
+- [x] Consolidar o `README.md` como entrada para avaliação e execução.
 - [x] Criar `docs/architecture.md`.
 - [x] Criar `docs/testing-strategy.md`.
 - [x] Criar `docs/ai-assisted-development.md`.
@@ -89,7 +89,15 @@ commits permanece no Git; decisões e detalhes técnicos ficam no
 
 ## Fase 12 — Auditoria final
 
-- [ ] Auditar requisitos funcionais, técnicos, bônus e critérios de avaliação.
-- [ ] Executar revisão final de segurança, dependências e limpeza.
-- [ ] Corrigir gaps documentados sem ampliar o escopo do desafio.
-- [ ] Confirmar branch, diff, CI e preparação da pull request.
+- [x] Auditar requisitos funcionais, técnicos, bônus e critérios de avaliação.
+- [x] Proteger a paridade do dataset, o watcher da Saga e o comportamento das rotas com testes.
+- [x] Validar interface, estados, responsividade, teclado e acessibilidade em navegador.
+- [x] Executar revisão manual, Bugbot, Security Review e auditoria de dependências.
+- [x] Alinhar a árvore da branch à estratégia de entrega sem restaurar instruções da `main`.
+- [x] Executar o quality gate local completo e validar as URLs públicas atuais.
+- [x] Confirmar bases, diff e preparação local da pull request, sem push nem criação remota.
+
+Risco residual: `pnpm audit --prod` está limpo, mas o CLI Vercel mais recente mantém advisories
+transitivos em dependências de tooling. O CLI não integra o bundle de runtime e é usado apenas com
+configuração e código confiáveis em ambiente controlado; os advisories permanecem monitorados sem
+overrides incompatíveis.

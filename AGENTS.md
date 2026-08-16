@@ -57,7 +57,7 @@ A versão do Node está definida em `.nvmrc`.
 
 ## Documentação
 
-- [README](README.md): setup, scripts, URLs e visão geral.
+- [README](README.md): setup, scripts, URLs e visão geral da entrega.
 - [Blueprint](docs/sketch.md): escopo, premissas e solução consolidada.
 - [Arquitetura](docs/architecture.md): dados, estado, gráficos e deploy.
 - [Testes](docs/testing-strategy.md): camadas, mocks e CI.

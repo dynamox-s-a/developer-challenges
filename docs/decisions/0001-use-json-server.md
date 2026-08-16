@@ -13,7 +13,8 @@ backend de produção.
 ## Decisão
 
 Usar `json-server` com [`mock/db.json`](../../mock/db.json) no desenvolvimento e nos testes
-end-to-end locais.
+end-to-end locais. Acrescentar um `id` estável por série, exigido para representar recursos REST,
+sem modificar `name` ou `data` do arquivo oficial.
 
 Em produção, usar uma Vercel Function que importa o mesmo arquivo e responde ao endpoint
 `GET /api/measurements`. O runtime muda, mas payload e fonte de dados permanecem iguais.
@@ -43,6 +44,7 @@ Positivas:
 - integração HTTP real;
 - uma única fonte de dados;
 - paridade de contrato entre local e produção;
+- paridade verificável com o dataset oficial, ignorando somente a extensão `id`;
 - testes e deploy simples.
 
 Negativas:

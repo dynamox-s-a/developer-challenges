@@ -7,7 +7,8 @@ Compare contra `origin/leonardo-jacomussi` para capturar tudo que será enviado 
 3. Verifique credenciais, `.env`, `.vercel`, artefatos gerados e arquivos pessoais acidentais.
 4. Execute as validações proporcionais ao risco; para entrega final, use a skill
    `frontend-quality-gate`.
-5. Confirme consistência entre README, blueprint, roadmap, arquitetura, testes, ADRs e contribuição.
+5. Confirme consistência entre `README.md`, blueprint, roadmap, arquitetura, testes, ADRs e
+   contribuição.
 6. Informe qualquer bloqueio sem contorná-lo silenciosamente.
 
 Ao final, produza:

@@ -84,7 +84,7 @@ o efeito anterior. Falhas são convertidas em mensagem e publicadas por `measure
 ```ts
 interface MeasurementsState {
 	data: MeasurementSeries[];
-	status: 'idle' | 'loading' | 'success' | 'error';
+	status: "idle" | "loading" | "success" | "error";
 	error: string | null;
 }
 ```
@@ -129,11 +129,15 @@ type MeasurementsApiResponse = MeasurementRaw[];
 O dataset possui sete séries: três de aceleração, três de velocidade e uma de temperatura. Nomes
 com `/x`, `/y` ou `/z` carregam o eixo; temperatura não possui eixo.
 
+O arquivo oficial possui apenas `name` e `data`. `mock/db.json` acrescenta um `id` estável e único
+por série para o `json-server`, preservando integralmente os demais campos. Um hash SHA-256 da
+representação sem IDs protege essa paridade no teste da Function.
+
 ## Modelo interno
 
 ```ts
-type Metric = 'accelerationRms' | 'velocityRms' | 'temperature';
-type Axis = 'x' | 'y' | 'z' | null;
+type Metric = "accelerationRms" | "velocityRms" | "temperature";
+type Axis = "x" | "y" | "z" | null;
 
 interface DataPoint {
 	timestamp: number;
@@ -220,6 +224,11 @@ recebem rótulos associados aos títulos dos cards.
 Contêineres de grid usam limites de largura que permitem o resize do Highcharts sem overflow. A
 validação combina testes automatizados, Storybook, axe-core e revisão visual.
 
+Cada série mantém seus 181 pontos disponíveis para navegação por teclado e leitores de tela. Essa
+decisão aumenta o DOM SVG, mas preserva a exploração ponto a ponto; a auditoria de performance trata
+esse custo como um trade-off deliberado. As fontes Roboto são auto-hospedadas somente no subconjunto
+Latin usado pela interface.
+
 ## Runtime local
 
 `pnpm dev` executa Vite e `json-server` em paralelo:
@@ -246,6 +255,10 @@ flowchart LR
 
 A aplicação possui rewrite de SPA. A Function importa o mesmo JSON usado localmente e responde
 com `Response.json`. O Storybook é publicado em projeto Vercel independente.
+
+Assets gerados pelo Vite possuem nome com hash e cache imutável por um ano. HTML e API permanecem
+revalidáveis. A Vercel também aplica CSP, HSTS, política de permissões, proteção contra MIME sniffing
+e framing restrito à mesma origem; a CSP permite o iframe interno usado pelo Storybook.
 
 ## CI/CD
 

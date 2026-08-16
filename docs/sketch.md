@@ -77,7 +77,8 @@ sem criar um monorepo ou camadas sem uso atual.
 
 ## Contrato e modelo de dados
 
-A resposta externa é uma lista com:
+A resposta oficial possui `name` e `data`. O mock acrescenta somente um `id` estável por série para
+que o `json-server` represente recursos REST sem alterar nomes ou medições:
 
 ```ts
 interface MeasurementRaw {
@@ -96,8 +97,8 @@ O mapper converte cada série para o modelo interno:
 interface MeasurementSeries {
 	id: string;
 	name: string;
-	metric: 'accelerationRms' | 'velocityRms' | 'temperature';
-	axis: 'x' | 'y' | 'z' | null;
+	metric: "accelerationRms" | "velocityRms" | "temperature";
+	axis: "x" | "y" | "z" | null;
 	unit: string;
 	data: Array<{ timestamp: number; value: number }>;
 }
@@ -109,7 +110,7 @@ definidas pelo domínio: `g`, `mm/s` e `°C`.
 O mesmo contrato é servido por dois runtimes:
 
 - localmente, `json-server` lê [`mock/db.json`](../mock/db.json);
-- em produção, [`api/measurements.ts`](../api/measurements.ts) entrega o mesmo dataset.
+- em produção, [`api/measurements.ts`](../api/measurements.ts) entrega o mesmo mock estendido.
 
 ## Fluxo de estado
 

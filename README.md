@@ -77,9 +77,10 @@ flowchart LR
 O hover não passa pelo Redux. Adapters imperativos atualizam tooltip e crosshair diretamente nas
 instâncias do Highcharts e removem listeners no cleanup.
 
-O `json-server` local e a Function da Vercel servem o mesmo conteúdo de
-[`mock/db.json`](mock/db.json), preservando o contrato entre ambientes. Consulte
-[`docs/architecture.md`](docs/architecture.md) para detalhes.
+O `json-server` local e a Function da Vercel servem [`mock/db.json`](mock/db.json). O mock preserva
+integralmente nomes e medições do dataset oficial e acrescenta somente um `id` estável por série,
+necessário para representar recursos REST. Consulte [`docs/architecture.md`](docs/architecture.md)
+para detalhes.
 
 ## Execução local
 

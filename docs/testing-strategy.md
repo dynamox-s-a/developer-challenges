@@ -80,7 +80,8 @@ Esse limite evita reproduzir internals do Highcharts dentro dos testes.
 - status HTTP 200;
 - conteúdo JSON;
 - equivalência com `mock/db.json`;
-- coleção completa esperada pelo contrato.
+- IDs estáveis e únicos;
+- paridade integral de `name` e `data` com o arquivo oficial por hash SHA-256.
 
 O teste protege a paridade entre runtime local e produção sem iniciar um servidor.
 
