@@ -18,7 +18,9 @@
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"test:coverage": "vitest run --coverage",
-		"dev:api": "json-server mock/db.json --port 3001"
+		"dev:api": "json-server mock/db.json --port 3001",
+		"storybook": "storybook dev -p 6006",
+		"build-storybook": "storybook build"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.14.0",
@@ -38,6 +40,8 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.5.8",
+		"@storybook/addon-a11y": "^10.5.8",
+		"@storybook/react-vite": "^10.5.8",
 		"@testing-library/jest-dom": "^7.0.1",
 		"@testing-library/react": "^16.3.2",
 		"@testing-library/user-event": "^14.6.4",
@@ -50,6 +54,7 @@
 		"jsdom": "^30.0.1",
 		"json-server": "1.0.0-beta.15",
 		"redux-saga-test-plan": "^4.0.6",
+		"storybook": "^10.5.8",
 		"typescript": "~6.0.2",
 		"vite": "^8.2.0",
 		"vitest": "^4.1.10"

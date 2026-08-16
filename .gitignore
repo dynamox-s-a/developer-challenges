@@ -31,6 +31,9 @@ dist-ssr
 # Test coverage
 coverage
 
+# Storybook
+storybook-static
+
 # Docs (sketch repo only)
 docs/sketch.md
 docs/TODO.md
