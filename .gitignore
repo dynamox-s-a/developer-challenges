@@ -34,6 +34,11 @@ coverage
 # Storybook
 storybook-static
 
+# Cypress
+cypress/downloads
+cypress/screenshots
+cypress/videos
+
 # Docs (sketch repo only)
 docs/sketch.md
 docs/TODO.md
