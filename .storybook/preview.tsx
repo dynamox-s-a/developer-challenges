@@ -1,6 +1,6 @@
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
+import '@fontsource/roboto/latin-400.css';
+import '@fontsource/roboto/latin-500.css';
+import '@fontsource/roboto/latin-700.css';
 
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
