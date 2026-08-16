@@ -1,4 +1,4 @@
-import type { MeasurementsApiResponse } from '../api/types';
+import type { MeasurementsApiResponse } from '@/features/measurements/api/types';
 import { mapMeasurements } from './mapper';
 
 describe('mapMeasurements', () => {

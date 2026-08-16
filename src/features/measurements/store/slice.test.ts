@@ -4,7 +4,7 @@ import reducer, {
 	measurementsSucceeded,
 	type MeasurementsState,
 } from './slice';
-import type { MeasurementSeries } from '../model/types';
+import type { MeasurementSeries } from '@/features/measurements/model/types';
 
 const initialState: MeasurementsState = {
 	data: [],

@@ -1,9 +1,9 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
 import { throwError } from 'redux-saga-test-plan/providers';
-import * as measurementsService from '../api/measurementsService';
-import type { MeasurementsApiResponse } from '../api/types';
-import { mapMeasurements } from '../model/mapper';
+import * as measurementsService from '@/features/measurements/api/measurementsService';
+import type { MeasurementsApiResponse } from '@/features/measurements/api/types';
+import { mapMeasurements } from '@/features/measurements/model/mapper';
 import { measurementsFailed, measurementsRequested, measurementsSucceeded } from './slice';
 import { fetchMeasurementsSaga } from './saga';
 

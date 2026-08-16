@@ -1,4 +1,4 @@
-import type { MeasurementsApiResponse } from '../api/types';
+import type { MeasurementsApiResponse } from '@/features/measurements/api/types';
 import type { Axis, MeasurementSeries, Metric } from './types';
 
 const UNIT_MAP: Record<Metric, string> = {

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import type { MachineInfo } from '../../constants';
+import type { MachineInfo } from '@/features/measurements/constants';
 import { MachineSummary } from './index';
 
 const mockData: MachineInfo = {

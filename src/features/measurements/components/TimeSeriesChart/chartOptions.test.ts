@@ -1,4 +1,4 @@
-import type { Axis, MeasurementSeries } from '../../model/types';
+import type { Axis, MeasurementSeries } from '@/features/measurements/model/types';
 import { designColors } from '@/theme/colors';
 import { buildLineSeries, createChartOptions } from './chartOptions';
 

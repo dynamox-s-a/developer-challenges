@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import type { MeasurementSeries } from '../../model/types';
+import type { MeasurementSeries } from '@/features/measurements/model/types';
 import { ChartsPanel } from '.';
 
-vi.mock('../TimeSeriesChart', () => ({
+vi.mock('@/features/measurements/components/TimeSeriesChart', () => ({
 	TimeSeriesChart: ({
 		title,
 		series,

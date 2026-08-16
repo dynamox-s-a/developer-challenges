@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import Highcharts from 'highcharts';
 import 'highcharts/modules/accessibility';
 import { HighchartsReact } from 'highcharts-react-official';
-import type { MeasurementSeries } from '../../model/types';
+import type { MeasurementSeries } from '@/features/measurements/model/types';
 import { createChartOptions } from './chartOptions';
 
 interface TimeSeriesChartProps {

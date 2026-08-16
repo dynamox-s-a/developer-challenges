@@ -1,5 +1,5 @@
 import type { RootState } from '@/store';
-import type { MeasurementSeries } from '../model/types';
+import type { MeasurementSeries } from '@/features/measurements/model/types';
 import {
 	selectAccelerationSeries,
 	selectAllSeries,

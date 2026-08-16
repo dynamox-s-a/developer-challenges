@@ -4,7 +4,7 @@ import type {
 	Point,
 	SeriesLineOptions,
 } from 'highcharts';
-import type { Axis, MeasurementSeries } from '../../model/types';
+import type { Axis, MeasurementSeries } from '@/features/measurements/model/types';
 import { designColors } from '@/theme/colors';
 
 const AXIS_ORDER: Record<Exclude<Axis, null>, number> = { x: 0, y: 1, z: 2 };

@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { MeasurementSeries } from '../model/types';
+import type { MeasurementSeries } from '@/features/measurements/model/types';
 
 export interface MeasurementsState {
 	data: MeasurementSeries[];

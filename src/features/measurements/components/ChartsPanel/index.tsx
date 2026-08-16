@@ -6,9 +6,9 @@ import {
 	selectAccelerationSeries,
 	selectTemperatureSeries,
 	selectVelocitySeries,
-} from '../../store/selectors';
-import { MetricChartCard } from '../MetricChartCard';
-import { TimeSeriesChart } from '../TimeSeriesChart';
+} from '@/features/measurements/store/selectors';
+import { MetricChartCard } from '@/features/measurements/components/MetricChartCard';
+import { TimeSeriesChart } from '@/features/measurements/components/TimeSeriesChart';
 import { useChartSynchronization } from './useChartSynchronization';
 
 const charts = [

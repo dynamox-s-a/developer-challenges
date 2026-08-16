@@ -1,8 +1,8 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import * as measurementsService from '../api/measurementsService';
-import { mapMeasurements } from '../model/mapper';
-import type { MeasurementsApiResponse } from '../api/types';
-import type { MeasurementSeries } from '../model/types';
+import * as measurementsService from '@/features/measurements/api/measurementsService';
+import { mapMeasurements } from '@/features/measurements/model/mapper';
+import type { MeasurementsApiResponse } from '@/features/measurements/api/types';
+import type { MeasurementSeries } from '@/features/measurements/model/types';
 import { measurementsFailed, measurementsRequested, measurementsSucceeded } from './slice';
 
 export function* fetchMeasurementsSaga() {

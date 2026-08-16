@@ -1,7 +1,7 @@
 import type { HTMLAttributes } from 'react';
 import type Highcharts from 'highcharts';
 import { render, screen } from '@testing-library/react';
-import type { MeasurementSeries } from '../../model/types';
+import type { MeasurementSeries } from '@/features/measurements/model/types';
 import { TimeSeriesChart } from '.';
 
 vi.mock('highcharts-react-official', () => ({
