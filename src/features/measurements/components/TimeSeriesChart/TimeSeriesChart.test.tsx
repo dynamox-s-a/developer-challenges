@@ -1,8 +1,8 @@
 import type { HTMLAttributes } from 'react';
-import type Highcharts from 'highcharts';
+import Highcharts from 'highcharts';
 import { render, screen } from '@testing-library/react';
 import type { MeasurementSeries } from '@/features/measurements/model/types';
-import { TimeSeriesChart } from '.';
+import { localizeChartSvgDescription, TimeSeriesChart } from '.';
 
 vi.mock('highcharts-react-official', () => ({
 	HighchartsReact: ({
@@ -30,6 +30,33 @@ function createSeries(axis: MeasurementSeries['axis']): MeasurementSeries {
 }
 
 describe('TimeSeriesChart', () => {
+	it('configures Highcharts accessibility text for Brazilian Portuguese', () => {
+		expect(Highcharts.getOptions().lang).toMatchObject({
+			accessibility: {
+				chartContainerLabel: '{title}. Gráfico interativo.',
+				graphicContainerLabel: '{title}. Gráfico interativo.',
+				legend: { legendItem: 'Exibir {itemName}' },
+				svgContainerLabel: 'Gráfico interativo.',
+				svgContainerTitle: 'Gráfico interativo',
+			},
+			locale: 'pt-BR',
+		});
+	});
+
+	it('replaces the generated SVG description with localized chart context', () => {
+		const container = document.createElement('div');
+		container.innerHTML = '<svg><desc>Created with Highcharts</desc></svg>';
+
+		localizeChartSvgDescription(
+			{ container },
+			'Aceleração RMS. Gráfico temporal com valores em g.',
+		);
+
+		expect(container.querySelector('desc')).toHaveTextContent(
+			'Aceleração RMS. Gráfico temporal com valores em g.',
+		);
+	});
+
 	it.each([
 		[['x'] as const, '1'],
 		[['z', 'x', 'y'] as const, '3'],
