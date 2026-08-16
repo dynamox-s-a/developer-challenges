@@ -1,0 +1,15 @@
+---
+description: Mantém mudanças alinhadas ao escopo e aos critérios do desafio Dynamox
+globs: ""
+alwaysApply: true
+---
+
+# Escopo do projeto
+
+- Antes de editar, relacione a solicitação a um requisito ou decisão documentada.
+- Diferencie requisito, bônus, melhoria opcional e complexidade prematura.
+- Não transforme uma tarefa estreita em refatoração, infraestrutura ou limpeza adjacente.
+- Preserve a separação entre arquivos oficiais do desafio e a implementação desta branch.
+- Não altere o contrato mock sem atualizar Function, mapper e testes.
+- Verifique o diff completo e mantenha alterações do usuário que estejam fora do escopo.
+- Ao encontrar conflito entre pedido e requisito, apresente a evidência antes de decidir.

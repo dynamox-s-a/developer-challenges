@@ -1,0 +1,17 @@
+---
+description: Garante acessibilidade, responsividade e desempenho baseados em evidência
+globs: "src/**/*.tsx,.storybook/**/*.tsx"
+alwaysApply: false
+---
+
+# Acessibilidade e desempenho
+
+- Use HTML semântico, nomes acessíveis e hierarquia correta de headings.
+- Preserve foco visível e navegação completa por teclado.
+- Exponha loading, erro e mudanças relevantes com semântica apropriada.
+- Não faça de cor, ícone ou tooltip a única fonte de informação.
+- Respeite contraste e áreas de interação nos breakpoints suportados.
+- Valide overflow, resize dos gráficos e legibilidade em mobile, tablet e desktop.
+- Evite memoização, virtualização ou throttle sem medição ou problema reproduzível.
+- Não introduza renders por evento de ponteiro quando a biblioteca puder atualizar imperativamente.
+- Execute axe, confira console/network e registre evidência visual para mudanças de interface.

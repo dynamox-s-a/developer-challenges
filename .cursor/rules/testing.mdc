@@ -1,0 +1,17 @@
+---
+description: Define estratégia de testes unitários, componentes, Storybook e Cypress
+globs: "**/*.{test,spec,stories}.{ts,tsx},cypress/**/*.ts,cypress.config.ts"
+alwaysApply: false
+---
+
+# Testes
+
+- Teste comportamento observável, regras de negócio e contratos nas fronteiras.
+- Use queries acessíveis e interações próximas às ações reais do usuário.
+- Cubra sucesso, loading, erro, retry, vazio e casos limite relevantes.
+- Evite snapshots grandes e asserts sobre detalhes internos de bibliotecas.
+- Mocke Highcharts apenas na fronteira em testes de componente; teste options e sincronização à parte.
+- Use o `json-server` real nos cenários e2e de sucesso e `cy.intercept` para falhas controladas.
+- Não dependa de contagem exata de requests quando React StrictMode puder duplicar efeitos em dev.
+- Mantenha dados de teste determinísticos e sem duplicar desnecessariamente o dataset oficial.
+- Todo bug corrigido deve receber teste de regressão quando reproduzível de forma estável.

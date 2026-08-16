@@ -1,0 +1,17 @@
+---
+description: Preserva contrato, desempenho e sincronização dos gráficos Highcharts
+globs: "src/features/measurements/components/ChartsPanel/**,src/features/measurements/components/TimeSeriesChart/**,src/features/measurements/components/MetricChartCard/**"
+alwaysApply: false
+---
+
+# Gráficos
+
+- Mantenha timestamps UTC no modelo e formate datas somente na apresentação.
+- Preserve unidades, precisão, cores e ordem das séries de cada métrica.
+- Não acople componentes de gráfico ao payload bruto da API.
+- Sincronize tooltip e crosshair pelo timestamp mais próximo.
+- Use a API imperativa do Highcharts sem provocar renders React por `mousemove`.
+- Remova listeners e referências no cleanup; evite handlers duplicados em StrictMode.
+- Não recrie instâncias ou options sem necessidade comprovada.
+- Valide resize, overflow, ausência de dados e interação por mouse nos três gráficos.
+- Teste nossa preparação e sincronização; não teste detalhes internos do Highcharts em JSDOM.
