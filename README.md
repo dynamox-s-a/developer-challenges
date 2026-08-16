@@ -12,6 +12,7 @@ Dashboard responsivo para análise de séries temporais de uma máquina industri
 ![TypeScript 6](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)
 ![Vite 8](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
 ![Material UI 5](https://img.shields.io/badge/Material_UI-5-007FFF?logo=mui&logoColor=white)
+[![CI](https://github.com/leonardojacomussi/dynamox-front-end-challenge/actions/workflows/ci.yml/badge.svg?branch=leonardo-jacomussi)](https://github.com/leonardojacomussi/dynamox-front-end-challenge/actions/workflows/ci.yml?query=branch%3Aleonardo-jacomussi)
 
 ![Dashboard da Dynamox em um dispositivo móvel](./public/mockup-mobile-preview.png)
 ![Dashboard da Dynamox em um notebook](./public/mockup-desktop-preview.png)
@@ -103,6 +104,12 @@ pnpm install --frozen-lockfile
 O `.env.example` define `VITE_API_BASE_URL=http://localhost:3001`. O arquivo `.env` local é
 ignorado pelo Git e não deve conter credenciais destinadas ao browser.
 
+Se o Cypress informar que o binário local não está instalado, execute:
+
+```bash
+pnpm exec cypress install
+```
+
 ### Desenvolvimento
 
 ```bash
@@ -137,8 +144,12 @@ pnpm test:watch         # mantém Vitest em watch
 pnpm test:coverage      # gera relatório de coverage
 pnpm build              # gera build de produção
 pnpm build-storybook    # gera Storybook estático
-pnpm preview            # serve o build localmente
+pnpm preview            # serve o build e inicia a API local
 ```
+
+Após `pnpm build`, `pnpm preview` disponibiliza a aplicação em `http://localhost:4173/data` e a API
+em `http://localhost:3001/measurements`. O build usa a URL definida no `.env` criado durante o
+setup.
 
 ### End-to-end
 
@@ -171,6 +182,9 @@ O workflow de CI roda em pull requests, push para `leonardo-jacomussi` e execuç
 
 - `quality`: formatação, lint, tipos, testes, build da aplicação e Storybook;
 - `e2e`: instalação do Cypress e `pnpm e2e:ci`.
+
+Como o workflow pertence ao fork, o GitHub pode não exibi-lo como check no pull request para o
+upstream. O badge no início deste documento aponta para as execuções da branch de entrega.
 
 O CD é chamado somente em push ou execução manual na branch da solução, depois de ambos passarem.
 A aplicação e a API usam um projeto Vercel; o Storybook usa outro. Não há integração Git direta

@@ -135,7 +135,7 @@ página escolhe entre loading, erro com retry, vazio e conteúdo.
 A página contém:
 
 - header da análise;
-- resumo com máquina, rotação, intervalo de aquisição e período;
+- resumo com máquina, ponto monitorado, rotação, faixa e intervalo de aquisição;
 - card de aceleração RMS com eixos `x`, `y` e `z`;
 - card de temperatura;
 - card de velocidade RMS com eixos `x`, `y` e `z`.

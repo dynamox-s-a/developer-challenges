@@ -10,7 +10,7 @@
 	"scripts": {
 		"dev": "concurrently -n vite,api -c blue,green \"vite\" \"pnpm dev:api\"",
 		"build": "tsc -b && vite build",
-		"preview": "vite preview",
+		"preview": "concurrently -n preview,api -c blue,green \"vite preview\" \"pnpm dev:api\"",
 		"lint": "biome lint .",
 		"format": "biome format --write .",
 		"format:check": "biome format .",
