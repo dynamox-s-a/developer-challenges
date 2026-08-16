@@ -1,11 +1,13 @@
-import { expectSaga } from 'redux-saga-test-plan';
+import { expectSaga, testSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
 import { throwError } from 'redux-saga-test-plan/providers';
 import * as measurementsService from '@/features/measurements/api/measurementsService';
 import type { MeasurementsApiResponse } from '@/features/measurements/api/types';
 import { mapMeasurements } from '@/features/measurements/model/mapper';
 import { measurementsFailed, measurementsRequested, measurementsSucceeded } from './slice';
-import { fetchMeasurementsSaga } from './saga';
+import { fetchMeasurementsSaga, measurementsSaga } from './saga';
+
+const loadErrorMessage = 'Não foi possível carregar as medições. Tente novamente.';
 
 const mockRaw: MeasurementsApiResponse = [
 	{
@@ -35,7 +37,7 @@ describe('measurementsSaga', () => {
 
 		return expectSaga(fetchMeasurementsSaga)
 			.provide([[matchers.call.fn(measurementsService.getAll), throwError(error)]])
-			.put(measurementsFailed('Network error'))
+			.put(measurementsFailed(loadErrorMessage))
 			.run();
 	});
 
@@ -47,17 +49,15 @@ describe('measurementsSaga', () => {
 					throwError('string error' as unknown as Error),
 				],
 			])
-			.put(measurementsFailed('Unknown error'))
+			.put(measurementsFailed(loadErrorMessage))
 			.run();
 	});
 
-	it('responds to measurementsRequested action', () => {
-		const mapped = mapMeasurements(mockRaw);
-
-		return expectSaga(fetchMeasurementsSaga)
-			.provide([[matchers.call.fn(measurementsService.getAll), mockRaw]])
-			.dispatch(measurementsRequested())
-			.put(measurementsSucceeded(mapped))
-			.run();
+	it('takes only the latest measurements request', () => {
+		testSaga(measurementsSaga)
+			.next()
+			.takeLatest(measurementsRequested.type, fetchMeasurementsSaga)
+			.next()
+			.isDone();
 	});
 });

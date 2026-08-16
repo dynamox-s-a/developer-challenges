@@ -21,7 +21,9 @@ describe('Data page API recovery', () => {
 		cy.visitDataPage();
 
 		cy.wait('@failedMeasurements').its('response.statusCode').should('eq', 500);
-		cy.get('[role="alert"]').should('be.visible').and('contain.text', '500');
+		cy.get('[role="alert"]')
+			.should('be.visible')
+			.and('contain.text', 'Não foi possível carregar as medições. Tente novamente.');
 
 		cy.then(() => {
 			shouldFail = false;
