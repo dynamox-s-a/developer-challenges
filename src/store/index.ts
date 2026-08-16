@@ -1,11 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
+import measurementsReducer from '@/features/measurements/store/slice';
 import { rootSaga } from './rootSaga';
 
 const sagaMiddleware = createSagaMiddleware();
 
 export const store = configureStore({
-	reducer: {},
+	reducer: {
+		measurements: measurementsReducer,
+	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),
 });

@@ -28,6 +28,7 @@
 		"@mui/icons-material": "5",
 		"@mui/material": "5",
 		"@reduxjs/toolkit": "^2.12.0",
+		"axios": "^1.19.0",
 		"react": "^19.2.8",
 		"react-dom": "^19.2.8",
 		"react-redux": "^9.3.0",
@@ -46,6 +47,7 @@
 		"concurrently": "^10.0.5",
 		"jsdom": "^30.0.1",
 		"json-server": "1.0.0-beta.15",
+		"redux-saga-test-plan": "^4.0.6",
 		"typescript": "~6.0.2",
 		"vite": "^8.2.0",
 		"vitest": "^4.1.10"
