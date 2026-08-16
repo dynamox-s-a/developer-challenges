@@ -13,12 +13,13 @@ import type { MachineInfo } from '@/features/measurements/constants';
 const GpsFixed = resolveDefaultExport(GpsFixedIcon);
 
 interface MachineSummaryProps {
-	data: MachineInfo;
+	data: Partial<MachineInfo>;
 }
 
 interface SummaryItem {
 	accessibleValue: string;
 	icon: ReactNode;
+	id: keyof MachineInfo;
 	label: string;
 }
 
@@ -34,9 +35,15 @@ const visuallyHidden = {
 	width: 1,
 } as const;
 
+function hasText(value: string | undefined): value is string {
+	return Boolean(value?.trim());
+}
+
 export function MachineSummary({ data }: MachineSummaryProps) {
-	const items: SummaryItem[] = [
-		{
+	const items: SummaryItem[] = [];
+
+	if (hasText(data.machineId)) {
+		items.push({
 			accessibleValue: data.machineId,
 			icon: (
 				<MachineIcon
@@ -47,9 +54,13 @@ export function MachineSummary({ data }: MachineSummaryProps) {
 					viewBox="0 0 20 20"
 				/>
 			),
+			id: 'machineId',
 			label: `Máquina ${data.machineId}`,
-		},
-		{
+		});
+	}
+
+	if (hasText(data.pointId)) {
+		items.push({
 			accessibleValue: data.pointId,
 			icon: (
 				<GpsFixed
@@ -59,9 +70,13 @@ export function MachineSummary({ data }: MachineSummaryProps) {
 					sx={{ fontSize: 20 }}
 				/>
 			),
+			id: 'pointId',
 			label: `Ponto ${data.pointId}`,
-		},
-		{
+		});
+	}
+
+	if (data.rpm !== undefined) {
+		items.push({
 			accessibleValue: `${data.rpm} RPM`,
 			icon: (
 				<RpmIcon
@@ -72,9 +87,13 @@ export function MachineSummary({ data }: MachineSummaryProps) {
 					viewBox="0 0 20 20"
 				/>
 			),
+			id: 'rpm',
 			label: `${data.rpm}`,
-		},
-		{
+		});
+	}
+
+	if (hasText(data.range)) {
+		items.push({
 			accessibleValue: data.range,
 			icon: (
 				<MeasurementRangeIcon
@@ -85,9 +104,13 @@ export function MachineSummary({ data }: MachineSummaryProps) {
 					viewBox="0 0 20 20"
 				/>
 			),
+			id: 'range',
 			label: data.range,
-		},
-		{
+		});
+	}
+
+	if (hasText(data.acquisitionInterval)) {
+		items.push({
 			accessibleValue: data.acquisitionInterval,
 			icon: (
 				<AcquisitionIntervalIcon
@@ -98,9 +121,15 @@ export function MachineSummary({ data }: MachineSummaryProps) {
 					viewBox="0 0 20 20"
 				/>
 			),
+			id: 'acquisitionInterval',
 			label: data.acquisitionInterval,
-		},
-	];
+		});
+	}
+
+	const desktopColumns =
+		items.length === 5
+			? '25% 25% 15.61% 17.22% 17.17%'
+			: `repeat(${Math.max(items.length, 1)}, minmax(0, 1fr))`;
 
 	return (
 		<Paper
@@ -115,7 +144,7 @@ export function MachineSummary({ data }: MachineSummaryProps) {
 					display: 'grid',
 					gridTemplateColumns: {
 						xs: '1fr',
-						sm: '25% 25% 15.61% 17.22% 17.17%',
+						sm: desktopColumns,
 					},
 					listStyle: 'none',
 					m: 0,
@@ -126,7 +155,7 @@ export function MachineSummary({ data }: MachineSummaryProps) {
 				{items.map((item, index) => (
 					<Box
 						component="li"
-						key={item.label}
+						key={item.id}
 						sx={{
 							alignItems: 'center',
 							display: 'flex',

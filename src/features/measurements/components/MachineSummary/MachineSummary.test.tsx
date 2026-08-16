@@ -40,4 +40,16 @@ describe('MachineSummary', () => {
 		expect(screen.getByText('Máquina 9999')).toBeInTheDocument();
 		expect(screen.getByText('500')).toBeInTheDocument();
 	});
+
+	it('omits unavailable fields and preserves zero RPM', () => {
+		render(<MachineSummary data={{ machineId: '1023', rpm: 0 }} />);
+
+		expect(screen.getAllByRole('listitem')).toHaveLength(2);
+		expect(screen.getByText('Máquina 1023')).toBeInTheDocument();
+		expect(screen.getByText('0')).toBeInTheDocument();
+		expect(screen.getByText('0 RPM')).toBeInTheDocument();
+		expect(screen.queryByRole('img', { name: 'Ponto de monitoramento' })).not.toBeInTheDocument();
+		expect(screen.queryByRole('img', { name: 'Faixa de medição' })).not.toBeInTheDocument();
+		expect(screen.queryByRole('img', { name: 'Intervalo de aquisição' })).not.toBeInTheDocument();
+	});
 });
