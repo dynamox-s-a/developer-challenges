@@ -99,4 +99,12 @@ describe('measurements selectors', () => {
 		expect(selectVelocitySeries(state)).toEqual([]);
 		expect(selectTemperatureSeries(state)).toEqual([]);
 	});
+
+	it('memoizes derived series while the source data reference is unchanged', () => {
+		const state = createState({ data: mockSeries });
+
+		expect(selectAccelerationSeries(state)).toBe(selectAccelerationSeries(state));
+		expect(selectVelocitySeries(state)).toBe(selectVelocitySeries(state));
+		expect(selectTemperatureSeries(state)).toBe(selectTemperatureSeries(state));
+	});
 });
