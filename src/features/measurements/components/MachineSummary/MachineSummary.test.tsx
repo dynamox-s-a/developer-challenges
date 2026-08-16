@@ -13,11 +13,19 @@ const mockData: MachineInfo = {
 describe('MachineSummary', () => {
 	it('renders all machine info fields', () => {
 		render(<MachineSummary data={mockData} />);
+		expect(screen.getByRole('region', { name: 'Resumo da máquina' })).toBeInTheDocument();
+		expect(screen.getAllByRole('listitem')).toHaveLength(5);
 		expect(screen.getByText('Máquina 1023')).toBeInTheDocument();
 		expect(screen.getByText('Ponto 20192')).toBeInTheDocument();
 		expect(screen.getByText('200')).toBeInTheDocument();
-		expect(screen.getByText('16g')).toBeInTheDocument();
-		expect(screen.getByText('20 min')).toBeInTheDocument();
+		expect(screen.getByText('16g', { selector: 'p' })).toBeInTheDocument();
+		expect(screen.getByText('20 min', { selector: 'p' })).toBeInTheDocument();
+		expect(screen.getByRole('img', { name: 'Máquina' })).toBeInTheDocument();
+		expect(screen.getByRole('img', { name: 'Ponto de monitoramento' })).toBeInTheDocument();
+		expect(screen.getByRole('img', { name: 'Rotação' })).toBeInTheDocument();
+		expect(screen.getByRole('img', { name: 'Faixa de medição' })).toBeInTheDocument();
+		expect(screen.getByRole('img', { name: 'Intervalo de aquisição' })).toBeInTheDocument();
+		expect(screen.getByText('200 RPM')).toBeInTheDocument();
 	});
 
 	it('renders correct values from props', () => {
