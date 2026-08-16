@@ -6,6 +6,7 @@ alwaysApply: true
 
 # Escopo do projeto
 
+- Use `docs/sketch.md` como escopo consolidado e `docs/TODO.md` como roadmap.
 - Antes de editar, relacione a solicitação a um requisito ou decisão documentada.
 - Diferencie requisito, bônus, melhoria opcional e complexidade prematura.
 - Não transforme uma tarefa estreita em refatoração, infraestrutura ou limpeza adjacente.

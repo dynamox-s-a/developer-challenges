@@ -6,6 +6,7 @@ alwaysApply: false
 
 # React e TypeScript
 
+- Siga as fronteiras de `docs/architecture.md` e as convenções de `CONTRIBUTING.md`.
 - Preserve `strict`, tipos explícitos nas fronteiras e inferência segura internamente.
 - Não use `any`, `@ts-ignore`, non-null assertions ou casts para esconder erros.
 - Use componentes funcionais e composição em vez de herança.

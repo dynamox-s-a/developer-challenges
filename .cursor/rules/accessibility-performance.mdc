@@ -6,6 +6,7 @@ alwaysApply: false
 
 # Acessibilidade e desempenho
 
+- Siga os critérios de `docs/testing-strategy.md` e `CONTRIBUTING.md`.
 - Use HTML semântico, nomes acessíveis e hierarquia correta de headings.
 - Preserve foco visível e navegação completa por teclado.
 - Exponha loading, erro e mudanças relevantes com semântica apropriada.

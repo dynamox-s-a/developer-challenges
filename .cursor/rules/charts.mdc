@@ -6,6 +6,7 @@ alwaysApply: false
 
 # Gráficos
 
+- Consulte `docs/architecture.md` e `docs/testing-strategy.md` para fronteiras e validação.
 - Mantenha timestamps UTC no modelo e formate datas somente na apresentação.
 - Preserve unidades, precisão, cores e ordem das séries de cada métrica.
 - Não acople componentes de gráfico ao payload bruto da API.

@@ -6,6 +6,7 @@ alwaysApply: false
 
 # Estado e efeitos
 
+- Preserve o fluxo e os limites descritos em `docs/architecture.md`.
 - Use Redux apenas para estado global compartilhado e serializável.
 - Mantenha interação visual transitória e instâncias externas no componente ou hook responsável.
 - Use Saga para carregamento assíncrono e represente sucesso, falha e efeitos obsoletos.

@@ -1,7 +1,11 @@
 Audite a implementação atual contra o enunciado oficial e a documentação deste repositório.
 
-Fontes de referência: `docs/sketch.md` (decisões e requisitos), `docs/TODO.md` (entregas por fase)
-e o enunciado original na branch `main`.
+Use as fontes com estes papéis:
+
+- `origin/main:front-end-challenge-v2.md`: enunciado oficial e fonte normativa;
+- `docs/sketch.md`: escopo, premissas e solução consolidada;
+- `docs/TODO.md`: status das entregas;
+- `README.md` e `docs/*.md`: comportamento, operação e decisões documentadas.
 
 1. Leia os requisitos funcionais, técnicos, bônus e critérios de avaliação.
 2. Inspecione a implementação e as validações existentes sem modificar arquivos.

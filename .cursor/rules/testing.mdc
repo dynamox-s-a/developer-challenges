@@ -6,6 +6,7 @@ alwaysApply: false
 
 # Testes
 
+- Escolha a camada conforme `docs/testing-strategy.md`.
 - Teste comportamento observável, regras de negócio e contratos nas fronteiras.
 - Use queries acessíveis e interações próximas às ações reais do usuário.
 - Cubra sucesso, loading, erro, retry, vazio e casos limite relevantes.
