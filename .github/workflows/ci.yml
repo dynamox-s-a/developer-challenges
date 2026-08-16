@@ -124,3 +124,14 @@ jobs:
             cypress/videos
           if-no-files-found: ignore
           retention-days: 7
+
+  deploy:
+    name: Continuous deployment
+    needs: [quality, e2e]
+    if: >-
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+      github.ref == 'refs/heads/leonardo-jacomussi'
+    uses: ./.github/workflows/cd.yml
+    permissions:
+      contents: read
+    secrets: inherit
