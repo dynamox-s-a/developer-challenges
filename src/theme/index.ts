@@ -15,7 +15,7 @@ export function createAppTheme() {
 		},
 		palette,
 		shadows,
-		shape: { borderRadius: 8 },
+		shape: { borderRadius: 4 },
 		typography,
 	});
 

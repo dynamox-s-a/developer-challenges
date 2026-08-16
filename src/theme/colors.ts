@@ -1,5 +1,19 @@
 import { alpha } from '@mui/material/styles';
 
+export const designColors = {
+	background: '#F8FAFC',
+	paper: '#FFFFFF',
+	border: '#DFE3E8',
+	text: '#3A3B3F',
+	axisLabel: '#6673A9',
+	chart: {
+		x: '#2386CB',
+		y: '#CC337D',
+		z: '#B48A00',
+		temperature: '#89982E',
+	},
+} as const;
+
 interface ColorInput {
 	lightest: string;
 	light: string;

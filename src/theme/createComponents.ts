@@ -6,7 +6,7 @@ export function createComponents(palette: Theme['palette']): Components<Theme> {
 		MuiButton: {
 			styleOverrides: {
 				root: {
-					borderRadius: '12px',
+					borderRadius: 4,
 					textTransform: 'none',
 				},
 				sizeSmall: {
@@ -23,9 +23,10 @@ export function createComponents(palette: Theme['palette']): Components<Theme> {
 		MuiCard: {
 			styleOverrides: {
 				root: {
-					borderRadius: 20,
+					border: `1px solid ${palette.divider}`,
+					borderRadius: 4,
 					[`&.${paperClasses.elevation1}`]: {
-						boxShadow: '0px 5px 22px rgba(0, 0, 0, 0.04), 0px 0px 0px 0.5px rgba(0, 0, 0, 0.03)',
+						boxShadow: 'none',
 					},
 				},
 			},
@@ -33,9 +34,9 @@ export function createComponents(palette: Theme['palette']): Components<Theme> {
 		MuiCardContent: {
 			styleOverrides: {
 				root: {
-					padding: '32px 24px',
+					padding: 24,
 					'&:last-child': {
-						paddingBottom: '32px',
+						paddingBottom: 24,
 					},
 				},
 			},
@@ -47,7 +48,15 @@ export function createComponents(palette: Theme['palette']): Components<Theme> {
 			},
 			styleOverrides: {
 				root: {
-					padding: '32px 24px 16px',
+					borderBottom: `1px solid ${palette.divider}`,
+					padding: '19px 24px',
+				},
+			},
+		},
+		MuiPaper: {
+			styleOverrides: {
+				rounded: {
+					borderRadius: 4,
 				},
 			},
 		},

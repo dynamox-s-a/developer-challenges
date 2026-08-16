@@ -1,77 +1,76 @@
 export function createTypography() {
 	return {
-		fontFamily:
-			'"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif',
+		fontFamily: '"Roboto", Arial, sans-serif',
 		body1: {
-			fontSize: '1rem',
-			fontWeight: 400,
-			lineHeight: 1.5,
-		},
-		body2: {
 			fontSize: '0.875rem',
 			fontWeight: 400,
-			lineHeight: 1.57,
+			lineHeight: 1.5,
+			letterSpacing: '-0.05px',
+		},
+		body2: {
+			fontSize: '0.75rem',
+			fontWeight: 400,
+			lineHeight: '14px',
+			letterSpacing: '-0.04px',
 		},
 		button: {
-			fontWeight: 600,
+			fontSize: '0.875rem',
+			fontWeight: 500,
+			textTransform: 'none' as const,
 		},
 		caption: {
 			fontSize: '0.75rem',
-			fontWeight: 500,
-			lineHeight: 1.66,
+			fontWeight: 400,
+			lineHeight: '14px',
 		},
 		subtitle1: {
-			fontSize: '1rem',
-			fontWeight: 500,
-			lineHeight: 1.57,
-		},
-		subtitle2: {
 			fontSize: '0.875rem',
 			fontWeight: 500,
-			lineHeight: 1.57,
+			lineHeight: '20px',
+		},
+		subtitle2: {
+			fontSize: '0.75rem',
+			fontWeight: 500,
+			lineHeight: '14px',
 		},
 		overline: {
 			fontSize: '0.75rem',
-			fontWeight: 600,
+			fontWeight: 500,
 			letterSpacing: '0.5px',
 			lineHeight: 2.5,
 			textTransform: 'uppercase' as const,
 		},
 		h1: {
-			fontFamily: "'Plus Jakarta Sans', sans-serif",
-			fontWeight: 700,
-			fontSize: '3.5rem',
+			fontWeight: 500,
+			fontSize: '2.5rem',
 			lineHeight: 1.2,
 		},
 		h2: {
-			fontFamily: "'Plus Jakarta Sans', sans-serif",
-			fontWeight: 700,
-			fontSize: '3rem',
-			lineHeight: 1.2,
-		},
-		h3: {
-			fontFamily: "'Plus Jakarta Sans', sans-serif",
-			fontWeight: 700,
-			fontSize: '2.25rem',
-			lineHeight: 1.2,
-		},
-		h4: {
-			fontFamily: "'Plus Jakarta Sans', sans-serif",
-			fontWeight: 700,
+			fontWeight: 500,
 			fontSize: '2rem',
 			lineHeight: 1.2,
 		},
-		h5: {
-			fontFamily: "'Plus Jakarta Sans', sans-serif",
-			fontWeight: 700,
+		h3: {
+			fontWeight: 500,
 			fontSize: '1.5rem',
 			lineHeight: 1.2,
 		},
+		h4: {
+			fontSize: '1.25rem',
+			fontWeight: 500,
+			lineHeight: '24px',
+			letterSpacing: '-0.06px',
+		},
+		h5: {
+			fontSize: '1rem',
+			fontWeight: 500,
+			lineHeight: '22px',
+		},
 		h6: {
-			fontFamily: "'Plus Jakarta Sans', sans-serif",
-			fontWeight: 700,
-			fontSize: '1.125rem',
-			lineHeight: 1.2,
+			fontSize: '0.875rem',
+			fontWeight: 500,
+			lineHeight: '20px',
+			letterSpacing: '-0.05px',
 		},
 	};
 }

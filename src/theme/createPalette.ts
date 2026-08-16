@@ -1,7 +1,6 @@
 import type { PaletteOptions } from '@mui/material/styles';
 import { alpha } from '@mui/material/styles';
-import { common } from '@mui/material/colors';
-import { error, indigo, info, neutral, success, warning } from './colors';
+import { designColors, error, indigo, info, neutral, success, warning } from './colors';
 
 export function createPalette(): PaletteOptions {
 	return {
@@ -14,18 +13,18 @@ export function createPalette(): PaletteOptions {
 			selected: alpha(neutral[900], 0.12),
 		},
 		background: {
-			default: common.white,
-			paper: common.white,
+			default: designColors.background,
+			paper: designColors.paper,
 		},
-		divider: '#F2F4F7',
+		divider: designColors.border,
 		error,
 		info,
 		mode: 'light',
 		primary: indigo,
 		success,
 		text: {
-			primary: neutral[900],
-			secondary: neutral[500],
+			primary: designColors.text,
+			secondary: designColors.axisLabel,
 			disabled: alpha(neutral[900], 0.38),
 		},
 		warning,
