@@ -1,8 +1,8 @@
 import "./App.css";
-import { Text } from "./components/Text/Text";
+import { Typography } from "./components/Typography/Typography";
 
 function App() {
-	return <Text text="Dynamox test" />;
+	return <Typography text="Dynamox test" />;
 }
 
 export default App;
