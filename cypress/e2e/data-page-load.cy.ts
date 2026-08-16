@@ -42,4 +42,18 @@ describe('Data page loading', () => {
 			3,
 		);
 	});
+
+	it('requests measurements again when the user re-enters the route', () => {
+		cy.intercept('GET', '**/measurements').as('getMeasurements');
+
+		cy.visitDataPage();
+		cy.wait('@getMeasurements').its('response.statusCode').should('eq', 200);
+
+		cy.visit('/unknown');
+		cy.contains('404 — Página não encontrada').should('be.visible');
+
+		cy.visitDataPage();
+		cy.wait('@getMeasurements').its('response.statusCode').should('eq', 200);
+		cy.get('section[aria-label="Gráficos de medições"]').should('be.visible');
+	});
 });

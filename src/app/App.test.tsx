@@ -1,23 +1,33 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { MemoryRouter } from 'react-router-dom';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import measurementsReducer from '@/features/measurements/store/slice';
-import DataPage from '@/pages/DataPage';
+import { appRoutes } from './routes';
 
 describe('App', () => {
-	it('renders DataPage without crashing', () => {
+	function renderRoute(path: string) {
 		const store = configureStore({
 			reducer: { measurements: measurementsReducer },
 		});
+		const router = createMemoryRouter(appRoutes, { initialEntries: [path] });
 
-		render(
+		return render(
 			<Provider store={store}>
-				<MemoryRouter>
-					<DataPage />
-				</MemoryRouter>
+				<RouterProvider router={router} />
 			</Provider>,
 		);
-		expect(screen.getByText('Análise de Dados')).toBeInTheDocument();
+	}
+
+	it.each(['/', '/data'])('renders the data page at %s', async (path) => {
+		renderRoute(path);
+
+		expect(await screen.findByText('Análise de Dados')).toBeInTheDocument();
+	});
+
+	it('renders the not-found page for unknown routes', () => {
+		renderRoute('/unknown');
+
+		expect(screen.getByText('404 — Página não encontrada')).toBeInTheDocument();
 	});
 });
