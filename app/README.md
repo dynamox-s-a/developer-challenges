@@ -82,7 +82,8 @@ npm run format:check   # Prettier (check)
 
 ```
 app/
-├── db.json                        # dados mock servidos pelo json-server
+├── api/
+    ├── db.json                    # dados mock servidos pelo json-server
 ├── cypress/                       # testes end-to-end
 │   ├── e2e/                       # specs E2E (app, data page, API)
 │   ├── component/                 # specs de componentes isolados
@@ -117,12 +118,12 @@ app/
     │   └── Data/                  # página principal acessada em /data
     │       └── index.tsx          # orquestra fetch, loading, error e renderiza MachineInfo + Charts
     └── components/
-  ├── Chart/                 # wrapper do HighchartsReact com configuração padrão
-  ├── Header/                # barra de título da aplicação
-  ├── Info/                  # item atômico de informação (ícone + texto)
-  ├── Loading/               # indicador de carregamento
-  ├── MachineInfo/           # painel com metadados da máquina (nome, ponto, RPM, etc.)
-  └── icons/                 # ícones SVG customizados (Machine, Location, Rpm, Duration, Interval)
+        ├── Chart/                 # wrapper do HighchartsReact com configuração padrão
+        ├── Header/                # barra de título da aplicação
+        ├── Info/                  # item atômico de informação (ícone + texto)
+        ├── Loading/               # indicador de carregamento
+        ├── MachineInfo/           # painel com metadados da máquina (nome, ponto, RPM, etc.)
+        └── icons/                 # ícones SVG customizados (Machine, Location, Rpm, Duration, Interval)
 ```
 
 > Cada componente possui um arquivo `index.stories.tsx` (Storybook) e `*.test.tsx` (Vitest).
@@ -130,7 +131,7 @@ app/
 ## Arquitetura de dados
 
 ```
-json-server (db.json)
+json-server (api/db.json)
     └── GET /metrics
       └── Redux Saga (sagas.ts)
         ├── FETCH_REQUEST → loading: true
