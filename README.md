@@ -14,8 +14,18 @@ Responsive dashboard for analyzing industrial machine time series.
 ![Material UI 5](https://img.shields.io/badge/Material_UI-5-007FFF?logo=mui&logoColor=white)
 [![CI](https://github.com/leonardojacomussi/dynamox-front-end-challenge/actions/workflows/ci.yml/badge.svg?branch=leonardo-jacomussi)](https://github.com/leonardojacomussi/dynamox-front-end-challenge/actions/workflows/ci.yml?query=branch%3Aleonardo-jacomussi)
 
-![Dynamox dashboard on a mobile device](./public/mockup-mobile-preview.png)
-![Dynamox dashboard on a laptop](./public/mockup-desktop-preview.png)
+<table>
+  <tbody>
+    <tr>
+      <td>
+        <img alt="Dynamox dashboard on a mobile device" width="100%" src="./public/mockup-mobile-preview.png">
+      </td>
+      <td>
+        <img alt="Dynamox dashboard on a laptop" width="100%" src="./public/mockup-desktop-preview.png">
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ## About the challenge
 
