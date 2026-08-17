@@ -1,12 +1,13 @@
 import { describe, expect, it } from 'vitest';
+import type { CallEffect, ForkEffect, PutEffect } from 'redux-saga/effects';
 
 import { api } from '../../services/api';
 import { fetchDataFailure, fetchDataSuccess } from './actions';
 import * as sagas from './sagas';
 import { DataActionTypes } from './types';
-import { Data } from '../../types/data';
+import type { Data } from '../../types/data';
 
-type SagaGenerator = Generator<unknown, void, unknown>;
+type SagaGenerator = Generator<CallEffect | PutEffect | ForkEffect, void, unknown>;
 type SagaFactory = () => SagaGenerator;
 
 type SagaModule = {
@@ -36,14 +37,16 @@ describe('fetchDataSaga', () => {
     ];
     const generator = fetchDataSaga();
 
-    const callEffect = generator.next().value;
+    const callResult = generator.next();
+    const callEffect = callResult.value as CallEffect;
     expect(callEffect).toMatchObject({
       '@@redux-saga/IO': true,
       type: 'CALL',
     });
     expect(callEffect.payload.fn).toBe(api.getData);
 
-    const putEffect = generator.next(data).value;
+    const putResult = generator.next(data);
+    const putEffect = putResult.value as PutEffect;
     expect(putEffect).toMatchObject({
       '@@redux-saga/IO': true,
       type: 'PUT',
@@ -59,7 +62,8 @@ describe('fetchDataSaga', () => {
 
     generator.next();
 
-    const putEffect = generator.throw(error).value;
+    const putResult = generator.throw(error);
+    const putEffect = putResult.value as PutEffect;
     expect(putEffect).toMatchObject({
       '@@redux-saga/IO': true,
       type: 'PUT',
@@ -75,7 +79,8 @@ describe('fetchDataSaga', () => {
 describe('dataSaga', () => {
   it('calls FETCH_REQUEST and bind the worker saga', () => {
     const generator = dataSaga();
-    const effect = generator.next().value;
+    const result = generator.next();
+    const effect = result.value as ForkEffect;
 
     expect(effect).toMatchObject({
       '@@redux-saga/IO': true,

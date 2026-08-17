@@ -17,7 +17,7 @@ import { parseSeries } from '../../parsers/parserSeries';
 
 export default function Data() {
   const dispatch = useDispatch();
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null!);
 
   const data = useSelector(selectData);
   const loading = useSelector(selectDataLoading);

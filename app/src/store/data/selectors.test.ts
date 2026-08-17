@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { selectData, selectDataError, selectDataLoading, selectDataState } from './selectors';
-import { RootState } from '..';
+import type { RootState } from '..';
 
 describe('data selectors', () => {
   const state: RootState = {

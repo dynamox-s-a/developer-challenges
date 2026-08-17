@@ -1,4 +1,4 @@
-import { RefObject } from 'react';
+import type { RefObject } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import Highcharts from 'highcharts';
@@ -136,7 +136,7 @@ describe('useChartSync', () => {
   it('attaches listeners to document.body when containerRef.current is null', () => {
     const addSpy = vi.spyOn(document.body, 'addEventListener');
     const removeSpy = vi.spyOn(document.body, 'removeEventListener');
-    const containerRef = { current: null } as RefObject<HTMLDivElement>;
+    const containerRef = { current: null } as unknown as RefObject<HTMLDivElement>;
 
     const { unmount } = renderHook(() => useChartSync({ containerRef, data: [1] }));
 

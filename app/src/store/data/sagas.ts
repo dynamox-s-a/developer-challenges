@@ -4,10 +4,11 @@ import type { SagaIterator } from 'redux-saga';
 import { api } from '../../services/api';
 import { fetchDataFailure, fetchDataSuccess } from './actions';
 import { DataActionTypes } from './types';
+import type { Data } from '../../types/data';
 
-export function* fetchDataSaga() {
+export function* fetchDataSaga(): SagaIterator {
   try {
-    const data = yield call(api.getData);
+    const data = (yield call(api.getData)) as unknown as Data[];
 
     yield put(fetchDataSuccess(data));
   } catch {

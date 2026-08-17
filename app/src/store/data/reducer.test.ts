@@ -15,7 +15,7 @@ describe('dataReducer', () => {
       error: 'old error',
     };
 
-    const result = dataReducer(prevState as typeof initialState, {
+    const result = dataReducer(prevState as unknown as typeof initialState, {
       type: DataActionTypes.FETCH_REQUEST,
     });
 
