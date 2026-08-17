@@ -15,6 +15,7 @@ export function Flex({ children, direction = "row", justify, align, gap, ...marg
 		<Box
 			sx={{
 				display: "flex",
+				flexWrap: "wrap",
 				flexDirection: direction,
 				justifyContent: justify,
 				alignItems: align,
