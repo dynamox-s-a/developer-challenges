@@ -3,8 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchDataRequest } from '../../store/data/actions';
 import { selectData, selectDataError, selectDataLoading } from '../../store/data/selectors';
+import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
 import { Paper } from '@mui/material';
 import Header from '../../components/Header';
 import Chart from '../../components/Chart';
@@ -32,7 +34,43 @@ export default function Data() {
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return (
+      <main>
+        <Header />
+        <Divider />
+        <Box
+          sx={{
+            minHeight: 'calc(100vh - 57px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#F8FAFC',
+            p: 3,
+          }}
+        >
+          <Paper
+            variant="outlined"
+            sx={{
+              px: 4,
+              py: 5,
+              width: '100%',
+              maxWidth: 480,
+              textAlign: 'center',
+            }}
+          >
+            <Typography variant="h6" sx={{ mb: 1.5 }}>
+              Ocorreu um erro ao carregar os dados
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+              {error}
+            </Typography>
+            <Button variant="contained" onClick={() => window.location.reload()}>
+              Recarregar tela
+            </Button>
+          </Paper>
+        </Box>
+      </main>
+    );
   }
 
   return (
