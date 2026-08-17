@@ -1,55 +1,55 @@
-# ADR 0003 — Usar Highcharts para séries temporais sincronizadas
+# ADR 0003 — Use Highcharts for synchronized time series
 
 ## Status
 
-Aceita.
+Accepted.
 
-## Contexto
+## Context
 
-O dashboard precisa exibir sete séries agrupadas em três métricas e sincronizar tooltip e
-crosshair entre gráficos pelo instante equivalente. A biblioteca deve suportar séries temporais,
-eixos, múltiplas séries e uma API para interação coordenada.
+The dashboard must display seven series grouped into three metrics and synchronize the tooltip and
+crosshair across charts at the equivalent instant. The library must support time series, axes,
+multiple series, and an API for coordinated interaction.
 
-## Decisão
+## Decision
 
-Usar Highcharts com `highcharts-react-official`.
+Use Highcharts with `highcharts-react-official`.
 
-Options são geradas a partir do modelo interno. A sincronização usa um adapter local sobre a API
-imperativa da biblioteca, permitindo testar busca de pontos e coordenação sem acoplar toda a lógica
-a tipos concretos do Highcharts.
+Options are generated from the internal model. Synchronization uses a local adapter over the
+library's imperative API, allowing point lookup and coordination to be tested without coupling all
+logic to concrete Highcharts types.
 
-Instâncias, tooltip e crosshair permanecem em refs e são atualizados diretamente, fora do Redux.
+Instances, tooltip, and crosshair remain in refs and are updated directly, outside Redux.
 
-## Alternativas consideradas
+## Alternatives considered
 
 ### Recharts
 
-Oferece integração declarativa com React, mas exigiria construir parte maior da sincronização e do
-tooltip compartilhado.
+It offers declarative React integration, but would require building more of the synchronization and
+shared tooltip behavior.
 
 ### Chart.js
 
-Atende gráficos temporais, porém a integração entre múltiplas instâncias também exigiria plugins e
-adapters específicos.
+It supports time-series charts, but integration across multiple instances would also require
+specific plugins and adapters.
 
 ### D3
 
-Fornece controle completo, mas aumentaria significativamente implementação, acessibilidade,
-manutenção e testes para um desafio com prazo limitado.
+It provides complete control, but would significantly increase implementation, accessibility,
+maintenance, and testing effort for a time-constrained challenge.
 
-## Consequências
+## Consequences
 
-Positivas:
+Positive:
 
-- suporte maduro a séries temporais e múltiplos eixos;
-- API de tooltip, pointer e crosshair adequada ao requisito;
-- exemplo oficial próximo ao comportamento solicitado;
-- atualização imperativa sem render React a cada `mousemove`;
-- lógica de sincronização isolada e testável.
+- mature support for time series and multiple axes;
+- tooltip, pointer, and crosshair API suited to the requirement;
+- an official example close to the requested behavior;
+- imperative updates without a React render on every `mousemove`;
+- isolated, testable synchronization logic.
 
-Negativas:
+Negative:
 
-- dependência relevante no bundle;
-- APIs imperativas exigem cleanup cuidadoso;
-- JSDOM não reproduz layout SVG, deslocando parte da validação para Cypress;
-- mudanças de versão podem exigir revisar o adapter e as options.
+- a significant bundle dependency;
+- imperative APIs require careful cleanup;
+- JSDOM does not reproduce SVG layout, shifting part of the validation to Cypress;
+- version changes may require reviewing the adapter and options.

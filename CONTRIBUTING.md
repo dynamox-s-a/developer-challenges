@@ -1,19 +1,19 @@
-# Como contribuir
+# Contributing
 
-## Antes de começar
+## Before you begin
 
-Leia:
+Read:
 
-- [`README.md`](README.md) para execução;
-- [`docs/sketch.md`](docs/sketch.md) para escopo;
-- [`docs/architecture.md`](docs/architecture.md) para fronteiras;
-- [`docs/testing-strategy.md`](docs/testing-strategy.md) para escolher testes;
-- [`docs/TODO.md`](docs/TODO.md) para o roadmap.
+- [`README.md`](README.md) for running the project;
+- [`docs/sketch.md`](docs/sketch.md) for scope;
+- [`docs/architecture.md`](docs/architecture.md) for boundaries;
+- [`docs/testing-strategy.md`](docs/testing-strategy.md) for selecting tests;
+- [`docs/TODO.md`](docs/TODO.md) for the roadmap.
 
-Priorize requisitos do desafio, correção, acessibilidade e mudanças proporcionais. Não adicione
-infraestrutura, dependências ou abstrações sem benefício demonstrável.
+Prioritize challenge requirements, correctness, accessibility, and proportionate changes. Do not
+add infrastructure, dependencies, or abstractions without a demonstrated benefit.
 
-## Ambiente
+## Environment
 
 - Node.js 24
 - pnpm 9.15.4
@@ -25,76 +25,76 @@ pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Não versione `.env`, `.vercel`, credenciais ou artifacts gerados.
+Do not commit `.env`, `.vercel`, credentials, or generated artifacts.
 
-## Organização do trabalho
+## Work organization
 
-1. Relacione a mudança a um requisito, bug ou decisão documentada.
-2. Identifique a menor fronteira que resolve o problema completamente.
-3. Preserve alterações existentes fora do escopo.
-4. Implemente com TypeScript strict.
-5. Adicione ou ajuste testes proporcionais.
-6. Atualize documentação quando contrato, arquitetura ou operação mudar.
-7. Revise o diff completo.
-8. Execute as validações adequadas.
+1. Relate the change to a requirement, bug, or documented decision.
+2. Identify the smallest boundary that completely solves the problem.
+3. Preserve existing changes outside the scope.
+4. Implement with TypeScript strict.
+5. Add or adjust proportionate tests.
+6. Update documentation when the contract, architecture, or operation changes.
+7. Review the complete diff.
+8. Run the appropriate validations.
 
-## Código
+## Code
 
-- Use componentes funcionais e composição.
-- Separe apresentação, transformação, acesso HTTP e efeitos.
-- Prefira aliases `@/` entre módulos de `src`.
-- Não use `any`, `@ts-ignore` ou regras desabilitadas para ocultar erros.
-- Mantenha estado global serializável e compartilhado.
-- Mantenha interação transitória e instâncias de bibliotecas fora do Redux.
-- Extraia abstrações quando houver reutilização, isolamento ou ganho claro.
-- Siga a formatação e o lint do Biome.
+- Use functional components and composition.
+- Separate presentation, transformation, HTTP access, and effects.
+- Prefer `@/` aliases between `src` modules.
+- Do not use `any`, `@ts-ignore`, or disabled rules to hide errors.
+- Keep global state serializable and shared.
+- Keep transient interaction and library instances outside Redux.
+- Extract abstractions when they provide reuse, isolation, or a clear benefit.
+- Follow Biome formatting and linting.
 
-## Mudanças no contrato de medições
+## Measurement contract changes
 
-O contrato atravessa runtimes e camadas. Ao alterá-lo, revise:
+The contract crosses runtimes and layers. When changing it, review:
 
 - [`mock/db.json`](mock/db.json);
 - [`api/measurements.ts`](api/measurements.ts);
 - `src/features/measurements/api`;
 - `src/features/measurements/model`;
-- slice e selectors;
-- testes unitários e da Function;
-- Cypress e documentação.
+- slice and selectors;
+- unit and Function tests;
+- Cypress and documentation.
 
-O `json-server` local e a Function precisam continuar equivalentes.
+The local `json-server` and the Function must remain equivalent.
 
-## Gráficos
+## Charts
 
-- Mantenha timestamp no modelo e formatação na apresentação.
-- Preserve unidades e associação entre métrica/eixo.
-- Não coloque tooltip, crosshair ou `Highcharts.Chart` no Redux.
-- Remova listeners e refs no cleanup.
-- Teste preparação e sincronização fora dos internals da biblioteca.
-- Valide interação real no Cypress.
+- Keep timestamps in the model and formatting in presentation.
+- Preserve units and metric/axis associations.
+- Do not put tooltip, crosshair, or `Highcharts.Chart` in Redux.
+- Remove listeners and refs during cleanup.
+- Test preparation and synchronization outside library internals.
+- Validate real interaction in Cypress.
 
-## Acessibilidade e responsividade
+## Accessibility and responsiveness
 
-- Use HTML semântico e nomes acessíveis.
-- Preserve foco visível e teclado.
-- Não dependa somente de cor, ícone ou tooltip.
-- Valide loading, erro, vazio e sucesso.
-- Confira overflow e resize em mobile, tablet e desktop.
-- Use axe-core como apoio, não como substituto de revisão manual.
+- Use semantic HTML and accessible names.
+- Preserve visible focus and keyboard support.
+- Do not rely solely on color, icons, or tooltips.
+- Validate loading, error, empty, and success states.
+- Check overflow and resizing on mobile, tablet, and desktop.
+- Use axe-core as support, not as a substitute for manual review.
 
-## Testes proporcionais
+## Proportionate testing
 
-- Transformação pura: Vitest.
-- Estado ou efeito: reducer, selector ou Saga.
-- Comportamento acessível: Testing Library.
-- Estado visual isolado: Storybook.
-- Integração navegador/API: Cypress.
-- Contrato de produção: teste da Function ou smoke.
+- Pure transformation: Vitest.
+- State or effect: reducer, selector, or Saga.
+- Accessible behavior: Testing Library.
+- Isolated visual state: Storybook.
+- Browser/API integration: Cypress.
+- Production contract: Function test or smoke test.
 
-Todo bug deve receber um teste de regressão quando houver reprodução determinística.
+Every bug should receive a regression test when it can be reproduced deterministically.
 
 ## Quality gate
 
-Para entrega completa:
+For a complete delivery:
 
 ```bash
 pnpm format:check
@@ -107,17 +107,17 @@ pnpm build-storybook
 pnpm e2e:ci
 ```
 
-Use `pnpm install --frozen-lockfile` antes quando dependências estiverem ausentes ou o lockfile
-tiver mudado. Não declare a entrega pronta com etapa falha ou não executada sem explicar o motivo.
+Run `pnpm install --frozen-lockfile` first when dependencies are missing or the lockfile has changed.
+Do not declare the delivery ready if a step failed or was not run without explaining why.
 
 ## Commits
 
-- Use mensagens em inglês no formato Conventional Commits.
-- Mantenha cada commit revisável e funcional.
-- Separe documentação, refatoração, testes e comportamento quando forem mudanças independentes.
-- Não inclua arquivos pessoais, generated artifacts ou mudanças adjacentes.
+- Use English messages in Conventional Commits format.
+- Keep each commit reviewable and functional.
+- Separate documentation, refactoring, tests, and behavior when they are independent changes.
+- Do not include personal files, generated artifacts, or adjacent changes.
 
-Exemplos:
+Examples:
 
 ```text
 feat: add synchronized chart indicators
@@ -126,24 +126,24 @@ test: cover measurement retry flow
 docs: document testing strategy
 ```
 
-Agentes não devem criar commits ou fazer push sem solicitação explícita.
+Agents must not create commits or push without an explicit request.
 
-## Pull request
+## Pull requests
 
-Antes de abrir:
+Before opening one:
 
-- sincronize a branch sem reescrever histórico compartilhado;
-- revise commits e diff contra a base;
-- confirme que documentação e testes refletem a mudança;
-- procure segredos e artifacts;
-- execute o quality gate;
-- descreva resumo, riscos e plano de testes.
+- synchronize the branch without rewriting shared history;
+- review commits and the diff against the base;
+- confirm that documentation and tests reflect the change;
+- look for secrets and artifacts;
+- run the quality gate;
+- describe the summary, risks, and test plan.
 
-O fork preserva arquivos oficiais em `main`; a solução vive em `leonardo-jacomussi` e a pull
-request de avaliação aponta para `dynamox-s-a/developer-challenges:main`.
+The fork preserves official files on `main`; the solution lives on `leonardo-jacomussi`, and the
+evaluation pull request targets `dynamox-s-a/developer-challenges:main`.
 
-## Ferramentas assistidas
+## Assisted tools
 
-Cursor Rules, Commands, Skills, Bugbot e MCPs são opcionais. `/pr-ready` e a skill
-`frontend-quality-gate` podem apoiar a revisão, mas não substituem os comandos nem a decisão
-humana. Consulte [`docs/ai-assisted-development.md`](docs/ai-assisted-development.md).
+Cursor Rules, Commands, Skills, Bugbot, and MCPs are optional. `/pr-ready` and the
+`frontend-quality-gate` skill can support review, but do not replace the commands or human
+judgment. See [`docs/ai-assisted-development.md`](docs/ai-assisted-development.md).

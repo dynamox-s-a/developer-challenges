@@ -1,12 +1,12 @@
 # Dynamox Front-End Challenge
 
-Dashboard responsivo para análise de séries temporais de uma máquina industrial.
+Responsive dashboard for analyzing industrial machine time series.
 
-[Live](#aplicação-publicada) |
-[Funcionalidades](#funcionalidades) |
-[Execução](#execução-local) |
-[Testes](#testes-e-qualidade) |
-[Documentação](#documentação)
+[Live](#live-application) |
+[Features](#features) |
+[Running locally](#running-locally) |
+[Testing](#testing-and-quality) |
+[Documentation](#documentation)
 
 ![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)
 ![TypeScript 6](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)
@@ -14,55 +14,55 @@ Dashboard responsivo para análise de séries temporais de uma máquina industri
 ![Material UI 5](https://img.shields.io/badge/Material_UI-5-007FFF?logo=mui&logoColor=white)
 [![CI](https://github.com/leonardojacomussi/dynamox-front-end-challenge/actions/workflows/ci.yml/badge.svg?branch=leonardo-jacomussi)](https://github.com/leonardojacomussi/dynamox-front-end-challenge/actions/workflows/ci.yml?query=branch%3Aleonardo-jacomussi)
 
-![Dashboard da Dynamox em um dispositivo móvel](./public/mockup-mobile-preview.png)
-![Dashboard da Dynamox em um notebook](./public/mockup-desktop-preview.png)
+![Dynamox dashboard on a mobile device](./public/mockup-mobile-preview.png)
+![Dynamox dashboard on a laptop](./public/mockup-desktop-preview.png)
 
-## Sobre o desafio
+## About the challenge
 
-Esta implementação responde ao
+This implementation addresses the
 [Dynamox Front-end Developer Challenge](https://github.com/dynamox-s-a/developer-challenges/blob/main/front-end-challenge-v2.md):
-construir com React e TypeScript uma página `/data` que carregue medições por uma API REST mock,
-apresente informações da máquina e exiba gráficos sincronizados de aceleração, velocidade e
-temperatura.
+build a `/data` page with React and TypeScript that loads measurements from a mock REST API,
+presents machine information, and displays synchronized acceleration, velocity, and temperature
+charts.
 
-Além dos requisitos técnicos, foram implementados os bônus de Storybook, testes end-to-end com
-Cypress e deploy em cloud.
+In addition to the technical requirements, Storybook, Cypress end-to-end tests, and cloud deployment
+were implemented as bonus items.
 
-## Aplicação publicada
+## Live application
 
 - [Dashboard](https://dynamox.leonardojacomussi.com/data)
-- [API mock](https://dynamox.leonardojacomussi.com/api/measurements)
+- [Mock API](https://dynamox.leonardojacomussi.com/api/measurements)
 - [Storybook](https://dynamox-storybook.leonardojacomussi.com)
 
-## Funcionalidades
+## Features
 
-- Resumo da máquina, ponto monitorado, rotação, faixa e intervalo de aquisição.
-- Gráfico de aceleração RMS nos eixos `x`, `y` e `z`.
-- Gráfico de temperatura.
-- Gráfico de velocidade RMS nos eixos `x`, `y` e `z`.
-- Tooltip e crosshair sincronizados pelo timestamp mais próximo.
-- Estados de loading, erro com retry, vazio e falha inesperada.
-- Layout responsivo para mobile, tablet e desktop.
-- Semântica, teclado, foco, contraste e nomes acessíveis.
-- SPA com fallback de rota e API mock disponível localmente e na Vercel.
+- Machine summary, monitored point, rotation, range, and acquisition interval.
+- RMS acceleration chart on the `x`, `y`, and `z` axes.
+- Temperature chart.
+- RMS velocity chart on the `x`, `y`, and `z` axes.
+- Tooltip and crosshair synchronized by the nearest timestamp.
+- Loading, retryable error, empty, and unexpected failure states.
+- Responsive layout for mobile, tablet, and desktop.
+- Semantics, keyboard support, focus, contrast, and accessible names.
+- SPA with route fallback and a mock API available locally and on Vercel.
 
-## Tecnologias
+## Technologies
 
-- React 19, React Router 7, TypeScript 6 e Vite 8
-- Material UI 5 e Roboto
-- Redux Toolkit, Redux Saga, React Redux e Axios
+- React 19, React Router 7, TypeScript 6, and Vite 8
+- Material UI 5 and Roboto
+- Redux Toolkit, Redux Saga, React Redux, and Axios
 - Highcharts
-- Vitest, Testing Library, axe-core e `redux-saga-test-plan`
+- Vitest, Testing Library, axe-core, and `redux-saga-test-plan`
 - Storybook
 - Cypress
 - Biome
-- GitHub Actions e Vercel
+- GitHub Actions and Vercel
 
-## Arquitetura resumida
+## Architecture overview
 
-Ao entrar em `/data`, a página dispara `measurementsRequested`. A Saga busca o contrato externo,
-o mapper converte datas ISO e valores máximos para o modelo interno e o slice armazena o resultado.
-Selectors memoizados separam as métricas consumidas pelos três gráficos.
+When `/data` is opened, the page dispatches `measurementsRequested`. The Saga fetches the external
+contract, the mapper converts ISO dates and maximum values into the internal model, and the slice
+stores the result. Memoized selectors separate the metrics consumed by the three charts.
 
 ```mermaid
 flowchart LR
@@ -75,22 +75,22 @@ flowchart LR
     Store --> Charts[HighchartsUI]
 ```
 
-O hover não passa pelo Redux. Adapters imperativos atualizam tooltip e crosshair diretamente nas
-instâncias do Highcharts e removem listeners no cleanup.
+Hover state does not pass through Redux. Imperative adapters update the tooltip and crosshair
+directly on Highcharts instances and remove listeners during cleanup.
 
-O `json-server` local e a Function da Vercel servem [`mock/db.json`](mock/db.json). O mock preserva
-integralmente nomes e medições do dataset oficial e acrescenta somente um `id` estável por série,
-necessário para representar recursos REST. Consulte [`docs/architecture.md`](docs/architecture.md)
-para detalhes.
+The local `json-server` and the Vercel Function serve [`mock/db.json`](mock/db.json). The mock fully
+preserves the names and measurements from the official dataset and adds only one stable `id` per
+series, which is required to represent REST resources. See
+[`docs/architecture.md`](docs/architecture.md) for details.
 
-## Execução local
+## Running locally
 
-### Requisitos
+### Requirements
 
-- Node.js 24, definido em [`.nvmrc`](.nvmrc)
-- pnpm 9.15.4, definido em [`package.json`](package.json)
+- Node.js 24, defined in [`.nvmrc`](.nvmrc)
+- pnpm 9.15.4, defined in [`package.json`](package.json)
 
-### Instalação
+### Installation
 
 ```bash
 git clone --branch leonardo-jacomussi \
@@ -101,24 +101,24 @@ cp .env.example .env
 pnpm install --frozen-lockfile
 ```
 
-O `.env.example` define `VITE_API_BASE_URL=http://localhost:3001`. O arquivo `.env` local é
-ignorado pelo Git e não deve conter credenciais destinadas ao browser.
+`.env.example` defines `VITE_API_BASE_URL=http://localhost:3001`. The local `.env` file is ignored
+by Git and must not contain credentials intended for the browser.
 
-Se o Cypress informar que o binário local não está instalado, execute:
+If Cypress reports that the local binary is not installed, run:
 
 ```bash
 pnpm exec cypress install
 ```
 
-### Desenvolvimento
+### Development
 
 ```bash
 pnpm dev
 ```
 
-Esse comando inicia Vite e `json-server` em conjunto:
+This command starts Vite and `json-server` together:
 
-- aplicação: `http://localhost:5173/data`;
+- application: `http://localhost:5173/data`;
 - API: `http://localhost:3001/measurements`.
 
 ### Storybook
@@ -127,104 +127,106 @@ Esse comando inicia Vite e `json-server` em conjunto:
 pnpm storybook
 ```
 
-Disponível em `http://localhost:6006`.
+Available at `http://localhost:6006`.
 
 ## Scripts
 
-### Qualidade e build
+### Quality and build
 
 ```bash
-pnpm format:check       # verifica formatação
-pnpm format             # aplica formatação
-pnpm lint               # executa lint
-pnpm exec tsc -b        # valida TypeScript da aplicação e tooling
-pnpm typecheck:e2e      # valida TypeScript do Cypress
-pnpm test               # executa Vitest
-pnpm test:watch         # mantém Vitest em watch
-pnpm test:coverage      # gera relatório de coverage
-pnpm build              # gera build de produção
-pnpm build-storybook    # gera Storybook estático
-pnpm preview            # serve o build e inicia a API local
+pnpm format:check       # checks formatting
+pnpm format             # applies formatting
+pnpm lint               # runs lint
+pnpm exec tsc -b        # validates application and tooling TypeScript
+pnpm typecheck:e2e      # validates Cypress TypeScript
+pnpm test               # runs Vitest
+pnpm test:watch         # keeps Vitest in watch mode
+pnpm test:coverage      # generates the coverage report
+pnpm build              # creates the production build
+pnpm build-storybook    # creates the static Storybook build
+pnpm preview            # serves the build and starts the local API
 ```
 
-Após `pnpm build`, `pnpm preview` disponibiliza a aplicação em `http://localhost:4173/data` e a API
-em `http://localhost:3001/measurements`. O build usa a URL definida no `.env` criado durante o
-setup.
+After `pnpm build`, `pnpm preview` makes the application available at
+`http://localhost:4173/data` and the API at `http://localhost:3001/measurements`. The build uses the
+URL defined in the `.env` created during setup.
 
 ### End-to-end
 
 ```bash
-pnpm e2e                # inicia API/Vite e abre Cypress
-pnpm e2e:open           # abre Cypress usando serviços existentes
-pnpm e2e:run            # executa Cypress headless usando serviços existentes
-pnpm e2e:ci             # build, servidores temporários e Cypress headless
+pnpm e2e                # starts API/Vite and opens Cypress
+pnpm e2e:open           # opens Cypress using existing services
+pnpm e2e:run            # runs Cypress headlessly using existing services
+pnpm e2e:ci             # build, temporary servers, and headless Cypress
 ```
 
-Os scripts `dev:web:e2e`, `build:e2e`, `preview:e2e` e `e2e:run:preview` são suporte interno da
-execução automatizada.
+The `dev:web:e2e`, `build:e2e`, `preview:e2e`, and `e2e:run:preview` scripts provide internal
+support for automated execution.
 
-## Testes e qualidade
+## Testing and quality
 
-- Vitest testa domínio, estado, sagas, componentes e sincronização.
-- Testing Library prioriza comportamento e queries acessíveis.
-- O contrato da Function é validado contra o dataset oficial.
-- Storybook documenta estados isolados e integra axe-core.
-- Cypress usa API real local nos fluxos de sucesso e intercepta falhas controladas.
-- O smoke de produção valida endpoints e fluxos essenciais depois do deploy.
+- Vitest tests the domain, state, sagas, components, and synchronization.
+- Testing Library prioritizes behavior and accessible queries.
+- The Function contract is validated against the official dataset.
+- Storybook documents isolated states and integrates axe-core.
+- Cypress uses the real local API in success flows and intercepts controlled failures.
+- The production smoke test validates endpoints and essential flows after deployment.
 
-`pnpm test:coverage` gera o relatório localmente. Não há threshold obrigatório, e o CI executa
-`pnpm test` sem coverage. A estratégia completa está em
+`pnpm test:coverage` generates the report locally. There is no mandatory threshold, and CI runs
+`pnpm test` without coverage. The complete strategy is documented in
 [`docs/testing-strategy.md`](docs/testing-strategy.md).
 
-## CI/CD e deploy
+## CI/CD and deployment
 
-O workflow de CI roda em pull requests, push para `leonardo-jacomussi` e execução manual:
+The CI workflow runs on pull requests, pushes to `leonardo-jacomussi`, and manual runs:
 
-- `quality`: formatação, lint, tipos, testes, build da aplicação e Storybook;
-- `e2e`: instalação do Cypress e `pnpm e2e:ci`.
+- `quality`: formatting, lint, types, tests, application build, and Storybook;
+- `e2e`: Cypress installation and `pnpm e2e:ci`.
 
-Como o workflow pertence ao fork, o GitHub pode não exibi-lo como check no pull request para o
-upstream. O badge no início deste documento aponta para as execuções da branch de entrega.
+Because the workflow belongs to the fork, GitHub may not display it as a check on the pull request
+to upstream. The badge at the beginning of this document points to runs from the delivery branch.
 
-O CD é chamado somente em push ou execução manual na branch da solução, depois de ambos passarem.
-A aplicação e a API usam um projeto Vercel; o Storybook usa outro. Não há integração Git direta
-na Vercel. O workflow faz build prebuilt, deploy de produção e smoke dos três endpoints.
+CD is invoked only on pushes or manual runs on the solution branch, after both jobs pass. The
+application and API use one Vercel project; Storybook uses another. There is no direct Git
+integration in Vercel. The workflow performs a prebuilt build, production deployment, and smoke
+testing of all three endpoints.
 
-`VITE_API_BASE_URL=/api` é fornecida pelos ambientes da Vercel e do GitHub Actions. IDs de projeto
-e token da Vercel permanecem em variables/secrets do GitHub Environment.
+`VITE_API_BASE_URL=/api` is provided by the Vercel and GitHub Actions environments. Vercel project
+IDs and token remain in GitHub Environment variables/secrets.
 
-## Estratégia do fork
+## Fork strategy
 
-- `main` preserva os arquivos oficiais do repositório da Dynamox.
-- `leonardo-jacomussi` é a branch padrão do fork e contém a solução.
-- A pull request deve partir de `leonardojacomussi:leonardo-jacomussi` para
+- `main` preserves the official files from the Dynamox repository.
+- `leonardo-jacomussi` is the fork's default branch and contains the solution.
+- The pull request must originate from `leonardojacomussi:leonardo-jacomussi` and target
   `dynamox-s-a/developer-challenges:main`.
 
-Essa organização mantém o enunciado separado da árvore da aplicação sem alterar o destino da
-avaliação.
+This organization keeps the challenge statement separate from the application tree without changing
+the evaluation target.
 
-## Limitações e premissas
+## Limitations and assumptions
 
-- A aplicação possui uma única página funcional e uma rota de fallback.
-- A API é mock, somente leitura e sem persistência.
-- Os metadados da máquina são constantes porque não existem no payload fornecido.
-- O mapper confia no contrato conhecido e não executa validação runtime.
-- Timestamps são armazenados como números e exibidos no timezone local do navegador.
-- Não há autenticação, backend de produção ou Nx porque não fazem parte deste desafio front-end.
+- The application has a single functional page and a fallback route.
+- The API is a read-only mock with no persistence.
+- Machine metadata is constant because it is not included in the provided payload.
+- The mapper trusts the known contract and does not perform runtime validation.
+- Timestamps are stored as numbers and displayed in the browser's local timezone.
+- There is no authentication, production backend, or Nx because they are outside the scope of this
+  front-end challenge.
 
-## Documentação
+## Documentation
 
-- [`docs/sketch.md`](docs/sketch.md): blueprint técnico consolidado.
-- [`docs/TODO.md`](docs/TODO.md): roadmap e status das entregas.
-- [`docs/architecture.md`](docs/architecture.md): arquitetura, dados, gráficos e deploy.
-- [`docs/testing-strategy.md`](docs/testing-strategy.md): estratégia e limites dos testes.
-- [`docs/ai-assisted-development.md`](docs/ai-assisted-development.md): governança do uso de IA.
-- [`docs/decisions`](docs/decisions): registros de decisões arquiteturais.
-- [`CONTRIBUTING.md`](CONTRIBUTING.md): setup e critérios para contribuir.
+- [`docs/sketch.md`](docs/sketch.md): consolidated technical blueprint.
+- [`docs/TODO.md`](docs/TODO.md): delivery roadmap and status.
+- [`docs/architecture.md`](docs/architecture.md): architecture, data, charts, and deployment.
+- [`docs/testing-strategy.md`](docs/testing-strategy.md): testing strategy and boundaries.
+- [`docs/ai-assisted-development.md`](docs/ai-assisted-development.md): governance of AI use.
+- [`docs/decisions`](docs/decisions): architecture decision records.
+- [`CONTRIBUTING.md`](CONTRIBUTING.md): setup and contribution criteria.
 
-## Desenvolvimento assistido por IA
+## AI-assisted development
 
-O repositório contém `AGENTS.md`, Cursor Rules, Commands, Skills, critérios do Bugbot e MCPs
-opcionais. Eles fornecem contexto e checklists, mas não substituem revisão humana nem as validações
-determinísticas. Consulte
+The repository contains `AGENTS.md`, Cursor Rules, Commands, Skills, Bugbot criteria, and optional
+MCPs. They provide context and checklists, but do not replace human review or deterministic
+validation. See
 [`docs/ai-assisted-development.md`](docs/ai-assisted-development.md).

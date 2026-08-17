@@ -1,146 +1,145 @@
-# Estratégia de testes
+# Testing strategy
 
-## Objetivo
+## Objective
 
-A estratégia prioriza comportamento observável, regras de domínio e contratos nas fronteiras. Cada
-camada cobre um risco diferente; nenhum teste isolado é tratado como garantia suficiente.
+The strategy prioritizes observable behavior, domain rules, and boundary contracts. Each layer
+covers a different risk; no isolated test is treated as a sufficient guarantee.
 
-## Princípios
+## Principles
 
-- Testar nossa lógica, não detalhes internos das bibliotecas.
-- Usar queries acessíveis e interações próximas às ações do usuário.
-- Manter fixtures determinísticas.
-- Mockar no limite externo mais estreito.
-- Cobrir regressões reproduzíveis.
-- Evitar snapshots grandes e asserts frágeis de estrutura.
-- Separar falha do produto de limitação do ambiente de testes.
+- Test our logic, not library internals.
+- Use accessible queries and interactions close to user actions.
+- Keep fixtures deterministic.
+- Mock at the narrowest external boundary.
+- Cover reproducible regressions.
+- Avoid large snapshots and brittle structural assertions.
+- Distinguish product failures from test environment limitations.
 
-## Camadas
+## Layers
 
-### Funções de domínio
+### Domain functions
 
-Vitest cobre transformações puras:
+Vitest covers pure transformations:
 
-- parse de métrica e eixo;
-- associação de unidade;
-- conversão de ISO para timestamp;
-- mapeamento de `max` para `value`;
-- busca do ponto mais próximo;
-- sincronização e ocultação de indicadores.
+- metric and axis parsing;
+- unit association;
+- ISO-to-timestamp conversion;
+- mapping `max` to `value`;
+- nearest-point lookup;
+- indicator synchronization and hiding.
 
-Esses testes são rápidos e não precisam de DOM ou rede.
+These tests are fast and require neither the DOM nor network access.
 
-### Estado e efeitos
+### State and effects
 
-Reducers são exercitados pelas actions públicas e validam transições entre `idle`, `loading`,
-`success` e `error`.
+Reducers are exercised through public actions and validate transitions between `idle`, `loading`,
+`success`, and `error`.
 
-Selectors recebem estados representativos e confirmam agrupamento por métrica e estabilidade das
-derivações.
+Selectors receive representative states and confirm grouping by metric and stable derivations.
 
-Sagas são testadas com efeitos declarativos e `redux-saga-test-plan`, cobrindo:
+Sagas are tested with declarative effects and `redux-saga-test-plan`, covering:
 
-- chamada ao serviço;
-- transformação pelo mapper;
-- dispatch de sucesso;
-- normalização e dispatch de erro;
-- observação com `takeLatest`.
+- service calls;
+- mapper transformation;
+- success dispatch;
+- error normalization and dispatch;
+- watching with `takeLatest`.
 
-### Componentes
+### Components
 
-Testing Library renderiza componentes com providers reais quando a integração importa. Os testes
-consultam papel, nome e texto acessível em vez de classes ou árvore interna.
+Testing Library renders components with real providers when integration matters. Tests query roles,
+names, and accessible text instead of classes or the internal tree.
 
-Os cenários incluem:
+Scenarios include:
 
 - loading;
-- erro e retry;
-- ausência de dados;
-- resumo completo e parcial;
-- composição dos três gráficos;
-- fallback do Error Boundary;
-- navegação e rotas.
+- error and retry;
+- no data;
+- complete and partial summaries;
+- composition of all three charts;
+- Error Boundary fallback;
+- navigation and routes.
 
 ### Highcharts
 
-JSDOM não implementa layout SVG como um navegador. Por isso:
+JSDOM does not implement SVG layout like a browser. Therefore:
 
-- componentes mockam Highcharts na fronteira;
-- `chartOptions` é testado como preparação de configuração;
-- sincronização é testada contra a interface `SynchronizableChart`;
-- adapters recebem doubles mínimos da API imperativa;
-- renderização SVG e eventos reais são validados no Cypress.
+- components mock Highcharts at the boundary;
+- `chartOptions` is tested as configuration preparation;
+- synchronization is tested against the `SynchronizableChart` interface;
+- adapters receive minimal doubles of the imperative API;
+- SVG rendering and real events are validated in Cypress.
 
-Esse limite evita reproduzir internals do Highcharts dentro dos testes.
+This boundary avoids reproducing Highcharts internals in tests.
 
-### Contrato da Function
+### Function contract
 
-`tests/api/measurements.test.ts` importa `GET` diretamente e confirma:
+`tests/api/measurements.test.ts` imports `GET` directly and confirms:
 
-- status HTTP 200;
-- conteúdo JSON;
-- equivalência com `mock/db.json`;
-- IDs estáveis e únicos;
-- paridade integral de `name` e `data` com o arquivo oficial por hash SHA-256.
+- HTTP 200 status;
+- JSON content;
+- equivalence with `mock/db.json`;
+- stable, unique IDs;
+- full parity of `name` and `data` with the official file through a SHA-256 hash.
 
-O teste protege a paridade entre runtime local e produção sem iniciar um servidor.
+The test protects parity between local and production runtimes without starting a server.
 
 ### Storybook
 
-Stories documentam componentes e estados isolados:
+Stories document isolated components and states:
 
-- loading, erro e vazio;
-- resumo completo e parcial;
-- cards e gráficos com dados previsíveis.
+- loading, error, and empty states;
+- complete and partial summaries;
+- cards and charts with predictable data.
 
-O addon de acessibilidade executa verificações axe no canvas. Storybook apoia desenvolvimento e
-revisão visual, mas não substitui integração ou Cypress.
+The accessibility addon runs axe checks in the canvas. Storybook supports development and visual
+review but does not replace integration testing or Cypress.
 
-### Cypress local
+### Local Cypress
 
-A abordagem é híbrida:
+The approach is hybrid:
 
-- cenários de sucesso usam `json-server` e a aplicação de verdade;
-- falhas determinísticas usam `cy.intercept`;
-- o build e2e recebe `VITE_API_BASE_URL=http://127.0.0.1:3001`.
+- success scenarios use `json-server` and the real application;
+- deterministic failures use `cy.intercept`;
+- the e2e build receives `VITE_API_BASE_URL=http://127.0.0.1:3001`.
 
-Os fluxos cobertos são:
+The covered flows are:
 
-- carregar a página e renderizar resumo e gráficos;
-- receber falha da API, exibir erro e recuperar após retry;
-- evitar overflow em mobile e tablet;
-- mostrar e ocultar tooltip/crosshair nos três gráficos.
+- load the page and render the summary and charts;
+- receive an API failure, display an error, and recover after retry;
+- prevent overflow on mobile and tablet;
+- show and hide tooltip/crosshair across all three charts.
 
-O cenário SVG de sincronização admite retries apenas em modo headless, pois eventos e layout do
-Electron podem variar. A asserção continua exigindo os indicadores nos três gráficos.
+The SVG synchronization scenario allows retries only in headless mode because Electron events and
+layout may vary. The assertion still requires indicators in all three charts.
 
-### Smoke de produção
+### Production smoke test
 
-Depois do deploy, o CD:
+After deployment, CD:
 
-1. confirma HTTP de `/data`, `/api/measurements` e Storybook;
-2. valida com `jq` que a API contém sete séries com `id`, `name` e `data`;
-3. executa os specs de carregamento e sincronização contra a URL pública.
+1. confirms HTTP responses for `/data`, `/api/measurements`, and Storybook;
+2. validates with `jq` that the API contains seven series with `id`, `name`, and `data`;
+3. runs the loading and synchronization specs against the public URL.
 
-O smoke detecta diferenças de ambiente que testes locais não cobrem.
+The smoke test detects environment differences that local tests do not cover.
 
-## Acessibilidade
+## Accessibility
 
-As verificações combinam:
+Checks combine:
 
-- queries acessíveis da Testing Library;
-- helper axe nos testes de componentes;
-- addon a11y no Storybook;
-- semântica e teclado no Cypress quando fazem parte do fluxo;
-- inspeção manual de foco, contraste e leitura.
+- accessible Testing Library queries;
+- the axe helper in component tests;
+- the a11y addon in Storybook;
+- semantics and keyboard support in Cypress when part of the flow;
+- manual inspection of focus, contrast, and reading.
 
-axe-core detecta classes conhecidas de problema, mas não certifica acessibilidade completa.
+axe-core detects known classes of problems but does not certify complete accessibility.
 
-## Responsividade
+## Responsiveness
 
-Componentes são validados por comportamento no JSDOM quando possível. Overflow e resize dependem
-de layout real e são verificados pelo Cypress em viewports mobile e tablet, além de revisão visual
-em desktop.
+Components are validated by behavior in JSDOM when possible. Overflow and resizing depend on real
+layout and are checked by Cypress in mobile and tablet viewports, in addition to visual review on
+desktop.
 
 ## Coverage
 
@@ -148,51 +147,51 @@ em desktop.
 pnpm test:coverage
 ```
 
-O provider V8 gera relatório local. Não existe threshold configurado, e coverage não roda no job
-`quality` atual. O percentual é sinal para identificar áreas sem exercício, não meta isolada de
-qualidade.
+The V8 provider generates a local report. No threshold is configured, and coverage does not run in
+the current `quality` job. The percentage is a signal for identifying untested areas, not a
+standalone quality target.
 
-## Comandos
+## Commands
 
 ```bash
-pnpm test              # suíte Vitest
-pnpm test:watch        # Vitest em watch
-pnpm test:coverage     # Vitest com coverage
-pnpm typecheck:e2e     # tipos do Cypress
-pnpm storybook         # revisão isolada
-pnpm build-storybook   # build estático
-pnpm e2e               # Cypress interativo com serviços temporários
-pnpm e2e:ci            # Cypress headless sobre build
+pnpm test              # Vitest suite
+pnpm test:watch        # Vitest in watch mode
+pnpm test:coverage     # Vitest with coverage
+pnpm typecheck:e2e     # Cypress types
+pnpm storybook         # isolated review
+pnpm build-storybook   # static build
+pnpm e2e               # interactive Cypress with temporary services
+pnpm e2e:ci            # headless Cypress against the build
 ```
 
 ## CI
 
-O job `quality` executa testes unitários e builds depois de formato, lint e typechecks. O job
-`e2e` instala o binário do Cypress e executa `pnpm e2e:ci` em paralelo. Falhas do Cypress enviam
-screenshots e vídeos como artifacts com retenção limitada.
+The `quality` job runs unit tests and builds after formatting, lint, and type checks. The `e2e` job
+installs the Cypress binary and runs `pnpm e2e:ci` in parallel. Cypress failures upload screenshots
+and videos as artifacts with limited retention.
 
-Deploy só pode começar quando os dois jobs concluem com sucesso.
+Deployment can begin only after both jobs complete successfully.
 
-## Quando adicionar um teste
+## When to add a test
 
-- Regra de transformação: teste unitário puro.
-- Transição de estado: reducer ou saga.
-- Comportamento acessível: teste de componente.
-- Estado visual isolado: Storybook.
-- Integração navegador/API: Cypress.
-- Contrato de produção: teste da Function ou smoke.
+- Transformation rule: pure unit test.
+- State transition: reducer or saga.
+- Accessible behavior: component test.
+- Isolated visual state: Storybook.
+- Browser/API integration: Cypress.
+- Production contract: Function test or smoke test.
 
-Um bug deve receber o teste mais baixo que reproduza a causa com fidelidade. Testes de camadas
-superiores são adicionados quando o risco está na integração, não para duplicar toda a pirâmide.
+A bug should receive the lowest-level test that faithfully reproduces its cause. Higher-layer tests
+are added when the risk lies in integration, not to duplicate the entire pyramid.
 
-## Critério de conclusão
+## Completion criteria
 
-Uma mudança está testada de forma proporcional quando:
+A change is tested proportionately when:
 
-- regras alteradas possuem cobertura comportamental;
-- loading, erro, vazio e sucesso permanecem coerentes;
-- mocks não escondem a fronteira modificada;
-- TypeScript dos testes passa;
-- builds da aplicação e Storybook passam;
-- Cypress cobre integrações críticas afetadas;
-- falhas não são ocultadas por retries, snapshots ou regras desabilitadas.
+- changed rules have behavioral coverage;
+- loading, error, empty, and success states remain consistent;
+- mocks do not hide the modified boundary;
+- test TypeScript passes;
+- application and Storybook builds pass;
+- Cypress covers affected critical integrations;
+- failures are not hidden by retries, snapshots, or disabled rules.

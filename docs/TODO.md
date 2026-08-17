@@ -1,103 +1,103 @@
 # Roadmap
 
-Este documento acompanha entregas e pendências do projeto em nível de capacidade. O histórico de
-commits permanece no Git; decisões e detalhes técnicos ficam no
-[`docs/sketch.md`](sketch.md) e em [`docs/architecture.md`](architecture.md).
+This document tracks project deliveries and pending work at the capability level. Commit history
+remains in Git; decisions and technical details are documented in
+[`docs/sketch.md`](sketch.md) and [`docs/architecture.md`](architecture.md).
 
 ## Status
 
-- [x] concluído e validado
-- [ ] pendente
+- [x] completed and validated
+- [ ] pending
 
-## Fases concluídas
+## Completed phases
 
-### Fase 1 — Scaffold e tooling
+### Phase 1 — Scaffold and tooling
 
-- [x] Configurar React, TypeScript strict, Vite, Material UI e Biome.
-- [x] Definir Node 24, pnpm 9, aliases e execução conjunta de aplicação/API.
-- [x] Preparar tema, fonte, favicon e arquivos de ambiente sem credenciais.
+- [x] Configure React, TypeScript strict, Vite, Material UI, and Biome.
+- [x] Define Node 24, pnpm 9, aliases, and combined application/API execution.
+- [x] Prepare the theme, font, favicon, and environment files without credentials.
 
-### Fase 2 — Camada de dados
+### Phase 2 — Data layer
 
-- [x] Modelar contrato externo e domínio interno.
-- [x] Implementar mapper, Axios, slice, selectors e Redux Saga.
-- [x] Cobrir transformação, estado e efeitos com testes.
+- [x] Model the external contract and internal domain.
+- [x] Implement the mapper, Axios, slice, selectors, and Redux Saga.
+- [x] Cover transformation, state, and effects with tests.
 
-### Fase 3 — Interface base
+### Phase 3 — Base interface
 
-- [x] Criar rota `/data`, providers e estados de loading, erro, retry e vazio.
-- [x] Implementar resumo da máquina e layout baseado no protótipo.
-- [x] Adicionar semântica, Error Boundary e testes de componentes.
+- [x] Create the `/data` route, providers, and loading, error, retry, and empty states.
+- [x] Implement the machine summary and prototype-based layout.
+- [x] Add semantics, an Error Boundary, and component tests.
 
-### Fase 4 — Gráficos
+### Phase 4 — Charts
 
-- [x] Implementar cards de aceleração RMS, temperatura e velocidade RMS.
-- [x] Mapear séries, eixos, unidades e opções do Highcharts.
-- [x] Sincronizar tooltip e crosshair pelo timestamp mais próximo.
-- [x] Garantir cleanup e testes das funções de sincronização.
+- [x] Implement RMS acceleration, temperature, and RMS velocity cards.
+- [x] Map series, axes, units, and Highcharts options.
+- [x] Synchronize tooltip and crosshair by the nearest timestamp.
+- [x] Ensure cleanup and test the synchronization functions.
 
-### Fase 5 — Responsividade e acessibilidade
+### Phase 5 — Responsiveness and accessibility
 
-- [x] Adaptar interface para mobile, tablet e desktop.
-- [x] Eliminar overflow horizontal e validar resize dos gráficos.
-- [x] Melhorar teclado, foco, semântica, contraste e estados acessíveis.
-- [x] Revisar performance e divisão de bundles com base em evidência.
+- [x] Adapt the interface for mobile, tablet, and desktop.
+- [x] Eliminate horizontal overflow and validate chart resizing.
+- [x] Improve keyboard support, focus, semantics, contrast, and accessible states.
+- [x] Review performance and bundle splitting based on evidence.
 
-### Fase 6 — Storybook
+### Phase 6 — Storybook
 
-- [x] Configurar Storybook com tema e addon de acessibilidade.
-- [x] Documentar estados transversais, resumo e componentes de gráfico.
-- [x] Validar typecheck e build estático.
+- [x] Configure Storybook with the theme and accessibility addon.
+- [x] Document cross-cutting states, the summary, and chart components.
+- [x] Validate type checking and the static build.
 
-### Fase 7 — Cypress
+### Phase 7 — Cypress
 
-- [x] Configurar execução interativa e headless.
-- [x] Cobrir carregamento real, falha/retry, responsividade e sincronização.
-- [x] Usar abordagem híbrida com `json-server` e interceptações na fronteira.
+- [x] Configure interactive and headless execution.
+- [x] Cover real loading, failure/retry, responsiveness, and synchronization.
+- [x] Use a hybrid approach with `json-server` and boundary-level interception.
 
-### Fase 8 — CI
+### Phase 8 — CI
 
-- [x] Criar jobs separados de qualidade e end-to-end.
-- [x] Configurar cache, artifacts de falha, concorrência e Dependabot.
-- [x] Validar o workflow localmente e no GitHub Actions.
+- [x] Create separate quality and end-to-end jobs.
+- [x] Configure caching, failure artifacts, concurrency, and Dependabot.
+- [x] Validate the workflow locally and in GitHub Actions.
 
-### Fase 9 — Deploy na Vercel
+### Phase 9 — Vercel deployment
 
-- [x] Publicar aplicação e API mock no mesmo domínio.
-- [x] Publicar Storybook em projeto separado.
-- [x] Condicionar CD ao CI verde.
-- [x] Executar smoke de endpoints e Cypress em produção.
+- [x] Publish the application and mock API on the same domain.
+- [x] Publish Storybook in a separate project.
+- [x] Make CD conditional on passing CI.
+- [x] Run endpoint smoke tests and Cypress in production.
 
-### Fase 10 — Documentação orientada a IA
+### Phase 10 — AI-oriented documentation
 
-- [x] Criar `AGENTS.md` e seis Rules escopadas.
-- [x] Criar Commands e Skills para auditoria e qualidade.
-- [x] Definir critérios do Bugbot.
-- [x] Configurar MCPs opcionais e sem credenciais versionadas.
+- [x] Create `AGENTS.md` and six scoped Rules.
+- [x] Create Commands and Skills for auditing and quality.
+- [x] Define Bugbot criteria.
+- [x] Configure optional MCPs without committed credentials.
 
-## Fase 11 — Documentação final e pública
+## Phase 11 — Final public documentation
 
-- [x] Publicar este roadmap e reescrever `docs/sketch.md` como blueprint final.
-- [x] Consolidar o `README.md` como entrada para avaliação e execução.
-- [x] Criar `docs/architecture.md`.
-- [x] Criar `docs/testing-strategy.md`.
-- [x] Criar `docs/ai-assisted-development.md`.
-- [x] Registrar ADRs de json-server, Redux Saga e Highcharts.
-- [x] Criar `CONTRIBUTING.md`.
-- [x] Alinhar `AGENTS.md`, Rules e Commands à documentação pública.
-- [x] Validar links, segurança, URLs e quality gate completo.
+- [x] Publish this roadmap and rewrite `docs/sketch.md` as the final blueprint.
+- [x] Consolidate `README.md` as the entry point for evaluation and execution.
+- [x] Create `docs/architecture.md`.
+- [x] Create `docs/testing-strategy.md`.
+- [x] Create `docs/ai-assisted-development.md`.
+- [x] Record ADRs for json-server, Redux Saga, and Highcharts.
+- [x] Create `CONTRIBUTING.md`.
+- [x] Align `AGENTS.md`, Rules, and Commands with the public documentation.
+- [x] Validate links, security, URLs, and the complete quality gate.
 
-## Fase 12 — Auditoria final
+## Phase 12 — Final audit
 
-- [x] Auditar requisitos funcionais, técnicos, bônus e critérios de avaliação.
-- [x] Proteger a paridade do dataset, o watcher da Saga e o comportamento das rotas com testes.
-- [x] Validar interface, estados, responsividade, teclado e acessibilidade em navegador.
-- [x] Executar revisão manual, Bugbot, Security Review e auditoria de dependências.
-- [x] Alinhar a árvore da branch à estratégia de entrega sem restaurar instruções da `main`.
-- [x] Executar o quality gate local completo e validar as URLs públicas atuais.
-- [x] Confirmar bases, diff e preparação local da pull request, sem push nem criação remota.
+- [x] Audit functional and technical requirements, bonus items, and evaluation criteria.
+- [x] Protect dataset parity, the Saga watcher, and route behavior with tests.
+- [x] Validate the interface, states, responsiveness, keyboard support, and accessibility in a browser.
+- [x] Perform manual review, Bugbot, Security Review, and dependency auditing.
+- [x] Align the branch tree with the delivery strategy without restoring instructions from `main`.
+- [x] Run the complete local quality gate and validate the current public URLs.
+- [x] Confirm bases, diff, and local pull request readiness, without pushing or creating it remotely.
 
-Risco residual: `pnpm audit --prod` está limpo, mas o CLI Vercel mais recente mantém advisories
-transitivos em dependências de tooling. O CLI não integra o bundle de runtime e é usado apenas com
-configuração e código confiáveis em ambiente controlado; os advisories permanecem monitorados sem
-overrides incompatíveis.
+Residual risk: `pnpm audit --prod` is clean, but the latest Vercel CLI retains transitive advisories
+in tooling dependencies. The CLI is not part of the runtime bundle and is used only with trusted
+configuration and code in a controlled environment; the advisories remain monitored without
+incompatible overrides.

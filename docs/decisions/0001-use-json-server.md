@@ -1,54 +1,54 @@
-# ADR 0001 — Usar json-server no desenvolvimento
+# ADR 0001 — Use json-server in development
 
 ## Status
 
-Aceita.
+Accepted.
 
-## Contexto
+## Context
 
-O desafio exige buscar o dataset fornecido por uma API REST mock e sugere `json-server`. A solução
-também precisa ser simples de iniciar localmente e publicar na Vercel sem transformar o mock em um
-backend de produção.
+The challenge requires fetching the provided dataset through a mock REST API and suggests
+`json-server`. The solution must also be easy to start locally and deploy to Vercel without turning
+the mock into a production backend.
 
-## Decisão
+## Decision
 
-Usar `json-server` com [`mock/db.json`](../../mock/db.json) no desenvolvimento e nos testes
-end-to-end locais. Acrescentar um `id` estável por série, exigido para representar recursos REST,
-sem modificar `name` ou `data` do arquivo oficial.
+Use `json-server` with [`mock/db.json`](../../mock/db.json) in development and local end-to-end
+tests. Add a stable `id` per series, as required to represent REST resources, without modifying
+`name` or `data` from the official file.
 
-Em produção, usar uma Vercel Function que importa o mesmo arquivo e responde ao endpoint
-`GET /api/measurements`. O runtime muda, mas payload e fonte de dados permanecem iguais.
+In production, use a Vercel Function that imports the same file and responds at
+`GET /api/measurements`. The runtime changes, but the payload and data source remain the same.
 
-## Alternativas consideradas
+## Alternatives considered
 
-### Mockar Axios no frontend
+### Mock Axios in the frontend
 
-Reduziria setup, mas não atenderia à integração com uma API REST nem exercitaria a fronteira HTTP
-nos cenários de sucesso.
+This would reduce setup, but would not satisfy REST API integration or exercise the HTTP boundary
+in success scenarios.
 
-### Hospedar json-server como processo persistente
+### Host json-server as a persistent process
 
-Reproduziria o runtime local, porém adicionaria serviço e operação desnecessários para um dataset
-estático e somente leitura.
+This would reproduce the local runtime, but add unnecessary service and operational overhead for a
+static, read-only dataset.
 
-### Implementar backend e banco de dados
+### Implement a backend and database
 
-Não é requisito deste desafio front-end e criaria autenticação, persistência, deploy e manutenção
-sem benefício para a avaliação solicitada.
+This is not a requirement of this front-end challenge and would introduce authentication,
+persistence, deployment, and maintenance without benefiting the requested evaluation.
 
-## Consequências
+## Consequences
 
-Positivas:
+Positive:
 
-- execução local previsível;
-- integração HTTP real;
-- uma única fonte de dados;
-- paridade de contrato entre local e produção;
-- paridade verificável com o dataset oficial, ignorando somente a extensão `id`;
-- testes e deploy simples.
+- predictable local execution;
+- real HTTP integration;
+- a single data source;
+- contract parity between local and production environments;
+- verifiable parity with the official dataset, ignoring only the `id` extension;
+- straightforward testing and deployment.
 
-Negativas:
+Negative:
 
-- a Function não reproduz todos os comportamentos do `json-server`;
-- a API é somente leitura e sem persistência;
-- mudanças no contrato exigem atualização coordenada de mock, Function, mapper, testes e docs.
+- the Function does not reproduce every `json-server` behavior;
+- the API is read-only and has no persistence;
+- contract changes require coordinated updates to the mock, Function, mapper, tests, and docs.

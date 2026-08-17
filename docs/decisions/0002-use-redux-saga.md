@@ -1,50 +1,50 @@
-# ADR 0002 — Usar Redux Saga para efeitos assíncronos
+# ADR 0002 — Use Redux Saga for asynchronous effects
 
 ## Status
 
-Aceita.
+Accepted.
 
-## Contexto
+## Context
 
-Redux e Redux Saga são requisitos explícitos do desafio. O carregamento precisa representar
-loading, sucesso, erro e retry sem misturar acesso HTTP com componentes de apresentação.
+Redux and Redux Saga are explicit challenge requirements. Loading must represent loading, success,
+error, and retry states without mixing HTTP access with presentation components.
 
-## Decisão
+## Decision
 
-Centralizar o carregamento em `measurementsSaga`.
+Centralize loading in `measurementsSaga`.
 
-`DataPage` dispara `measurementsRequested`; a saga usa `takeLatest`, chama
-`measurementsService.getAll`, aplica `mapMeasurements` e publica sucesso ou falha. O slice mantém
-somente estado serializável, e selectors derivam séries por métrica.
+`DataPage` dispatches `measurementsRequested`; the saga uses `takeLatest`, calls
+`measurementsService.getAll`, applies `mapMeasurements`, and publishes success or failure. The slice
+keeps only serializable state, and selectors derive series by metric.
 
-## Alternativas consideradas
+## Alternatives considered
 
-### Request direto no componente
+### Direct request in the component
 
-Seria menor, mas violaria a separação pedida, duplicaria tratamento assíncrono e dificultaria
-testes dos efeitos.
+This would be smaller, but would violate the required separation, duplicate asynchronous handling,
+and make effect testing harder.
 
 ### `createAsyncThunk`
 
-É adequado para fluxos simples, porém não atende ao requisito explícito de Redux Saga.
+It is suitable for simple flows, but does not satisfy the explicit Redux Saga requirement.
 
-### Armazenar toda interação no Redux
+### Store all interaction in Redux
 
-Tooltip, crosshair e instâncias de gráfico não são estado de negócio. Colocá-los no store causaria
-updates em alta frequência e adicionaria valores não serializáveis.
+Tooltip, crosshair, and chart instances are not business state. Putting them in the store would
+cause high-frequency updates and add non-serializable values.
 
-## Consequências
+## Consequences
 
-Positivas:
+Positive:
 
-- efeitos isolados e testáveis;
-- componentes focados em dispatch e renderização;
-- transições de estado explícitas;
-- `takeLatest` evita publicar uma resposta obsoleta após novo retry;
-- mapper permanece na fronteira do domínio.
+- isolated, testable effects;
+- components focused on dispatch and rendering;
+- explicit state transitions;
+- `takeLatest` prevents publishing a stale response after a new retry;
+- the mapper remains at the domain boundary.
 
-Negativas:
+Negative:
 
-- adiciona conceitos e uma dependência para um único fluxo;
-- exige testes específicos de generators;
-- demanda disciplina para não mover estado local ou imperativo para o Redux.
+- adds concepts and a dependency for a single flow;
+- requires generator-specific tests;
+- requires discipline to avoid moving local or imperative state into Redux.

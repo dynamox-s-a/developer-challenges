@@ -1,34 +1,34 @@
-# Arquitetura
+# Architecture
 
-## Visão geral
+## Overview
 
-O projeto é uma SPA React orientada ao domínio de medições. A arquitetura separa:
+The project is a React SPA organized around the measurement domain. The architecture separates:
 
-- composição da aplicação e rotas;
-- contrato HTTP e modelo interno;
-- estado global e efeitos assíncronos;
-- componentes de domínio e componentes transversais;
-- runtime mock local e Function de produção;
-- interação imperativa do Highcharts e estado Redux.
+- application composition and routes;
+- HTTP contract and internal model;
+- global state and asynchronous effects;
+- domain and cross-cutting components;
+- local mock runtime and production Function;
+- imperative Highcharts interaction and Redux state.
 
-O objetivo é manter fronteiras explícitas sem criar camadas ou infraestrutura além do tamanho do
-desafio.
+The goal is to keep boundaries explicit without creating layers or infrastructure beyond the scale
+of the challenge.
 
-## Mapa de diretórios
+## Directory map
 
 ```text
 api/
-  measurements.ts                  GET /api/measurements na Vercel
+  measurements.ts                  GET /api/measurements on Vercel
 cypress/
-  e2e/                             fluxos end-to-end
-  support/                         commands e setup
+  e2e/                             end-to-end flows
+  support/                         commands and setup
 mock/
-  db.json                          fonte única do dataset
+  db.json                          single dataset source
 src/
   app/
-    App.tsx                        shell da aplicação
-    providers.tsx                  Redux e tema
-    routes.tsx                     /data e fallback
+    App.tsx                        application shell
+    providers.tsx                  Redux and theme
+    routes.tsx                     /data and fallback
   components/
     EmptyState/
     ErrorBoundary/
@@ -36,21 +36,21 @@ src/
     LoadingState/
     icons/
   features/measurements/
-    api/                            tipos externos e serviço Axios
-    components/                     resumo, cards e gráficos
-    model/                          tipos internos e mapper
-    store/                          slice, selectors e sagas
-  lib/                              cliente HTTP e helpers
+    api/                            external types and Axios service
+    components/                     summary, cards, and charts
+    model/                          internal types and mapper
+    store/                          slice, selectors, and sagas
+  lib/                              HTTP client and helpers
   pages/
-    DataPage/                       composição da rota principal
+    DataPage/                       main route composition
     NotFoundPage/
-  store/                            store tipada e root saga
-  test/                             ambiente de testes
-  theme/                            tema Material UI
-tests/api/                          teste da Function
+  store/                            typed store and root saga
+  test/                             test environment
+  theme/                            Material UI theme
+tests/api/                          Function test
 ```
 
-## Fluxo de carregamento
+## Loading flow
 
 ```mermaid
 sequenceDiagram
@@ -66,20 +66,21 @@ sequenceDiagram
     Saga->>Service: getAll
     Service->>Api: GET /measurements
     Api-->>Service: MeasurementsApiResponse
-    Service-->>Saga: payload externo
+    Service-->>Saga: external payload
     Saga->>Mapper: mapMeasurements
     Mapper-->>Saga: MeasurementSeries[]
     Saga->>Store: measurementsSucceeded
     Store-->>Page: selectors
 ```
 
-Ao montar, `DataPage` dispara `measurementsRequested`. A saga observa a action com `takeLatest`,
-chama o serviço e transforma a resposta antes de publicar sucesso. Uma nova solicitação substitui
-o efeito anterior. Falhas são convertidas em mensagem e publicadas por `measurementsFailed`.
+On mount, `DataPage` dispatches `measurementsRequested`. The saga watches the action with
+`takeLatest`, calls the service, and transforms the response before publishing success. A new
+request replaces the previous effect. Failures are converted into a message and published by
+`measurementsFailed`.
 
-## Estado
+## State
 
-`MeasurementsState` contém somente dados compartilhados e serializáveis:
+`MeasurementsState` contains only shared, serializable data:
 
 ```ts
 interface MeasurementsState {
@@ -89,27 +90,27 @@ interface MeasurementsState {
 }
 ```
 
-A página interpreta os estados:
+The page interprets the states:
 
-- `idle` e `loading`: indicador de carregamento;
-- `error`: mensagem e ação de retry;
-- `success` sem séries: estado vazio;
-- `success` com séries: resumo e gráficos.
+- `idle` and `loading`: loading indicator;
+- `error`: message and retry action;
+- `success` without series: empty state;
+- `success` with series: summary and charts.
 
-Selectors memoizados derivam aceleração, velocidade e temperatura sem duplicar esses agrupamentos
-no store.
+Memoized selectors derive acceleration, velocity, and temperature without duplicating those
+groupings in the store.
 
-## Fronteira HTTP
+## HTTP boundary
 
-O `httpClient` recebe `VITE_API_BASE_URL`. O serviço solicita `/measurements`:
+The `httpClient` receives `VITE_API_BASE_URL`. The service requests `/measurements`:
 
-- local: base `http://localhost:3001`, resultando em
+- local: base `http://localhost:3001`, resulting in
   `http://localhost:3001/measurements`;
-- produção: base `/api`, resultando em `/api/measurements`.
+- production: base `/api`, resulting in `/api/measurements`.
 
-O frontend não conhece se a resposta veio do `json-server` ou da Function.
+The frontend does not know whether the response came from `json-server` or the Function.
 
-## Contrato externo
+## External contract
 
 ```ts
 interface MeasurementDataPoint {
@@ -126,14 +127,14 @@ interface MeasurementRaw {
 type MeasurementsApiResponse = MeasurementRaw[];
 ```
 
-O dataset possui sete séries: três de aceleração, três de velocidade e uma de temperatura. Nomes
-com `/x`, `/y` ou `/z` carregam o eixo; temperatura não possui eixo.
+The dataset contains seven series: three acceleration, three velocity, and one temperature series.
+Names with `/x`, `/y`, or `/z` carry the axis; temperature has no axis.
 
-O arquivo oficial possui apenas `name` e `data`. `mock/db.json` acrescenta um `id` estável e único
-por série para o `json-server`, preservando integralmente os demais campos. Um hash SHA-256 da
-representação sem IDs protege essa paridade no teste da Function.
+The official file contains only `name` and `data`. `mock/db.json` adds a stable, unique `id` per
+series for `json-server`, fully preserving all other fields. A SHA-256 hash of the representation
+without IDs protects this parity in the Function test.
 
-## Modelo interno
+## Internal model
 
 ```ts
 type Metric = "accelerationRms" | "velocityRms" | "temperature";
@@ -154,84 +155,84 @@ interface MeasurementSeries {
 }
 ```
 
-`mapMeasurements` executa quatro transformações:
+`mapMeasurements` performs four transformations:
 
-1. separa métrica e eixo pelo `/` do nome;
-2. associa unidade pelo tipo de métrica;
-3. converte `datetime` para timestamp com `Date#getTime`;
-4. renomeia `max` para `value`.
+1. separates the metric and axis using `/` in the name;
+2. associates a unit by metric type;
+3. converts `datetime` to a timestamp with `Date#getTime`;
+4. renames `max` to `value`.
 
-O mapper é puro e mantém detalhes do payload fora da UI.
+The mapper is pure and keeps payload details out of the UI.
 
-## Tempo e unidades
+## Time and units
 
-O instante absoluto é mantido como timestamp UTC. Formatação de eixo e tooltip ocorre somente nas
-options do gráfico e segue o timezone local do navegador. A implementação não altera o timestamp
-para simular timezone.
+The absolute instant is kept as a UTC timestamp. Axis and tooltip formatting occurs only in chart
+options and follows the browser's local timezone. The implementation does not alter the timestamp
+to simulate a timezone.
 
-Unidades pertencem ao domínio:
+Units belong to the domain:
 
-- aceleração RMS: `g`;
-- velocidade RMS: `mm/s`;
-- temperatura: `°C`.
+- RMS acceleration: `g`;
+- RMS velocity: `mm/s`;
+- temperature: `°C`.
 
-## Composição da interface
+## Interface composition
 
-`DataPage` orquestra estado e layout. `MachineSummary` recebe metadados estáticos definidos em
-`constants.ts`, pois o contrato oficial contém apenas medições.
+`DataPage` orchestrates state and layout. `MachineSummary` receives static metadata defined in
+`constants.ts` because the official contract contains only measurements.
 
-`ChartsPanel` seleciona as métricas e compõe três `MetricChartCard`. Cada card hospeda um
-`TimeSeriesChart`, que traduz `MeasurementSeries` em options do Highcharts.
+`ChartsPanel` selects the metrics and composes three `MetricChartCard` components. Each card hosts a
+`TimeSeriesChart`, which translates `MeasurementSeries` into Highcharts options.
 
-## Sincronização dos gráficos
+## Chart synchronization
 
-A sincronização é isolada em funções puras e adapters:
+Synchronization is isolated in pure functions and adapters:
 
 ```mermaid
 flowchart LR
-    Pointer[MouseMove] --> SourceTimestamp[TimestampNoEixo]
-    SourceTimestamp --> ClosestSource[PontoMaisPróximo]
-    ClosestSource --> Adapters[AdaptersRegistrados]
-    Adapters --> ClosestSeries[PontosPorSérie]
+    Pointer[MouseMove] --> SourceTimestamp[AxisTimestamp]
+    SourceTimestamp --> ClosestSource[NearestPoint]
+    ClosestSource --> Adapters[RegisteredAdapters]
+    Adapters --> ClosestSeries[PointsBySeries]
     ClosestSeries --> Tooltip[RefreshTooltip]
     ClosestSeries --> Crosshair[DrawCrosshair]
 ```
 
-`useChartSynchronization` mantém adapters e cleanups em refs. Cada gráfico registra:
+`useChartSynchronization` keeps adapters and cleanup functions in refs. Each chart registers:
 
-- conversão do evento em timestamp;
-- leitura dos pontos visíveis por série;
-- atualização e ocultação de tooltip;
-- desenho e ocultação de crosshair.
+- event-to-timestamp conversion;
+- reading visible points by series;
+- tooltip updates and hiding;
+- crosshair drawing and hiding.
 
-No movimento do mouse, `findClosestPoint` seleciona o instante mais próximo em cada série visível.
-No `mouseleave`, todos os indicadores são ocultados. Ao substituir ou desmontar uma instância, os
-listeners são removidos.
+On mouse movement, `findClosestPoint` selects the nearest instant in each visible series. On
+`mouseleave`, all indicators are hidden. When an instance is replaced or unmounted, listeners are
+removed.
 
-Essa interação permanece fora do Redux porque:
+This interaction remains outside Redux because it:
 
-- ocorre em alta frequência;
-- não é estado de negócio;
-- contém referências não serializáveis;
-- a API imperativa evita renders React por movimento.
+- occurs at high frequency;
+- is not business state;
+- contains non-serializable references;
+- uses an imperative API that avoids React renders on each movement.
 
-## Acessibilidade e responsividade
+## Accessibility and responsiveness
 
-Material UI concentra breakpoints, espaçamento, tipografia e contraste. Os componentes preservam
-semântica HTML e regiões nomeadas. Estados assíncronos expõem informação acessível, e gráficos
-recebem rótulos associados aos títulos dos cards.
+Material UI centralizes breakpoints, spacing, typography, and contrast. Components preserve HTML
+semantics and named regions. Asynchronous states expose accessible information, and charts receive
+labels associated with card titles.
 
-Contêineres de grid usam limites de largura que permitem o resize do Highcharts sem overflow. A
-validação combina testes automatizados, Storybook, axe-core e revisão visual.
+Grid containers use width constraints that allow Highcharts to resize without overflow. Validation
+combines automated tests, Storybook, axe-core, and visual review.
 
-Cada série mantém seus 181 pontos disponíveis para navegação por teclado e leitores de tela. Essa
-decisão aumenta o DOM SVG, mas preserva a exploração ponto a ponto; a auditoria de performance trata
-esse custo como um trade-off deliberado. As fontes Roboto são auto-hospedadas somente no subconjunto
-Latin usado pela interface.
+Each series keeps all 181 points available for keyboard navigation and screen readers. This decision
+increases the SVG DOM but preserves point-by-point exploration; the performance audit treats this
+cost as a deliberate trade-off. Roboto fonts are self-hosted only for the Latin subset used by the
+interface.
 
-## Runtime local
+## Local runtime
 
-`pnpm dev` executa Vite e `json-server` em paralelo:
+`pnpm dev` runs Vite and `json-server` in parallel:
 
 ```mermaid
 flowchart LR
@@ -240,9 +241,9 @@ flowchart LR
     JsonServer --> Database[mock/db.json]
 ```
 
-O arquivo `.env.example` fornece somente a URL pública local. `.env` é ignorado.
+The `.env.example` file provides only the public local URL. `.env` is ignored.
 
-## Runtime de produção
+## Production runtime
 
 ```mermaid
 flowchart LR
@@ -253,32 +254,32 @@ flowchart LR
     Reviewer[Reviewer] --> Storybook[VercelStorybook]
 ```
 
-A aplicação possui rewrite de SPA. A Function importa o mesmo JSON usado localmente e responde
-com `Response.json`. O Storybook é publicado em projeto Vercel independente.
+The application has an SPA rewrite. The Function imports the same JSON used locally and responds
+with `Response.json`. Storybook is deployed to a separate Vercel project.
 
-Assets gerados pelo Vite possuem nome com hash e cache imutável por um ano. HTML e API permanecem
-revalidáveis. A Vercel também aplica CSP, HSTS, política de permissões, proteção contra MIME sniffing
-e framing restrito à mesma origem; a CSP permite o iframe interno usado pelo Storybook.
+Assets generated by Vite have hashed names and immutable one-year caching. HTML and API responses
+remain revalidatable. Vercel also applies CSP, HSTS, a permissions policy, MIME-sniffing protection,
+and framing restricted to the same origin; the CSP allows the internal iframe used by Storybook.
 
 ## CI/CD
 
-O workflow `ci.yml` possui:
+The `ci.yml` workflow contains:
 
-- `quality`: install frozen, formato, lint, typechecks, testes e builds;
-- `e2e`: cache/instalação do Cypress e execução headless;
-- `deploy`: chamada ao workflow reutilizável somente após ambos passarem.
+- `quality`: frozen install, formatting, lint, type checks, tests, and builds;
+- `e2e`: Cypress caching/installation and headless execution;
+- `deploy`: invocation of the reusable workflow only after both pass.
 
-`cd.yml` constrói e publica aplicação e Storybook em paralelo. Depois, `production-smoke` valida
-os três endpoints, o contrato com `jq` e dois fluxos Cypress em produção.
+`cd.yml` builds and deploys the application and Storybook in parallel. Then `production-smoke`
+validates the three endpoints, the contract with `jq`, and two Cypress flows in production.
 
-## Decisões e limites
+## Decisions and boundaries
 
-- Vite permanece como build tool; Nx não agregaria valor a um único pacote.
-- Redux Saga atende ao requisito e centraliza efeitos; requests não vivem nos componentes.
-- Highcharts atende gráficos temporais e fornece APIs necessárias à sincronização.
-- `json-server` reproduz o contrato local; a Function substitui apenas o runtime em produção.
-- Não existe backend real, persistência ou autenticação.
-- Não há validação runtime porque o payload é um fixture controlado; mudança de contrato deve
-  atualizar todos os consumidores e testes.
+- Vite remains the build tool; Nx would add no value to a single package.
+- Redux Saga meets the requirement and centralizes effects; requests do not live in components.
+- Highcharts supports time-series charts and provides the APIs required for synchronization.
+- `json-server` reproduces the local contract; the Function replaces only the production runtime.
+- There is no real backend, persistence, or authentication.
+- There is no runtime validation because the payload is a controlled fixture; contract changes must
+  update all consumers and tests.
 
-Consulte os [registros de decisão](decisions) para contexto e consequências de cada escolha.
+See the [decision records](decisions) for the context and consequences of each choice.

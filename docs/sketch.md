@@ -1,84 +1,84 @@
-# Blueprint técnico da solução
+# Technical blueprint for the solution
 
-## Objetivo
+## Objective
 
-Este documento registra o plano técnico consolidado do dashboard desenvolvido para o
-[desafio front-end da Dynamox](https://github.com/dynamox-s-a/developer-challenges/blob/main/front-end-challenge-v2.md).
-Ele descreve o escopo, as decisões e os limites da implementação final. O
-[`docs/TODO.md`](TODO.md) acompanha o progresso das entregas; detalhes operacionais ficam no
-[`README.md`](../README.md), o estado atual em [`docs/architecture.md`](architecture.md) e as
-justificativas duráveis nos [ADRs](decisions).
+This document records the consolidated technical plan for the dashboard developed for the
+[Dynamox front-end challenge](https://github.com/dynamox-s-a/developer-challenges/blob/main/front-end-challenge-v2.md).
+It describes the scope, decisions, and boundaries of the final implementation.
+[`docs/TODO.md`](TODO.md) tracks delivery progress; operational details are in
+[`README.md`](../README.md), the current state is in [`docs/architecture.md`](architecture.md), and
+durable rationale is recorded in the [ADRs](decisions).
 
-## Escopo do desafio
+## Challenge scope
 
-A solução atende aos requisitos centrais:
+The solution meets the core requirements:
 
-- rota `/data` com resumo de uma máquina e séries temporais;
-- gráficos de aceleração RMS, temperatura e velocidade RMS;
-- dados carregados por uma API REST mock a cada entrada na página;
-- tooltip e crosshair sincronizados pelo timestamp mais próximo;
-- React, TypeScript, Redux, Redux Saga, Vite, Material UI 5 e Highcharts;
-- testes automatizados da lógica e do comportamento.
+- `/data` route with a machine summary and time series;
+- RMS acceleration, temperature, and RMS velocity charts;
+- data loaded from a mock REST API each time the page is entered;
+- tooltip and crosshair synchronized by the nearest timestamp;
+- React, TypeScript, Redux, Redux Saga, Vite, Material UI 5, and Highcharts;
+- automated logic and behavior tests.
 
-Os bônus implementados são:
+The implemented bonus items are:
 
-- documentação de componentes no Storybook;
-- testes end-to-end com Cypress;
-- aplicação, API mock e Storybook publicados na Vercel.
+- component documentation in Storybook;
+- end-to-end tests with Cypress;
+- application, mock API, and Storybook deployed to Vercel.
 
-## Premissas
+## Assumptions
 
-- O dataset fornecido é um contrato conhecido e contém sete séries.
-- Os metadados da máquina são estáticos porque não fazem parte do payload oficial.
-- A API é somente leitura; o desafio não exige autenticação, persistência ou escrita.
-- Datas são convertidas em timestamps na fronteira do domínio e formatadas na apresentação.
-- A interface precisa funcionar em mobile, tablet e desktop sem alterar a hierarquia dos dados.
-- Ferramentas de IA e MCPs auxiliam o desenvolvimento, mas são opcionais para executar o projeto.
+- The provided dataset is a known contract containing seven series.
+- Machine metadata is static because it is not part of the official payload.
+- The API is read-only; the challenge does not require authentication, persistence, or writes.
+- Dates are converted to timestamps at the domain boundary and formatted in presentation.
+- The interface must work on mobile, tablet, and desktop without changing the data hierarchy.
+- AI tools and MCPs assist development but are optional for running the project.
 
 ## Stack
 
-- React 19 e React Router 7
-- TypeScript 6 em modo strict
+- React 19 and React Router 7
+- TypeScript 6 in strict mode
 - Vite 8
-- Material UI 5 e Roboto
-- Redux Toolkit, React Redux e Redux Saga
+- Material UI 5 and Roboto
+- Redux Toolkit, React Redux, and Redux Saga
 - Axios
-- Highcharts e `highcharts-react-official`
-- Vitest, Testing Library, axe-core e `redux-saga-test-plan`
-- Storybook e addon de acessibilidade
+- Highcharts and `highcharts-react-official`
+- Vitest, Testing Library, axe-core, and `redux-saga-test-plan`
+- Storybook and the accessibility addon
 - Cypress
 - Biome
-- pnpm 9 e Node.js 24
-- GitHub Actions e Vercel
+- pnpm 9 and Node.js 24
+- GitHub Actions and Vercel
 
-## Organização
+## Organization
 
 ```text
-api/                         Function usada na Vercel
-cypress/                     testes end-to-end
-mock/                        dataset do json-server
+api/                         Function used on Vercel
+cypress/                     end-to-end tests
+mock/                        json-server dataset
 src/
-  app/                       providers, rotas e composição da aplicação
-  components/                estados e componentes transversais
+  app/                       providers, routes, and application composition
+  components/                cross-cutting states and components
   features/measurements/
-    api/                     contrato e serviço HTTP
-    components/              resumo, cards e gráficos
-    model/                   tipos e mapper do domínio
-    store/                   slice, selectors e sagas
-  pages/                     páginas roteáveis
-  store/                     configuração Redux e root saga
-  test/                      setup e utilitários de teste
-  theme/                     tokens e configuração Material UI
-tests/api/                   teste de contrato da Function
+    api/                     contract and HTTP service
+    components/              summary, cards, and charts
+    model/                   domain types and mapper
+    store/                   slice, selectors, and sagas
+  pages/                     routable pages
+  store/                     Redux configuration and root saga
+  test/                      test setup and utilities
+  theme/                     Material UI tokens and configuration
+tests/api/                   Function contract test
 ```
 
-A organização orientada ao domínio mantém API, modelo, estado e interface de medições próximos,
-sem criar um monorepo ou camadas sem uso atual.
+The domain-oriented organization keeps the measurement API, model, state, and interface together
+without creating a monorepo or layers that have no current use.
 
-## Contrato e modelo de dados
+## Data contract and model
 
-A resposta oficial possui `name` e `data`. O mock acrescenta somente um `id` estável por série para
-que o `json-server` represente recursos REST sem alterar nomes ou medições:
+The official response contains `name` and `data`. The mock adds only a stable `id` per series so
+that `json-server` can represent REST resources without changing names or measurements:
 
 ```ts
 interface MeasurementRaw {
@@ -91,7 +91,7 @@ interface MeasurementRaw {
 }
 ```
 
-O mapper converte cada série para o modelo interno:
+The mapper converts each series to the internal model:
 
 ```ts
 interface MeasurementSeries {
@@ -104,107 +104,107 @@ interface MeasurementSeries {
 }
 ```
 
-O nome identifica métrica e eixo, `datetime` vira timestamp e `max` vira valor. As unidades são
-definidas pelo domínio: `g`, `mm/s` e `°C`.
+The name identifies the metric and axis, `datetime` becomes a timestamp, and `max` becomes a value.
+Units are defined by the domain: `g`, `mm/s`, and `°C`.
 
-O mesmo contrato é servido por dois runtimes:
+The same contract is served by two runtimes:
 
-- localmente, `json-server` lê [`mock/db.json`](../mock/db.json);
-- em produção, [`api/measurements.ts`](../api/measurements.ts) entrega o mesmo mock estendido.
+- locally, `json-server` reads [`mock/db.json`](../mock/db.json);
+- in production, [`api/measurements.ts`](../api/measurements.ts) returns the same extended mock.
 
-## Fluxo de estado
+## State flow
 
 ```mermaid
 flowchart LR
     DataPage["DataPage /data"] --> Requested[measurementsRequested]
     Requested --> Saga[Redux Saga]
     Saga --> Service[measurementsService]
-    Service --> Api[API mock]
+    Service --> Api[Mock API]
     Api --> Mapper[mapMeasurements]
     Mapper --> Slice[measurementsSlice]
-    Slice --> Selectors[Selectors memoizados]
-    Selectors --> View[Resumo e gráficos]
+    Slice --> Selectors[MemoizedSelectors]
+    Selectors --> View[SummaryAndCharts]
 ```
 
-O slice representa `idle`, `loading`, `success` e `error`. A saga usa `takeLatest` para que uma
-nova tentativa substitua o carregamento anterior. Selectors separam as séries por métrica, e a
-página escolhe entre loading, erro com retry, vazio e conteúdo.
+The slice represents `idle`, `loading`, `success`, and `error`. The saga uses `takeLatest` so a new
+attempt replaces the previous load. Selectors separate series by metric, and the page chooses
+between loading, retryable error, empty, and content states.
 
-## Interface e gráficos
+## Interface and charts
 
-A página contém:
+The page contains:
 
-- header da análise;
-- resumo com máquina, ponto monitorado, rotação, faixa e intervalo de aquisição;
-- card de aceleração RMS com eixos `x`, `y` e `z`;
-- card de temperatura;
-- card de velocidade RMS com eixos `x`, `y` e `z`.
+- analysis header;
+- summary with machine, monitored point, rotation, range, and acquisition interval;
+- RMS acceleration card with `x`, `y`, and `z` axes;
+- temperature card;
+- RMS velocity card with `x`, `y`, and `z` axes.
 
-As options do Highcharts são produzidas a partir do modelo interno. Tooltip, crosshair e
-instâncias do Highcharts não entram no Redux.
+Highcharts options are produced from the internal model. Tooltip, crosshair, and Highcharts
+instances do not enter Redux.
 
-Cada gráfico registra um adapter imperativo. No `mousemove`, o timestamp do eixo da origem é
-calculado, o ponto mais próximo é localizado em cada série visível e todos os gráficos atualizam
-tooltip e crosshair. No `mouseleave`, os indicadores são ocultados. Listeners e referências são
-removidos no cleanup, inclusive sob React StrictMode.
+Each chart registers an imperative adapter. On `mousemove`, the source axis timestamp is calculated,
+the nearest point is located in each visible series, and all charts update their tooltip and
+crosshair. On `mouseleave`, the indicators are hidden. Listeners and references are removed during
+cleanup, including under React StrictMode.
 
-## Responsividade e acessibilidade
+## Responsiveness and accessibility
 
-- Layout, paddings e tipografia respondem aos breakpoints do Material UI.
-- Contêineres e gráficos preservam `min-width: 0` e evitam overflow horizontal.
-- Estados de loading, erro e vazio possuem semântica e mensagens acessíveis.
-- A estrutura usa `header`, `main`, headings e regiões nomeadas.
-- Foco visível, teclado, contraste e nomes acessíveis são verificados.
-- Storybook e testes de componentes usam axe-core como apoio; revisão manual continua necessária.
+- Layout, padding, and typography respond to Material UI breakpoints.
+- Containers and charts preserve `min-width: 0` and avoid horizontal overflow.
+- Loading, error, and empty states have semantics and accessible messages.
+- The structure uses `header`, `main`, headings, and named regions.
+- Visible focus, keyboard support, contrast, and accessible names are verified.
+- Storybook and component tests use axe-core as support; manual review remains necessary.
 
-## Estratégia de testes
+## Testing strategy
 
-- Vitest cobre mapper, reducers, selectors, sagas e funções puras de sincronização.
-- Testing Library valida componentes pelo comportamento e por queries acessíveis.
-- Highcharts é mockado na fronteira dos componentes; options e adapters são testados separadamente.
-- O teste da Function confirma status, JSON e equivalência com o dataset.
-- Storybook documenta estados isolados e executa verificações de acessibilidade.
-- Cypress usa o `json-server` real nos cenários de sucesso e `cy.intercept` para falhas controladas.
-- O smoke de produção valida endpoints e os fluxos essenciais contra a API publicada.
+- Vitest covers the mapper, reducers, selectors, sagas, and pure synchronization functions.
+- Testing Library validates components through behavior and accessible queries.
+- Highcharts is mocked at the component boundary; options and adapters are tested separately.
+- The Function test confirms status, JSON, and dataset equivalence.
+- Storybook documents isolated states and runs accessibility checks.
+- Cypress uses the real `json-server` in success scenarios and `cy.intercept` for controlled failures.
+- The production smoke test validates endpoints and essential flows against the published API.
 
-Coverage pode ser gerado localmente, sem threshold obrigatório e sem alegação de cobertura total.
-Consulte [`docs/testing-strategy.md`](testing-strategy.md).
+Coverage can be generated locally, with no mandatory threshold or claim of complete coverage. See
+[`docs/testing-strategy.md`](testing-strategy.md).
 
-## CI/CD e Vercel
+## CI/CD and Vercel
 
-O CI executa em pull requests, pushes para `leonardo-jacomussi` e disparos manuais. Os jobs
-`quality` e `e2e` rodam separadamente. O primeiro valida formato, lint, tipos, testes, build da
-aplicação e Storybook; o segundo executa Cypress.
+CI runs on pull requests, pushes to `leonardo-jacomussi`, and manual triggers. The `quality` and
+`e2e` jobs run separately. The first validates formatting, lint, types, tests, the application
+build, and Storybook; the second runs Cypress.
 
-O workflow de CD só é chamado em push ou execução manual na branch da solução depois dos dois jobs
-passarem. Aplicação/API e Storybook usam projetos Vercel distintos e não dependem da integração Git
-automática. Após o deploy, o smoke verifica `/data`, `/api/measurements`, Storybook e os cenários
-essenciais do Cypress.
+The CD workflow is invoked only on pushes or manual runs on the solution branch after both jobs
+pass. Application/API and Storybook use separate Vercel projects and do not depend on automatic Git
+integration. After deployment, the smoke test checks `/data`, `/api/measurements`, Storybook, and
+essential Cypress scenarios.
 
-## Desenvolvimento assistido por IA
+## AI-assisted development
 
-O projeto inclui orientação em `AGENTS.md`, Rules por escopo, Commands, Skills, critérios do Bugbot
-e MCPs opcionais. Esses artefatos reduzem ambiguidades, mas não substituem revisão humana, testes,
-lint, TypeScript ou CI. Credenciais nunca são versionadas. Consulte
+The project includes guidance in `AGENTS.md`, scoped Rules, Commands, Skills, Bugbot criteria, and
+optional MCPs. These artifacts reduce ambiguity but do not replace human review, tests, lint,
+TypeScript, or CI. Credentials are never committed. See
 [`docs/ai-assisted-development.md`](ai-assisted-development.md).
 
-## Limites deliberados
+## Deliberate boundaries
 
-- Não há Nx: o projeto possui uma aplicação pequena e um único pacote.
-- Não há backend real: produção reproduz somente o contrato mock solicitado.
-- Não há validação runtime do payload: a fronteira confia no fixture conhecido do desafio.
-- Não há dados de máquina na API: o resumo usa constantes explícitas.
-- Não há estado de hover no Redux: é transitório e específico do Highcharts.
-- Não há meta mínima de coverage: o relatório apoia revisão, mas não é apresentado como garantia.
+- There is no Nx: the project has a small application and a single package.
+- There is no real backend: production reproduces only the requested mock contract.
+- There is no runtime payload validation: the boundary trusts the challenge's known fixture.
+- There is no machine data in the API: the summary uses explicit constants.
+- There is no hover state in Redux: it is transient and Highcharts-specific.
+- There is no minimum coverage target: the report supports review but is not presented as a guarantee.
 
-## Definição de pronto
+## Definition of done
 
-Uma entrega só é considerada pronta quando:
+A delivery is considered done only when:
 
-- requisitos e documentação continuam alinhados;
-- TypeScript strict, Biome e testes passam;
-- aplicação e Storybook geram builds;
-- Cypress valida os fluxos essenciais;
-- acessibilidade e responsividade são revisadas;
-- nenhum segredo ou artefato gerado entra no diff;
-- alterações de contrato atualizam mock, Function, mapper, testes e documentação.
+- requirements and documentation remain aligned;
+- TypeScript strict, Biome, and tests pass;
+- the application and Storybook build successfully;
+- Cypress validates the essential flows;
+- accessibility and responsiveness are reviewed;
+- no secrets or generated artifacts enter the diff;
+- contract changes update the mock, Function, mapper, tests, and documentation.

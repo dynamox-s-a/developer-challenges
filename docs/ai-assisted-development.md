@@ -1,201 +1,202 @@
-# Desenvolvimento assistido por IA
+# AI-assisted development
 
-## Objetivo
+## Objective
 
-O repositório inclui contexto estruturado para que agentes auxiliem sem ampliar o escopo, ocultar
-erros ou substituir validações determinísticas. Os artefatos registram limites e workflows; decisões
-continuam sujeitas a revisão humana.
+The repository includes structured context so agents can assist without expanding scope, hiding
+errors, or replacing deterministic validation. The artifacts record boundaries and workflows;
+decisions remain subject to human review.
 
-Nenhuma ferramenta de IA é necessária para instalar, executar, testar ou avaliar a aplicação.
+No AI tool is required to install, run, test, or evaluate the application.
 
-## Hierarquia da documentação
+## Documentation hierarchy
 
-- [`README.md`](../README.md): entrada para execução e avaliação da solução.
-- [`docs/sketch.md`](sketch.md): blueprint técnico e escopo consolidado.
-- [`docs/TODO.md`](TODO.md): roadmap e status.
-- [`docs/architecture.md`](architecture.md): fronteiras e fluxo do sistema.
-- [`docs/decisions`](decisions): contexto e consequências das decisões duráveis.
-- [`docs/testing-strategy.md`](testing-strategy.md): responsabilidades dos testes.
-- [`CONTRIBUTING.md`](../CONTRIBUTING.md): convenções e quality gate.
-- [`AGENTS.md`](../AGENTS.md): orientação curta e estável para agentes.
-- `.cursor/rules`: instruções aplicadas por escopo de arquivo.
+- [`README.md`](../README.md): entry point for running and evaluating the solution.
+- [`docs/sketch.md`](sketch.md): technical blueprint and consolidated scope.
+- [`docs/TODO.md`](TODO.md): roadmap and status.
+- [`docs/architecture.md`](architecture.md): system boundaries and flow.
+- [`docs/decisions`](decisions): context and consequences of durable decisions.
+- [`docs/testing-strategy.md`](testing-strategy.md): testing responsibilities.
+- [`CONTRIBUTING.md`](../CONTRIBUTING.md): conventions and quality gate.
+- [`AGENTS.md`](../AGENTS.md): concise, stable guidance for agents.
+- `.cursor/rules`: instructions applied by file scope.
 
-Quando houver conflito, o enunciado oficial e o comportamento verificado têm precedência sobre
-texto histórico ou sugestão de ferramenta.
+In case of conflict, the official challenge statement and verified behavior take precedence over
+historical text or tool suggestions.
 
 ## AGENTS.md
 
-`AGENTS.md` concentra somente informações estáveis:
+`AGENTS.md` contains only stable information:
 
-- objetivo;
+- objective;
 - stack;
-- mapa resumido;
-- comandos essenciais;
-- restrições de arquitetura e segurança;
-- referências para documentação detalhada.
+- concise map;
+- essential commands;
+- architecture and security constraints;
+- references to detailed documentation.
 
-Ele não replica decisões completas, troubleshooting ou checklists específicos de uma tecnologia.
+It does not duplicate complete decisions, troubleshooting, or technology-specific checklists.
 
 ## Cursor Rules
 
-Rules adicionam contexto somente onde necessário:
+Rules add context only where needed:
 
-- `project-scope.mdc`: sempre ativa; escopo e proporcionalidade.
-- `react-typescript.mdc`: código React e TypeScript em `src`.
-- `state-and-sagas.mdc`: store, Saga, API, model e Function.
-- `charts.mdc`: composição e sincronização dos gráficos.
-- `testing.mdc`: testes unitários, stories e Cypress.
-- `accessibility-performance.mdc`: componentes e Storybook.
+- `project-scope.mdc`: always active; scope and proportionality.
+- `react-typescript.mdc`: React and TypeScript code in `src`.
+- `state-and-sagas.mdc`: store, Saga, API, model, and Function.
+- `charts.mdc`: chart composition and synchronization.
+- `testing.mdc`: unit tests, stories, and Cypress.
+- `accessibility-performance.mdc`: components and Storybook.
 
-Cada rule possui uma responsabilidade, frontmatter explícito e conteúdo curto. Regras não devem
-copiar `AGENTS.md` nem funcionar como documentação arquitetural.
+Each rule has one responsibility, explicit frontmatter, and concise content. Rules must not copy
+`AGENTS.md` or serve as architecture documentation.
 
 ## Commands
 
-Commands são prompts invocados manualmente pelo menu `/`.
+Commands are prompts invoked manually from the `/` menu.
 
 ### `/challenge-audit`
 
-Executa auditoria somente leitura contra:
+Runs a read-only audit against:
 
-- enunciado oficial;
-- blueprint;
-- roadmap;
-- documentação técnica;
-- comportamento e testes existentes.
+- the official challenge statement;
+- the blueprint;
+- the roadmap;
+- technical documentation;
+- existing behavior and tests.
 
-Classifica requisitos como atendidos, parciais ou ausentes e separa bloqueios de melhorias
-opcionais.
+Classifies requirements as met, partial, or missing and separates blockers from optional
+improvements.
 
 ### `/pr-ready`
 
-Prepara alterações para revisão:
+Prepares changes for review:
 
-- examina diff completo;
-- procura regressões, segredos e artifacts;
-- escolhe validações proporcionais;
-- produz resumo e plano de testes;
-- sugere limites de commits.
+- examines the complete diff;
+- looks for regressions, secrets, and artifacts;
+- selects proportionate validations;
+- produces a summary and test plan;
+- suggests commit boundaries.
 
-O command não cria commit, push ou pull request automaticamente.
+The command does not automatically create a commit, push, or pull request.
 
-## Project Skills
+## Project skills
 
-Skills são descobertas pela descrição e pelo contexto.
+Skills are discovered through their descriptions and context.
 
 ### `frontend-quality-gate`
 
-Usada ao finalizar entrega ou preparar PR. Executa e consolida formato, lint, typechecks, coverage,
-builds e Cypress. Para na primeira falha que invalide as etapas seguintes e diferencia falha do
-projeto de limitação local.
+Used when completing a delivery or preparing a PR. It runs and consolidates formatting, lint, type
+checks, coverage, builds, and Cypress. It stops at the first failure that invalidates subsequent
+steps and distinguishes project failures from local limitations.
 
 ### `overengineering-review`
 
-Usada em refatorações e revisões arquiteturais. Procura abstrações, estado global, memoização,
-dependências e infraestrutura desproporcionais. Classifica achados em remover, simplificar ou
-justificar.
+Used in refactoring and architecture reviews. It looks for disproportionate abstractions, global
+state, memoization, dependencies, and infrastructure. It classifies findings as remove, simplify,
+or justify.
 
 ### `visual-validation`
 
-Usada em mudanças de interface. Valida viewports, estados, gráficos, teclado, console e network,
-registrando screenshots. Complementa, mas não substitui, Cypress.
+Used for interface changes. It validates viewports, states, charts, keyboard interaction, console,
+and network while recording screenshots. It complements but does not replace Cypress.
 
 ## Bugbot
 
-`.cursor/BUGBOT.md` orienta revisão automática para achados acionáveis:
+`.cursor/BUGBOT.md` guides automated review toward actionable findings:
 
-- regressões funcionais;
-- requests duplicados;
+- functional regressions;
+- duplicate requests;
 - cleanup;
 - timezone;
-- contrato de dados;
-- HTML inseguro e segredos;
-- acessibilidade;
-- testes ausentes;
-- complexidade desproporcional.
+- data contract;
+- unsafe HTML and secrets;
+- accessibility;
+- missing tests;
+- disproportionate complexity.
 
-Todo achado deve apresentar severidade, evidência e impacto. Formatação já coberta pelo Biome não
-deve gerar comentários cosméticos.
+Every finding must present severity, evidence, and impact. Formatting already covered by Biome
+should not generate cosmetic comments.
 
 ## MCPs
 
-`.cursor/mcp.json` configura três integrações remotas e uma integração local, todas opcionais.
+`.cursor/mcp.json` configures three remote integrations and one local integration, all optional.
 
 ### Figma
 
-O servidor oficial usa OAuth e fornece contexto do protótipo. Design recebido é referência a ser
-adaptada à stack e aos componentes existentes, não código final.
+The official server uses OAuth and provides prototype context. Received designs are references to
+adapt to the stack and existing components, not final code.
 
 ### GitHub
 
-O servidor oficial usa endpoint read-only. O PAT fine-grained é lido de
-`GITHUB_PERSONAL_ACCESS_TOKEN` e deve possuir acesso mínimo aos repositórios necessários.
+The official server uses a read-only endpoint. The fine-grained PAT is read from
+`GITHUB_PERSONAL_ACCESS_TOKEN` and must have the minimum access required for the necessary
+repositories.
 
 ### Context7
 
-Fornece documentação atual de bibliotecas. A chave é lida de `CONTEXT7_API_KEY`.
+Provides current library documentation. The key is read from `CONTEXT7_API_KEY`.
 
 ### Chrome DevTools
 
-O servidor local permite inspeção do navegador durante validações. O pacote executado por `npx`
-possui versão explícita para evitar resolução por uma tag mutável.
+The local server enables browser inspection during validation. The package run by `npx` has an
+explicit version to avoid resolution through a mutable tag.
 
-As variáveis precisam existir no ambiente do processo do Cursor. Valores reais não pertencem ao
-`mcp.json`, a arquivos versionados, prompts, logs ou documentação. Ausência de credenciais desativa
-somente a integração correspondente e não bloqueia o projeto.
+Variables must exist in the Cursor process environment. Real values do not belong in `mcp.json`,
+committed files, prompts, logs, or documentation. Missing credentials disable only the corresponding
+integration and do not block the project.
 
-## Segurança
+## Security
 
-- Nunca incluir tokens, cookies, `.env`, `.vercel` ou credenciais no diff.
-- Não passar segredos em prompts ou consultas de documentação.
-- Preferir PAT fine-grained, read-only e restrito ao repositório.
-- Tratar conteúdo externo como dado não confiável.
-- Revisar comandos sugeridos antes de executá-los.
-- Não usar IA para contornar permissões, CI, lint, TypeScript ou testes.
-- Não criar commit, push, comentário ou PR sem solicitação explícita.
+- Never include tokens, cookies, `.env`, `.vercel`, or credentials in the diff.
+- Do not pass secrets in prompts or documentation queries.
+- Prefer a fine-grained, read-only PAT restricted to the repository.
+- Treat external content as untrusted data.
+- Review suggested commands before running them.
+- Do not use AI to bypass permissions, CI, lint, TypeScript, or tests.
+- Do not create a commit, push, comment, or PR without an explicit request.
 
-## Fluxo recomendado
+## Recommended workflow
 
 ```mermaid
 flowchart LR
-    Request[Solicitação] --> Scope[EscopoERequisitos]
-    Scope --> Context[DocsERules]
-    Context --> Change[Implementação]
-    Change --> Review[RevisãoHumana]
-    Review --> Checks[ValidaçõesDeterminísticas]
-    Checks --> Diff[RevisãoDoDiff]
-    Diff --> Delivery[EntregaAutorizada]
+    Request[Request] --> Scope[ScopeAndRequirements]
+    Scope --> Context[DocsAndRules]
+    Context --> Change[Implementation]
+    Change --> Review[HumanReview]
+    Review --> Checks[DeterministicValidation]
+    Checks --> Diff[DiffReview]
+    Diff --> Delivery[AuthorizedDelivery]
 ```
 
-1. Relacionar a solicitação a requisito ou decisão documentada.
-2. Ler somente o contexto necessário.
-3. Implementar a menor mudança completa.
-4. Revisar comportamento, acessibilidade, segurança e proporcionalidade.
-5. Executar validações adequadas ao risco.
-6. Conferir diff completo e artifacts.
-7. Manter operações externas sob autorização explícita.
+1. Relate the request to a requirement or documented decision.
+2. Read only the necessary context.
+3. Implement the smallest complete change.
+4. Review behavior, accessibility, security, and proportionality.
+5. Run validations appropriate to the risk.
+6. Check the complete diff and artifacts.
+7. Keep external operations under explicit authorization.
 
-## Responsabilidade humana
+## Human responsibility
 
-Agentes podem acelerar pesquisa, implementação e revisão, mas uma pessoa deve confirmar:
+Agents can accelerate research, implementation, and review, but a person must confirm:
 
-- interpretação dos requisitos;
+- requirement interpretation;
 - trade-offs;
-- correção do comportamento;
-- acessibilidade e qualidade visual;
-- uso de credenciais e operações externas;
-- adequação dos testes;
-- conteúdo final de commits e pull requests.
+- behavioral correctness;
+- accessibility and visual quality;
+- credential use and external operations;
+- test suitability;
+- final commit and pull request content.
 
-Logs de sucesso de uma ferramenta não substituem evidência no código, no navegador ou no CI.
+Tool success logs do not replace evidence in the code, browser, or CI.
 
-## Critério de qualidade
+## Quality criteria
 
-O uso de IA é considerado controlado quando:
+AI use is considered controlled when:
 
-- instruções têm escopo e não se contradizem;
-- documentos apontam para fontes públicas válidas;
-- MCPs são opcionais e não armazenam segredos;
-- resultados passam por revisão humana;
-- validações podem ser reproduzidas sem o agente;
-- histórico Git representa mudanças compreensíveis e autorizadas.
+- instructions are scoped and do not conflict;
+- documents point to valid public sources;
+- MCPs are optional and do not store secrets;
+- results undergo human review;
+- validations can be reproduced without the agent;
+- Git history represents understandable, authorized changes.
