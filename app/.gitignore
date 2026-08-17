@@ -1,5 +1,20 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+dist-ssr/
+coverage/
+storybook-static/
+*.tsbuildinfo
+
+# Environment and local overrides
+.env
+.env.*
+*.local
+
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -7,19 +22,22 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
+# Editor and IDE files
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
+.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-.env
+
+# Cypress
+cypress/videos/
+cypress/screenshots/
+cypress-results.txt
+cypress-results.json
+nohup.out
+
+# OS files
+.DS_Store

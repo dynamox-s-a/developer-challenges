@@ -30,6 +30,37 @@ function createMockChart(foundPoint: unknown = { x: 1, y: 2 }): MockChart {
   };
 }
 
+function createMockChartWithOptions(options?: {
+  foundPoint?: unknown;
+  includeSearchPoint?: boolean;
+  includeTooltip?: boolean;
+  includeXAxis?: boolean;
+  normalizeThrows?: boolean;
+  hoverPoints?: unknown[];
+}) {
+  const foundPoint = options?.foundPoint ?? { x: 1, y: 2 };
+  const includeSearchPoint = options?.includeSearchPoint ?? true;
+  const includeTooltip = options?.includeTooltip ?? true;
+  const includeXAxis = options?.includeXAxis ?? true;
+  const normalizeThrows = options?.normalizeThrows ?? false;
+
+  const chart = {
+    pointer: {
+      normalize: normalizeThrows
+        ? vi.fn(() => {
+            throw new Error('normalize failed');
+          })
+        : vi.fn((e) => e),
+    },
+    series: includeSearchPoint ? [{ searchPoint: vi.fn(() => foundPoint) }] : [{}],
+    hoverPoints: options?.hoverPoints,
+    tooltip: includeTooltip ? { refresh: vi.fn(), hide: vi.fn() } : undefined,
+    xAxis: includeXAxis ? [{ drawCrosshair: vi.fn(), hideCrosshair: vi.fn() }] : undefined,
+  };
+
+  return chart;
+}
+
 describe('useChartSync', () => {
   beforeEach(() => {
     (Highcharts.charts as unknown[]) = [];
@@ -100,5 +131,85 @@ describe('useChartSync', () => {
 
     expect(removeSpy).toHaveBeenCalledWith('mousemove', expect.any(Function));
     expect(removeSpy).toHaveBeenCalledWith('mouseleave', expect.any(Function));
+  });
+
+  it('attaches listeners to document.body when containerRef.current is null', () => {
+    const addSpy = vi.spyOn(document.body, 'addEventListener');
+    const removeSpy = vi.spyOn(document.body, 'removeEventListener');
+    const containerRef = { current: null } as RefObject<HTMLDivElement>;
+
+    const { unmount } = renderHook(() => useChartSync({ containerRef, data: [1] }));
+
+    expect(addSpy).toHaveBeenCalledWith('mousemove', expect.any(Function));
+    expect(addSpy).toHaveBeenCalledWith('mouseleave', expect.any(Function));
+
+    unmount();
+
+    expect(removeSpy).toHaveBeenCalledWith('mousemove', expect.any(Function));
+    expect(removeSpy).toHaveBeenCalledWith('mouseleave', expect.any(Function));
+  });
+
+  it('ignores null charts and charts without searchPoint safely', () => {
+    const container = document.createElement('div');
+    const chartWithoutSearchPoint = createMockChartWithOptions({ includeSearchPoint: false });
+    (Highcharts.charts as unknown[]) = [null, chartWithoutSearchPoint];
+
+    const containerRef = { current: container } as RefObject<HTMLDivElement>;
+    renderHook(() => useChartSync({ containerRef, data: [1] }));
+
+    expect(() => {
+      container.dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
+      container.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
+    }).not.toThrow();
+
+    expect(chartWithoutSearchPoint.pointer.normalize).toHaveBeenCalled();
+    expect('searchPoint' in chartWithoutSearchPoint.series[0]).toBe(false);
+  });
+
+  it('uses hoverPoints when available on tooltip refresh', () => {
+    const container = document.createElement('div');
+    const point = { x: 10, y: 20 };
+    const hoverPoints = [{ x: 11, y: 21 }];
+    const chart = createMockChartWithOptions({ foundPoint: point, hoverPoints });
+    (Highcharts.charts as unknown[]) = [chart];
+
+    const containerRef = { current: container } as RefObject<HTMLDivElement>;
+    renderHook(() => useChartSync({ containerRef, data: [1] }));
+
+    container.dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
+
+    expect(chart.tooltip?.refresh).toHaveBeenCalledWith(hoverPoints);
+  });
+
+  it('does not fail when chart has no tooltip or xAxis', () => {
+    const container = document.createElement('div');
+    const chart = createMockChartWithOptions({ includeTooltip: false, includeXAxis: false });
+    (Highcharts.charts as unknown[]) = [chart];
+
+    const containerRef = { current: container } as RefObject<HTMLDivElement>;
+    renderHook(() => useChartSync({ containerRef, data: [1] }));
+
+    expect(() => {
+      container.dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
+      container.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
+    }).not.toThrow();
+  });
+
+  it('swallows per-chart errors and continues processing other charts', () => {
+    const container = document.createElement('div');
+    const failingChart = createMockChartWithOptions({ normalizeThrows: true });
+    const healthyPoint = { x: 5, y: 6 };
+    const healthyChart = createMockChart(healthyPoint);
+    (Highcharts.charts as unknown[]) = [failingChart, healthyChart];
+
+    const containerRef = { current: container } as RefObject<HTMLDivElement>;
+    renderHook(() => useChartSync({ containerRef, data: [1] }));
+
+    expect(() => {
+      container.dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
+    }).not.toThrow();
+
+    expect(healthyChart.pointer.normalize).toHaveBeenCalled();
+    expect(healthyChart.tooltip.refresh).toHaveBeenCalledWith([healthyPoint]);
   });
 });
