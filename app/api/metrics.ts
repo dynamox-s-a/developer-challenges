@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-import data from './db.json';
+import data from './db.json' with { type: 'json' };
 
 export default function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'GET') {
@@ -9,5 +9,5 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     });
   }
 
-  return res.status(200).json(data);
+  return res.status(200).json(data.metrics);
 }
