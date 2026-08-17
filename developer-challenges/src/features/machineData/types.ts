@@ -1,9 +1,9 @@
 export interface MachineInfo {
-	id: string;
-	name: string;
-	location: string;
-	sensor: string;
-	lastUpdate: string;
+	machine: string;
+	point: string;
+	rpm: string;
+	range: string;
+	duration: string;
 }
 
 export interface RawSeriesPoint {

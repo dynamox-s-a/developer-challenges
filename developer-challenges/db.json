@@ -1,10 +1,10 @@
 {
   "machine": {
-    "id": "MTR-2231",
-    "name": "Motor de Indução Trifásico",
-    "location": "Linha 3 - Planta Joinville",
-    "sensor": "TcAg - S/N 0293",
-    "lastUpdate": "2023-12-12T15:02:42.000Z"
+    "machine": "Máquina 1023",
+    "point": "Ponto 20192",
+    "rpm": "200",
+    "range": "16g",
+    "duration": "20 min"
   },
   "readings": [
     {
