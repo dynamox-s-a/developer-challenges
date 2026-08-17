@@ -1,29 +1,29 @@
-# Critérios de revisão
+# Review criteria
 
-Priorize bugs acionáveis introduzidos pelo diff. Cada achado deve indicar severidade, arquivo,
-evidência, impacto observável e correção mínima.
+Prioritize actionable bugs introduced by the diff. Each finding MUST state the severity, file,
+evidence, observable impact, and minimum fix.
 
-## Verificar
+## Check for
 
-- regressões nos requisitos de `/data`, estados ou roteamento;
-- requests ausentes ou duplicados, especialmente sob React StrictMode;
-- listeners, timers e referências sem cleanup;
-- timestamp ou formatação que altere timezone e associação entre séries;
-- divergência entre contrato da API, mapper, selectors e gráficos;
-- HTML inseguro, credenciais, tokens ou dados sensíveis;
-- quebra de semântica, teclado, foco, contraste ou nomes acessíveis;
-- overflow, resize ou interação inconsistente nos breakpoints;
-- falha sem teste de regressão ou cenário crítico sem cobertura;
-- abstrações e dependências com custo maior que o problema resolvido;
-- alterações que contornem CI, lint, TypeScript ou testes.
+- regressions in `/data` requirements, states, or routing;
+- missing or duplicate requests, especially under React StrictMode;
+- listeners, timers, and references without cleanup;
+- timestamp handling or formatting that changes timezone or series association;
+- inconsistencies among the API contract, mapper, selectors, and charts;
+- unsafe HTML, credentials, tokens, or sensitive data;
+- broken semantics, keyboard support, focus, contrast, or accessible names;
+- inconsistent overflow, resize behavior, or interaction across breakpoints;
+- a failure without a regression test or a critical scenario without coverage;
+- abstractions and dependencies whose cost exceeds the problem they solve;
+- changes that bypass CI, lint, TypeScript, or tests.
 
-## Evitar
+## Avoid
 
-- comentários apenas de estilo cobertos pelo Biome;
-- preferências sem impacto funcional ou padrão documentado;
-- exigir arquitetura de produção além do escopo do desafio;
-- repetir o mesmo problema em vários arquivos sem identificar a causa comum;
-- alegar erro sem caminho reproduzível ou evidência no diff.
+- style-only comments already covered by Biome;
+- preferences without functional impact or a documented standard;
+- requiring production architecture beyond the challenge scope;
+- repeating the same issue across multiple files without identifying the common cause;
+- claiming an error without a reproducible path or evidence in the diff.
 
-Classifique como bloqueante apenas quando houver risco concreto de funcionalidade, segurança,
-acessibilidade, dados ou deploy.
+Classify a finding as blocking only when there is a concrete risk to functionality, security,
+accessibility, data, or deployment.

@@ -1,6 +1,6 @@
 ---
 name: overengineering-review
-description: Revisa mudanças em busca de complexidade desproporcional ao desafio. Use em refatorações, revisões arquiteturais ou quando uma solução parece maior que o problema.
+description: Reviews changes for complexity disproportionate to the challenge. Use during refactoring, architectural reviews, or when a solution appears larger than the problem.
 paths:
   - "src/**"
   - "api/**"
@@ -8,28 +8,28 @@ paths:
   - "vite.config.ts"
 ---
 
-# Revisão de overengineering
+# Overengineering review
 
-Analise o diff e o contexto antes de concluir. Não trate quantidade de linhas como evidência
-isolada.
+Analyze the diff and context before reaching a conclusion. Do not treat line count as sufficient
+evidence on its own.
 
-## Procurar
+## Look for
 
-- abstrações com um único consumidor sem isolamento relevante;
-- wrappers triviais e hooks que apenas renomeiam chamadas;
-- estado global para interação local ou dados derivados duplicados;
-- memoização, cache, throttle ou virtualização sem medição;
-- genéricos e tipos mais complexos que o domínio;
-- design system paralelo ao Material UI;
-- dependências para problemas triviais;
-- infraestrutura, padrões ou camadas não exigidos pelo desafio.
+- abstractions with a single consumer and no meaningful isolation;
+- trivial wrappers and hooks that merely rename calls;
+- global state for local interaction or duplicated derived data;
+- memoization, caching, throttling, or virtualization without measurements;
+- generics and types more complex than the domain;
+- a design system parallel to Material UI;
+- dependencies for trivial problems;
+- infrastructure, patterns, or layers not required by the challenge.
 
-## Classificar
+## Classify
 
-- **Remover agora**: aumenta risco ou manutenção sem benefício atual.
-- **Simplificar depois**: válido, mas não bloqueia a entrega.
-- **Complexidade justificada**: resolve reutilização, teste, fronteira externa ou requisito real.
+- **Remove now**: increases risk or maintenance without a current benefit.
+- **Simplify later**: valid concern, but does not block delivery.
+- **Justified complexity**: addresses reuse, testing, an external boundary, or a real requirement.
 
-Para cada achado, cite evidência, custo e alternativa mínima. Não proponha simplificação que
-reduza acessibilidade, testes, segurança ou clareza. Faça revisão somente leitura, salvo pedido
-explícito de correção.
+For each finding, cite the evidence, cost, and minimum alternative. Do not propose simplification
+that reduces accessibility, testing, security, or clarity. Perform a read-only review unless a fix
+is explicitly requested.

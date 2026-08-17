@@ -1,18 +1,18 @@
 ---
-description: Garante acessibilidade, responsividade e desempenho baseados em evidência
+description: Ensures evidence-based accessibility, responsiveness, and performance
 globs: "src/**/*.tsx,.storybook/**/*.tsx"
 alwaysApply: false
 ---
 
-# Acessibilidade e desempenho
+# Accessibility and performance
 
-- Siga os critérios de `docs/testing-strategy.md` e `CONTRIBUTING.md`.
-- Use HTML semântico, nomes acessíveis e hierarquia correta de headings.
-- Preserve foco visível e navegação completa por teclado.
-- Exponha loading, erro e mudanças relevantes com semântica apropriada.
-- Não faça de cor, ícone ou tooltip a única fonte de informação.
-- Respeite contraste e áreas de interação nos breakpoints suportados.
-- Valide overflow, resize dos gráficos e legibilidade em mobile, tablet e desktop.
-- Evite memoização, virtualização ou throttle sem medição ou problema reproduzível.
-- Não introduza renders por evento de ponteiro quando a biblioteca puder atualizar imperativamente.
-- Execute axe, confira console/network e registre evidência visual para mudanças de interface.
+- Follow the criteria in `docs/testing-strategy.md` and `CONTRIBUTING.md`.
+- Use semantic HTML, accessible names, and a correct heading hierarchy.
+- Preserve visible focus and complete keyboard navigation.
+- Expose loading, error, and relevant changes with appropriate semantics.
+- Do not make color, icons, or tooltips the sole source of information.
+- Meet contrast and interaction-target requirements at supported breakpoints.
+- Validate overflow, chart resizing, and readability on mobile, tablet, and desktop.
+- Avoid memoization, virtualization, or throttling without measurements or a reproducible problem.
+- Do not introduce renders for pointer events when the library can update imperatively.
+- Run axe, inspect the console and network activity, and record visual evidence for interface changes.

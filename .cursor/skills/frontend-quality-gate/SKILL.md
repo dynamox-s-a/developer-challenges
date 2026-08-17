@@ -1,13 +1,13 @@
 ---
 name: frontend-quality-gate
-description: Executa e consolida todas as validações do front-end. Use ao finalizar uma entrega, preparar revisão ou confirmar que a branch está pronta para PR.
+description: Runs and consolidates all front-end validations. Use when finalizing a delivery, preparing a review, or confirming that the branch is ready for a PR.
 ---
 
 # Front-end quality gate
 
-## Execução
+## Execution
 
-Execute na raiz, em ordem:
+Run the following commands from the repository root, in order:
 
 1. `pnpm format:check`
 2. `pnpm lint`
@@ -18,19 +18,18 @@ Execute na raiz, em ordem:
 7. `pnpm build-storybook`
 8. `pnpm e2e:ci`
 
-Use `pnpm install --frozen-lockfile` antes quando dependências estiverem ausentes ou o lockfile
-tiver mudado.
+Run `pnpm install --frozen-lockfile` first when dependencies are missing or the lockfile has changed.
 
-## Regras
+## Rules
 
-- Pare na primeira falha que invalide etapas seguintes.
-- Preserve logs suficientes para identificar comando, arquivo e causa.
-- Não desabilite testes, lint ou TypeScript para obter resultado verde.
-- Não altere código durante uma solicitação apenas de validação.
-- Se e2e depender de binário local ausente, execute `pnpm exec cypress install` e repita uma vez.
-- Diferencie falha do projeto, limitação local e etapa não executada.
+- Stop at the first failure that invalidates subsequent steps.
+- Preserve enough logs to identify the command, file, and cause.
+- Do not disable tests, lint, or TypeScript to obtain a passing result.
+- Do not modify code during a validation-only request.
+- If e2e depends on a missing local binary, run `pnpm exec cypress install` and retry once.
+- Distinguish among a project failure, a local limitation, and a step that was not run.
 
-## Relatório
+## Report
 
-Liste cada etapa como passou, falhou ou não executada. Inclua duração quando útil, causa raiz das
-falhas e o menor próximo passo. Só declare o quality gate verde quando todas as etapas passarem.
+List each step as passed, failed, or not run. Include duration when useful, the root cause of
+failures, and the smallest next step. Declare the quality gate green only when every step passes.

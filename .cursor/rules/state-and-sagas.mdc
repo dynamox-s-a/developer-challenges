@@ -1,17 +1,17 @@
 ---
-description: Orienta estado global, sagas, API e transformação das medições
+description: Guides global state, sagas, the API, and measurement transformation
 globs: "src/store/**/*.{ts,tsx},src/features/measurements/{api,model,store}/**/*.{ts,tsx},api/**/*.ts"
 alwaysApply: false
 ---
 
-# Estado e efeitos
+# State and effects
 
-- Preserve o fluxo e os limites descritos em `docs/architecture.md`.
-- Use Redux apenas para estado global compartilhado e serializável.
-- Mantenha interação visual transitória e instâncias externas no componente ou hook responsável.
-- Use Saga para carregamento assíncrono e represente sucesso, falha e efeitos obsoletos.
-- Derive dados com selectors memoizados somente quando a referência estável ou o custo justificar.
-- Mantenha mappers puros entre o contrato da API e o modelo interno.
-- Não duplique no store dados que possam ser derivados.
-- Preserve erros úteis para a interface sem expor detalhes internos.
-- Cubra reducers, selectors, mapper e fluxos da saga com testes de comportamento.
+- Preserve the flow and boundaries described in `docs/architecture.md`.
+- Use Redux only for shared, serializable global state.
+- Keep transient visual interaction and external instances in the responsible component or hook.
+- Use Saga for asynchronous loading and represent success, failure, and stale effects.
+- Derive data with memoized selectors only when stable references or computational cost justify it.
+- Keep mappers between the API contract and the internal model pure.
+- Do not duplicate derivable data in the store.
+- Preserve errors that are useful to the interface without exposing internal details.
+- Cover reducers, selectors, the mapper, and saga flows with behavioral tests.

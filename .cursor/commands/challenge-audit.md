@@ -1,18 +1,20 @@
-Audite a implementação atual contra o enunciado oficial e a documentação deste repositório.
+Audit the current implementation against the official challenge specification and this repository's
+documentation.
 
-Use as fontes com estes papéis:
+Use the sources according to these roles:
 
-- `origin/main:front-end-challenge-v2.md`: enunciado oficial e fonte normativa;
-- `docs/sketch.md`: escopo, premissas e solução consolidada;
-- `docs/TODO.md`: status das entregas;
-- `README.md` e `docs/*.md`: comportamento, operação e decisões documentadas.
+- `origin/main:front-end-challenge-v2.md`: official specification and normative source;
+- `docs/sketch.md`: scope, assumptions, and consolidated solution;
+- `docs/TODO.md`: delivery status;
+- `README.md` and `docs/*.md`: documented behavior, operation, and decisions.
 
-1. Leia os requisitos funcionais, técnicos, bônus e critérios de avaliação.
-2. Inspecione a implementação e as validações existentes sem modificar arquivos.
-3. Classifique cada requisito como atendido, parcial ou ausente.
-4. Sustente conclusões com arquivos, testes ou comportamento observável.
-5. Destaque regressões, documentação desatualizada e dificuldades para um avaliador executar.
-6. Separe bloqueios de melhorias opcionais e evite sugerir escopo não solicitado.
+1. Read the functional and technical requirements, bonus items, and evaluation criteria.
+2. Inspect the implementation and existing validations without modifying files.
+3. Classify each requirement as met, partial, or missing.
+4. Support conclusions with files, tests, or observable behavior.
+5. Highlight regressions, outdated documentation, and obstacles that hinder an evaluator from
+   running the project.
+6. Separate blockers from optional improvements and do not suggest unrequested scope.
 
-Entregue um resumo objetivo, achados ordenados por impacto e próximos passos mínimos. Não faça
-correções, commits, push ou alterações externas durante a auditoria.
+Provide a concise summary, findings ordered by impact, and the minimum next steps. Do not make fixes,
+create commits, push, or make external changes during the audit.

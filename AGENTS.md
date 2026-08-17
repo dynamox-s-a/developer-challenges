@@ -1,30 +1,30 @@
-# Orientações do projeto
+# Project guidelines
 
-## Objetivo
+## Objective
 
-Mantenha o dashboard de medições da Dynamox simples de executar, fiel aos requisitos e pronto para
-avaliação. Priorize correção funcional, acessibilidade, responsividade, testes e clareza sobre
-abstrações ou infraestrutura adicionais.
+Keep the Dynamox measurements dashboard easy to run, faithful to the requirements, and ready for
+evaluation. Prioritize functional correctness, accessibility, responsiveness, testing, and clarity
+over additional abstractions or infrastructure.
 
 ## Stack
 
-- React 19, TypeScript strict e Vite 8
+- React 19, TypeScript strict, and Vite 8
 - Material UI 5
-- Redux Toolkit e Redux Saga
+- Redux Toolkit and Redux Saga
 - Highcharts
-- Vitest, Testing Library, Cypress e Storybook
-- Biome, pnpm 9 e Node.js 24
+- Vitest, Testing Library, Cypress, and Storybook
+- Biome, pnpm 9, and Node.js 24
 
-## Arquitetura
+## Architecture
 
-- `src/features/measurements`: API, modelo, store e componentes do domínio.
-- `src/components`: estados e componentes transversais.
-- `src/store`: configuração global e root saga.
-- `mock/db.json`: dataset usado pelo `json-server` local.
-- `api/measurements.ts`: Function que serve o mesmo contrato na Vercel.
-- `.github/workflows`: quality gate, e2e e deploy condicionado ao CI verde.
+- `src/features/measurements`: domain API, model, store, and components.
+- `src/components`: cross-cutting states and components.
+- `src/store`: global configuration and root saga.
+- `mock/db.json`: dataset used by the local `json-server`.
+- `api/measurements.ts`: Function that serves the same contract on Vercel.
+- `.github/workflows`: quality gate, e2e, and deployment conditional on green CI.
 
-## Comandos
+## Commands
 
 ```bash
 pnpm install --frozen-lockfile
@@ -40,26 +40,26 @@ pnpm build-storybook
 pnpm e2e:ci
 ```
 
-Execute validações proporcionais ao risco e o quality gate completo antes de declarar uma entrega
-pronta.
+Run validations proportional to the risk and the complete quality gate before declaring a delivery
+ready.
 
-## Restrições
+## Constraints
 
-- Não adicione Nx, backend de produção ou dependências sem benefício demonstrável.
-- Preserve TypeScript strict; não use `any`, `@ts-ignore` nem desabilite regras para ocultar erros.
-- Mantenha tooltip, crosshair e instâncias do Highcharts fora do Redux.
-- Preserve o contrato entre `mock/db.json`, a Function e o mapper.
-- Não versione credenciais, `.env`, `.vercel` ou artefatos gerados.
-- Atualize documentação quando uma decisão arquitetural mudar.
-- Não crie commits ou faça push sem solicitação explícita.
+- Do not add Nx, a production backend, or dependencies without a demonstrated benefit.
+- Preserve TypeScript strict; do not use `any`, `@ts-ignore`, or disable rules to hide errors.
+- Keep tooltip, crosshair, and Highcharts instances out of Redux.
+- Preserve the contract among `mock/db.json`, the Function, and the mapper.
+- Do not commit credentials, `.env`, `.vercel`, or generated artifacts.
+- Update documentation when an architectural decision changes.
+- Do not create commits or push without an explicit request.
 
-A versão do Node está definida em `.nvmrc`.
+The Node version is defined in `.nvmrc`.
 
-## Documentação
+## Documentation
 
-- [README](README.md): setup, scripts, URLs e visão geral da entrega.
-- [Blueprint](docs/sketch.md): escopo, premissas e solução consolidada.
-- [Arquitetura](docs/architecture.md): dados, estado, gráficos e deploy.
-- [Testes](docs/testing-strategy.md): camadas, mocks e CI.
-- [IA](docs/ai-assisted-development.md): Rules, Commands, Skills, Bugbot e MCPs.
-- [Contribuição](CONTRIBUTING.md): convenções e quality gate.
+- [README](README.md): setup, scripts, URLs, and delivery overview.
+- [Blueprint](docs/sketch.md): scope, assumptions, and consolidated solution.
+- [Architecture](docs/architecture.md): data, state, charts, and deployment.
+- [Testing](docs/testing-strategy.md): layers, mocks, and CI.
+- [AI](docs/ai-assisted-development.md): Rules, Commands, Skills, Bugbot, and MCPs.
+- [Contributing](CONTRIBUTING.md): conventions and quality gate.

@@ -1,20 +1,21 @@
-Prepare as alterações atuais para revisão, sem criar commit, push ou pull request.
+Prepare the current changes for review without creating a commit, push, or pull request.
 
-Compare contra `origin/leonardo-jacomussi` para capturar tudo que será enviado ao remoto.
+Compare against `origin/leonardo-jacomussi` to capture everything that will be sent to the remote.
 
-1. Revise todo o diff da branch, incluindo arquivos staged, unstaged e não rastreados.
-2. Identifique bugs, regressões, mudanças fora do escopo e testes ausentes.
-3. Verifique credenciais, `.env`, `.vercel`, artefatos gerados e arquivos pessoais acidentais.
-4. Execute as validações proporcionais ao risco; para entrega final, use a skill
-   `frontend-quality-gate`.
-5. Confirme consistência entre `README.md`, blueprint, roadmap, arquitetura, testes, ADRs e
-   contribuição.
-6. Informe qualquer bloqueio sem contorná-lo silenciosamente.
+1. Review the entire branch diff, including staged, unstaged, and untracked files.
+2. Identify bugs, regressions, out-of-scope changes, and missing tests.
+3. Check for credentials, `.env`, `.vercel`, generated artifacts, and accidentally included
+   personal files.
+4. Run validations proportional to the risk; for a final delivery, use the
+   `frontend-quality-gate` skill.
+5. Confirm consistency among `README.md`, the blueprint, roadmap, architecture, tests, ADRs, and
+   contribution guidelines.
+6. Report any blocker without silently bypassing it.
 
-Ao final, produza:
+At the end, provide:
 
-- resumo das mudanças;
-- riscos e pendências;
-- validações executadas e resultados;
-- plano de testes para a PR;
-- sugestão de commits semânticos por escopo.
+- a summary of the changes;
+- risks and pending items;
+- validations run and their results;
+- a test plan for the PR;
+- suggested semantic commits grouped by scope.

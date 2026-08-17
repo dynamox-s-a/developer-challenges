@@ -1,17 +1,17 @@
 ---
-description: Define padrões de React e TypeScript para o código da aplicação
+description: Defines React and TypeScript standards for the application code
 globs: "src/**/*.{ts,tsx}"
 alwaysApply: false
 ---
 
-# React e TypeScript
+# React and TypeScript
 
-- Siga as fronteiras de `docs/architecture.md` e as convenções de `CONTRIBUTING.md`.
-- Preserve `strict`, tipos explícitos nas fronteiras e inferência segura internamente.
-- Não use `any`, `@ts-ignore`, non-null assertions ou casts para esconder erros.
-- Use componentes funcionais e composição em vez de herança.
-- Separe apresentação, transformação pura, acesso HTTP e efeitos assíncronos.
-- Coloque comportamento reutilizável em hooks somente quando houver complexidade real.
-- Prefira aliases `@/` para imports entre módulos de `src`.
-- Modele estados impossíveis para que não sejam representáveis quando isso simplificar o código.
-- Abstraia apenas quando houver reutilização, isolamento de biblioteca ou ganho claro de legibilidade.
+- Follow the boundaries in `docs/architecture.md` and the conventions in `CONTRIBUTING.md`.
+- Preserve `strict`, explicit types at boundaries, and safe inference internally.
+- Do not use `any`, `@ts-ignore`, non-null assertions, or casts to hide errors.
+- Use function components and composition instead of inheritance.
+- Separate presentation, pure transformation, HTTP access, and asynchronous effects.
+- Move reusable behavior into hooks only when there is genuine complexity.
+- Prefer `@/` aliases for imports between modules under `src`.
+- Make impossible states unrepresentable when doing so simplifies the code.
+- Introduce abstractions only for reuse, library isolation, or a clear readability benefit.

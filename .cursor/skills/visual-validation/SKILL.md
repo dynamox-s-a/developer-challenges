@@ -1,6 +1,6 @@
 ---
 name: visual-validation
-description: Valida visualmente o dashboard e registra evidências. Use após mudanças de interface, gráficos, tema, responsividade ou acessibilidade visual.
+description: Visually validates the dashboard and records evidence. Use after changes to the interface, charts, theme, responsiveness, or visual accessibility.
 paths:
   - "src/**/*.tsx"
   - "src/theme/**"
@@ -8,31 +8,31 @@ paths:
   - "cypress/**"
 ---
 
-# Validação visual
+# Visual validation
 
-## Preparação
+## Preparation
 
-1. Reutilize servidores existentes; caso não existam, inicie `pnpm dev`.
-2. Abra `/data` e confirme que a API terminou sem erro.
-3. Preserve o viewport e o estado ao comparar antes e depois.
+1. Reuse existing servers; if none are running, start `pnpm dev`.
+2. Open `/data` and confirm that the API request completes without errors.
+3. Preserve the viewport and state when comparing before and after.
 
-## Cenários
+## Scenarios
 
-Valide:
+Validate:
 
-- desktop, tablet e mobile;
-- loading, sucesso, erro e vazio;
-- resumo da máquina e os três gráficos;
-- overflow horizontal, espaçamento e resize;
-- tooltip e crosshair sincronizados;
-- foco visível e navegação por teclado;
-- console e network sem erros inesperados.
+- desktop, tablet, and mobile;
+- loading, success, error, and empty states;
+- the machine summary and all three charts;
+- horizontal overflow, spacing, and resize behavior;
+- synchronized tooltip and crosshair;
+- visible focus and keyboard navigation;
+- console and network activity without unexpected errors.
 
-Use o Storybook para estados isolados e a aplicação para integração. Não substitua os testes
-Cypress nem atualize snapshots para esconder regressões.
+Use Storybook for isolated states and the application for integration. Do not replace Cypress tests
+or update snapshots to hide regressions.
 
-## Evidência
+## Evidence
 
-Capture screenshots representativas com nomes descritivos. Relate viewport, rota, estado,
-resultado, diferenças observadas e erros de console/network. Separe defeitos objetivos de
-preferências visuais e não altere código em uma solicitação apenas de validação.
+Capture representative screenshots with descriptive names. Report the viewport, route, state,
+result, observed differences, and console or network errors. Separate objective defects from visual
+preferences, and do not modify code during a validation-only request.

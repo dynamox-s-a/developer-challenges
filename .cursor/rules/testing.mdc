@@ -1,18 +1,18 @@
 ---
-description: Define estratégia de testes unitários, componentes, Storybook e Cypress
+description: Defines the testing strategy for unit tests, components, Storybook, and Cypress
 globs: "**/*.{test,spec,stories}.{ts,tsx},cypress/**/*.ts,cypress.config.ts"
 alwaysApply: false
 ---
 
-# Testes
+# Testing
 
-- Escolha a camada conforme `docs/testing-strategy.md`.
-- Teste comportamento observável, regras de negócio e contratos nas fronteiras.
-- Use queries acessíveis e interações próximas às ações reais do usuário.
-- Cubra sucesso, loading, erro, retry, vazio e casos limite relevantes.
-- Evite snapshots grandes e asserts sobre detalhes internos de bibliotecas.
-- Mocke Highcharts apenas na fronteira em testes de componente; teste options e sincronização à parte.
-- Use o `json-server` real nos cenários e2e de sucesso e `cy.intercept` para falhas controladas.
-- Não dependa de contagem exata de requests quando React StrictMode puder duplicar efeitos em dev.
-- Mantenha dados de teste determinísticos e sem duplicar desnecessariamente o dataset oficial.
-- Todo bug corrigido deve receber teste de regressão quando reproduzível de forma estável.
+- Choose the appropriate layer according to `docs/testing-strategy.md`.
+- Test observable behavior, business rules, and boundary contracts.
+- Use accessible queries and interactions that closely match real user actions.
+- Cover success, loading, error, retry, empty, and relevant edge cases.
+- Avoid large snapshots and assertions about library internals.
+- Mock Highcharts only at the component boundary; test options and synchronization separately.
+- Use the real `json-server` in successful e2e scenarios and `cy.intercept` for controlled failures.
+- Do not depend on exact request counts when React StrictMode may duplicate effects in development.
+- Keep test data deterministic without unnecessarily duplicating the official dataset.
+- Every fixed bug MUST receive a regression test when it can be reproduced reliably.
