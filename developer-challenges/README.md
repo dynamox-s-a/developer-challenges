@@ -5,7 +5,37 @@
 Projeto criado usando o scaffold oficial do vite para react + typescript
 
 ## Stack
-Construído com React, TypeScript, Redux Toolkit + Redux-Saga, Material UI 5 e Highcharts, Vitest para testes e Storybooks para visualização de componentes
+
+**Core**
+- React `19.2.8`
+- TypeScript `6.0.2`
+- Vite `8.2.0`
+- React Router DOM `7.18.2`
+
+**Estado**
+- Redux Toolkit `2.12.0`
+- Redux-Saga `1.5.1`
+- React Redux `9.3.0`
+
+**UI**
+- Material UI `5.18.0` (`@mui/material` + `@mui/icons-material`)
+- Emotion `11.14.1` (engine de estilos do MUI)
+- Fonte Roboto (via Google Fonts)
+
+**Dados & Gráficos**
+- Axios `1.19.0`
+- Highcharts `13.0.0` + highcharts-react-official `3.2.3`
+- json-server `0.17.4` (mock da API)
+
+**Testes**
+- Vitest `4.1.10`
+- Testing Library (React) `16.3.2` + jest-dom `7.0.1`
+- Cypress `15.20.1` + cypress-real-events `1.15.0`
+
+**Dev tools**
+- Storybook `10.5.8`
+- ESLint `10.8.0` + typescript-eslint `8.65.0`
+- concurrently `10.0.5`
 
 
 Como o objetivo desse projeto é mostrar alguns conhecimentos de otimização de performance optei por não selecionar o react compiler, que faz de forma automatica a memoização dos arquivos .tsx
