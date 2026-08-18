@@ -7,11 +7,23 @@ export interface TypographyProps extends MarginProps {
 	size?: MuiTypographyProps["variant"];
 	color?: MuiTypographyProps["color"];
 	align?: MuiTypographyProps["align"];
+	fontSize?: number;
+	bold?: boolean;
+	fontWeight?: number;
 }
 
-export function Typography({ text, size, color, align, ...marginProps }: TypographyProps) {
+export function Typography({ text, size, color, align, fontSize, bold, fontWeight, ...marginProps }: TypographyProps) {
 	return (
-		<MuiTypography variant={size} color={color} align={align} sx={marginProps}>
+		<MuiTypography
+			variant={size}
+			color={color}
+			align={align}
+			sx={{
+				...marginProps,
+				...(fontSize && { fontSize: `${fontSize}px` }),
+				...(fontWeight ? { fontWeight } : bold && { fontWeight: "bold" }),
+			}}
+		>
 			{text}
 		</MuiTypography>
 	);
