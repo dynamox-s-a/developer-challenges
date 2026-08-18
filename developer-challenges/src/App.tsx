@@ -21,13 +21,15 @@ function App() {
 	return (
 		<Provider store={store}>
 			<BrowserRouter>
-				<Suspense fallback={<RouteFallback />}>
-					<Routes>
-						<Route path="/" element={<Navigate to="/data" replace />} />
-						<Route path="/data" element={<DataPage />} />
-						<Route path="*" element={<NotFoundPage />} />
-					</Routes>
-				</Suspense>
+				<main>
+					<Suspense fallback={<RouteFallback />}>
+						<Routes>
+							<Route path="/" element={<Navigate to="/data" replace />} />
+							<Route path="/data" element={<DataPage />} />
+							<Route path="*" element={<NotFoundPage />} />
+						</Routes>
+					</Suspense>
+				</main>
 			</BrowserRouter>
 		</Provider>
 	);
