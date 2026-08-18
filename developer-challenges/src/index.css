@@ -1,0 +1,11 @@
+body {
+	margin: 0;
+}
+
+/*
+ * Workaround to make the highcharts chart to be responsive o window resize
+ */
+.highcharts-container,
+.highcharts-container svg {
+	width: 100% !important;
+}

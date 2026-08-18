@@ -1,0 +1,84 @@
+# Dynamox Front-end Challenge
+
+# React + TypeScript + Vite
+
+Projeto criado usando o scaffold oficial do vite para react + typescript
+
+## Stack
+
+**Core**
+- React `19.2.8`
+- TypeScript `6.0.2`
+- Vite `8.2.0`
+- React Router DOM `7.18.2`
+
+**Estado**
+- Redux Toolkit `2.12.0`
+- Redux-Saga `1.5.1`
+- React Redux `9.3.0`
+
+**UI**
+- Material UI `5.18.0` (`@mui/material` + `@mui/icons-material`)
+- Emotion `11.14.1` (engine de estilos do MUI)
+- Fonte Roboto (via Google Fonts)
+
+**Dados & Gráficos**
+- Axios `1.19.0`
+- Highcharts `13.0.0` + highcharts-react-official `3.2.3`
+- json-server `0.17.4` (mock da API)
+
+**Testes**
+- Vitest `4.1.10`
+- Testing Library (React) `16.3.2` + jest-dom `7.0.1`
+- Cypress `15.20.1` + cypress-real-events `1.15.0`
+
+**Dev tools**
+- Storybook `10.5.8`
+- ESLint `10.8.0` + typescript-eslint `8.65.0`
+- concurrently `10.0.5`
+
+
+Como o objetivo desse projeto é mostrar alguns conhecimentos de otimização de performance optei por não selecionar o react compiler, que faz de forma automatica a memoização dos arquivos .tsx
+
+## Scripts
+
+`npm run dev` Sobe só o front-end (Vite dev server), em `http://localhost:5173`. Precisa do mock da API rodando à parte para os dados carregarem. |
+`npm run mock-api` Sobe o `json-server` servindo `db.json` em `http://localhost:4000` (`/machine` e `/readings`). |
+`npm run dev:all` Sobe front-end e mock da API juntos (via `concurrently`), com logs prefixados/coloridos por processo (`vite` / `api`). Jeito mais rápido de rodar o projeto localmente. |
+`npm run build` Type-check (`tsc -b`) + build de produção do front-end. |
+`npm run preview` Serve o build de produção localmente. |
+`npm run lint` ESLint no projeto todo. |
+`npm run test` Roda a suíte de testes (Vitest) uma vez. |
+`npm run test:watch` Vitest em modo watch. |
+`npm run storybook` Sobe o Storybook em `http://localhost:6006`, catálogo dos componentes isolados. |
+`npm run build-storybook` Build estático do Storybook. |
+`npm run cypress:open` Abre o Cypress no modo interativo (precisa do `npm run dev:all` rodando à parte). |
+`npm run e2e` Sobe front-end + mock da API (`dev:all`), espera ficar no ar e roda os testes do Cypress em modo headless (`cypress run`), derrubando tudo no final. |
+
+## Testes E2E (Cypress)
+
+Cobrem a rota `/data`: header da máquina + os 3 gráficos renderizando, hover num gráfico mostrando tooltip com dado, e uma rota desconhecida caindo na página 404. Ficam em `cypress/e2e/`.
+
+```bash
+npm run e2e
+```
+
+## Variáveis de ambiente
+
+O front-end lê a URL da API mockada de `VITE_API_URL`. Crie um arquivo `.env` na raiz do projeto (ronomeie .env.example) com:
+
+```
+VITE_API_URL=http://localhost:4000
+```
+
+Precisa bater com a porta que o `json-server` sobe (`npm run mock-api`, configurada em `--port 4000` no script).
+
+## Rodando o projeto
+
+```bash
+npm install
+npm run dev:all
+```
+
+Depois é só acessar `http://localhost:5173/data`.
+

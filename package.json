@@ -1,0 +1,20 @@
+{
+	"name": "developer-challenges",
+	"version": "1.0.0",
+	"description": "[Dynamox](https://dynamox.net/) is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications.",
+	"homepage": "https://github.com/codenicolai/developer-challenges#readme",
+	"bugs": {
+		"url": "https://github.com/codenicolai/developer-challenges/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/codenicolai/developer-challenges.git"
+	},
+	"license": "ISC",
+	"author": "",
+	"type": "module",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	}
+}

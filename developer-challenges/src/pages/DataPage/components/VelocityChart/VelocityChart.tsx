@@ -1,0 +1,39 @@
+import { memo } from "react";
+import { Highcharts, type HighchartsSeries } from "../../../../components/Highcharts/Highcharts";
+import type { RawSeries } from "../../../../features/machineData/types";
+
+const AXIS_LABELS: Record<string, string> = {
+	x: "Axial",
+	y: "Horizontal",
+	z: "Radial",
+};
+
+export interface VelocityChartProps {
+	readings: RawSeries[];
+}
+
+function VelocityChartComponent({ readings }: VelocityChartProps) {
+	const series: HighchartsSeries[] = readings
+		.filter((reading) => reading.name.startsWith("velocityRms/"))
+		.map((reading) => {
+			const axis = reading.name.split("/")[1];
+			return {
+				name: AXIS_LABELS[axis] ?? axis,
+				data: reading.data
+					.map((point): [number, number] => [Date.parse(point.datetime), point.max])
+					.sort((a, b) => a[0] - b[0]),
+			};
+		});
+
+	return (
+		<Highcharts
+			yAxisTitle="Velocidade RMS (mm/s)"
+			series={series}
+			description="Gráfico de linha mostrando a velocidade RMS ao longo do tempo, em milímetros por segundo, para os eixos axial, horizontal e radial."
+		/>
+	);
+}
+
+export const VelocityChart = memo(VelocityChartComponent);
+
+export default VelocityChart;
