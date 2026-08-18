@@ -13,12 +13,12 @@ import { AccelerationChart } from "./components/AccelerationChart/AccelerationCh
 import { TemperatureChart } from "./components/TemperatureChart/TemperatureChart";
 import { VelocityChart } from "./components/VelocityChart/VelocityChart";
 
-const MACHINE_INFO_FIELDS: { key: keyof MachineInfo; icon: IconName }[] = [
-	{ key: "machine", icon: "Machine" },
-	{ key: "point", icon: "GpsFixed" },
-	{ key: "rpm", icon: "Rpm" },
-	{ key: "range", icon: "DynamicRange" },
-	{ key: "duration", icon: "AccessTime" },
+const MACHINE_INFO_FIELDS: { key: keyof MachineInfo; icon: IconName; label: string }[] = [
+	{ key: "machine", icon: "Machine", label: "Máquina" },
+	{ key: "point", icon: "GpsFixed", label: "Ponto" },
+	{ key: "rpm", icon: "Rpm", label: "RPM" },
+	{ key: "range", icon: "DynamicRange", label: "Faixa dinâmica" },
+	{ key: "duration", icon: "AccessTime", label: "Duração" },
 ];
 
 export function DataPage() {
@@ -48,39 +48,50 @@ export function DataPage() {
 	}
 
 	return (
-		<Flex direction="column" gap={3} m={3}>
+		<Flex direction="column" gap={3} mt={3} mb={3}>
 			<Flex direction="column">
-				<Typography text="Análise de Dados" size="h5" />
+				<Typography text="Análise de Dados" size="h5" ml={3} mr={3} />
 				<Divider sx={{ mt: 2 }} />
 			</Flex>
 
-			{machine && (
-				<Paper variant="outlined" sx={{ p: 2, borderRadius: 2 }}>
-					<Flex justify="space-between" align="center" gap={2}>
-						{MACHINE_INFO_FIELDS.map((field) => (
-							<Flex key={field.key} align="center" gap={1}>
-								<Icon icon={field.icon} color="action" size="small" />
-								<Typography text={machine[field.key]} />
-							</Flex>
-						))}
+			<Flex direction="column" gap={3} ml={3} mr={3}>
+				{machine && (
+					<Paper variant="outlined" sx={{ p: 2, borderRadius: 2 }}>
+						<Flex justify="space-between" align="center" gap={2}>
+							{MACHINE_INFO_FIELDS.map((field) => (
+								<Flex key={field.key} align="center" gap={1}>
+									<Icon icon={field.icon} text={field.label} color="action" size="small" />
+									<Typography text={machine[field.key]} />
+								</Flex>
+							))}
+						</Flex>
+					</Paper>
+				)}
+
+				<Paper variant="outlined" sx={{ borderRadius: 0 }}>
+					<Typography text="Aceleração RMS" size="subtitle1" m={2} />
+					<Divider />
+					<Flex direction="column" m={2}>
+						<AccelerationChart readings={readings} />
 					</Flex>
 				</Paper>
-			)}
 
-			<Paper variant="outlined" sx={{ p: 2, borderRadius: 2 }}>
-				<Typography text="Aceleração RMS" size="subtitle1" />
-				<AccelerationChart readings={readings} />
-			</Paper>
+				<Paper variant="outlined" sx={{ borderRadius: 0 }}>
+					<Typography text="Temperatura" size="subtitle1" m={2} />
+					<Divider />
+					<Flex direction="column" m={2}>
+						<TemperatureChart readings={readings} />
+					</Flex>
+				</Paper>
 
-			<Paper variant="outlined" sx={{ p: 2, borderRadius: 2 }}>
-				<Typography text="Temperatura" size="subtitle1" />
-				<TemperatureChart readings={readings} />
-			</Paper>
-
-			<Paper variant="outlined" sx={{ p: 2, borderRadius: 2 }}>
-				<Typography text="Velocidade RMS" size="subtitle1" />
-				<VelocityChart readings={readings} />
-			</Paper>
+				<Paper variant="outlined" sx={{ borderRadius: 0 }}>
+					<Typography text="Velocidade RMS" size="subtitle1" m={2} />
+					<Divider />
+					<Flex direction="column" m={2}>
+						<VelocityChart readings={readings} />
+					</Flex>
+				</Paper>
+			</Flex>
 		</Flex>
 	);
 }

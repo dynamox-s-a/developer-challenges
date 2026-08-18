@@ -20,7 +20,13 @@ function TemperatureChartComponent({ readings }: TemperatureChartProps) {
 			]
 		: [];
 
-	return <Highcharts yAxisTitle="Temperatura (°C)" series={series} />;
+	return (
+		<Highcharts
+			yAxisTitle="Temperatura (°C)"
+			series={series}
+			description="Gráfico de linha mostrando a temperatura ao longo do tempo, em graus Celsius."
+		/>
+	);
 }
 
 export const TemperatureChart = memo(TemperatureChartComponent);

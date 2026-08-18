@@ -1,5 +1,6 @@
 import { forwardRef } from "react";
 import HC from "highcharts";
+import "highcharts/esm/modules/accessibility.js";
 import { HighchartsReact } from "highcharts-react-official";
 import type { HighchartsReactRefObject } from "highcharts-react-official";
 
@@ -14,6 +15,9 @@ HC.setOptions({
 			"Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira",
 			"Quinta-feira", "Sexta-feira", "Sábado",
 		],
+		accessibility: {
+			defaultChartTitle: "Gráfico",
+		},
 	},
 });
 
@@ -32,17 +36,23 @@ export interface HighchartsSeries {
 export interface HighchartsProps {
 	yAxisTitle: string;
 	series: HighchartsSeries[];
+	description: string;
 }
 
 export const Highcharts = forwardRef<HighchartsReactRefObject, HighchartsProps>(
-	({ yAxisTitle, series }, ref) => {
+	({ yAxisTitle, series, description }, ref) => {
 		const options: HC.Options = {
 			chart: {
 				backgroundColor: CHART_SURFACE_COLOR,
 				zooming: { type: "x" },
 				style: { fontFamily: "inherit" },
+				animation: !("Cypress" in window),
 			},
 			title: { text: undefined },
+			accessibility: {
+				enabled: true,
+				description,
+			},
 			colors: SERIES_COLORS,
 			xAxis: {
 				type: "datetime",

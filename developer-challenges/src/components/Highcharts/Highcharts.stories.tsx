@@ -31,6 +31,7 @@ type Story = StoryObj<typeof meta>;
 export const LineChart: Story = {
 	args: {
 		yAxisTitle: "Métrica (teste)",
+		description: "Gráfico de linha mostrando a métrica de teste ao longo do tempo.",
 		series: [
 			{ name: "Data 1", data: mockSeries(60, 6, 3, 1) },
 			{ name: "Data 2", data: mockSeries(60, 8, 3, 2) },

@@ -25,7 +25,13 @@ function AccelerationChartComponent({ readings }: AccelerationChartProps) {
 			};
 		});
 
-	return <Highcharts yAxisTitle="Aceleração RMS (g)" series={series} />;
+	return (
+		<Highcharts
+			yAxisTitle="Aceleração RMS (g)"
+			series={series}
+			description="Gráfico de linha mostrando a aceleração RMS ao longo do tempo, em g, para os eixos axial, horizontal e radial."
+		/>
+	);
 }
 
 export const AccelerationChart = memo(AccelerationChartComponent);

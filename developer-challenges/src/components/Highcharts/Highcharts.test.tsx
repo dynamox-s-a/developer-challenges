@@ -7,6 +7,7 @@ describe("Highcharts", () => {
 		const { container } = render(
 			<Highcharts
 				yAxisTitle="Aceleração RMS (g)"
+				description="Gráfico de teste"
 				series={[{ name: "Axial", data: [[0, 1], [1, 2]] }]}
 			/>,
 		);
@@ -17,6 +18,7 @@ describe("Highcharts", () => {
 		const { container } = render(
 			<Highcharts
 				yAxisTitle="Aceleração RMS (g)"
+				description="Gráfico de teste"
 				series={[
 					{ name: "Axial", data: [[0, 1]] },
 					{ name: "Radial", data: [[0, 2]] },

@@ -25,7 +25,13 @@ function VelocityChartComponent({ readings }: VelocityChartProps) {
 			};
 		});
 
-	return <Highcharts yAxisTitle="Velocidade RMS (mm/s)" series={series} />;
+	return (
+		<Highcharts
+			yAxisTitle="Velocidade RMS (mm/s)"
+			series={series}
+			description="Gráfico de linha mostrando a velocidade RMS ao longo do tempo, em milímetros por segundo, para os eixos axial, horizontal e radial."
+		/>
+	);
 }
 
 export const VelocityChart = memo(VelocityChartComponent);
