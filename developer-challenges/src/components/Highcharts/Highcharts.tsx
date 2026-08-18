@@ -78,6 +78,7 @@ export const Highcharts = forwardRef<HighchartsReactRefObject, HighchartsProps>(
 			tooltip: {
 				shared: true,
 				xDateFormat: "%d/%m/%Y %H:%M",
+				valueDecimals: 4,
 			},
 			series: series.map((s) => ({
 				type: "line",
