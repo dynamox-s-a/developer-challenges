@@ -22,6 +22,16 @@ Como o objetivo desse projeto é mostrar alguns conhecimentos de otimização de
 `npm run test:watch` Vitest em modo watch. |
 `npm run storybook` Sobe o Storybook em `http://localhost:6006`, catálogo dos componentes isolados. |
 `npm run build-storybook` Build estático do Storybook. |
+`npm run cypress:open` Abre o Cypress no modo interativo (precisa do `npm run dev:all` rodando à parte). |
+`npm run e2e` Sobe front-end + mock da API (`dev:all`), espera ficar no ar e roda os testes do Cypress em modo headless (`cypress run`), derrubando tudo no final. |
+
+## Testes E2E (Cypress)
+
+Cobrem a rota `/data`: header da máquina + os 3 gráficos renderizando, hover num gráfico mostrando tooltip com dado, e uma rota desconhecida caindo na página 404. Ficam em `cypress/e2e/`.
+
+```bash
+npm run e2e
+```
 
 ## Variáveis de ambiente
 
