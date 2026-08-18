@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import Alert from "@mui/material/Alert";
 import CircularProgress from "@mui/material/CircularProgress";
 import Divider from "@mui/material/Divider";
@@ -58,23 +58,32 @@ export function DataPage() {
 				square
 				sx={{ py: 2, borderBottom: "1px solid", borderColor: "grey.300" }}
 			>
-				<Typography text="Análise de Dados" fontSize={20} fontWeight={500} ml={3} mr={3} />
+				<Typography
+					text="Análise de Dados"
+					fontSize={20}
+					fontWeight={500}
+					ml={3}
+					mr={3}
+				/>
 			</Paper>
 
 			<Flex direction="column" gap={3} ml={3} mr={3} mb={3}>
 				{machine && (
-					<Paper variant="outlined" sx={{ p: 2, borderRadius: 2 }}>
+					<Paper variant="outlined" sx={{ px: 10, py: 2, borderRadius: 2 }}>
 						<Flex justify="space-between" align="center" gap={2}>
-							{MACHINE_INFO_FIELDS.map((field) => (
-								<Flex key={field.key} align="center" gap={1}>
-									<Icon
-										icon={field.icon}
-										text={field.label}
-										color="action"
-										size="small"
-									/>
-									<Typography text={machine[field.key]} fontSize={14} />
-								</Flex>
+							{MACHINE_INFO_FIELDS.map((field, index) => (
+								<Fragment key={field.key}>
+									{index > 0 && <Divider orientation="vertical" flexItem />}
+									<Flex align="center" gap={1}>
+										<Icon
+											icon={field.icon}
+											text={field.label}
+											color="action"
+											size="small"
+										/>
+										<Typography text={machine[field.key]} fontSize={14} />
+									</Flex>
+								</Fragment>
 							))}
 						</Flex>
 					</Paper>
