@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Highcharts, type HighchartsSeries } from "../../../../components/Highcharts/Highcharts";
 import type { RawSeries } from "../../../../features/machineData/types";
 
@@ -11,7 +12,7 @@ export interface VelocityChartProps {
 	readings: RawSeries[];
 }
 
-export function VelocityChart({ readings }: VelocityChartProps) {
+function VelocityChartComponent({ readings }: VelocityChartProps) {
 	const series: HighchartsSeries[] = readings
 		.filter((reading) => reading.name.startsWith("velocityRms/"))
 		.map((reading) => {
@@ -26,5 +27,7 @@ export function VelocityChart({ readings }: VelocityChartProps) {
 
 	return <Highcharts yAxisTitle="Velocidade RMS (mm/s)" series={series} />;
 }
+
+export const VelocityChart = memo(VelocityChartComponent);
 
 export default VelocityChart;

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Highcharts, type HighchartsSeries } from "../../../../components/Highcharts/Highcharts";
 import type { RawSeries } from "../../../../features/machineData/types";
 
@@ -5,7 +6,7 @@ export interface TemperatureChartProps {
 	readings: RawSeries[];
 }
 
-export function TemperatureChart({ readings }: TemperatureChartProps) {
+function TemperatureChartComponent({ readings }: TemperatureChartProps) {
 	const temperature = readings.find((reading) => reading.name === "temperature");
 
 	const series: HighchartsSeries[] = temperature
@@ -21,5 +22,7 @@ export function TemperatureChart({ readings }: TemperatureChartProps) {
 
 	return <Highcharts yAxisTitle="Temperatura (°C)" series={series} />;
 }
+
+export const TemperatureChart = memo(TemperatureChartComponent);
 
 export default TemperatureChart;

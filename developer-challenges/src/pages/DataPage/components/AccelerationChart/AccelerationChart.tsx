@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Highcharts, type HighchartsSeries } from "../../../../components/Highcharts/Highcharts";
 import type { RawSeries } from "../../../../features/machineData/types";
 
@@ -11,7 +12,7 @@ export interface AccelerationChartProps {
 	readings: RawSeries[];
 }
 
-export function AccelerationChart({ readings }: AccelerationChartProps) {
+function AccelerationChartComponent({ readings }: AccelerationChartProps) {
 	const series: HighchartsSeries[] = readings
 		.filter((reading) => reading.name.startsWith("accelerationRms/"))
 		.map((reading) => {
@@ -26,5 +27,7 @@ export function AccelerationChart({ readings }: AccelerationChartProps) {
 
 	return <Highcharts yAxisTitle="Aceleração RMS (g)" series={series} />;
 }
+
+export const AccelerationChart = memo(AccelerationChartComponent);
 
 export default AccelerationChart;

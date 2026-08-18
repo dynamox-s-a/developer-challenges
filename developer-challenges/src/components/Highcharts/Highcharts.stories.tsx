@@ -28,7 +28,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Acceleration: Story = {
+export const LineChart: Story = {
 	args: {
 		yAxisTitle: "Métrica (teste)",
 		series: [
