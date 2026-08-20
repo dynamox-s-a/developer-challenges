@@ -1,55 +1,64 @@
-# Dynamox Developer Challenges
+# Testes de Qualidade – Análise de Dados
 
-## About Dynamox
+Projeto desenvolvido como parte de um desafio técnico de QA, com foco na validação funcional da aplicação de análise de dados.
 
-[Dynamox](https://dynamox.net/) is a high-tech firm specializing in vibration analysis and industrial asset condition monitoring. Our expert team develops comprehensive hardware and software solutions, encompassing firmware, mobile applications (Android and iOS), and full-stack cloud native applications. 
+## Objetivo
 
-With our proficiency in signal processing for vibration and acoustics, we deliver advanced and precise monitoring systems. We are committed to optimizing operational efficiency and facilitating proactive maintenance through our innovative technology and integrated solutions.
+Validar os principais comportamentos da tela de Análise de Dados, considerando carregamento da aplicação, consumo das APIs, apresentação das informações e componentes gráficos.
 
-## Positions
+## Tecnologias utilizadas
 
-We are looking for developers who are passionate about learning, growing, and contributing to our team. You will play a key role in our development efforts, working on a variety of projects and collaborating with different teams to build and improve our solutions.
+- Cypress 15.21.0
+- JavaScript
+- Node.js
+- Git / GitHub
 
-We value flexibility and collaboration, hence we provide opportunities for you to lend your skills to other teams when required. Join us on this exciting journey as we revolutionize our digital platforms. Currently we are particularly interested in individuals who can identify with one of the following role descriptions:
+## Cenários automatizados
 
-### Junior Software Developer
+Foram implementados 6 cenários de teste:
 
-With limited experience, assists in coding, testing, and stabilizing systems under supervision. Communicates with immediate team members and solves straightforward problems with guidance. Should display a willingness to learn and grow professionally. This is an individual contributor role.
+1. **Carregar a tela de análise de dados**
+   - Valida a presença do título principal da funcionalidade.
 
-### Mid-level Software Developer
+2. **Carregar os dados através das APIs**
+   - Intercepta as requisições para `data.json` e `metadata.json`.
+   - Valida o retorno HTTP `200`.
 
-With a certain level of proven experience, contributes to software development, solves moderate problems, and starts handling ambiguous situations with minimal guidance. Communicates with the broader team and engages in code reviews and documentation. This role also includes supporting junior engineers and commitment to continuous learning. This is an individual contributor role.
+3. **Exibir os três gráficos de séries temporais**
+   - Valida a apresentação dos gráficos:
+     - Aceleração RMS
+     - Temperatura
+     - Velocidade RMS
 
-### Senior-level Software Developer
+4. **Exibir as informações da máquina no cabeçalho**
+   - Valida informações relevantes apresentadas na tela:
+     - Máquina 1023
+     - Ponto 20192
+     - 16g
 
-With vast experience, enhances software development, leading complex system development and ambiguous situation handling. Tackles intricate problems and mentors junior and mid-level engineers. Champions coding standards, project strategy, and technology adoption. Communicates across teams, influencing technical and non-technical stakeholders. This individual contributor role blends technical expertise with leadership, focusing on innovation, mentorship, and strategic contributions to the development process.
+5. **Carregar os dados novamente ao acessar a página**
+   - Executa um novo carregamento da página.
+   - Valida novamente as requisições das APIs e seus respectivos status HTTP.
 
-## Challenges Full-Stack
+6. **Identificar os elementos do gráfico para interação**
+   - Valida a existência dos elementos estruturais utilizados pelos gráficos Highcharts.
+   - Permite identificar componentes que podem ser utilizados em futuras interações automatizadas.
 
-- [ ] [01 - Dynamox Full-Stack Node.js React Developer Challenge](./full-stack-challenge.md)
-- [ ] [02 - Dynamox Full-Stack C# React Developer Challenge](./full-stack-csharp-react-challenge.md) 
-  
-## Challenges Front-End
+## Estratégia de testes
 
-- [ ] [01 - Dynamox Front-end React Developer Challenge Marketing Teams](./front-end-challenge-v1.md)
-- [ ] [02 - Dynamox Front-end React Developer Challenge Product Teams](./front-end-challenge-v2.md)
+A automação foi estruturada utilizando diferentes níveis de validação:
 
-## Challenges DevOps
+- **Interface:** validação dos elementos visíveis para o usuário.
+- **Integração:** monitoramento das requisições realizadas pela aplicação.
+- **API:** validação dos códigos de resposta HTTP.
+- **Componentes gráficos:** identificação da estrutura renderizada pelo Highcharts.
+- **Recarregamento:** validação do comportamento da aplicação após novo acesso.
 
-- [ ] [01 - Dynamox DevOps Developer Challenge Foundation Teams](./dev-sec-fin-ops-challenge-v1/README.md)
+Para as requisições de dados foi utilizado `cy.intercept()`, permitindo observar as chamadas realizadas pela aplicação sem substituir o comportamento real da API.
 
-## Challenges Mobile
+## Execução dos testes
 
-- [ ] [01 - Dynamox Kotlin Multiplatform Developer Challenge](./kotlin-multiplatform-challenge.md)
-- [ ] [02 - Dynamox Android Developer Challenge](./android-challenge.md)
-- [ ] [03 - Dynamox iOS Developer Challenge](./ios-challenge.md)
+### Instalação das dependências
 
-## Challenge Back-End
-- [ ] [01 - Dynamox Back-End Time Series ](./back-end-challenge-v1.md)
-
-## Challenge QA
-- [ ] [01- Dynamox QA Challenge](./qa-challenge.md)
-
-</br>
-
-**Good luck! We look forward to reviewing your submission.** 🚀
+```bash
+npm install
