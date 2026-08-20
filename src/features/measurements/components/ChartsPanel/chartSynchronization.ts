@@ -92,6 +92,14 @@ export function bindChartSynchronization<T>(
 export function createHighchartsSyncAdapter(
 	chart: Highcharts.Chart,
 ): SynchronizableChart<Highcharts.Point> {
+	let activeTooltipPoints: Highcharts.Point[] = [];
+
+	const resetTooltipPointStates = () => {
+		for (const point of activeTooltipPoints) point.setState();
+		for (const series of chart.series) series.setState('');
+		activeTooltipPoints = [];
+	};
+
 	return {
 		drawCrosshair: (event, point) => {
 			const axis = chart.xAxis[0];
@@ -111,10 +119,13 @@ export function createHighchartsSyncAdapter(
 			chart.xAxis[0]?.hideCrosshair();
 		},
 		hideTooltip: () => {
-			chart.tooltip.hide();
+			resetTooltipPointStates();
+			chart.tooltip.hide(0);
 		},
 		refreshTooltip: (points) => {
+			resetTooltipPointStates();
 			chart.tooltip.refresh(points);
+			activeTooltipPoints = [...points];
 		},
 	};
 }

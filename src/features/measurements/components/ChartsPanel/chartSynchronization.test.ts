@@ -1,5 +1,7 @@
+import type Highcharts from 'highcharts';
 import {
 	bindChartSynchronization,
+	createHighchartsSyncAdapter,
 	findClosestPoint,
 	hideChartIndicators,
 	synchronizeCharts,
@@ -87,6 +89,31 @@ describe('chartSynchronization', () => {
 		expect(first.hideCrosshair).toHaveBeenCalledOnce();
 		expect(second.hideTooltip).toHaveBeenCalledOnce();
 		expect(second.hideCrosshair).toHaveBeenCalledOnce();
+	});
+
+	it('resets previously active Highcharts points before refreshing and hiding the tooltip', () => {
+		const firstPoint = { setState: vi.fn() } as unknown as Highcharts.Point;
+		const secondPoint = { setState: vi.fn() } as unknown as Highcharts.Point;
+		const series = { setState: vi.fn() };
+		const tooltip = { hide: vi.fn(), refresh: vi.fn() };
+		const chart = {
+			series: [series],
+			tooltip,
+		} as unknown as Highcharts.Chart;
+		const adapter = createHighchartsSyncAdapter(chart);
+
+		adapter.refreshTooltip([firstPoint]);
+		adapter.refreshTooltip([secondPoint]);
+
+		expect(firstPoint.setState).toHaveBeenCalledWith();
+		expect(tooltip.refresh).toHaveBeenNthCalledWith(1, [firstPoint]);
+		expect(tooltip.refresh).toHaveBeenNthCalledWith(2, [secondPoint]);
+
+		adapter.hideTooltip();
+
+		expect(secondPoint.setState).toHaveBeenCalledWith();
+		expect(series.setState).toHaveBeenCalledWith('');
+		expect(tooltip.hide).toHaveBeenCalledWith(0);
 	});
 
 	it('registers mouse listeners and removes them during cleanup', () => {

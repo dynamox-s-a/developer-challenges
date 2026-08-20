@@ -32,7 +32,33 @@ describe('Synchronized chart indicators', { retries: { openMode: 0, runMode: 2 }
 		cy.get('#temperature-chart .highcharts-tooltip').should('contain.text', '°C');
 		cy.get('#velocity-chart .highcharts-tooltip').should('contain.text', 'mm/s');
 
+		cy.get('#acceleration-chart .highcharts-container').then(($container) => {
+			const containerBounds = $container[0]?.getBoundingClientRect();
+			const plotBounds = $container.find('.highcharts-plot-background')[0]?.getBoundingClientRect();
+
+			expect(containerBounds).not.to.be.undefined;
+			expect(plotBounds).not.to.be.undefined;
+			if (!containerBounds || !plotBounds) return;
+
+			for (const position of [0.2, 0.4, 0.6, 0.8]) {
+				const x = plotBounds.left - containerBounds.left + plotBounds.width * position;
+				const y = plotBounds.top - containerBounds.top + plotBounds.height / 2;
+				cy.wrap($container).trigger('mousemove', x, y, { force: true });
+			}
+		});
+
+		cy.get('#acceleration-chart .highcharts-point-hover').should(($points) => {
+			expect($points.length).to.be.at.most(3);
+		});
+		cy.get('#temperature-chart .highcharts-point-hover').should(($points) => {
+			expect($points.length).to.be.at.most(1);
+		});
+		cy.get('#velocity-chart .highcharts-point-hover').should(($points) => {
+			expect($points.length).to.be.at.most(3);
+		});
+
 		cy.get('#acceleration-chart .highcharts-container').trigger('mouseleave', { force: true });
+		cy.get('.highcharts-point-hover').should('not.exist');
 
 		for (const chartId of chartIds) {
 			cy.get(`#${chartId} .highcharts-tooltip`).should('not.be.visible');
