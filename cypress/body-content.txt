@@ -1,0 +1,56 @@
+Análise de dados
+Máquina 1023
+Ponto 20192
+200
+16g
+null min
+Aceleração RMS
+Aceleração RMS (g)
+Axial
+Horizontal
+Radial
+Nov 13
+Nov 20
+Nov 27
+Dec 4
+Dec 11
+0
+0.025
+0.05
+0.075
+0.1
+0.125
+0.15
+Highcharts.com
+Temperatura
+Temperatura (°C)
+Temperatura
+Nov 13
+Nov 20
+Nov 27
+Dec 4
+Dec 11
+15
+20
+25
+30
+35
+40
+Highcharts.com
+Velocidade RMS
+Velocidade RMS (mm/s)
+Axial
+Horizontal
+Radial
+Nov 13
+Nov 20
+Nov 27
+Dec 4
+Dec 11
+0
+5
+10
+15
+20
+25
+Highcharts.com
