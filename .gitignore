@@ -40,3 +40,6 @@ storybook-static
 cypress/downloads
 cypress/screenshots
 cypress/videos
+
+# Docs
+docs/interview
