@@ -1,0 +1,17 @@
+---
+description: Defines React and TypeScript standards for the application code
+globs: "src/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# React and TypeScript
+
+- Follow the boundaries in `docs/architecture.md` and the conventions in `CONTRIBUTING.md`.
+- Preserve `strict`, explicit types at boundaries, and safe inference internally.
+- Do not use `any`, `@ts-ignore`, non-null assertions, or casts to hide errors.
+- Use function components and composition instead of inheritance.
+- Separate presentation, pure transformation, HTTP access, and asynchronous effects.
+- Move reusable behavior into hooks only when there is genuine complexity.
+- Prefer `@/` aliases for imports between modules under `src`.
+- Make impossible states unrepresentable when doing so simplifies the code.
+- Introduce abstractions only for reuse, library isolation, or a clear readability benefit.

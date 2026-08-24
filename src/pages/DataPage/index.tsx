@@ -1,0 +1,77 @@
+import { useEffect } from 'react';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import { EmptyState } from '@/components/EmptyState';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { ErrorState } from '@/components/ErrorState';
+import { LoadingState } from '@/components/LoadingState';
+import { ChartsPanel } from '@/features/measurements/components/ChartsPanel';
+import { MachineSummary } from '@/features/measurements/components/MachineSummary';
+import { MACHINE_INFO } from '@/features/measurements/constants';
+import {
+	selectAllSeries,
+	selectMeasurementsError,
+	selectMeasurementsStatus,
+} from '@/features/measurements/store/selectors';
+import { measurementsRequested } from '@/features/measurements/store/slice';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+
+export default function DataPage() {
+	const dispatch = useAppDispatch();
+	const status = useAppSelector(selectMeasurementsStatus);
+	const error = useAppSelector(selectMeasurementsError);
+	const data = useAppSelector(selectAllSeries);
+
+	useEffect(() => {
+		dispatch(measurementsRequested());
+	}, [dispatch]);
+
+	const handleRetry = () => dispatch(measurementsRequested());
+
+	function renderContent() {
+		switch (status) {
+			case 'idle':
+			case 'loading':
+				return <LoadingState />;
+			case 'error':
+				return <ErrorState message={error ?? undefined} onRetry={handleRetry} />;
+			case 'success':
+				if (data.length === 0) return <EmptyState />;
+				return (
+					<Box sx={{ display: 'grid', gap: 3 }}>
+						<MachineSummary data={MACHINE_INFO} />
+						<ChartsPanel />
+					</Box>
+				);
+		}
+	}
+
+	return (
+		<Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
+			<Box
+				component="header"
+				sx={{
+					alignItems: 'center',
+					backgroundColor: 'background.paper',
+					borderBottom: 1,
+					borderColor: 'divider',
+					display: 'flex',
+					height: 64,
+					px: { xs: 2, sm: 3 },
+				}}
+			>
+				<Typography variant="h4" component="h1">
+					Análise de Dados
+				</Typography>
+			</Box>
+			<Box
+				component="main"
+				id="main-content"
+				aria-busy={status === 'idle' || status === 'loading'}
+				sx={{ minWidth: 0, p: { xs: 2, sm: 3 } }}
+			>
+				<ErrorBoundary>{renderContent()}</ErrorBoundary>
+			</Box>
+		</Box>
+	);
+}

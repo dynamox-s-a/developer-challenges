@@ -1,0 +1,17 @@
+---
+description: Guides global state, sagas, the API, and measurement transformation
+globs: "src/store/**/*.{ts,tsx},src/features/measurements/{api,model,store}/**/*.{ts,tsx},api/**/*.ts"
+alwaysApply: false
+---
+
+# State and effects
+
+- Preserve the flow and boundaries described in `docs/architecture.md`.
+- Use Redux only for shared, serializable global state.
+- Keep transient visual interaction and external instances in the responsible component or hook.
+- Use Saga for asynchronous loading and represent success, failure, and stale effects.
+- Derive data with memoized selectors only when stable references or computational cost justify it.
+- Keep mappers between the API contract and the internal model pure.
+- Do not duplicate derivable data in the store.
+- Preserve errors that are useful to the interface without exposing internal details.
+- Cover reducers, selectors, the mapper, and saga flows with behavioral tests.

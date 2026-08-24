@@ -1,0 +1,63 @@
+import { expectSaga, testSaga } from 'redux-saga-test-plan';
+import * as matchers from 'redux-saga-test-plan/matchers';
+import { throwError } from 'redux-saga-test-plan/providers';
+import * as measurementsService from '@/features/measurements/api/measurementsService';
+import type { MeasurementsApiResponse } from '@/features/measurements/api/types';
+import { mapMeasurements } from '@/features/measurements/model/mapper';
+import { measurementsFailed, measurementsRequested, measurementsSucceeded } from './slice';
+import { fetchMeasurementsSaga, measurementsSaga } from './saga';
+
+const loadErrorMessage = 'Não foi possível carregar as medições. Tente novamente.';
+
+const mockRaw: MeasurementsApiResponse = [
+	{
+		id: 'accelerationRms-x',
+		name: 'accelerationRms/x',
+		data: [{ datetime: '2023-11-07T11:53:38.187Z', max: 1.5 }],
+	},
+	{
+		id: 'temperature',
+		name: 'temperature',
+		data: [{ datetime: '2023-11-07T12:00:00.000Z', max: 25.0 }],
+	},
+];
+
+describe('measurementsSaga', () => {
+	it('fetches measurements and dispatches success on happy path', () => {
+		const mapped = mapMeasurements(mockRaw);
+
+		return expectSaga(fetchMeasurementsSaga)
+			.provide([[matchers.call.fn(measurementsService.getAll), mockRaw]])
+			.put(measurementsSucceeded(mapped))
+			.run();
+	});
+
+	it('dispatches failure when service throws', () => {
+		const error = new Error('Network error');
+
+		return expectSaga(fetchMeasurementsSaga)
+			.provide([[matchers.call.fn(measurementsService.getAll), throwError(error)]])
+			.put(measurementsFailed(loadErrorMessage))
+			.run();
+	});
+
+	it('dispatches failure with generic message for non-Error throws', () => {
+		return expectSaga(fetchMeasurementsSaga)
+			.provide([
+				[
+					matchers.call.fn(measurementsService.getAll),
+					throwError('string error' as unknown as Error),
+				],
+			])
+			.put(measurementsFailed(loadErrorMessage))
+			.run();
+	});
+
+	it('takes only the latest measurements request', () => {
+		testSaga(measurementsSaga)
+			.next()
+			.takeLatest(measurementsRequested.type, fetchMeasurementsSaga)
+			.next()
+			.isDone();
+	});
+});

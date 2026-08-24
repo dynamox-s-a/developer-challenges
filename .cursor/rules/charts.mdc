@@ -1,0 +1,18 @@
+---
+description: Preserves the contract, performance, and synchronization of Highcharts charts
+globs: "src/features/measurements/components/ChartsPanel/**,src/features/measurements/components/TimeSeriesChart/**,src/features/measurements/components/MetricChartCard/**"
+alwaysApply: false
+---
+
+# Charts
+
+- Consult `docs/architecture.md` and `docs/testing-strategy.md` for boundaries and validation.
+- Keep UTC timestamps in the model and format dates only in the presentation layer.
+- Preserve the units, precision, colors, and series order for each metric.
+- Do not couple chart components to the raw API payload.
+- Synchronize tooltip and crosshair by the nearest timestamp.
+- Use the imperative Highcharts API without triggering React renders on `mousemove`.
+- Remove listeners and references during cleanup; prevent duplicate handlers in StrictMode.
+- Do not recreate instances or options without a demonstrated need.
+- Validate resize behavior, overflow, missing data, and mouse interaction across all three charts.
+- Test our data preparation and synchronization; do not test Highcharts internals in JSDOM.

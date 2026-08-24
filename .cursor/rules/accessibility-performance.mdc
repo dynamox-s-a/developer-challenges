@@ -1,0 +1,18 @@
+---
+description: Ensures evidence-based accessibility, responsiveness, and performance
+globs: "src/**/*.tsx,.storybook/**/*.tsx"
+alwaysApply: false
+---
+
+# Accessibility and performance
+
+- Follow the criteria in `docs/testing-strategy.md` and `CONTRIBUTING.md`.
+- Use semantic HTML, accessible names, and a correct heading hierarchy.
+- Preserve visible focus and complete keyboard navigation.
+- Expose loading, error, and relevant changes with appropriate semantics.
+- Do not make color, icons, or tooltips the sole source of information.
+- Meet contrast and interaction-target requirements at supported breakpoints.
+- Validate overflow, chart resizing, and readability on mobile, tablet, and desktop.
+- Avoid memoization, virtualization, or throttling without measurements or a reproducible problem.
+- Do not introduce renders for pointer events when the library can update imperatively.
+- Run axe, inspect the console and network activity, and record visual evidence for interface changes.

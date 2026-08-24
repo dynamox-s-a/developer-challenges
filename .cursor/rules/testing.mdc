@@ -1,0 +1,18 @@
+---
+description: Defines the testing strategy for unit tests, components, Storybook, and Cypress
+globs: "**/*.{test,spec,stories}.{ts,tsx},cypress/**/*.ts,cypress.config.ts"
+alwaysApply: false
+---
+
+# Testing
+
+- Choose the appropriate layer according to `docs/testing-strategy.md`.
+- Test observable behavior, business rules, and boundary contracts.
+- Use accessible queries and interactions that closely match real user actions.
+- Cover success, loading, error, retry, empty, and relevant edge cases.
+- Avoid large snapshots and assertions about library internals.
+- Mock Highcharts only at the component boundary; test options and synchronization separately.
+- Use the real `json-server` in successful e2e scenarios and `cy.intercept` for controlled failures.
+- Do not depend on exact request counts when React StrictMode may duplicate effects in development.
+- Keep test data deterministic without unnecessarily duplicating the official dataset.
+- Every fixed bug MUST receive a regression test when it can be reproduced reliably.
