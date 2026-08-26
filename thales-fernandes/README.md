@@ -93,6 +93,7 @@ tests/
 docs/
   defects.md               # defects found, with evidence and severity
   questions-to-designer.md # requirements not specified in Figma/challenge
+  out-of-scope.md          # coverage and manual checks left out on purpose
 ```
 
 ## Test strategy
@@ -237,6 +238,7 @@ tests/
 docs/
   defects.md               # defeitos encontrados, com evidência e severidade
   questions-to-designer.md # requisitos não especificados no Figma/desafio
+  out-of-scope.md          # cobertura e checagens manuais deixadas de fora de propósito
 ```
 
 ## Estratégia de teste

@@ -1,3 +1,47 @@
+# Points to align with Product/Design
+
+Requirements observed in the implementation that are not specified in the
+Figma prototype nor in the challenge statement:
+
+1. **API error behavior**: what should the UI show if `/data.json` or
+   `/metadata.json` fails (timeout, 500, malformed JSON)? Today there is
+   no visible error state specified in either document.
+2. **Empty state**: if a series comes back with no points, should the
+   chart disappear, show "no data", or render empty?
+3. **Legend series toggle**: Highcharts lets you click the legend to
+   hide/show a series (default library behavior). Is this intentional as
+   part of the product, or is it just a side effect of the library that
+   design never thought about? If it's intentional, it should be
+   documented in Figma.
+4. **Field `interval: null`**: is it expected that the API sends `null`
+   in some real scenario (e.g. a newly registered machine, no readings
+   yet)? If so, Figma should have that state specified, today it only
+   shows the happy path ("30 min").
+5. **Tooltip weekday language**: there is no explicit rule anywhere
+   (Figma or the challenge) about the tooltip's weekday specifically.
+   Unlike the month (which Figma defines as PT-BR on the X axis: "31.
+   Mai", "1. Jun"), the tooltip itself has no hover state designed in the
+   prototype. The expectation that the weekday should also be PT-BR comes
+   only from consistency with the rest of the UI, it is not a confirmed
+   requirement. Worth confirming with the team whether this is expected.
+6. **Decimal places in the tooltip**: today the tooltip shows the raw
+   value with no rounding at all, and this varies a lot depending on the
+   metric:
+   - Aceleração RMS: `"Radial: 0.03125 g"` (5 decimal places, the raw
+     `data.json` value is a "clean" fraction, a power of 2).
+   - Velocidade RMS: `"Radial: 4.810673076923077 mm/s"` (**15 decimal
+     places**), because the raw `data.json` value already comes like that
+     (`0.2829807692307692` at another point in the same series, for
+     example).
+   This is clearly unintentional, no design would define 15 decimal
+   places on purpose. There is no fixed pattern today. What is the
+   expected number of decimal places for each metric (acceleration,
+   velocity, temperature)? Suggestion: normalize it on the client before
+   passing it to Highcharts (e.g. `Number(value.toFixed(2))`), since the
+   data source (mock/API) doesn't seem to control this.
+
+---
+
 # Pontos para alinhar com Produto/Design
 
 Requisitos observados na implementação que não estão especificados no

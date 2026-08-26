@@ -1,3 +1,118 @@
+# Defects found
+
+Each item below has a corresponding automated test that asserts the
+CORRECT expected behavior, and therefore shows up as **FAIL** in the
+Playwright report while the bug exists (screenshot/video/trace attached
+to the error). We deliberately do not use `test.fail(...)`: that helper
+inverts the result and shows "passed" when the failure is the expected
+one, which would hide the defect behind a misleading green. #3 is also
+sensitive to browser locale, so it is documented here as the main
+evidence, in addition to the test.
+
+## #1: Collection interval shown as "null min"
+
+- **Where**: header, last field (clock icon).
+- **Expected (Figma)**: a numeric value, e.g. "30 min".
+- **Actual**: `metadata.json` returns `"interval": null`, and the UI does
+  not handle that case, it concatenates the raw value with "min",
+  resulting in `"null min"`.
+- **Evidence**: `tests/header.spec.ts` and `tests/api.spec.ts`.
+- **Suggested fix**: when `interval` is `null`/missing, hide the field or
+  show a placeholder ("-"), never render the raw value.
+- **Suggested severity**: low/medium (does not block usage, but is
+  visible and gives the end user the impression of a bug).
+
+## #2: Data points with `"max": "null"` (string) instead of number/null
+
+- **Where**: `data.json`, series `accelerationRms/x`, 4 out of 181 points.
+- **Expected**: `max` should always be `number`, or real `null` (not the
+  string `"null"`), for the client to handle it consistently.
+- **Actual**: a mix of `number` and the literal string `"null"` in the
+  same series; the other 6 series don't have this problem.
+- **Observed impact on the chart**: could not reproduce it visually with
+  certainty (Highcharts appears to coerce it to 0 at that point), but it
+  is not a guaranteed behavior, it can vary by engine/library version.
+- **Evidence**: `tests/api.spec.ts`.
+- **Suggested fix**: fix it at the data source (API/mock); on the client
+  side, validate/normalize `max` before passing it to Highcharts.
+
+## Context shared by #3 and #4: the API sends no language information at all
+
+We checked `data.json` directly: each point only carries a raw ISO 8601
+date, e.g. `"2023-11-07T11:53:38.187Z"`. There is no language field,
+spelled-out month, or weekday coming from the API. All formatting
+(weekday, month, AM/PM) is done 100% on the client, by Highcharts'
+default locale (English), which was not configured for PT-BR. In other
+words, this is not a data problem, it is purely a front-end configuration
+issue.
+
+## #3: Tooltip weekday shows up in English
+
+- **Where**: tooltip on hover, in any of the 3 charts.
+- **Expected**: there is no explicit rule in the Figma prototype or the
+  challenge doc about the tooltip's weekday language specifically (the
+  prototype has no hover state designed). The expectation here comes only
+  from consistency with the rest of the UI, which is 100% PT-BR. See the
+  open question in `docs/questions-to-designer.md`.
+- **Actual**: the weekday shows up in English, e.g. `"Tuesday, Nov 7,
+  11:59:08 PM"`.
+- **Evidence**: `tests/tooltip.spec.ts`, test 26.
+- **Suggested fix**: configure `Highcharts.setOptions({ lang: { ... } })`
+  with a PT-BR locale, or format the date manually in
+  `tooltip.formatter`.
+- **Suggested severity**: low (cosmetic, and the rule itself is not
+  confirmed with the design team).
+
+## #4: Tooltip month shows up in English, contradicting the Figma prototype itself
+
+- **Where**: tooltip on hover, in any of the 3 charts.
+- **Expected**: unlike #3, here there is concrete evidence in Figma. The
+  X axis of the 3 charts in the prototype shows months abbreviated in
+  Portuguese: `"31. Mai"`, `"1. Jun"`, `"2. Jun"`... This confirms the
+  intended month format for the application is PT-BR, it is not a UX
+  assumption.
+- **Actual**: the tooltip shows the month in English. Point used to
+  confirm it (a December point, where the abbreviation genuinely differs
+  between the two languages): `"Friday, Dec 1, 05:02:42 AM"`. It should
+  be `"Dez"`, not `"Dec"`. ("Nov" alone proves nothing, the abbreviation
+  is the same in both languages.)
+- **Evidence**: `tests/tooltip.spec.ts`, test 27.
+- **Suggested fix**: same as #3, configuring a PT-BR locale globally on
+  Highcharts fixes both at once.
+- **Suggested severity**: medium (unlike #3, this one contradicts an
+  explicit definition in the prototype, it's not just a perceived
+  inconsistency).
+
+## #5: Tooltip never appears on the Temperatura chart
+
+- **Where**: the "Temperatura" chart (2nd chart on the page).
+- **Expected (challenge RN4)**: "as a user, when hovering over the time
+  series, I want to see a tooltip displaying the data values."
+- **Actual**: the point is highlighted correctly (the marker lights up
+  exactly under the cursor, confirmed visually at multiple points in the
+  series, including well-defined peaks), but the tooltip box
+  (`.highcharts-tooltip`) never renders. The other 2 charts (Aceleração
+  RMS and Velocidade RMS) work normally.
+- **Evidence**: `tests/tooltip.spec.ts` (shows up as FAIL), also
+  reproduced manually via real mouse hover (not just via automation).
+- **Hypothesis**: the "Temperatura" series only has 1 data series
+  (unlike the others, which have 3: Axial, Horizontal, Radial). It could
+  be a `tooltip.shared`/`crosshair` configuration issue specific to that
+  chart, or the component rendering that chart uses a different prop by
+  mistake.
+- **Suggested severity**: medium/high, breaks an explicit product
+  requirement (RN4) for 1 of the 3 charts.
+
+## Spec divergence (not a bug, outdated doc)
+
+The challenge describes the endpoints as `GET /data` and `GET /metadata`.
+In the actual implementation, the app calls `GET /data.json` and
+`GET /metadata.json`. It does not affect functionality, but it is worth
+reporting to the team to keep the challenge doc aligned with the
+reference app.
+
+---
+
 # Defeitos encontrados
 
 Cada item abaixo tem um teste automatizado correspondente que afirma o
