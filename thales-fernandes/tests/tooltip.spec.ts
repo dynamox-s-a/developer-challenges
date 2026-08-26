@@ -33,19 +33,33 @@ test.describe('Tooltip on hover (challenge RN4)', () => {
     await expect(tooltip).toBeVisible();
   });
 
+  // Não há requisito documentado (Figma/desafio) sobre o idioma do dia da
+  // semana especificamente, mas toda a UI é PT-BR, então dia da semana em
+  // inglês é inconsistente. Ver docs/questions-to-designer.md (pergunta
+  // sobre regra explícita para isso).
   test('26. tooltip date follows the PT-BR language of the rest of the UI', async ({ page }) => {
     const chart = page.locator(HIGHCHARTS.container).first();
     await hoverChartPoint(chart);
 
     const tooltip = page.locator(HIGHCHARTS.tooltip);
-    // cobre dia da semana em inglês (ex.: "Friday") e mês em inglês que não
-    // coincide com a abreviação em português. Jan, Mar, Jun, Jul e Nov foram
-    // excluídos de propósito: a abreviação é idêntica nos dois idiomas
-    // (ex.: novembro -> "Nov" também em PT-BR), então não provam nada
-    // sozinhos. Só entram os meses que realmente diferem: Feb/Fev, Apr/Abr,
-    // May/Mai, Aug/Ago, Sep/Set, Oct/Out, Dec/Dez.
-    await expect(tooltip).not.toContainText(
-      /Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|\bFeb\b|\bApr\b|\bMay\b|\bAug\b|\bSep\b|\bOct\b|\bDec\b/
-    );
+    await expect(tooltip).not.toContainText(/Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday/);
+  });
+
+  // Diferente do teste 26, aqui temos evidência concreta do Figma: o eixo X
+  // dos 3 gráficos mostra os meses abreviados em português ("31. Mai",
+  // "1. Jun"...). Isso não é suposição de UX, é o que o protótipo define.
+  // Testamos com um ponto de dezembro porque "Dez" (PT-BR) e "Dec" (EN) são
+  // visivelmente diferentes, ao contrário de "Nov"/"Nov", que coincidem nos
+  // dois idiomas e não provariam nada.
+  test('27. tooltip month abbreviation matches the Portuguese format shown in the Figma prototype (Dez, not Dec)', async ({ page }) => {
+    const chart = page.locator(HIGHCHARTS.container).first();
+    // ~70% da largura do container cai em pontos de dezembro nesse dataset
+    // (dados vão de 7 nov a 12 dez); ver docs/defects.md #3 para o ponto
+    // exato usado para confirmar isso manualmente ("Friday, Dec 1, 05:02:42 AM").
+    await hoverChartPoint(chart, 0.7, 0.5);
+
+    const tooltip = page.locator(HIGHCHARTS.tooltip);
+    await expect(tooltip).toBeVisible();
+    await expect(tooltip).toContainText(/\bDez\b/);
   });
 });

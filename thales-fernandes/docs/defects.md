@@ -35,26 +35,51 @@ além do teste.
 - **Sugestão de correção**: corrigir na origem dos dados (API/mock); do lado
   do client, validar/normalizar `max` antes de repassar ao Highcharts.
 
-## #3: Data do tooltip em inglês, resto da UI em PT-BR
+## Contexto comum aos #3 e #4: a API não manda nenhuma informação de idioma
+
+Verificamos `data.json` diretamente: cada ponto traz só uma data ISO 8601
+crua, ex. `"2023-11-07T11:53:38.187Z"`. Não há campo de idioma, mês por
+extenso ou dia da semana vindo da API. Toda a formatação (dia da semana,
+mês, AM/PM) é feita 100% no client, pelo locale padrão do Highcharts
+(inglês), que não foi configurado para PT-BR. Ou seja, isso não é um
+problema de dado, é puramente configuração de front-end.
+
+## #3: Dia da semana do tooltip aparece em inglês
 
 - **Onde**: tooltip ao hover em qualquer um dos 3 gráficos.
-- **Esperado**: consistência de idioma. Toda a UI está em PT-BR
-  ("Análise de dados", "Aceleração RMS", "Máquina", "Ponto"...).
-- **Real**: a data formatada pelo Highcharts aparece em inglês, ex.
-  `"Tuesday, Nov 7, 11:59:08 PM"`. Vale notar que "Nov" sozinho não prova
-  nada (a abreviação é igual em PT-BR); a prova mais forte é em pontos de
-  dezembro, ex. `"Friday, Dec 1, 05:02:42 AM"`, onde "Dec" (em vez de
-  "Dez") confirma que é o mês em inglês, não só o dia da semana.
-- **Por que documentar em vez de confiar só no teste automatizado**: o
-  formato de data do Highcharts depende de config de locale que pode mudar
-  com a versão da lib ou do browser rodando o CI. O teste em
-  `tooltip.spec.ts` cobre o caso hoje, mas o time deve tratar isso como
-  achado principal, não só "teste passou/falhou".
+- **Esperado**: não há uma regra explícita no Figma ou no desafio sobre o
+  idioma do dia da semana no tooltip especificamente (o protótipo não tem
+  um estado de hover desenhado). A expectativa aqui vem só de consistência
+  com o resto da UI, que é 100% PT-BR. Ver pergunta aberta em
+  `docs/questions-to-designer.md`.
+- **Real**: o dia da semana aparece em inglês, ex. `"Tuesday, Nov 7,
+  11:59:08 PM"`.
+- **Evidência**: `tests/tooltip.spec.ts`, teste 26.
 - **Sugestão de correção**: configurar `Highcharts.setOptions({ lang: { ... } })`
   com locale PT-BR, ou formatar a data manualmente no `tooltip.formatter`.
-- **Severidade sugerida**: baixa (cosmético, mas fica muito visível).
+- **Severidade sugerida**: baixa (cosmético, e a regra em si não está
+  confirmada com o time de design).
 
-## #4: Tooltip não aparece no gráfico de Temperatura
+## #4: Mês do tooltip aparece em inglês, contrariando o próprio protótipo Figma
+
+- **Onde**: tooltip ao hover em qualquer um dos 3 gráficos.
+- **Esperado**: diferente do #3, aqui existe evidência concreta no Figma.
+  O eixo X dos 3 gráficos no protótipo mostra os meses abreviados em
+  português: `"31. Mai"`, `"1. Jun"`, `"2. Jun"`... Isso confirma que o
+  formato de mês pretendido para a aplicação é PT-BR, não é suposição de
+  UX.
+- **Real**: o tooltip mostra o mês em inglês. Ponto usado para confirmar
+  (mês de dezembro, onde a abreviação diverge de verdade entre os
+  idiomas): `"Friday, Dec 1, 05:02:42 AM"`. Deveria ser `"Dez"`, não
+  `"Dec"`. ("Nov" sozinho não prova nada, a abreviação é igual nos dois
+  idiomas.)
+- **Evidência**: `tests/tooltip.spec.ts`, teste 27.
+- **Sugestão de correção**: mesma do #3, configurar locale PT-BR no
+  Highcharts globalmente resolve os dois ao mesmo tempo.
+- **Severidade sugerida**: média (diferente do #3, este contraria uma
+  definição explícita do protótipo, não é só inconsistência percebida).
+
+## #5: Tooltip não aparece no gráfico de Temperatura
 
 - **Onde**: gráfico "Temperatura" (2º gráfico da página).
 - **Esperado (RN4 do desafio)**: "ao passar o mouse sobre a série temporal,
