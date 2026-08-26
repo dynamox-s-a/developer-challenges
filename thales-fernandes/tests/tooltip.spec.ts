@@ -38,6 +38,14 @@ test.describe('Tooltip on hover (challenge RN4)', () => {
     await hoverChartPoint(chart);
 
     const tooltip = page.locator(HIGHCHARTS.tooltip);
-    await expect(tooltip).not.toContainText(/Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday/);
+    // cobre dia da semana em inglês (ex.: "Friday") e mês em inglês que não
+    // coincide com a abreviação em português. Jan, Mar, Jun, Jul e Nov foram
+    // excluídos de propósito: a abreviação é idêntica nos dois idiomas
+    // (ex.: novembro -> "Nov" também em PT-BR), então não provam nada
+    // sozinhos. Só entram os meses que realmente diferem: Feb/Fev, Apr/Abr,
+    // May/Mai, Aug/Ago, Sep/Set, Oct/Out, Dec/Dez.
+    await expect(tooltip).not.toContainText(
+      /Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|\bFeb\b|\bApr\b|\bMay\b|\bAug\b|\bSep\b|\bOct\b|\bDec\b/
+    );
   });
 });

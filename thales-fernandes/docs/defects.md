@@ -41,7 +41,10 @@ além do teste.
 - **Esperado**: consistência de idioma. Toda a UI está em PT-BR
   ("Análise de dados", "Aceleração RMS", "Máquina", "Ponto"...).
 - **Real**: a data formatada pelo Highcharts aparece em inglês, ex.
-  `"Tuesday, Nov 7, 11:59:08 PM"`.
+  `"Tuesday, Nov 7, 11:59:08 PM"`. Vale notar que "Nov" sozinho não prova
+  nada (a abreviação é igual em PT-BR); a prova mais forte é em pontos de
+  dezembro, ex. `"Friday, Dec 1, 05:02:42 AM"`, onde "Dec" (em vez de
+  "Dez") confirma que é o mês em inglês, não só o dia da semana.
 - **Por que documentar em vez de confiar só no teste automatizado**: o
   formato de data do Highcharts depende de config de locale que pode mudar
   com a versão da lib ou do browser rodando o CI. O teste em

@@ -15,7 +15,7 @@
 Error: expect(locator).not.toContainText(expected) failed
 
 Locator: locator('.highcharts-tooltip')
-Expected pattern: not /Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday/
+Expected pattern: not /Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|\bFeb\b|\bApr\b|\bMay\b|\bAug\b|\bSep\b|\bOct\b|\bDec\b/
 Received string: "Sunday, Nov 12, 08:05:53 PM​● Radial: 0 g​"
 Timeout: 5000ms
 
@@ -74,9 +74,17 @@ Call log:
   38 |     await hoverChartPoint(chart);
   39 | 
   40 |     const tooltip = page.locator(HIGHCHARTS.tooltip);
-> 41 |     await expect(tooltip).not.toContainText(/Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday/);
+  41 |     // cobre dia da semana em inglês (ex.: "Friday") e mês em inglês que não
+  42 |     // coincide com a abreviação em português. Jan, Mar, Jun, Jul e Nov foram
+  43 |     // excluídos de propósito: a abreviação é idêntica nos dois idiomas
+  44 |     // (ex.: novembro -> "Nov" também em PT-BR), então não provam nada
+  45 |     // sozinhos. Só entram os meses que realmente diferem: Feb/Fev, Apr/Abr,
+  46 |     // May/Mai, Aug/Ago, Sep/Set, Oct/Out, Dec/Dez.
+> 47 |     await expect(tooltip).not.toContainText(
      |                               ^ Error: expect(locator).not.toContainText(expected) failed
-  42 |   });
-  43 | });
-  44 | 
+  48 |       /Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|\bFeb\b|\bApr\b|\bMay\b|\bAug\b|\bSep\b|\bOct\b|\bDec\b/
+  49 |     );
+  50 |   });
+  51 | });
+  52 | 
 ```
