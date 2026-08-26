@@ -25,8 +25,15 @@ protótipo Figma nem no enunciado do desafio:
    deveria estar em PT-BR vem só de consistência com o resto da UI, não é
    um requisito confirmado. Vale confirmar com o time se isso é esperado.
 6. **Casas decimais no tooltip**: hoje o tooltip mostra o valor bruto sem
-   arredondamento (ex.: `"Radial: 0.03125 g"`, 5 casas decimais, batendo
-   exatamente com o dado cru do `data.json`). Não há padrão fixo. Qual é o
-   número de casas decimais esperado para cada grandeza (aceleração,
-   velocidade, temperatura)? Isso deveria ser fixo (ex.: sempre 2 casas) ou
-   é aceitável mostrar o valor bruto variável como está hoje?
+   nenhum arredondamento, e isso varia muito dependendo da grandeza:
+   - Aceleração RMS: `"Radial: 0.03125 g"` (5 casas, o dado bruto no
+     `data.json` é uma fração "limpa" tipo potência de 2).
+   - Velocidade RMS: `"Radial: 4.810673076923077 mm/s"` (**15 casas
+     decimais**), porque o dado bruto no `data.json` já vem assim
+     (`0.2829807692307692` em outro ponto da mesma série, por exemplo).
+   Isso claramente não é intencional, nenhum design definiria 15 casas
+   decimais de propósito. Não há padrão fixo hoje. Qual é o número de
+   casas decimais esperado para cada grandeza (aceleração, velocidade,
+   temperatura)? Sugestão: normalizar no client antes de passar ao
+   Highcharts (ex.: `Number(valor.toFixed(2))`), já que a origem dos dados
+   (mock/API) parece não controlar isso.

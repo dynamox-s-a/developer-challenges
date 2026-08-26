@@ -130,8 +130,14 @@ docs/
    `interval: null`, UI does not handle it).
 2. 4 points in the `accelerationRms/x` series carry `max: "null"` (string)
    instead of a real number/null.
-3. The tooltip date shows up in English; the rest of the UI is in PT-BR.
-4. The challenge doc describes the endpoints as `/data` and `/metadata`;
+3. The tooltip weekday shows up in English (no confirmed spec, but the
+   rest of the UI is 100% PT-BR).
+4. The tooltip month shows up in English, contradicting the Figma
+   prototype itself: the chart x-axis is explicitly PT-BR ("31. Mai",
+   "1. Jun"...).
+5. The tooltip never appears on the Temperatura chart, breaking RN4 for
+   that one chart specifically (the other 2 charts work).
+6. The challenge doc describes the endpoints as `/data` and `/metadata`;
    the actual implementation uses `/data.json` and `/metadata.json`.
 
 ---
@@ -266,6 +272,12 @@ docs/
    `interval: null`, UI não trata).
 2. 4 pontos da série `accelerationRms/x` trazem `max: "null"` (string) em
    vez de número/null real.
-3. Data do tooltip aparece em inglês; resto da UI está em PT-BR.
-4. Doc do desafio descreve endpoints `/data` e `/metadata`; implementação
+3. Dia da semana do tooltip aparece em inglês (sem regra confirmada, mas o
+   resto da UI é 100% PT-BR).
+4. Mês do tooltip aparece em inglês, contrariando o próprio protótipo
+   Figma: o eixo X dos gráficos é explicitamente PT-BR ("31. Mai",
+   "1. Jun"...).
+5. Tooltip nunca aparece no gráfico de Temperatura, quebrando o RN4 só
+   nesse gráfico (os outros 2 funcionam).
+6. Doc do desafio descreve endpoints `/data` e `/metadata`; implementação
    real usa `/data.json` e `/metadata.json`.
