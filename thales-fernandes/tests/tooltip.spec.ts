@@ -1,12 +1,12 @@
 import { test, expect } from '@playwright/test';
 import { HIGHCHARTS, hoverChartPoint } from './support/selectors';
 
-test.describe('Tooltip ao hover (RN4 do desafio)', () => {
+test.describe('Tooltip on hover (challenge RN4)', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
   });
 
-  test('23. hover em um ponto do gráfico de Aceleração RMS exibe tooltip com data e valor', async ({ page }) => {
+  test('23. hover on a point in the Aceleração RMS chart shows tooltip with date and value', async ({ page }) => {
     const chart = page.locator(HIGHCHARTS.container).first();
     await hoverChartPoint(chart);
 
@@ -17,7 +17,7 @@ test.describe('Tooltip ao hover (RN4 do desafio)', () => {
     await expect(tooltip).toContainText(/\d+(\.\d+)?\s*g\b/);
   });
 
-  test('24. hover em um ponto do gráfico de Temperatura exibe tooltip', async ({ page }) => {
+  test('24. hover on a point in the Temperatura chart shows tooltip', async ({ page }) => {
     const chart = page.locator(HIGHCHARTS.container).nth(1);
     await hoverChartPoint(chart);
 
@@ -25,7 +25,7 @@ test.describe('Tooltip ao hover (RN4 do desafio)', () => {
     await expect(tooltip).toBeVisible();
   });
 
-  test('25. hover em um ponto do gráfico de Velocidade RMS exibe tooltip', async ({ page }) => {
+  test('25. hover on a point in the Velocidade RMS chart shows tooltip', async ({ page }) => {
     const chart = page.locator(HIGHCHARTS.container).nth(2);
     await hoverChartPoint(chart);
 
@@ -33,7 +33,7 @@ test.describe('Tooltip ao hover (RN4 do desafio)', () => {
     await expect(tooltip).toBeVisible();
   });
 
-  test('26. data no tooltip segue o idioma PT-BR do restante da UI', async ({ page }) => {
+  test('26. tooltip date follows the PT-BR language of the rest of the UI', async ({ page }) => {
     const chart = page.locator(HIGHCHARTS.container).first();
     await hoverChartPoint(chart);
 

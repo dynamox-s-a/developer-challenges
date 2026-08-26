@@ -9,7 +9,7 @@ import { test, expect } from './support/api-fixtures';
  * entre spec e implementação, não é bug, mas time de produto deveria saber.
  */
 test.describe('API /metadata.json', () => {
-  test('1. retorna todos os campos esperados pelo header', async ({ apiCalls }) => {
+  test('1. returns all fields expected by the header', async ({ apiCalls }) => {
     const { metadata } = apiCalls;
     expect(metadata).toHaveProperty('machine');
     expect(metadata).toHaveProperty('spot');
@@ -18,20 +18,20 @@ test.describe('API /metadata.json', () => {
     expect(metadata).toHaveProperty('interval');
   });
 
-  test('2. campos "machine" e "spot" devem ser string não vazia', async ({ apiCalls }) => {
+  test('2. fields "machine" and "spot" must be non-empty string', async ({ apiCalls }) => {
     const { metadata } = apiCalls;
     expect(metadata.machine).toMatch(/\S/);
     expect(metadata.spot).toMatch(/\S/);
   });
 
-  test('3. campo "interval" deve ser number', async ({ apiCalls }) => {
+  test('3. field "interval" must be number', async ({ apiCalls }) => {
     const { metadata } = apiCalls;
     expect(typeof metadata.interval).toBe('number');
   });
 });
 
 test.describe('API /data.json', () => {
-  test('4. retorna as 7 séries esperadas (3 eixos x2 grandezas + temperatura)', async ({ apiCalls }) => {
+  test('4. returns the 7 expected series (3 axes x2 metrics + temperature)', async ({ apiCalls }) => {
     const { data } = apiCalls;
     const names = data.data.map((s) => s.name).sort();
     expect(names).toEqual(
@@ -47,13 +47,13 @@ test.describe('API /data.json', () => {
     );
   });
 
-  test('5. todas as séries têm o mesmo número de pontos (séries alinhadas no tempo)', async ({ apiCalls }) => {
+  test('5. all series have the same number of points (time-aligned series)', async ({ apiCalls }) => {
     const { data } = apiCalls;
     const lengths = new Set(data.data.map((s) => s.data.length));
     expect(lengths.size).toBe(1);
   });
 
-  test('6. campo "max" deve ser number ou null', async ({ apiCalls }) => {
+  test('6. field "max" must be number or null', async ({ apiCalls }) => {
     const { data } = apiCalls;
     const offenders = data.data.flatMap((s) =>
       s.data

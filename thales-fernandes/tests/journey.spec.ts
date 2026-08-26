@@ -7,7 +7,7 @@ import { HIGHCHARTS, CHART_TITLES, hoverChartPoint } from './support/selectors';
  * conseguindo consumir a informação principal (header + 3 gráficos + tooltip).
  * Os specs de header/charts/tooltip cobrem o detalhe; este cobre o fluxo.
  */
-test('21. usuário consegue visualizar máquina, ponto e os 3 gráficos com dados ao acessar a página', async ({ page }) => {
+test('21. user can view machine, spot and the 3 charts with data on page access', async ({ page }) => {
   await page.goto('/');
 
   await expect(page.getByText('Análise de dados')).toBeVisible();
@@ -27,7 +27,7 @@ test('21. usuário consegue visualizar máquina, ponto e os 3 gráficos com dado
   await expect(page.locator(HIGHCHARTS.tooltip)).toBeVisible();
 });
 
-test('22. página não quebra (sem erro fatal de console) durante o carregamento', async ({ page }) => {
+test('22. page does not crash (no fatal console error) during load', async ({ page }) => {
   const pageErrors: string[] = [];
   page.on('pageerror', (err) => pageErrors.push(err.message));
 

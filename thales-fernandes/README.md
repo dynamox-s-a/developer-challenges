@@ -1,5 +1,143 @@
 # QA Challenge, Dynamox
 
+Automated tests (Playwright + TypeScript) for the Dynamox QA challenge: a
+web app that displays vibration and temperature sensor data for a
+monitored machine.
+
+- App under test: https://frontend-test-for-qa.vercel.app/
+- Figma prototype: https://www.figma.com/file/QxUZkTUIzQA7cvyiMvVyxK/Front-end---Teste
+
+## How to run
+
+```bash
+npm install
+npx playwright install --with-deps chromium
+npm test
+```
+
+Other useful modes:
+
+```bash
+npm run test:ui       # interactive mode (Playwright UI)
+npm run test:headed   # runs with a visible browser
+npm run report        # opens the last HTML report
+```
+
+## How to view test results
+
+After running `npm test`, Playwright generates 2 folders at the project
+root:
+
+```
+playwright-report/   # final HTML report
+test-results/        # raw artifacts per test (screenshot, video, trace)
+```
+
+### HTML report (overview)
+
+```bash
+npm run report
+```
+
+Opens a page in the browser with the list of all tests, status
+(passed/failed), execution time and a per-file summary. This is the
+starting point for the overall result of the suite.
+
+### Screenshot and video for a specific test
+
+Each test has its own subfolder inside `test-results/`, named after the
+file and the test name. Inside it:
+
+- `test-failed-1.png`: screenshot of the moment the assertion failed.
+- `video.webm`: recording of the entire test run, start to finish.
+- `error-context.md`: a text summary of the page state at the time of
+  the error.
+
+The `.png` and `.webm` can be opened directly in any image/video viewer,
+no Playwright needed.
+
+### Trace (most detailed)
+
+The trace is a full recording of the run: action timeline, DOM at each
+step, network requests, console. To open it:
+
+```bash
+npx playwright show-trace test-results/<test-folder>/trace.zip
+```
+
+This opens the Trace Viewer in the browser, with a player that lets you
+step through the test run.
+
+### Interactive mode (watch it run live)
+
+```bash
+npm run test:ui
+```
+
+Opens the Playwright interface with the list of tests, letting you run
+them one by one and watch the browser in real time, without waiting for
+the final report.
+
+## Structure
+
+```
+tests/
+  api.spec.ts          # /data.json and /metadata.json contract
+  header.spec.ts        # RN1, header with machine information
+  charts.spec.ts        # RN2, 3 charts, series, axes, data refresh
+  tooltip.spec.ts        # RN4, tooltip on hover
+  journey.spec.ts        # macro end-to-end journey + console smoke test
+  support/
+    api-fixtures.ts       # fixture that captures API responses per load
+    selectors.ts           # centralized selectors (text + Highcharts classes)
+docs/
+  defects.md               # defects found, with evidence and severity
+  questions-to-designer.md # requirements not specified in Figma/challenge
+```
+
+## Test strategy
+
+- **Framework**: Playwright. Chosen for its native trace viewer, network
+  support (`waitForResponse`) without needing mocks to validate the API
+  contract, and for being the current market standard for e2e web
+  testing.
+- **Selectors**: the app is React + MUI with no `data-testid`; the MUI
+  classes are build hashes (`css-1f62mcz`) and not stable. So the tests
+  use visible text (`getByText`) for header/titles and native Highcharts
+  classes (`.highcharts-container`, `.highcharts-legend-item`,
+  `.highcharts-tooltip`) for the charts: those come from the library, not
+  the app's bundler, so they stay stable across builds.
+- **Known defects**: instead of only listing them in text, each
+  automatable defect has a normal test (`test(...)`) that asserts the
+  CORRECT expected behavior. It shows up as **FAIL** in the report while
+  the bug exists, with a real screenshot/video/trace of the error
+  attached. We deliberately do **not** use `test.fail(...)`: that
+  Playwright helper inverts the result and reports "passed" when the test
+  fails as expected, which would hide the defect behind a misleading
+  green. Here red is the correct signal. Once the dev fixes the bug, the
+  test turns green on its own. See `docs/defects.md`.
+- **Out of automated scope**: the tooltip language inconsistency (English
+  date) has a test, but it is sensitive to locale/library version, so it
+  is documented in more detail in text as a more reliable way to report
+  it.
+- **Robustness vs. time trade-off**: the suite runs 1 browser (chromium)
+  by default; firefox/webkit are commented out in `playwright.config.ts`
+  to run before a final delivery, not on every CI run.
+
+## Relevant findings (summary, detail in docs/)
+
+1. Header shows `"null min"` instead of an interval value (API returns
+   `interval: null`, UI does not handle it).
+2. 4 points in the `accelerationRms/x` series carry `max: "null"` (string)
+   instead of a real number/null.
+3. The tooltip date shows up in English; the rest of the UI is in PT-BR.
+4. The challenge doc describes the endpoints as `/data` and `/metadata`;
+   the actual implementation uses `/data.json` and `/metadata.json`.
+
+---
+
+# QA Challenge, Dynamox (Português)
+
 Testes automatizados (Playwright + TypeScript) para o desafio de QA da
 Dynamox: aplicação web que exibe dados de vibração e temperatura de uma
 máquina monitorada.
@@ -25,8 +163,7 @@ npm run report        # abre o último relatório HTML
 
 ## Como ver os resultados dos testes
 
-Depois de rodar `npm test`, o Playwright gera 2 pastas na raiz do projeto
-(ambas ignoradas pelo git, ver `.gitignore`):
+Depois de rodar `npm test`, o Playwright gera 2 pastas na raiz do projeto:
 
 ```
 playwright-report/   # relatório HTML final
@@ -132,5 +269,3 @@ docs/
 3. Data do tooltip aparece em inglês; resto da UI está em PT-BR.
 4. Doc do desafio descreve endpoints `/data` e `/metadata`; implementação
    real usa `/data.json` e `/metadata.json`.
-
-
