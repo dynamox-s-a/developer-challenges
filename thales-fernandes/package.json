@@ -1,0 +1,16 @@
+{
+  "name": "qa-challenge-dynamox",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Testes automatizados (Playwright) para o desafio de QA da Dynamox",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "report": "playwright show-report",
+    "install:browsers": "playwright install --with-deps chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0"
+  }
+}
