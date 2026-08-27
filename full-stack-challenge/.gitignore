@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Builds
+dist/
+build/
+tmp/
+out-tsc/
+
+# Env
+.env
+.env.local
+.env.*.local
+apps/api/.env
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Nx
+.nx/cache
+.nx/workspace-data
+
+# Tests / coverage
+coverage/
+*.lcov
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Prisma
+apps/api/prisma/*.db
+apps/api/prisma/*.db-journal
+
+# Cypress
+cypress/videos/
+cypress/screenshots/
+cypress/downloads/

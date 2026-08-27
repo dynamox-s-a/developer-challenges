@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../dist/apps/api",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "types": ["node"],
+    "noEmit": false
+  },
+  "include": ["src/**/*.ts", "prisma/seed.ts"],
+  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"]
+}

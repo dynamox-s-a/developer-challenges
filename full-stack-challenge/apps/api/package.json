@@ -1,0 +1,16 @@
+{
+  "name": "@dynamox/api",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "serve": "tsx watch src/main.ts",
+    "build": "tsc -p tsconfig.app.json",
+    "test": "vitest run",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:seed": "tsx prisma/seed.ts"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  }
+}

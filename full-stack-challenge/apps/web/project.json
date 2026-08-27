@@ -1,0 +1,33 @@
+{
+  "name": "web",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/web/src",
+  "projectType": "application",
+  "tags": ["type:app", "scope:web"],
+  "targets": {
+    "serve": {
+      "command": "vite",
+      "options": {
+        "cwd": "apps/web"
+      }
+    },
+    "build": {
+      "command": "tsc -b && vite build",
+      "options": {
+        "cwd": "apps/web"
+      }
+    },
+    "preview": {
+      "command": "vite preview",
+      "options": {
+        "cwd": "apps/web"
+      }
+    },
+    "test": {
+      "command": "vitest run",
+      "options": {
+        "cwd": "apps/web"
+      }
+    }
+  }
+}

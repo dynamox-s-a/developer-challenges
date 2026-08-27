@@ -1,0 +1,66 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: dynamox
+      POSTGRES_PASSWORD: dynamox
+      POSTGRES_DB: dynamox
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U dynamox -d dynamox']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      target: api
+    environment:
+      DATABASE_URL: postgresql://dynamox:dynamox@postgres:5432/dynamox?schema=public
+      JWT_SECRET: change-me-in-production
+      JWT_EXPIRES_IN: 8h
+      PORT: 3001
+      # Same-origin via LB on host :8080
+      CORS_ORIGIN: http://localhost:8080
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # Scale with: docker compose -f docker-compose.prod.yml up --scale api=2
+    expose:
+      - '3001'
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://127.0.0.1:3001/health').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 20s
+
+  web:
+    build:
+      context: .
+      target: web
+    expose:
+      - '80'
+    depends_on:
+      - api
+
+  lb:
+    build:
+      context: .
+      target: lb
+    ports:
+      - '8080:80'
+    depends_on:
+      - api
+      - web
+
+volumes:
+  postgres_data:

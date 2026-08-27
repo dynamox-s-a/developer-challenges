@@ -1,0 +1,45 @@
+{
+  "name": "api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/api/src",
+  "projectType": "application",
+  "tags": ["type:app", "scope:api"],
+  "targets": {
+    "serve": {
+      "command": "tsx watch src/main.ts",
+      "options": {
+        "cwd": "apps/api"
+      }
+    },
+    "build": {
+      "command": "tsc -p tsconfig.app.json",
+      "options": {
+        "cwd": "apps/api"
+      }
+    },
+    "test": {
+      "command": "vitest run",
+      "options": {
+        "cwd": "apps/api"
+      }
+    },
+    "prisma:generate": {
+      "command": "npx prisma generate --schema prisma/schema.prisma",
+      "options": {
+        "cwd": "apps/api"
+      }
+    },
+    "prisma:migrate": {
+      "command": "npx prisma migrate dev --schema prisma/schema.prisma",
+      "options": {
+        "cwd": "apps/api"
+      }
+    },
+    "prisma:seed": {
+      "command": "npx tsx prisma/seed.ts",
+      "options": {
+        "cwd": "apps/api"
+      }
+    }
+  }
+}

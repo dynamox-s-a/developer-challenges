@@ -1,0 +1,72 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MachineType {
+  Pump
+  Fan
+}
+
+enum SensorModel {
+  TcAg
+  TcAs
+  HFPlus @map("HF+")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Machine {
+  id               String            @id @default(cuid())
+  name             String
+  type             MachineType
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  monitoringPoints MonitoringPoint[]
+}
+
+model MonitoringPoint {
+  id        String          @id @default(cuid())
+  name      String
+  machineId String
+  machine   Machine         @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  sensor    Sensor?
+  readings  SensorReading[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@index([machineId])
+}
+
+model Sensor {
+  id                String          @id
+  model             SensorModel
+  monitoringPointId String          @unique
+  monitoringPoint   MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+}
+
+model SensorReading {
+  id                String          @id @default(cuid())
+  monitoringPointId String
+  monitoringPoint   MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
+  timestamp         DateTime
+  value             Float
+  createdAt         DateTime        @default(now())
+
+  @@index([monitoringPointId, timestamp])
+  @@index([timestamp])
+}
