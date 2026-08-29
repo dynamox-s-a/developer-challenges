@@ -7,7 +7,7 @@ import { App } from "./App";
 import { createHttpApiClient } from "./api/client";
 import { type AppStore, createAppStore } from "./app/store";
 import { theme } from "./app/theme";
-import { readSession } from "./auth/session";
+import { readSession, SESSION_KEY } from "./auth/session";
 import { checkSession, sessionExpired } from "./features/auth/authSlice";
 import "./styles.css";
 
@@ -24,6 +24,15 @@ store = createAppStore(api);
 if (store.getState().auth.status === "checking") {
   void store.dispatch(checkSession());
 }
+
+// The session lives in localStorage, so another tab signing in or out rewrites it under this tab's
+// feet. Reloading re-bootstraps the store from the shared session instead of rendering one identity
+// while sending another's token. The storage event only fires in other tabs, so this never loops.
+window.addEventListener("storage", (event) => {
+  if (event.key === SESSION_KEY || event.key === null) {
+    window.location.reload();
+  }
+});
 
 const rootElement = document.getElementById("root");
 if (!rootElement) {

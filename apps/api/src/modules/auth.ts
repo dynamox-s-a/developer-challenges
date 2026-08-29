@@ -17,12 +17,6 @@ const derivePassword = promisify(scrypt) as (
   keyLength: number
 ) => Promise<Buffer>;
 
-export interface AuthService {
-  register: (email: string, password: string) => Promise<LoginResponse>;
-  login: (email: string, password: string) => Promise<LoginResponse>;
-  verifyToken: (token: string) => Promise<AuthenticatedUser>;
-}
-
 export interface AuthServiceOptions {
   repository: UserRepository;
   jwtSecret: string;
@@ -37,11 +31,7 @@ export class AuthenticationError extends DomainError {
   }
 }
 
-function invalidCredentials(): AuthenticationError {
-  return new AuthenticationError("INVALID_CREDENTIALS", "Email or password is incorrect");
-}
-
-export function createAuthService(options: AuthServiceOptions): AuthService {
+export function createAuthService(options: AuthServiceOptions) {
   const now = options.now ?? (() => new Date());
   // Unknown emails still pay for one scrypt derivation against this salt, so response timing does
   // not reveal whether an account exists.
@@ -72,7 +62,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
   }
 
   return {
-    async register(email, password) {
+    async register(email: string, password: string): Promise<LoginResponse> {
       const normalizedEmail = email.toLowerCase();
       const salt = randomBytes(16);
       const hash = await derivePassword(password, salt, keyLength);
@@ -89,7 +79,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
       return issueSession(user);
     },
 
-    async login(email, password) {
+    async login(email: string, password: string): Promise<LoginResponse> {
       const user = await options.repository.findUserByEmail(email.toLowerCase());
       const salt = user ? Buffer.from(user.passwordSalt, "base64") : timingEqualizerSalt;
       const expected = user ? Buffer.from(user.passwordHash, "base64") : null;
@@ -98,13 +88,13 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         expected !== null && expected.length === actual.length && timingSafeEqual(actual, expected);
 
       if (!user || !passwordMatches) {
-        throw invalidCredentials();
+        throw new AuthenticationError("INVALID_CREDENTIALS", "Email or password is incorrect");
       }
 
       return issueSession(user);
     },
 
-    async verifyToken(token) {
+    async verifyToken(token: string): Promise<AuthenticatedUser> {
       // hono/jwt verifies the signature and expiry; the issuer claims are ours to check.
       let payload: Awaited<ReturnType<typeof verify>>;
       try {
@@ -122,3 +112,5 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
     },
   };
 }
+
+export type AuthService = ReturnType<typeof createAuthService>;

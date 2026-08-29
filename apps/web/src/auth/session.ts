@@ -1,6 +1,6 @@
 import { type LoginResponse, loginResponseSchema } from "@dyn/contracts";
 
-const SESSION_KEY = "dynamonitor.session";
+export const SESSION_KEY = "dynamonitor.session";
 
 export function readSession(): LoginResponse | null {
   const raw = localStorage.getItem(SESSION_KEY);
