@@ -1,0 +1,155 @@
+name: dynamox-monitoring
+
+x-development-image: &development-image
+  image: dynamox-monitoring-development
+  build:
+    context: .
+    target: development
+
+x-database-environment: &database-environment
+  POSTGRES_DB: ${POSTGRES_DB:-dynamox}
+  POSTGRES_USER: ${POSTGRES_USER:-dynamox}
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dynamox_dev_only}
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment: *database-environment
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U "${POSTGRES_USER:-dynamox}" -d "${POSTGRES_DB:-dynamox}"
+      interval: 2s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+    restart: unless-stopped
+
+  migrate:
+    <<: *development-image
+    command:
+      - pnpm
+      - --filter
+      - "@dyn/database"
+      - db:migrate
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-dynamox}:${POSTGRES_PASSWORD:-dynamox_dev_only}@db:5432/${POSTGRES_DB:-dynamox}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  api:
+    <<: *development-image
+    working_dir: /workspace/apps/api
+    command:
+      - node
+      - --import
+      - tsx
+      - src/server.ts
+    init: true
+    environment:
+      NODE_ENV: development
+      HOST: 0.0.0.0
+      PORT: 3000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-dynamox}:${POSTGRES_PASSWORD:-dynamox_dev_only}@db:5432/${POSTGRES_DB:-dynamox}
+      AUTH_EMAIL: ${AUTH_EMAIL:-admin@dynamox.local}
+      AUTH_PASSWORD_SALT: ${AUTH_PASSWORD_SALT:-ZHluYW1veC1kZXYtc2FsdA==}
+      AUTH_PASSWORD_HASH: ${AUTH_PASSWORD_HASH:-q+15C3iVTh7UHaGBcAwbXsjT9/DnspRRfNdXqlfIe4AC870Xh71DEnApN8mKnfeni/uAoq6yY/stF689IMB1PA==}
+      JWT_SECRET: ${JWT_SECRET:-dynamox-development-jwt-secret-change-me}
+      JWT_EXPIRES_IN_SECONDS: ${JWT_EXPIRES_IN_SECONDS:-900}
+    ports:
+      - "${API_PORT:-3000}:3000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - fetch('http://127.0.0.1:3000/health').then((response)=>process.exit(response.ok?0:1)).catch(()=>process.exit(1))
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+  web:
+    <<: *development-image
+    working_dir: /workspace/apps/web
+    command:
+      - pnpm
+      - exec
+      - vite
+      - --host
+      - 0.0.0.0
+      - --port
+      - "5173"
+    init: true
+    environment:
+      VITE_API_ORIGIN: ${VITE_API_ORIGIN:-}
+      API_PROXY_TARGET: ${API_PROXY_TARGET:-http://api:3000}
+    ports:
+      - "${WEB_PORT:-5173}:5173"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - fetch('http://127.0.0.1:5173').then((response)=>process.exit(response.ok?0:1)).catch(()=>process.exit(1))
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+  db-test:
+    image: postgres:16-alpine
+    profiles:
+      - test
+    environment:
+      POSTGRES_DB: dynamox_test
+      POSTGRES_USER: dynamox_test
+      POSTGRES_PASSWORD: dynamox_test
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U dynamox_test -d dynamox_test
+      interval: 2s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+
+  test:
+    <<: *development-image
+    profiles:
+      - test
+    working_dir: /workspace
+    command:
+      - /bin/sh
+      - -c
+      - |-
+        set -eu
+        pnpm --filter @dyn/database db:migrate
+        pnpm test
+    environment:
+      NODE_ENV: test
+      DATABASE_URL: postgresql://dynamox_test:dynamox_test@db-test:5432/dynamox_test
+      AUTH_EMAIL: admin@dynamox.local
+      AUTH_PASSWORD_SALT: ZHluYW1veC1kZXYtc2FsdA==
+      AUTH_PASSWORD_HASH: q+15C3iVTh7UHaGBcAwbXsjT9/DnspRRfNdXqlfIe4AC870Xh71DEnApN8mKnfeni/uAoq6yY/stF689IMB1PA==
+      JWT_SECRET: dynamox-test-jwt-secret-at-least-32-characters
+      JWT_EXPIRES_IN_SECONDS: 900
+    depends_on:
+      db-test:
+        condition: service_healthy
+    restart: "no"
+
+volumes:
+  postgres-data:
