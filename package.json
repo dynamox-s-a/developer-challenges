@@ -1,0 +1,26 @@
+{
+  "name": "dynamox-condition-monitoring-challenge",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @dyn/api --filter @dyn/web dev",
+    "build": "pnpm -r --if-present build",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "check": "biome check .",
+    "fix": "biome check --write .",
+    "test": "pnpm -r --if-present test",
+    "db:generate": "pnpm --filter @dyn/database db:generate",
+    "db:migrate": "pnpm --filter @dyn/database db:migrate",
+    "db:check": "pnpm --filter @dyn/database db:check",
+    "db:push": "pnpm --filter @dyn/database db:push",
+    "db:studio": "pnpm --filter @dyn/database db:studio"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.9"
+  },
+  "engines": {
+    "node": ">=22.19.0 <23"
+  },
+  "packageManager": "pnpm@10.27.0"
+}
