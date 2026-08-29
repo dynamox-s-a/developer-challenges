@@ -1,0 +1,35 @@
+{
+  "name": "@dyn/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./app": {
+      "types": "./src/app.ts",
+      "default": "./src/app.ts"
+    }
+  },
+  "scripts": {
+    "dev": "node --watch --import tsx src/server.ts",
+    "start": "node --import tsx src/server.ts",
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@dyn/contracts": "workspace:*",
+    "@dyn/database": "workspace:*",
+    "@hono/node-server": "^1.19.9",
+    "@hono/zod-validator": "^0.7.6",
+    "drizzle-orm": "^0.45.2",
+    "hono": "^4.11.7",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.17",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10"
+  }
+}
