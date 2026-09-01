@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist",
+    "types": ["node", "jest"],
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    // As libs compartilhadas chegam pelo node_modules (build publicado em dist),
+    // e não pelos aliases de fonte do tsconfig.base.
+    "paths": {}
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts"]
+}

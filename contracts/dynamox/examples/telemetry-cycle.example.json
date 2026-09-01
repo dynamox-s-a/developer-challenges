@@ -1,0 +1,104 @@
+{
+  "telemetryCycleData": {
+    "measuringSystemUniqueIdentifier": "SIM-HF-001",
+    "measuringSystemModel": {
+      "name": "industrial-condition-sensor-sim",
+      "version": 1
+    },
+    "measurements": [
+      {
+        "resourceId": "42d726ba50f8645df08dba9f",
+        "attributes": {
+          "physicalQuantity": "acceleration",
+          "axis": "x",
+          "unit": "g",
+          "displayName": {
+            "pt": "Aceleração RMS — eixo X",
+            "en": "Acceleration RMS — X axis"
+          }
+        },
+        "dataPoints": [
+          { "timestamp": "2026-08-26T12:00:00.000Z", "value": 0.0081 },
+          { "timestamp": "2026-08-26T12:00:10.000Z", "value": 0.0083 },
+          { "timestamp": "2026-08-26T12:00:20.000Z", "value": 0.008 }
+        ]
+      },
+      {
+        "resourceId": "42d726ba50f8645df08dba9f",
+        "attributes": {
+          "physicalQuantity": "acceleration",
+          "axis": "y",
+          "unit": "g",
+          "displayName": {
+            "pt": "Aceleração RMS — eixo Y",
+            "en": "Acceleration RMS — Y axis"
+          }
+        },
+        "dataPoints": [
+          { "timestamp": "2026-08-26T12:00:00.000Z", "value": 0.0204 },
+          { "timestamp": "2026-08-26T12:00:10.000Z", "value": 0.0209 },
+          { "timestamp": "2026-08-26T12:00:20.000Z", "value": 0.0201 }
+        ]
+      },
+      {
+        "resourceId": "42d726ba50f8645df08dba9f",
+        "attributes": {
+          "physicalQuantity": "acceleration",
+          "axis": "z",
+          "unit": "g",
+          "displayName": {
+            "pt": "Aceleração RMS — eixo Z",
+            "en": "Acceleration RMS — Z axis"
+          }
+        },
+        "dataPoints": [
+          { "timestamp": "2026-08-26T12:00:00.000Z", "value": 0.0198 },
+          { "timestamp": "2026-08-26T12:00:10.000Z", "value": 0.0211 },
+          { "timestamp": "2026-08-26T12:00:20.000Z", "value": 0.0205 }
+        ]
+      },
+      {
+        "resourceId": "42d726ba50f8645df08dba9f",
+        "attributes": {
+          "physicalQuantity": "temperature",
+          "unit": "degC",
+          "displayName": {
+            "pt": "Temperatura do mancal",
+            "en": "Bearing temperature"
+          }
+        },
+        "dataPoints": [
+          { "timestamp": "2026-08-26T12:00:00.000Z", "value": 38.4 },
+          { "timestamp": "2026-08-26T12:00:10.000Z", "value": 38.6 },
+          { "timestamp": "2026-08-26T12:00:20.000Z", "value": 38.7 }
+        ]
+      }
+    ],
+    "metadata": {
+      "origin": "simulation",
+      "generator": {
+        "name": "industrial-condition-sensor-sim",
+        "version": "0.1.0"
+      },
+      "profile": "HF+",
+      "cycleId": "f0d9c89efff3a4c175542448",
+      "seed": 20260826,
+      "synthetic": true
+    },
+    "tags": ["simulated", "pump-p101", "hf-plus", "scenario:normal"]
+  },
+  "configuration": {
+    "monitoringLocationMap": [
+      {
+        "mapLabel": "P-101 / Mancal lado acoplamento",
+        "mapValue": "42d726ba50f8645df08dba9f"
+      }
+    ],
+    "rpm": 1750,
+    "loadPercent": 70,
+    "scenario": "normal",
+    "seed": 20260826,
+    "durationSeconds": 30,
+    "publishRateHz": 0.1
+  }
+}

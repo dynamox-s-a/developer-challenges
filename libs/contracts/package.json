@@ -1,0 +1,19 @@
+{
+  "name": "@dynamox/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Contrato interno de telemetria (SCP-04): validação Ajv do schema reduzido e derivação determinística da chave de idempotência. Uso server-side.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src --max-warnings 0",
+    "test": "echo \"@dynamox/contracts: coberto pelos testes de contrato de apps/api\" && exit 0"
+  },
+  "dependencies": {
+    "@dynamox/domain": "0.1.0",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  }
+}

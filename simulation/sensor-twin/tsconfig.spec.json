@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // O ts-jest precisa enxergar src/ E test/ sob o mesmo rootDir; o build de produção
+    // continua usando o tsconfig.json (rootDir src, sem specs em dist).
+    "rootDir": ".",
+    "noEmit": true
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts", "test-ros/**/*.ts"]
+}

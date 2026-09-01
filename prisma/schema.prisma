@@ -1,0 +1,500 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Perfis de acesso. VIEWER é o default por princípio de menor privilégio:
+/// quem for criado sem perfil explícito só consulta.
+enum UserRole {
+  ADMIN
+  VIEWER
+}
+
+enum MachineType {
+  PUMP
+  FAN
+}
+
+/// Os valores do enunciado são "TcAg", "TcAs" e "HF+". O identificador HF_PLUS existe
+/// porque enums Prisma não aceitam "+"; a tradução para o rótulo público fica no domínio.
+enum SensorModel {
+  TC_AG
+  TC_AS
+  HF_PLUS
+}
+
+enum PhysicalQuantity {
+  ACCELERATION
+  VELOCITY
+  TEMPERATURE
+  ROTATIONAL_SPEED
+}
+
+/// NONE representa grandezas não direcionais (temperatura). Um enum sem NULL mantém a
+/// unicidade de (sensor, grandeza, eixo) funcional no PostgreSQL, onde NULLs são distintos.
+enum Axis {
+  X
+  Y
+  Z
+  NONE
+}
+
+enum IngestionOrigin {
+  SIMULATION
+  ROSBAG_REPLAY
+  SEED
+  MANUAL
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         UserRole @default(VIEWER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  acknowledgedAlerts AlertOccurrence[]
+  alertEvents        AlertEvent[]
+
+  @@map("users")
+}
+
+model Machine {
+  id               String            @id @default(uuid())
+  name             String            @unique
+  type             MachineType
+  monitoringPoints MonitoringPoint[]
+  alerts           AlertOccurrence[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  @@map("machines")
+}
+
+model MonitoringPoint {
+  id        String  @id @default(uuid())
+  name      String
+  machineId String
+  machine   Machine @relation(fields: [machineId], references: [id], onDelete: Cascade)
+
+  /// Identificador determinístico de 24 hex usado como resourceId no contrato de telemetria.
+  /// Interno ao projeto; não é um ObjectId emitido pela Dynamox.
+  externalResourceId String @unique @db.VarChar(24)
+
+  sensor      Sensor?
+  alertStates AlertRuleState[]
+  alerts      AlertOccurrence[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@unique([machineId, name])
+  @@index([machineId])
+  @@map("monitoring_points")
+}
+
+model Sensor {
+  id           String      @id @default(uuid())
+  serialNumber String      @unique
+  model        SensorModel
+
+  /// Um ponto de monitoramento recebe no máximo um sensor.
+  monitoringPointId String?          @unique
+  monitoringPoint   MonitoringPoint? @relation(fields: [monitoringPointId], references: [id], onDelete: SetNull)
+
+  timeSeries TimeSeries[]
+  alerts     AlertOccurrence[]
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+
+  @@map("sensors")
+}
+
+model TimeSeries {
+  id               String             @id @default(uuid())
+  sensorId         String
+  sensor           Sensor             @relation(fields: [sensorId], references: [id], onDelete: Cascade)
+  physicalQuantity PhysicalQuantity
+  axis             Axis               @default(NONE)
+  unit             String
+  displayName      Json?
+  samples          TimeSeriesSample[]
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+
+  @@unique([sensorId, physicalQuantity, axis])
+  @@index([sensorId])
+  @@map("time_series")
+}
+
+model TimeSeriesSample {
+  id           String     @id @default(uuid())
+  timeSeriesId String
+  timeSeries   TimeSeries @relation(fields: [timeSeriesId], references: [id], onDelete: Cascade)
+  timestamp    DateTime   @db.Timestamptz(3)
+  value        Float
+
+  ingestionCycleId String?
+  ingestionCycle   IngestionCycle? @relation(fields: [ingestionCycleId], references: [id], onDelete: SetNull)
+
+  /// Índice único de série + instante: garante a ordenação temporal das consultas e
+  /// impede que um replay do mesmo ciclo grave a mesma amostra duas vezes.
+  @@unique([timeSeriesId, timestamp])
+  @@index([ingestionCycleId])
+  @@map("time_series_samples")
+}
+
+model IngestionCycle {
+  id String @id @default(uuid())
+
+  /// Valor do header Idempotency-Key (ou o próprio fingerprint, quando o header não vem).
+  /// Identifica a *intenção* do cliente.
+  idempotencyKey String @unique @db.VarChar(128)
+
+  /// SHA-256 canônico do conteúdo completo do ciclo. Identifica o *conteúdo*.
+  /// Separar chave e conteúdo é o que permite distinguir uma repetição legítima
+  /// (mesma chave, mesmo fingerprint) de uma chave reutilizada indevidamente.
+  payloadFingerprint String @unique @db.Char(64)
+
+  /// Cópia rastreável de telemetryCycleData.metadata.cycleId.
+  cycleId String?
+
+  measuringSystemUid String
+  modelName          String
+  modelVersion       Float
+  origin             IngestionOrigin
+  tags               String[]
+  metadata           Json
+  configuration      Json
+  measurementCount   Int             @default(0)
+  sampleCount        Int             @default(0)
+
+  /// Séries afetadas por este ciclo, para que a resposta de uma repetição devolva
+  /// exatamente o mesmo resultado da ingestão original.
+  timeSeriesIds String[]
+
+  createdAt DateTime @default(now())
+
+  samples          TimeSeriesSample[]
+  alertEvidence    AlertCycleEvidence?
+  alertEvaluations AlertRuleEvaluation[]
+
+  @@index([measuringSystemUid, createdAt])
+  @@index([cycleId])
+  @@map("ingestion_cycles")
+}
+
+// ————————————————————————————————————————————————————————————————————————————————
+// ALERTAS — episódio persistido, distinto da condição (derivada e recalculável).
+//
+// Fluxo: telemetria → evidência imutável por ciclo → avaliação versionada por regra →
+// ocorrência (episódio) → eventos (transições). Ground truth do gerador NUNCA entra aqui.
+// ————————————————————————————————————————————————————————————————————————————————
+
+enum AlertType {
+  VIBRATION_THRESHOLD
+  TEMPERATURE_THRESHOLD
+  SENSOR_SILENT
+  FLEET_SILENT
+}
+
+enum AlertScope {
+  POINT
+  FLEET
+}
+
+/// Dois níveis, como na plataforma de referência: A2 é o mais crítico e é "latched" — uma
+/// ocorrência que chegou a A2 permanece A2 até resolver.
+enum AlertLevel {
+  A1
+  A2
+}
+
+/// Estado do EPISÓDIO (a anomalia existe ou deixou de existir). O reconhecimento humano é
+/// ortogonal: mora em acknowledgedAt/acknowledgedBy, e a interface deriva "reconhecido".
+enum AlertState {
+  ACTIVE
+  RESOLVED
+}
+
+enum AlertEventType {
+  OPENED
+  ESCALATED
+  ACKNOWLEDGED
+  RESOLVED
+}
+
+enum AlertThresholdMode {
+  RATIO_TO_BASELINE
+  DELTA_FROM_BASELINE
+  ELAPSED_INTERVALS
+}
+
+enum AlertResolutionReason {
+  CONDITION_CLEARED
+  TELEMETRY_RESUMED
+}
+
+enum AlertBaselineStatus {
+  LEARNING
+  ESTABLISHED
+}
+
+/// Desfecho de uma avaliação (ciclo × regra × versão). OUT_OF_ORDER não é descarte: a
+/// evidência fica gravada e a avaliação é detectável para reconciliação por backfill.
+enum AlertEvaluationOutcome {
+  EVALUATED
+  LEARNING
+  SUPPRESSED
+  NO_EVIDENCE
+  UNASSIGNED
+  OUT_OF_ORDER
+}
+
+/// Regra da Alert Policy: parâmetros explícitos e tipados — nunca um JSON de configuração.
+/// `policyVersion` acompanha cada ocorrência gerada, para que um alerta de agosto não passe
+/// a significar outra coisa quando um limiar mudar em setembro.
+model AlertRule {
+  id      String    @id @default(uuid())
+  key     String    @unique @db.VarChar(64)
+  type    AlertType
+  enabled Boolean   @default(true)
+
+  metric        String             @db.VarChar(64)
+  unit          String             @db.VarChar(16)
+  thresholdMode AlertThresholdMode
+
+  a1Threshold        Float
+  a2Threshold        Float?
+  clearThreshold     Float
+  consecutiveTrigger Int    @default(2)
+  consecutiveClear   Int    @default(4)
+
+  /// Aprendizado da baseline por CONTAGEM de ciclos avaliados (nulo em regras sem baseline).
+  learningCycles            Int?
+  minBinCount               Int?
+  /// Cadência esperada de aquisição; sustenta a presença e a detecção de lacuna.
+  expectedIntervalSeconds   Int?
+  postGapSuppressionMinutes Int?
+  /// Fração de pontos silentes acima da qual o silêncio é da planta, não do sensor.
+  fleetCollapseFraction     Float?
+
+  policyVersion Int
+
+  states      AlertRuleState[]
+  evaluations AlertRuleEvaluation[]
+  occurrences AlertOccurrence[]
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  @@map("alert_rules")
+}
+
+/// Evidência física de UM ciclo, calculada uma vez e nunca alterada. Separada da avaliação
+/// para que uma regra nova ou uma versão nova reavaliem o mesmo ciclo sem revarrer amostras.
+model AlertCycleEvidence {
+  cycleId String         @id
+  cycle   IngestionCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+
+  monitoringPointId  String?
+  sensorId           String?
+  sensorSerialNumber String  @db.VarChar(64)
+
+  startedAt DateTime @db.Timestamptz(3)
+  endedAt   DateTime @db.Timestamptz(3)
+
+  /// RMS radial Y/Z pareado por instante — a mesma fórmula da condição.
+  radialRms         Float?
+  radialSampleCount Int    @default(0)
+  temperatureAvg    Float?
+  temperatureCount  Int    @default(0)
+  rpmAvg            Float?
+
+  computedAt DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([monitoringPointId, startedAt])
+  @@index([sensorSerialNumber, startedAt])
+  @@map("alert_cycle_evidence")
+}
+
+/// Uma avaliação = (ciclo, regra, versão da política). A unicidade é o exactly-once do motor.
+model AlertRuleEvaluation {
+  id String @id @default(uuid())
+
+  cycleId String
+  cycle   IngestionCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  ruleId  String
+  rule    AlertRule      @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+
+  policyVersion Int
+  outcome       AlertEvaluationOutcome
+  /// Grandeza comparada ao limiar (razão, delta ou intervalos); nula sem avaliação.
+  measure       Float?
+  evaluatedAt   DateTime               @default(now()) @db.Timestamptz(3)
+
+  @@unique([cycleId, ruleId, policyVersion])
+  @@index([ruleId, outcome])
+  @@map("alert_rule_evaluations")
+}
+
+/// Estado do motor por (regra, ponto): baseline aprendida, streaks e marca d'água temporal.
+model AlertRuleState {
+  id String @id @default(uuid())
+
+  ruleId String
+  rule   AlertRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+
+  monitoringPointId String
+  monitoringPoint   MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
+
+  baselineStatus        AlertBaselineStatus @default(LEARNING)
+  /// Sensor a que a baseline pertence: troca de sensor no ponto reinicia o aprendizado.
+  baselineSensorId      String?
+  learningCount         Int                 @default(0)
+  baselineValue         Float?
+  /// 24 medianas por hora UTC (bins com poucas amostras já recebem a mediana global).
+  baselineProfile       Float[]
+  baselineBinCounts     Int[]
+  baselineFrom          DateTime?           @db.Timestamptz(3)
+  baselineTo            DateTime?           @db.Timestamptz(3)
+  baselineEstablishedAt DateTime?           @db.Timestamptz(3)
+
+  aboveA1Streak    Int @default(0)
+  aboveA2Streak    Int @default(0)
+  belowClearStreak Int @default(0)
+
+  suppressedUntil DateTime? @db.Timestamptz(3)
+
+  /// Fim do último ciclo avaliado — a fonte da regra de presença.
+  lastSeenAt           DateTime? @db.Timestamptz(3)
+  /// Marca d'água: início do último ciclo aplicado em ordem. Ciclo mais antigo é OUT_OF_ORDER.
+  lastEvaluatedAt      DateTime? @db.Timestamptz(3)
+  lastEvaluatedCycleId String?
+  lastValue            Float?
+  lastMeasure          Float?
+
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  @@unique([ruleId, monitoringPointId])
+  @@index([monitoringPointId])
+  @@map("alert_rule_states")
+}
+
+/// O episódio. Leituras seguintes que continuam acima do limiar ATUALIZAM esta linha — nunca
+/// criam outra. `activeKey` é única enquanto o episódio está ativo e nula depois: é o dedup
+/// garantido pelo banco, sem índice parcial.
+model AlertOccurrence {
+  id String @id @default(uuid())
+
+  ruleId String
+  rule   AlertRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+
+  type  AlertType
+  scope AlertScope @default(POINT)
+  level AlertLevel
+  state AlertState @default(ACTIVE)
+
+  activeKey String? @unique @db.VarChar(128)
+
+  /// FKs anuláveis + snapshots: o histórico sobrevive à exclusão do cadastro, e o escopo de
+  /// frota não pertence a máquina alguma.
+  machineId           String?
+  machine             Machine?         @relation(fields: [machineId], references: [id], onDelete: SetNull)
+  machineName         String?
+  monitoringPointId   String?
+  monitoringPoint     MonitoringPoint? @relation(fields: [monitoringPointId], references: [id], onDelete: SetNull)
+  monitoringPointName String?
+  sensorId            String?
+  sensor              Sensor?          @relation(fields: [sensorId], references: [id], onDelete: SetNull)
+  sensorSerialNumber  String?
+
+  openedAt        DateTime @db.Timestamptz(3)
+  lastEvaluatedAt DateTime @db.Timestamptz(3)
+
+  /// Reconhecimento humano — ortogonal ao estado. Escalar o nível limpa o reconhecimento.
+  acknowledgedAt      DateTime?   @db.Timestamptz(3)
+  acknowledgedById    String?
+  acknowledgedBy      User?       @relation(fields: [acknowledgedById], references: [id], onDelete: SetNull)
+  acknowledgedByEmail String?
+  acknowledgedLevel   AlertLevel?
+  acknowledgeNote     String?
+
+  resolvedAt       DateTime?              @db.Timestamptz(3)
+  resolutionReason AlertResolutionReason?
+
+  metric        String             @db.VarChar(64)
+  unit          String             @db.VarChar(16)
+  thresholdMode AlertThresholdMode
+
+  /// Evidência do disparo: o ciclo que completou o gatilho consecutivo.
+  triggerCycleId         String?
+  triggerAt              DateTime @db.Timestamptz(3)
+  triggerValue           Float?
+  triggerBaseline        Float?
+  triggerMeasure         Float?
+  triggerThreshold       Float
+  consecutiveEvaluations Int
+
+  peakValue   Float?
+  peakMeasure Float?
+  peakAt      DateTime? @db.Timestamptz(3)
+  peakCycleId String?
+
+  lastValue   Float?
+  lastMeasure Float?
+  lastCycleId String?
+
+  /// Pontos cobertos por um episódio de frota.
+  affectedCount Int?
+
+  policyVersion Int
+
+  events AlertEvent[]
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  @@index([state, openedAt(sort: Desc)])
+  @@index([machineId, state])
+  @@index([monitoringPointId, state])
+  @@index([sensorId, state])
+  @@index([type, state])
+  @@index([openedAt])
+  @@map("alert_occurrences")
+}
+
+/// Transições do episódio — o mínimo para responder "o que aconteceu com este alerta".
+model AlertEvent {
+  id String @id @default(uuid())
+
+  alertId String
+  alert   AlertOccurrence @relation(fields: [alertId], references: [id], onDelete: Cascade)
+
+  type      AlertEventType
+  fromState AlertState?
+  toState   AlertState
+  fromLevel AlertLevel?
+  toLevel   AlertLevel?
+
+  occurredAt DateTime @db.Timestamptz(3)
+  cycleId    String?
+  value      Float?
+  measure    Float?
+  threshold  Float?
+
+  actorUserId String?
+  actor       User?   @relation(fields: [actorUserId], references: [id], onDelete: SetNull)
+  actorEmail  String?
+  note        String?
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([alertId, occurredAt])
+  @@map("alert_events")
+}

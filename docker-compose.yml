@@ -1,0 +1,22 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: dynamox-challenge-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-dynamox}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dynamox}
+      POSTGRES_DB: ${POSTGRES_DB:-dynamox_challenge}
+    ports:
+      - '${POSTGRES_PORT:-5432}:5432'
+    volumes:
+      - dynamox_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-dynamox} -d ${POSTGRES_DB:-dynamox_challenge}']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  dynamox_pgdata:

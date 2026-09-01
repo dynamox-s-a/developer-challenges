@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "composite": false,
+    "types": ["node", "jest"],
+    // Em build, as dependências de workspace são resolvidas pelo node_modules (dist + .d.ts).
+    // Os aliases de fonte do tsconfig.base servem apenas a ferramentas de bundle e testes.
+    "paths": {}
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts"]
+}

@@ -1,0 +1,63 @@
+{
+  "name": "dynamox-challenge",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Desafio Full-Stack Dynamox — monorepo Nx com API NestJS, frontend React e telemetria de séries temporais",
+  "workspaces": [
+    "apps/*",
+    "libs/*",
+    "simulation/*"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "db:up": "docker compose up -d db",
+    "db:down": "docker compose down",
+    "db:reset": "docker compose down -v && docker compose up -d --wait db && npm run prisma:deploy && npm run seed",
+    "db:logs": "docker compose logs -f db",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:deploy": "prisma migrate deploy",
+    "prisma:studio": "prisma studio",
+    "seed": "tsx prisma/seed.ts",
+    "contracts:validate": "tsx tools/validate-contracts.ts",
+    "build": "nx run-many -t build",
+    "lint": "nx run-many -t lint",
+    "typecheck": "nx run-many -t typecheck",
+    "test": "nx run-many -t test",
+    "predev:api": "npx nx run-many -t build --projects @dynamox/contracts,@dynamox/domain",
+    "dev:api": "npm run dev -w @dynamox/api",
+    "dev:web": "npm run dev -w @dynamox/web",
+    "analysis:inventory": "tsx tools/extract-endpoint-inventory.ts",
+    "perf:latency": "tsx tools/measure-latency.ts",
+    "twin:cycle": "tsx simulation/sensor-twin/src/cli.ts generate",
+    "twin:ingest": "tsx simulation/sensor-twin/src/cli.ts ingest",
+    "twin:integration": "npm run test:integration -w @dynamox/sensor-twin",
+    "twin:ros": "npm run test:ros -w @dynamox/sensor-twin",
+    "plant": "tsx simulation/sensor-twin/src/cli.ts plant",
+    "twin:history": "tsx simulation/sensor-twin/src/cli.ts plant history",
+    "history:purge": "tsx tools/purge-history.ts",
+    "prealerts:backfill": "npx nx run-many -t build --projects @dynamox/domain",
+    "alerts:backfill": "tsx apps/api/src/alerts/backfill.cli.ts",
+    "prealerts:validate": "npx nx run-many -t build --projects @dynamox/domain",
+    "alerts:validate": "tsx apps/api/src/alerts/validate.cli.ts",
+    "alerts:seed-history": "tsx prisma/operational-history.ts",
+    "demo:prepare": "tsx tools/demo-prepare.ts",
+    "demo:verify": "tsx tools/demo-verify.ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.15.0",
+    "@types/node": "^22.9.0",
+    "eslint": "^9.15.0",
+    "nx": "^20.2.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.15.0"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "prisma": "^5.22.0"
+  }
+}

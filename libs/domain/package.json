@@ -1,0 +1,14 @@
+{
+  "name": "@dynamox/domain",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Regras e vocabulário de domínio compartilhados entre API e frontend. Sem dependência de Node ou de browser.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src --max-warnings 0",
+    "test": "echo \"@dynamox/domain: coberto pelos testes de apps/api\" && exit 0"
+  }
+}
