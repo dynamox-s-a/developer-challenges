@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Simple "?" mark centered, representing the quiz theme -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,30 C44,30 38,36 38,45 L48,45 C48,40 50,38 54,38 C58,38 61,40 61,44 C61,48 58,50 54,54 C50,58 49,61 49,68 L59,68 C59,63 60,61 63,58 C68,53 71,49 71,43 C71,35 64,30 54,30 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M49,76 L59,76 L59,86 L49,86 Z" />
+</vector>

@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>LongMethod:QuizScreen.kt$@Composable private fun QuestionContent( state: QuizUiState.InProgress, onOptionSelected: (String) -&gt; Unit, onSubmit: () -&gt; Unit, onNext: (QuizUiState.InProgress) -&gt; Unit, )</ID>
+    <ID>ReturnCount:QuizViewModel.kt$QuizViewModel$fun onSubmitAnswer()</ID>
+    <ID>SwallowedException:ApiErrorMapper.kt$e: IOException</ID>
+  </CurrentIssues>
+</SmellBaseline>

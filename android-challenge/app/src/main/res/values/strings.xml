@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Quiz Dynamox</string>
+
+    <!-- Name entry screen -->
+    <string name="name_entry_title">Bem-vindo(a) ao Quiz!</string>
+    <string name="name_entry_subtitle">Digite seu nome ou apelido para começar</string>
+    <string name="name_entry_label">Nome ou apelido</string>
+    <string name="name_entry_start_button">Iniciar quiz</string>
+    <string name="name_entry_history_button">Ver histórico de pontuações</string>
+
+    <!-- Quiz screen -->
+    <string name="quiz_question_counter">Pergunta %1$d de %2$d</string>
+    <string name="quiz_submit_button">Confirmar resposta</string>
+    <string name="quiz_next_button">Próxima pergunta</string>
+    <string name="quiz_finish_button">Ver resultado</string>
+    <string name="quiz_correct_feedback">Você acertou! 🎉</string>
+    <string name="quiz_incorrect_feedback">Não foi dessa vez.</string>
+    <string name="quiz_correct_icon_description">Resposta correta</string>
+    <string name="quiz_incorrect_icon_description">Resposta incorreta</string>
+    <string name="quiz_loading_question">Carregando pergunta…</string>
+
+    <!-- Result screen -->
+    <string name="result_title">Quiz finalizado!</string>
+    <string name="result_score">%1$s, você acertou %2$d de %3$d perguntas.</string>
+    <string name="result_restart_button">Jogar novamente</string>
+    <string name="result_change_player_button">Trocar de jogador</string>
+    <string name="result_history_button">Ver histórico de pontuações</string>
+    <string name="result_share_button">Compartilhar pontuação</string>
+    <string name="result_share_chooser_title">Compartilhar pontuação via</string>
+    <string name="result_share_message">%1$s acertou %2$d de %3$d perguntas no Quiz Dynamox! 🎉</string>
+    <string name="result_share_icon_description">Compartilhar</string>
+
+    <!-- History screen -->
+    <string name="history_title">Histórico de pontuações</string>
+    <string name="history_empty_state">Nenhuma pontuação registrada ainda. Jogue uma partida para aparecer aqui!</string>
+    <string name="history_score_format">%1$d/%2$d</string>
+    <string name="history_back_description">Voltar</string>
+
+    <!-- Errors -->
+    <string name="error_network">Sem conexão com a internet. Verifique sua rede e tente novamente.</string>
+    <string name="error_bad_request">Não foi possível processar a solicitação.</string>
+    <string name="error_not_found">A pergunta não foi encontrada no servidor.</string>
+    <string name="error_server">O servidor encontrou um problema. Tente novamente em instantes.</string>
+    <string name="error_unknown">Ocorreu um erro inesperado.</string>
+    <string name="error_retry_button">Tentar novamente</string>
+</resources>

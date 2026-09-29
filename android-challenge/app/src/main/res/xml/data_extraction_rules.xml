@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Android 12+ (API 31+) Auto Backup rules: what gets included in the automatic cloud backup
+  to the user's Google account, and in the on-device "copy my data" transfer between devices.
+
+  We explicitly (rather than relying on the default "back up almost everything" behavior)
+  include only the Room database, which is where player names and quiz scores live, so a
+  score history survives the app being uninstalled and reinstalled (same device restore, or
+  a new device signed into the same Google account). This addresses user story 3.2 (wanting
+  to visualize the score of every user at all times) beyond just a single install.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <include domain="database" path="." />
+    </cloud-backup>
+    <device-transfer>
+        <include domain="database" path="." />
+    </device-transfer>
+</data-extraction-rules>
