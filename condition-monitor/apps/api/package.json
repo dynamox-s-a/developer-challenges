@@ -1,0 +1,157 @@
+{
+  "name": "@condition-monitor/api",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "name": "api",
+    "targets": {
+      "prune-lockfile": {
+        "dependsOn": [
+          "build"
+        ],
+        "cache": true,
+        "executor": "@nx/js:prune-lockfile",
+        "outputs": [
+          "{workspaceRoot}/apps/api/dist/package.json",
+          "{workspaceRoot}/apps/api/dist/package-lock.json"
+        ],
+        "options": {
+          "buildTarget": "build"
+        }
+      },
+      "copy-workspace-modules": {
+        "dependsOn": [
+          "build"
+        ],
+        "cache": true,
+        "outputs": [
+          "{workspaceRoot}/apps/api/dist/workspace_modules"
+        ],
+        "executor": "@nx/js:copy-workspace-modules",
+        "options": {
+          "buildTarget": "build"
+        }
+      },
+      "prune": {
+        "dependsOn": [
+          "prune-lockfile",
+          "copy-workspace-modules"
+        ],
+        "executor": "nx:noop"
+      },
+      "serve": {
+        "continuous": true,
+        "executor": "@nx/js:node",
+        "defaultConfiguration": "development",
+        "dependsOn": [
+          "build"
+        ],
+        "options": {
+          "buildTarget": "api:build",
+          "runBuildTargetDependencies": false
+        },
+        "configurations": {
+          "development": {
+            "buildTarget": "api:build:development"
+          },
+          "production": {
+            "buildTarget": "api:build:production"
+          }
+        }
+      },
+      "prisma-generate": {
+        "executor": "nx:run-commands",
+        "cache": true,
+        "inputs": [
+          "{projectRoot}/prisma/schema.prisma"
+        ],
+        "outputs": [
+          "{projectRoot}/src/generated/prisma"
+        ],
+        "options": {
+          "command": "prisma generate",
+          "cwd": "{projectRoot}"
+        }
+      },
+      "prisma-migration": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node prisma/new-migration.mjs",
+          "cwd": "{projectRoot}"
+        }
+      },
+      "prisma-deploy": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "prisma migrate deploy",
+          "cwd": "{projectRoot}"
+        }
+      },
+      "build": {
+        "dependsOn": [
+          "^build",
+          "prisma-generate"
+        ]
+      },
+      "typecheck": {
+        "dependsOn": [
+          "^build",
+          "prisma-generate"
+        ]
+      },
+      "test": {
+        "dependsOn": [
+          "^build",
+          "prisma-generate"
+        ]
+      },
+      "lint": {
+        "dependsOn": [
+          "prisma-generate"
+        ]
+      },
+      "test-integration": {
+        "executor": "@nx/jest:jest",
+        "dependsOn": [
+          "^build",
+          "prisma-generate"
+        ],
+        "options": {
+          "jestConfig": "{projectRoot}/jest.integration.config.cts",
+          "runInBand": true
+        }
+      },
+      "prisma-seed": {
+        "executor": "nx:run-commands",
+        "dependsOn": [
+          "build"
+        ],
+        "options": {
+          "command": "prisma db seed",
+          "cwd": "{projectRoot}"
+        }
+      }
+    },
+    "tags": [
+      "type:app"
+    ]
+  },
+  "dependencies": {
+    "@condition-monitor/shared": "*",
+    "@nestjs/common": "11.2.6",
+    "@nestjs/core": "11.2.6",
+    "@nestjs/jwt": "11.0.2",
+    "@nestjs/platform-express": "11.2.6",
+    "@prisma/adapter-pg": "7.10.0",
+    "@prisma/client": "7.10.0",
+    "bcrypt": "6.0.0",
+    "cookie-parser": "1.4.7",
+    "nestjs-zod": "5.5.0",
+    "reflect-metadata": "0.2.2",
+    "rxjs": "7.8.1",
+    "tslib": "2.8.1"
+  },
+  "devDependencies": {
+    "@nestjs/testing": "11.2.6"
+  }
+}

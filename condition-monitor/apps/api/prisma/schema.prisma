@@ -1,0 +1,201 @@
+// Data model of the API (docs/domain-model.md). Tables arrive with the feature slices,
+// one migration per change. What Prisma cannot express (CHECK constraints, partial and
+// NULLS NOT DISTINCT indexes) is written as SQL in the migrations (ADR 0006).
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Tables and columns are snake_case, the PostgreSQL convention, so hand-written SQL in
+// the migrations never needs quoted identifiers. Prisma keeps camelCase in the code.
+
+/// The fixed user of assumption A1, created by the seed. Every other record belongs to
+/// a user (A4). The email is stored lowercase, so one address cannot exist twice with
+/// different casing.
+model User {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  sectors      Sector[]
+
+  @@map("users")
+}
+
+/// A physical area of the plant where machines are installed, in a single level
+/// (assumption B9). The code is unique across the system, since it prefixes machine tags
+/// (B10). A user who still owns sectors cannot be deleted: nothing cascades silently.
+model Sector {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ownerId   String    @map("owner_id") @db.Uuid
+  code      String    @unique
+  name      String
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  owner     User      @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+  machines  Machine[]
+
+  @@index([ownerId])
+  @@map("sectors")
+}
+
+/// Declared in alphabetical order on purpose: PostgreSQL sorts an enum by declaration
+/// order, so sorting machines by type then reads Fan before Pump.
+enum MachineType {
+  FAN
+  PUMP
+
+  @@map("machine_type")
+}
+
+/// A pump or a fan installed in a sector. Its tag, such as DRY-FAN-01, is built from the
+/// sector code, type and number and never stored (B10); the unique index on those three
+/// columns makes the tag unique. The name is free text and may repeat (B2). A sector that
+/// still has machines cannot be deleted (B9).
+model Machine {
+  id               String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sectorId         String            @map("sector_id") @db.Uuid
+  type             MachineType
+  number           Int
+  name             String
+  createdAt        DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt        DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
+  sector           Sector            @relation(fields: [sectorId], references: [id], onDelete: Restrict)
+  monitoringPoints MonitoringPoint[]
+
+  @@unique([sectorId, type, number])
+  /// Target of the composite foreign key that copies the type into monitoring points.
+  @@unique([id, type])
+  @@map("machines")
+}
+
+/// Installation positions of both machine types (B11), declared in power-flow order so
+/// sorting by position walks each machine from the motor's free end; OTHER comes last.
+enum Location {
+  PUMP_MOTOR_NDE
+  PUMP_MOTOR_DE
+  PUMP_COUPLING_SIDE
+  PUMP_IMPELLER_SIDE
+  PUMP_MECHANICAL_SEAL
+  FAN_MOTOR_NDE
+  FAN_MOTOR_DE
+  FAN_SHAFT_DE
+  FAN_SHAFT_NDE
+  OTHER
+
+  @@map("location")
+}
+
+/// A position on a machine where a sensor is mounted. machineType is a copy of the
+/// machine's type, kept equal by the composite foreign key with ON UPDATE CASCADE, so a
+/// CHECK on this row can require the position to belong to the type (domain model,
+/// "Rules that span tables"). The name is free text and may repeat (B2).
+model MonitoringPoint {
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  machineId   String       @map("machine_id") @db.Uuid
+  machineType MachineType  @map("machine_type")
+  location    Location
+  name        String
+  createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  machine     Machine      @relation(fields: [machineId, machineType], references: [id, type], onDelete: Cascade, onUpdate: Cascade)
+  sensor      Sensor?
+  timeSeries  TimeSeries[]
+
+  /// Target of the composite foreign key that copies the type into the sensor.
+  @@unique([id, machineType])
+  @@index([machineId])
+  @@map("monitoring_points")
+}
+
+/// Declared in alphabetical order of their labels (HF+, TcAg, TcAs), since PostgreSQL
+/// sorts an enum by declaration order.
+enum SensorModel {
+  HF_PLUS
+  TC_AG
+  TC_AS
+
+  @@map("sensor_model")
+}
+
+/// The sensor mounted at a monitoring point, at most one per point (B3), identified by
+/// its serial number (B4). machineType is a copy of the point's copy, kept equal by the
+/// composite foreign key, so a CHECK on this row enforces the challenge rule: no TcAg or
+/// TcAs sensor on a pump (B15).
+model Sensor {
+  id                String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  monitoringPointId String          @unique @map("monitoring_point_id") @db.Uuid
+  machineType       MachineType     @map("machine_type")
+  serialNumber      String          @unique @map("serial_number")
+  model             SensorModel
+  createdAt         DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime        @updatedAt @map("updated_at") @db.Timestamptz(3)
+  monitoringPoint   MonitoringPoint @relation(fields: [monitoringPointId, machineType], references: [id, machineType], onDelete: Cascade, onUpdate: Cascade)
+
+  /// Required by Prisma for a one-to-one relation over both columns.
+  @@unique([monitoringPointId, machineType])
+  @@map("sensors")
+}
+
+/// Telemetry quantities, each with a fixed unit kept in the shared library (C10).
+/// Declared in the order the monitoring point page lists them.
+enum Quantity {
+  ACCELERATION_RMS
+  VELOCITY_RMS
+  TEMPERATURE
+
+  @@map("quantity")
+}
+
+/// Machine directions: horizontal, vertical, axial (B13).
+enum Axis {
+  H
+  V
+  A
+
+  @@map("axis")
+}
+
+/// A series of readings at a monitoring point, for one quantity and axis (C1). It
+/// belongs to the point, not to the sensor, so replacing a sensor keeps the history (C2).
+/// Temperature has no axis and vibration has one, a CHECK in the migration (C10).
+/// One series per point, quantity and axis: a unique index with NULLS NOT DISTINCT,
+/// written in the migration, since Prisma cannot declare it and two temperature series
+/// would otherwise not collide on their null axes.
+model TimeSeries {
+  id                String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  monitoringPointId String          @map("monitoring_point_id") @db.Uuid
+  quantity          Quantity
+  axis              Axis?
+  /// Readings the series holds, kept by triggers on readings in the migration, so the
+  /// overview and the series limit (C8) do not count up to millions of rows each time.
+  readingCount      Int             @default(0) @map("reading_count")
+  createdAt         DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime        @updatedAt @map("updated_at") @db.Timestamptz(3)
+  monitoringPoint   MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
+  readings          Reading[]
+
+  @@map("time_series")
+}
+
+/// One value of a series at one instant. Series and timestamp identify it, so it has no
+/// id of its own: an extra key would cost space in the largest table for no answer. The
+/// primary key refuses a second reading at the same instant (C5) and serves the reads of
+/// a series over a time interval. Timestamps keep milliseconds, the precision JavaScript
+/// dates carry. The value is finite, a CHECK in the migration (C4).
+model Reading {
+  seriesId  String     @map("series_id") @db.Uuid
+  timestamp DateTime   @db.Timestamptz(3)
+  value     Float
+  series    TimeSeries @relation(fields: [seriesId], references: [id], onDelete: Cascade)
+
+  @@id([seriesId, timestamp])
+  @@map("readings")
+}

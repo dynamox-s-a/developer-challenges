@@ -1,0 +1,25 @@
+{
+  "name": "@condition-monitor/web-e2e",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "name": "web-e2e",
+    "projectType": "application",
+    "implicitDependencies": [
+      "api",
+      "web"
+    ],
+    "targets": {
+      "e2e": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node apps/web-e2e/run.mjs",
+          "cwd": "{workspaceRoot}"
+        }
+      }
+    },
+    "tags": [
+      "type:app"
+    ]
+  }
+}

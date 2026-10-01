@@ -1,0 +1,42 @@
+# compiled output
+dist
+tmp
+out-tsc
+
+# dependencies
+node_modules
+
+# environment
+.env
+
+# IDEs and editors
+/.idea
+.vscode/*
+!.vscode/extensions.json
+
+# misc
+/coverage
+npm-debug.log
+
+# system files
+.DS_Store
+Thumbs.db
+
+# Nx
+.nx/cache
+.nx/workspace-data
+
+vitest.config.*.timestamp*
+test-output
+
+# Prisma client, generated from apps/api/prisma/schema.prisma
+apps/api/src/generated
+
+vite.config.*.timestamp*
+# Load test output: the published numbers live in docs/performance.md
+load-tests/results
+
+# Cypress end-to-end output
+apps/web-e2e/screenshots
+apps/web-e2e/videos
+apps/web-e2e/out-tsc

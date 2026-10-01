@@ -1,0 +1,140 @@
+# Continuous integration of the condition-monitor project. GitHub only reads workflows
+# from the repository root, so this file lives here while the project lives in its folder.
+name: condition-monitor
+
+on:
+  push:
+    paths:
+      - 'condition-monitor/**'
+      - '.github/workflows/condition-monitor.yml'
+  pull_request:
+    paths:
+      - 'condition-monitor/**'
+      - '.github/workflows/condition-monitor.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: condition-monitor-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: condition-monitor
+
+    # Integration tests need a real PostgreSQL (ADR 0010). CI only needs the test
+    # database, so the service creates it directly.
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: condition_monitor
+          POSTGRES_PASSWORD: condition_monitor
+          POSTGRES_DB: condition_monitor_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U condition_monitor -d condition_monitor_test"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgresql://condition_monitor:condition_monitor@localhost:5432/condition_monitor_test
+      DATABASE_URL_TEST: postgresql://condition_monitor:condition_monitor@localhost:5432/condition_monitor_test
+      NX_NO_CLOUD: 'true'
+      # This job lints, type-checks, tests and builds; it does not run Cypress, so the
+      # Cypress binary (a large Electron download) is not fetched. The e2e job fetches it.
+      CYPRESS_INSTALL_BINARY: '0'
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: condition-monitor/.nvmrc
+          cache: npm
+          cache-dependency-path: condition-monitor/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check formatting
+        run: npm run format:check
+
+      # Every project on every run: affected-only runs need a main branch with CI
+      # history to compare against, and this branch has none.
+      - name: Lint, test, type-check and build
+        run: npx nx run-many -t lint test typecheck build
+
+      - name: Integration tests
+        run: npx nx run-many -t test-integration
+
+  # Runs the Cypress end-to-end suite against the built application and a database of its
+  # own. Separate from `check`, since it needs the Cypress binary and running servers.
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: condition-monitor
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: condition_monitor
+          POSTGRES_PASSWORD: condition_monitor
+          POSTGRES_DB: condition_monitor
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U condition_monitor -d condition_monitor"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+
+    env:
+      NX_NO_CLOUD: 'true'
+      # Prisma reads this when it generates the client, before the run script sets its own
+      # for the e2e database (the same value). Without it, `prisma generate` fails.
+      DATABASE_URL: postgresql://condition_monitor:condition_monitor@localhost:5432/condition_monitor_e2e
+      # The run script builds the database URL from these and localhost:5432.
+      POSTGRES_USER: condition_monitor
+      POSTGRES_PASSWORD: condition_monitor
+      POSTGRES_PORT: '5432'
+      # The API refuses to start without a secret of at least 32 characters (ADR 0008);
+      # a throwaway one, since this database never leaves the runner.
+      JWT_SECRET: end-to-end-ci-secret-not-for-production-use
+      SEED_USER_EMAIL: operator@condition-monitor.test
+      SEED_USER_PASSWORD: Monitor-2026-dev
+      E2E_USER2_EMAIL: inspector@condition-monitor.test
+      E2E_USER2_PASSWORD: Inspector-2026-dev
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: condition-monitor/.nvmrc
+          cache: npm
+          cache-dependency-path: condition-monitor/package-lock.json
+
+      # The Cypress binary is large; keep it between runs, keyed on the lockfile.
+      - name: Cache the Cypress binary
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-${{ runner.os }}-${{ hashFiles('condition-monitor/package-lock.json') }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Electron needs a display on Linux; xvfb provides a virtual one.
+      - name: End-to-end tests
+        run: xvfb-run --auto-servernum npm run e2e

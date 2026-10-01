@@ -1,0 +1,26 @@
+{
+  "name": "@condition-monitor/web",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "name": "web",
+    "tags": [
+      "type:app"
+    ]
+  },
+  "dependencies": {
+    "@condition-monitor/shared": "*",
+    "@emotion/react": "11.14.0",
+    "@emotion/styled": "11.14.1",
+    "@fontsource/roboto": "5.3.0",
+    "@hookform/resolvers": "5.9.1",
+    "@mui/icons-material": "5.18.0",
+    "@mui/material": "5.18.0",
+    "@reduxjs/toolkit": "2.13.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-hook-form": "7.89.0",
+    "react-redux": "9.3.0",
+    "react-router": "8.4.0"
+  }
+}

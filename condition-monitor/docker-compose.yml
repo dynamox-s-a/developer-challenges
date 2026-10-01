@@ -1,0 +1,26 @@
+# PostgreSQL for development and integration tests (ADR 0006, ADR 0010).
+# One container, two databases: the application database and a separate one for
+# integration tests, so tests never touch development data.
+services:
+  postgres:
+    image: postgres:16-alpine
+    # Comes back after a reboot or a Docker restart; `docker compose stop` still stops it
+    # for good, until the next `docker compose up`.
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-condition_monitor}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-condition_monitor}
+      POSTGRES_DB: ${POSTGRES_DB:-condition_monitor}
+    ports:
+      - '${POSTGRES_PORT:-5432}:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./docker/postgres:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  postgres-data:

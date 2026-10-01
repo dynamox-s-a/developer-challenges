@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "out-tsc/web-e2e",
+    "rootDir": ".",
+    "sourceMap": false,
+    "types": ["cypress", "node", "@testing-library/cypress"],
+    "noEmit": true
+  },
+  "include": ["src/**/*.ts", "cypress.config.ts"],
+  "exclude": ["out-tsc"]
+}

@@ -1,0 +1,10 @@
+dist
+coverage
+node_modules
+.nx
+package-lock.json
+
+# Hand-written documentation and diagram exports
+*.md
+docs/*.excalidraw
+docs/*.svg
