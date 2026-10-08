@@ -1,0 +1,3 @@
+# Hooks run from the git root; the Nx workspace lives in this folder.
+cd full-stack-challenge
+npx lint-staged

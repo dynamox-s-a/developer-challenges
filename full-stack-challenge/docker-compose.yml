@@ -1,0 +1,92 @@
+name: dynapredict
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: dynapredict
+      POSTGRES_PASSWORD: dynapredict
+      POSTGRES_DB: dynapredict
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U dynapredict -d dynapredict']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Ephemeral database for integration tests: data lives in tmpfs and is
+  # discarded whenever the container stops.
+  postgres-test:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: dynapredict
+      POSTGRES_PASSWORD: dynapredict
+      POSTGRES_DB: dynapredict_test
+    ports:
+      - '5433:5432'
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U dynapredict -d dynapredict_test']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Full stack for local runs and CI only; production uses Neon/Render/Vercel.
+  # The values below are dev-only and independent of any local .env. Host
+  # ports default to 3333/8080; override with API_PORT/WEB_PORT if taken.
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    environment:
+      DATABASE_URL: postgresql://dynapredict:dynapredict@postgres:5432/dynapredict
+      PORT: 3333
+      # development keeps the auth cookie SameSite=Lax without Secure, which
+      # browsers (Safari included) accept on http://localhost. production
+      # would demand HTTPS for SameSite=None (see config/auth.ts).
+      NODE_ENV: development
+      CORS_ORIGIN: http://localhost:${WEB_PORT:-8080}
+      AUTH_EMAIL: admin@dynapredict.com
+      # bcrypt of "dynapredict123"; $$ escapes compose interpolation.
+      AUTH_PASSWORD_HASH: $$2b$$10$$OdyYOmQp41oMSn1ArDiq8erLkv115W6DHECqimOH6S51brwLSBaCi
+      JWT_SECRET: local-compose-only-secret-do-not-use-in-production
+      JWT_EXPIRES_IN: 8h
+    ports:
+      - '${API_PORT:-3333}:3333'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # Same probe as the Dockerfile HEALTHCHECK, polled faster while starting
+    # so `web` doesn't wait a full interval after the API is up.
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'wget -q -O /dev/null http://127.0.0.1:3333/api/v1/health',
+        ]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
+      start_interval: 2s
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        # Read by the browser, not by the container: it reaches the API
+        # through the port published on the host.
+        VITE_API_URL: http://localhost:${API_PORT:-3333}/api/v1
+    ports:
+      - '${WEB_PORT:-8080}:8080'
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  postgres-data:

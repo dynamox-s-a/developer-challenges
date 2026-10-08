@@ -1,0 +1,5 @@
+# Hooks run from the git root; resolve the message file before entering the
+# Nx workspace, where commitlint and its config live.
+msg="$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
+cd full-stack-challenge
+npx --no -- commitlint --edit "$msg"

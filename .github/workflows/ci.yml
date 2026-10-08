@@ -1,0 +1,151 @@
+# CI for the Dynapredict full-stack challenge. The Nx workspace lives in
+# full-stack-challenge/, so every step runs there and only changes under it
+# (or to this file) trigger the workflow.
+name: CI
+
+on:
+  push:
+    branches: ['**']
+    paths:
+      - 'full-stack-challenge/**'
+      - '.github/workflows/ci.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'full-stack-challenge/**'
+      - '.github/workflows/ci.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read # nx-set-shas reads past workflow runs to find the affected base
+
+defaults:
+  run:
+    working-directory: full-stack-challenge
+
+env:
+  NX_DAEMON: false
+  NX_NO_CLOUD: true
+  # E2E runs in the cypress/included image, never on the runner (decisions #41).
+  CYPRESS_INSTALL_BINARY: 0
+
+jobs:
+  lint-typecheck:
+    name: Lint & typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # nx affected compares against the last green commit
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: full-stack-challenge/.nvmrc
+          cache: npm
+          cache-dependency-path: full-stack-challenge/package-lock.json
+
+      - uses: actions/cache@v6
+        with:
+          path: full-stack-challenge/.nx/cache
+          key: nx-lint-${{ runner.os }}-${{ hashFiles('full-stack-challenge/package-lock.json') }}-${{ github.sha }}
+          restore-keys: nx-lint-${{ runner.os }}-${{ hashFiles('full-stack-challenge/package-lock.json') }}-
+
+      - run: npm ci
+
+      - uses: nrwl/nx-set-shas@v5
+        with:
+          working-directory: full-stack-challenge
+
+      # The Prisma client is generated into apps/api/src/generated (gitignored).
+      - run: npx prisma generate
+
+      - run: npm run format:check
+      - run: npx nx affected -t lint typecheck
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: full-stack-challenge/.nvmrc
+          cache: npm
+          cache-dependency-path: full-stack-challenge/package-lock.json
+
+      - uses: actions/cache@v6
+        with:
+          path: full-stack-challenge/.nx/cache
+          key: nx-build-${{ runner.os }}-${{ hashFiles('full-stack-challenge/package-lock.json') }}-${{ github.sha }}
+          restore-keys: nx-build-${{ runner.os }}-${{ hashFiles('full-stack-challenge/package-lock.json') }}-
+
+      - run: npm ci
+
+      - uses: nrwl/nx-set-shas@v5
+        with:
+          working-directory: full-stack-challenge
+
+      - run: npx prisma generate
+      - run: npx nx affected -t build
+
+  test:
+    name: Test & coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: full-stack-challenge/.nvmrc
+          cache: npm
+          cache-dependency-path: full-stack-challenge/package-lock.json
+
+      - run: npm ci
+      - run: npx prisma generate
+
+      # The same ephemeral database used locally (tmpfs, port 5433). The API's
+      # vitest.global-setup.ts applies the migrations before the first test.
+      - run: docker compose up -d --wait postgres-test
+
+      # Every project, not just affected ones: SonarCloud needs the full lcov
+      # on each run. The coverage thresholds in each vitest config gate here.
+      - run: npx nx run-many -t test --coverage --skip-nx-cache
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: coverage
+          path: full-stack-challenge/coverage/apps/*/lcov.info
+          if-no-files-found: error
+          retention-days: 7
+
+  sonarcloud:
+    name: SonarCloud
+    needs: test
+    runs-on: ubuntu-latest
+    # Forked PRs don't receive secrets, so the scan would always fail there.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # SonarCloud needs full history for blame and new-code detection
+
+      # Restores coverage/apps/{api,web}/lcov.info, the paths that
+      # sonar-project.properties reads.
+      - uses: actions/download-artifact@v8
+        with:
+          name: coverage
+          path: full-stack-challenge/coverage/apps
+
+      - uses: SonarSource/sonarqube-scan-action@v8
+        with:
+          projectBaseDir: full-stack-challenge
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

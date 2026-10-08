@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx nx test api *)",
+      "Bash(npx nx run-many -t lint typecheck *)",
+      "Bash(npx nx run-many -t test *)",
+      "Bash(npm run -s format:check *)",
+      "Bash(pnpm test *)",
+      "Bash(pnpm lint *)",
+      "Bash(npx vitest run *)",
+      "Bash(npx nx format:check *)",
+      "Bash(npx tsc --noEmit *)",
+      "Bash(npx prettier --check *)",
+      "Bash(docker compose ps *)",
+      "Bash(docker compose logs *)"
+    ]
+  }
+}

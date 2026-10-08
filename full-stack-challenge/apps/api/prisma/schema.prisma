@@ -1,0 +1,70 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Enum values are declared in alphabetical order on purpose: PostgreSQL sorts
+// enums by declaration order, and the listings sort by these columns.
+enum MachineType {
+  Fan
+  Pump
+}
+
+// "HF+" is not a valid Prisma identifier; shared-types maps HFPlus <-> "HF+".
+enum SensorModel {
+  HFPlus
+  TcAg
+  TcAs
+}
+
+model Machine {
+  id               String            @id @default(uuid())
+  name             String
+  type             MachineType
+  monitoringPoints MonitoringPoint[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  @@index([type])
+}
+
+model MonitoringPoint {
+  id        String   @id @default(uuid())
+  name      String
+  machineId String
+  machine   Machine  @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  sensor    Sensor?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([machineId])
+}
+
+model Sensor {
+  id                String          @id @default(uuid())
+  serialNumber      String          @unique
+  model             SensorModel
+  monitoringPointId String          @unique
+  monitoringPoint   MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
+  readings          Reading[]
+  createdAt         DateTime        @default(now())
+
+  @@index([model])
+}
+
+model Reading {
+  id        BigInt   @id @default(autoincrement())
+  sensorId  String
+  sensor    Sensor   @relation(fields: [sensorId], references: [id], onDelete: Cascade)
+  timestamp DateTime
+  value     Float
+
+  // One reading per sensor and instant: re-uploading a batch is idempotent
+  // (createMany skips duplicates). The unique index also serves range queries.
+  @@unique([sensorId, timestamp])
+}

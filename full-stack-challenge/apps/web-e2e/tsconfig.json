@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "lib": ["es2022", "dom"],
+    "types": ["cypress", "node", "@testing-library/cypress"],
+    "noEmit": true,
+    "sourceMap": false
+  },
+  "include": ["cypress.config.ts", "cypress/**/*.ts"]
+}

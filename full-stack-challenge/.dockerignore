@@ -1,0 +1,12 @@
+**/node_modules
+dist
+tmp
+coverage
+.nx
+.git
+.vscode
+.env
+.env.*
+!.env.example
+apps/api/src/generated
+**/*.log

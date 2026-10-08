@@ -1,0 +1,51 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+build/
+tmp/
+out-tsc/
+coverage/
+
+# env
+.env
+.env.*
+!.env.example
+
+# logs
+*.log
+
+# Nx
+.nx/cache
+.nx/workspace-data
+.nx/polygraph
+.nx/self-healing
+.nx/migrate-runs
+
+# IDE / OS
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+
+# Claude Code
+.claude/worktrees
+.claude/settings.local.json
+
+# Cypress
+cypress/videos/
+cypress/screenshots/
+
+# Planning docs (local only)
+PLAN.md
+TASKS.md
+decisions.md
+
+vitest.config.*.timestamp*
+
+vite.config.*.timestamp*
+
+# Prisma generated client
+apps/api/src/generated/

@@ -1,0 +1,30 @@
+# Weekly dependency updates for the full-stack challenge workspace. Minor and
+# patch bumps are grouped into one PR per ecosystem to keep the noise down;
+# majors arrive one by one, since they usually need code changes.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /full-stack-challenge
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      npm-minor-and-patch:
+        update-types: [minor, patch]
+    ignore:
+      # MUI 5 is a challenge requirement.
+      - dependency-name: "@mui/*"
+        update-types: [version-update:semver-major]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: ci
+    groups:
+      actions:
+        patterns: ["*"]

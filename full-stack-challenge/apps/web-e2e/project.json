@@ -1,0 +1,27 @@
+{
+  "name": "web-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/web-e2e/cypress",
+  "implicitDependencies": ["web"],
+  "tags": [],
+  "targets": {
+    "e2e": {
+      "// note": "Runs against the compose stack (`docker compose up -d --wait api web`), with Cypress in its own container so the host needs no Cypress binary or GUI libs. WEB_PORT/API_PORT match the compose overrides.",
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "cwd": "{workspaceRoot}",
+        "command": "docker run --rm --network host -e NO_COLOR=1 -e CYPRESS_VERIFY_TIMEOUT=120000 --user \"$(id -u):$(id -g)\" -e HOME=/tmp -e CYPRESS_BASE_URL=http://localhost:${WEB_PORT:-8080} -e CYPRESS_API_URL=http://localhost:${API_PORT:-3333}/api/v1 -v \"$PWD\":/workspace -w /workspace/apps/web-e2e cypress/included:15.21.1"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "inputs": ["default"],
+      "options": {
+        "command": "tsc -p apps/web-e2e/tsconfig.json --noEmit"
+      }
+    }
+  }
+}
