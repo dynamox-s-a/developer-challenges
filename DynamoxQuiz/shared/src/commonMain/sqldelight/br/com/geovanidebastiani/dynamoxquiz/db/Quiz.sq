@@ -1,0 +1,25 @@
+CREATE TABLE Quiz(
+   id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+   playerNickname TEXT NOT NULL,
+   amountCorrectAnswers INTEGER NOT NULL,
+   amountQuestions INTEGER NOT NULL,
+   createdAt INTEGER NOT NULL
+);
+
+CREATE INDEX quiz_created_at_idx ON Quiz(createdAt);
+CREATE INDEX quiz_player_nickname_idx ON Quiz(playerNickname);
+
+insertQuiz:
+INSERT INTO
+    Quiz(playerNickname, amountCorrectAnswers, amountQuestions, createdAt)
+VALUES
+    ( ?, ?, ?, ?);
+
+queryAllQuiz:
+SELECT Quiz.* FROM Quiz ORDER BY createdAt DESC;
+
+lastInsertRowId:
+SELECT last_insert_rowid();
+
+fetchQuizById:
+SELECT id, playerNickname, amountQuestions, amountCorrectAnswers, createdAt FROM Quiz WHERE id = ?;

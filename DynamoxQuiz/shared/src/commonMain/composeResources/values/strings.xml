@@ -1,0 +1,20 @@
+<resources>
+    <string name="player_nickname_screen_enter_your_nickname">Enter Your Nickname</string>
+    <string name="player_nickname_screen_start_quiz">Start Quiz</string>
+    <string name="error_bad_request">Something went wrong with your request. Please check your input and try again.</string>
+    <string name="error_not_found">The requested resource could not be found.</string>
+    <string name="error_no_internet">No internet connection. Please check your network and try again.</string>
+    <string name="error_server">Our servers are having trouble right now. Please try again later.</string>
+    <string name="error_serialization">We encountered an issue processing the data. Please try again.</string>
+    <string name="error_unknown">An unexpected error occurred. Please try again.</string>
+    <string name="quiz_screen_finish_screen">Finish Screen</string>
+    <string name="quiz_screen_next_question">Next Question</string>
+    <string name="final_score_restart_quiz">Restart Quiz</string>
+    <string name="final_score_see_history">See History</string>
+    <string name="final_score_quiz_completed">Quiz Completed!</string>
+    <string name="final_score_your_score">Your Score</string>
+    <string name="history_no_completed_quiz_yet">No completed quizzes yet.</string>
+    <string name="history_quiz_score_format">%1$s/%2$s Correct</string>
+    <string name="history_screen">Quiz History</string>
+    <string name="player_nickname_see_history">See History</string>
+</resources>
