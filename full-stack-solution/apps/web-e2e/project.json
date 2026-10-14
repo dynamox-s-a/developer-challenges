@@ -1,0 +1,31 @@
+{
+  "name": "web-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/web-e2e/src",
+  "implicitDependencies": ["web", "api"],
+  "targets": {
+    "e2e": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cypress run",
+        "cwd": "apps/web-e2e"
+      }
+    },
+    "e2e-open": {
+      "continuous": true,
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cypress open",
+        "cwd": "apps/web-e2e"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p tsconfig.json",
+        "cwd": "apps/web-e2e"
+      }
+    }
+  }
+}

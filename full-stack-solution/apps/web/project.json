@@ -1,0 +1,47 @@
+{
+  "name": "web",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/web/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "continuous": true,
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vite",
+        "cwd": "apps/web"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/apps/web"],
+      "options": {
+        "command": "vite build",
+        "cwd": "apps/web"
+      }
+    },
+    "preview": {
+      "continuous": true,
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vite preview",
+        "cwd": "apps/web"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vitest run",
+        "cwd": "apps/web"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p tsconfig.app.json",
+        "cwd": "apps/web"
+      }
+    }
+  }
+}

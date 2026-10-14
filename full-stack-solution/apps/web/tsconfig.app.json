@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc",
+    "target": "es2020",
+    "lib": ["es2021", "dom", "dom.iterable"],
+    "jsx": "react-jsx",
+    "types": ["vite/client"],
+    "noEmit": true,
+    "paths": {
+      "@full-stack-solution/shared": ["../../libs/shared/src/index.ts"],
+      "@web/*": ["./src/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "vite.config.mts"],
+  "exclude": ["src/**/*.spec.ts", "src/**/*.spec.tsx", "src/test/**"]
+}

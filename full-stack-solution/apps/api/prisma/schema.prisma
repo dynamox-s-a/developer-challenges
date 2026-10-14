@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client"
+  output = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum MachineType {
+  Fan
+  Pump
+}
+
+// Declared alphabetically on purpose: PostgreSQL sorts enums by declaration
+// order, so this keeps query ordering aligned with alphabetical order.
+enum MeasurementMetric {
+  temperature
+  vibrationAccelerationRms
+  vibrationVelocityRms
+}
+
+enum SensorModel {
+  HF_PLUS @map("HF+")
+  TcAg
+  TcAs
+}
+
+model User {
+  id String @id @default(uuid())
+  email String @unique
+  password String
+  createdAt DateTime @default(now())
+  machines Machine[]
+  monitoringPoints MonitoringPoint[]
+  sensors Sensor[]
+}
+
+model Machine {
+  id String @id @default(uuid())
+  name String
+  type MachineType
+  createdById String
+  createdBy User @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  monitoringPoints MonitoringPoint[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MonitoringPoint {
+  id String @id @default(uuid())
+  name String
+  machineId String
+  machine Machine @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  createdById String
+  createdBy User @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  sensor Sensor?
+  readings Reading[]
+  createdAt DateTime @default(now())
+
+  @@index([machineId])
+}
+
+model Sensor {
+  id String @id
+  model SensorModel
+  monitoringPointId String @unique
+  monitoringPoint MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
+  createdById String
+  createdBy User @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  createdAt DateTime @default(now())
+}
+
+model Reading {
+  monitoringPointId String
+  metric MeasurementMetric
+  timestamp DateTime
+  value Float
+  monitoringPoint MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
+
+  // One sample per point, per quantity, per instant. The metric belongs in the
+  // key because a point reports several quantities at the same timestamp;
+  // without it the second one would be skipped as a duplicate.
+  @@id([monitoringPointId, metric, timestamp])
+}
