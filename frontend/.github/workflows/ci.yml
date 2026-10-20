@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.1.34
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install
+        run: bun install --frozen-lockfile
+        env:
+          CYPRESS_INSTALL_BINARY: "0"
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Type-check
+        run: bunx tsc -b
+
+      - name: Unit tests
+        run: bun run test:run
+
+      - name: Build
+        run: bun run build
+
+      - name: Build Storybook
+        run: bun run build-storybook
