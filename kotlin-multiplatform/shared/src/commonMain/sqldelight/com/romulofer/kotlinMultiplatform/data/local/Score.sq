@@ -1,0 +1,22 @@
+CREATE TABLE score (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    player_id INTEGER NOT NULL REFERENCES player(id),
+    correct_answers INTEGER NOT NULL,
+    total_questions INTEGER NOT NULL,
+    played_at INTEGER NOT NULL,
+    CHECK (correct_answers BETWEEN 0 AND total_questions)
+);
+
+insert:
+INSERT INTO score(player_id, correct_answers, total_questions, played_at)
+VALUES (?, ?, ?, ?);
+
+selectScoreboard:
+SELECT
+    p.name AS playerName,
+    s.correct_answers AS correctAnswers,
+    s.total_questions AS totalQuestions,
+    s.played_at AS playedAtEpochMillis
+FROM score s
+JOIN player p ON p.id = s.player_id
+ORDER BY s.correct_answers DESC, s.played_at DESC;

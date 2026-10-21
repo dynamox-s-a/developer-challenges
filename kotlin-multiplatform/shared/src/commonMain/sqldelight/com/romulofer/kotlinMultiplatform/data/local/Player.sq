@@ -1,0 +1,10 @@
+CREATE TABLE player (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL COLLATE NOCASE UNIQUE
+);
+
+insertIgnore:
+INSERT OR IGNORE INTO player(name) VALUES (?);
+
+selectByName:
+SELECT * FROM player WHERE name = ?;
