@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -36,6 +36,21 @@ describe('App', () => {
     renderApp('/monitoring-points');
     expect(
       screen.getByRole('heading', { name: 'Pontos de monitoramento' }),
+    ).toBeTruthy();
+  });
+
+  it('should navigate using the side menu', async () => {
+    renderApp('/machines');
+
+    // O menu existe duas vezes (celular e computador): clicamos no primeiro
+    const [link] = screen.getAllByRole('link', {
+      name: 'Pontos de monitoramento',
+      hidden: true,
+    });
+    fireEvent.click(link);
+
+    expect(
+      await screen.findByRole('heading', { name: 'Pontos de monitoramento' }),
     ).toBeTruthy();
   });
 });
