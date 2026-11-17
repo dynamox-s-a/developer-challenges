@@ -1,0 +1,56 @@
+{
+  "name": "@dynapredict/api",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "nx": {
+    "targets": {
+      "prune-lockfile": {
+        "dependsOn": [
+          "build"
+        ],
+        "cache": true,
+        "executor": "@nx/js:prune-lockfile",
+        "outputs": [
+          "{workspaceRoot}/apps/api/dist/package.json",
+          "{workspaceRoot}/apps/api/dist/package-lock.json"
+        ],
+        "options": {
+          "buildTarget": "build"
+        }
+      },
+      "copy-workspace-modules": {
+        "dependsOn": [
+          "build"
+        ],
+        "cache": true,
+        "outputs": [
+          "{workspaceRoot}/apps/api/dist/workspace_modules"
+        ],
+        "executor": "@nx/js:copy-workspace-modules",
+        "options": {
+          "buildTarget": "build"
+        }
+      },
+      "prune": {
+        "dependsOn": [
+          "prune-lockfile",
+          "copy-workspace-modules"
+        ],
+        "executor": "nx:noop"
+      },
+      "serve": {
+        "continuous": true,
+        "dependsOn": [
+          "^build"
+        ],
+        "readyWhen": {
+          "signal": true
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

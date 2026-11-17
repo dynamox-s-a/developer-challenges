@@ -5,6 +5,7 @@
   "scripts": {},
   "private": true,
   "dependencies": {
+    "express": "^5.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "6.30.3"
@@ -15,6 +16,7 @@
     "@nx/eslint": "24.0.6",
     "@nx/eslint-plugin": "24.0.6",
     "@nx/js": "24.0.6",
+    "@nx/node": "^24.0.6",
     "@nx/react": "24.0.6",
     "@nx/vite": "24.0.6",
     "@nx/vitest": "24.0.6",
@@ -25,6 +27,7 @@
     "@swc/helpers": "~0.5.18",
     "@testing-library/dom": "10.4.0",
     "@testing-library/react": "16.3.0",
+    "@types/express": "^5.0.0",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
