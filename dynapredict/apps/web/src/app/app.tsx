@@ -1,9 +1,34 @@
 import { useEffect, useState } from 'react';
+import {
+  Alert,
+  Card,
+  CardContent,
+  Chip,
+  CircularProgress,
+  Container,
+  Stack,
+  Typography,
+} from '@mui/material';
 
 type HealthStatus = {
   api: string;
   database: string;
 };
+
+type StatusChipProps = {
+  label: string;
+  value: string;
+};
+
+// Componente pequeno e reutilizável: verde se "ok", vermelho se não
+function StatusChip({ label, value }: StatusChipProps) {
+  return (
+    <Chip
+      label={`${label}: ${value}`}
+      color={value === 'ok' ? 'success' : 'error'}
+    />
+  );
+}
 
 export function App() {
   const [health, setHealth] = useState<HealthStatus | null>(null);
@@ -17,15 +42,27 @@ export function App() {
       .catch(() => setError('Não foi possível falar com a API'));
   }, []);
 
-  if (error) return <p>{error}</p>;
-  if (!health) return <p>Carregando...</p>;
-
   return (
-    <div>
-      <h1>DynaPredict</h1>
-      <p>API: {health.api}</p>
-      <p>Banco: {health.database}</p>
-    </div>
+    <Container maxWidth="sm" sx={{ py: 6 }}>
+      <Card>
+        <CardContent>
+          <Typography variant="h4" gutterBottom>
+            DynaPredict
+          </Typography>
+
+          {error && <Alert severity="error">{error}</Alert>}
+
+          {!error && !health && <CircularProgress />}
+
+          {health && (
+            <Stack direction="row" spacing={1}>
+              <StatusChip label="API" value={health.api} />
+              <StatusChip label="Banco" value={health.database} />
+            </Stack>
+          )}
+        </CardContent>
+      </Card>
+    </Container>
   );
 }
 
