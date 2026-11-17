@@ -1,62 +1,18 @@
-import { useEffect } from 'react';
-import {
-  Alert,
-  Card,
-  CardContent,
-  Chip,
-  CircularProgress,
-  Container,
-  Stack,
-  Typography,
-} from '@mui/material';
-import { useAppDispatch, useAppSelector } from './hooks';
-import { fetchHealth } from '../features/health/health.slice';
-
-type StatusChipProps = {
-  label: string;
-  value: string;
-};
-
-// Componente pequeno e reutilizável: verde se "ok", vermelho se não
-function StatusChip({ label, value }: StatusChipProps) {
-  return (
-    <Chip
-      label={`${label}: ${value}`}
-      color={value === 'ok' ? 'success' : 'error'}
-    />
-  );
-}
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { HealthPage } from '../features/health/health-page';
+import { MachinesPage } from '../features/machines/machines-page';
+import { MonitoringPointsPage } from '../features/monitoring-points/monitoring-points-page';
 
 export function App() {
-  const dispatch = useAppDispatch();
-  const { data, status, error } = useAppSelector((state) => state.health);
-
-  // Roda uma vez quando a tela abre: pede ao Redux para buscar o status
-  useEffect(() => {
-    dispatch(fetchHealth());
-  }, [dispatch]);
-
   return (
-    <Container maxWidth="sm" sx={{ py: 6 }}>
-      <Card>
-        <CardContent>
-          <Typography variant="h4" gutterBottom>
-            DynaPredict
-          </Typography>
+    <Routes>
+      <Route path="/machines" element={<MachinesPage />} />
+      <Route path="/monitoring-points" element={<MonitoringPointsPage />} />
+      <Route path="/status" element={<HealthPage />} />
 
-          {error && <Alert severity="error">{error}</Alert>}
-
-          {status === 'loading' && <CircularProgress />}
-
-          {data && (
-            <Stack direction="row" spacing={1}>
-              <StatusChip label="API" value={data.api} />
-              <StatusChip label="Banco" value={data.database} />
-            </Stack>
-          )}
-        </CardContent>
-      </Card>
-    </Container>
+      {/* Qualquer outra URL (inclusive "/") vai para máquinas */}
+      <Route path="*" element={<Navigate to="/machines" replace />} />
+    </Routes>
   );
 }
 
