@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {
   Alert,
   Card,
@@ -9,11 +9,8 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-
-type HealthStatus = {
-  api: string;
-  database: string;
-};
+import { useAppDispatch, useAppSelector } from './hooks';
+import { fetchHealth } from '../features/health/health.slice';
 
 type StatusChipProps = {
   label: string;
@@ -31,16 +28,13 @@ function StatusChip({ label, value }: StatusChipProps) {
 }
 
 export function App() {
-  const [health, setHealth] = useState<HealthStatus | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const { data, status, error } = useAppSelector((state) => state.health);
 
-  // Roda uma vez quando a tela abre: busca o status na API
+  // Roda uma vez quando a tela abre: pede ao Redux para buscar o status
   useEffect(() => {
-    fetch('/api/health')
-      .then((response) => response.json())
-      .then((data: HealthStatus) => setHealth(data))
-      .catch(() => setError('Não foi possível falar com a API'));
-  }, []);
+    dispatch(fetchHealth());
+  }, [dispatch]);
 
   return (
     <Container maxWidth="sm" sx={{ py: 6 }}>
@@ -52,12 +46,12 @@ export function App() {
 
           {error && <Alert severity="error">{error}</Alert>}
 
-          {!error && !health && <CircularProgress />}
+          {status === 'loading' && <CircularProgress />}
 
-          {health && (
+          {data && (
             <Stack direction="row" spacing={1}>
-              <StatusChip label="API" value={health.api} />
-              <StatusChip label="Banco" value={health.database} />
+              <StatusChip label="API" value={data.api} />
+              <StatusChip label="Banco" value={data.database} />
             </Stack>
           )}
         </CardContent>
