@@ -1,4 +1,5 @@
 import { Typography } from '@mui/material';
+import { MACHINE_TYPES } from '@dynapredict/shared';
 
 export function MachinesPage() {
   return (
@@ -7,7 +8,8 @@ export function MachinesPage() {
         Máquinas
       </Typography>
       <Typography color="text.secondary">
-        Em breve: cadastro de máquinas.
+        Em breve: cadastro de máquinas. Tipos aceitos:{' '}
+        {MACHINE_TYPES.join(', ')}.
       </Typography>
     </>
   );
