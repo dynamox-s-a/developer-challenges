@@ -30,3 +30,18 @@ export async function login({ email, password }: LoginInput) {
     user: { id: user.id, email: user.email },
   };
 }
+
+
+export async function getCurrentUser(userId: string) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { id: true, email: true }, // nunca devolve o passwordHash
+  });
+
+  // O token pode ser válido, mas o usuário ter sido apagado depois
+  if (!user) {
+    throw new AppError(401, 'UNAUTHORIZED', 'Usuário não encontrado');
+  }
+
+  return user;
+}

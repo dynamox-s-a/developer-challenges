@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { login } from './auth.service.ts';
+import { getCurrentUser, login } from './auth.service.ts';
 
 // Cria a função falsa do banco antes dos vi.mock (que o Vitest sobe para o topo)
 const { findUnique } = vi.hoisted(() => ({ findUnique: vi.fn() }));
@@ -54,5 +54,31 @@ describe('login', () => {
     await expect(
       login({ email: 'ninguem@dynamox.com', password: 'dynapredict123' }),
     ).rejects.toMatchObject({ statusCode: 401, code: 'INVALID_CREDENTIALS' });
+  });
+});
+
+
+describe('getCurrentUser', () => {
+  beforeEach(() => findUnique.mockReset());
+
+  it('should return the user, asking the database only for id and email', async () => {
+    findUnique.mockResolvedValue({ id: 'user-1', email: 'admin@dynamox.com' });
+
+    const result = await getCurrentUser('user-1');
+
+    expect(result).toEqual({ id: 'user-1', email: 'admin@dynamox.com' });
+    expect(findUnique).toHaveBeenCalledWith({
+      where: { id: 'user-1' },
+      select: { id: true, email: true },
+    });
+  });
+
+  it('should reject with 401 when the user no longer exists', async () => {
+    findUnique.mockResolvedValue(null);
+
+    await expect(getCurrentUser('user-apagado')).rejects.toMatchObject({
+      statusCode: 401,
+      code: 'UNAUTHORIZED',
+    });
   });
 });
