@@ -54,7 +54,6 @@ describe('App', () => {
     ).toBeTruthy();
   });
 
-  
   it('should show the login page without the side menu', () => {
     renderApp('/login');
 
