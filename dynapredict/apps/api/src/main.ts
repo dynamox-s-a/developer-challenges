@@ -1,15 +1,13 @@
 #!/usr/bin/env node
 // @nx-target-name: serve
 import { app } from './app.ts';
+import { env } from './config/env.ts';
 
-const host = process.env.HOST ?? 'localhost';
-const port = process.env.PORT ? Number(process.env.PORT) : 3000;
-
-const server = app.listen(port, host, async (error?: Error) => {
+const server = app.listen(env.PORT, env.HOST, async (error?: Error) => {
   if (error) {
     throw error;
   }
-  console.log(`[ ready ] http://${host}:${port}`);
+  console.log(`[ ready ] http://${env.HOST}:${env.PORT}`);
   // Set when Nx waits for this server to be ready
   if (process.env.NX_READY_SIGNAL_SOCKET) {
     try {
