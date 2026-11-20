@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { z } from 'zod';
 import {
   Alert,
@@ -20,15 +20,21 @@ import { login } from './auth.slice';
 type FieldErrors = Partial<Record<keyof LoginInput, string[]>>;
 
 export function LoginPage() {
-  const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch();
+  const location = useLocation();
   const { token, status, error } = useAppSelector((state) => state.auth);
 
   const [values, setValues] = useState<LoginInput>({ email: '', password: '' });
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
+  // Para onde voltar depois do login (o RequireAuth guardou isso no "state"
+  // da navegação). Se a pessoa abriu o /login direto, vai para máquinas
+  const from =
+    (location.state as { from?: string } | null)?.from ?? '/machines';
+
   // Já tem token (acabou de logar ou já estava logado)? Sai da tela de login
   if (token) {
-    return <Navigate to="/machines" replace />;
+    return <Navigate to={from} replace />;
   }
 
   const isLoading = status === 'loading';

@@ -3,6 +3,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 import {
   AppBar,
   Box,
+  Button,
   Divider,
   Drawer,
   IconButton,
@@ -13,10 +14,13 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
+import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
 import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
 import SensorsIcon from '@mui/icons-material/Sensors';
+import { useAppDispatch } from '../hooks';
+import { logout } from '../../features/auth/auth.slice';
 
 const drawerWidth = 240;
 
@@ -36,6 +40,7 @@ const menuItems = [
 ];
 
 export function AppLayout() {
+  const dispatch = useAppDispatch();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const toggleDrawer = () => setMobileOpen((open) => !open);
@@ -93,6 +98,17 @@ export function AppLayout() {
           <Typography variant="h6" noWrap>
             DynaPredict
           </Typography>
+          
+          {/* Espaço "elástico": empurra o que vem depois para a direita */}
+          <Box sx={{ flexGrow: 1 }} />
+
+          <Button
+            color="inherit"
+            startIcon={<LogoutIcon />}
+            onClick={() => dispatch(logout())}
+          >
+            Sair
+          </Button>
         </Toolbar>
       </AppBar>
 

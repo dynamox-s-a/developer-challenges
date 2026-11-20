@@ -45,6 +45,13 @@ export const login = createAsyncThunk<
   }
 });
 
+// A API não guarda sessões (o JWT é "sem estado"), então sair = jogar o
+// token fora no front. É um thunk porque mexe no localStorage (efeito
+// colateral), e reducer não pode fazer isso
+export const logout = createAsyncThunk('auth/logout', async () => {
+  tokenStorage.clear();
+});
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -63,6 +70,12 @@ const authSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload ?? 'Erro inesperado';
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.token = null;
+        state.user = null;
+        state.status = 'idle';
+        state.error = null;
       });
   },
 });

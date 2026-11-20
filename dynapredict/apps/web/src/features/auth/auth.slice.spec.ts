@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { AxiosError, type AxiosResponse } from 'axios';
 import { api } from '../../lib/api-client';
 import { tokenStorage } from '../../lib/token-storage';
-import { authReducer, login } from './auth.slice';
+import { authReducer, login, logout } from './auth.slice';
 
 const credentials = { email: 'admin@dynamox.com', password: 'dynapredict123' };
 const user = { id: 'user-1', email: 'admin@dynamox.com' };
@@ -72,6 +72,21 @@ describe('authReducer', () => {
       token: null,
       status: 'failed',
       error: 'E-mail ou senha inválidos',
+    });
+    expect(tokenStorage.get()).toBeNull();
+  });
+  
+  it('should forget the token and the user on logout', async () => {
+    tokenStorage.set('token-salvo');
+    const store = createTestStore();
+
+    await store.dispatch(logout());
+
+    expect(store.getState().auth).toEqual({
+      token: null,
+      user: null,
+      status: 'idle',
+      error: null,
     });
     expect(tokenStorage.get()).toBeNull();
   });
