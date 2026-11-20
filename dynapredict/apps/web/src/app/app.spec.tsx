@@ -53,4 +53,12 @@ describe('App', () => {
       await screen.findByRole('heading', { name: 'Pontos de monitoramento' }),
     ).toBeTruthy();
   });
+
+  
+  it('should show the login page without the side menu', () => {
+    renderApp('/login');
+
+    expect(screen.getByRole('button', { name: 'Entrar' })).toBeTruthy();
+    expect(screen.queryByRole('navigation')).toBeNull();
+  });
 });
