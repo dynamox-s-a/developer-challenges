@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { loginSchema } from '@dynapredict/shared';
+import { AppError } from '../../errors/app-error.ts';
 import { requireAuth } from '../../middlewares/require-auth.ts';
 import { validateBody } from '../../middlewares/validate-body.ts';
 import { getCurrentUser, login } from './auth.service.ts';
@@ -14,7 +15,12 @@ authRouter.post('/login', validateBody(loginSchema), async (req, res) => {
 
 // Privada: o requireAuth roda antes e preenche req.user
 authRouter.get('/me', requireAuth, async (req, res) => {
-  // O "!" diz ao TypeScript: "pode confiar, o requireAuth garantiu que existe"
-  const user = await getCurrentUser(req.user!.sub);
+  // O requireAuth já garante o req.user, mas o TypeScript não sabe disso.
+  // Este if prova para ele (e protege se alguém tirar o requireAuth um dia)
+  if (!req.user) {
+    throw new AppError(401, 'UNAUTHORIZED', 'Token de acesso ausente');
+  }
+
+  const user = await getCurrentUser(req.user.sub);
   res.json({ user });
 });
