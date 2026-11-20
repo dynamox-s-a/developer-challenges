@@ -42,9 +42,7 @@ describe('requireAuth', () => {
   it('should reject a token signed with another secret', () => {
     const forged = jwt.sign(payload, 'outra-chave-que-a-api-nao-conhece-1234');
 
-    expect(() => run(`Bearer ${forged}`)).toThrow(
-      'Token inválido ou expirado',
-    );
+    expect(() => run(`Bearer ${forged}`)).toThrow('Token inválido ou expirado');
   });
 
   it('should reject an expired token', () => {

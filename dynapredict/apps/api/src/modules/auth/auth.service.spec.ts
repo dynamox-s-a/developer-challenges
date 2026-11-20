@@ -57,7 +57,6 @@ describe('login', () => {
   });
 });
 
-
 describe('getCurrentUser', () => {
   beforeEach(() => findUnique.mockReset());
 

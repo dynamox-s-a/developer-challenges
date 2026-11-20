@@ -31,7 +31,6 @@ export async function login({ email, password }: LoginInput) {
   };
 }
 
-
 export async function getCurrentUser(userId: string) {
   const user = await prisma.user.findUnique({
     where: { id: userId },

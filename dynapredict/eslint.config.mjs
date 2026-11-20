@@ -42,7 +42,7 @@ export default [
       '**/*.mjs',
     ],
     // Override or add rules here
-     rules: {
+    rules: {
       // Parâmetro começando com "_" = "não uso, mas precisa existir"
       // (ex.: o next do errorHandler, que o Express exige para reconhecer o middleware de erro)
       '@typescript-eslint/no-unused-vars': [

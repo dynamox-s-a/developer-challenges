@@ -13,7 +13,9 @@ function handle(error: unknown) {
 
 describe('errorHandler', () => {
   it('should answer an AppError with its own status and code', () => {
-    const res = handle(new AppError(404, 'NOT_FOUND', 'Máquina não encontrada'));
+    const res = handle(
+      new AppError(404, 'NOT_FOUND', 'Máquina não encontrada'),
+    );
 
     expect(res.status).toHaveBeenCalledWith(404);
     expect(res.json).toHaveBeenCalledWith({
