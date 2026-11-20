@@ -27,7 +27,7 @@
     "src/**/*.test.jsx",
     "src/**/*.spec.jsx",
     "src/**/*.d.ts"
-, "src/middlewares/error-handler.spec.ts"  ],
+  ],
   "references": [
     {
       "path": "./tsconfig.app.json"
