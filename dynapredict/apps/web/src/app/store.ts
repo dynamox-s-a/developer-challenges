@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { authReducer } from '../features/auth/auth.slice';
 import { healthReducer } from '../features/health/health.slice';
 
 export const store = configureStore({
   reducer: {
+    auth: authReducer,
     health: healthReducer,
   },
 });
