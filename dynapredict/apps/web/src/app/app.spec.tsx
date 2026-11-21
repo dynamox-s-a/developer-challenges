@@ -14,8 +14,11 @@ const user = { id: 'user-1', email: 'admin@dynamox.com' };
 async function renderApp(path: string, { loggedIn = true } = {}) {
   if (loggedIn) {
     tokenStorage.set('token-de-teste');
-    // O porteiro vai perguntar "quem é você?" para a API (/auth/me)
-    vi.spyOn(api, 'get').mockResolvedValue({ data: { user } });
+    // API de mentira: o porteiro pergunta "quem é você?" (/auth/me) e a
+    // página de máquinas pede a lista (/machines), que aqui vem vazia
+    vi.spyOn(api, 'get').mockImplementation(async (url) => ({
+      data: url === '/auth/me' ? { user } : [],
+    }));
   }
 
   const result = render(
