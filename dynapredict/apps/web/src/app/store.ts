@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { authReducer } from '../features/auth/auth.slice';
+import { authReducer, logout } from '../features/auth/auth.slice';
 import { healthReducer } from '../features/health/health.slice';
+import { setOnUnauthorized } from '../lib/api-client';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -10,7 +11,15 @@ const rootReducer = combineReducers({
 // "Fábrica" de stores: cada chamada cria uma store nova, do zero.
 // O app usa uma só; os testes criam uma por teste, sem um vazar no outro
 export function setupStore() {
-  return configureStore({ reducer: rootReducer });
+  const store = configureStore({ reducer: rootReducer });
+
+  // Quando qualquer chamada à API responder 401, desloga mostrando o motivo.
+  // Só existe um "ouvinte": a store criada por último é a que recebe o aviso
+  setOnUnauthorized(() => {
+    store.dispatch(logout('Sua sessão expirou. Entre novamente.'));
+  });
+
+  return store;
 }
 
 export const store = setupStore();

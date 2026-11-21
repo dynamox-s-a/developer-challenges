@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { AxiosError, type AxiosResponse } from 'axios';
 import { api } from '../../lib/api-client';
 import { tokenStorage } from '../../lib/token-storage';
-import { authReducer, login, logout } from './auth.slice';
+import { authReducer, fetchCurrentUser, login, logout } from './auth.slice';
 
 const credentials = { email: 'admin@dynamox.com', password: 'dynapredict123' };
 const user = { id: 'user-1', email: 'admin@dynamox.com' };
@@ -89,5 +89,25 @@ describe('authReducer', () => {
       error: null,
     });
     expect(tokenStorage.get()).toBeNull();
+  });
+
+  it('should keep the reason of the logout as the error message', async () => {
+    const store = createTestStore();
+
+    await store.dispatch(logout('Sua sessão expirou. Entre novamente.'));
+
+    expect(store.getState().auth.error).toBe(
+      'Sua sessão expirou. Entre novamente.',
+    );
+  });
+
+  it('should store the user returned by /auth/me', async () => {
+    vi.spyOn(api, 'get').mockResolvedValue({ data: { user } });
+    const store = createTestStore();
+
+    await store.dispatch(fetchCurrentUser());
+
+    expect(api.get).toHaveBeenCalledWith('/auth/me');
+    expect(store.getState().auth.user).toEqual(user);
   });
 });

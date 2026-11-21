@@ -19,7 +19,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
 import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
 import SensorsIcon from '@mui/icons-material/Sensors';
-import { useAppDispatch } from '../hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
 import { logout } from '../../features/auth/auth.slice';
 
 const drawerWidth = 240;
@@ -41,6 +41,7 @@ const menuItems = [
 
 export function AppLayout() {
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const toggleDrawer = () => setMobileOpen((open) => !open);
@@ -101,6 +102,17 @@ export function AppLayout() {
 
           {/* Espaço "elástico": empurra o que vem depois para a direita */}
           <Box sx={{ flexGrow: 1 }} />
+
+          {/* Só aparece depois que o /me responder (e some no celular) */}
+          {user && (
+            <Typography
+              variant="body2"
+              noWrap
+              sx={{ mr: 2, display: { xs: 'none', sm: 'block' } }}
+            >
+              {user.email}
+            </Typography>
+          )}
 
           <Button
             color="inherit"

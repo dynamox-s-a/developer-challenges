@@ -1,5 +1,5 @@
 import { AxiosError, type AxiosAdapter, type AxiosResponse } from 'axios';
-import { api, getApiErrorMessage } from './api-client';
+import { api, getApiErrorMessage, setOnUnauthorized } from './api-client';
 import { tokenStorage } from './token-storage';
 
 // "Servidor de mentira": em vez de ir para a rede, devolve o cabeçalho
@@ -11,6 +11,17 @@ const echoAuthorization: AxiosAdapter = async (config) => ({
   headers: {},
   config,
 });
+
+// "Servidor de mentira" que sempre responde 401 (token vencido ou inválido)
+const answer401: AxiosAdapter = async (config) => {
+  throw new AxiosError('Unauthorized', 'ERR_BAD_REQUEST', config, null, {
+    data: { error: { code: 'UNAUTHORIZED', message: 'Token inválido' } },
+    status: 401,
+    statusText: 'Unauthorized',
+    headers: {},
+    config,
+  });
+};
 
 describe('api client', () => {
   beforeEach(() => localStorage.clear());
@@ -27,6 +38,28 @@ describe('api client', () => {
     const { data } = await api.get('/qualquer', { adapter: echoAuthorization });
 
     expect(data).toBeNull();
+  });
+
+  it('should warn when the api answers 401', async () => {
+    const onUnauthorized = vi.fn();
+    setOnUnauthorized(onUnauthorized);
+
+    await expect(
+      api.get('/machines', { adapter: answer401 }),
+    ).rejects.toThrow();
+
+    expect(onUnauthorized).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not warn on a 401 from the login (wrong password)', async () => {
+    const onUnauthorized = vi.fn();
+    setOnUnauthorized(onUnauthorized);
+
+    await expect(
+      api.post('/auth/login', {}, { adapter: answer401 }),
+    ).rejects.toThrow();
+
+    expect(onUnauthorized).not.toHaveBeenCalled();
   });
 });
 

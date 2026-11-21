@@ -45,12 +45,30 @@ export const login = createAsyncThunk<
   }
 });
 
+// Confere se o token guardado ainda vale e busca os dados do usuário
+export const fetchCurrentUser = createAsyncThunk<
+  AuthUser,
+  void,
+  { rejectValue: string }
+>('auth/fetchCurrentUser', async (_, { rejectWithValue }) => {
+  try {
+    const { data } = await api.get<{ user: AuthUser }>('/auth/me');
+    return data.user;
+  } catch (error) {
+    return rejectWithValue(getApiErrorMessage(error));
+  }
+});
+
 // A API não guarda sessões (o JWT é "sem estado"), então sair = jogar o
 // token fora no front. É um thunk porque mexe no localStorage (efeito
-// colateral), e reducer não pode fazer isso
-export const logout = createAsyncThunk('auth/logout', async () => {
-  tokenStorage.clear();
-});
+// colateral), e reducer não pode fazer isso.
+// Recebe opcionalmente um motivo, que aparece na tela de login
+export const logout = createAsyncThunk<void, string | undefined>(
+  'auth/logout',
+  async () => {
+    tokenStorage.clear();
+  },
+);
 
 const authSlice = createSlice({
   name: 'auth',
@@ -71,11 +89,14 @@ const authSlice = createSlice({
         state.status = 'failed';
         state.error = action.payload ?? 'Erro inesperado';
       })
-      .addCase(logout.fulfilled, (state) => {
+      .addCase(fetchCurrentUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+      })
+      .addCase(logout.fulfilled, (state, action) => {
         state.token = null;
         state.user = null;
         state.status = 'idle';
-        state.error = null;
+        state.error = action.meta.arg ?? null; // o motivo do logout, se houver
       });
   },
 });
