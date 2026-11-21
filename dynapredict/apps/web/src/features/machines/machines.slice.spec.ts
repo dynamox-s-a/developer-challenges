@@ -2,7 +2,12 @@ import { AxiosError, type AxiosResponse } from 'axios';
 import { setupStore } from '../../app/store';
 import { api } from '../../lib/api-client';
 import { logout } from '../auth/auth.slice';
-import { fetchMachines, type Machine } from './machines.slice';
+import {
+  createMachine,
+  fetchMachines,
+  updateMachine,
+  type Machine,
+} from './machines.slice';
 
 const machine: Machine = {
   id: 'machine-1',
@@ -55,6 +60,49 @@ describe('machines slice', () => {
       status: 'failed',
       error: 'Erro interno do servidor',
     });
+  });
+
+  it('should put a new machine at the top of the list', async () => {
+    const newMachine: Machine = {
+      ...machine,
+      id: 'machine-2',
+      name: 'Ventilador 01',
+      type: 'Fan',
+    };
+    vi.spyOn(api, 'get').mockResolvedValue({ data: [machine] });
+    vi.spyOn(api, 'post').mockResolvedValue({ data: newMachine });
+    const store = setupStore();
+    await store.dispatch(fetchMachines());
+
+    await store.dispatch(createMachine({ name: 'Ventilador 01', type: 'Fan' }));
+
+    expect(api.post).toHaveBeenCalledWith('/machines', {
+      name: 'Ventilador 01',
+      type: 'Fan',
+    });
+    expect(store.getState().machines.items).toEqual([newMachine, machine]);
+  });
+
+  it('should replace the edited machine in the list', async () => {
+    const edited: Machine = { ...machine, name: 'Bomba 01 revisada' };
+    vi.spyOn(api, 'get').mockResolvedValue({ data: [machine] });
+    vi.spyOn(api, 'put').mockResolvedValue({ data: edited });
+    const store = setupStore();
+    await store.dispatch(fetchMachines());
+
+    await store.dispatch(
+      updateMachine({
+        id: 'machine-1',
+        name: 'Bomba 01 revisada',
+        type: 'Pump',
+      }),
+    );
+
+    expect(api.put).toHaveBeenCalledWith('/machines/machine-1', {
+      name: 'Bomba 01 revisada',
+      type: 'Pump',
+    });
+    expect(store.getState().machines.items).toEqual([edited]);
   });
 
   it('should forget the machines on logout', async () => {

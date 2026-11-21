@@ -35,6 +35,33 @@ export const fetchMachines = createAsyncThunk<
   }
 });
 
+export const createMachine = createAsyncThunk<
+  Machine,
+  MachineInput,
+  { rejectValue: string }
+>('machines/create', async (input, { rejectWithValue }) => {
+  try {
+    const { data } = await api.post<Machine>('/machines', input);
+    return data;
+  } catch (error) {
+    return rejectWithValue(getApiErrorMessage(error));
+  }
+});
+
+// Recebe o id e os campos novos juntos: { id, name, type }
+export const updateMachine = createAsyncThunk<
+  Machine,
+  MachineInput & { id: string },
+  { rejectValue: string }
+>('machines/update', async ({ id, ...input }, { rejectWithValue }) => {
+  try {
+    const { data } = await api.put<Machine>(`/machines/${id}`, input);
+    return data;
+  } catch (error) {
+    return rejectWithValue(getApiErrorMessage(error));
+  }
+});
+
 const machinesSlice = createSlice({
   name: 'machines',
   initialState,
@@ -52,6 +79,19 @@ const machinesSlice = createSlice({
       .addCase(fetchMachines.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload ?? 'Erro inesperado';
+      })
+      // A lista vem da mais nova para a mais antiga: a nova entra no topo
+      .addCase(createMachine.fulfilled, (state, action) => {
+        state.items.unshift(action.payload);
+      })
+      // Troca a versão antiga da máquina pela que a API devolveu
+      .addCase(updateMachine.fulfilled, (state, action) => {
+        const index = state.items.findIndex(
+          (machine) => machine.id === action.payload.id,
+        );
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        }
       })
       // Saiu do sistema? Esquece as máquinas (o próximo login busca de novo)
       .addCase(logout.fulfilled, () => initialState);
