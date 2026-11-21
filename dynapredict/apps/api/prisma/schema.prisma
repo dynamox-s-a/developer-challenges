@@ -14,3 +14,17 @@ model User {
   passwordHash String
   createdAt    DateTime @default(now())
 }
+
+// Os mesmos valores do machineTypeSchema do shared (Pump e Fan)
+enum MachineType {
+  Pump
+  Fan
+}
+
+model Machine {
+  id        String      @id @default(uuid())
+  name      String      @db.VarChar(100)
+  type      MachineType
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
