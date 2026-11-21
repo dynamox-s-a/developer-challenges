@@ -20,7 +20,7 @@ import { login } from './auth.slice';
 type FieldErrors = Partial<Record<keyof LoginInput, string[]>>;
 
 export function LoginPage() {
-    const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const { token, status, error } = useAppSelector((state) => state.auth);
 

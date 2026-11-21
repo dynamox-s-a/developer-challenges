@@ -98,7 +98,7 @@ export function AppLayout() {
           <Typography variant="h6" noWrap>
             DynaPredict
           </Typography>
-          
+
           {/* Espaço "elástico": empurra o que vem depois para a direita */}
           <Box sx={{ flexGrow: 1 }} />
 

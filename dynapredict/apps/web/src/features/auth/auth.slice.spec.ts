@@ -75,7 +75,7 @@ describe('authReducer', () => {
     });
     expect(tokenStorage.get()).toBeNull();
   });
-  
+
   it('should forget the token and the user on logout', async () => {
     tokenStorage.set('token-salvo');
     const store = createTestStore();
