@@ -1,12 +1,60 @@
 import {
   isSensorModelAllowed,
   type MonitoringPointInput,
+  type MonitoringPointListQuery,
+  type MonitoringPointSortField,
   type SensorInput,
+  type SortOrder,
 } from '@dynapredict/shared';
 import { AppError } from '../../errors/app-error.ts';
 import { Prisma } from '../../generated/prisma/client.ts';
 import { prisma } from '../../lib/prisma.ts';
 import { getMachine } from '../machines/machines.service.ts';
+
+// Cada coluna da lista e o campo do banco que a ordena. Máquina e sensor
+// estão em outras tabelas: o Prisma faz o JOIN sozinho
+const SORT_COLUMNS: Record<
+  MonitoringPointSortField,
+  (order: SortOrder) => Prisma.MonitoringPointOrderByWithRelationInput
+> = {
+  machineName: (order) => ({ machine: { name: order } }),
+  machineType: (order) => ({ machine: { type: order } }),
+  pointName: (order) => ({ name: order }),
+  sensorModel: (order) => ({ sensor: { model: order } }),
+};
+
+// Uma página da lista de todos os pontos, já ordenada.
+// "query" já chega validado (e com os valores padrão) pelo schema do shared
+export async function listMonitoringPoints({
+  page,
+  pageSize,
+  sortBy,
+  order,
+}: MonitoringPointListQuery) {
+  const [total, items] = await Promise.all([
+    prisma.monitoringPoint.count(),
+    prisma.monitoringPoint.findMany({
+      orderBy: [
+        SORT_COLUMNS[sortBy](order),
+        // Desempate: sem ele, linhas com o mesmo valor (ex.: vários pontos da
+        // mesma máquina) podiam trocar de lugar e pular ou repetir entre páginas
+        { machine: { name: 'asc' } },
+        { name: 'asc' },
+        { id: 'asc' },
+      ],
+      skip: (page - 1) * pageSize, // página 3 com 5 por página: pula 10
+      take: pageSize,
+      select: {
+        id: true,
+        name: true,
+        machine: { select: { id: true, name: true, type: true } },
+        sensor: { select: { id: true, model: true, serialNumber: true } },
+      },
+    }),
+  ]);
+
+  return { items, total, page, pageSize };
+}
 
 // Um ponto pelo id. Se não existir, lança 404
 export async function getMonitoringPoint(id: string) {

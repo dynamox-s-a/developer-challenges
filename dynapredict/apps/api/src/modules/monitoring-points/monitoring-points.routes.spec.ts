@@ -183,4 +183,32 @@ describe('monitoring points routes', () => {
     expect(service.removeSensor).toHaveBeenCalledWith('point-1');
     expect(service.deleteMonitoringPoint).not.toHaveBeenCalled();
   });
+
+  it('should list the points with the parameters from the url', async () => {
+    const page = { items: [], total: 0, page: 2, pageSize: 5 };
+    vi.mocked(service.listMonitoringPoints).mockResolvedValue(page);
+
+    const response = await request(
+      '/monitoring-points?page=2&sortBy=sensorModel&order=desc',
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(page);
+    // O "2" da URL chega como número, e o que faltou vem com o valor padrão
+    expect(service.listMonitoringPoints).toHaveBeenCalledWith({
+      page: 2,
+      pageSize: 5,
+      sortBy: 'sensorModel',
+      order: 'desc',
+    });
+  });
+
+  it('should answer 400 for invalid list parameters', async () => {
+    const response = await request('/monitoring-points?page=0');
+    const body = (await response.json()) as ErrorBody;
+
+    expect(response.status).toBe(400);
+    expect(body.error.code).toBe('VALIDATION_ERROR');
+    expect(service.listMonitoringPoints).not.toHaveBeenCalled();
+  });
 });

@@ -1,10 +1,16 @@
 import { Router, type Request } from 'express';
-import { monitoringPointSchema, sensorSchema } from '@dynapredict/shared';
+import {
+  monitoringPointListQuerySchema,
+  monitoringPointSchema,
+  sensorSchema,
+} from '@dynapredict/shared';
+import { parseQuery } from '../../lib/parse-query.ts';
 import { requireAuth } from '../../middlewares/require-auth.ts';
 import { validateBody } from '../../middlewares/validate-body.ts';
 import {
   createMonitoringPoint,
   deleteMonitoringPoint,
+  listMonitoringPoints,
   removeSensor,
   setSensor,
 } from './monitoring-points.service.ts';
@@ -25,10 +31,17 @@ machineMonitoringPointsRouter.post(
   },
 );
 
-// Um ponto que já existe: /api/monitoring-points/:id
+// A lista de todos os pontos (/api/monitoring-points) e um ponto que já
+// existe (/api/monitoring-points/:id)
 export const monitoringPointsRouter = Router();
 
 monitoringPointsRouter.use(requireAuth);
+
+// Ex.: GET /api/monitoring-points?page=2&sortBy=machineName&order=desc
+monitoringPointsRouter.get('/', async (req, res) => {
+  const query = parseQuery(monitoringPointListQuerySchema, req.query);
+  res.json(await listMonitoringPoints(query));
+});
 
 monitoringPointsRouter.delete('/:id', async (req, res) => {
   await deleteMonitoringPoint(req.params.id);

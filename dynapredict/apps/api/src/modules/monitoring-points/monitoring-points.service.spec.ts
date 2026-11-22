@@ -1,7 +1,9 @@
+import type { MonitoringPointSortField } from '@dynapredict/shared';
 import { Prisma } from '../../generated/prisma/client.ts';
 import {
   createMonitoringPoint,
   deleteMonitoringPoint,
+  listMonitoringPoints,
   removeSensor,
   setSensor,
 } from './monitoring-points.service.ts';
@@ -10,7 +12,13 @@ import {
 // também usa o getMachine, que procura a máquina em prisma.machine
 const db = vi.hoisted(() => ({
   machine: { findUnique: vi.fn() },
-  monitoringPoint: { findUnique: vi.fn(), create: vi.fn(), delete: vi.fn() },
+  monitoringPoint: {
+    findMany: vi.fn(),
+    count: vi.fn(),
+    findUnique: vi.fn(),
+    create: vi.fn(),
+    delete: vi.fn(),
+  },
   sensor: { findUnique: vi.fn(), upsert: vi.fn(), delete: vi.fn() },
 }));
 
@@ -181,5 +189,75 @@ describe('monitoring point sensor', () => {
       message: 'Ponto de monitoramento não encontrado',
     });
     expect(db.sensor.delete).not.toHaveBeenCalled();
+  });
+});
+
+describe('monitoring points list', () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+    db.monitoringPoint.count.mockResolvedValue(0);
+    db.monitoringPoint.findMany.mockResolvedValue([]);
+  });
+
+  it('should return one page of points and the total', async () => {
+    const row = {
+      id: 'point-1',
+      name: 'Mancal LA',
+      machine: { id: 'machine-1', name: 'Bomba 01', type: 'Pump' },
+      sensor: null,
+    };
+    db.monitoringPoint.count.mockResolvedValue(32);
+    db.monitoringPoint.findMany.mockResolvedValue([row]);
+
+    const result = await listMonitoringPoints({
+      page: 3,
+      pageSize: 10,
+      sortBy: 'machineName',
+      order: 'asc',
+    });
+
+    expect(result).toEqual({ items: [row], total: 32, page: 3, pageSize: 10 });
+    // Página 3 com 10 por página: pula os 20 primeiros e pega 10
+    expect(db.monitoringPoint.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        skip: 20,
+        take: 10,
+        select: {
+          id: true,
+          name: true,
+          machine: { select: { id: true, name: true, type: true } },
+          sensor: { select: { id: true, model: true, serialNumber: true } },
+        },
+      }),
+    );
+  });
+
+  it('should sort by the chosen column and then break the ties', async () => {
+    const columns: [MonitoringPointSortField, object][] = [
+      ['machineName', { machine: { name: 'desc' } }],
+      ['machineType', { machine: { type: 'desc' } }],
+      ['pointName', { name: 'desc' }],
+      ['sensorModel', { sensor: { model: 'desc' } }],
+    ];
+
+    for (const [sortBy, column] of columns) {
+      await listMonitoringPoints({
+        page: 1,
+        pageSize: 5,
+        sortBy,
+        order: 'desc',
+      });
+
+      expect(db.monitoringPoint.findMany).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          orderBy: [
+            column,
+            { machine: { name: 'asc' } },
+            { name: 'asc' },
+            { id: 'asc' },
+          ],
+        }),
+      );
+    }
   });
 });
