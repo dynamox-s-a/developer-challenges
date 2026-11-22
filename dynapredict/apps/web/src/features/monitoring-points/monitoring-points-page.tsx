@@ -4,6 +4,7 @@ import {
   Button,
   LinearProgress,
   Paper,
+  Snackbar,
   Stack,
   Table,
   TableBody,
@@ -15,6 +16,7 @@ import {
   TableSortLabel,
   Typography,
 } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import type {
   MonitoringPointListQuery,
   MonitoringPointSortField,
@@ -24,6 +26,7 @@ import {
   fetchMonitoringPoints,
   type MonitoringPoint,
 } from './monitoring-points.slice';
+import { NewMonitoringPointDialog } from './new-monitoring-point-dialog';
 
 const PAGE_SIZE = 5;
 
@@ -117,6 +120,11 @@ export function MonitoringPointsPage() {
     order: 'asc',
   });
 
+  // O diálogo de ponto novo está aberto?
+  const [formOpen, setFormOpen] = useState(false);
+  // Mensagem de sucesso que aparece no rodapé (null = nenhuma)
+  const [notice, setNotice] = useState<string | null>(null);
+
   useEffect(() => {
     const request = dispatch(fetchMonitoringPoints(query));
     // Trocou de página (ou saiu dela) antes da resposta? Cancela a busca
@@ -135,9 +143,33 @@ export function MonitoringPointsPage() {
     }));
   }
 
+  function handleCreated(message: string) {
+    setFormOpen(false);
+    setNotice(message);
+    // A lista vem ordenada e paginada pela API: busca a página de novo
+    dispatch(fetchMonitoringPoints(query));
+  }
+
   return (
     <Stack spacing={2}>
-      <Typography variant="h4">Pontos de monitoramento</Typography>
+      <Stack
+        direction="row"
+        sx={{
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: 2,
+        }}
+      >
+        <Typography variant="h4">Pontos de monitoramento</Typography>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={() => setFormOpen(true)}
+        >
+          Novo ponto
+        </Button>
+      </Stack>
 
       {/* Uma barra fina no topo: a tabela antiga continua à vista enquanto
           a próxima página carrega */}
@@ -187,6 +219,20 @@ export function MonitoringPointsPage() {
           />
         </Paper>
       )}
+
+      {formOpen && (
+        <NewMonitoringPointDialog
+          onClose={() => setFormOpen(false)}
+          onCreated={handleCreated}
+        />
+      )}
+
+      <Snackbar
+        open={notice !== null}
+        autoHideDuration={4000}
+        onClose={() => setNotice(null)}
+        message={notice}
+      />
     </Stack>
   );
 }

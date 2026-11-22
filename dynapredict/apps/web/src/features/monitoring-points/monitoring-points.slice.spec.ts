@@ -4,6 +4,7 @@ import { setupStore } from '../../app/store';
 import { api } from '../../lib/api-client';
 import { logout } from '../auth/auth.slice';
 import {
+  createMonitoringPoint,
   fetchMonitoringPoints,
   type MonitoringPointsPage,
 } from './monitoring-points.slice';
@@ -103,5 +104,21 @@ describe('monitoring points slice', () => {
 
     expect(store.getState().monitoringPoints.items).toEqual([]);
     expect(store.getState().monitoringPoints.total).toBe(0);
+  });
+
+  it('should create the point in the machine given in the url', async () => {
+    const created = { id: 'point-9', name: 'Base', machineId: 'machine-7' };
+    vi.spyOn(api, 'post').mockResolvedValue({ data: created });
+    const store = setupStore();
+
+    const result = await store
+      .dispatch(createMonitoringPoint({ machineId: 'machine-7', name: 'Base' }))
+      .unwrap();
+
+    expect(api.post).toHaveBeenCalledWith(
+      '/machines/machine-7/monitoring-points',
+      { name: 'Base' },
+    );
+    expect(result).toEqual(created);
   });
 });

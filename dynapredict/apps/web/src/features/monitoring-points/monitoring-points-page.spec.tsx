@@ -9,6 +9,7 @@ import {
 import { Provider } from 'react-redux';
 import { setupStore } from '../../app/store';
 import { api } from '../../lib/api-client';
+import type { Machine } from '../machines/machines.slice';
 import { MonitoringPointsPage } from './monitoring-points-page';
 import type {
   MonitoringPoint,
@@ -27,6 +28,16 @@ const points: MonitoringPoint[] = [
     name: 'Motor',
     machine: { id: 'machine-2', name: 'Ventilador 01', type: 'Fan' },
     sensor: null,
+  },
+];
+
+const machines: Machine[] = [
+  {
+    id: 'machine-1',
+    name: 'Bomba 01',
+    type: 'Pump',
+    createdAt: '2026-11-21T12:00:00.000Z',
+    updatedAt: '2026-11-21T12:00:00.000Z',
   },
 ];
 
@@ -169,5 +180,39 @@ describe('MonitoringPointsPage', () => {
 
     expect(await screen.findByText('Mancal LA')).toBeTruthy();
     expect(api.get).toHaveBeenCalledTimes(2);
+  });
+
+  it('should create a point and reload the list', async () => {
+    // A lista de pontos e, para o diálogo, a lista de máquinas
+    vi.spyOn(api, 'get').mockImplementation(async (url) =>
+      url === '/machines' ? { data: machines } : { data: pageOf(points) },
+    );
+    vi.spyOn(api, 'post').mockResolvedValue({
+      data: { id: 'point-3', name: 'Base', machineId: 'machine-1' },
+    });
+    renderPage();
+    await screen.findByText('Mancal LA');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Novo ponto' }));
+    // Espera as máquinas chegarem antes de abrir a lista delas
+    await waitFor(() =>
+      expect(screen.queryByText('Carregando máquinas...')).toBeNull(),
+    );
+    fireEvent.mouseDown(screen.getByRole('combobox', { name: 'Máquina' }));
+    fireEvent.click(screen.getByRole('option', { name: 'Bomba 01 (Pump)' }));
+    fireEvent.change(screen.getByLabelText('Nome do ponto'), {
+      target: { value: 'Base' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Salvar' }));
+
+    expect(await screen.findByText('Ponto criado')).toBeTruthy();
+    expect(screen.queryByRole('dialog')).toBeNull();
+    // Buscou os pontos de novo: uma vez ao abrir a página e outra depois
+    // de criar, porque a API é que sabe onde o ponto novo entra
+    const pointCalls = vi
+      .mocked(api.get)
+      .mock.calls.filter(([url]) => url === '/monitoring-points');
+    expect(pointCalls).toHaveLength(2);
+    await waitForLoad();
   });
 });

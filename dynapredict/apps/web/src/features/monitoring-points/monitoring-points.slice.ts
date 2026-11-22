@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type {
   MachineType,
+  MonitoringPointInput,
   MonitoringPointListQuery,
   SensorModel,
 } from '@dynapredict/shared';
@@ -54,6 +55,31 @@ export const fetchMonitoringPoints = createAsyncThunk<
     return rejectWithValue(getApiErrorMessage(error));
   }
 });
+
+// O que o POST devolve: o ponto sozinho, sem a máquina e o sensor junto
+type CreatedMonitoringPoint = { id: string; name: string; machineId: string };
+
+// O ponto novo: a máquina vai na URL e o nome vai no corpo. A lista não é
+// mexida aqui: quem chamou busca a página de novo, porque é a API que sabe
+// em que página e em que posição o ponto novo entra
+export const createMonitoringPoint = createAsyncThunk<
+  CreatedMonitoringPoint,
+  MonitoringPointInput & { machineId: string },
+  { rejectValue: string }
+>(
+  'monitoringPoints/create',
+  async ({ machineId, ...input }, { rejectWithValue }) => {
+    try {
+      const { data } = await api.post<CreatedMonitoringPoint>(
+        `/machines/${machineId}/monitoring-points`,
+        input,
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(getApiErrorMessage(error));
+    }
+  },
+);
 
 const monitoringPointsSlice = createSlice({
   name: 'monitoringPoints',
