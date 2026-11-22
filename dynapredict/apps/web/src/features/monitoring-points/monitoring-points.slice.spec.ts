@@ -6,6 +6,8 @@ import { logout } from '../auth/auth.slice';
 import {
   createMonitoringPoint,
   fetchMonitoringPoints,
+  removeSensor,
+  setSensor,
   type MonitoringPointsPage,
 } from './monitoring-points.slice';
 
@@ -120,5 +122,44 @@ describe('monitoring points slice', () => {
       { name: 'Base' },
     );
     expect(result).toEqual(created);
+  });
+
+  it('should put the sensor on the point given in the url', async () => {
+    const sensor = {
+      id: 'sensor-9',
+      model: 'HF+',
+      serialNumber: 'DyL4.01.A0009',
+    };
+    vi.spyOn(api, 'put').mockResolvedValue({ data: sensor });
+    const store = setupStore();
+
+    const result = await store
+      .dispatch(
+        setSensor({
+          pointId: 'point-7',
+          model: 'HF+',
+          serialNumber: 'DyL4.01.A0009',
+        }),
+      )
+      .unwrap();
+
+    // O id do ponto vai na URL; o modelo e o número, no corpo
+    expect(api.put).toHaveBeenCalledWith('/monitoring-points/point-7/sensor', {
+      model: 'HF+',
+      serialNumber: 'DyL4.01.A0009',
+    });
+    expect(result).toEqual(sensor);
+  });
+
+  it('should remove the sensor of the point given in the url', async () => {
+    vi.spyOn(api, 'delete').mockResolvedValue({ data: '' });
+    const store = setupStore();
+
+    const result = await store.dispatch(removeSensor('point-7')).unwrap();
+
+    expect(api.delete).toHaveBeenCalledWith(
+      '/monitoring-points/point-7/sensor',
+    );
+    expect(result).toBe('point-7');
   });
 });

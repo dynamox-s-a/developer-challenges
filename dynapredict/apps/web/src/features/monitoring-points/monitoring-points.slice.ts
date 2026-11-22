@@ -4,16 +4,19 @@ import type {
   MonitoringPointInput,
   MonitoringPointListQuery,
   SensorModel,
+  SensorInput,
 } from '@dynapredict/shared';
 import { api, getApiErrorMessage } from '../../lib/api-client';
 import { logout } from '../auth/auth.slice';
+
+export type Sensor = { id: string; model: SensorModel; serialNumber: string };
 
 // Um ponto como a lista da API devolve: já com a máquina e o sensor
 export type MonitoringPoint = {
   id: string;
   name: string;
   machine: { id: string; name: string; type: MachineType };
-  sensor: { id: string; model: SensorModel; serialNumber: string } | null;
+  sensor: Sensor | null;
 };
 
 // Uma página da lista: os pontos dela e o total de pontos (de todas as páginas)
@@ -80,6 +83,41 @@ export const createMonitoringPoint = createAsyncThunk<
     }
   },
 );
+
+// Coloca ou troca o sensor do ponto (PUT: o sensor do ponto passa a ser este).
+// Como no ponto novo, quem chamou busca a lista de novo
+export const setSensor = createAsyncThunk<
+  Sensor,
+  SensorInput & { pointId: string },
+  { rejectValue: string }
+>(
+  'monitoringPoints/setSensor',
+  async ({ pointId, ...input }, { rejectWithValue }) => {
+    try {
+      const { data } = await api.put<Sensor>(
+        `/monitoring-points/${pointId}/sensor`,
+        input,
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(getApiErrorMessage(error));
+    }
+  },
+);
+
+// Tira o sensor do ponto. A API responde 204: devolve o id do ponto
+export const removeSensor = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string }
+>('monitoringPoints/removeSensor', async (pointId, { rejectWithValue }) => {
+  try {
+    await api.delete(`/monitoring-points/${pointId}/sensor`);
+    return pointId;
+  } catch (error) {
+    return rejectWithValue(getApiErrorMessage(error));
+  }
+});
 
 const monitoringPointsSlice = createSlice({
   name: 'monitoringPoints',

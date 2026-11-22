@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   Alert,
   Button,
+  IconButton,
   LinearProgress,
   Paper,
   Snackbar,
@@ -14,9 +15,11 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import SensorsIcon from '@mui/icons-material/Sensors';
 import type {
   MonitoringPointListQuery,
   MonitoringPointSortField,
@@ -27,6 +30,7 @@ import {
   type MonitoringPoint,
 } from './monitoring-points.slice';
 import { NewMonitoringPointDialog } from './new-monitoring-point-dialog';
+import { SensorDialog } from './sensor-dialog';
 
 const PAGE_SIZE = 5;
 
@@ -50,9 +54,15 @@ type PointsTableProps = {
   points: MonitoringPoint[];
   query: MonitoringPointListQuery;
   onSort: (field: MonitoringPointSortField) => void;
+  onEditSensor: (point: MonitoringPoint) => void;
 };
 
-function PointsTable({ points, query, onSort }: PointsTableProps) {
+function PointsTable({
+  points,
+  query,
+  onSort,
+  onEditSensor,
+}: PointsTableProps) {
   return (
     <TableContainer>
       <Table>
@@ -76,6 +86,7 @@ function PointsTable({ points, query, onSort }: PointsTableProps) {
                 </TableCell>
               );
             })}
+            <TableCell align="right">Ações</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -97,6 +108,18 @@ function PointsTable({ points, query, onSort }: PointsTableProps) {
                     Sem sensor
                   </Typography>
                 )}
+              </TableCell>
+              <TableCell align="right">
+                <Tooltip title="Sensor">
+                  {/* O nome da máquina entra no rótulo porque pontos de
+                      máquinas diferentes podem ter o mesmo nome */}
+                  <IconButton
+                    aria-label={`Sensor de ${point.name} (${point.machine.name})`}
+                    onClick={() => onEditSensor(point)}
+                  >
+                    <SensorsIcon />
+                  </IconButton>
+                </Tooltip>
               </TableCell>
             </TableRow>
           ))}
@@ -122,6 +145,8 @@ export function MonitoringPointsPage() {
 
   // O diálogo de ponto novo está aberto?
   const [formOpen, setFormOpen] = useState(false);
+  // O ponto com o diálogo do sensor aberto (null = nenhum)
+  const [sensorPoint, setSensorPoint] = useState<MonitoringPoint | null>(null);
   // Mensagem de sucesso que aparece no rodapé (null = nenhuma)
   const [notice, setNotice] = useState<string | null>(null);
 
@@ -147,6 +172,13 @@ export function MonitoringPointsPage() {
     setFormOpen(false);
     setNotice(message);
     // A lista vem ordenada e paginada pela API: busca a página de novo
+    dispatch(fetchMonitoringPoints(query));
+  }
+
+  function handleSensorSaved(message: string) {
+    setSensorPoint(null);
+    setNotice(message);
+    // O sensor aparece na lista, e a ordem por sensor pode mudar
     dispatch(fetchMonitoringPoints(query));
   }
 
@@ -201,7 +233,12 @@ export function MonitoringPointsPage() {
 
       {items.length > 0 && (
         <Paper>
-          <PointsTable points={items} query={query} onSort={handleSort} />
+          <PointsTable
+            points={items}
+            query={query}
+            onSort={handleSort}
+            onEditSensor={setSensorPoint}
+          />
           <TablePagination
             component="div"
             count={total}
@@ -224,6 +261,14 @@ export function MonitoringPointsPage() {
         <NewMonitoringPointDialog
           onClose={() => setFormOpen(false)}
           onCreated={handleCreated}
+        />
+      )}
+
+      {sensorPoint && (
+        <SensorDialog
+          point={sensorPoint}
+          onClose={() => setSensorPoint(null)}
+          onSaved={handleSensorSaved}
         />
       )}
 

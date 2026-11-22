@@ -215,4 +215,36 @@ describe('MonitoringPointsPage', () => {
     expect(pointCalls).toHaveLength(2);
     await waitForLoad();
   });
+  it('should open the sensor dialog of a point and reload the list after saving', async () => {
+    vi.spyOn(api, 'get').mockResolvedValue({ data: pageOf(points) });
+    vi.spyOn(api, 'put').mockResolvedValue({
+      data: { id: 'sensor-2', model: 'TcAg', serialNumber: 'DyL1.01.A0001' },
+    });
+    renderPage();
+
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: 'Sensor de Motor (Ventilador 01)',
+      }),
+    );
+    expect(
+      screen.getByRole('dialog', { name: 'Sensor do ponto Motor' }),
+    ).toBeTruthy();
+    fireEvent.mouseDown(screen.getByRole('combobox', { name: 'Modelo' }));
+    fireEvent.click(screen.getByRole('option', { name: 'TcAg' }));
+    fireEvent.change(screen.getByLabelText('Número de série'), {
+      target: { value: 'DyL1.01.A0001' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Salvar' }));
+
+    expect(await screen.findByText('Sensor salvo')).toBeTruthy();
+    expect(screen.queryByRole('dialog')).toBeNull();
+    // O sensor foi para o ponto certo, e a lista foi buscada de novo
+    expect(api.put).toHaveBeenCalledWith('/monitoring-points/point-2/sensor', {
+      model: 'TcAg',
+      serialNumber: 'DyL1.01.A0001',
+    });
+    expect(api.get).toHaveBeenCalledTimes(2);
+    await waitForLoad();
+  });
 });

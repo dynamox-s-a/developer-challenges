@@ -26,8 +26,9 @@ export function isSensorModelAllowed(
 // A comparação é feita em maiúsculas, por isso "DYL" aqui
 const SERIAL_NUMBER_PATTERN = /^DYL\d\.\d{2}\.[A-Z]\d{4}$/;
 
-// O dígito logo depois de "DyL" diz o modelo do sensor
-const SERIAL_NUMBER_PREFIXES: Record<SensorModel, string> = {
+// O dígito logo depois de "DyL" diz o modelo do sensor. Exportado para a
+// tela mostrar o exemplo certo de cada modelo
+export const SERIAL_NUMBER_PREFIXES: Record<SensorModel, string> = {
   TcAg: 'DyL1',
   TcAs: 'DyL0',
   'HF+': 'DyL4',
