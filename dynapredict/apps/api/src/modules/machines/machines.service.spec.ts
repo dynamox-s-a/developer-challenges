@@ -15,7 +15,12 @@ const db = vi.hoisted(() => ({
   delete: vi.fn(),
 }));
 
-vi.mock('../../lib/prisma.ts', () => ({ prisma: { machine: db } }));
+// prisma.sensor.findMany: ao editar, o service confere os sensores da máquina
+const sensorDb = vi.hoisted(() => ({ findMany: vi.fn() }));
+
+vi.mock('../../lib/prisma.ts', () => ({
+  prisma: { machine: db, sensor: sensorDb },
+}));
 
 const machine = {
   id: 'machine-1',
@@ -25,9 +30,15 @@ const machine = {
   updatedAt: new Date(),
 };
 
+const fan = { ...machine, name: 'Ventilador 01', type: 'Fan' };
+
 describe('machines service', () => {
-  // Zera as respostas e o histórico de chamadas de todas as funções falsas
-  beforeEach(() => vi.resetAllMocks());
+  beforeEach(() => {
+    // Zera as respostas e o histórico de chamadas de todas as funções falsas
+    vi.resetAllMocks();
+    // Por padrão, a máquina não tem sensores que impeçam a edição
+    sensorDb.findMany.mockResolvedValue([]);
+  });
 
   it('should list the machines, newest first', async () => {
     db.findMany.mockResolvedValue([machine]);
@@ -86,6 +97,36 @@ describe('machines service', () => {
     await expect(
       updateMachine('nao-existe', { name: 'Bomba 02', type: 'Pump' }),
     ).rejects.toMatchObject({ statusCode: 404 });
+    expect(db.update).not.toHaveBeenCalled();
+  });
+
+  it('should look for the sensors the new type does not allow', async () => {
+    db.findUnique.mockResolvedValue(fan);
+
+    await updateMachine('machine-1', { name: 'Ventilador 01', type: 'Pump' });
+
+    expect(sensorDb.findMany).toHaveBeenCalledWith({
+      where: {
+        monitoringPoint: { machineId: 'machine-1' },
+        model: { in: ['TcAg', 'TcAs'] },
+      },
+      select: { model: true },
+      distinct: ['model'],
+      orderBy: { model: 'asc' },
+    });
+  });
+
+  it('should not change a machine to Pump while it has TcAg or TcAs sensors', async () => {
+    db.findUnique.mockResolvedValue(fan);
+    sensorDb.findMany.mockResolvedValue([{ model: 'TcAg' }, { model: 'TcAs' }]);
+
+    await expect(
+      updateMachine('machine-1', { name: 'Ventilador 01', type: 'Pump' }),
+    ).rejects.toMatchObject({
+      statusCode: 409,
+      message:
+        'Máquinas do tipo Pump não aceitam sensores TcAg e TcAs. Troque ou remova esses sensores antes de mudar o tipo',
+    });
     expect(db.update).not.toHaveBeenCalled();
   });
 

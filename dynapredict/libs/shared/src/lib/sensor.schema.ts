@@ -8,17 +8,18 @@ export const sensorModelSchema = z.enum(
 export type SensorModel = z.infer<typeof sensorModelSchema>;
 export const SENSOR_MODELS = sensorModelSchema.options; // ['TcAg', 'TcAs', 'HF+']
 
-// Regra do negócio: TcAg e TcAs não podem ser usados em máquinas do tipo Pump
-const MODELS_NOT_ALLOWED_ON_PUMP: SensorModel[] = ['TcAg', 'TcAs'];
+// Regra do negócio: os modelos de sensor que cada tipo de máquina NÃO aceita.
+// O Record obriga a listar todos os tipos: um tipo novo não passa sem regra
+export const SENSOR_MODELS_NOT_ALLOWED: Record<MachineType, SensorModel[]> = {
+  Pump: ['TcAg', 'TcAs'],
+  Fan: [],
+};
 
 export function isSensorModelAllowed(
   machineType: MachineType,
   sensorModel: SensorModel,
 ): boolean {
-  if (machineType === 'Pump') {
-    return !MODELS_NOT_ALLOWED_ON_PUMP.includes(sensorModel);
-  }
-  return true;
+  return !SENSOR_MODELS_NOT_ALLOWED[machineType].includes(sensorModel);
 }
 
 // Número de série: DyL<modelo>.<2 dígitos>.<letra><4 dígitos>, ex.: DyL4.01.A0000.
