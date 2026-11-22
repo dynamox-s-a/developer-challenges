@@ -4,6 +4,10 @@ import { notFoundHandler } from './middlewares/not-found.ts';
 import { authRouter } from './modules/auth/auth.routes.ts';
 import { healthRouter } from './modules/health/health.routes.ts';
 import { machinesRouter } from './modules/machines/machines.routes.ts';
+import {
+  machineMonitoringPointsRouter,
+  monitoringPointsRouter,
+} from './modules/monitoring-points/monitoring-points.routes.ts';
 
 export const app = express();
 
@@ -12,7 +16,13 @@ app.use(express.json());
 
 app.use('/api/health', healthRouter);
 app.use('/api/auth', authRouter);
+// Antes do machinesRouter: o caminho mais específico vem primeiro
+app.use(
+  '/api/machines/:machineId/monitoring-points',
+  machineMonitoringPointsRouter,
+);
 app.use('/api/machines', machinesRouter);
+app.use('/api/monitoring-points', monitoringPointsRouter);
 
 // Nenhuma rota acima respondeu: 404 em JSON
 app.use(notFoundHandler);
