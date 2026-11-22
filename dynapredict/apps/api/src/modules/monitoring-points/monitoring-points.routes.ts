@@ -1,10 +1,12 @@
 import { Router, type Request } from 'express';
-import { monitoringPointSchema } from '@dynapredict/shared';
+import { monitoringPointSchema, sensorSchema } from '@dynapredict/shared';
 import { requireAuth } from '../../middlewares/require-auth.ts';
 import { validateBody } from '../../middlewares/validate-body.ts';
 import {
   createMonitoringPoint,
   deleteMonitoringPoint,
+  removeSensor,
+  setSensor,
 } from './monitoring-points.service.ts';
 
 // Os pontos de UMA máquina: /api/machines/:machineId/monitoring-points.
@@ -30,5 +32,21 @@ monitoringPointsRouter.use(requireAuth);
 
 monitoringPointsRouter.delete('/:id', async (req, res) => {
   await deleteMonitoringPoint(req.params.id);
+  res.status(204).end();
+});
+
+// O sensor do ponto: /api/monitoring-points/:id/sensor. No singular porque
+// cada ponto tem no máximo um. PUT porque coloca ou troca: mandar o mesmo
+// pedido duas vezes deixa o ponto do mesmo jeito
+monitoringPointsRouter.put(
+  '/:id/sensor',
+  validateBody(sensorSchema),
+  async (req: Request<{ id: string }>, res) => {
+    res.json(await setSensor(req.params.id, req.body));
+  },
+);
+
+monitoringPointsRouter.delete('/:id/sensor', async (req, res) => {
+  await removeSensor(req.params.id);
   res.status(204).end();
 });

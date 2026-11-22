@@ -23,6 +23,16 @@ const point = {
   createdAt: new Date('2026-11-22T10:00:00Z'),
   updatedAt: new Date('2026-11-22T10:00:00Z'),
 };
+
+const sensor = {
+  id: 'sensor-1',
+  model: 'TcAg',
+  serialNumber: 'DyL1.01.A0000',
+  monitoringPointId: 'point-1',
+  createdAt: new Date('2026-11-22T10:00:00Z'),
+  updatedAt: new Date('2026-11-22T10:00:00Z'),
+};
+
 const token = signToken({ sub: 'user-1', email: 'admin@dynamox.com' });
 
 type ErrorBody = { error: { code: string; message: string } };
@@ -129,5 +139,48 @@ describe('monitoring points routes', () => {
 
     expect(response.status).toBe(204);
     expect(service.deleteMonitoringPoint).toHaveBeenCalledWith('point-1');
+  });
+
+  it('should put a sensor on the point and answer 200', async () => {
+    vi.mocked(service.setSensor).mockResolvedValue(sensor);
+
+    const response = await request('/monitoring-points/point-1/sensor', {
+      method: 'PUT',
+      body: JSON.stringify({ model: 'TcAg', serialNumber: 'dyl1.01.a0000' }),
+    });
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({
+      id: 'sensor-1',
+      model: 'TcAg',
+      serialNumber: 'DyL1.01.A0000',
+    });
+    // O número chega ao service no formato padrão, mesmo digitado em minúsculas
+    expect(service.setSensor).toHaveBeenCalledWith('point-1', {
+      model: 'TcAg',
+      serialNumber: 'DyL1.01.A0000',
+    });
+  });
+
+  it('should answer 400 when the serial number is from another model', async () => {
+    const response = await request('/monitoring-points/point-1/sensor', {
+      method: 'PUT',
+      body: JSON.stringify({ model: 'HF+', serialNumber: 'DyL1.01.A0000' }),
+    });
+    const body = (await response.json()) as ErrorBody;
+
+    expect(response.status).toBe(400);
+    expect(body.error.code).toBe('VALIDATION_ERROR');
+    expect(service.setSensor).not.toHaveBeenCalled();
+  });
+
+  it('should remove only the sensor and answer 204', async () => {
+    const response = await request('/monitoring-points/point-1/sensor', {
+      method: 'DELETE',
+    });
+
+    expect(response.status).toBe(204);
+    expect(service.removeSensor).toHaveBeenCalledWith('point-1');
+    expect(service.deleteMonitoringPoint).not.toHaveBeenCalled();
   });
 });
