@@ -15,10 +15,12 @@ model User {
   createdAt    DateTime @default(now())
 }
 
-// Os mesmos valores do machineTypeSchema do shared (Pump e Fan)
+// Os mesmos valores do machineTypeSchema do shared (Pump e Fan).
+// Em ordem alfabética de propósito: o Postgres ordena um enum pela ordem dos
+// valores (veja a migration sort_machine_types_alphabetically)
 enum MachineType {
-  Pump
   Fan
+  Pump
 }
 
 model Machine {
