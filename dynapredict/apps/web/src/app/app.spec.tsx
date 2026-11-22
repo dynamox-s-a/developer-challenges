@@ -14,11 +14,18 @@ const user = { id: 'user-1', email: 'admin@dynamox.com' };
 async function renderApp(path: string, { loggedIn = true } = {}) {
   if (loggedIn) {
     tokenStorage.set('token-de-teste');
-    // API de mentira: o porteiro pergunta "quem é você?" (/auth/me) e a
-    // página de máquinas pede a lista (/machines), que aqui vem vazia
-    vi.spyOn(api, 'get').mockImplementation(async (url) => ({
-      data: url === '/auth/me' ? { user } : [],
-    }));
+    // API de mentira: o porteiro pergunta "quem é você?" (/auth/me), e as
+    // páginas pedem as listas, que aqui vêm vazias. A de pontos vem em
+    // páginas, por isso a resposta dela tem outro formato
+    vi.spyOn(api, 'get').mockImplementation(async (url) => {
+      if (url === '/auth/me') {
+        return { data: { user } };
+      }
+      if (url === '/monitoring-points') {
+        return { data: { items: [], total: 0, page: 1, pageSize: 5 } };
+      }
+      return { data: [] };
+    });
   }
 
   const result = render(

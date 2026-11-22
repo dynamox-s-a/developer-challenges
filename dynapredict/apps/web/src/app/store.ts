@@ -2,12 +2,14 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { authReducer, logout } from '../features/auth/auth.slice';
 import { healthReducer } from '../features/health/health.slice';
 import { machinesReducer } from '../features/machines/machines.slice';
+import { monitoringPointsReducer } from '../features/monitoring-points/monitoring-points.slice';
 import { setOnUnauthorized } from '../lib/api-client';
 
 const rootReducer = combineReducers({
   auth: authReducer,
   health: healthReducer,
   machines: machinesReducer,
+  monitoringPoints: monitoringPointsReducer,
 });
 
 // "Fábrica" de stores: cada chamada cria uma store nova, do zero.
