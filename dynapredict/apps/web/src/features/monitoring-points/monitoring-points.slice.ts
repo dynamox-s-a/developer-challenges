@@ -119,6 +119,21 @@ export const removeSensor = createAsyncThunk<
   }
 });
 
+// Exclui o ponto (o sensor dele vai junto, no banco). A API responde 204:
+// devolve o id do ponto
+export const deleteMonitoringPoint = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string }
+>('monitoringPoints/delete', async (pointId, { rejectWithValue }) => {
+  try {
+    await api.delete(`/monitoring-points/${pointId}`);
+    return pointId;
+  } catch (error) {
+    return rejectWithValue(getApiErrorMessage(error));
+  }
+});
+
 const monitoringPointsSlice = createSlice({
   name: 'monitoringPoints',
   initialState,

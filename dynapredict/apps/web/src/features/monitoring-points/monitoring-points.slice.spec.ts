@@ -5,6 +5,7 @@ import { api } from '../../lib/api-client';
 import { logout } from '../auth/auth.slice';
 import {
   createMonitoringPoint,
+  deleteMonitoringPoint,
   fetchMonitoringPoints,
   removeSensor,
   setSensor,
@@ -160,6 +161,18 @@ describe('monitoring points slice', () => {
     expect(api.delete).toHaveBeenCalledWith(
       '/monitoring-points/point-7/sensor',
     );
+    expect(result).toBe('point-7');
+  });
+
+  it('should delete the point given in the url', async () => {
+    vi.spyOn(api, 'delete').mockResolvedValue({ data: '' });
+    const store = setupStore();
+
+    const result = await store
+      .dispatch(deleteMonitoringPoint('point-7'))
+      .unwrap();
+
+    expect(api.delete).toHaveBeenCalledWith('/monitoring-points/point-7');
     expect(result).toBe('point-7');
   });
 });

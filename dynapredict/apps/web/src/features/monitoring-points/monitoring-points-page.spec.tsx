@@ -7,6 +7,7 @@ import {
   within,
 } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import type { MonitoringPointListQuery } from '@dynapredict/shared';
 import { setupStore } from '../../app/store';
 import { api } from '../../lib/api-client';
 import type { Machine } from '../machines/machines.slice';
@@ -245,6 +246,67 @@ describe('MonitoringPointsPage', () => {
       serialNumber: 'DyL1.01.A0001',
     });
     expect(api.get).toHaveBeenCalledTimes(2);
+    await waitForLoad();
+  });
+
+  it('should delete a point after the confirmation and reload the list', async () => {
+    vi.spyOn(api, 'get').mockResolvedValue({ data: pageOf(points) });
+    vi.spyOn(api, 'delete').mockResolvedValue({ data: '' });
+    renderPage();
+
+    // O segundo ponto da tabela, para garantir que é o ponto da linha clicada
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: 'Excluir Motor (Ventilador 01)',
+      }),
+    );
+    expect(screen.getByRole('dialog', { name: 'Excluir ponto?' })).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Excluir' }));
+
+    expect(await screen.findByText('Ponto excluído')).toBeTruthy();
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(api.delete).toHaveBeenCalledWith('/monitoring-points/point-2');
+    expect(api.get).toHaveBeenCalledTimes(2);
+    await waitForLoad();
+  });
+
+  it('should go back to the previous page when the current one becomes empty', async () => {
+    // 6 pontos: 5 na página 1 e o "Motor" sozinho na página 2.
+    // Depois que o Motor é excluído, a página 2 fica vazia
+    const firstPage = [1, 2, 3, 4, 5].map((n) => ({
+      ...points[0],
+      id: `point-1${n}`,
+      name: `Ponto ${n}`,
+    }));
+    let deleted = false;
+    vi.spyOn(api, 'get').mockImplementation(async (_url, config) => {
+      // Os parâmetros que a página mandou: { page, pageSize, sortBy, order }
+      const { page } = config?.params as MonitoringPointListQuery;
+      const total = deleted ? 5 : 6;
+      if (page === 2) {
+        const items = deleted ? [] : [points[1]];
+        return { data: { items, total, page: 2, pageSize: 5 } };
+      }
+      return { data: { items: firstPage, total, page: 1, pageSize: 5 } };
+    });
+    vi.spyOn(api, 'delete').mockImplementation(async () => {
+      deleted = true;
+      return { data: '' };
+    });
+    renderPage();
+    expect(await screen.findByText('1–5 de 6')).toBeTruthy();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Próxima página' }));
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: 'Excluir Motor (Ventilador 01)',
+      }),
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Excluir' }));
+
+    // Voltou sozinha para a página 1, que agora é a última
+    expect(await screen.findByText('1–5 de 5')).toBeTruthy();
+    expect(lastParams()).toMatchObject({ page: 1 });
     await waitForLoad();
   });
 });

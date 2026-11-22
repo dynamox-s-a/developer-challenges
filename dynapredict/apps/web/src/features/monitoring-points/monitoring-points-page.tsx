@@ -19,6 +19,7 @@ import {
   Typography,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import SensorsIcon from '@mui/icons-material/Sensors';
 import type {
   MonitoringPointListQuery,
@@ -29,6 +30,7 @@ import {
   fetchMonitoringPoints,
   type MonitoringPoint,
 } from './monitoring-points.slice';
+import { DeleteMonitoringPointDialog } from './delete-monitoring-point-dialog';
 import { NewMonitoringPointDialog } from './new-monitoring-point-dialog';
 import { SensorDialog } from './sensor-dialog';
 
@@ -55,6 +57,7 @@ type PointsTableProps = {
   query: MonitoringPointListQuery;
   onSort: (field: MonitoringPointSortField) => void;
   onEditSensor: (point: MonitoringPoint) => void;
+  onDelete: (point: MonitoringPoint) => void;
 };
 
 function PointsTable({
@@ -62,6 +65,7 @@ function PointsTable({
   query,
   onSort,
   onEditSensor,
+  onDelete,
 }: PointsTableProps) {
   return (
     <TableContainer>
@@ -120,6 +124,14 @@ function PointsTable({
                     <SensorsIcon />
                   </IconButton>
                 </Tooltip>
+                <Tooltip title="Excluir">
+                  <IconButton
+                    aria-label={`Excluir ${point.name} (${point.machine.name})`}
+                    onClick={() => onDelete(point)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
               </TableCell>
             </TableRow>
           ))}
@@ -147,6 +159,8 @@ export function MonitoringPointsPage() {
   const [formOpen, setFormOpen] = useState(false);
   // O ponto com o diálogo do sensor aberto (null = nenhum)
   const [sensorPoint, setSensorPoint] = useState<MonitoringPoint | null>(null);
+  // O ponto esperando a confirmação para ser excluído (null = nenhum)
+  const [toDelete, setToDelete] = useState<MonitoringPoint | null>(null);
   // Mensagem de sucesso que aparece no rodapé (null = nenhuma)
   const [notice, setNotice] = useState<string | null>(null);
 
@@ -156,6 +170,14 @@ export function MonitoringPointsPage() {
     // antiga, para uma resposta atrasada não aparecer no lugar da nova
     return () => request.abort();
   }, [dispatch, query]);
+
+  // A página ficou vazia (ex.: excluiu o último ponto da última página)?
+  // Volta para a anterior, em vez de mostrar uma página sem nada
+  useEffect(() => {
+    if (status === 'succeeded' && items.length === 0 && query.page > 1) {
+      setQuery((current) => ({ ...current, page: current.page - 1 }));
+    }
+  }, [status, items.length, query.page]);
 
   function handleSort(field: MonitoringPointSortField) {
     setQuery((current) => ({
@@ -179,6 +201,13 @@ export function MonitoringPointsPage() {
     setSensorPoint(null);
     setNotice(message);
     // O sensor aparece na lista, e a ordem por sensor pode mudar
+    dispatch(fetchMonitoringPoints(query));
+  }
+
+  function handleDeleted(message: string) {
+    setToDelete(null);
+    setNotice(message);
+    // Busca a página de novo: um ponto da página seguinte sobe para ela
     dispatch(fetchMonitoringPoints(query));
   }
 
@@ -238,6 +267,7 @@ export function MonitoringPointsPage() {
             query={query}
             onSort={handleSort}
             onEditSensor={setSensorPoint}
+            onDelete={setToDelete}
           />
           <TablePagination
             component="div"
@@ -269,6 +299,14 @@ export function MonitoringPointsPage() {
           point={sensorPoint}
           onClose={() => setSensorPoint(null)}
           onSaved={handleSensorSaved}
+        />
+      )}
+
+      {toDelete && (
+        <DeleteMonitoringPointDialog
+          point={toDelete}
+          onClose={() => setToDelete(null)}
+          onDeleted={handleDeleted}
         />
       )}
 
