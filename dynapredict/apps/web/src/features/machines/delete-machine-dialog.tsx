@@ -1,15 +1,5 @@
-import { useState } from 'react';
-import {
-  Alert,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Stack,
-} from '@mui/material';
 import { useAppDispatch } from '../../app/hooks';
+import { ConfirmDeleteDialog } from '../../components/confirm-delete-dialog';
 import { deleteMachine, type Machine } from './machines.slice';
 
 type DeleteMachineDialogProps = {
@@ -25,51 +15,21 @@ export function DeleteMachineDialog({
   onDeleted,
 }: DeleteMachineDialogProps) {
   const dispatch = useAppDispatch();
-  const [deleting, setDeleting] = useState(false);
-  const [deleteError, setDeleteError] = useState<string | null>(null);
 
+  // O unwrap() lança a mensagem de erro, e o diálogo de confirmação a mostra
   async function handleConfirm() {
-    setDeleteError(null);
-    setDeleting(true);
-
-    // Mesmo esquema do formulário: o unwrap() lança o erro para o catch
-    try {
-      await dispatch(deleteMachine(machine.id)).unwrap();
-      onDeleted('Máquina excluída');
-    } catch (error) {
-      setDeleteError(typeof error === 'string' ? error : 'Erro inesperado');
-    } finally {
-      setDeleting(false);
-    }
+    await dispatch(deleteMachine(machine.id)).unwrap();
+    onDeleted('Máquina excluída');
   }
 
   return (
-    // Como o formulário: a página só desenha o diálogo enquanto ele está aberto
-    <Dialog open onClose={onClose} fullWidth maxWidth="xs">
-      <DialogTitle>Excluir máquina?</DialogTitle>
-
-      <DialogContent>
-        <Stack spacing={2}>
-          {deleteError && <Alert severity="error">{deleteError}</Alert>}
-
-          <DialogContentText>
-            A máquina <strong>{machine.name}</strong> será excluída. Essa ação
-            não pode ser desfeita.
-          </DialogContentText>
-        </Stack>
-      </DialogContent>
-
-      <DialogActions>
-        <Button onClick={onClose}>Cancelar</Button>
-        <Button
-          variant="contained"
-          color="error"
-          onClick={handleConfirm}
-          disabled={deleting}
-        >
-          {deleting ? 'Excluindo...' : 'Excluir'}
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <ConfirmDeleteDialog
+      title="Excluir máquina?"
+      onConfirm={handleConfirm}
+      onClose={onClose}
+    >
+      A máquina <strong>{machine.name}</strong> será excluída. Essa ação não
+      pode ser desfeita.
+    </ConfirmDeleteDialog>
   );
 }
