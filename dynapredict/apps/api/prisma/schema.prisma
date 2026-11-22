@@ -22,9 +22,40 @@ enum MachineType {
 }
 
 model Machine {
-  id        String      @id @default(uuid())
-  name      String      @db.VarChar(100)
-  type      MachineType
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  id               String            @id @default(uuid())
+  name             String            @db.VarChar(100)
+  type             MachineType
+  monitoringPoints MonitoringPoint[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+}
+
+model MonitoringPoint {
+  id        String   @id @default(uuid())
+  name      String   @db.VarChar(100)
+  machineId String
+  // Excluir a máquina exclui junto os pontos dela
+  machine   Machine  @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  // No máximo um sensor por ponto
+  sensor    Sensor?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Deixa rápida a busca dos pontos de uma máquina
+  @@index([machineId])
+}
+
+model Sensor {
+  id                String          @id @default(uuid())
+  // O "ID único" do sensor é o número de série (ex.: DyL4.01.A0000)
+  serialNumber      String          @unique
+  // TcAg, TcAs ou HF+. É texto porque "HF+" não é um nome válido de enum
+  // no Prisma; a migration tem uma CHECK que só aceita esses três valores
+  model             String
+  // @unique: um ponto não pode ter dois sensores
+  monitoringPointId String          @unique
+  // Excluir o ponto exclui junto o sensor dele
+  monitoringPoint   MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
 }
