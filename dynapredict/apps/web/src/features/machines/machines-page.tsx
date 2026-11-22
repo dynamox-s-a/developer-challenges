@@ -17,8 +17,10 @@ import {
   Typography,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { DeleteMachineDialog } from './delete-machine-dialog';
 import { MachineFormDialog } from './machine-form-dialog';
 import { fetchMachines, type Machine } from './machines.slice';
 
@@ -30,9 +32,10 @@ function formatDate(isoDate: string) {
 type MachinesTableProps = {
   machines: Machine[];
   onEdit: (machine: Machine) => void;
+  onDelete: (machine: Machine) => void;
 };
 
-function MachinesTable({ machines, onEdit }: MachinesTableProps) {
+function MachinesTable({ machines, onEdit, onDelete }: MachinesTableProps) {
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -57,6 +60,12 @@ function MachinesTable({ machines, onEdit }: MachinesTableProps) {
                 >
                   <EditIcon />
                 </IconButton>
+                <IconButton
+                  aria-label={`Excluir ${machine.name}`}
+                  onClick={() => onDelete(machine)}
+                >
+                  <DeleteIcon />
+                </IconButton>
               </TableCell>
             </TableRow>
           ))}
@@ -73,6 +82,8 @@ export function MachinesPage() {
   // O formulário está aberto? E qual máquina ele edita (null = nova)
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Machine | null>(null);
+  // A máquina esperando a confirmação para ser excluída (null = nenhuma)
+  const [toDelete, setToDelete] = useState<Machine | null>(null);
   // Mensagem de sucesso que aparece no rodapé (null = nenhuma)
   const [notice, setNotice] = useState<string | null>(null);
 
@@ -88,6 +99,11 @@ export function MachinesPage() {
 
   function handleSaved(message: string) {
     setFormOpen(false);
+    setNotice(message);
+  }
+
+  function handleDeleted(message: string) {
+    setToDelete(null);
     setNotice(message);
   }
 
@@ -138,7 +154,11 @@ export function MachinesPage() {
       )}
 
       {status === 'succeeded' && items.length > 0 && (
-        <MachinesTable machines={items} onEdit={openForm} />
+        <MachinesTable
+          machines={items}
+          onEdit={openForm}
+          onDelete={setToDelete}
+        />
       )}
 
       {formOpen && (
@@ -146,6 +166,14 @@ export function MachinesPage() {
           machine={editing}
           onClose={() => setFormOpen(false)}
           onSaved={handleSaved}
+        />
+      )}
+
+      {toDelete && (
+        <DeleteMachineDialog
+          machine={toDelete}
+          onClose={() => setToDelete(null)}
+          onDeleted={handleDeleted}
         />
       )}
 

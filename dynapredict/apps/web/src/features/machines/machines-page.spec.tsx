@@ -120,4 +120,21 @@ describe('MachinesPage', () => {
     expect(screen.getByText('Bomba 01 revisada')).toBeTruthy();
     expect(screen.queryByText('Bomba 01')).toBeNull();
   });
+
+  it('should take the machine out of the list after the confirmation', async () => {
+    vi.spyOn(api, 'get').mockResolvedValue({ data: machines });
+    vi.spyOn(api, 'delete').mockResolvedValue({ data: '' });
+    renderPage();
+
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Excluir Bomba 01' }),
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Excluir' }));
+
+    expect(await screen.findByText('Máquina excluída')).toBeTruthy();
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(screen.queryByText('Bomba 01')).toBeNull();
+    // Sobram o cabeçalho e o Ventilador 01
+    expect(screen.getAllByRole('row')).toHaveLength(2);
+  });
 });

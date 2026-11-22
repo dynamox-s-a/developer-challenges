@@ -4,6 +4,7 @@ import { api } from '../../lib/api-client';
 import { logout } from '../auth/auth.slice';
 import {
   createMachine,
+  deleteMachine,
   fetchMachines,
   updateMachine,
   type Machine,
@@ -103,6 +104,19 @@ describe('machines slice', () => {
       type: 'Pump',
     });
     expect(store.getState().machines.items).toEqual([edited]);
+  });
+
+  it('should take the deleted machine out of the list', async () => {
+    const other: Machine = { ...machine, id: 'machine-2', name: 'Bomba 02' };
+    vi.spyOn(api, 'get').mockResolvedValue({ data: [machine, other] });
+    vi.spyOn(api, 'delete').mockResolvedValue({ data: '' });
+    const store = setupStore();
+    await store.dispatch(fetchMachines());
+
+    await store.dispatch(deleteMachine('machine-1'));
+
+    expect(api.delete).toHaveBeenCalledWith('/machines/machine-1');
+    expect(store.getState().machines.items).toEqual([other]);
   });
 
   it('should forget the machines on logout', async () => {

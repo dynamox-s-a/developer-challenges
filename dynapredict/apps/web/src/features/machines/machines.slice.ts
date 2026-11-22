@@ -62,6 +62,21 @@ export const updateMachine = createAsyncThunk<
   }
 });
 
+// A API responde 204 (sem corpo). O thunk devolve o próprio id,
+// para o reducer saber qual máquina tirar da lista
+export const deleteMachine = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string }
+>('machines/delete', async (id, { rejectWithValue }) => {
+  try {
+    await api.delete(`/machines/${id}`);
+    return id;
+  } catch (error) {
+    return rejectWithValue(getApiErrorMessage(error));
+  }
+});
+
 const machinesSlice = createSlice({
   name: 'machines',
   initialState,
@@ -93,6 +108,14 @@ const machinesSlice = createSlice({
           state.items[index] = action.payload;
         }
       })
+
+      // Fica com todas, menos a que foi excluída
+      .addCase(deleteMachine.fulfilled, (state, action) => {
+        state.items = state.items.filter(
+          (machine) => machine.id !== action.payload,
+        );
+      })
+
       // Saiu do sistema? Esquece as máquinas (o próximo login busca de novo)
       .addCase(logout.fulfilled, () => initialState);
   },
