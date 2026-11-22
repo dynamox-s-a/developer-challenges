@@ -28,8 +28,9 @@ export function DeleteMachineDialog({
       onConfirm={handleConfirm}
       onClose={onClose}
     >
-      A máquina <strong>{machine.name}</strong> será excluída. Essa ação não
-      pode ser desfeita.
+      A máquina <strong>{machine.name}</strong> será excluída, junto com todos
+      os pontos de monitoramento e sensores dela. Essa ação não pode ser
+      desfeita.
     </ConfirmDeleteDialog>
   );
 }
