@@ -33,15 +33,17 @@ model Machine {
 }
 
 model MonitoringPoint {
-  id        String   @id @default(uuid())
-  name      String   @db.VarChar(100)
-  machineId String
+  id         String       @id @default(uuid())
+  name       String       @db.VarChar(100)
+  machineId  String
   // Excluir a máquina exclui junto os pontos dela
-  machine   Machine  @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  machine    Machine      @relation(fields: [machineId], references: [id], onDelete: Cascade)
   // No máximo um sensor por ponto
-  sensor    Sensor?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  sensor     Sensor?
+  // Os dados que os sensores deste ponto enviaram
+  timeSeries TimeSeries[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
 
   // Deixa rápida a busca dos pontos de uma máquina
   @@index([machineId])
@@ -60,4 +62,43 @@ model Sensor {
   monitoringPoint   MonitoringPoint @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
+}
+
+// Uma série temporal: um lote de medições que um sensor enviou de uma vez
+// (ex.: a temperatura de um dia). Fica no PONTO, e não no sensor, para o
+// histórico continuar lá quando o sensor for trocado ou removido
+model TimeSeries {
+  id                 String             @id @default(uuid())
+  // O que foi medido, ex.: "Temperatura" ou "Velocidade RMS"
+  name               String             @db.VarChar(100)
+  // A unidade dos valores, ex.: "°C" ou "mm/s" (opcional)
+  unit               String?            @db.VarChar(20)
+  // O sensor que estava no ponto quando os dados chegaram
+  sensorSerialNumber String
+  monitoringPointId  String
+  // Excluir o ponto exclui junto as séries dele
+  monitoringPoint    MonitoringPoint    @relation(fields: [monitoringPointId], references: [id], onDelete: Cascade)
+  samples            TimeSeriesSample[]
+  // Um resumo gravado junto com a série, que não muda depois de enviada:
+  // assim a lista de séries não precisa contar as medições toda vez
+  sampleCount        Int
+  startedAt          DateTime
+  endedAt            DateTime
+  createdAt          DateTime           @default(now())
+
+  // Deixa rápida a busca das séries de um ponto
+  @@index([monitoringPointId])
+}
+
+// Uma medição da série: o instante e o valor medido
+model TimeSeriesSample {
+  timeSeriesId String
+  // Excluir a série exclui junto as medições dela
+  timeSeries   TimeSeries @relation(fields: [timeSeriesId], references: [id], onDelete: Cascade)
+  timestamp    DateTime
+  value        Float
+
+  // A chave é a série + o instante: uma série não tem duas medições no
+  // mesmo instante, e o índice já deixa as medições em ordem de tempo
+  @@id([timeSeriesId, timestamp])
 }
