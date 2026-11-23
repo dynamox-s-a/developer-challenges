@@ -8,7 +8,10 @@ import {
   machineMonitoringPointsRouter,
   monitoringPointsRouter,
 } from './modules/monitoring-points/monitoring-points.routes.ts';
-import { pointTimeSeriesRouter } from './modules/time-series/time-series.routes.ts';
+import {
+  pointTimeSeriesRouter,
+  timeSeriesRouter,
+} from './modules/time-series/time-series.routes.ts';
 
 export const app = express();
 
@@ -27,6 +30,7 @@ app.use('/api/machines', machinesRouter);
 // Antes do monitoringPointsRouter, pelo mesmo motivo
 app.use('/api/monitoring-points/:pointId/time-series', pointTimeSeriesRouter);
 app.use('/api/monitoring-points', monitoringPointsRouter);
+app.use('/api/time-series', timeSeriesRouter);
 
 // Nenhuma rota acima respondeu: 404 em JSON
 app.use(notFoundHandler);

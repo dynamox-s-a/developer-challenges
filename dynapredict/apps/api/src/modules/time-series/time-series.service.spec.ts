@@ -1,4 +1,11 @@
-import { createTimeSeries, listTimeSeries } from './time-series.service.ts';
+import {
+  countTimeSeries,
+  createTimeSeries,
+  deleteTimeSeries,
+  getTimeSeries,
+  getTimeSeriesMetrics,
+  listTimeSeries,
+} from './time-series.service.ts';
 
 // As funções falsas do banco, criadas antes do vi.mock. O service usa o
 // getMonitoringPoint, que procura o ponto em prisma.monitoringPoint
@@ -6,8 +13,14 @@ const { db, tx } = vi.hoisted(() => ({
   db: {
     monitoringPoint: { findUnique: vi.fn() },
     sensor: { findUnique: vi.fn() },
-    timeSeries: { findMany: vi.fn() },
+    timeSeries: {
+      findMany: vi.fn(),
+      count: vi.fn(),
+      findUnique: vi.fn(),
+      delete: vi.fn(),
+    },
     $transaction: vi.fn(),
+    $queryRaw: vi.fn(),
   },
   // O que roda dentro da transação usa o "tx", e não o prisma
   tx: { timeSeries: { create: vi.fn() }, $executeRaw: vi.fn() },
@@ -151,5 +164,85 @@ describe('time series service', () => {
       statusCode: 404,
     });
     expect(db.timeSeries.findMany).not.toHaveBeenCalled();
+  });
+});
+
+describe('time series by id', () => {
+  beforeEach(() => vi.resetAllMocks());
+
+  it('should count the series of every point', async () => {
+    db.timeSeries.count.mockResolvedValue(3);
+
+    await expect(countTimeSeries()).resolves.toBe(3);
+    expect(db.timeSeries.count).toHaveBeenCalledWith(); // sem filtro
+  });
+
+  it('should get a full series with the samples in time order', async () => {
+    const series = { id: 'series-1', samples: [] };
+    db.timeSeries.findUnique.mockResolvedValue(series);
+
+    await expect(getTimeSeries('series-1')).resolves.toBe(series);
+    expect(db.timeSeries.findUnique).toHaveBeenCalledWith({
+      where: { id: 'series-1' },
+      select: {
+        ...SUMMARY,
+        samples: {
+          select: { timestamp: true, value: true },
+          orderBy: { timestamp: 'asc' },
+        },
+      },
+    });
+  });
+
+  it('should calculate the metrics in the database', async () => {
+    const metrics = {
+      count: 4,
+      min: 31.5,
+      max: 33,
+      mean: 32,
+      stdDev: 0.5,
+      rms: 32,
+    };
+    db.timeSeries.findUnique.mockResolvedValue({ id: 'series-1' });
+    db.$queryRaw.mockResolvedValue([metrics]);
+
+    await expect(getTimeSeriesMetrics('series-1')).resolves.toBe(metrics);
+    // Para conferir se a série existe, não traz as medições
+    expect(db.timeSeries.findUnique).toHaveBeenCalledWith({
+      where: { id: 'series-1' },
+      select: { id: true },
+    });
+    expect(db.$queryRaw).toHaveBeenCalledWith(
+      expect.anything(), // o texto do SQL
+      'series-1',
+    );
+  });
+
+  it('should delete a series that exists', async () => {
+    db.timeSeries.findUnique.mockResolvedValue({ id: 'series-1' });
+
+    await deleteTimeSeries('series-1');
+
+    expect(db.timeSeries.delete).toHaveBeenCalledWith({
+      where: { id: 'series-1' },
+    });
+  });
+
+  it('should answer 404 for a series that does not exist', async () => {
+    db.timeSeries.findUnique.mockResolvedValue(null);
+    const notFound = {
+      statusCode: 404,
+      message: 'Série temporal não encontrada',
+    };
+
+    await expect(getTimeSeries('nao-existe')).rejects.toMatchObject(notFound);
+    await expect(getTimeSeriesMetrics('nao-existe')).rejects.toMatchObject(
+      notFound,
+    );
+    await expect(deleteTimeSeries('nao-existe')).rejects.toMatchObject(
+      notFound,
+    );
+    expect(db.$queryRaw).not.toHaveBeenCalled();
+    expect(db.timeSeries.delete).not.toHaveBeenCalled();
   });
 });

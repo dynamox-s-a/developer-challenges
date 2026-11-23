@@ -91,3 +91,83 @@ export async function listTimeSeries(pointId: string) {
     select: SUMMARY,
   });
 }
+
+// Quantas séries estão guardadas, somando todos os pontos
+export async function countTimeSeries() {
+  return prisma.timeSeries.count();
+}
+
+function timeSeriesNotFound() {
+  return new AppError(404, 'NOT_FOUND', 'Série temporal não encontrada');
+}
+
+// 404 se a série não existir. Só confere: não traz as medições
+async function ensureTimeSeriesExists(id: string) {
+  const series = await prisma.timeSeries.findUnique({
+    where: { id },
+    select: { id: true },
+  });
+
+  if (!series) {
+    throw timeSeriesNotFound();
+  }
+}
+
+// Uma série inteira: o resumo e todas as medições, em ordem de tempo
+export async function getTimeSeries(id: string) {
+  const series = await prisma.timeSeries.findUnique({
+    where: { id },
+    select: {
+      ...SUMMARY,
+      samples: {
+        select: { timestamp: true, value: true },
+        orderBy: { timestamp: 'asc' },
+      },
+    },
+  });
+
+  if (!series) {
+    throw timeSeriesNotFound();
+  }
+
+  return series;
+}
+
+export type TimeSeriesMetrics = {
+  count: number;
+  min: number;
+  max: number;
+  mean: number;
+  stdDev: number;
+  rms: number;
+};
+
+// As métricas da série, calculadas pelo próprio banco numa consulta só:
+// mais rápido que trazer todas as medições para calcular aqui
+export async function getTimeSeriesMetrics(id: string) {
+  await ensureTimeSeriesExists(id);
+
+  // count(*) volta do banco como bigint: o ::int deixa como número.
+  // Desvio-padrão populacional (stddev_pop): a série é tudo o que foi
+  // medido, e não uma amostra. RMS (valor eficaz): a raiz da média dos
+  // quadrados, muito usado em vibração
+  const [metrics] = await prisma.$queryRaw<TimeSeriesMetrics[]>`
+    SELECT
+      count(*)::int AS "count",
+      min("value") AS "min",
+      max("value") AS "max",
+      avg("value") AS "mean",
+      stddev_pop("value") AS "stdDev",
+      sqrt(avg("value" * "value")) AS "rms"
+    FROM "TimeSeriesSample"
+    WHERE "timeSeriesId" = ${id}
+  `;
+
+  return metrics;
+}
+
+export async function deleteTimeSeries(id: string) {
+  await ensureTimeSeriesExists(id); // garante o 404 antes de tentar apagar
+  // As medições vão junto (onDelete: Cascade no schema)
+  await prisma.timeSeries.delete({ where: { id } });
+}
