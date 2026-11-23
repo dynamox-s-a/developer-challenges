@@ -8,11 +8,13 @@ import {
   machineMonitoringPointsRouter,
   monitoringPointsRouter,
 } from './modules/monitoring-points/monitoring-points.routes.ts';
+import { pointTimeSeriesRouter } from './modules/time-series/time-series.routes.ts';
 
 export const app = express();
 
-// Permite que a API leia JSON enviado no corpo das requisições
-app.use(express.json());
+// Permite que a API leia JSON enviado no corpo das requisições.
+// Até 2 MB (o padrão é 100 KB): uma série com 10.000 medições tem uns 700 KB
+app.use(express.json({ limit: '2mb' }));
 
 app.use('/api/health', healthRouter);
 app.use('/api/auth', authRouter);
@@ -22,6 +24,8 @@ app.use(
   machineMonitoringPointsRouter,
 );
 app.use('/api/machines', machinesRouter);
+// Antes do monitoringPointsRouter, pelo mesmo motivo
+app.use('/api/monitoring-points/:pointId/time-series', pointTimeSeriesRouter);
 app.use('/api/monitoring-points', monitoringPointsRouter);
 
 // Nenhuma rota acima respondeu: 404 em JSON
