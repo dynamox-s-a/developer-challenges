@@ -22,6 +22,17 @@ export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
     return;
   }
 
+  // Corpo maior que o limite do express.json() (no app.ts)
+  if (err?.type === 'entity.too.large') {
+    res.status(413).json({
+      error: {
+        code: 'PAYLOAD_TOO_LARGE',
+        message: 'O corpo da requisição é grande demais',
+      },
+    });
+    return;
+  }
+
   // Qualquer outro erro é inesperado: registra no terminal e responde 500
   console.error(err);
   res.status(500).json({

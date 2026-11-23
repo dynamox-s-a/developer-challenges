@@ -42,6 +42,23 @@ describe('errorHandler', () => {
     });
   });
 
+  it('should answer 413 when the body is too large', () => {
+    // O mesmo formato do erro que o express.json() gera nesse caso
+    const error = Object.assign(new Error('request entity too large'), {
+      type: 'entity.too.large',
+      status: 413,
+    });
+    const res = handle(error);
+
+    expect(res.status).toHaveBeenCalledWith(413);
+    expect(res.json).toHaveBeenCalledWith({
+      error: {
+        code: 'PAYLOAD_TOO_LARGE',
+        message: 'O corpo da requisição é grande demais',
+      },
+    });
+  });
+
   it('should answer 500 without exposing unexpected errors', () => {
     const log = vi.spyOn(console, 'error').mockImplementation(() => undefined);
     const res = handle(new Error('detalhe interno que não pode vazar'));
