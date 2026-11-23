@@ -58,6 +58,13 @@ function mockApi(answer = { point, series }) {
   );
 }
 
+// Um arquivo CSV escolhido pelo usuário (o File do jsdom não tem o .text()
+// dos navegadores: veja o teste do diálogo de envio)
+function csvFile(content: string) {
+  const file = new File([content], 'temperatura.csv', { type: 'text/csv' });
+  return Object.assign(file, { text: async () => content });
+}
+
 // Abre a página de um ponto. A rota da lista é só um marcador, para
 // sabermos que o botão de voltar funcionou
 function renderPage(store = setupStore(), path = '/monitoring-points/point-1') {
@@ -114,6 +121,53 @@ describe('MonitoringPointDetailsPage', () => {
     ).toBeTruthy();
     expect(screen.getByText('Sensor: sem sensor')).toBeTruthy();
     expect(screen.queryByRole('table')).toBeNull();
+  });
+
+  it('should not let a point without a sensor receive data', async () => {
+    mockApi({ point: { ...point, sensor: null }, series: [] });
+    renderPage();
+
+    const button = await screen.findByRole('button', { name: 'Enviar série' });
+    expect(button.hasAttribute('disabled')).toBe(true);
+    expect(
+      screen.getByText('Coloque um sensor no ponto para enviar dados.'),
+    ).toBeTruthy();
+  });
+
+  it('should upload a series and reload the list', async () => {
+    mockApi();
+    vi.spyOn(api, 'post').mockResolvedValue({ data: series[0] });
+    renderPage();
+
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Enviar série' }),
+    );
+    expect(
+      screen.getByRole('dialog', { name: 'Enviar série temporal' }),
+    ).toBeTruthy();
+    fireEvent.change(screen.getByLabelText('Nome da série'), {
+      target: { value: 'Temperatura' },
+    });
+    fireEvent.change(screen.getByLabelText('Arquivo CSV'), {
+      target: { files: [csvFile('2026-11-22T10:00:00Z,31.5')] },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Enviar' }));
+
+    expect(await screen.findByText('Série enviada')).toBeTruthy();
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(api.post).toHaveBeenCalledWith(
+      '/monitoring-points/point-1/time-series',
+      expect.objectContaining({ name: 'Temperatura' }),
+    );
+    // Buscou as séries de novo: uma vez ao abrir a página e outra depois
+    // de enviar, para a série nova aparecer na lista
+    const seriesCalls = vi
+      .mocked(api.get)
+      .mock.calls.filter(([url]) => url.endsWith('/time-series'));
+    expect(seriesCalls).toHaveLength(2);
+    await waitFor(() =>
+      expect(screen.queryByLabelText('Carregando o ponto')).toBeNull(),
+    );
   });
 
   it('should show the error and try again when asked', async () => {

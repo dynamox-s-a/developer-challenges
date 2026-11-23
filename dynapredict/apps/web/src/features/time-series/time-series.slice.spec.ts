@@ -5,6 +5,7 @@ import { logout } from '../auth/auth.slice';
 import type { MonitoringPoint } from '../monitoring-points/monitoring-points.slice';
 import {
   fetchPointTimeSeries,
+  uploadTimeSeries,
   type TimeSeriesSummary,
 } from './time-series.slice';
 
@@ -115,5 +116,29 @@ describe('time series slice', () => {
 
     expect(store.getState().timeSeries.point).toBeNull();
     expect(store.getState().timeSeries.items).toEqual([]);
+  });
+
+  it('should send a series to the point given in the url', async () => {
+    vi.spyOn(api, 'post').mockResolvedValue({ data: series[0] });
+    const store = setupStore();
+    const samples = [{ timestamp: '2026-11-22T10:00:00Z', value: 31.5 }];
+
+    const result = await store
+      .dispatch(
+        uploadTimeSeries({
+          pointId: 'point-1',
+          name: 'Temperatura',
+          unit: '°C',
+          samples,
+        }),
+      )
+      .unwrap();
+
+    // O ponto vai na URL; o resto, no corpo
+    expect(api.post).toHaveBeenCalledWith(
+      '/monitoring-points/point-1/time-series',
+      { name: 'Temperatura', unit: '°C', samples },
+    );
+    expect(result).toEqual(series[0]);
   });
 });

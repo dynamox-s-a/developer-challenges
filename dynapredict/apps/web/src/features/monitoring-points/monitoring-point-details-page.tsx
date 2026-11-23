@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import {
   Alert,
@@ -6,6 +6,7 @@ import {
   Button,
   LinearProgress,
   Paper,
+  Snackbar,
   Stack,
   Table,
   TableBody,
@@ -16,11 +17,13 @@ import {
   Typography,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   fetchPointTimeSeries,
   type TimeSeriesSummary,
 } from '../time-series/time-series.slice';
+import { UploadTimeSeriesDialog } from '../time-series/upload-time-series-dialog';
 
 // Data e hora no fuso de quem está usando, ex.: 22/11/2026, 07:00:00
 function formatDateTime(isoDate: string) {
@@ -70,6 +73,11 @@ export function MonitoringPointDetailsPage() {
     (state) => state.timeSeries,
   );
 
+  // O diálogo de enviar série está aberto?
+  const [uploadOpen, setUploadOpen] = useState(false);
+  // Mensagem de sucesso que aparece no rodapé (null = nenhuma)
+  const [notice, setNotice] = useState<string | null>(null);
+
   useEffect(() => {
     const request = dispatch(fetchPointTimeSeries(pointId));
     // Saiu da página antes da resposta? Cancela a busca
@@ -79,6 +87,13 @@ export function MonitoringPointDetailsPage() {
   // Só mostra o ponto da URL: enquanto o novo carrega, a store ainda tem
   // o ponto (e as séries) da página visitada antes
   const current = point?.id === pointId ? point : null;
+
+  function handleUploaded(message: string) {
+    setUploadOpen(false);
+    setNotice(message);
+    // Busca de novo: a série nova entra na lista, na ordem certa
+    dispatch(fetchPointTimeSeries(pointId));
+  }
 
   return (
     <Stack spacing={2}>
@@ -127,7 +142,32 @@ export function MonitoringPointDetailsPage() {
             </Typography>
           </Box>
 
-          <Typography variant="h6">Séries temporais</Typography>
+          <Stack
+            direction="row"
+            sx={{
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: 2,
+            }}
+          >
+            <Typography variant="h6">Séries temporais</Typography>
+            {/* Os dados vêm do sensor: sem sensor, não há o que enviar */}
+            <Button
+              variant="contained"
+              startIcon={<UploadFileIcon />}
+              disabled={!current.sensor}
+              onClick={() => setUploadOpen(true)}
+            >
+              Enviar série
+            </Button>
+          </Stack>
+
+          {!current.sensor && (
+            <Typography color="text.secondary">
+              Coloque um sensor no ponto para enviar dados.
+            </Typography>
+          )}
 
           {items.length > 0 ? (
             <SeriesTable series={items} />
@@ -138,6 +178,21 @@ export function MonitoringPointDetailsPage() {
           )}
         </>
       )}
+
+      {uploadOpen && (
+        <UploadTimeSeriesDialog
+          pointId={pointId}
+          onClose={() => setUploadOpen(false)}
+          onUploaded={handleUploaded}
+        />
+      )}
+
+      <Snackbar
+        open={notice !== null}
+        autoHideDuration={4000}
+        onClose={() => setNotice(null)}
+        message={notice}
+      />
     </Stack>
   );
 }

@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import type { TimeSeriesUpload } from '@dynapredict/shared';
 import { api, getApiErrorMessage } from '../../lib/api-client';
 import { logout } from '../auth/auth.slice';
 import type { MonitoringPoint } from '../monitoring-points/monitoring-points.slice';
@@ -48,6 +49,24 @@ export const fetchPointTimeSeries = createAsyncThunk<
       ),
     ]);
     return { point: point.data, series: series.data };
+  } catch (error) {
+    return rejectWithValue(getApiErrorMessage(error));
+  }
+});
+
+// Envia uma série para o ponto. A lista não é mexida aqui: quem chamou
+// busca de novo, porque é a API que sabe em que ordem as séries ficam
+export const uploadTimeSeries = createAsyncThunk<
+  TimeSeriesSummary,
+  TimeSeriesUpload & { pointId: string },
+  { rejectValue: string }
+>('timeSeries/upload', async ({ pointId, ...upload }, { rejectWithValue }) => {
+  try {
+    const { data } = await api.post<TimeSeriesSummary>(
+      `/monitoring-points/${pointId}/time-series`,
+      upload,
+    );
+    return data;
   } catch (error) {
     return rejectWithValue(getApiErrorMessage(error));
   }
