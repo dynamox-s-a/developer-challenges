@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Alert,
   Button,
   IconButton,
   LinearProgress,
+  Link,
   Paper,
   Snackbar,
   Stack,
@@ -98,7 +100,15 @@ function PointsTable({
             <TableRow key={point.id}>
               <TableCell>{point.machine.name}</TableCell>
               <TableCell>{point.machine.type}</TableCell>
-              <TableCell>{point.name}</TableCell>
+              <TableCell>
+                {/* Abre a página do ponto, com as séries temporais dele */}
+                <Link
+                  component={RouterLink}
+                  to={`/monitoring-points/${point.id}`}
+                >
+                  {point.name}
+                </Link>
+              </TableCell>
               <TableCell>
                 {point.sensor ? (
                   <>

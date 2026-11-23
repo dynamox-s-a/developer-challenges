@@ -7,6 +7,7 @@ import {
   within,
 } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import { MemoryRouter, Route, Routes, useParams } from 'react-router-dom';
 import type { MonitoringPointListQuery } from '@dynapredict/shared';
 import { setupStore } from '../../app/store';
 import { api } from '../../lib/api-client';
@@ -46,10 +47,24 @@ function pageOf(items: MonitoringPoint[], total = items.length): PointsPage {
   return { items, total, page: 1, pageSize: 5 };
 }
 
+// Marcador da página de um ponto: mostra o id que veio na URL
+function PointPageMarker() {
+  const { id } = useParams();
+  return <h1>Página do ponto {id}</h1>;
+}
+
 function renderPage() {
   render(
     <Provider store={setupStore()}>
-      <MonitoringPointsPage />
+      <MemoryRouter
+        initialEntries={['/monitoring-points']}
+        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+      >
+        <Routes>
+          <Route path="/monitoring-points" element={<MonitoringPointsPage />} />
+          <Route path="/monitoring-points/:id" element={<PointPageMarker />} />
+        </Routes>
+      </MemoryRouter>
     </Provider>,
   );
 }
@@ -97,6 +112,16 @@ describe('MonitoringPointsPage', () => {
       sortBy: 'machineName',
       order: 'asc',
     });
+  });
+
+  it('should open the page of a point from its name', async () => {
+    vi.spyOn(api, 'get').mockResolvedValue({ data: pageOf(points) });
+    renderPage();
+
+    // O segundo ponto, para garantir que o link leva ao ponto da linha
+    fireEvent.click(await screen.findByRole('link', { name: 'Motor' }));
+
+    expect(screen.getByText('Página do ponto point-2')).toBeTruthy();
   });
 
   it('should sort by a column and invert the order on the second click', async () => {

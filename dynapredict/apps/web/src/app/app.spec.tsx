@@ -8,6 +8,13 @@ import { setupStore } from './store';
 
 const user = { id: 'user-1', email: 'admin@dynamox.com' };
 
+const point = {
+  id: 'point-1',
+  name: 'Mancal LA',
+  machine: { id: 'machine-1', name: 'Bomba 01', type: 'Pump' },
+  sensor: null,
+};
+
 // Renderiza o App como se o navegador estivesse na URL "path".
 // Por padrão entra logado e espera o app descobrir quem é o usuário;
 // use { loggedIn: false } para simular um visitante
@@ -16,13 +23,17 @@ async function renderApp(path: string, { loggedIn = true } = {}) {
     tokenStorage.set('token-de-teste');
     // API de mentira: o porteiro pergunta "quem é você?" (/auth/me), e as
     // páginas pedem as listas, que aqui vêm vazias. A de pontos vem em
-    // páginas, por isso a resposta dela tem outro formato
+    // páginas, por isso a resposta dela tem outro formato. E a página de um
+    // ponto pede o ponto (o point-1)
     vi.spyOn(api, 'get').mockImplementation(async (url) => {
       if (url === '/auth/me') {
         return { data: { user } };
       }
       if (url === '/monitoring-points') {
         return { data: { items: [], total: 0, page: 1, pageSize: 5 } };
+      }
+      if (url === '/monitoring-points/point-1') {
+        return { data: point };
       }
       return { data: [] };
     });
@@ -65,6 +76,13 @@ describe('App', () => {
     await renderApp('/monitoring-points');
     expect(
       screen.getByRole('heading', { name: 'Pontos de monitoramento' }),
+    ).toBeTruthy();
+  });
+
+  it('should open the page of a monitoring point', async () => {
+    await renderApp('/monitoring-points/point-1');
+    expect(
+      await screen.findByRole('heading', { name: 'Mancal LA' }),
     ).toBeTruthy();
   });
 

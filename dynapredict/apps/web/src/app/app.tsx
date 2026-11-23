@@ -4,6 +4,7 @@ import { LoginPage } from '../features/auth/login-page';
 import { RequireAuth } from '../features/auth/require-auth';
 import { HealthPage } from '../features/health/health-page';
 import { MachinesPage } from '../features/machines/machines-page';
+import { MonitoringPointDetailsPage } from '../features/monitoring-points/monitoring-point-details-page';
 import { MonitoringPointsPage } from '../features/monitoring-points/monitoring-points-page';
 
 export function App() {
@@ -18,6 +19,10 @@ export function App() {
         <Route element={<AppLayout />}>
           <Route path="/machines" element={<MachinesPage />} />
           <Route path="/monitoring-points" element={<MonitoringPointsPage />} />
+          <Route
+            path="/monitoring-points/:id"
+            element={<MonitoringPointDetailsPage />}
+          />
           <Route path="/status" element={<HealthPage />} />
         </Route>
       </Route>
