@@ -3,6 +3,7 @@ import { Prisma } from '../../generated/prisma/client.ts';
 import {
   createMonitoringPoint,
   deleteMonitoringPoint,
+  getMonitoringPointDetails,
   listMonitoringPoints,
   removeSensor,
   setSensor,
@@ -84,6 +85,35 @@ describe('monitoring points service', () => {
     expect(db.monitoringPoint.delete).toHaveBeenCalledWith({
       where: { id: 'point-1' },
     });
+  });
+
+  it('should get a point with its machine and sensor', async () => {
+    const details = {
+      id: 'point-1',
+      name: 'Mancal LA',
+      machine: { id: 'machine-1', name: 'Bomba 01', type: 'Pump' },
+      sensor: null,
+    };
+    db.monitoringPoint.findUnique.mockResolvedValue(details);
+
+    await expect(getMonitoringPointDetails('point-1')).resolves.toBe(details);
+    expect(db.monitoringPoint.findUnique).toHaveBeenCalledWith({
+      where: { id: 'point-1' },
+      select: {
+        id: true,
+        name: true,
+        machine: { select: { id: true, name: true, type: true } },
+        sensor: { select: { id: true, model: true, serialNumber: true } },
+      },
+    });
+  });
+
+  it('should answer 404 for the details of a point that does not exist', async () => {
+    db.monitoringPoint.findUnique.mockResolvedValue(null);
+
+    await expect(getMonitoringPointDetails('nao-existe')).rejects.toMatchObject(
+      { statusCode: 404, message: 'Ponto de monitoramento não encontrado' },
+    );
   });
 
   it('should not delete a point that does not exist', async () => {

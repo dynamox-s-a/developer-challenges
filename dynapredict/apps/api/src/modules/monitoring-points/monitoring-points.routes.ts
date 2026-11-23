@@ -10,6 +10,7 @@ import { validateBody } from '../../middlewares/validate-body.ts';
 import {
   createMonitoringPoint,
   deleteMonitoringPoint,
+  getMonitoringPointDetails,
   listMonitoringPoints,
   removeSensor,
   setSensor,
@@ -41,6 +42,10 @@ monitoringPointsRouter.use(requireAuth);
 monitoringPointsRouter.get('/', async (req, res) => {
   const query = parseQuery(monitoringPointListQuerySchema, req.query);
   res.json(await listMonitoringPoints(query));
+});
+
+monitoringPointsRouter.get('/:id', async (req, res) => {
+  res.json(await getMonitoringPointDetails(req.params.id));
 });
 
 monitoringPointsRouter.delete('/:id', async (req, res) => {

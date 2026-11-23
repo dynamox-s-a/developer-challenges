@@ -23,6 +23,22 @@ const SORT_COLUMNS: Record<
   sensorModel: (order) => ({ sensor: { model: order } }),
 };
 
+// Os campos de um ponto como as telas mostram: já com a máquina e o sensor
+const POINT_DETAILS = {
+  id: true,
+  name: true,
+  machine: { select: { id: true, name: true, type: true } },
+  sensor: { select: { id: true, model: true, serialNumber: true } },
+} satisfies Prisma.MonitoringPointSelect;
+
+function pointNotFound() {
+  return new AppError(
+    404,
+    'NOT_FOUND',
+    'Ponto de monitoramento não encontrado',
+  );
+}
+
 // Uma página da lista de todos os pontos, já ordenada.
 // "query" já chega validado (e com os valores padrão) pelo schema do shared
 export async function listMonitoringPoints({
@@ -44,12 +60,7 @@ export async function listMonitoringPoints({
       ],
       skip: (page - 1) * pageSize, // página 3 com 5 por página: pula 10
       take: pageSize,
-      select: {
-        id: true,
-        name: true,
-        machine: { select: { id: true, name: true, type: true } },
-        sensor: { select: { id: true, model: true, serialNumber: true } },
-      },
+      select: POINT_DETAILS,
     }),
   ]);
 
@@ -61,11 +72,21 @@ export async function getMonitoringPoint(id: string) {
   const point = await prisma.monitoringPoint.findUnique({ where: { id } });
 
   if (!point) {
-    throw new AppError(
-      404,
-      'NOT_FOUND',
-      'Ponto de monitoramento não encontrado',
-    );
+    throw pointNotFound();
+  }
+
+  return point;
+}
+
+// Um ponto já com a máquina e o sensor, para a página do ponto
+export async function getMonitoringPointDetails(id: string) {
+  const point = await prisma.monitoringPoint.findUnique({
+    where: { id },
+    select: POINT_DETAILS,
+  });
+
+  if (!point) {
+    throw pointNotFound();
   }
 
   return point;

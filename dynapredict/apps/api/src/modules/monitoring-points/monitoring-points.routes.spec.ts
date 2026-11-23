@@ -203,6 +203,22 @@ describe('monitoring points routes', () => {
     });
   });
 
+  it('should answer one point with its machine and sensor', async () => {
+    const details = {
+      id: 'point-1',
+      name: 'Mancal LA',
+      machine: { id: 'machine-1', name: 'Bomba 01', type: 'Pump' as const },
+      sensor: null,
+    };
+    vi.mocked(service.getMonitoringPointDetails).mockResolvedValue(details);
+
+    const response = await request('/monitoring-points/point-1');
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(details);
+    expect(service.getMonitoringPointDetails).toHaveBeenCalledWith('point-1');
+  });
+
   it('should answer 400 for invalid list parameters', async () => {
     const response = await request('/monitoring-points?page=0');
     const body = (await response.json()) as ErrorBody;
