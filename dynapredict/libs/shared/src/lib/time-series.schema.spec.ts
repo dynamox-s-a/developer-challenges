@@ -75,6 +75,27 @@ describe('timeSeriesSchema', () => {
     }
   });
 
+  it('should reject a timestamp before 1970', () => {
+    const timestamps = ['0000-01-01T00:00:00Z', '1969-12-31T23:59:59Z'];
+    for (const timestamp of timestamps) {
+      const result = timeSeriesSchema.safeParse({
+        ...series,
+        samples: [{ timestamp, value: 1 }],
+      });
+      expect(result.error?.issues).toEqual([
+        expect.objectContaining({ message: 'Use instantes a partir de 1970' }),
+      ]);
+    }
+  });
+
+  it('should accept the first instant of 1970', () => {
+    const result = timeSeriesSchema.safeParse({
+      ...series,
+      samples: [{ timestamp: '1970-01-01T00:00:00Z', value: 1 }],
+    });
+    expect(result.success).toBe(true);
+  });
+
   it('should reject a value that is not a number', () => {
     const values = ['31.5', null, undefined];
     for (const value of values) {

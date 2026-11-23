@@ -15,7 +15,10 @@ const sampleSchema = z.object({
       error: 'Use data e hora com fuso, ex.: 2026-11-22T10:00:00Z',
       abort: true,
     })
-    .transform((timestamp) => new Date(timestamp)),
+    .transform((timestamp) => new Date(timestamp))
+    // Antes de 1970 não há dado de sensor. E o Postgres recusa o ano 0000,
+    // que o formato aceita: sem esta regra, a API responderia 500
+    .refine((date) => date.getTime() >= 0, 'Use instantes a partir de 1970'),
   // O z.number() já recusa NaN e Infinity
   value: z.number('O valor tem que ser um número'),
 });
