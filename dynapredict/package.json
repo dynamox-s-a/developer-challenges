@@ -12,7 +12,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
-    "@nx/cypress": "24.0.6",
     "@nx/eslint": "24.0.6",
     "@nx/eslint-plugin": "24.0.6",
     "@nx/js": "24.0.6",
@@ -34,10 +33,8 @@
     "@vitejs/plugin-react": "^6.0.0",
     "@vitest/coverage-v8": "~5.0.1",
     "@vitest/ui": "~5.0.1",
-    "cypress": "^16.0.0",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^10.0.0",
-    "eslint-plugin-cypress": "^3.5.0",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-jsx-a11y": "6.10.1",
     "eslint-plugin-react": "^7.35.0",

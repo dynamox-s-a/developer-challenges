@@ -59,15 +59,7 @@
         "testMode": "watch"
       }
     },
-    {
-      "plugin": "@nx/cypress/plugin",
-      "options": {
-        "targetName": "e2e",
-        "openTargetName": "open-cypress",
-        "componentTestingTargetName": "component-test",
-        "ciTargetName": "e2e-ci"
-      }
-    },
+
     "@nx/js/node",
     {
       "plugin": "@nx/js/typescript",
