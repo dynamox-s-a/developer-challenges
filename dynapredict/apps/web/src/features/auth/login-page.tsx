@@ -8,10 +8,14 @@ import {
   Card,
   CardContent,
   CircularProgress,
+  IconButton,
+  InputAdornment,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { loginSchema, type LoginInput } from '@dynapredict/shared';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { login } from './auth.slice';
@@ -26,6 +30,8 @@ export function LoginPage() {
 
   const [values, setValues] = useState<LoginInput>({ email: '', password: '' });
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  // A senha aparece em texto, para conferir o que foi digitado?
+  const [showPassword, setShowPassword] = useState(false);
 
   // Para onde voltar depois do login (o RequireAuth guardou isso no "state"
   // da navegação). Se a pessoa abriu o /login direto, vai para máquinas
@@ -95,7 +101,7 @@ export function LoginPage() {
 
               <TextField
                 label="Senha"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 autoComplete="current-password"
                 fullWidth
                 value={values.password}
@@ -104,6 +110,29 @@ export function LoginPage() {
                 }
                 error={Boolean(fieldErrors.password)}
                 helperText={fieldErrors.password?.[0]}
+                InputProps={{
+                  // O "olho" no fim do campo: mostra ou esconde a senha
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label={
+                          showPassword ? 'Esconder senha' : 'Mostrar senha'
+                        }
+                        onClick={() => setShowPassword((shown) => !shown)}
+                        // Sem isso, o clique tira o cursor do campo e a
+                        // pessoa teria que clicar nele de novo para digitar
+                        onMouseDown={(event) => event.preventDefault()}
+                        edge="end"
+                      >
+                        {showPassword ? (
+                          <VisibilityOffIcon />
+                        ) : (
+                          <VisibilityIcon />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
 
               <Button

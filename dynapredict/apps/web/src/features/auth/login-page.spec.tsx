@@ -90,6 +90,32 @@ describe('LoginPage', () => {
     expect(within(alert).getByText('E-mail ou senha inválidos')).toBeTruthy();
   });
 
+  it('should show and hide the password without sending the form', () => {
+    const post = vi.spyOn(api, 'post');
+    renderLoginPage();
+    // Formulário válido: se o "olhinho" enviasse o formulário, a API seria
+    // chamada
+    fireEvent.change(screen.getByLabelText('E-mail'), {
+      target: { value: 'admin@dynamox.com' },
+    });
+    const password = screen.getByLabelText('Senha') as HTMLInputElement;
+    fireEvent.change(password, { target: { value: 'dynapredict123' } });
+    expect(password.type).toBe('password');
+
+    const show = screen.getByRole('button', { name: 'Mostrar senha' });
+    // false = o clique não tirou o cursor do campo de senha
+    expect(fireEvent.mouseDown(show)).toBe(false);
+    fireEvent.click(show);
+
+    // A senha aparece como texto, e o que foi digitado continua lá
+    expect(password.type).toBe('text');
+    expect(password.value).toBe('dynapredict123');
+    expect(post).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Esconder senha' }));
+    expect(password.type).toBe('password');
+  });
+
   it('should skip the login page when the user is already logged in', () => {
     tokenStorage.set('token-salvo');
 
