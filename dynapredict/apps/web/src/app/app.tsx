@@ -5,6 +5,7 @@ import { RequireAuth } from '../features/auth/require-auth';
 import { HealthPage } from '../features/health/health-page';
 import { MachinesPage } from '../features/machines/machines-page';
 import { MonitoringPointDetailsPage } from '../features/monitoring-points/monitoring-point-details-page';
+import { TimeSeriesPage } from '../features/time-series/time-series-page';
 import { MonitoringPointsPage } from '../features/monitoring-points/monitoring-points-page';
 
 export function App() {
@@ -23,6 +24,7 @@ export function App() {
             path="/monitoring-points/:id"
             element={<MonitoringPointDetailsPage />}
           />
+          <Route path="/time-series/:id" element={<TimeSeriesPage />} />
           <Route path="/status" element={<HealthPage />} />
         </Route>
       </Route>

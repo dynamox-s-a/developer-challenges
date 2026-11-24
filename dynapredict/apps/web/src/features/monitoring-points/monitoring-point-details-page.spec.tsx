@@ -7,7 +7,7 @@ import {
 } from '@testing-library/react';
 import { AxiosError, type AxiosResponse } from 'axios';
 import { Provider } from 'react-redux';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route, Routes, useParams } from 'react-router-dom';
 import { setupStore } from '../../app/store';
 import { api } from '../../lib/api-client';
 import {
@@ -65,8 +65,14 @@ function csvFile(content: string) {
   return Object.assign(file, { text: async () => content });
 }
 
-// Abre a página de um ponto. A rota da lista é só um marcador, para
-// sabermos que o botão de voltar funcionou
+// Marcador da página de uma série: mostra o id que veio na URL
+function SeriesPageMarker() {
+  const { id } = useParams();
+  return <h1>Página da série {id}</h1>;
+}
+
+// Abre a página de um ponto. As outras rotas são só marcadores, para
+// sabermos para onde os links levam
 function renderPage(store = setupStore(), path = '/monitoring-points/point-1') {
   render(
     <Provider store={store}>
@@ -80,6 +86,7 @@ function renderPage(store = setupStore(), path = '/monitoring-points/point-1') {
             path="/monitoring-points/:id"
             element={<MonitoringPointDetailsPage />}
           />
+          <Route path="/time-series/:id" element={<SeriesPageMarker />} />
         </Routes>
       </MemoryRouter>
     </Provider>,
@@ -103,13 +110,25 @@ describe('MonitoringPointDetailsPage', () => {
     const rows = screen.getAllByRole('row');
     // 1 linha de cabeçalho + 2 séries
     expect(rows).toHaveLength(3);
-    expect(within(rows[1]).getByText('Velocidade RMS (mm/s)')).toBeTruthy();
+    // O nome é um link, e a unidade vem logo depois dele
+    const [nameCell] = within(rows[1]).getAllByRole('cell');
+    expect(nameCell.textContent).toBe('Velocidade RMS (mm/s)');
     expect(within(rows[1]).getByText('10.000')).toBeTruthy();
     // As datas aparecem no fuso de quem usa, como o navegador formata
     const startedAt = new Date(series[0].startedAt).toLocaleString('pt-BR');
     expect(within(rows[1]).getByText(startedAt)).toBeTruthy();
     expect(within(rows[2]).getByText('Temperatura')).toBeTruthy();
     expect(within(rows[2]).getByText('DyL4.01.A0000')).toBeTruthy();
+  });
+
+  it('should open the page of a series from its name', async () => {
+    mockApi();
+    renderPage();
+
+    // A segunda série, para garantir que o link leva à série da linha
+    fireEvent.click(await screen.findByRole('link', { name: 'Temperatura' }));
+
+    expect(screen.getByText('Página da série series-2')).toBeTruthy();
   });
 
   it('should say when the point has no sensor and no series yet', async () => {

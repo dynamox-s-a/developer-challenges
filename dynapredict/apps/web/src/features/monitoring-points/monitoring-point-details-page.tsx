@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   LinearProgress,
+  Link,
   Paper,
   Snackbar,
   Stack,
@@ -19,16 +20,12 @@ import {
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { formatDateTime } from '../../lib/format';
 import {
   fetchPointTimeSeries,
   type TimeSeriesSummary,
 } from '../time-series/time-series.slice';
 import { UploadTimeSeriesDialog } from '../time-series/upload-time-series-dialog';
-
-// Data e hora no fuso de quem está usando, ex.: 22/11/2026, 07:00:00
-function formatDateTime(isoDate: string) {
-  return new Date(isoDate).toLocaleString('pt-BR');
-}
 
 function SeriesTable({ series }: { series: TimeSeriesSummary[] }) {
   return (
@@ -47,7 +44,10 @@ function SeriesTable({ series }: { series: TimeSeriesSummary[] }) {
           {series.map((item) => (
             <TableRow key={item.id}>
               <TableCell>
-                {item.name}
+                {/* Abre a página da série, com o gráfico e as métricas */}
+                <Link component={RouterLink} to={`/time-series/${item.id}`}>
+                  {item.name}
+                </Link>
                 {item.unit && ` (${item.unit})`}
               </TableCell>
               <TableCell align="right">

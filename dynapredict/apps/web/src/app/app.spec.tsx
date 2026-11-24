@@ -15,6 +15,28 @@ const point = {
   sensor: null,
 };
 
+const series = {
+  id: 'series-1',
+  name: 'Temperatura',
+  unit: '°C',
+  sensorSerialNumber: 'DyL4.01.A0001',
+  monitoringPointId: 'point-1',
+  sampleCount: 1,
+  startedAt: '2026-11-22T10:00:00.000Z',
+  endedAt: '2026-11-22T10:00:00.000Z',
+  createdAt: '2026-11-22T11:00:00.000Z',
+  samples: [{ timestamp: '2026-11-22T10:00:00.000Z', value: 31.5 }],
+};
+
+const metrics = {
+  count: 1,
+  min: 31.5,
+  max: 31.5,
+  mean: 31.5,
+  stdDev: 0,
+  rms: 31.5,
+};
+
 // Renderiza o App como se o navegador estivesse na URL "path".
 // Por padrão entra logado e espera o app descobrir quem é o usuário;
 // use { loggedIn: false } para simular um visitante
@@ -24,7 +46,8 @@ async function renderApp(path: string, { loggedIn = true } = {}) {
     // API de mentira: o porteiro pergunta "quem é você?" (/auth/me), e as
     // páginas pedem as listas, que aqui vêm vazias. A de pontos vem em
     // páginas, por isso a resposta dela tem outro formato. E a página de um
-    // ponto pede o ponto (o point-1)
+    // ponto pede o ponto (o point-1), e a de uma série, a série e as
+    // métricas (da series-1)
     vi.spyOn(api, 'get').mockImplementation(async (url) => {
       if (url === '/auth/me') {
         return { data: { user } };
@@ -34,6 +57,12 @@ async function renderApp(path: string, { loggedIn = true } = {}) {
       }
       if (url === '/monitoring-points/point-1') {
         return { data: point };
+      }
+      if (url === '/time-series/series-1') {
+        return { data: series };
+      }
+      if (url === '/time-series/series-1/metrics') {
+        return { data: metrics };
       }
       return { data: [] };
     });
@@ -83,6 +112,13 @@ describe('App', () => {
     await renderApp('/monitoring-points/point-1');
     expect(
       await screen.findByRole('heading', { name: 'Mancal LA' }),
+    ).toBeTruthy();
+  });
+
+  it('should open the page of a time series', async () => {
+    await renderApp('/time-series/series-1');
+    expect(
+      await screen.findByRole('heading', { name: 'Temperatura (°C)' }),
     ).toBeTruthy();
   });
 

@@ -3,6 +3,7 @@ import { authReducer, logout } from '../features/auth/auth.slice';
 import { healthReducer } from '../features/health/health.slice';
 import { machinesReducer } from '../features/machines/machines.slice';
 import { monitoringPointsReducer } from '../features/monitoring-points/monitoring-points.slice';
+import { timeSeriesDetailsReducer } from '../features/time-series/time-series-details.slice';
 import { timeSeriesReducer } from '../features/time-series/time-series.slice';
 import { setOnUnauthorized } from '../lib/api-client';
 
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   machines: machinesReducer,
   monitoringPoints: monitoringPointsReducer,
   timeSeries: timeSeriesReducer,
+  timeSeriesDetails: timeSeriesDetailsReducer,
 });
 
 // "Fábrica" de stores: cada chamada cria uma store nova, do zero.
