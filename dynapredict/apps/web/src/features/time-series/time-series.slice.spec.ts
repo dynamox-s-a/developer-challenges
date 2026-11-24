@@ -6,6 +6,7 @@ import type { MonitoringPoint } from '../monitoring-points/monitoring-points.sli
 import {
   deleteTimeSeries,
   fetchPointTimeSeries,
+  fetchTimeSeriesCount,
   uploadTimeSeries,
   type TimeSeriesSummary,
 } from './time-series.slice';
@@ -49,6 +50,7 @@ describe('time series slice', () => {
       items: [],
       status: 'idle',
       error: null,
+      count: null,
     });
   });
 
@@ -70,6 +72,7 @@ describe('time series slice', () => {
       items: series,
       status: 'succeeded',
       error: null,
+      count: null,
     });
   });
 
@@ -158,5 +161,17 @@ describe('time series slice', () => {
 
     expect(api.delete).toHaveBeenCalledWith('/time-series/series-1');
     expect(store.getState().timeSeries.items).toEqual([other]);
+  });
+
+  it('should ask the api how many series there are and store the number', async () => {
+    vi.spyOn(api, 'get').mockResolvedValue({ data: { count: 7 } });
+    const store = setupStore();
+
+    await store.dispatch(fetchTimeSeriesCount());
+
+    expect(api.get).toHaveBeenCalledWith('/time-series/count', {
+      signal: expect.any(AbortSignal),
+    });
+    expect(store.getState().timeSeries.count).toBe(7);
   });
 });

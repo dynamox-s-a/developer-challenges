@@ -24,6 +24,8 @@ type TimeSeriesState = {
   items: TimeSeriesSummary[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
+  // Quantas séries existem no sistema todo (null = ainda não chegou)
+  count: number | null;
 };
 
 const initialState: TimeSeriesState = {
@@ -31,6 +33,7 @@ const initialState: TimeSeriesState = {
   items: [],
   status: 'idle',
   error: null,
+  count: null,
 };
 
 // Busca o ponto e as séries dele ao mesmo tempo (Promise.all): são duas
@@ -87,6 +90,17 @@ export const deleteTimeSeries = createAsyncThunk<
   }
 });
 
+// Busca quantas séries existem no sistema todo, somando todos os pontos
+export const fetchTimeSeriesCount = createAsyncThunk<number, void>(
+  'timeSeries/fetchCount',
+  async (_arg, { signal }) => {
+    const { data } = await api.get<{ count: number }>('/time-series/count', {
+      signal,
+    });
+    return data.count;
+  },
+);
+
 const timeSeriesSlice = createSlice({
   name: 'timeSeries',
   initialState,
@@ -116,6 +130,11 @@ const timeSeriesSlice = createSlice({
       // A lista não tem páginas: basta tirar a série dela, sem buscar de novo
       .addCase(deleteTimeSeries.fulfilled, (state, action) => {
         state.items = state.items.filter((item) => item.id !== action.payload);
+      })
+      // Se a busca do total falhar, a página só não mostra o número: é uma
+      // informação a mais, não vale um alerta de erro
+      .addCase(fetchTimeSeriesCount.fulfilled, (state, action) => {
+        state.count = action.payload;
       })
 
       // Saiu do sistema? Esquece o ponto e as séries

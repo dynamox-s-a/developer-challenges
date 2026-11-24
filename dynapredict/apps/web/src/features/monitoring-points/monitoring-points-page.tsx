@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   Alert,
+  Box,
   Button,
   IconButton,
   LinearProgress,
@@ -28,6 +29,8 @@ import type {
   MonitoringPointSortField,
 } from '@dynapredict/shared';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { TimeSeriesCount } from '../time-series/time-series-count';
+import { fetchTimeSeriesCount } from '../time-series/time-series.slice';
 import {
   fetchMonitoringPoints,
   type MonitoringPoint,
@@ -219,6 +222,8 @@ export function MonitoringPointsPage() {
     setNotice(message);
     // Busca a página de novo: um ponto da página seguinte sobe para ela
     dispatch(fetchMonitoringPoints(query));
+    // As séries do ponto foram junto: o total de séries mudou
+    dispatch(fetchTimeSeriesCount());
   }
 
   return (
@@ -232,7 +237,10 @@ export function MonitoringPointsPage() {
           gap: 2,
         }}
       >
-        <Typography variant="h4">Pontos de monitoramento</Typography>
+        <Box>
+          <Typography variant="h4">Pontos de monitoramento</Typography>
+          <TimeSeriesCount />
+        </Box>
         <Button
           variant="contained"
           startIcon={<AddIcon />}

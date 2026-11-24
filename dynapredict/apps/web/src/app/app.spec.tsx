@@ -45,15 +45,18 @@ async function renderApp(path: string, { loggedIn = true } = {}) {
     tokenStorage.set('token-de-teste');
     // API de mentira: o porteiro pergunta "quem é você?" (/auth/me), e as
     // páginas pedem as listas, que aqui vêm vazias. A de pontos vem em
-    // páginas, por isso a resposta dela tem outro formato. E a página de um
-    // ponto pede o ponto (o point-1), e a de uma série, a série e as
-    // métricas (da series-1)
+    // páginas, por isso a resposta dela tem outro formato, e ela também pede
+    // o total de séries. A página de um ponto pede o ponto (o point-1), e a
+    // de uma série, a série e as métricas (da series-1)
     vi.spyOn(api, 'get').mockImplementation(async (url) => {
       if (url === '/auth/me') {
         return { data: { user } };
       }
       if (url === '/monitoring-points') {
         return { data: { items: [], total: 0, page: 1, pageSize: 5 } };
+      }
+      if (url === '/time-series/count') {
+        return { data: { count: 3 } };
       }
       if (url === '/monitoring-points/point-1') {
         return { data: point };
@@ -101,10 +104,13 @@ describe('App', () => {
     expect(screen.getByRole('heading', { name: 'Máquinas' })).toBeTruthy();
   });
 
-  it('should open the monitoring points page', async () => {
+  it('should open the monitoring points page, with the number of series', async () => {
     await renderApp('/monitoring-points');
     expect(
       screen.getByRole('heading', { name: 'Pontos de monitoramento' }),
+    ).toBeTruthy();
+    expect(
+      await screen.findByText('Séries temporais armazenadas: 3'),
     ).toBeTruthy();
   });
 

@@ -18,6 +18,12 @@ import type {
   MonitoringPointsPage as PointsPage,
 } from './monitoring-points.slice';
 
+// O total de séries no topo da página tem os próprios testes. Aqui ele vira
+// "nada", para as chamadas à API serem só as da lista de pontos
+vi.mock('../time-series/time-series-count', () => ({
+  TimeSeriesCount: () => null,
+}));
+
 const points: MonitoringPoint[] = [
   {
     id: 'point-1',
@@ -291,7 +297,15 @@ describe('MonitoringPointsPage', () => {
     expect(await screen.findByText('Ponto excluído')).toBeTruthy();
     expect(screen.queryByRole('dialog')).toBeNull();
     expect(api.delete).toHaveBeenCalledWith('/monitoring-points/point-2');
-    expect(api.get).toHaveBeenCalledTimes(2);
+    // Buscou a lista de novo e também o total de séries, porque as séries
+    // do ponto foram junto
+    const pointCalls = vi
+      .mocked(api.get)
+      .mock.calls.filter(([url]) => url === '/monitoring-points');
+    expect(pointCalls).toHaveLength(2);
+    expect(api.get).toHaveBeenCalledWith('/time-series/count', {
+      signal: expect.any(AbortSignal),
+    });
     await waitForLoad();
   });
 
