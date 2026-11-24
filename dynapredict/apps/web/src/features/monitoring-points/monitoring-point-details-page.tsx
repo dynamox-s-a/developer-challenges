@@ -4,6 +4,7 @@ import {
   Alert,
   Box,
   Button,
+  IconButton,
   LinearProgress,
   Link,
   Paper,
@@ -15,9 +16,11 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import DeleteIcon from '@mui/icons-material/Delete';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { formatDateTime } from '../../lib/format';
@@ -25,9 +28,15 @@ import {
   fetchPointTimeSeries,
   type TimeSeriesSummary,
 } from '../time-series/time-series.slice';
+import { DeleteTimeSeriesDialog } from '../time-series/delete-time-series-dialog';
 import { UploadTimeSeriesDialog } from '../time-series/upload-time-series-dialog';
 
-function SeriesTable({ series }: { series: TimeSeriesSummary[] }) {
+type SeriesTableProps = {
+  series: TimeSeriesSummary[];
+  onDelete: (series: TimeSeriesSummary) => void;
+};
+
+function SeriesTable({ series, onDelete }: SeriesTableProps) {
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -38,6 +47,7 @@ function SeriesTable({ series }: { series: TimeSeriesSummary[] }) {
             <TableCell>Início</TableCell>
             <TableCell>Fim</TableCell>
             <TableCell>Sensor</TableCell>
+            <TableCell align="right">Ações</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -56,6 +66,16 @@ function SeriesTable({ series }: { series: TimeSeriesSummary[] }) {
               <TableCell>{formatDateTime(item.startedAt)}</TableCell>
               <TableCell>{formatDateTime(item.endedAt)}</TableCell>
               <TableCell>{item.sensorSerialNumber}</TableCell>
+              <TableCell align="right">
+                <Tooltip title="Excluir">
+                  <IconButton
+                    aria-label={`Excluir ${item.name}`}
+                    onClick={() => onDelete(item)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -75,6 +95,8 @@ export function MonitoringPointDetailsPage() {
 
   // O diálogo de enviar série está aberto?
   const [uploadOpen, setUploadOpen] = useState(false);
+  // A série esperando a confirmação para ser excluída (null = nenhuma)
+  const [toDelete, setToDelete] = useState<TimeSeriesSummary | null>(null);
   // Mensagem de sucesso que aparece no rodapé (null = nenhuma)
   const [notice, setNotice] = useState<string | null>(null);
 
@@ -93,6 +115,12 @@ export function MonitoringPointDetailsPage() {
     setNotice(message);
     // Busca de novo: a série nova entra na lista, na ordem certa
     dispatch(fetchPointTimeSeries(pointId));
+  }
+
+  function handleDeleted(message: string) {
+    setToDelete(null);
+    setNotice(message);
+    // Não precisa buscar de novo: o slice já tirou a série da lista
   }
 
   return (
@@ -170,7 +198,7 @@ export function MonitoringPointDetailsPage() {
           )}
 
           {items.length > 0 ? (
-            <SeriesTable series={items} />
+            <SeriesTable series={items} onDelete={setToDelete} />
           ) : (
             <Typography color="text.secondary">
               Nenhuma série enviada para este ponto ainda.
@@ -184,6 +212,14 @@ export function MonitoringPointDetailsPage() {
           pointId={pointId}
           onClose={() => setUploadOpen(false)}
           onUploaded={handleUploaded}
+        />
+      )}
+
+      {toDelete && (
+        <DeleteTimeSeriesDialog
+          series={toDelete}
+          onClose={() => setToDelete(null)}
+          onDeleted={handleDeleted}
         />
       )}
 

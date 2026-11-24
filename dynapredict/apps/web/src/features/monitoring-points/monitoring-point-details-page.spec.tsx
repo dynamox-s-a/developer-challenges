@@ -189,6 +189,26 @@ describe('MonitoringPointDetailsPage', () => {
     );
   });
 
+  it('should delete a series after the confirmation', async () => {
+    mockApi();
+    vi.spyOn(api, 'delete').mockResolvedValue({ data: '' });
+    renderPage();
+
+    // A segunda série, para garantir que é a série da linha clicada
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Excluir Temperatura' }),
+    );
+    expect(screen.getByRole('dialog', { name: 'Excluir série?' })).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Excluir' }));
+
+    expect(await screen.findByText('Série excluída')).toBeTruthy();
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(api.delete).toHaveBeenCalledWith('/time-series/series-2');
+    // A série saiu da tabela: sobram o cabeçalho e a outra série
+    expect(screen.getAllByRole('row')).toHaveLength(2);
+    expect(screen.queryByRole('link', { name: 'Temperatura' })).toBeNull();
+  });
+
   it('should show the error and try again when asked', async () => {
     const error = new AxiosError('Request failed', 'ERR_BAD_REQUEST');
     error.response = {

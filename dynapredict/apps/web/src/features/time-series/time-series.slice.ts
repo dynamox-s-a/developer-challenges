@@ -72,6 +72,21 @@ export const uploadTimeSeries = createAsyncThunk<
   }
 });
 
+// Exclui uma série (e as medições dela). A API responde 204, sem corpo:
+// o id volta para o reducer saber qual tirar da lista
+export const deleteTimeSeries = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string }
+>('timeSeries/delete', async (seriesId, { rejectWithValue }) => {
+  try {
+    await api.delete(`/time-series/${seriesId}`);
+    return seriesId;
+  } catch (error) {
+    return rejectWithValue(getApiErrorMessage(error));
+  }
+});
+
 const timeSeriesSlice = createSlice({
   name: 'timeSeries',
   initialState,
@@ -97,6 +112,12 @@ const timeSeriesSlice = createSlice({
         state.status = 'failed';
         state.error = action.payload ?? 'Erro inesperado';
       })
+
+      // A lista não tem páginas: basta tirar a série dela, sem buscar de novo
+      .addCase(deleteTimeSeries.fulfilled, (state, action) => {
+        state.items = state.items.filter((item) => item.id !== action.payload);
+      })
+
       // Saiu do sistema? Esquece o ponto e as séries
       .addCase(logout.fulfilled, () => initialState);
   },

@@ -4,6 +4,7 @@ import { api } from '../../lib/api-client';
 import { logout } from '../auth/auth.slice';
 import type { MonitoringPoint } from '../monitoring-points/monitoring-points.slice';
 import {
+  deleteTimeSeries,
   fetchPointTimeSeries,
   uploadTimeSeries,
   type TimeSeriesSummary,
@@ -140,5 +141,22 @@ describe('time series slice', () => {
       { name: 'Temperatura', unit: '°C', samples },
     );
     expect(result).toEqual(series[0]);
+  });
+
+  it('should delete a series and take only it out of the list', async () => {
+    const other = { ...series[0], id: 'series-2', name: 'Temperatura' };
+    vi.spyOn(api, 'get').mockImplementation(async (url) =>
+      url.endsWith('/time-series')
+        ? { data: [series[0], other] }
+        : { data: point },
+    );
+    vi.spyOn(api, 'delete').mockResolvedValue({ data: '' });
+    const store = setupStore();
+    await store.dispatch(fetchPointTimeSeries('point-1'));
+
+    await store.dispatch(deleteTimeSeries('series-1'));
+
+    expect(api.delete).toHaveBeenCalledWith('/time-series/series-1');
+    expect(store.getState().timeSeries.items).toEqual([other]);
   });
 });
