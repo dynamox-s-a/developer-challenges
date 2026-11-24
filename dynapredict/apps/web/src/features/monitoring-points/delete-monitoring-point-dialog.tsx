@@ -31,14 +31,14 @@ export function DeleteMonitoringPointDialog({
       onClose={onClose}
     >
       O ponto <strong>{point.name}</strong> da máquina{' '}
-      <strong>{point.machine.name}</strong> será excluído
-      {/* Avisa que o sensor vai junto (no banco, ele é apagado em cascata) */}
+      <strong>{point.machine.name}</strong> será excluído, junto com{' '}
+      {/* Avisa o que vai junto (no banco, é apagado em cascata) */}
       {point.sensor && (
         <>
-          , junto com o sensor <strong>{point.sensor.serialNumber}</strong>
+          o sensor <strong>{point.sensor.serialNumber}</strong> e{' '}
         </>
       )}
-      . Essa ação não pode ser desfeita.
+      as séries temporais dele. Essa ação não pode ser desfeita.
     </ConfirmDeleteDialog>
   );
 }

@@ -54,13 +54,14 @@ describe('DeleteMachineDialog', () => {
     expect(api.delete).toHaveBeenCalledWith('/machines/machine-1');
   });
 
-  it('should warn that the points and sensors of the machine go too', () => {
+  it('should warn that the points, sensors and series of the machine go too', () => {
     renderDialog();
 
-    // No banco, excluir a máquina apaga os pontos e os sensores em cascata
+    // No banco, excluir a máquina apaga os pontos, os sensores e as séries
+    // em cascata
     const dialog = screen.getByRole('dialog', { name: 'Excluir máquina?' });
     expect(dialog.textContent).toContain(
-      'A máquina Bomba 01 será excluída, junto com todos os pontos de monitoramento e sensores dela.',
+      'A máquina Bomba 01 será excluída, junto com todos os pontos de monitoramento, sensores e séries temporais dela.',
     );
   });
 

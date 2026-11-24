@@ -34,13 +34,13 @@ function renderDialog(target: MonitoringPoint = point) {
 describe('DeleteMonitoringPointDialog', () => {
   afterEach(() => vi.restoreAllMocks());
 
-  it('should say that the sensor goes too and delete only after the confirmation', async () => {
+  it('should say that the sensor and the series go too and delete only after the confirmation', async () => {
     vi.spyOn(api, 'delete').mockResolvedValue({ data: '' });
     const { onDeleted } = renderDialog();
 
     const dialog = screen.getByRole('dialog', { name: 'Excluir ponto?' });
     expect(dialog.textContent).toContain(
-      'O ponto Mancal LA da máquina Bomba 01 será excluído, junto com o sensor DyL4.01.A0001.',
+      'O ponto Mancal LA da máquina Bomba 01 será excluído, junto com o sensor DyL4.01.A0001 e as séries temporais dele.',
     );
     expect(api.delete).not.toHaveBeenCalled();
 
@@ -57,7 +57,7 @@ describe('DeleteMonitoringPointDialog', () => {
 
     const dialog = screen.getByRole('dialog', { name: 'Excluir ponto?' });
     expect(dialog.textContent).toContain(
-      'O ponto Mancal LA da máquina Bomba 01 será excluído. Essa ação',
+      'O ponto Mancal LA da máquina Bomba 01 será excluído, junto com as séries temporais dele.',
     );
   });
 
